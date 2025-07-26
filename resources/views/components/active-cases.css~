@@ -1,0 +1,286 @@
+@props(['title', 'btnText','type'])
+
+<style>
+    body {
+        background-color: #d3d3d3;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+
+    }
+
+    .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 30rem;
+        padding: 2rem;
+        position: relative;
+    }
+
+    .close-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: #ef4444;
+        color: #ffffff;
+        border: none;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.25rem;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .close-button:hover {
+        background-color: #dc2626;
+    }
+
+    .modal-title {
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+
+
+    }
+
+    .option-row {
+        display: flex;
+        align-items: center;
+        padding: 1rem;
+        font-weight: bold;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        height: 2.5rem;
+    }
+
+    .option-row.orange {
+        background-color: #f97316;
+        color: #ffffff;
+
+    }
+
+    .option-row.blue {
+        background-color: #3b82f6;
+        color: #ffffff;
+
+    }
+
+    /*.option-row.blue > .id-circle {*/
+    /*    color: #f97316;*/
+    /*}*/
+
+    /*.option-row.orange > .id-circle {*/
+    /*    color: #3b82f6;*/
+    /*}*/
+
+    .id-circle {
+        background-color: #ffffff;
+        color: #1f1f1f;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1rem;
+        border: 2px solid #d1d5db;
+        cursor: pointer;
+    }
+
+    .id-circle.selected {
+        background-color: #3b82f6;
+        color: #ffffff;
+    }
+
+    .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+
+    .option-row.blue {
+        background-color: #3b82f6;
+        color: #ffffff;
+
+    }
+
+    .checkbox {
+        height: 1.5rem;
+        width: 1.5rem;
+        border-radius: 50%;
+        border: 2px solid #d1d5db;
+        margin-right: 1rem;
+        cursor: pointer;
+    }
+
+    .checkbox:disabled {
+        cursor: not-allowed;
+    }
+
+    .id-circle {
+        background-color: #ffffff;
+
+        color: #1f1f1f;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 1rem;
+    }
+
+    .text-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex: 1;
+        gap: 0.5rem;
+    }
+
+    .separator {
+        margin: 0 0.5rem;
+    }
+
+    .button-container {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .action-button {
+        background: linear-gradient(to right, #3b82f6, #8b5cf6);
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+        transition: background 0.3s;
+        font-size: 1.25rem;
+    }
+
+    .action-button:hover {
+        background: linear-gradient(to right, #2563eb, #7c3aed);
+    }
+
+    @media (max-width: 400px) {
+        .modal-container {
+            padding: 2rem 0.5rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+
+    }
+
+
+</style>
+<div class="blackbox-modal modal-overlay" id="{{$type}}casesListDialog" tabindex="-1" role="dialog">
+    <div class="modal-container">
+        <button class="close-button" onclick="closeModal('{{$type}}casesListDialog')" data-dismiss="modal">
+            X
+        </button>
+        <h2 class="modal-title">{{ $title }}</h2>
+        <div class="cases-list">
+            @php
+                $options1 = [
+                            ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => true, 'id' => 5],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => true, 'id' => 4],
+                    ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => true, 'id' => 5],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => true, 'id' => 4],
+                    ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => true, 'id' => 5],
+                    ['clientName' => 'سنان عيشان', 'patientName' => 'خليل علي', 'isActive' => false, 'id' => 2],
+                    ['clientName' => 'تامر ديب', 'patientName' => 'احمد خليل', 'isActive' => false, 'id' => 2],
+                    ['clientName' => 'اسم رابع', 'patientName' => 'اسم ثالث', 'isActive' => false, 'id' => 3],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => false, 'id' => 4],
+                    ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => false, 'id' => 5],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => false, 'id' => 4],
+                ];
+                    $options2 = [
+                    ['clientName' => 'تامر ديب', 'patientName' => 'احمد خليل', 'isActive' => false, 'id' => 2],
+                    ['clientName' => 'اسم رابع', 'patientName' => 'اسم ثالث', 'isActive' => false, 'id' => 3],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => false, 'id' => 4],
+                    ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => false, 'id' => 5],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => false, 'id' => 4],
+                ];
+                    $options3 = [
+                    ['clientName' => 'تامر ديب', 'patientName' => 'احمد خليل', 'isActive' => true, 'id' => 2],
+                    ['clientName' => 'اسم رابع', 'patientName' => 'اسم ثالث', 'isActive' => true, 'id' => 3],
+                    ['clientName' => 'اسم سادس', 'patientName' => 'اسم خامس', 'isActive' => true, 'id' => 4],
+                    ['clientName' => 'اسم ثامن', 'patientName' => 'اسم سابع', 'isActive' => true, 'id' => 5],
+                ];
+
+                    $options = $options2;
+            $noActiveCases = array_reduce($options, function($carry, $option) {
+                return $carry && !$option['isActive'];
+            }, true);
+            $allActive = array_reduce($options, function($carry, $option) {
+                        return $carry && $option['isActive'];
+                    }, true);
+
+
+            @endphp
+
+            @foreach($options1 as $option)
+                <div class="option-row {{ $option['isActive'] ? 'blue' : 'orange' }}">
+                    @if(!$option['isActive'])
+                        <input type="checkbox" class="checkbox" {{ !$noActiveCases ? 'disabled' : '' }}>
+                    @endif
+                    <div class="text-container">
+                        <span>{{ $option['clientName'] }}</span>
+                        <span class="separator">|</span>
+                        <span>{{ $option['patientName'] }}</span>
+                    </div>
+                    <div class="id-circle">{{ $option['id'] }}</div>
+                </div>
+            @endforeach
+        </div>
+        @php
+            $btnColor = '';
+            // في زرقاء وحدة ع الاقل
+            if (!$noActiveCases )
+                $btnColor = 'green';
+            // اذا ما في ازرق و في برتقالي بس
+            if($noActiveCases )
+                $btnColor = 'blue';   //'orange';
+
+
+        @endphp
+
+        <div class="blackbox-button-container popup-img-container cases-popup" id="silicon-valley-inputs-container ">
+
+            <button class="xxx" id="silicon-valley-button" type="submit" style="border: none;">
+                <div
+                    class="blackbox-button-outer  outer-devices-popup cases-popup {{$btnColor}} enabled"
+                    id="blackbox-btn-outer">
+                    <div
+                        class="blackbox-button-inner outer-devices-popup cases-popup {{$btnColor}} enabled"
+                        id="blackbox-btn-inner">
+                        <span
+                            class="blackbox-button-text cases-popup" {{$allActive  ? 'orange' : ''}}>{{ $noActiveCases ? 'START' : 'COMPLETE' }}</span>
+                    </div>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+

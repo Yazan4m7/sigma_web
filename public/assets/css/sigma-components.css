@@ -1,0 +1,444 @@
+/* Sigma Dental Lab Custom Components
+   Created to provide enhanced UI components that match the existing application style
+   Version 1.0
+*/
+
+/* =========== 1. Enhanced Device Selection Cards =========== */
+.sigma-device-card {
+  position: relative;
+  width: 220px;
+  height: 180px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin: 10px;
+  border: 2px solid transparent;
+}
+
+.sigma-device-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.sigma-device-card.selected {
+  border-color: #2b7b7d;
+  box-shadow: 0 0 0 2px rgba(43, 123, 125, 0.3);
+}
+
+.sigma-device-image {
+  height: 120px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 15px;
+}
+
+.sigma-device-image img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.sigma-device-card:hover .sigma-device-image img {
+  transform: scale(1.05);
+}
+
+.sigma-device-details {
+  padding: 10px 15px;
+  background: #f6f9fa;
+  border-top: 1px solid #eaeaea;
+  transition: background 0.3s ease;
+}
+
+.sigma-device-card.selected .sigma-device-details {
+  background: rgba(43, 123, 125, 0.1);
+}
+
+.sigma-device-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+  text-align: center;
+}
+
+.sigma-device-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #4CAF50;
+}
+
+.sigma-device-status.busy {
+  background: #FFC107;
+}
+
+.sigma-device-status.offline {
+  background: #F44336;
+}
+
+/* =========== 2. Modern "Assign" and "Complete" Buttons =========== */
+.sigma-button {
+    color: white;
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  background: #2b7b7d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  outline: none;
+  width: 100%;
+}
+
+.sigma-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: all 0.5s ease;
+}
+
+.sigma-button:hover:before {
+  left: 100%;
+}
+
+.sigma-button:hover {
+  background: #1d6062;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.sigma-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-button.assign {
+  background: #2b7b7d;
+}
+
+.sigma-button.complete {
+  background: #4CAF50;
+}
+
+.sigma-button.cancel {
+  background: #757575;
+}
+
+.sigma-button.warning {
+  background: #ff8400;
+}
+
+.sigma-button.danger {
+  background: #F44336;
+}
+
+.sigma-button.icon-button {
+  padding-left: 15px;
+}
+
+.sigma-button i {
+  margin-right: 8px;
+}
+
+/* =========== 3. Improved Case Listing UI =========== */
+.sigma-case-row {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  padding: 12px 15px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  align-items: center;
+}
+
+.sigma-case-row:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.sigma-case-row.selected {
+  background: rgba(43, 123, 125, 0.05);
+  border-left: 4px solid #2b7b7d;
+}
+
+.sigma-case-checkbox {
+  width: 22px;
+  height: 22px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.sigma-case-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.sigma-case-patient {
+  width: 25%;
+  font-weight: 600;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 12px;
+}
+
+.sigma-case-doctor {
+  width: 25%;
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 15px;
+}
+
+.sigma-case-date {
+  width: 15%;
+  color: #777;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.sigma-case-units {
+  width: 10%;
+  color: #2b7b7d;
+  font-weight: 600;
+  background: rgba(43, 123, 125, 0.1);
+  border-radius: 50px;
+  height: 24px;
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.sigma-case-tags {
+  width: 15%;
+  display: flex;
+  gap: 5px;
+}
+
+.sigma-case-tag {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 3px;
+}
+
+.sigma-case-tag.urgent {
+  background: #F44336;
+}
+
+.sigma-case-tag.vip {
+  background: #2196F3;
+}
+
+.sigma-case-tag.notes {
+  background: #FFC107;
+}
+
+/* =========== 4. Better Dialog Box Styling =========== */
+.sigma-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sigma-dialog.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sigma-dialog-content {
+  width: 90%;
+  max-width: 550px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  overflow: hidden;
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.sigma-dialog.active .sigma-dialog-content {
+  transform: translateY(0);
+}
+
+.sigma-dialog-header {
+  padding: 20px 25px;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sigma-dialog-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.sigma-dialog-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #888;
+  font-size: 22px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.sigma-dialog-close:hover {
+  color: #333;
+}
+
+.sigma-dialog-body {
+  padding: 25px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.sigma-dialog-section {
+  margin-bottom: 20px;
+}
+
+.sigma-dialog-section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.sigma-dialog-footer {
+  padding: 15px 25px;
+  background: #f9f9f9;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+/* Notes in Dialog */
+.sigma-note {
+  background: #f8f9fa;
+  border-left: 3px solid #2b7b7d;
+  padding: 10px 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.sigma-note-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.sigma-note-text {
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+}
+
+/* Case info in dialog */
+.sigma-case-detail-row {
+  display: flex;
+  margin-bottom: 15px;
+}
+
+.sigma-case-detail-col {
+  flex: 1;
+}
+
+.sigma-case-detail-label {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.sigma-case-detail-value {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Jobs list in dialog */
+.sigma-job-item {
+  display: flex;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.sigma-job-item:last-child {
+  border-bottom: none;
+}
+
+.sigma-job-units {
+  color: #2b7b7d;
+  font-weight: 600;
+  margin-right: 10px;
+  min-width: 30px;
+}
+
+.sigma-job-details {
+  flex: 1;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .sigma-dialog-content {
+    width: 95%;
+  }
+
+  .sigma-case-detail-row {
+    flex-direction: column;
+  }
+
+  .sigma-case-detail-col:not(:last-child) {
+    margin-bottom: 15px;
+  }
+}
