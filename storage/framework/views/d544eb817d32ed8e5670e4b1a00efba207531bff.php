@@ -306,15 +306,16 @@
                                     <tbody>
 
                                     <?php $__currentLoopData = $cases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $case): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <tr role="row" class="odd clickable" data-toggle="modal"
-                                            data-target="#actionsDialog<?php echo e($case->id); ?>">
-                                            <td class="sorting_1 "><?php echo e($case->id); ?></td>
-                                            <td><?php echo e($case->case_id); ?></td>
-                                            <td><?php echo e($case->client->name); ?></td>
-                                            <td><?php echo e($case->patient_name); ?></td>
-                                            <td class="initDeliDateTD"><?php echo e($case->initDeliveryDate()); ?>
 
-                                                &nbsp;&nbsp; <?php echo e($case->initDeliveryTime()); ?></td>
+                                        <tr role="row" class="odd clickable" data-toggle="modal"
+                                            data-target="#actionsDialog<?php echo e($case->id ?? "x"); ?>">
+                                            <td class="sorting_1 "><?php echo e($case->id ?? "x"); ?></td>
+                                            <td><?php echo e($case->case_id ?? "x"); ?></td>
+                                            <td><?php echo e($case->client->name ?? "x"); ?></td>
+                                            <td><?php echo e($case->patient_name ?? "x"); ?></td>
+                                            <td class="initDeliDateTD"><?php echo e($case->initDeliveryDate() ?? "x"); ?>
+
+                                                &nbsp;&nbsp; <?php echo e($case->initDeliveryTime() ?? "x"); ?></td>
                                             <td><?php echo e($case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()); ?>
 
                                                 &nbsp;&nbsp; <?php echo e($case->actualDeliveryTime() ?? ""); ?></td>

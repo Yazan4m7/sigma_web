@@ -306,14 +306,15 @@
                                     <tbody>
 
                                     @foreach($cases  as $case)
+
                                         <tr role="row" class="odd clickable" data-toggle="modal"
-                                            data-target="#actionsDialog{{$case->id}}">
-                                            <td class="sorting_1 ">{{$case->id}}</td>
-                                            <td>{{$case->case_id}}</td>
-                                            <td>{{$case->client->name}}</td>
-                                            <td>{{$case->patient_name}}</td>
-                                            <td class="initDeliDateTD">{{$case->initDeliveryDate() }}
-                                                &nbsp;&nbsp; {{$case->initDeliveryTime()}}</td>
+                                            data-target="#actionsDialog{{$case->id ?? "x"}}">
+                                            <td class="sorting_1 ">{{$case->id ?? "x"}}</td>
+                                            <td>{{$case->case_id ?? "x"}}</td>
+                                            <td>{{$case->client->name ?? "x"}}</td>
+                                            <td>{{$case->patient_name ?? "x"}}</td>
+                                            <td class="initDeliDateTD">{{$case->initDeliveryDate() ?? "x" }}
+                                                &nbsp;&nbsp; {{$case->initDeliveryTime() ?? "x"}}</td>
                                             <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                                 &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
                                             <td>

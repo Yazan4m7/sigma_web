@@ -119,7 +119,7 @@ function getCheckedValues(tableKey) {
     var checkedValues = [];
     // First check if we have a case from a single case dialog
     if (caseIDFromOldDialog != 0) return [caseIDFromOldDialog];
-    
+
     console.log("Checking for checkboxes with selector: " + 'input[name="CheckBoxes' + tableKey + '[]"]:checked');
     // Select checkboxes with the specific dynamic name
     $('input[name="CheckBoxes' + tableKey + '[]"]:checked').each(function () {
@@ -133,13 +133,13 @@ function getCheckedValues(tableKey) {
             checkedValues.push($(this).val());
         });
     }
-    
+
     // If still no checkboxes found, check the global case ID from waiting dialog
     if (checkedValues.length == 0 && window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
         checkedValues = [window.caseIDFromOldDialog];
         console.log("Using case from waiting dialog:", window.caseIDFromOldDialog);
     }
-    
+
     console.log("Checked Count for", tableKey, ":", checkedValues.length); // Debugging
     console.log("Checked Values:", checkedValues); // Debugging
 
@@ -148,7 +148,7 @@ function getCheckedValues(tableKey) {
 
 function submitForm(key, action, deviceId = 0) {
     console.log("WARNING: submitForm called for " + key + " - this is deprecated. Please use submitWorkflow instead.");
-    
+
     if (!deviceSelected) //if  0 (false)  = >  true => assign
         deviceSelected = deviceId;
 
@@ -254,7 +254,7 @@ $(document).on('click', 'multipleCB.3dprinting', function (e) {
 function showToast(message, type = 'error') {
     // Remove any existing toasts first
     $('.toast-alert').remove();
-    
+
     var toast = $('<div class="toast-alert ' + type + '"><span>' + message + '</span></div>');
     $('body').append(toast);
 
@@ -1111,6 +1111,13 @@ function closeModal({
     try {
         let modal = document.getElementById(id) ?? document.getElementById(exactId);
         if (modal) {
+
+            //remove focus
+            if (modal.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+
+
             console.log("Modal found ");
             console.log(modal);
             modal.classList.add('fade-out-animation');

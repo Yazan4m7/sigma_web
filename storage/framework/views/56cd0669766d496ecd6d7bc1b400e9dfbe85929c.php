@@ -127,12 +127,16 @@
                             </thead>
                             <tbody>
                             <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $client): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr id="<?php echo e($client->id); ?>" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog<?php echo e($client->id); ?>">
+                                <tr id="<?php echo e($client->id); ?>" class="odd clickable <?php echo e($client->active ? '' : 'table-secondary'); ?>" data-toggle="modal" data-target="#actionsDialog<?php echo e($client->id); ?>" style="<?php echo e($client->active ? '' : 'opacity: 0.6;'); ?>">
                                     <td>
                                         <span class="tabledit-span tabledit-identifier"><?php echo e($client->id); ?></span>
                                     </td>
                                     <td class="tabledit-view-mode"><span
-                                                class="tabledit-span"><?php echo e($client->name); ?></span><input
+                                                class="tabledit-span"><?php echo e($client->name); ?> 
+                                                <?php if(!$client->active): ?>
+                                                    <span class="badge badge-secondary ml-1">Disabled</span>
+                                                <?php endif; ?>
+                                            </span><input
                                                 class="tabledit-input form-control input-sm" type="text" name="col1"
                                                 value="John" style="display: none;" disabled=""></td>
                                     <td class="tabledit-view-mode"><span
@@ -339,8 +343,11 @@
                                                                             Create a discount </button></a>
                                                                 </div>
                                                                 <div class="col-6 padding5px" >
-                                                                    <a href="<?php echo e(route('soft-delete-client', $client->id)); ?>" onclick="return confirm('Are you sure you want to delete this doctor?');">
-                                                                        <button type="button" class="btn btn-danger">Delete</button>
+                                                                    <a href="<?php echo e(route('toggle-client-active', $client->id)); ?>" onclick="return confirm('Are you sure you want to <?php echo e($client->active ? 'disable' : 'enable'); ?> this doctor?');">
+                                                                        <button type="button" class="btn <?php echo e($client->active ? 'btn-warning' : 'btn-success'); ?>">
+                                                                            <?php echo e($client->active ? 'Disable' : 'Enable'); ?>
+
+                                                                        </button>
                                                                     </a>
                                                                 </div>
 

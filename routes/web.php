@@ -314,7 +314,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::get('/dentists/new', [App\Http\Controllers\ClientsController::class, 'returnCreate'])->name('new-dentist-view');
         Route::post('/dentists/new-post', [App\Http\Controllers\ClientsController::class, 'create'])->name('new-dentist');
         Route::post('/dentists/account-discount', [App\Http\Controllers\ClientsController::class, 'accountDiscount'])->name('account-discount');
-        Route::get('/dentists/delete/{id}', [App\Http\Controllers\ClientsController::class, 'softDelete'])->name('soft-delete-client');
+        Route::get('/dentists/toggle-active/{id}', [App\Http\Controllers\ClientsController::class, 'toggleActive'])->name('toggle-client-active');
 
 
         Route::get('/system/switch_env', [App\Http\Controllers\SystemController::class, 'switchEnvironment'])->name('switch-env');

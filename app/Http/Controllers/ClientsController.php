@@ -60,10 +60,8 @@ class ClientsController extends Controller
 // Start query
         $query = Client::query();
 
-// Include soft-deleted clients only when showing disabled
-        if ($status === 0) {
-            $query->onlyTrashed();
-        }
+// Filter by active status only (no soft deletes)
+        $query->where('active', $status);
 
 // Filter by doctors
         if ($request->doctor && !in_array('all', $request->doctor)) {
@@ -73,7 +71,7 @@ class ClientsController extends Controller
             $selectedClients = null;
         }
 
-        $clients = $query->where('active', $status)->get();
+        $clients = $query->get();
 
 // Balance logic
         $from = $request->from ?? now()->toDateString() . ' 23:59';
@@ -400,15 +398,20 @@ class ClientsController extends Controller
 
     }
 
-    public function softDelete($id)
+    public function toggleActive($id)
     {
         try {
             $client = client::where('id', $id)->first();
             if (!$client) {
                 return back()->with('error', 'Doctor not found');
             }
-            $client->delete();
-            return back()->with('success', 'Doctor deleted successfully');
+            
+            // Toggle the active status
+            $client->active = $client->active ? 0 : 1;
+            $client->save();
+            
+            $status = $client->active ? 'enabled' : 'disabled';
+            return back()->with('success', "Doctor has been {$status} successfully");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

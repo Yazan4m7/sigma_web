@@ -126,12 +126,16 @@
                             </thead>
                             <tbody>
                             @foreach($clients as $client)
-                                <tr id="{{$client->id}}" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$client->id}}">
+                                <tr id="{{$client->id}}" class="odd clickable {{ $client->active ? '' : 'table-secondary' }}" data-toggle="modal" data-target="#actionsDialog{{$client->id}}" style="{{ $client->active ? '' : 'opacity: 0.6;' }}">
                                     <td>
                                         <span class="tabledit-span tabledit-identifier">{{$client->id}}</span>
                                     </td>
                                     <td class="tabledit-view-mode"><span
-                                                class="tabledit-span">{{$client->name}}</span><input
+                                                class="tabledit-span">{{$client->name}} 
+                                                @if(!$client->active)
+                                                    <span class="badge badge-secondary ml-1">Disabled</span>
+                                                @endif
+                                            </span><input
                                                 class="tabledit-input form-control input-sm" type="text" name="col1"
                                                 value="John" style="display: none;" disabled=""></td>
                                     <td class="tabledit-view-mode"><span
@@ -338,8 +342,10 @@
                                                                             Create a discount </button></a>
                                                                 </div>
                                                                 <div class="col-6 padding5px" >
-                                                                    <a href="{{route('soft-delete-client', $client->id)}}" onclick="return confirm('Are you sure you want to delete this doctor?');">
-                                                                        <button type="button" class="btn btn-danger">Delete</button>
+                                                                    <a href="{{route('toggle-client-active', $client->id)}}" onclick="return confirm('Are you sure you want to {{ $client->active ? 'disable' : 'enable' }} this doctor?');">
+                                                                        <button type="button" class="btn {{ $client->active ? 'btn-warning' : 'btn-success' }}">
+                                                                            {{ $client->active ? 'Disable' : 'Enable' }}
+                                                                        </button>
                                                                     </a>
                                                                 </div>
 
