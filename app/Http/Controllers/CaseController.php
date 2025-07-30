@@ -792,14 +792,14 @@ class CaseController extends Controller
             foreach ($devices as $device) {
                 $deviceId = $device['id'];
                 $deviceType = $device['type'];
-                
+
                 // Create a temporary Device model instance to call methods
                 $deviceModel = new device();
                 $deviceModel->fill($device);
                 $deviceModel->exists = true;
                 $deviceModel->id = $deviceId;
                 $deviceModel->type = $deviceType;
-                
+
                 foreach ([ 2, 3, 4, 5,] as $stage) {
                     $deviceUnitsCounts[$deviceId][$stage]['waiting'] = $deviceModel->countOfUnits($stage, false);
                     $deviceUnitsCounts[$deviceId][$stage]['active'] = $deviceModel->countOfUnits($stage, true);
@@ -814,7 +814,7 @@ class CaseController extends Controller
                 $stats = $deviceStats->get($deviceId);
                 // Note: We can't set properties on arrays, so we'll skip these assignments
                 // $device->jobsWaiting = $stats ? $stats->waiting_count : 0;
-                // $device->jobsSet = $stats ? $stats->set_count : 0; 
+                // $device->jobsSet = $stats ? $stats->set_count : 0;
                 // $device->jobsActive = $stats ? $stats->active_count : 0;
             }
 
@@ -968,6 +968,7 @@ class CaseController extends Controller
         foreach ($jobs as $job) {
             $nextStage = $this->getJobNextStage($job);
             Log::info('[finishCaseStage] job', ['job' => $job, 'nextStage' => $nextStage]);
+
             // before QC ( 7 = QC ) just send them to next stage
 
             if ($nextStage != 7) {
@@ -980,6 +981,7 @@ class CaseController extends Controller
 
                 $job->save();
                 //dd($job, $job->stage, $nextStage);
+
             } // If Next stage is QC check if all jobs are ready (in finishing) or not before sending them to QC
             else {
                 if ($this->allJobsAreIn($case, 6)) {
@@ -988,6 +990,8 @@ class CaseController extends Controller
                     $job->device_id = null;
                     $job->assignee = null;
                     $job->stage = $nextStage;
+                    if ($nextStage != 8)
+                    $this->issueInvoice($job);
                     $job->save();
                 } else {
                     if ($returnMessages)
@@ -998,7 +1002,7 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8) $this->issueInvoice($job);
+        if ($nextStage == 8) $this->applyInvoice($job);
 
         // if all jobs are finished, apply invoice and set date delivered
         if ($nextStage == -1) {
@@ -1111,7 +1115,7 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8){ $this->issueInvoice($job);
+        if ($nextStage == 8){ $this->applyInvoice($job);
         $job->is_set=null; $job->assignee=$assignee;$job->is_set=null;}
 
         // if all jobs are finished, apply invoice and set date delivered

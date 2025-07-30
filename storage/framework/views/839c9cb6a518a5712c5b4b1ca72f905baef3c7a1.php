@@ -1,5 +1,5 @@
-@extends('layouts.app' ,[ 'pageSlug' => 'View Invoice' ])
-@section('head')
+
+<?php $__env->startSection('head'); ?>
   <style>
       body{
           -webkit-print-color-adjust:exact !important;
@@ -30,8 +30,8 @@
       }
   </style>
 
-@endsection
-@section('content')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
 
     <div class="row">
         <div class="col-12 m-b-30">
@@ -45,9 +45,9 @@
                         </div>
                         <div class="pull-right">
                             <h6>Invoice : #
-                                <strong>{{$case->invoice->id}}</strong>
+                                <strong><?php echo e($case->invoice->id); ?></strong>
                             </h6>
-                            <h6 class="pull-right">Date : {{substr(now(),0,16)}}</h6>
+                            <h6 class="pull-right">Date : <?php echo e(substr(now(),0,16)); ?></h6>
                         </div>
                     </div>
                     <hr>
@@ -61,21 +61,21 @@
 
                                 </address>
                                 <p><strong>Order Status: </strong>
-                                    @if(isset($case->delivered_to_client))
+                                    <?php if(isset($case->delivered_to_client)): ?>
                                         <span class="badge badge-success">Applied</span></p>
-                                @else
+                                <?php else: ?>
 
                                     <span class="badge badge-warning">Pending</span></p>
-                                @endif
+                                <?php endif; ?>
                             </div>
                             <div class="pull-right mt-4">
-                                <p><strong>Dentist: </strong><b>{{$case->client->name}}</b></p>
-                                <p><strong>Patient: </strong><b>{{$case->patient_name}}</b></p>
-                                <p><strong>Order Date: </strong>{{str_replace('T', ' ',$case->created_at)}}</p>
-                                @if(isset($case->actual_delivery_date))
-                                    <p><strong>Delivered on: </strong>{{substr($case->actual_delivery_date,0,16)}}</p>
-                                @endif
-                                <p><strong>Order ID: </strong>{{$case->case_id . '/'. $case->id}}</p>
+                                <p><strong>Dentist: </strong><b><?php echo e($case->client->name); ?></b></p>
+                                <p><strong>Patient: </strong><b><?php echo e($case->patient_name); ?></b></p>
+                                <p><strong>Order Date: </strong><?php echo e(str_replace('T', ' ',$case->created_at)); ?></p>
+                                <?php if(isset($case->actual_delivery_date)): ?>
+                                    <p><strong>Delivered on: </strong><?php echo e(substr($case->actual_delivery_date,0,16)); ?></p>
+                                <?php endif; ?>
+                                <p><strong>Order ID: </strong><?php echo e($case->case_id . '/'. $case->id); ?></p>
                             </div>
                         </div>
                     </div><!--end row-->
@@ -96,27 +96,28 @@
                                     <th style=" "><span style="">Amount</span></th>
                                     </THEAD>
                                     <tbody>
-                                    @php
+                                    <?php
                                         $i=1;
                                     $totalInvoiceAmount=0;
-                                    @endphp
+                                    ?>
 
-                                    @foreach($case->jobs as $job)
-                                        @php
+                                    <?php $__currentLoopData = $case->jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php
                                         if($job->is_modification)
                                         continue;
-                                        @endphp
+                                        ?>
                                         <tr>
-                                            <td style="">{{$i}}
-                                            @if ($job->is_rejection)
-                                                <span style="color:red">REJECTION</span>
-                                                @endif
-                                            </td>
-                                            <td style="">{{$job->jobType->name}}</td>
-                                            <td style=" ">{{$job->material->name}}</td>
+                                            <td style=""><?php echo e($i); ?>
 
-                                            <td style=" ">{{$job->style}}</td>
-                                            @php
+                                            <?php if($job->is_rejection): ?>
+                                                <span style="color:red">REJECTION</span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td style=""><?php echo e($job->jobType->name); ?></td>
+                                            <td style=" "><?php echo e($job->material->name); ?></td>
+
+                                            <td style=" "><?php echo e($job->style); ?></td>
+                                            <?php
 
                                             $unitsAmount = count(explode(',', $job->unit_num));
                                             {{ print_r($unitsAmount . ' <= Units amount  '); }}
@@ -131,15 +132,15 @@
 
                                             $totalInvoiceAmount += $totalJobPrice;
 
-                                            @endphp
-                                            <td style=" ">{{$unitsAmount}}</td>
-                                            <td style=" ">{{$job->unit_price ?? $job->material->price}}</td>
-                                            <td style=" ">{{$totalJobPrice}}</td>
+                                            ?>
+                                            <td style=" "><?php echo e($unitsAmount); ?></td>
+                                            <td style=" "><?php echo e($job->unit_price ?? $job->material->price); ?></td>
+                                            <td style=" "><?php echo e($totalJobPrice); ?></td>
                                         </tr>
-                                        @php
+                                        <?php
                                             $i++;
-                                        @endphp
-                                    @endforeach
+                                        ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -152,16 +153,17 @@
                         </div>
                         <div class="col-md-3">
                             <h6 class="text-right">
-                                @if(isset($case->discount))
-                                Discount : {{$case->discount->discount}}
-                                @endif
+                                <?php if(isset($case->discount)): ?>
+                                Discount : <?php echo e($case->discount->discount); ?>
+
+                                <?php endif; ?>
                             </h6>
                             <hr>
-                            @if(isset($case->discount))
-                            <h4 class="text-right">Total: <b>{{$totalInvoiceAmount - $case->discount->discount}}</b> JOD </h4>
-                            @else
-                                <h4 class="text-right">Total: <b>{{$totalInvoiceAmount }}</b> JOD </h4>
-                                @endif
+                            <?php if(isset($case->discount)): ?>
+                            <h4 class="text-right">Total: <b><?php echo e($totalInvoiceAmount - $case->discount->discount); ?></b> JOD </h4>
+                            <?php else: ?>
+                                <h4 class="text-right">Total: <b><?php echo e($totalInvoiceAmount); ?></b> JOD </h4>
+                                <?php endif; ?>
                         </div>
                     </div><!--end row-->
 
@@ -178,21 +180,21 @@
             </div>
         </div>
     </div>
-    @endsection
-@push('js')
+    <?php $__env->stopSection(); ?>
+<?php $__env->startPush('js'); ?>
     <script>
         function print(){
             var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
             mywindow.document.write('<html><head><title>' + document.title + '</title>');
             mywindow.document.write(`
-            <link href="{{asset('assets/css/slidebars.min.css')}}" rel="stylesheet">
-<link href="{{asset('assets/css/icons.css')}}" rel="stylesheet">
-<link href="{{asset('assets/icons/css/themify-icons.css')}}" rel="stylesheet">
-<link href="{{asset('assets/css/menu.css')}}" rel="stylesheet" type="text/css">
-<link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
+            <link href="<?php echo e(asset('assets/css/slidebars.min.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('assets/css/icons.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('assets/icons/css/themify-icons.css')); ?>" rel="stylesheet">
+<link href="<?php echo e(asset('assets/css/menu.css')); ?>" rel="stylesheet" type="text/css">
+<link href="<?php echo e(asset('assets/css/style.css')); ?>" rel="stylesheet">
 
-<link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css')}}" media="all" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l')" crossorigin="anonymous">
+<link rel="stylesheet" href="<?php echo e(asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css')); ?>" media="all" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l')" crossorigin="anonymous">
 
   <style>
   body{
@@ -237,9 +239,9 @@
                         </div>
                         <div class="pull-right">
                             <h6>Invoice : #
-                                <strong>{{$case->invoice->id}}</strong>
+                                <strong><?php echo e($case->invoice->id); ?></strong>
                             </h6>
-                            <h6 class="pull-right">Date : {{substr(now(),0,16)}}</h6>
+                            <h6 class="pull-right">Date : <?php echo e(substr(now(),0,16)); ?></h6>
                         </div>
                     </div>
                     <hr>
@@ -253,21 +255,21 @@
 
                                 </address>
                                 <p><strong>Order Status: </strong>
-                                    @if(isset($case->delivered_to_client))
+                                    <?php if(isset($case->delivered_to_client)): ?>
                 <span class="badge badge-success">Applied</span></p>
-@else
+<?php else: ?>
 
                 <span class="badge badge-warning">Pending</span></p>
-@endif
+<?php endif; ?>
                 </div>
                 <div class="pull-right mt-4">
-                    <p><strong>Dentist: </strong><b>{{$case->client->name}}</b></p>
-                                <p><strong>Patient: </strong><b>{{$case->patient_name}}</b></p>
-                                <p><strong>Order Date: </strong>{{str_replace('T', ' ',$case->created_at)}}</p>
-                                @if(isset($case->actual_delivery_date))
-                <p><strong>Delivered on: </strong>{{substr($case->actual_delivery_date,0,16)}}</p>
-                                @endif
-                <p><strong>Order ID: </strong>{{$case->case_id . '/'. $case->id}}</p>
+                    <p><strong>Dentist: </strong><b><?php echo e($case->client->name); ?></b></p>
+                                <p><strong>Patient: </strong><b><?php echo e($case->patient_name); ?></b></p>
+                                <p><strong>Order Date: </strong><?php echo e(str_replace('T', ' ',$case->created_at)); ?></p>
+                                <?php if(isset($case->actual_delivery_date)): ?>
+                <p><strong>Delivered on: </strong><?php echo e(substr($case->actual_delivery_date,0,16)); ?></p>
+                                <?php endif; ?>
+                <p><strong>Order ID: </strong><?php echo e($case->case_id . '/'. $case->id); ?></p>
                             </div>
                         </div>
                     </div>
@@ -288,35 +290,35 @@
                 <th style=" "><span style="">Amount</span></th>
                 </THEAD>
                 <tbody>
-            @php
+            <?php
                 $i=1;
             $totalInvoiceAmount=0;
-            @endphp
-                    @foreach($case->jobs  as $job)
-                    @php
+            ?>
+                    <?php $__currentLoopData = $case->jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php
                         if($job->is_modification)
                         continue;
-                    @endphp
+                    ?>
                 <tr>
-                <td style="">{{$i}}</td>
-                <td style="">{{$job->jobType->name}}</td>
-                <td style=" ">{{$job->material->name}}</td>
+                <td style=""><?php echo e($i); ?></td>
+                <td style=""><?php echo e($job->jobType->name); ?></td>
+                <td style=" "><?php echo e($job->material->name); ?></td>
 
-                <td style=" ">{{$job->style}}</td>
-                    @php
+                <td style=" "><?php echo e($job->style); ?></td>
+                    <?php
 
                         $unitsAmount = count(explode(',',$job->unit_num));
                         $totalJobPrice = $unitsAmount * $job->unit_price ?? $job->material->price;
                         $totalInvoiceAmount += $totalJobPrice;
-                    @endphp
-                <td style=" ">{{$unitsAmount}}</td>
-                <td style=" ">{{$job->unit_price ?? $job->material->price}}</td>
-                <td style=" ">{{$totalJobPrice}}</td>
+                    ?>
+                <td style=" "><?php echo e($unitsAmount); ?></td>
+                <td style=" "><?php echo e($job->unit_price ?? $job->material->price); ?></td>
+                <td style=" "><?php echo e($totalJobPrice); ?></td>
                 </tr>
-            @php
+            <?php
                 $i++;
-            @endphp
-                    @endforeach
+            ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 </table>
                 </div>
@@ -329,16 +331,17 @@
                 </div>
                 <div class="col-md-3">
                    <h6 class="text-right">
-                                @if(isset($case->discount))
-                Discount : {{$case->discount->discount}}
-                    @endif
+                                <?php if(isset($case->discount)): ?>
+                Discount : <?php echo e($case->discount->discount); ?>
+
+                    <?php endif; ?>
                 </h6>
                 <hr>
-               @if(isset($case->discount))
-                <h4 class="text-right">Total: <b>{{$totalInvoiceAmount - $case->discount->discount}}</b> JOD </h4>
-                            @else
-                <h4 class="text-right">Total: <b>{{$totalInvoiceAmount }}</b> JOD </h4>
-                                @endif
+               <?php if(isset($case->discount)): ?>
+                <h4 class="text-right">Total: <b><?php echo e($totalInvoiceAmount - $case->discount->discount); ?></b> JOD </h4>
+                            <?php else: ?>
+                <h4 class="text-right">Total: <b><?php echo e($totalInvoiceAmount); ?></b> JOD </h4>
+                                <?php endif; ?>
                 </div>
                 </div>
 
@@ -362,4 +365,6 @@
             return true;
         }
     </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app' ,[ 'pageSlug' => 'View Invoice' ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Yazan\Desktop\sigma\staging\resources\views/generic/invoice-view.blade.php ENDPATH**/ ?>

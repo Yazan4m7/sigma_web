@@ -176,6 +176,20 @@
                     $('body').removeClass('white-content');
                 });
             });
+            document.querySelectorAll('td.clickable[data-toggle="modal"][data-target^="#waitingDialogdelivery"]').forEach(el => {
+            console.log("adding listener to clickable");
+                el.addEventListener('click', function () {
+                    const target = this.getAttribute('data-target'); // e.g. "#waitingDialogdelivery175"
+                    const match = target.match(/#waitingDialogdelivery(\d+)/);
+                    console.log("row clicked, match:", match);
+                    if (match) {
+                        console.log("setting lastCaseClickedCase:", match);
+                        window.lastCaseClickedCase = parseInt(match[1]);
+                        console.log("Clicked case ID:", window.lastCaseClickedCase);
+                    }
+                });
+            });
+
         });
     </script>
     <script>
@@ -382,13 +396,14 @@
         // Select the navbar-toggle div and overlay
         const navbarToggle = document.querySelector('.navbar-toggle');
         const overlay = document.getElementById('overlay');
-
+        try{
         // Toggle "toggled" class and show/hide overlay on click
         navbarToggle.addEventListener('click', function () {
             console.log("nav clicked");
             // Toggle the "toggled" class
             // navbarToggle.classList.toggle('toggled');
             // navbarToggle.classList.toggle('toggled');
+
             setTimeout(() => {
 
                 // Show or hide overlay based on the "toggled" class
@@ -405,6 +420,10 @@
                 }
             }, 10);
         });
+
+        } catch (e) {
+            console.log(e);
+        }
 
 
         // // Close overlay and remove "toggled" class when overlay is clicked

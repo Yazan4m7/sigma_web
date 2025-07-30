@@ -423,6 +423,10 @@
                                         <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling"
                                                           :devices="$devices"
                                                           stageId="2"/>
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn milling"
+                                                style="display:none; margin:5px;"
+                                                onclick="openModal('milling',true)">SET
+                                        </button>
                                         @break
 
                                     @case('3dprinting')
@@ -432,7 +436,6 @@
                                                                      :devices="$devices"
                                                                      stageId="3" showBuildName="true"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting"
-                                                data-toggle="modal" data-backdrop="false"
                                                 style="display:none; margin:5px;"
                                                 onclick="openModal('3dprinting',true)">SET
                                         </button>
@@ -443,7 +446,6 @@
                                                           :devices="$devices"
                                                           stageId="4"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
-                                                data-toggle="modal" data-backdrop="false"
                                                 style="display:none; margin:5px;"
                                                 onclick="openModal('sintering',true)">SET
                                         </button>
@@ -454,8 +456,7 @@
                                                           :devices="$devices"
                                                           stageId="5"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
-                                                data-toggle="modal"
-                                                data-backdrop="false" style="display:none; margin:5px;"
+                                                style="display:none; margin:5px;"
                                                 onclick="openModal('pressing',true)">SET
                                         </button>
                                         @break
@@ -464,8 +465,7 @@
                                         <x-waiting-delivery-dialog title="Assign to" btnText="ASSIGN"
                                                                    :drivers="$drivers" stageId="5"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn delivery"
-                                                data-toggle="modal"
-                                                data-backdrop="false" style="display:none; margin:5px;"
+                                                style="display:none; margin:5px;"
                                                 onclick="openModal('DeliveryDialog',false)">ASSIGN
                                         </button>
                                         @break
@@ -742,7 +742,7 @@
                                                                             <div class="col-12 padding5px">
                                                                                 <button type="button"
                                                                                             class="btn btn-warning"
-                                                                                            onclick="openModal('DeliveryDialog',false)">
+                                                                                            onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)">
                                                                                         Assign to..
                                                                                     </button>
                                                                             </div>
@@ -750,7 +750,7 @@
                                                                             <div class="col-12 padding5px">
                                                                                 <button type="button"
                                                                                             class="btn btn-warning"
-                                                                                            onclick="openModal('DeliveryDialog', false)">
+                                                                                            onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)">
                                                                                         Re-Assign..
                                                                                     </button>
                                                                             </div>
@@ -905,11 +905,15 @@
                                             <div class="modal fade" tabindex="-1" role="dialog"
                                                  id="confirmCompletion{{ $key . $case->id }}">
                                                 <form
-                                                    action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+
+
+                                                    action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+
+
                                                     method="GET">
                                                     @csrf
                                                     <input type="hidden" name="case_id"
-                       s                                    value="{{ $case->id }}">
+                                                            value="{{ $case->id }}">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">

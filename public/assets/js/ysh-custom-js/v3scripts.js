@@ -11,7 +11,7 @@ var selectedBuildId = null;
 window.dialogOnScreen = null;
 window.selectedMachineId = null;
 window.initialMachineSelection = true;
-
+window.lastCaseClickedCase= null;
 $('.sigma-build-radio').on('click', e => e.stopPropagation());
 
 
@@ -281,16 +281,16 @@ function submitWorkflow(type) {
 
     // Get checked cases - check both checkboxes and single case from dialog
     let checkedCases = getCheckedValues(type);
-    
+
     // If no checkboxes are selected, check if we have a case from the waiting dialog
     if ((!checkedCases || checkedCases.length === 0) && window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
         checkedCases = [window.caseIDFromOldDialog];
         console.log("Using case from waiting dialog:", window.caseIDFromOldDialog);
     }
-    
+
     if (!checkedCases || checkedCases.length === 0) {
         hideLoadingIndicator();
-        showToast("No cases selected. Please select at least one case.", "warning");
+        showToast("Err01; No cases selected. Please select at least one case.", "warning");
         return;
     }
     const caseIdsField = document.getElementById('case-ids-' + type);
@@ -635,20 +635,7 @@ $(".multipleCB").on("change", function () {
 });
 
 // Override your close function to include reset
-function closeDeviceDialog(deviceId) {
-    // Optional: clear buildsIds input on close
-    // const hiddenInput = document.querySelector(`#${deviceId}casesListDialog input[name="buildsIds"]`);
-//     if (hiddenInput) {
-//     hiddenInput.value = '';
-// }
 
-    // Optional: uncheck all checkboxes
-    //  const checkboxes = document.querySelectorAll(`.sigma-workflow-modal#${deviceId}casesListDialog input[type="checkbox"].sigma-checkbox`);
-    // checkboxes.forEach(checkbox => checkbox.checked = false);
-
-    // Actually close the modal (you can customize this)
-    document.getElementById(`${deviceId}casesListDialog`).style.display = 'none';
-}
 
 
 /**
@@ -657,25 +644,40 @@ function closeDeviceDialog(deviceId) {
  * @param {string} deviceId - The device ID
  */
 function closeDeviceDialog(deviceId) {
+    console.log(`closeDeviceDialog called for device: ${deviceId}`);
+
     // Try all possible dialog IDs
     const possibleDialogIds = [
+        `${deviceId}casesListDialog`,
         `${deviceId}-cases-dialog`,
         `device-${deviceId}-dialog`,
-        `${deviceId}casesListDialog`
+        `waiting-milling`,
+        `waiting-3dprinting`,
+        `waiting-sintering`,
+        `waiting-pressing`,
+        `waiting-delivery`
     ];
 
     let dialog = null;
     for (const id of possibleDialogIds) {
         const foundDialog = document.getElementById(id);
-        if (foundDialog) {
+        if (foundDialog && foundDialog.classList.contains('active')) {
             dialog = foundDialog;
+            console.log(`Found active dialog: ${id}`);
             break;
         }
     }
 
     if (!dialog) {
-        console.error(`No dialog found for device ID: ${deviceId}`);
+        console.error(`No active dialog found for device ID: ${deviceId}`);
+        // Fallback: close all active modals
+        closeAllModals();
         return;
+    }
+
+    // Remove focus if dialog contains active element
+    if (dialog.contains(document.activeElement)) {
+        document.activeElement.blur();
     }
 
     // Add fade-out animation
@@ -687,10 +689,14 @@ function closeDeviceDialog(deviceId) {
     // Hide dialog after animation completes
     setTimeout(() => {
         dialog.classList.remove('active');
-        dialog.style.display = 'none';
         if (dialogContent) {
-            dialogContent.classList.remove('fade-out');
+            dialogContent.classList.remove('fade-out', 'fade-in');
         }
+
+        // Clean up any overlays
+        document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
+            backdrop.remove();
+        });
     }, 300);
 }
 
@@ -957,19 +963,19 @@ function showToast(message, type = 'info') {
     // Create new toast using the CSS classes
     const toast = document.createElement('div');
     toast.className = `toast-alert ${type}`;
-    
+
     // Create content span for the message
     const messageSpan = document.createElement('span');
     messageSpan.textContent = message;
     toast.appendChild(messageSpan);
-    
+
     document.body.appendChild(toast);
 
     // Show toast with animation
     toast.style.opacity = '0';
     toast.style.top = '-60px';
     toast.style.transform = 'translateX(-50%) translateY(-10px)';
-    
+
     // Use requestAnimationFrame for smooth animation
     requestAnimationFrame(() => {
         toast.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -983,7 +989,7 @@ function showToast(message, type = 'info') {
         toast.style.top = '-60px';
         toast.style.opacity = '0';
         toast.style.transform = 'translateX(-50%) translateY(-10px)';
-        
+
         // Remove from DOM after animation
         setTimeout(() => {
             if (toast.parentNode) {
@@ -1542,7 +1548,7 @@ function processDeliveryAction(deviceId, action) {
 
     if (selectedCases.length === 0) {
         hideLoadingIndicator();
-        showToast('Please select at least one case', 'warning');
+        showToast('Err02; Please select at least one case', 'warning');
         return;
     }
 
@@ -1668,13 +1674,18 @@ function selectDeliveryDriver(element, driverId) {
 
     // Update the hidden form field
     const driverIdInput = document.getElementById('driver-id-input');
+    console.log("driver-id-input ");
     if (driverIdInput) {
+        console.log("driver-id-input found, setting it to  " . driverIdInput);
         driverIdInput.value = driverId;
     }
 
-    // Enable the assign button
+    // Enable the assign button and ensure it's in proper state
     if (assignButton) {
+        console.log("disabling assign button");
         assignButton.disabled = false;
+        assignButton.classList.remove('btn-loading', 'disabled');
+        assignButton.innerText = 'ASSIGN';
     }
 
     console.log('Selected driver ID:', window.selectedDriverId);
@@ -1705,13 +1716,16 @@ function submitDeliveryAssignment() {
 
     // If no checkboxes found with that name, try fallback method
     if (caseIds.length === 0) {
-        caseIds = getCheckedValues('delivery') || [];
+        caseIds = getCheckedValues('delivery') ?? window.lastCaseClickedCase;
     }
 
     // Check if we have any cases selected
-    if (caseIds.length === 0) {
-        showToast('Please select at least one case', 'warning');
+    if (caseIds.length === 0 && window.selectedDriverId === null) {
+        showToast('Err03; Please select at least one case', 'warning');
         return;
+    }
+    if(window.lastCaseClickedCase !== null){
+        caseIds.push(window.lastCaseClickedCase);
     }
 
     console.log('Assigning cases to driver:', window.selectedDriverId, 'Case IDs:', caseIds);
@@ -1724,7 +1738,7 @@ function submitDeliveryAssignment() {
         driverIdInput.value = window.selectedDriverId;
         caseIdsInput.value = caseIds.join(',');
 
-        // Show loading indicator
+        // Show loading indicatorl
         showLoadingIndicator();
 
         // Submit the form
@@ -1742,16 +1756,140 @@ function submitDeliveryAssignment() {
 }
 
 /**
+ * Close all currently open modals and remove overlays
+ */
+function closeAllModals() {
+    // Remove all active classes from sigma workflow modals
+    document.querySelectorAll('.sigma-workflow-modal.active').forEach(modal => {
+        modal.classList.remove('active');
+        const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
+        if (dialogContent) {
+            dialogContent.classList.remove('fade-in', 'fade-out');
+        }
+    });
+
+    // Remove Bootstrap modal overlays and backdrops
+    document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
+        backdrop.remove();
+    });
+
+    // Clean up any lingering Bootstrap modals
+    document.querySelectorAll('.modal.show, .modal.fade.show').forEach(modal => {
+        modal.classList.remove('show', 'fade');
+    });
+
+    // Remove any body classes that prevent scrolling
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+}
+
+/**
+ * Initialize delivery dialog state
+ */
+function initializeDeliveryDialog() {
+    // Reset driver selection
+    document.querySelectorAll('.sigma-driver-card').forEach(card => {
+        card.classList.remove('selected');
+        const img = card.querySelector('.sigma-driver-image');
+        if (img) {
+            img.classList.add('grayscale');
+        }
+    });
+
+    // Reset the assign button to initial state
+    const assignButton = document.getElementById('action-button-delivery');
+    if (assignButton) {
+        assignButton.disabled = true;
+        assignButton.classList.remove('btn-loading', 'disabled');
+        assignButton.innerText = 'ASSIGN';
+        console.log('Reset delivery button state');
+    }
+
+    // Clear selected driver
+    window.selectedDriverId = null;
+}
+
+/**
  * Open a modal dialog
  */
-function openModal(modalId, isWaiting = false) {
-    const modal = document.getElementById(modalId);
+function openModal(modalId, isWaiting = false, caseId = 0) {
+    console.log(`openModal called with: ${modalId}, isWaiting: ${isWaiting}, caseId: ${caseId}`);
+
+    // Close any currently open modals first to prevent overlays
+    // Special handling for Bootstrap modals with specific classes
+    document.querySelectorAll('.modal.show, .modal.fade.show').forEach(modal => {
+        modal.classList.remove('show', 'fade');
+        modal.style.display = 'none';
+    });
+
+    closeAllModals();
+
+    // Store case ID if provided for single case operations
+    if (caseId > 0) {
+        window.caseIDFromOldDialog = caseId;
+        console.log('Stored case ID from dialog:', caseId);
+    }
+
+    // Construct the modal ID, adding waiting suffix if needed
+    let fullModalId = modalId;
+    if (isWaiting && !modalId.includes('-waiting')) {
+        fullModalId = modalId + '-waiting';
+    }
+
+    console.log(`Looking for modal with ID: ${fullModalId}`);
+
+    const modal = document.getElementById(fullModalId);
     if (modal) {
-        modal.style.display = 'flex';
+        // Clear any existing animation classes
+        const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
+        if (dialogContent) {
+            dialogContent.classList.remove('fade-out', 'fade-in');
+        }
+
+        // Show the modal
         modal.classList.add('active');
-        console.log('Opened modal:', modalId);
+
+        // Add fade-in animation
+        if (dialogContent) {
+            setTimeout(() => {
+                dialogContent.classList.add('fade-in');
+            }, 10);
+        }
+
+        console.log('Successfully opened modal:', fullModalId);
+
+        // Initialize dialog state for delivery
+        if (modalId === 'DeliveryDialog') {
+            initializeDeliveryDialog();
+        }
+
+        // Initialize dialog state for other types
+        const modalType = modalId.replace('-waiting', '').replace('Dialog', '');
+        if (typeof initializeDialog === 'function' && modalType !== 'Delivery') {
+            initializeDialog(modalType);
+        }
     } else {
-        console.error('Modal not found:', modalId);
+        console.error('Modal not found:', fullModalId);
+        // Try alternative modal IDs
+        const alternativeIds = [
+            modalId,
+            modalId + '-waiting',
+            modalId.replace('waiting', ''),
+            modalId + 'Dialog',
+            modalId + 'casesListDialog'
+        ];
+
+        for (const altId of alternativeIds) {
+            const altModal = document.getElementById(altId);
+            if (altModal) {
+                console.log('Found modal with alternative ID:', altId);
+                altModal.classList.add('active');
+                return;
+            }
+        }
+
+        console.error('No modal found with any alternative IDs:', alternativeIds);
     }
 }
 
@@ -1849,7 +1987,7 @@ function getCheckedValues(type) {
     } else {
         selector = `.multipleCB.${type}:checked`;
     }
-    
+
     const checkboxes = document.querySelectorAll(selector);
     if (checkboxes.length > 0) {
         return Array.from(checkboxes).map(cb => cb.value);
@@ -1860,13 +1998,13 @@ function getCheckedValues(type) {
     if (genericCheckboxes.length > 0) {
         return Array.from(genericCheckboxes).map(cb => cb.value);
     }
-    
+
     // Final fallback: check if we have a case from waiting dialog
     if (window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
         console.log(`Using case from waiting dialog for ${type}:`, window.caseIDFromOldDialog);
         return [window.caseIDFromOldDialog];
     }
-    
+
     return [];
 }
 

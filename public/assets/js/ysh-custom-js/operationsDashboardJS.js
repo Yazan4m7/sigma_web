@@ -282,9 +282,15 @@ function multiCBChanged(groupKey, changedCheckbox) {
     // This part of the function handles the show/hide behavior for .receiveSelectBtn based on overall selection.
     var checkedCount = $(`.multipleCB.${groupKey}:checkbox:checked`).length;
 
+    console.log(`multiCBChanged called for ${groupKey}, checked count: ${checkedCount}`);
+
     if (checkedCount > 0) {
-        if (!$('.receiveSelectBtn').is(":visible")) {
-            $(`.receiveSelectBtn.${groupKey}`).css({
+        // Show the SET button for this specific stage
+        const setButton = $(`.receiveSelectBtn.${groupKey}`);
+
+        if (!setButton.is(":visible")) {
+            console.log(`Showing SET button for ${groupKey}`);
+            setButton.css({
                 "opacity": "0",
                 "display": "flex"
             }).show().animate({
@@ -292,13 +298,12 @@ function multiCBChanged(groupKey, changedCheckbox) {
             }, 300);
         }
     } else {
-        $(`.receiveSelectBtn.${groupKey}`).css({
-            "opacity": "1",
-            "display": "flex"
-        }).animate({
+        // Hide the SET button for this specific stage
+        console.log(`Hiding SET button for ${groupKey}`);
+        $(`.receiveSelectBtn.${groupKey}`).stop(true, true).animate({
             opacity: 0
         }, 300, function () {
-            $(`.receiveSelectBtn.${groupKey}`).css({
+            $(this).css({
                 "display": "none"
             });
         });
@@ -307,16 +312,16 @@ function multiCBChanged(groupKey, changedCheckbox) {
 
 
 function selectAll(ele, classname) {
+    console.log(`selectAll called for ${classname}, checked: ${$(ele).prop('checked')}`);
+
     if ($(ele).prop('checked')) {
         $('.multipleCB.' + classname).prop('checked', true);
     } else {
         $('.multipleCB.' + classname).prop('checked', false);
     }
-    if ($('.multipleCB:checkbox').length > 0) {
-        multiCBChanged(classname);
-    } else {
-        console.log('select all didnt call multipleCheckboxChanged');
-    }
+
+    // Always call multiCBChanged to update the SET button state
+    multiCBChanged(classname);
 }
 
 
@@ -824,23 +829,27 @@ function disableButton(key, deviceId = "", isWaiting = false) {
 
 
     // delivery dialog has no rounded button
-    if (key.indexOf('delivery') !== -1) {
 
-        const submitButton = document.getElementById('assignDeliveryBtn');
-        submitButton.disabled = true;
-        submitButton.classList.add('btn-loading');
+        const submitButton = document.getElementById('action-button-delivery');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.classList.add('btn-loading');
+            submitButton.innerText = 'Processing...';
+            submitButton.classList.add('disabled');
 
-        // Optionally, update the button text to indicate processing
-        // You might store the initial text if you wish to revert later
-        submitButton.innerText = 'Processing...';
-        submitButton.classList.add('disabled');
-        setTimeout(() => {
-            submitButton.classList.remove('disabled');
-        }, 3000);
-    }
+            console.log('Disabled delivery button');
 
-    ///////////////
-    else {
+            // Auto-reset after timeout (fallback) - but the dialog should reset it when reopened
+            setTimeout(() => {
+                console.log('Auto-resetting delivery button after timeout');
+                submitButton.classList.remove('disabled', 'btn-loading');
+                submitButton.disabled = true; // Keep disabled until driver selected
+                submitButton.innerText = 'ASSIGN';
+            }, 3000);
+        }
+
+
+
         // active dialog
         if (deviceId !== "" && !isWaiting) {
 
@@ -862,12 +871,8 @@ function disableButton(key, deviceId = "", isWaiting = false) {
                 'disabled');
 
 
+            //TODO disable btn by currentId
         }
-
-    }
-
-    //TODO disable btn by currentId
-
 
 }
 
@@ -955,8 +960,7 @@ function resetDialogStatus({
         uncheckCheckboxes(deviceId);
         console.log("reset done for " + exactId + " stageType1 : " + stageType1 + " deviceId : " + deviceId);
     } else {
-        let classSelector = (isWaiting ? '.waiting-popup' : '') + '.' + CSS.escape(stageType1) +
-            '.silicon-valley-choice:not(.silicon-valley-enabled)';
+        let classSelector =CSS.escape(stageType1)
         console.log("resetting dialog : " + stageType1);
 
         $(classSelector).addClass('silicon-valley-enabled');
@@ -1047,121 +1051,78 @@ function YSH_toggleBuild(event, clickedRow) {
 }
 
 
-//TODO ANIMATION
-function openModal(id, waiting = false, caseId = 0) {
-    console.log("openModal parameters: id=" + id + ", waiting=" + waiting + ", caseId=" + caseId);
 
-    currentModalId = id;
-    console.log(" ---------FOUND BY ID GIVEN ID IS : " + id + (waiting ? "-waiting" : "") + "---------------  ");
-    caseIDFromOldDialog = caseId;
-    window.caseIDFromOldDialog = caseId; // Also set it globally for consistency
-    let modal = document.getElementById(id + (waiting ? "-waiting" : ""));
-    const caseIdField = document.getElementById("caseIdFromWaitingDialog");
-    if (caseIdField) {
-        caseIdField.value = caseIDFromOldDialog;
+
+function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
+    console.log(`closeModal called with id: ${id}, isWaiting: ${isWaiting}, exactId: ${exactId}`);
+
+    // If exactId is provided, use it directly, otherwise construct modal ID
+    let modalId = exactId || id;
+    if (isWaiting && !modalId.includes('-waiting')) {
+        modalId = modalId + '-waiting';
     }
 
-    console.log("modal opened id : ============= CASE ID FROM OLD DIALOG : " + caseIDFromOldDialog +
-        "   selectedCases:   " + selectedCases);
-    console.log(modal);
+    // For waiting dialogs, try different ID patterns
+    let modal = document.getElementById(modalId);
+
+    if (!modal && id === 'WaitingDialog') {
+        // Try to find any open waiting dialog
+        modal = document.querySelector('.modal.show[id*="waitingDialog"]') ||
+                document.querySelector('.sigma-workflow-modal.active[id*="waiting"]');
+        if (modal) {
+            modalId = modal.id;
+            console.log(`Found waiting dialog with ID: ${modalId}`);
+        }
+    }
 
     if (modal) {
-        modal.style.display = 'flex';
-        modal.classList.add('modal-active');
-        modal.classList.add('fade-in-animation');
+        console.log(`Closing modal: ${modalId}`);
 
-        modal.addEventListener('animationend', function handler() {
-            console.log("animation ended");
-            modal.classList.remove('fade-in-animation');
-            modal.removeEventListener('animationend', handler);
-        });
+        // Remove focus if modal contains active element
+        if (modal.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
 
-        // setTimeout(function() {
-        //      modal.classList.remove('fade-in-animation');
-        //     modal.style.display = 'flex';
-        //     modal.classList.remove('modal-active');
-        // }, 500); // close the modal after 500ms
+        // Add fade-out animation
+        const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
+        if (dialogContent) {
+            dialogContent.classList.add('fade-out');
+        }
 
-
-        console.log("modal found " + id);
-        if (id == "DeliveryDialog")
-            modal.classList.add('active');
-        modal.style.display = 'flex'; // or 'block' depending on your CSS
-        modal.classList.add('show');
-        modal.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        }); // optional: for animation
-    } else {
-        console.error("Modal not found:", id);
-    }
-}
-
-function closeModal({
-                        id,
-                        isWaiting = false,
-                        deviceId = 0,
-                        exactId = null
-                    }) {
-    if (isWaiting)
-        id = id + "-waiting";
-    currentModalId = id;
-    console.log("closing modal " + id);
-
-    try {
-        let modal = document.getElementById(id) ?? document.getElementById(exactId);
-        if (modal) {
-
-            //remove focus
-            if (modal.contains(document.activeElement)) {
-                document.activeElement.blur();
+        // Hide modal after animation
+        setTimeout(() => {
+            modal.classList.remove('active', 'show');
+            modal.style.display = 'none';
+            if (dialogContent) {
+                dialogContent.classList.remove('fade-out', 'fade-in');
             }
 
+            // Reset dialog state if needed
+            if (typeof resetDialogStatus === 'function') {
+                resetDialogStatus({
+                    stageType1: modalId,
+                    isWaiting: isWaiting,
+                    deviceId: deviceId,
+                    exactId: exactId
+                });
+            }
+        }, 300);
 
-            console.log("Modal found ");
-            console.log(modal);
-            modal.classList.add('fade-out-animation');
+    } else {
+        console.error(`Modal not found: ${modalId}, trying fallback cleanup`);
 
-            modal.addEventListener('animationend', function handler() {
-                console.log("animation ended");
-                modal.style.display = 'none';
-                modal.classList.remove('fade-out-animation');
-                modal.classList.remove('modal-active');
-                modal.removeEventListener('animationend', handler);
-            });
-            setTimeout(function () {
-                modal.style.display = 'none';
-                modal.classList.remove('fade-out-animation');
-                modal.classList.remove('modal-active');
-                if (id == "DeliveryDialog")
-                    modal.classList.remove('active');
-            }, 500); // close the modal after 500ms
-            // Todo reset by id
-            //not escaped
-            resetDialogStatus({
-                stageType1: modal.id,
-                isWaiting: false,
-                deviceId: deviceId,
-                exactId: exactId
-            });
-        }
-    } catch (e) {
-        console.log("Exception closing modal " + id);
-        console.log("Error closing modal: " + e);
-        document.querySelectorAll('div[role="dialog"]').forEach(el => {
-            el.classList.add('fade-out-animation');
-
-            el.style.display = 'none';
-            el.classList.remove('fade-out-animation');
-
+        // Fallback: close all active modals/dialogs
+        document.querySelectorAll('.modal.show, .sigma-workflow-modal.active, [id*="waitingDialog"].show').forEach(m => {
+            m.classList.remove('active', 'show');
+            m.style.display = 'none';
+            console.log(`Closed modal via fallback: ${m.id}`);
         });
-
-        // Todo reset by id
-
-        console.log("modal not found closing all by role.. id : " + id + " exception : " + e);
     }
 
-
+    // Clean up any remaining overlays
+    document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
+        backdrop.remove();
+    });
 }
 
 function processWorkflowAction222(deviceId, type, actionType, action) {

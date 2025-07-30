@@ -499,7 +499,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 </style>
 {{--{{collect($buildData)--}}
 {{--    ->flatMap(fn($data) => $data['cases'])}}--}}
-<div class="sigma-workflow-modal active" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
+<div class="sigma-workflow-modal" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
      onclick="handleDialogBackdropClick(event, '{{ $deviceId }}')">
     <div class="sigma-workflow-dialog" onclick="event.stopPropagation()">
         <div class="sigma-workflow-header">

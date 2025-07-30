@@ -513,7 +513,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 </style>
 
 
-<div class="sigma-workflow-modal active" id="<?php echo e($deviceId); ?>casesListDialog" tabindex="-1" role="dialog"
+<div class="sigma-workflow-modal" id="<?php echo e($deviceId); ?>casesListDialog" tabindex="-1" role="dialog"
      onclick="handleDialogBackdropClick(event, '<?php echo e($deviceId); ?>')">
     <div class="sigma-workflow-dialog" onclick="event.stopPropagation()">
         <div class="sigma-workflow-header">

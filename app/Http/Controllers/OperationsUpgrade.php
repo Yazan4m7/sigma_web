@@ -710,7 +710,7 @@ class OperationsUpgrade extends Controller
      */
     public function assignCasesToDelivery(Request $request)
     {
-        Log::info($request->all());
+
 
         return $this->executeTransaction(function () use ($request) {
             // Get case IDs to assign

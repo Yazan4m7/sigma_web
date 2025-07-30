@@ -1,12 +1,12 @@
-@extends('layouts.app' ,[ 'pageSlug' => 'Materials Report' ])
 
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
     <head>
 
     </head>
     <style>
-        @media screen and (max-width: 991px){
+        @media  screen and (max-width: 991px){
             #datatable_wrapper {
                 overflow: auto;
             }
@@ -28,7 +28,7 @@
 
     <div class="bg-white">
 
-            <form  class="kt-form" method="GET" action="{{route('materials-report')}}">
+            <form  class="kt-form" method="GET" action="<?php echo e(route('materials-report')); ?>">
 
 
                         <div class="col-lg-12 col-sm-12 ">
@@ -38,41 +38,41 @@
                                 <div class="col-lg-2 col-md-3 ">
                                     <div class="kt-subheader__search" style="">
                                         <label>From:</label>
-                                        <input type="date" class="form-control" name="from" value="{{$from}}">
+                                        <input type="date" class="form-control" name="from" value="<?php echo e($from); ?>">
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-md-3 ">
                                     <div class="kt-subheader__search" style="">
                                         <label>To:</label>
-                                        <input type="date" class="form-control" name="to" value="{{$to}}">
+                                        <input type="date" class="form-control" name="to" value="<?php echo e($to); ?>">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-3 col-md-3 ">
-                                    @if(isset($clients))
+                                    <?php if(isset($clients)): ?>
                                         <div class="dropdown">
                                             <label>Doctor:</label>
                                             <select style="width:100%"  class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor" data-live-search="true" title="All" data-hide-disabled="true">
 
-                                                    <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
-                                                    @foreach($clients as $d)
-                                                        <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                                @endforeach
+                                                    <option value="all" <?php echo e((isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''); ?>>All</option>
+                                                    <?php $__currentLoopData = $clients; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $d): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                        <option value="<?php echo e($d->id); ?>" <?php echo e((isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''); ?>><?php echo e($d->name); ?></option>
+                                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                             </select>
 
                                         </div>
-                                        @endif
+                                        <?php endif; ?>
 
 
                                 </div>
-                                {{--<div class="col-lg-2 col-md-3 ">--}}
-                                {{--<div class="kt-subheader__search">--}}
-                                {{--<label>Patient Name:</label>--}}
-                                {{--<br>--}}
-                                {{--<input type="text" name="patient_name" value="{{$patientName ?? ''}}"--}}
-                                {{--class="form-control">--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
                                 <div class="col-lg-3 col-md-3 ">
 
                                     <div class="kt-subheader__search" style="width:100%">
@@ -93,7 +93,7 @@
     <hr>
     <div class="card-body table-responsive">
         <h5 class="header-title">Total Amount:</h5>
-        <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($totalAmount)}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
+        <h2 style=""><span style="font-weight: bold;color:#a13030"><?php echo e(number_format($totalAmount)); ?></span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
         <p class="text-muted"></p>
         <div class="table-odd">
             <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12" style="padding:5px">
@@ -114,30 +114,30 @@
 
 
                             <tbody>
-                            @foreach($cases as $case)
-                                    <tr role="row" class="odd" onclick="window.location='{{route('view-invoice', $case->id)}}';">
+                            <?php $__currentLoopData = $cases; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $case): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <tr role="row" class="odd" onclick="window.location='<?php echo e(route('view-invoice', $case->id)); ?>';">
 
-                                        <td class="sorting_1">{{$case->client->name}}</td> <!--bold -->
-                                        <td>{{$case->patient_name}}</td>
-                                        <td>{{$case->materialUsed([1,20])}}</td>
-                                        <td>{{$case->materialUsed([2])}}</td>
-                                        <td>{{$case->materialUsed([3,4,6,7])}}</td>
-                                        <td>{{$case->materialUsed([9,10])}}</td>
-                                        <td>{{isset($case->invoice) ? $case->invoice->amount : 0}} </td> <!--JOD -->
-                                        <td>{{substr($case->actual_delivery_date,0,10)}} </td>
+                                        <td class="sorting_1"><?php echo e($case->client->name); ?></td> <!--bold -->
+                                        <td><?php echo e($case->patient_name); ?></td>
+                                        <td><?php echo e($case->materialUsed([1,20])); ?></td>
+                                        <td><?php echo e($case->materialUsed([2])); ?></td>
+                                        <td><?php echo e($case->materialUsed([3,4,6,7])); ?></td>
+                                        <td><?php echo e($case->materialUsed([9,10])); ?></td>
+                                        <td><?php echo e(isset($case->invoice) ? $case->invoice->amount : 0); ?> </td> <!--JOD -->
+                                        <td><?php echo e(substr($case->actual_delivery_date,0,10)); ?> </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </tbody>
                         </table></div></div></div>
         </div>
     </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
 
 
 
-@push('js')
+<?php $__env->startPush('js'); ?>
 
 <script type="text/javascript">
     //        $(document).ready(function() {
@@ -173,4 +173,6 @@
         });
     });
 </script>
-@endpush
+<?php $__env->stopPush(); ?>
+
+<?php echo $__env->make('layouts.app' ,[ 'pageSlug' => 'Materials Report' ], \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\Yazan\Desktop\sigma\staging\resources\views/reports/case-materials-report.blade.php ENDPATH**/ ?>

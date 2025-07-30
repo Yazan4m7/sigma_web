@@ -431,6 +431,10 @@
 <?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn milling"
+                                                style="display:none; margin:5px;"
+                                                onclick="openModal('milling',true)">SET
+                                        </button>
                                         <?php break; ?>
 
                                     <?php case ('3dprinting'): ?>
@@ -448,7 +452,6 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting"
-                                                data-toggle="modal" data-backdrop="false"
                                                 style="display:none; margin:5px;"
                                                 onclick="openModal('3dprinting',true)">SET
                                         </button>
@@ -468,7 +471,6 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
-                                                data-toggle="modal" data-backdrop="false"
                                                 style="display:none; margin:5px;"
                                                 onclick="openModal('sintering',true)">SET
                                         </button>
@@ -488,8 +490,7 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
-                                                data-toggle="modal"
-                                                data-backdrop="false" style="display:none; margin:5px;"
+                                                style="display:none; margin:5px;"
                                                 onclick="openModal('pressing',true)">SET
                                         </button>
                                         <?php break; ?>
@@ -508,8 +509,7 @@
 <?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
 <?php endif; ?>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn delivery"
-                                                data-toggle="modal"
-                                                data-backdrop="false" style="display:none; margin:5px;"
+                                                style="display:none; margin:5px;"
                                                 onclick="openModal('DeliveryDialog',false)">ASSIGN
                                         </button>
                                         <?php break; ?>
@@ -796,7 +796,7 @@
                                                                             <div class="col-12 padding5px">
                                                                                 <button type="button"
                                                                                             class="btn btn-warning"
-                                                                                            onclick="openModal('DeliveryDialog',false)">
+                                                                                            onclick="closeModal({id:'waitingDialog<?php echo e($key . $case->id); ?>'}); openModal('DeliveryDialog',false)">
                                                                                         Assign to..
                                                                                     </button>
                                                                             </div>
@@ -804,7 +804,7 @@
                                                                             <div class="col-12 padding5px">
                                                                                 <button type="button"
                                                                                             class="btn btn-warning"
-                                                                                            onclick="openModal('DeliveryDialog', false)">
+                                                                                            onclick="closeModal({id:'waitingDialog<?php echo e($key . $case->id); ?>'}); openModal('DeliveryDialog', false)">
                                                                                         Re-Assign..
                                                                                     </button>
                                                                             </div>
@@ -1001,11 +1001,15 @@
                                             <div class="modal fade" tabindex="-1" role="dialog"
                                                  id="confirmCompletion<?php echo e($key . $case->id); ?>">
                                                 <form
-                                                    action="<?php echo e($key == 'delivery' ? route('delivery-accept', $case->id) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']])); ?>"
+
+
+                                                    action="<?php echo e($key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']])); ?>"
+
+
                                                     method="GET">
                                                     <?php echo csrf_field(); ?>
                                                     <input type="hidden" name="case_id"
-                       s                                    value="<?php echo e($case->id); ?>">
+                                                            value="<?php echo e($case->id); ?>">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">

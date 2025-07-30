@@ -82,19 +82,60 @@ function closeModal(options) {
         return;
     }
 
-    // Add fade-out animation
+    console.log(`Closing delivery modal: ${modalId}`);
+
+    // Remove focus if modal contains active element
+    if (modal.contains(document.activeElement)) {
+        document.activeElement.blur();
+    }
+
+    // Clear any pending animations
     const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
     if (dialogContent) {
+        dialogContent.classList.remove('fade-in');
         dialogContent.classList.add('fade-out');
+    }
+
+    // Reset delivery dialog state
+    if (modalId === 'DeliveryDialog') {
+        // Reset driver selection
+        document.querySelectorAll('.sigma-driver-card').forEach(card => {
+            card.classList.remove('selected');
+            const img = card.querySelector('.sigma-driver-image');
+            if (img) {
+                img.classList.add('grayscale');
+            }
+        });
+        
+        // Reset the assign button state
+        const assignButton = document.getElementById('action-button-delivery');
+        if (assignButton) {
+            assignButton.disabled = true;
+            assignButton.classList.remove('btn-loading', 'disabled');
+            assignButton.innerText = 'ASSIGN';
+        }
+        
+        // Clear selected driver
+        window.selectedDriverId = null;
+        
+        // Reset form inputs
+        const driverInput = document.getElementById('driver-id-input');
+        const caseIdsInput = document.getElementById('case-ids-input');
+        if (driverInput) driverInput.value = '';
+        if (caseIdsInput) caseIdsInput.value = '';
     }
 
     // Hide dialog after animation completes
     setTimeout(() => {
         modal.classList.remove('active');
-        modal.style.display = 'none';
         if (dialogContent) {
-            dialogContent.classList.remove('fade-out');
+            dialogContent.classList.remove('fade-out', 'fade-in');
         }
+        
+        // Clean up any overlays
+        document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
+            backdrop.remove();
+        });
     }, 300);
 }
 </script>

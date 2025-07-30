@@ -9,7 +9,7 @@
             <td class="no-sort">
                 <span class="innerSpan4Mobile" style="position:absolute; left: 40% !important;  bottom:0px;">
                 @if ($key == "milling" || $key == "sintering" ||$key == "3dprinting" || $key == "pressing" || $key == "delivery")
-                <input type="checkbox" class="selectAllCases" value="0" name="selectAllCases" onchange="selectAll(this)"  style="position:absolute; left: 40% !important;  bottom:0px; "/>
+                <input type="checkbox" class="selectAllCases {{$key}}" value="0" name="selectAllCases" onchange="selectAll(this, '{{$key}}')"  style="position:absolute; left: 40% !important;  bottom:0px; "/>
                 @endif
                 </span>
             </td>
@@ -39,7 +39,7 @@
             @endif
             <td>
                 @if ($key == "milling" || $key == "3dprinting" || $key == "sintering" || $key == "pressing" || $key == "delivery" )
-                <input type="checkbox" class="custom-control-input multipleCB  " value="{{$case->id}}" name="casesCheckBoxes[]"   data-group-id="{{$type}}" onchange="multiCBChanged()" />
+                <input type="checkbox" class="custom-control-input multipleCB {{$key}}" value="{{$case->id}}" name="CheckBoxes{{$key}}[]" data-group-id="{{$key}}" onchange="multiCBChanged('{{$key}}', this)" />
                 @endif
             </td>
             <td class="clickable" data-toggle="modal"
@@ -204,11 +204,13 @@
                                 @if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 129))))
                                 @if($case->jobs[0]->assignee == null)
                                 <div class="col-12 padding5px">
-                                    <button type="button" class="btn btn-warning" onclick="openModal('DeliveryDialog', false)"> Assign to.. </button>
+                                    <button type="button" class="btn btn-warning" onclick="closeModal({id: 'waitingDialog{{$key.$case->id}}'}); openModal('DeliveryDialog', false)"> Assign to.. </button>
                                 </div>
                                 @else
                                 <div class="col-12 padding5px">
-                                    <button type="button" class="btn btn-warning" onclick="openModal('DeliveryDialog', false)">Re-Assign.. </button>
+
+
+                                    <button type="button" class="btn btn-warning" onclick="closeModal({id: 'waitingDialog{{$key.$case->id}}'}); openModal('DeliveryDialog', false)">Re-Assign.. </button>
                                 </div>
                                 @endif
                                 @endif
@@ -227,8 +229,6 @@
                                     </button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

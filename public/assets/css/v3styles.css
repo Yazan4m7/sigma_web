@@ -1,3 +1,12 @@
+/* Prevent auto-opening modals - ensure active class controls visibility */
+.sigma-workflow-modal {
+    display: none;
+}
+
+.sigma-workflow-modal.active {
+    display: flex;
+}
+
 /* Add this to your existing CSS or as a new file */
 
 /* Machine selection dialog enhancements */
@@ -643,11 +652,19 @@
     transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
+    /* Prevent modal from closing unexpectedly */
+    pointer-events: auto;
 }
 
 .sigma-workflow-modal.active {
-    /*display: flex;*/
+    display: flex !important;
     opacity: 1;
+}
+
+/* Ensure all modals are hidden by default */
+.sigma-workflow-modal:not(.active) {
+    display: none !important;
+    opacity: 0;
 }
 
 .sigma-workflow-dialog {
@@ -1064,6 +1081,23 @@
 /* Delivery dialog specific styles */
 .delivery-dialog .modal-dialog,
 
+/* Fix for delivery dialog flickering */
+#DeliveryDialog {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    display: none; /* Ensure it's hidden by default */
+}
+
+#DeliveryDialog.active {
+    visibility: visible !important;
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+#DeliveryDialog:not(.active) {
+    visibility: hidden;
+    opacity: 0;
+    display: none !important;
+}
 
 /* Delivery Dialog - Driver Selection */
 .sigma-drivers-grid {
