@@ -130,10 +130,10 @@
         }
 
         .login-button {
-
-            width: 100%;
+            text-align: center;
+            width: 80%;
             padding: 1rem;
-            background: linear-gradient(135deg, #5ed064 0%, #d6ebdd 100%);
+            background: linear-gradient(135deg, #38b449 0%, #38b449 100%);
             border: none;
             border-radius: 12px;
             color: white;
@@ -261,7 +261,7 @@
             <div class="login-header">
                 <img src="{{ asset('assets/sigma_favico.png') }}" alt="SIGMA Logo" class="login-logo">
                 <h1 class="login-title">Welcome Back</h1>
-                <p class="login-subtitle">Sign in to access your dental lab management system</p>
+                <p class="login-subtitle">Enter your credentials</p>
             </div>
 
             @if($errors->any() || isset($migrations_check))
@@ -270,7 +270,7 @@
 
             @endif
 
-            <form role="form" method="POST" action="{{ route('login') }}" autocomplete="on">
+            <form role="form" method="POST" action="{{ route('login') }}" autocomplete="on" style="text-align: center;  ">
                 @csrf
 
                 <div class="form-group-modern {{ $errors->has('username') ? 'has-error' : '' }}">

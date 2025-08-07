@@ -1236,10 +1236,14 @@ YSH-slide-grid {
    text-decoration: none;
 }
 
-.macaw-tabs.macaw-silk-tabs > [role="tabpanel"] > * {/* opacity: 0; */transition: opacity 0.2s, transform 0.2s;}
+.macaw-tabs.macaw-silk-tabs > [role="tabpanel"] > * {
+   /* opacity: 0; */
+   transition: opacity 0.2s, transform 0.2s;
+   margin-top: 0 !important;
+}
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] > *:first-child {
-   /* margin-top: 0; */
+   margin-top: 0 !important;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] > *:last-child {
@@ -1532,8 +1536,8 @@ waitingtabText.active {
 }
 
 .innerWaitingBtn[aria-selected="true"] {
-   background-color: #e8e8e8;
-   border-color: #cd5c5c #cd5c5c #cd5c5c;
+   background-color: #e8e8e8 !important;
+   border-color: #cd5c5c #cd5c5c #e8e8e8 !important;
 }
 
 svg {

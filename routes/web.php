@@ -48,6 +48,10 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
     Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])->name('admin-dashboard-v2');
 
+    Route::middleware('ViewDevicesMonitor')->group(function (): void {
+        Route::get('/devices', [App\Http\Controllers\CaseController::class, 'devicesPage'])->name('devices-page');
+    });
+
     Route::get('search', [App\Http\Controllers\CaseController::class, 'globalSearch'])->name('global-search');
 
     Route::get('quick-access-ds', [App\Http\Controllers\ClientsController::class, 'quickAccessDS'])->name('quick-access-ds');
@@ -304,7 +308,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::post('Job-type/edit-post', [App\Http\Controllers\JobTypeController::class, 'update'])->name('edit-job-type');
 
         // USERS ROUTES
-        Route::get('/users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
+        Route::get('/users/index?status=1', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
         Route::get('/users/new', [App\Http\Controllers\UserController::class, 'returnCreate'])->name('new-user-view');
         Route::post('/users/new-post', [App\Http\Controllers\UserController::class, 'create'])->name('new-user');
         Route::get('/users/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('edit-user-view');

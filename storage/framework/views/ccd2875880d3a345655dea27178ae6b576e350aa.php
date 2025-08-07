@@ -22,15 +22,7 @@
         <div class="sigma-workflow-body">
             <div class="sigma-drivers-grid">
                 <!-- Add "ME" option -->
-                <div class="sigma-driver-card"
-                     onclick="selectDeliveryDriver(this, <?php echo e(auth()->user()->id); ?>)">
-                    <div class="sigma-driver-image-container">
-                        <img src="<?php echo e(asset('/users/me_silhouette.png')); ?>"
-                             alt="Me (Self Assign)"
-                             class="sigma-driver-image grayscale">
-                    </div>
-                    <div class="sigma-driver-name">ME</div>
-                </div>
+
 
                 <!-- Show all delivery drivers -->
                 <?php $__currentLoopData = $drivers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $driver): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -106,7 +98,7 @@ function closeModal(options) {
                 img.classList.add('grayscale');
             }
         });
-        
+
         // Reset the assign button state
         const assignButton = document.getElementById('action-button-delivery');
         if (assignButton) {
@@ -114,10 +106,10 @@ function closeModal(options) {
             assignButton.classList.remove('btn-loading', 'disabled');
             assignButton.innerText = 'ASSIGN';
         }
-        
+
         // Clear selected driver
         window.selectedDriverId = null;
-        
+
         // Reset form inputs
         const driverInput = document.getElementById('driver-id-input');
         const caseIdsInput = document.getElementById('case-ids-input');
@@ -131,7 +123,7 @@ function closeModal(options) {
         if (dialogContent) {
             dialogContent.classList.remove('fade-out', 'fade-in');
         }
-        
+
         // Clean up any overlays
         document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
             backdrop.remove();

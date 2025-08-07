@@ -565,7 +565,7 @@
 }
 
 /* Inactive/Disabled Device State */
-.YSH-device.inactive {
+.YSH-device.inactive.hidden {
     opacity: 0.75;
     cursor: not-allowed;
     filter: grayscale(50%);
@@ -591,7 +591,7 @@
     color: #6B7280; /* Tailwind gray-500 */
 }
 
-.YSH-device.inactive .YSH-badge {
+.YSH-device.inactive .YSH-badge .hidden{
     display: none;
 }
 

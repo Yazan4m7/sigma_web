@@ -17,16 +17,20 @@
                                             ->whereNull('finished_at')
                                             ->get();
 
-                                $activeUnitsOrBuilds = $stageId==3 ? 
-                                    (isset($counts[$device['id']]['activeBuilds']) ? $counts[$device['id']]['activeBuilds'] : 0) : 
+                                $activeUnitsOrBuilds = $stageId==3 ?
+                                    (isset($counts[$device['id']]['activeBuilds']) ? $counts[$device['id']]['activeBuilds'] : 0) :
                                     (isset($counts[$device['id']][$stageId]['active']) ? $counts[$device['id']][$stageId]['active'] : 0);
-                                    
-                                $waitingUnitsOrBuilds = $stageId==3 ? 
-                                    (isset($counts[$device['id']]['waitingBuilds']) ? $counts[$device['id']]['waitingBuilds'] : 0) : 
+
+                                $waitingUnitsOrBuilds = $stageId==3 ?
+                                    (isset($counts[$device['id']]['waitingBuilds']) ? $counts[$device['id']]['waitingBuilds'] : 0) :
                                     (isset($counts[$device['id']][$stageId]['waiting']) ? $counts[$device['id']][$stageId]['waiting'] : 0);
-                                    
+
                                 $hasJobs = $activeUnitsOrBuilds > 0 || $waitingUnitsOrBuilds > 0;
-                                
+                                $hasActiveJobs = $activeUnitsOrBuilds > 0;
+                                $hasWaitingJobs = $waitingUnitsOrBuilds > 0;
+                                $isGrayScale = !$hasActiveJobs && $hasWaitingJobs;
+
+
                                 \Log::info("Device {$device['id']} (" . (isset($device['name']) ? $device['name'] : 'Unknown') . ") - Type: {$type} - Active: {$activeUnitsOrBuilds}, Waiting: {$waitingUnitsOrBuilds}");
                             } catch (Exception $e) {
                                 \Log::error("Error processing device: " . $e->getMessage());
@@ -36,12 +40,12 @@
                             }
                         @endphp
 
-                        <div class="YSH-device {{ $hasJobs ? 'clickable' : 'inactive' }}"
-                            onclick="{{ $hasJobs ? "handleClick(this, '{$device['id']}', '{$type}')" : 'showNoJobsMessage()' }}">
+                        <div class="YSH-device {{ $hasActiveJobs ? 'clickable' : 'inactive' }}"
+                            onclick="{{ $hasActiveJobs || $hasWaitingJobs ? "handleClick(this, '{$device['id']}', '{$type}')" : 'showNoJobsMessage()' }}">
                             <div class="">
-                                <img class="{{ !$hasJobs ? 'grayscale' : '' }} machine-img" alt="Some device :)"
+                                <img class="{{ !$hasActiveJobs ? 'grayscale' : '' }} machine-img" alt="Some device :)"
                                     src="{{ asset(isset($device['img']) ? $device['img'] : 'devicesImages/no_device_img.PNG') }}" onerror="this.onerror=null; this.src='devicesImages/no_device_img.PNG';" />
-                                <div class="YSH-badge-container">
+                                <div class="YSH-badge-container" style="display: {{ $hasJobs ? 'flex' : 'none' }};">
 
                                     <div class="YSH-badge YSH-badge-blue" title="{{ isset($activeUnitsOrBuilds) ? $activeUnitsOrBuilds : '-'  }} active jobs">
                                         {{ isset($activeUnitsOrBuilds) ? $activeUnitsOrBuilds : '-'  }}</div>

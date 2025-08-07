@@ -119,10 +119,6 @@
                                             @php
 
                                             $unitsAmount = count(explode(',', $job->unit_num));
-                                            {{ print_r($unitsAmount . ' <= Units amount  '); }}
-                                            {{ print_r($job->unit_price . ' <=  $job->unit_price'  ); }}
-                                            {{ print_r($job->material->price . ' =<<=  $job->material->price'); }}
-
 
                                              if (isset($job->unit_price) && $job->unit_price > 0)
                                             $totalJobPrice = $unitsAmount * $job->unit_price;

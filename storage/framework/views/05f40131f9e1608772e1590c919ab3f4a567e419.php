@@ -75,6 +75,9 @@
                 <?php if(($permissions && $permissions->contains('permission_id', 113)) || Auth()->user()->is_admin): ?>
                     <li class="<?php echo e(Route::currentRouteName() == 'view-cases-monitor' ? 'active' : ''); ?>"><a href="<?php echo e(route('view-cases-monitor')); ?>"><i class="fa-solid fa-table-cells-large"></i>Cases Monitor</a></li>
                 <?php endif; ?>
+                <?php if(($permissions && $permissions->contains('permission_id', 133)) || Auth()->user()->is_admin): ?>
+                    <li class="<?php echo e(Route::currentRouteName() == 'devices-page' ? 'active' : ''); ?>"><a href="<?php echo e(route('devices-page')); ?>"><i class="fa-solid fa-desktop"></i>Devices Monitor</a></li>
+                <?php endif; ?>
             <?php if(($permissions && ($permissions->contains('permission_id', 107))) || Auth()->user()->is_admin): ?>
                 <li class="<?php echo e(Route::currentRouteName() == 'clients-index' ? 'active' : ''); ?>" ><a href="<?php echo e(route('clients-index')); ?>"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
             <?php endif; ?>

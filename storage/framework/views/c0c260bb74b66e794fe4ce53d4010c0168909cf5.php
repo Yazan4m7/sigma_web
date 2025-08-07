@@ -177,7 +177,7 @@
                 });
             });
             document.querySelectorAll('td.clickable[data-toggle="modal"][data-target^="#waitingDialogdelivery"]').forEach(el => {
-            console.log("adding listener to clickable");
+
                 el.addEventListener('click', function () {
                     const target = this.getAttribute('data-target'); // e.g. "#waitingDialogdelivery175"
                     const match = target.match(/#waitingDialogdelivery(\d+)/);

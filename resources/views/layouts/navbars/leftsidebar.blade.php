@@ -75,6 +75,9 @@
                 @if(($permissions && $permissions->contains('permission_id', 113)) || Auth()->user()->is_admin)
                     <li class="{{Route::currentRouteName() == 'view-cases-monitor' ? 'active' : ''}}"><a href="{{route('view-cases-monitor')}}"><i class="fa-solid fa-table-cells-large"></i>Cases Monitor</a></li>
                 @endif
+                @if(($permissions && $permissions->contains('permission_id', 133)) || Auth()->user()->is_admin)
+                    <li class="{{Route::currentRouteName() == 'devices-page' ? 'active' : ''}}"><a href="{{route('devices-page')}}"><i class="fa-solid fa-desktop"></i>Devices Monitor</a></li>
+                @endif
             @if(($permissions && ($permissions->contains('permission_id', 107))) || Auth()->user()->is_admin)
                 <li class="{{Route::currentRouteName() == 'clients-index' ? 'active' : ''}}" ><a href="{{route('clients-index')}}"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
             @endif

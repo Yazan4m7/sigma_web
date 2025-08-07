@@ -99,6 +99,7 @@ class Kernel extends HttpKernel
         'OrderAbutments'=>\App\Http\Middleware\OrderAbutmentMiddleware::class,
         'ViewVouchers'=>\App\Http\Middleware\ViewVouchersMiddleware::class,
         'LockUnlockCases'=>\App\Http\Middleware\LockUnlockCasesMiddleware::class,
+        'ViewDevicesMonitor'=>\App\Http\Middleware\ViewDevicesMonitorMiddleware::class,
 
 
     ];

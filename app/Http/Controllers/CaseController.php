@@ -36,6 +36,7 @@ use App\Http\Traits\helperTrait;
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use Log;
+use App\Http\Controllers\OperationsUpgrade;
 
 
 class CaseController extends Controller
@@ -43,6 +44,81 @@ class CaseController extends Controller
     public function __construct()
     {
 
+    }
+    
+    public function devicesPage()
+    {
+        $this->setUserPermissions();
+        $permissions = Cache::get('user' . Auth::user()->id);
+        $currentUserId = Auth()->user()->id;
+        $isAdmin = Auth()->user()->is_admin == 1 || ($permissions && $permissions->contains('permission_id', 122));
+
+        // Get only devices for stages that use devices (2=Milling, 3=3D Printing, 4=Sintering, 5=Pressing)
+        $devices = device::whereIn('type', [2, 3, 4, 5])->get();
+        
+        // Get device counts for badges
+        $deviceCounts = [];
+        
+        foreach ($devices as $device) {
+            $deviceId = $device->id;
+            $stageId = $device->type;
+            
+            // Get active and waiting job counts for each device
+            if ($stageId == 3) { // 3D Printing - count builds
+                $activeBuilds = Build::where('printer_id', $deviceId)
+                    ->whereNull('finished_at')
+                    ->count();
+                $waitingBuilds = job::where('stage', $stageId)
+                    ->where('is_active', 0)
+                    ->whereNull('printing_build_id')
+                    ->count();
+                    
+                $deviceCounts[$deviceId] = [
+                    'activeBuilds' => $activeBuilds,
+                    'waitingBuilds' => $waitingBuilds
+                ];
+            } else {
+                // Other stages - count individual jobs
+                $activeJobs = job::where('stage', $stageId)
+                    ->where('device_id', $deviceId)
+                    ->where('is_active', 1)
+                    ->count();
+                    
+                $waitingJobs = job::where('stage', $stageId)
+                    ->where('device_id', $deviceId)
+                    ->where('is_active', 0)
+                    ->count();
+                    
+                $deviceCounts[$deviceId] = [
+                    $stageId => [
+                        'active' => $activeJobs,
+                        'waiting' => $waitingJobs
+                    ]
+                ];
+            }
+        }
+
+        // Additional data needed for dialogs (similar to operations dashboard)
+        $allCases = sCase::with([
+            'client:id,name',
+            'jobs' => function ($q) {
+                $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'delivery_accepted');
+            },
+            'jobs.material:id,name,count_as_unit',
+            'jobs.jobType:id,name,a_secondary_item',
+            'jobs.assignedTo:id,name_initials',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name'
+        ])
+        ->whereHas('jobs', function ($q) {
+            $q->whereIn('stage', [2, 3, 4, 5]); // Only device-using stages
+        })
+        ->get();
+
+        // Add stage configuration for dialog components
+        $stageConfig = OperationsUpgrade::STAGE_CONFIG;
+        
+        return view('devices.devices-page', compact('devices', 'deviceCounts', 'allCases', 'stageConfig'));
     }
 
 
@@ -840,6 +916,9 @@ class CaseController extends Controller
 
         $activeOuterTab = $_COOKIE['activeOuterTab'] ?? "";
 
+        // Get stage configuration for components
+        $stageConfig = OperationsUpgrade::STAGE_CONFIG;
+
         // Log execution time - can be removed in production
         $executionTime = microtime(true) - $startTime;
         \Log::info("Dashboard loaded in {$executionTime} seconds");
@@ -850,7 +929,7 @@ class CaseController extends Controller
             'wSintering', 'aSintering', 'wPressing', 'aPressing',
             'wFinishing', 'aFinishing', 'wQC', 'aQC', 'wDelivery',
             'aDelivery', 'drivers', 'activeOuterTab', 'devices','deviceUnitsCounts',
-            'permissions'
+            'permissions', 'stageConfig'
         ));
     }
 
