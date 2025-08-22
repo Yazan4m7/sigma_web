@@ -1634,10 +1634,10 @@ svg {
 :root {
    /* Breakpoints */
    --breakpoint-xs: 499px;
-   --breakpoint-sm: 300px;
-   --breakpoint-sm-alt: 375px;
-   --breakpoint-md: 568px;
-   --breakpoint-lg: 1080px;
+   --breakpoint-sm: 500px;
+   --breakpoint-sm-alt: 575px;
+   --breakpoint-md: 768px;
+   --breakpoint-lg: 1280px;
 
    /* Inner button colors */
    --inner-gradient-blue: linear-gradient(to top, #36b7fb, #2975d4);
