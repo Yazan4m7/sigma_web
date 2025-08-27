@@ -142,7 +142,7 @@
                             <input type="hidden" class="form-control" name="id" value="{{$id}}">
                             @endif
                             <div class="container full-width">
-                                <div class="row " style="padding-bottom:0;justify-content: flex-end;">
+                                <div class="row " style="padding-bottom:0;">
                                     <!-- Date filtering section -->
                                     <div class="col-6 col-sm-6 col-md-3 mb-3">
                                         <div class="kt-subheader__search">
@@ -158,16 +158,16 @@
                                     </div>
 
                                     <!-- New Date Column Selection -->
-                                    <div class="col-6 col-sm-6 col-md-3 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label>Filter Date By:</label>
-                                            <select class="form-control" name="date_column">
-                                                <option value="initial_delivery_date" {{ isset($date_column) && $date_column == 'initial_delivery_date' ? 'selected' : '' }}>Initial Delivery Date</option>
-                                                <option value="actual_delivery_date" {{ isset($date_column) && $date_column == 'actual_delivery_date' ? 'selected' : '' }}>Actual Delivery Date</option>
-                                                <option value="created_at" {{ isset($date_column) && $date_column == 'created_at' ? 'selected' : '' }}>Date Created</option>
-                                            </select>
-                                        </div>
-                                    </div>
+{{--                                    <div class="col-6 col-sm-6 col-md-3 mb-3">--}}
+{{--                                        <div class="kt-subheader__search">--}}
+{{--                                            <label>Filter Date By:</label>--}}
+{{--                                            <select class="form-control" name="date_column">--}}
+{{--                                                <option value="initial_delivery_date" {{ isset($date_column) && $date_column == 'initial_delivery_date' ? 'selected' : '' }}>Initial Delivery Date</option>--}}
+{{--                                                <option value="actual_delivery_date" {{ isset($date_column) && $date_column == 'actual_delivery_date' ? 'selected' : '' }}>Actual Delivery Date</option>--}}
+{{--                                                <option value="created_at" {{ isset($date_column) && $date_column == 'created_at' ? 'selected' : '' }}>Date Created</option>--}}
+{{--                                            </select>--}}
+{{--                                        </div>--}}
+{{--                                    </div>--}}
 
                                     <!-- Doctor selection -->
                                     <div class="col-6 col-sm-6 col-md-3 mb-3">
@@ -277,7 +277,7 @@
                     @endif
                     @endif
                     <div class="container full-width">
-                        <div class="row" style="justify-content: flex-end;">
+                        <div class="row" style="">
                             <div class="col-12">
                                 <br>
                                 <table id="casesTable"
@@ -397,7 +397,7 @@
                                                                         $unit = explode(', ',$job->unit_num);
                                                                     @endphp
 
-                                                                    <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
+                                                                    <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}}{{isset($job->subType) && $job->subType->name ? " (" . $job->subType->name . ")" : ""}} {{$job->color =='0' ? "":" - " .$job->color}}
                                                                         {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
                                                                                     {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
                                                                 @endforeach

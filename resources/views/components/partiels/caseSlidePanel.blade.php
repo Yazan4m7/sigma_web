@@ -41,7 +41,7 @@
                                 $unit = explode(', ',$job->unit_num);
                             @endphp
                             <span>
-                        {{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}}
+                        {{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}}{{isset($job->subType) && $job->subType->name ? " (" . $job->subType->name . ")" : ""}}
                                 {{$job->color == '0' ? "" : " - " . $job->color}}
                                 {{$job->style == 'None' ? "" : " - " . $job->style}}
                                 {{ isset($job->implantR) && $job->jobType->id == 6 ? (" - Implant Type: " . $job->implantR->name) : "" }}

@@ -42,13 +42,13 @@
         $buildJobs = [];
 
         if ($type == 'milling') {
-            $buildJobs = job::where('milling_build_id', $build->id)->get();
+            $buildJobs = job::where('milling_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == '3dprinting') {
-            $buildJobs = job::where('printing_build_id', $build->id)->get();
+            $buildJobs = job::where('printing_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == 'sintering') {
-            $buildJobs = job::where('sintering_build_id', $build->id)->get();
+            $buildJobs = job::where('sintering_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == 'pressing') {
-            $buildJobs = job::where('pressing_build_id', $build->id)->get();
+            $buildJobs = job::where('pressing_build_id', $build->id)->with(['jobType', 'subType'])->get();
         }
 
         // Count the jobs
@@ -92,9 +92,13 @@
                     $unitCount += 1;
                 }
 
-                // Get job type
+                // Get job type and type (sub-material)
                 if ($job->jobType) {
-                    $jobTypes[] = $job->jobType->name;
+                    $jobTypeText = $job->jobType->name;
+                    if ($job->subType && is_object($job->subType) && isset($job->subType->name)) {
+                        $jobTypeText .= ' (' . $job->subType->name . ')';
+                    }
+                    $jobTypes[] = $jobTypeText;
                 }
             }
 
@@ -661,7 +665,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
      مع اطيب المتنيات و احر التعازي
      -->
 
-<form id="process-form-<?php echo e($deviceId); ?>" method="POST" class="d-none">
+<form id="process-form-<?php echo e($deviceId); ?>" method="POST" action="<?php echo e(route('operations-upgrade')); ?>" class="d-none">
     <?php echo csrf_field(); ?>
     <input type="hidden" name="deviceId" value="<?php echo e($deviceId); ?>">
     <input type="hidden" name="items" id="selected-items-<?php echo e($deviceId); ?>" value="">
@@ -669,6 +673,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     <input type="hidden" name="type" id="action-type-<?php echo e($deviceId); ?>" value="<?php echo e($type); ?>">
     <input type="hidden" class="buildsIdsHiddenInput<?php echo e($deviceId); ?>" name="buildsIdsHiddenInput<?php echo e($deviceId); ?>"
            id="action-buildsIds-<?php echo e($deviceId); ?>" value="">
+    <input type="hidden" name="redirect_to" value="devices">
 </form>
 
 

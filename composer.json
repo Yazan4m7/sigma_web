@@ -13,7 +13,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inspector-apm/inspector-laravel": "^4.9",
-        "jeremykenedy/laravel-logger": "^10.0",
+
         "juststeveking/laravel-feature-flags": "^0.3.0",
         "laravel/framework": "^8.54",
         "laravel/octane": "^1.5",

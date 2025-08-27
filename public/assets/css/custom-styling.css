@@ -131,7 +131,7 @@ font-weight: unset !important;
 }
 .pagination{
     margin-top:5px !important;
-    justify-content: flex-end;
+
 }
 .btn-warning {
     color: #ffffff;
@@ -593,7 +593,7 @@ blueTBBorder{
     #datatable_wrapper {
         overflow: auto;
     }
-    .modal-footer {
+    .modal-footer:not(.teethSelection){
         display: flex !important;
         align-items: center !important;
         justify-content: space-around !important;

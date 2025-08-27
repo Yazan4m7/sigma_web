@@ -5,7 +5,8 @@
     'type',
     'devices',
     'stageId',
-    'showBuildName' => true
+    'showBuildName' => true,
+    'types' => null
 ]); ?>
 <?php foreach (array_filter(([
     'title',
@@ -13,7 +14,8 @@
     'type',
     'devices',
     'stageId',
-    'showBuildName' => true
+    'showBuildName' => true,
+    'types' => null
 ]), 'is_string', ARRAY_FILTER_USE_KEY) as $__key => $__value) {
     $$__key = $$__key ?? $__value;
 } ?>
@@ -32,7 +34,7 @@
 
 
 
-<div class="sigma-workflow-modal waiting-dialog" id="<?php echo e($type); ?>-waiting" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc " id="<?php echo e($type); ?>-waiting" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
@@ -60,26 +62,49 @@
             $buildFieldName= ['milling' => 'Block', 'pressing' => 'Ring', 'delivery' => 'Assign','sintering' => 'START'  ];
                 ?>
 
-            <!-- Build name input) -->
-
-<?php if($type != "sintering"): ?>
-                <div class="sigma-form-group">
-
-                <input type="text"
+            <!-- Build name and Type selection inputs -->
+            <div class="sigma-inputs-container" style="display: flex; gap: 10px; align-items: end;">
+                
+                <!-- Build name input -->
+                <?php if($type != "sintering"): ?>
+                    <div class="sigma-form-group" style="flex: 1;">
+                        <label for="sigma-build-name-<?php echo e($type); ?>" class="sigma-form-label">
+                            <?php echo e($buildFieldName[$type] ?? 'Build'); ?> Name
+                        </label>
+                        <input type="text"
+                               id="sigma-build-name-<?php echo e($type); ?>"
+                               class="sigma-form-control <?php echo e($stageConfig[$type]['multiple-waiting']?'multiple-choice' :'single-choice'); ?>"
+                               placeholder="Enter <?php echo e($buildFieldName[$type] ?? 'Build'); ?> name"
+                               oninput="validateAndSetBuildName('<?php echo e($type); ?>')">
+                    </div>
+                <?php else: ?>
+                    <input type="hidden"
                            id="sigma-build-name-<?php echo e($type); ?>"
-                           class="sigma-form-control  <?php echo e($stageConfig[$type]['multiple-waiting']?'multiple-choice' :'single-choice'); ?> "
+                           class="sigma-form-control"
                            placeholder="Enter <?php echo e($buildFieldName[$type] ?? 'Build'); ?> name"
                            oninput="validateAndSetBuildName('<?php echo e($type); ?>')">
+                <?php endif; ?>
 
-                </div>
+                <!-- Material Type selection for milling, pressing, sintering -->
+                <?php if(in_array($type, ['milling', 'pressing', 'sintering']) && $types && $types->count() > 0): ?>
+                    <div class="sigma-form-group" style="flex: 1;">
+                        <label for="sigma-material-type-<?php echo e($type); ?>" class="sigma-form-label">
+                            Material Type
+                        </label>
+                        <select id="sigma-material-type-<?php echo e($type); ?>" 
+                                class="sigma-form-control"
+                                onchange="validateMaterialTypeSelection('<?php echo e($type); ?>')">
+                            <option value="">Select Material Type</option>
+                            <?php $__currentLoopData = $types->where('is_enabled', true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $materialType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <option value="<?php echo e($materialType->id); ?>" data-material-id="<?php echo e($materialType->material_id); ?>">
+                                    <?php echo e($materialType->material?->name ?? 'Unknown Material'); ?> - <?php echo e($materialType->name); ?>
 
-            <?php else: ?>
-                <input type="hidden"
-                       id="sigma-build-name-<?php echo e($type); ?>"
-                       class="sigma-form-control"
-                       placeholder="Enter <?php echo e($buildFieldName[$type] ?? 'Build'); ?> name"
-                       oninput="validateAndSetBuildName('<?php echo e($type); ?>')">
-    <?php endif; ?>
+                                </option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+                <?php endif; ?>
+            </div>
 
         </div>
 
@@ -103,12 +128,50 @@
     <input type="hidden" name="type" value="<?php echo e($type); ?>">
     <input type="hidden" name="deviceId" id="device-id-<?php echo e($type); ?>" value="">
     <input type="hidden" name="WaitingPopupCheckBoxes<?php echo e($type); ?>[]" id="case-ids-<?php echo e($type); ?>" value="">
-        <input type="hidden" name="buildName" id="build-name-<?php echo e($type); ?>" value="">
-
+    <input type="hidden" name="buildName" id="build-name-<?php echo e($type); ?>" value="">
+    <input type="hidden" name="materialTypeId" id="material-type-id-<?php echo e($type); ?>" value="">
 </form>
 
 
 <script>
+
+    // Function to handle material type selection
+    function validateMaterialTypeSelection(type) {
+        const materialTypeSelect = document.getElementById('sigma-material-type-' + type);
+        const materialTypeHidden = document.getElementById('material-type-id-' + type);
+        const actionButton = document.getElementById('sigma-action-button-' + type.replace(/\W/g, ''));
+        
+        if (materialTypeSelect && materialTypeHidden) {
+            materialTypeHidden.value = materialTypeSelect.value;
+        }
+        
+        // Update button state based on all required selections
+        updateActionButtonState(type);
+    }
+    
+    // Enhanced button state validation including material type
+    function updateActionButtonState(type) {
+        const deviceSelected = window.selectedMachineId;
+        const buildNameInput = document.getElementById('sigma-build-name-' + type);
+        const materialTypeSelect = document.getElementById('sigma-material-type-' + type);
+        const actionButton = document.getElementById('sigma-action-button-' + type.replace(/\W/g, ''));
+        
+        let isValid = deviceSelected;
+        
+        // Check build name (except for sintering)
+        if (type !== 'sintering' && buildNameInput) {
+            isValid = isValid && buildNameInput.value.trim().length > 0;
+        }
+        
+        // Check material type for specific stages
+        if (materialTypeSelect && ['milling', 'pressing', 'sintering'].includes(type)) {
+            isValid = isValid && materialTypeSelect.value.length > 0;
+        }
+        
+        if (actionButton) {
+            actionButton.disabled = !isValid;
+        }
+    }
 
     function setInnerTab(btnElement) {
 

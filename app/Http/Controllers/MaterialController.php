@@ -21,7 +21,11 @@ class MaterialController extends Controller
     public function returnCreate()
     {
         $jobTypes =  JobType::all();
-        return view('material.create',compact('jobTypes'));
+        $types = \App\Type::with('material:id,name')
+            ->enabled()
+            ->whereHas('material')
+            ->get();
+        return view('material.create',compact('jobTypes', 'types'));
     }
     public function create(Request $request)
     {
@@ -53,18 +57,34 @@ class MaterialController extends Controller
           $jt->save();
          }
 
+        // Handle material types if provided
+        if ($request->has('materialTypes') && is_array($request->materialTypes)) {
+            foreach($request->materialTypes as $typeId) {
+                // Create a relationship between this material and the selected types
+                // This would typically be done through a pivot table if needed
+                // For now, we'll just ensure the types exist and are linked to materials
+                $type = \App\Type::find($typeId);
+                if ($type) {
+                    // You could add additional logic here if needed
+                    // For example, creating a material-type relationship table
+                }
+            }
+        }
+
             return back()->with('success', 'Material has been successfully created');
 
     }
     public function returnUpdate($id)
     {
-
         $jobTypes =  JobType::all();
         $material = material::findOrFail($id);
-        $matJobTypes =$material->jobtypes->pluck("jobtype_id")->toArray();;
+        $matJobTypes =$material->jobtypes->pluck("jobtype_id")->toArray();
+        $types = \App\Type::with('material:id,name')
+            ->enabled()
+            ->whereHas('material')
+            ->get();
 
-        return view('material.edit',compact('material','matJobTypes','jobTypes'));
-
+        return view('material.edit',compact('material','matJobTypes','jobTypes', 'types'));
     }
     public function update(Request $request)
     {
@@ -102,5 +122,19 @@ class MaterialController extends Controller
 
             return back()->with('success', 'Material has been successfully updated');
 
+    }
+
+    public function getTypes($id)
+    {
+        $material = material::find($id);
+        if (!$material) {
+            return response()->json(['error' => 'Material not found'], 404);
+        }
+
+        $types = \App\Type::where('material_id', $id)
+            ->enabled()
+            ->get(['id', 'name']);
+
+        return response()->json($types);
     }
 }

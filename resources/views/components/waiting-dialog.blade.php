@@ -5,7 +5,8 @@
     'type',
     'devices',
     'stageId',
-    'showBuildName' => true
+    'showBuildName' => true,
+    'types' => null
 ])
 <?php $escapedType = preg_replace('/\W/', '', $type); ?>
 @php   $stageSpecs = ['milling' => ['route'=>'/set-multiple-cases','btnText'=>'NEST'],
@@ -17,7 +18,7 @@
 
 
 
-<div class="sigma-workflow-modal waiting-dialog" id="{{ $type }}-waiting" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc " id="{{ $type }}-waiting" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
@@ -45,26 +46,48 @@
             $buildFieldName= ['milling' => 'Block', 'pressing' => 'Ring', 'delivery' => 'Assign','sintering' => 'START'  ];
                 @endphp
 
-            <!-- Build name input) -->
-
-@if($type != "sintering")
-                <div class="sigma-form-group">
-
-                <input type="text"
+            <!-- Build name and Type selection inputs -->
+            <div class="sigma-inputs-container" style="display: flex; gap: 10px; align-items: end;">
+                
+                <!-- Build name input -->
+                @if($type != "sintering")
+                    <div class="sigma-form-group" style="flex: 1;">
+                        <label for="sigma-build-name-{{ $type }}" class="sigma-form-label">
+                            {{$buildFieldName[$type] ?? 'Build'}} Name
+                        </label>
+                        <input type="text"
+                               id="sigma-build-name-{{ $type }}"
+                               class="sigma-form-control {{$stageConfig[$type]['multiple-waiting']?'multiple-choice' :'single-choice' }}"
+                               placeholder="Enter {{$buildFieldName[$type] ?? 'Build'}} name"
+                               oninput="validateAndSetBuildName('{{ $type }}')">
+                    </div>
+                @else
+                    <input type="hidden"
                            id="sigma-build-name-{{ $type }}"
-                           class="sigma-form-control  {{$stageConfig[$type]['multiple-waiting']?'multiple-choice' :'single-choice' }} "
+                           class="sigma-form-control"
                            placeholder="Enter {{$buildFieldName[$type] ?? 'Build'}} name"
                            oninput="validateAndSetBuildName('{{ $type }}')">
+                @endif
 
-                </div>
-
-            @else
-                <input type="hidden"
-                       id="sigma-build-name-{{ $type }}"
-                       class="sigma-form-control"
-                       placeholder="Enter {{$buildFieldName[$type] ?? 'Build'}} name"
-                       oninput="validateAndSetBuildName('{{ $type }}')">
-    @endif
+                <!-- Material Type selection for milling, pressing, sintering -->
+                @if(in_array($type, ['milling', 'pressing', 'sintering']) && $types && $types->count() > 0)
+                    <div class="sigma-form-group" style="flex: 1;">
+                        <label for="sigma-material-type-{{ $type }}" class="sigma-form-label">
+                            Material Type
+                        </label>
+                        <select id="sigma-material-type-{{ $type }}" 
+                                class="sigma-form-control"
+                                onchange="validateMaterialTypeSelection('{{ $type }}')">
+                            <option value="">Select Material Type</option>
+                            @foreach($types->where('is_enabled', true) as $materialType)
+                                <option value="{{ $materialType->id }}" data-material-id="{{ $materialType->material_id }}">
+                                    {{ $materialType->material?->name ?? 'Unknown Material' }} - {{ $materialType->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
+            </div>
 
         </div>
 
@@ -87,12 +110,50 @@
     <input type="hidden" name="type" value="{{ $type }}">
     <input type="hidden" name="deviceId" id="device-id-{{ $type }}" value="">
     <input type="hidden" name="WaitingPopupCheckBoxes{{ $type }}[]" id="case-ids-{{ $type }}" value="">
-        <input type="hidden" name="buildName" id="build-name-{{ $type }}" value="">
-
+    <input type="hidden" name="buildName" id="build-name-{{ $type }}" value="">
+    <input type="hidden" name="materialTypeId" id="material-type-id-{{ $type }}" value="">
 </form>
 
 
 <script>
+
+    // Function to handle material type selection
+    function validateMaterialTypeSelection(type) {
+        const materialTypeSelect = document.getElementById('sigma-material-type-' + type);
+        const materialTypeHidden = document.getElementById('material-type-id-' + type);
+        const actionButton = document.getElementById('sigma-action-button-' + type.replace(/\W/g, ''));
+        
+        if (materialTypeSelect && materialTypeHidden) {
+            materialTypeHidden.value = materialTypeSelect.value;
+        }
+        
+        // Update button state based on all required selections
+        updateActionButtonState(type);
+    }
+    
+    // Enhanced button state validation including material type
+    function updateActionButtonState(type) {
+        const deviceSelected = window.selectedMachineId;
+        const buildNameInput = document.getElementById('sigma-build-name-' + type);
+        const materialTypeSelect = document.getElementById('sigma-material-type-' + type);
+        const actionButton = document.getElementById('sigma-action-button-' + type.replace(/\W/g, ''));
+        
+        let isValid = deviceSelected;
+        
+        // Check build name (except for sintering)
+        if (type !== 'sintering' && buildNameInput) {
+            isValid = isValid && buildNameInput.value.trim().length > 0;
+        }
+        
+        // Check material type for specific stages
+        if (materialTypeSelect && ['milling', 'pressing', 'sintering'].includes(type)) {
+            isValid = isValid && materialTypeSelect.value.length > 0;
+        }
+        
+        if (actionButton) {
+            actionButton.disabled = !isValid;
+        }
+    }
 
     function setInnerTab(btnElement) {
 

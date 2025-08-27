@@ -28,13 +28,13 @@
         $buildJobs = [];
 
         if ($type == 'milling') {
-            $buildJobs = job::where('milling_build_id', $build->id)->get();
+            $buildJobs = job::where('milling_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == '3dprinting') {
-            $buildJobs = job::where('printing_build_id', $build->id)->get();
+            $buildJobs = job::where('printing_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == 'sintering') {
-            $buildJobs = job::where('sintering_build_id', $build->id)->get();
+            $buildJobs = job::where('sintering_build_id', $build->id)->with(['jobType', 'subType'])->get();
         } else if ($type == 'pressing') {
-            $buildJobs = job::where('pressing_build_id', $build->id)->get();
+            $buildJobs = job::where('pressing_build_id', $build->id)->with(['jobType', 'subType'])->get();
         }
 
         // Count the jobs
@@ -78,9 +78,13 @@
                     $unitCount += 1;
                 }
 
-                // Get job type
+                // Get job type and type (sub-material)
                 if ($job->jobType) {
-                    $jobTypes[] = $job->jobType->name;
+                    $jobTypeText = $job->jobType->name;
+                    if ($job->subType && is_object($job->subType) && isset($job->subType->name)) {
+                        $jobTypeText .= ' (' . $job->subType->name . ')';
+                    }
+                    $jobTypes[] = $jobTypeText;
                 }
             }
 
@@ -642,7 +646,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
      مع اطيب المتنيات و احر التعازي
      -->
 
-<form id="process-form-{{ $deviceId }}" method="POST" class="d-none">
+<form id="process-form-{{ $deviceId }}" method="POST" action="{{ route('operations-upgrade') }}" class="d-none">
     @csrf
     <input type="hidden" name="deviceId" value="{{ $deviceId }}">
     <input type="hidden" name="items" id="selected-items-{{ $deviceId }}" value="">
@@ -650,6 +654,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     <input type="hidden" name="type" id="action-type-{{ $deviceId }}" value="{{ $type }}">
     <input type="hidden" class="buildsIdsHiddenInput{{$deviceId}}" name="buildsIdsHiddenInput{{$deviceId}}"
            id="action-buildsIds-{{ $deviceId }}" value="">
+    <input type="hidden" name="redirect_to" value="devices">
 </form>
 
 

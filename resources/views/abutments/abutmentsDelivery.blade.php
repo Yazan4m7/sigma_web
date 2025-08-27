@@ -61,7 +61,7 @@
     </form>
 
     <div class="container full-width">
-        <div class="row" style="justify-content: flex-end; border-radius: 4px;">
+        <div class="row" style=" border-radius: 4px;">
             <div class="col-12">
                 <br>
                 <table id="datatable"

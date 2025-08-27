@@ -46,7 +46,11 @@
     </style>
 
     <style>
-       img{
+        .btn.btn-secondary {
+
+             width: 100%;
+        }
+        img{
             max-height: 100%;
             max-width: 100%;
         }
@@ -132,7 +136,7 @@
 
                 </div>
             </div>
-            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
+            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">rgba(126, 75, 75, 1)
                 <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
                 <div class="col-md-12 col-xs-12"> <select  class="form-control" name="impression_type" type="text"  data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true"  >
 
@@ -232,6 +236,34 @@
                                             @endif
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label>Type:</label>
+                                        </div>
+                                        <div class="kt-form__control">
+                                            <select {{$job->jobType->id == 6 ? 'disabled' : ''}}
+                                                    class="form-control type-dropdown"
+                                                    id="type_id{{$job->id}}"
+                                                    name="type_id{{$job->id}}"
+                                                    onchange="typeChanged(this, {{$job->id}})">
+                                                <option value="">Select Type</option>
+                                                @if($job->material && $job->material->types && $job->material->types->count() > 0)
+                                                    @foreach($job->material->types->where('is_enabled', true) as $type)
+                                                        <option value="{{$type->id}}" {{$job->type_id == $type->id ? 'selected' : ''}}>
+                                                            {{$type->name}}
+                                                        </option>
+                                                    @endforeach
+                                                @else
+                                                    <option value="" disabled>No Types</option>
+                                                @endif
+                                            </select>
+                                            @if($job->jobType->id == 6)
+                                                <input type="hidden" name="type_id{{$job->id}}" value="{{$job->type_id}}">
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2"><div class="kt-form__group--inline">
@@ -407,6 +439,18 @@
                                             </select>
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label>Type:</label>
+                                        </div>
+                                        <div class="kt-form__control">
+                                            <select class="form-control type-dropdown-new" id="type_id" name="type_id">
+                                                <option value="">Select Type</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2">
@@ -856,7 +900,7 @@
 
 
                 </div>
-                <div class="modal-footer" name ="model-footer">
+                <div class="modal-footer teethSelection" name ="model-footer">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="submitDialog"   onclick="submitDialogFun(this)" >Save changes</button>
@@ -1014,7 +1058,7 @@
 
 
                 </div>
-                <div class="modal-footer" name ="model-footer">
+                <div class="modal-footer teethSelection" name ="model-footer">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" id="submitDialog2"  >Save changes</button>
@@ -1041,7 +1085,7 @@
 
 
                 </div>
-                <div class="modal-footer" name ="model-footer">
+                <div class="modal-footer " name ="model-footer">
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary"    onclick="">Save changes</button>
@@ -1436,35 +1480,35 @@
                 .attr("value", 0)
                 .text("Select Stage"));
 
-                if (materialSelected.design ==1 )
+            if (materialSelected && materialSelected.design == 1)
             stagesDropDown.append($("<option></option>")
                     .attr("value", 1)
                     .text("Design"));
-            if (materialSelected.mill ==1 )
+            if (materialSelected && materialSelected.mill == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 2)
                     .text("Milling"));
-            if (materialSelected.print_3d ==1 )
+            if (materialSelected && materialSelected.print_3d == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 3)
                     .text("3D Printing"));
-            if (materialSelected.sinter_furnace ==1 )
+            if (materialSelected && materialSelected.sinter_furnace == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 4)
                     .text("Sintering Furnace"));
-            if (materialSelected.press_furnace ==1 )
+            if (materialSelected && materialSelected.press_furnace == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 5)
                     .text("Pressing Furnace"));
-            if (materialSelected.finish ==1 )
+            if (materialSelected && materialSelected.finish == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 6)
                     .text("Finishing"));
-            if (materialSelected.qc ==1 )
+            if (materialSelected && materialSelected.qc == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 7)
                     .text("QC"));
-            if (materialSelected.delivery ==1 )
+            if (materialSelected && materialSelected.delivery == 1)
                 stagesDropDown.append($("<option></option>")
                     .attr("value", 8)
                     .text("Delivery"));
@@ -1535,6 +1579,11 @@
             var openDialogBtn = $("[name='" + repeaterName2 + "[openDialogBtn]']");
             console.log("New job type changed " +$(jobTypeDD).find(":selected").val() );
             materialChanged();
+
+            // Load types for the new job material dropdown
+            if (materialBox.length > 0) {
+                loadTypesForNewJob(materialBox[0]);
+            }
 
             if($(jobTypeDD).find(":selected").val() == 6 ){
 
@@ -1756,6 +1805,119 @@
                 $(".jaw2").removeClass("checked");
             }
         }
+
+        // Function to handle type dropdown changes
+        function typeChanged(typeSelect, jobId) {
+            console.log('Type changed for job', jobId, 'to:', $(typeSelect).val());
+        }
+
+        // Function to load types when material is changed
+        function loadTypesForMaterial(materialSelect, jobId) {
+            var materialId = $(materialSelect).val();
+            var typeSelect = $('#type_id' + jobId);
+
+            // Clear current options
+            typeSelect.empty();
+            typeSelect.append('<option value="">Select Type</option>');
+
+            if (!materialId) {
+                typeSelect.prop('disabled', true);
+                typeSelect.append('<option value="" disabled>No Material Selected</option>');
+                return;
+            }
+
+            // Get material data from controller
+            var materials = @json($materials);
+            var selectedMaterial = materials.find(m => m.id == materialId);
+
+            if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
+                // Enable dropdown and populate with types
+                typeSelect.prop('disabled', false);
+                selectedMaterial.types.forEach(function(type) {
+                    typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                });
+            } else {
+                // No types available - disable and show message
+                typeSelect.prop('disabled', true);
+                typeSelect.append('<option value="" disabled>No Types</option>');
+            }
+        }
+
+        // Update existing jobTypeChanged function to also handle types
+        var originalJobTypeChanged = window.jobTypeChanged;
+        window.jobTypeChanged = function(jobTypeDD, jobId) {
+            // Call original function first
+            if (originalJobTypeChanged) {
+                originalJobTypeChanged(jobTypeDD, jobId);
+            }
+
+            // Handle type dropdown when job type changes
+            var materialSelect = $("[name='material_id" + jobId + "']");
+            if (materialSelect.length > 0) {
+                loadTypesForMaterial(materialSelect[0], jobId);
+            }
+        };
+
+        // Function to handle new job material changes
+        function loadTypesForNewJob(materialSelect) {
+            var materialId = $(materialSelect).val();
+            var typeSelect = $(materialSelect).closest('.row-item').find('select[name="type_id"]');
+
+            // Clear current options
+            typeSelect.empty();
+            typeSelect.append('<option value="">Select Type</option>');
+
+            if (!materialId) {
+                typeSelect.prop('disabled', true);
+                typeSelect.append('<option value="" disabled>No Material Selected</option>');
+                return;
+            }
+
+            // Get material data from controller
+            var materials = @json($materials);
+            var selectedMaterial = materials.find(m => m.id == materialId);
+
+            if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
+                // Enable dropdown and populate with types
+                typeSelect.prop('disabled', false);
+                selectedMaterial.types.forEach(function(type) {
+                    typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                });
+            } else {
+                // No types available - disable and show message
+                typeSelect.prop('disabled', true);
+                typeSelect.append('<option value="" disabled>No Types</option>');
+            }
+        }
+
+        // Add change handler for material dropdowns
+        $(document).ready(function() {
+            // Handle material changes for existing jobs
+            $('select[name^="material_id"]').on('change', function() {
+                var name = $(this).attr('name');
+                var jobId = name.replace('material_id', '');
+                loadTypesForMaterial(this, jobId);
+
+            });
+
+            // Handle material changes for new jobs (within repeater)
+            $(document).on('change', 'select[name="material_id"]', function() {
+                loadTypesForNewJob(this);
+            });
+
+            // Initialize type dropdowns on page load
+            $('select[name^="material_id"]').each(function() {
+                var name = $(this).attr('name');
+                var jobId = name.replace('material_id', '');
+                loadTypesForMaterial(this, jobId);
+            });
+
+            // Initialize new job type dropdowns on page load
+            $('select[name="material_id"]').each(function() {
+                loadTypesForNewJob(this);
+            });
+
+        });
 
 
     </script>

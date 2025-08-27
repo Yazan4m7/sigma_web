@@ -25,6 +25,10 @@ class job extends Model
 {
     return $this->belongsTo('App\material', 'material_id', 'id');
 }
+    public function subType()
+    {
+        return $this->belongsTo('App\Type', 'type_id', 'id');
+    }
     public function jobType()
     {
         return $this->belongsTo('App\JobType', 'type', 'id');

@@ -1,0 +1,119 @@
+SIGMA SYSTEM - TYPE (SUB MATERIAL) IMPLEMENTATION PLAN
+========================================================
+
+OVERVIEW:
+Add "Type" as sub-category of Material (e.g., Zirconia → Full Contour, Layered, Monolithic)
+
+PHASE 1: DATABASE & CORE MODELS
+===============================
+Tasks:
+- Create migration for 'types' table
+- Create Type model with Material relationship  
+- Update Job model to include type_id foreign key
+- Update Material model with hasMany types relationship
+- Create seeders with sample Type data
+
+Files to modify:
+- database/migrations/xxxx_create_types_table.php (new)
+- database/migrations/xxxx_add_type_id_to_jobs_table.php (new) 
+- app/Models/Type.php (new)
+- app/Models/Job.php (add type relationship)
+- app/Models/Material.php (add types relationship)
+- database/seeders/TypeSeeder.php (new)
+
+Expected outcome: Database structure ready, models can access Type data
+
+PHASE 2: CASE CREATION FLOW
+===========================
+Tasks:
+- Update create case screen with Type dropdown
+- Add AJAX endpoint to load types by material_id
+- Update CaseController validation and storage logic
+- Update job creation to include type_id
+- Test case creation with Type selection
+
+Files to modify:
+- resources/views/cases/create.blade.php (add Type dropdown)
+- app/Http/Controllers/CaseController.php (update create/store methods)
+- routes/web.php (add AJAX route for types by material)
+- public/assets/js/case-creation.js (Type dropdown logic)
+
+Expected outcome: New cases can be created with Type selection
+
+PHASE 3: OPERATIONS DASHBOARD INTEGRATION  
+=========================================
+Tasks:
+- Update device dialogs to show Type information
+- Modify operations dashboard to display Type in job counts
+- Update active cases dialog with Type details
+- Update device statistics to include Type breakdown
+- Test device operations with Type display
+
+Files to modify:
+- resources/views/components/active-cases-dialog.blade.php
+- resources/views/admin/adminDashboard_v2.blade.php  
+- app/Http/Controllers/CaseController.php (adminDashboard_v2 method)
+- app/Http/Controllers/OperationsUpgrade.php (device methods)
+
+Expected outcome: Operations dashboard shows Type information throughout
+
+PHASE 4: CASE MANAGEMENT & VIEWING
+==================================
+Tasks:
+- Update case index page to show Type column
+- Modify case details/view pages to display Type
+- Update edit case functionality for Type modification
+- Add Type to case slide panels and modals
+- Update search and filtering to include Type
+
+Files to modify:
+- resources/views/cases/index.blade.php (add Type column)
+- resources/views/components/view-case-dialog.blade.php
+- resources/views/partiels/caseSlidePanel.blade.php
+- app/Http/Controllers/CaseController.php (index, edit methods)
+- Case search/filter components
+
+Expected outcome: Complete case management with Type visibility
+
+PHASE 5: REPORTS & ADMIN FEATURES
+=================================
+Tasks:
+- Add Type management interface (CRUD operations)
+- Update reports to include Type filtering and columns
+- Create Material-Type relationship management
+- Update API endpoints to include Type data
+- Add Type-based analytics and statistics
+
+Files to modify:
+- resources/views/admin/types/ (new directory - index, create, edit)
+- app/Http/Controllers/TypeController.php (new)
+- app/Http/Controllers/ReportsController.php (add Type filters)
+- routes/web.php (Type management routes)
+- API routes for mobile integration
+
+Expected outcome: Full Type management and reporting capabilities
+
+IMPLEMENTATION NOTES:
+====================
+- Maintain backward compatibility - Type is optional initially
+- Use consistent naming: 'type_id' in database, 'Type' in UI
+- Follow existing code patterns and conventions
+- Test each phase thoroughly before proceeding
+- Consider performance impact on large datasets
+- Ensure proper validation and error handling
+
+SAMPLE DATA STRUCTURE:
+=====================
+Materials → Types:
+- Zirconia → Full Contour, Layered, Monolithic
+- PMMA → Temporary Crown, Surgical Guide, Try-in  
+- Lithium Disilicate → Pressed, CAD/CAM, Stained
+- Metal → Cast, Milled, 3D Printed
+
+TECHNICAL CONSIDERATIONS:
+========================
+- Use Laravel relationships for efficient queries
+- Implement cascading dropdowns with AJAX
+- Consider caching for Material-Type combinations
+- Add proper indexes for performance
+- Plan for future Type customization per client

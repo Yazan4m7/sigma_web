@@ -5,7 +5,7 @@
     'stageId'
 ])
 
-<div class="sigma-workflow-modal waiting-dialog" id="3dprinting-waiting" tabindex="-1" role="dialog">
+<div class="sig1ma-workflo1w-mo1dal waiting-dialog modal fade animate__animated animate__bounc"  id="3dprinting-waiting" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
@@ -56,20 +56,6 @@
                     disabled
                     onclick="submitWorkflow('3dprinting')">
                 SET
-            </button>
-
-            <!-- From Uiverse.io by Creatlydev — Namespaced with YSH- -->
-            <button class="YSH-button" style="--clr: #00ad54;">
-                <span class="YSH-button-decor"></span>
-                <div class="YSH-button-content">
-                    <div class="YSH-button__icon">
-                        <!-- SVG stays the same -->
-                        <svg viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg" width="24">
-                            <!-- ... SVG content omitted for brevity ... -->
-                        </svg>
-                    </div>
-                    <span class="YSH-button__text">SET</span>
-                </div>
             </button>
 
         </div>

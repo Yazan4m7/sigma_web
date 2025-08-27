@@ -48,8 +48,25 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
     Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])->name('admin-dashboard-v2');
 
+    // Type management routes
+    Route::resource('admin/types', App\Http\Controllers\TypeController::class)->names([
+        'index' => 'types.index',
+        'create' => 'types.create',
+        'store' => 'types.store',
+        'edit' => 'types.edit',
+        'update' => 'types.update',
+        'destroy' => 'types.destroy',
+    ]);
+
+    // Additional Type routes
+    Route::patch('/admin/types/{type}/toggle-status', [App\Http\Controllers\TypeController::class, 'toggleStatus'])->name('types.toggle-status');
+
+    // API route for types by material
+    Route::get('/api/materials/{materialId}/types', [App\Http\Controllers\TypeController::class, 'getTypesByMaterial'])->name('api.types.by-material');
+
     Route::middleware('ViewDevicesMonitor')->group(function (): void {
         Route::get('/devices', [App\Http\Controllers\CaseController::class, 'devicesPage'])->name('devices-page');
+        Route::post('/devices/reorder', [App\Http\Controllers\CaseController::class, 'updateDeviceOrder'])->name('devices-reorder');
     });
 
     Route::get('search', [App\Http\Controllers\CaseController::class, 'globalSearch'])->name('global-search');
@@ -308,7 +325,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::post('Job-type/edit-post', [App\Http\Controllers\JobTypeController::class, 'update'])->name('edit-job-type');
 
         // USERS ROUTES
-        Route::get('/users/index?status=1', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
+        Route::get('/users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
         Route::get('/users/new', [App\Http\Controllers\UserController::class, 'returnCreate'])->name('new-user-view');
         Route::post('/users/new-post', [App\Http\Controllers\UserController::class, 'create'])->name('new-user');
         Route::get('/users/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('edit-user-view');
@@ -376,6 +393,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
     Route::get('/assign-and-finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignAndFinish'])->name('assign-and-finish');
     Route::get('/finish-case/{caseId}', [App\Http\Controllers\CaseController::class, 'deliveredInBox'])->name('delivered-in-box');
+    Route::post('/operations-upgrade', [App\Http\Controllers\OperationsUpgrade::class, 'handleOperation'])->name('operations-upgrade');
     Route::post('/set-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'setOnDevice'])->name('set-multiple-cases');
     Route::post('/activate-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'activateMultipleCases'])->name('activate-multiple-cases');
     Route::post('/finish-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'finishMultipleCases'])->name('finish-multiple-cases');

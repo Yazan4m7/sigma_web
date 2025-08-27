@@ -158,6 +158,7 @@
 
                                         <th data-priority="3" id="tech-companies-1-col-2">Job Type</th>
                                         <th data-priority="1" id="tech-companies-1-col-3">Material</th>
+                                        <th data-priority="2" id="tech-companies-1-col-3a">Type</th>
                                         <th data-priority="3" id="tech-companies-1-col-4">Color</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Style</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Status</th>
@@ -177,6 +178,7 @@
 
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-2">{{$job->jobType->name}}</td>
                                         <td data-priority="1" colspan="1" data-columns="tech-companies-1-col-3">{{$job->material->name}}</td>
+                                        <td data-priority="2" colspan="1" data-columns="tech-companies-1-col-3a">{{$job->subType ? $job->subType->name : 'N/A'}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-4">{{$job->color =='0' ? "No color":$job->color}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">{{$job->style }}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">
@@ -717,6 +719,7 @@
             <tr>
             <th class="tablesHeaders" style="text-align:left" width="200"> Job Type</th>
         <th class="tablesHeaders" style="text-align:left" width="80;padding-left:0px">Material</th>
+            <th class="tablesHeaders" style="text-align:left;padding-left:0px" width="60">Type</th>
             <th class="tablesHeaders jobcolor" style="text-align:left;padding-left:0px" width="40">Color</th>
             <th class="tablesHeaders" style="text-align:left;" width="20">Qty</th>
 
@@ -730,6 +733,7 @@
             <tr style="text-align:center">
             <td class="tableContent" style="text-align:left;font-size:11px" width="200"> {{$job->jobType->name}}</td>
             <td class="tableContent " style="text-align:left;font-size:11px"  width="80">{{ $job->material->name}}</td>
+            <td class="tableContent" style="text-align:left;font-size:11px" width="60">{{$job->subType ? $job->subType->name : '-'}}</td>
             <td class="tableContent jobcolor paddingLeft" style="text-align:left;font-size:11px" width="40">{{$job->color == null ? "-" : $job->color}}</td>
             <td class="tableContent paddingLeft" style="text-align:left;font-size:11px" width="20">{{count(explode(',', $job->unit_num))}}</td>
 

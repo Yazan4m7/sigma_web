@@ -16,4 +16,9 @@ class material extends Model
         return $this->hasMany('App\materialJobtype', 'material_id', 'id');
     }
 
+    public function types(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany('App\Type', 'material_id', 'id');
+    }
+
 }

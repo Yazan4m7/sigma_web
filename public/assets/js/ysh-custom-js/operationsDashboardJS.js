@@ -53,24 +53,6 @@ function setInnerTab(btnElement) {
 }
 
 // setOuterTab function is now defined in the main dashboard view file
-function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
-    // Store the stage type for the panel to use (default to 3dprinting for backward compatibility)
-    window.currentPanelStage = stageType;
-
-    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-active');
-}
-
-function YSH_closeSlidePanel(caseId) {
-    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-closing');
-
-    overlay.addEventListener('animationend', () => {
-        overlay.classList.remove('YSH-active', 'YSH-closing');
-    }, {
-        once: true
-    });
-}
 
 // Handle dialog backdrop click for dismissal
 function handleDialogBackdropClick(event, deviceId) {

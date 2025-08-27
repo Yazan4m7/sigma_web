@@ -422,6 +422,7 @@
                                     @case('milling')
                                         <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling"
                                                           :devices="$devices"
+                                                          :types="$types"
                                                           stageId="2"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn milling"
                                                 style="display:none; margin:5px;"
@@ -444,6 +445,7 @@
                                     @case('sintering')
                                         <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering"
                                                           :devices="$devices"
+                                                          :types="$types"
                                                           stageId="4"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
                                                 style="display:none; margin:5px;"
@@ -454,6 +456,7 @@
                                     @case('pressing')
                                         <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing"
                                                           :devices="$devices"
+                                                          :types="$types"
                                                           stageId="5"/>
                                         <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
                                                 style="display:none; margin:5px;"
@@ -647,7 +650,7 @@
                                                                                 -
                                                                                 {{ $job->jobType->name ?? 'No Job Type' }}
                                                                                 -
-                                                                                {{ $job->material->name ?? 'no material' }}
+                                                                                {{ $job->material->name ?? 'no material' }}{{isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''}}
                                                                             {{ $job->color == '0' ? '' : ' - ' . $job->color }}
                                                                             {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
                                                                             {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
@@ -960,7 +963,7 @@
                                                                                     -
                                                                                     {{ $job->jobType->name ?? 'No Job Type' }}
                                                                                     -
-                                                                                    {{ $job->material->name ?? 'no material' }}
+                                                                                    {{ $job->material->name ?? 'no material' }}{{isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''}}
                                                                                 {{ $job->color == '0' ? '' : ' - ' . $job->color }}
                                                                                 {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
                                                                                 {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}

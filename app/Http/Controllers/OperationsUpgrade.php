@@ -20,6 +20,50 @@ class OperationsUpgrade extends Controller
 {
     protected $caseController;
 
+    /**
+     * Handle operations upgrade requests from devices page and operations dashboard
+     */
+    public function handleOperation(Request $request)
+    {
+        $type = $request->input('type');
+        $action = $request->input('action');
+        $redirectRoute = $this->getRedirectRoute($request);
+
+        try {
+            // Route to appropriate method based on type and action
+            switch ($type) {
+                case '3dprinting':
+                    if ($action === 'start') {
+                        return $this->activate3DBuilds($request);
+                    } elseif ($action === 'complete') {
+                        return $this->finish3DBuilds($request);
+                    }
+                    break;
+                
+                case 'milling':
+                case 'sintering':
+                case 'pressing':
+                case 'finishing':
+                case 'qc':
+                    if ($action === 'start') {
+                        return $this->activateMultipleCases($request);
+                    } elseif ($action === 'complete') {
+                        return $this->finishMultipleCases($request);
+                    }
+                    break;
+                
+                case 'delivery':
+                    return $this->assignCasesToDelivery($request);
+                    break;
+            }
+
+            return redirect()->route($redirectRoute)->with('error', 'Invalid operation type or action');
+        } catch (\Exception $e) {
+            Log::error('Operations upgrade error: ' . $e->getMessage());
+            return redirect()->route($redirectRoute)->with('error', 'Operation failed: ' . $e->getMessage());
+        }
+    }
+
 
     /**
      * These are the attributes that move the object in the views (front end)
@@ -166,7 +210,7 @@ class OperationsUpgrade extends Controller
 
             // Special handling for 3D printing builds
             $buildName = $request->input('buildName');
-
+            $materialTypeId = $request->input('materialTypeId');
 
             // Create a new build
             $build = new Build();
@@ -192,7 +236,8 @@ class OperationsUpgrade extends Controller
                 'sintering_build_id' => $type == "sintering" ? $build->id : null,
                 'pressing_build_id' => $type == "pressing" ? $build->id : null,
                 'notes_suffix' => ", Build: {$buildName}",
-                'is_active' => $type == "sintering" ? 1 : 0
+                'is_active' => $type == "sintering" ? 1 : 0,
+                'type_id' => $materialTypeId
             ]);
 
             // For sintering, start the build immediately
@@ -208,7 +253,7 @@ class OperationsUpgrade extends Controller
                 "{$jobCount} jobs have been {$stageConfig['set_action']} on {$deviceName}"
             );
 
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
     /**
@@ -245,7 +290,7 @@ class OperationsUpgrade extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function activateMultipleCases(Request $request)
+    public function activateMultipleCases(Request $request, ?string $redirectRoute = null)
     {
 
         // dd(self::STAGE_CONFIG , $request->all());
@@ -367,13 +412,13 @@ class OperationsUpgrade extends Controller
                 "Started successfully "
             ));
 
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
     /*******************************************************************************
      * Activate 3D builds - Specialized version of activateMultipleCases for builds
      */
-    #[NoReturn] public function activate3DBuilds(Request $request): \Illuminate\Http\RedirectResponse
+    #[NoReturn] public function activate3DBuilds(Request $request, ?string $redirectRoute = null): \Illuminate\Http\RedirectResponse
     {
 
         // dd($request->attributes->all() , );
@@ -478,7 +523,7 @@ class OperationsUpgrade extends Controller
                 'jobCount' => $jobCount,
                 'buildCount' => $builds->count()
             ]);
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
     /**
@@ -488,7 +533,7 @@ class OperationsUpgrade extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function finishMultipleCases(Request $request)
+    public function finishMultipleCases(Request $request, ?string $redirectRoute = null)
     {
         Log::info('Finishing cases::');
         Log::info($request->all());
@@ -532,6 +577,11 @@ class OperationsUpgrade extends Controller
 
             $type = str_replace('3d', '', $type);
             $buildIdField = $type . '_build_id';
+            
+            // Get device name for message outside the loop
+            $device = device::find($deviceId);
+            $deviceName = $device ? $device->name : 'unknown device';
+            
                 // Process build completion
             foreach ($builds as $buildId) {
 
@@ -542,6 +592,11 @@ class OperationsUpgrade extends Controller
                 ////////////////////////  Finishing build's jobs  ////////////////////////
                 ///////////////////////////////////////////////////////
                // dd($buildIdField,);
+                    // Check if jobs exist before accessing stage
+                    if ($jobs->isEmpty()) {
+                        continue; // Skip this build if no jobs found
+                    }
+                    
                     // Get stage from first job
                     $stage = $jobs->first()->stage;
                     // Complete each case's jobs
@@ -601,9 +656,6 @@ class OperationsUpgrade extends Controller
 //////////////////////////// END ///////////////////////////
                 //////////////////////// LOGGING  ////////////////////////
                 ///////////////////////////////////////////////////////
-                // Get device name for message
-                $device = device::find($deviceId);
-                $deviceName = $device ? $device->name : 'unknown device';
             }
 
             return $this->successResponse(
@@ -611,7 +663,7 @@ class OperationsUpgrade extends Controller
             );
 
 
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
 
@@ -621,7 +673,7 @@ class OperationsUpgrade extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function finish3DBuilds(Request $request)
+    public function finish3DBuilds(Request $request, ?string $redirectRoute = null)
     {
         Log::info('Finishing 3D builds:', $request->all());
 
@@ -699,7 +751,7 @@ class OperationsUpgrade extends Controller
                 'jobCount' => $jobCount,
                 'buildCount' => 1
             ]);
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
     /**
@@ -708,7 +760,7 @@ class OperationsUpgrade extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function assignCasesToDelivery(Request $request)
+    public function assignCasesToDelivery(Request $request, ?string $redirectRoute = null)
     {
 
 
@@ -756,7 +808,7 @@ class OperationsUpgrade extends Controller
                 count($cases) . " case(s) have been assigned to " . $driver->first_name . " and are pending acceptance",
                 ['driver_name' => $driver->first_name]
             );
-        }, 'admin-dashboard-v2');
+        }, $this->getRedirectRoute($request));
     }
 
     /**
@@ -835,6 +887,11 @@ class OperationsUpgrade extends Controller
             $job->printing_build_id = $options['printing_build_id'] ?? null;
             $job->sintering_build_id = $options['sintering_build_id'] ?? null;
             $job->pressing_build_id = $options['pressing_build_id'] ?? null;
+
+            // Set material type ID if provided
+            if (isset($options['type_id']) && !empty($options['type_id'])) {
+                $job->type_id = $options['type_id'];
+            }
 
             $job->assignee = Auth::id();
             $job->save();
@@ -1186,5 +1243,29 @@ class OperationsUpgrade extends Controller
     private function successResponse(string $message, array $additionalData = []): array
     {
         return array_merge(['success' => true, 'message' => $message], $additionalData);
+    }
+
+    /**
+     * Determine the correct redirect route based on the request source
+     *
+     * @param Request $request
+     * @return string|null
+     */
+    private function getRedirectRoute(Request $request): ?string
+    {
+        // Check for explicit redirect_to parameter first
+        $redirectTo = $request->input('redirect_to');
+        if ($redirectTo === 'devices') {
+            return 'devices-page';
+        }
+        
+        // Check if request came from devices page
+        $referer = $request->header('referer');
+        if ($referer && str_contains($referer, '/devices')) {
+            return 'devices-page';
+        }
+        
+        // Default to operations dashboard for existing functionality
+        return 'admin-dashboard-v2';
     }
 }

@@ -420,11 +420,11 @@
                                 <?php switch(strtolower($key)):
                                     case ('milling'): ?>
                                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Machine','btnText' => 'NEST','type' => 'milling','devices' => $devices,'stageId' => '2']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Machine','btnText' => 'NEST','type' => 'milling','devices' => $devices,'types' => $types,'stageId' => '2']]); ?>
 <?php $component->withName('waiting-dialog'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['title' => 'Choose Machine','btnText' => 'NEST','type' => 'milling','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'stageId' => '2']); ?>
+<?php $component->withAttributes(['title' => 'Choose Machine','btnText' => 'NEST','type' => 'milling','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'types' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($types),'stageId' => '2']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -459,11 +459,11 @@
 
                                     <?php case ('sintering'): ?>
                                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Furnace','btnText' => 'SET','type' => 'sintering','devices' => $devices,'stageId' => '4']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Furnace','btnText' => 'SET','type' => 'sintering','devices' => $devices,'types' => $types,'stageId' => '4']]); ?>
 <?php $component->withName('waiting-dialog'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['title' => 'Choose Furnace','btnText' => 'SET','type' => 'sintering','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'stageId' => '4']); ?>
+<?php $component->withAttributes(['title' => 'Choose Furnace','btnText' => 'SET','type' => 'sintering','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'types' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($types),'stageId' => '4']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -478,11 +478,11 @@
 
                                     <?php case ('pressing'): ?>
                                         <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Furnace','btnText' => 'SET','type' => 'pressing','devices' => $devices,'stageId' => '5']]); ?>
+<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.waiting-dialog','data' => ['title' => 'Choose Furnace','btnText' => 'SET','type' => 'pressing','devices' => $devices,'types' => $types,'stageId' => '5']]); ?>
 <?php $component->withName('waiting-dialog'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['title' => 'Choose Furnace','btnText' => 'SET','type' => 'pressing','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'stageId' => '5']); ?>
+<?php $component->withAttributes(['title' => 'Choose Furnace','btnText' => 'SET','type' => 'pressing','devices' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($devices),'types' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($types),'stageId' => '5']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
@@ -695,7 +695,7 @@
                                                                                 <?php echo e($job->jobType->name ?? 'No Job Type'); ?>
 
                                                                                 -
-                                                                                <?php echo e($job->material->name ?? 'no material'); ?>
+                                                                                <?php echo e($job->material->name ?? 'no material'); ?><?php echo e(isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''); ?>
 
                                                                             <?php echo e($job->color == '0' ? '' : ' - ' . $job->color); ?>
 
@@ -1058,7 +1058,7 @@
                                                                                     <?php echo e($job->jobType->name ?? 'No Job Type'); ?>
 
                                                                                     -
-                                                                                    <?php echo e($job->material->name ?? 'no material'); ?>
+                                                                                    <?php echo e($job->material->name ?? 'no material'); ?><?php echo e(isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''); ?>
 
                                                                                 <?php echo e($job->color == '0' ? '' : ' - ' . $job->color); ?>
 

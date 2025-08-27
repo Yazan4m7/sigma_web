@@ -7,6 +7,23 @@
     display: flex;
 }
 
+/* Device Dialog Layout Breakpoint Variables 
+   
+   Adjust these values to control when device layout changes:
+   
+   --device-dialog-tablet-breakpoint: Controls when devices change from single row to vertical stacking (default: 992px)
+   --device-dialog-mobile-breakpoint: Controls when devices use 2-column grid layout (default: 768px)  
+   --device-dialog-small-mobile-breakpoint: Controls when devices use single column layout (default: 480px)
+   
+   Example: To make devices switch to 2 rows at 1024px instead of 992px:
+   --device-dialog-tablet-breakpoint: 1024px;
+*/
+:root {
+    --device-dialog-tablet-breakpoint: 992px;
+    --device-dialog-mobile-breakpoint: 768px;
+    --device-dialog-small-mobile-breakpoint: 480px;
+}
+
 /* Add this to your existing CSS or as a new file */
 
 /* Machine selection dialog enhancements */
@@ -189,6 +206,45 @@
     margin: 15px 0;
     display: block;
     width: 100%;
+}
+
+/* Waiting dialog form styling */
+.waiting-dialog .sigma-inputs-container {
+    padding: 15px 0;
+}
+
+.waiting-dialog .sigma-form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.waiting-dialog .sigma-form-group {
+    margin: 0;
+}
+
+.waiting-dialog .sigma-form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.waiting-dialog .sigma-form-control:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+@media (max-width: 768px) {
+    .waiting-dialog .sigma-inputs-container {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
 }
 
 .sigma-form-label {
@@ -1206,6 +1262,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
+
 .waiting-dialog .sigma-machine-card.selected {
     border-color: #4CAF50;
     background-color: rgba(76, 175, 80, 0.05);
@@ -1224,6 +1281,7 @@
     border-radius: 8px;
     overflow: hidden;
 }
+
 
 .waiting-dialog .sigma-machine-image {
     max-width: 90%;
@@ -1490,7 +1548,7 @@
     }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: var(--device-dialog-tablet-breakpoint)) {
     .sigma-workflow-dialog {
         width: 70vw !important; /* Even wider on tablets */
         max-height: 85vh !important; /* Reduce height to fit better */
@@ -1520,7 +1578,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: var(--device-dialog-mobile-breakpoint)) {
     /* Mobile first approach - full responsive mobile layout */
     .sigma-workflow-dialog {
         width: 95vw !important;
@@ -1616,7 +1674,7 @@
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: var(--device-dialog-small-mobile-breakpoint)) {
     /* Extra small mobile devices */
     .sigma-workflow-dialog {
         width: 95vw !important;

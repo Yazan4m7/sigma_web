@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(mkdir:*)",
+      "Bash(php artisan make:migration:*)",
+      "Bash(php artisan config:clear:*)",
+      "Bash(php artisan serve:*)",
+      "Bash(curl:*)"
+    ],
+    "deny": []
+  }
+}

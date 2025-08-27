@@ -12,9 +12,34 @@
 
     <title>{{ $pageSlug ?? config('site_vars.projectNameShort') }}</title>
 
+<!-- CSS -->
+<link rel="stylesheet" href="{{ asset('custom-CSS-JS/style1.css') }}">
+<link rel="stylesheet" href="{{ asset('custom-CSS-JS/style2.css') }}">
+
+
+
+
+
+<!-- ############################################################# -->
+
+<!--  -----------------------ANIMATIONS------------------------ -->
+
+<!-- ############################################################# -->
+
+
+<!-- JS -->
+<script src="{{ asset('custom-CSS-JS/animation.js') }}"></script>
+<script src="{{ asset('custom-CSS-JS/script2.js') }}"></script>
+<!-- ############################################################# -->
+
 
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
     <!-- Reset/Base CSS -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <style>
         :root {
             --font-family-sans-serif: "Nunito", sans-serif;

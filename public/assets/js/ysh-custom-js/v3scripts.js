@@ -2055,3 +2055,26 @@ function updateActionXXXXXButtonState(deviceId, type) {
         actionButton.disabled = true;
     }
 }
+
+function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
+    // Store the stage type for the panel to use (default to 3dprinting for backward compatibility)
+    window.currentPanelStage = stageType;
+
+    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+    overlay.classList.add('YSH-active');
+    const panel = document.getElementById('YSH-slide-panel-' + caseId);
+    panel.style.right = '0%';
+}
+
+
+function YSH_closeSlidePanel(caseId) {
+    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+    overlay.classList.add('YSH-closing');
+    const panel = document.getElementById('YSH-slide-panel-' + caseId);
+    panel.style.right = '-100%';
+    overlay.addEventListener('animationend', () => {
+        overlay.classList.remove('YSH-active', 'YSH-closing');
+    }, {
+        once: true
+    });
+}

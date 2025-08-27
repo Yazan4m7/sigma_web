@@ -28,6 +28,7 @@ use App\invoice;
 use App\impressionType;
 use App\materialJobtype;
 use App\tag;
+use App\Type;
 use App\caseLog;
 use App\User;
 use App\lab;
@@ -53,48 +54,40 @@ class CaseController extends Controller
         $currentUserId = Auth()->user()->id;
         $isAdmin = Auth()->user()->is_admin == 1 || ($permissions && $permissions->contains('permission_id', 122));
 
-        // Get only devices for stages that use devices (2=Milling, 3=3D Printing, 4=Sintering, 5=Pressing)
-        $devices = device::whereIn('type', [2, 3, 4, 5])->get();
+        // Get only devices for stages that use devices, ordered by sorting_order
+        $devices = device::whereIn('type', [2, 3, 4, 5])
+            ->orderBy('sorting_order')
+            ->orderBy('name') // Fallback for devices with same/null sorting_order
+            ->get();
         
-        // Get device counts for badges
-        $deviceCounts = [];
+        // Get device counts using EXACT same logic as operations dashboard
+        $deviceUnitsCounts = [];
         
         foreach ($devices as $device) {
             $deviceId = $device->id;
-            $stageId = $device->type;
+            $deviceType = $device->type;
             
-            // Get active and waiting job counts for each device
-            if ($stageId == 3) { // 3D Printing - count builds
-                $activeBuilds = Build::where('printer_id', $deviceId)
-                    ->whereNull('finished_at')
-                    ->count();
-                $waitingBuilds = job::where('stage', $stageId)
-                    ->where('is_active', 0)
-                    ->whereNull('printing_build_id')
-                    ->count();
-                    
-                $deviceCounts[$deviceId] = [
-                    'activeBuilds' => $activeBuilds,
-                    'waitingBuilds' => $waitingBuilds
-                ];
-            } else {
-                // Other stages - count individual jobs
-                $activeJobs = job::where('stage', $stageId)
-                    ->where('device_id', $deviceId)
-                    ->where('is_active', 1)
-                    ->count();
-                    
-                $waitingJobs = job::where('stage', $stageId)
-                    ->where('device_id', $deviceId)
-                    ->where('is_active', 0)
-                    ->count();
-                    
-                $deviceCounts[$deviceId] = [
-                    $stageId => [
-                        'active' => $activeJobs,
-                        'waiting' => $waitingJobs
-                    ]
-                ];
+            // Create device model instance for countOfUnits method (same as operations dashboard)
+            $deviceModel = new device();
+            $deviceModel->exists = true;
+            $deviceModel->id = $deviceId;
+            $deviceModel->type = $deviceType;
+
+            // Count units for each stage (same as operations dashboard)
+            foreach ([2, 3, 4, 5] as $stage) {
+                if ($stage == $deviceType) { // Only calculate for the device's stage
+                    $deviceUnitsCounts[$deviceId][$stage]['waiting'] = $deviceModel->countOfUnits($stage, false);
+                    $deviceUnitsCounts[$deviceId][$stage]['active'] = $deviceModel->countOfUnits($stage, true);
+                }
+            }
+
+            // Special handling for 3D printing builds (same as operations dashboard)
+            if ($deviceType == 3) {
+                $deviceUnitsCounts[$deviceId]['waitingBuilds'] = Build::where('printer_id', $deviceId)
+                    ->whereNotNull('set_at')->whereNull('finished_at')->whereNull('started_at')->count();
+
+                $deviceUnitsCounts[$deviceId]['activeBuilds'] = Build::where('printer_id', $deviceId)
+                    ->whereNotNull('set_at')->whereNotNull('started_at')->whereNull('finished_at')->count();
             }
         }
 
@@ -118,7 +111,31 @@ class CaseController extends Controller
         // Add stage configuration for dialog components
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
         
-        return view('devices.devices-page', compact('devices', 'deviceCounts', 'allCases', 'stageConfig'));
+        return view('devices.devices-page', compact('devices', 'deviceUnitsCounts', 'allCases', 'stageConfig'));
+    }
+
+    /**
+     * Update device sort order
+     */
+    public function updateDeviceOrder(Request $request)
+    {
+        $deviceIds = $request->input('device_ids');
+        
+        if (!$deviceIds || !is_array($deviceIds)) {
+            return response()->json(['error' => 'Invalid device IDs'], 400);
+        }
+
+        try {
+            \DB::transaction(function () use ($deviceIds) {
+                foreach ($deviceIds as $index => $deviceId) {
+                    device::where('id', $deviceId)->update(['sorting_order' => $index + 1]);
+                }
+            });
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update order'], 500);
+        }
     }
 
 
@@ -188,7 +205,10 @@ class CaseController extends Controller
         // Load relationships using eager loading with specific columns to reduce memory usage
         $cases->load([
             'notes:id,case_id,note,created_at,written_by',
-            'tags:id,case_id,tag_id'
+            'tags:id,case_id,tag_id',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name',
+            'jobs.subType:id,name,material_id'
         ]);
 
         $selectedClients = $request->doctor;
@@ -200,7 +220,11 @@ class CaseController extends Controller
 
     public function view($id, $stage = -2)
     {
-        $case = sCase::findOrFail($id);
+        $case = sCase::with([
+            'jobs.jobType:id,name',
+            'jobs.material:id,name',
+            'jobs.subType:id,name,material_id'
+        ])->findOrFail($id);
         $materials = material::all();
         $clients = client::where('active', '!=', 0)->get();
         $types = JobType::all();
@@ -268,6 +292,7 @@ class CaseController extends Controller
                             'abutment' => $job["abutment"] ?? '0',
                             'implant' => $job["implant"] ?? '0',
                             'material_id' => $job["material_id"],
+                            'type_id' => $job["type_id"] ?? null,
                             'case_id' => $case->id,
                             'doctor_id' => $request->doctor,
                             'stage' => 1]);
@@ -359,10 +384,18 @@ class CaseController extends Controller
 
     public function returnEdit($id)
     {
-        $case = sCase::findOrFail($id);
-        $materials = material::all();
+        $case = sCase::with([
+            'jobs.jobType:id,name',
+            'jobs.material:id,name', 
+            'jobs.material.types:id,name,material_id',
+            'jobs.subType:id,name,material_id'
+        ])->findOrFail($id);
+        $materials = material::with(['types' => function ($query) {
+            $query->where('is_enabled', true);
+        }])->get();
         $clients = client::where('active', '!=', 0)->get();
         $types = JobType::all();
+        $subTypes = \App\Type::all();
         $impressionTypes = impressionType::all();
         $jobTypeMaterials = materialJobtype::all();
         $tags = tag::where('hidden', 0)->get();
@@ -370,7 +403,7 @@ class CaseController extends Controller
         $stage = -2;
         $implants = implant::all();
         $abutments = abutment::all();
-        return view('cases.edit-case', compact('case', 'clients', 'implants', 'abutments', 'materials', 'types', 'impressionTypes', 'tags', 'tagsAsArray', 'jobTypeMaterials', 'stage'));
+        return view('cases.edit-case', compact('case', 'clients', 'implants', 'abutments', 'materials', 'types', 'subTypes', 'impressionTypes', 'tags', 'tagsAsArray', 'jobTypeMaterials', 'stage'));
     }
 
     public function edit(Request $request)
@@ -414,13 +447,13 @@ class CaseController extends Controller
                         $job2->update(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId],
                             'color' => $job["color" . $jobId] ?? 'None', 'style' => $job["style" . $jobId] ?? 'None',
                             'abutment' => $job["abutment" . $jobId] ?? '0', 'implant' => $job["implant" . $jobId] ?? '0',
-                            'material_id' => $job["material_id" . $jobId], 'doctor_id' => $request->doctor,
+                            'material_id' => $job["material_id" . $jobId], 'type_id' => $job["type_id" . $jobId] ?? null, 'doctor_id' => $request->doctor,
                         ]);
                         $job2->unit_price = material::FindOrFail($job["material_id" . $jobId])->price - ($this->getDiscount($job2, $case) / count(explode(',', $job2->unit_num)));
                         $job2->save();
                     } else {
                         $job2 = job::where('id', $jobId)->first();
-                        $job2->update(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId], 'color' => $job["color" . $jobId], 'style' => $job["style" . $jobId] ?? 'None', 'abutment' => null, 'implant' => null, 'material_id' => $job["material_id" . $jobId], 'doctor_id' => $request->doctor]);
+                        $job2->update(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId], 'color' => $job["color" . $jobId], 'style' => $job["style" . $jobId] ?? 'None', 'abutment' => null, 'implant' => null, 'material_id' => $job["material_id" . $jobId], 'type_id' => $job["type_id" . $jobId] ?? null, 'doctor_id' => $request->doctor]);
                         $job2->unit_price = material::FindOrFail($job["material_id" . $jobId])->price - ($this->getDiscount($job2, $case) / count(explode(',', $job2->unit_num)));
                         $job2->save();
                     }
@@ -456,6 +489,7 @@ class CaseController extends Controller
                         $newJob->abutment = $job["abutment"] ?? '0';
                         $newJob->implant = $job["implant"] ?? '0';
                         $newJob->material_id = $job["material_id"];
+                        $newJob->type_id = $job["type_id"] ?? null;
                         $newJob->case_id = $case->id;
 
                         $newJob->save();
@@ -721,10 +755,11 @@ class CaseController extends Controller
             $allCases = sCase::with([
                 'client:id,name',
                 'jobs' => function ($q) {
-                    $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'delivery_accepted');
+                    $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'delivery_accepted', 'type_id');
                 },
                 'jobs.material:id,name,count_as_unit',
                 'jobs.jobType:id,name,a_secondary_item',
+                'jobs.subType:id,name,material_id',
                 'jobs.assignedTo:id,name_initials',
                 'jobs.implantR:id,name',
                 'jobs.abutmentR:id,name',
@@ -919,6 +954,12 @@ class CaseController extends Controller
         // Get stage configuration for components
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
 
+        // Get material types for operation dialogs
+        $types = \App\Type::with('material:id,name')
+            ->enabled()
+            ->whereHas('material')
+            ->get();
+
         // Log execution time - can be removed in production
         $executionTime = microtime(true) - $startTime;
         \Log::info("Dashboard loaded in {$executionTime} seconds");
@@ -929,7 +970,7 @@ class CaseController extends Controller
             'wSintering', 'aSintering', 'wPressing', 'aPressing',
             'wFinishing', 'aFinishing', 'wQC', 'aQC', 'wDelivery',
             'aDelivery', 'drivers', 'activeOuterTab', 'devices','deviceUnitsCounts',
-            'permissions', 'stageConfig'
+            'permissions', 'stageConfig', 'types'
         ));
     }
 
@@ -1842,5 +1883,16 @@ class CaseController extends Controller
             DB::rollBack();
             return "Error: " . $e->getMessage();
         }
+    }
+
+    public function getTypesByMaterial($material_id)
+    {
+        $material = material::find($material_id);
+        if (!$material) {
+            return response()->json(['error' => 'Material not found'], 404);
+        }
+
+        $types = $material->types()->get(['id', 'name', 'description']);
+        return response()->json($types);
     }
 }

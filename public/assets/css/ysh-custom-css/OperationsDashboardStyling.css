@@ -1011,8 +1011,8 @@ YSH-slide-grid {
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"].active > * {
    height: 100%;
    /* opacity: 1; */
-   animation: zoomIn;
-   animation-duration: 1.5s;
+   animation: fadeIn;
+   animation-duration: 0.5s;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"]:focus {
@@ -1023,6 +1023,8 @@ YSH-slide-grid {
 .m-1 {
    margin: 0.1rem 0rem !important;
 }
+
+
 
 /*
    --------
@@ -1270,7 +1272,7 @@ YSH-slide-grid {
    }
 
    .macaw-tabs.macaw-silk-tabs [role="tabpanel"] {
-       /* height: 57vh; */
+        height: 57vh;
    }
 }
 
@@ -1634,9 +1636,9 @@ svg {
 :root {
    /* Breakpoints */
    --breakpoint-xs: 499px;
-   --breakpoint-sm: 500px;
-   --breakpoint-sm-alt: 575px;
-   --breakpoint-md: 768px;
+   --breakpoint-sm: 1280px;
+   --breakpoint-sm-alt: 1280px;
+   --breakpoint-md: 1280px;
    --breakpoint-lg: 1280px;
 
    /* Inner button colors */

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="Staging" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false" compareModeInSync="TEXT" showEqualInSync="true" showDifferentInSync="false" showNewOnSourceInSync="false" showExcludedInSync="true">
+    <option name="confirmBeforeUploading" value="false" />
+    <serverData>
+      <paths name="Staging">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/var/www/staging" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path="/var/www/staging/.env" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+  </component>
+</project>

@@ -39,6 +39,8 @@ Route::post('/implants-report',[ApiController::class,'implantsReport']);
 
 Route::post('/register-login-time',[ApiController::class,'logSignin']);
 
+// TYPES
+Route::get('/materials/{id}/types', [App\Http\Controllers\MaterialController::class, 'getTypes']);
 
 //AUTH
 Route::post('/login',[ApiController::class,'login']);
