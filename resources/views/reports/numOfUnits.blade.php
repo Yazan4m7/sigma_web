@@ -80,11 +80,16 @@
     <form class="kt-form filtersPanel bd-callout bd-callout-info sigmaPanel" method="GET" action="{{route('num-of-units-report')}}" style="height:30%">
         <div class="row h-50" style="padding-left: 10px;padding-top: 0;padding-bottom: 0px">
 
-            <div class="col-lg-3 col-md-3 col-6 mb-3">
+            <div class="col-lg-2 col-md-3 col-6 mb-3">
                 <div class="kt-subheader__search" style="">
-                    <label>Date Range:</label>
-                    <input class="form-control dateRange" name="dateRange" autocomplete="off" readonly
-                           value="{{$dateRangeValue ?? "Select Period"}}" style="cursor: pointer;">
+                    <label>From:</label>
+                    <input type="date" class="form-control" name="from" value="{{$from ?? now()->subMonth()->format('Y-m-d')}}">
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6 mb-3">
+                <div class="kt-subheader__search" style="">
+                    <label>To:</label>
+                    <input type="date" class="form-control" name="to" value="{{$to ?? now()->format('Y-m-d')}}">
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 col-6 mb-3">
