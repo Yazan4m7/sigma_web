@@ -1,28 +1,29 @@
 
-/**
- * Global state variables
- */
-// let selectedMachineId = null;
-// selectedItems is declared in operationsDashboardJS.js
-var selectedBuildId = null;
-// let currentStage = null;
-// let dialogOnScreen = null;
-// Global variables
-window.dialogOnScreen = null;
-window.selectedMachineId = null;
-window.initialMachineSelection = true;
-window.lastCaseClickedCase= null;
-$('.sigma-build-radio').on('click', e => e.stopPropagation());
+jQuery(document).ready(function($) {
+    /**
+     * Global state variables
+     */
+    // let selectedMachineId = null;
+    // selectedItems is declared in operationsDashboardJS.js
+    var selectedBuildId = null;
+    // let currentStage = null;
+    // let dialogOnScreen = null;
+    // Global variables
+    window.dialogOnScreen = null;
+    window.selectedMachineId = null;
+    window.initialMachineSelection = true;
+    window.lastCaseClickedCase= null;
+    $('.sigma-build-radio').on('click', e => e.stopPropagation());
 
 
-/**
- * Handle click on a device in the devices block
- *
- * @param {HTMLElement} element - The clicked device element
- * @param {string} deviceId - The device ID
- * @param {string} type - The workflow type/stage
- */
-function handl222eClick(element, deviceId, type) {
+    /**
+     * Handle click on a device in the devices block
+     *
+     * @param {HTMLElement} element - The clicked device element
+     * @param {string} deviceId - The device ID
+     * @param {string} type - The workflow type/stage
+     */
+    function handl222eClick(element, deviceId, type) {
     console.log("Device clicked:", deviceId, "type:", type);
 
     // Open the device cases list dialog
