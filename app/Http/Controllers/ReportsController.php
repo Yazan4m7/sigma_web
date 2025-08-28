@@ -15,6 +15,7 @@ use App\sCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use DB;
+use Carbon\Carbon;
 
 
 class ReportsController extends Controller
@@ -50,19 +51,15 @@ class ReportsController extends Controller
           $selectedAbutments =  $abutments;
 
 
-        $selectedMonths = $request->dateRange;
-        if(str_contains($selectedMonths, 'Month')){
-            $numOfMonths  = explode(' Month',$selectedMonths)[0];
-            $selectedMonths= $this->lastMonthsAsYYYYMM($numOfMonths);
-            $dateRangeValue = $numOfMonths . 'm';
-        }
-        else if ($request->dateRange)
-        { $selectedMonths=$this->parseMonthsRange($request->dateRange);
-            $dateRangeValue = $request->dateRange;}
+        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
+        $to = $request->to ?? now()->format('Y-m-d');
 
-        else{
-            $selectedMonths=$this->lastMonthsAsYYYYMM(1);
-            $dateRangeValue = $request->dateRange ?? "1m";
+        $start = Carbon::parse($from)->startOfMonth();
+        $end = Carbon::parse($to)->endOfMonth();
+
+        $selectedMonths = [];
+        for ($date = $start; $date->lte($end); $date->addMonth()) {
+            $selectedMonths[] = $date->format('Y-m');
         }
 
         foreach($selectedMonths as $month)
@@ -85,8 +82,8 @@ class ReportsController extends Controller
         return view('reports.implants',compact('totals','totals2','clients','selectedClients',
             'implants','selectedImplants','allImplantsSelected',
             'abutments', 'selectedAbutments', 'allAbutmentsSelected',
-            'selectedMonths','dateRangeValue','clientLevelTotal',
-            'perUnitTrigger','labLevelTotal'));
+            'selectedMonths','clientLevelTotal',
+            'perUnitTrigger','labLevelTotal','from','to'));
 
 
     }
@@ -100,19 +97,15 @@ class ReportsController extends Controller
         $typesSelected = array();
         $selectedCauses = $request->causesInput ?? ["all"];
 
-        // Set the time range
-        $selectedMonths = $request->dateRange;
-        if(str_contains($selectedMonths, 'Month')){
-            $numOfMonths  = explode(' Month',$selectedMonths)[0];
-            $selectedMonths= $this->lastMonthsAsYYYYMM($numOfMonths);
-            $dateRangeValue = $numOfMonths.'m';
-        }
-        else if ($request->dateRange)
-        { $selectedMonths=$this->parseMonthsRange($request->dateRange);
-            $dateRangeValue = $request->dateRange;}
-        else{
-            $selectedMonths=$this->lastMonthsAsYYYYMM(1);
-            $dateRangeValue = $request->dateRange ?? "1m";
+        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
+        $to = $request->to ?? now()->format('Y-m-d');
+
+        $start = Carbon::parse($from)->startOfMonth();
+        $end = Carbon::parse($to)->endOfMonth();
+
+        $selectedMonths = [];
+        for ($date = $start; $date->lte($end); $date->addMonth()) {
+            $selectedMonths[] = $date->format('Y-m');
         }
         // reverse array to make new to old
         $selectedMonths=array_reverse($selectedMonths);
@@ -138,7 +131,7 @@ class ReportsController extends Controller
 
 
             // Get the FILTERED RESULTS
-            $results = $query->whereBetween('created_at', [ end($selectedMonths)  . '-01 00:00:00',array_values($selectedMonths)[0] . '-31 23:59:59'])->get();
+            $results = $query->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
              //dd($results);
              // SEPARATE THEM BY MONTH
             foreach($selectedMonths as $month){
@@ -161,8 +154,8 @@ class ReportsController extends Controller
                 $amountOfUnitsFailed+= count(explode(',',$job->unit_num));
 
         return view('reports.QC',compact('clients',
-            'failureLogs','selectedMonths','selectedClients','dateRangeValue', 'allCausesSelected',
-            'allFailureCauses','selectedFailureCauses','typesSelected','amountOfCases','labLevelTotal','amountOfUnitsFailed'));
+            'failureLogs','selectedMonths','selectedClients', 'allCausesSelected',
+            'allFailureCauses','selectedFailureCauses','typesSelected','amountOfCases','labLevelTotal','amountOfUnitsFailed','from','to'));
     }
     public function jobTypeReport(Request $request)
     {
@@ -182,19 +175,15 @@ class ReportsController extends Controller
         $selectedJobTypes =  JobType::whereIn('id',[1,2,3,4])->get();
             $allJobTypesSelected=false;}
 
-        $selectedMonths = $request->dateRange;
-        if(str_contains($selectedMonths, 'Month')){
-            $numOfMonths  = explode(' Month',$selectedMonths)[0];
-            $selectedMonths= $this->lastMonthsAsYYYYMM($numOfMonths);
-            $dateRangeValue = $numOfMonths . 'm';
-        }
-        else if ($request->dateRange)
-        { $selectedMonths=$this->parseMonthsRange($request->dateRange);
-            $dateRangeValue = $request->dateRange;}
+        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
+        $to = $request->to ?? now()->format('Y-m-d');
 
-        else{
-            $selectedMonths=$this->lastMonthsAsYYYYMM(1);
-            $dateRangeValue = $request->dateRange ?? "1m";
+        $start = Carbon::parse($from)->startOfMonth();
+        $end = Carbon::parse($to)->endOfMonth();
+
+        $selectedMonths = [];
+        for ($date = $start; $date->lte($end); $date->addMonth()) {
+            $selectedMonths[] = $date->format('Y-m');
         }
         foreach($selectedMonths as $month)
             foreach($selectedJobTypes as $jobType){
@@ -213,8 +202,8 @@ class ReportsController extends Controller
 
         return view('reports.jobTypes',compact('clients','totals','totals2',
             'jobTypes','selectedJobTypes','allJobTypesSelected','labLevelTotal',
-         'selectedClients','selectedMonths','dateRangeValue','clientLevelTotal',
-            'allJobTypesSelected','perUnitTrigger'));
+         'selectedClients','selectedMonths','clientLevelTotal',
+            'allJobTypesSelected','perUnitTrigger','from','to'));
 
     }
     public function numOfUnitsReport(Request $request)
@@ -224,21 +213,17 @@ class ReportsController extends Controller
         $materials = material::all();
         $selectedClients =  $request->doctor ?? ["all"];
         $selectedMaterials =  $request->material ?? [1,2,3];//material::all()->pluck('id')->toArray();
-        $selectedMonths = $request->dateRange;
 
-        if(str_contains($selectedMonths, 'Month')){
+        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
+        $to = $request->to ?? now()->format('Y-m-d');
 
-            $numOfMonths  = explode(' Month',$selectedMonths)[0];
-            $selectedMonths= $this->lastMonthsAsYYYYMM($numOfMonths);
-            $dateRangeValue = $numOfMonths . 'm';
-            // yields to 1m 3m 6m 12m and so on...
+        $start = Carbon::parse($from)->startOfMonth();
+        $end = Carbon::parse($to)->endOfMonth();
+
+        $selectedMonths = [];
+        for ($date = $start; $date->lte($end); $date->addMonth()) {
+            $selectedMonths[] = $date->format('Y-m');
         }
-        else if ($request->dateRange)
-        { $selectedMonths=$this->parseMonthsRange($request->dateRange);
-            $dateRangeValue = $request->dateRange;}
-        else{
-        $selectedMonths=$this->lastMonthsAsYYYYMM(1);
-        $dateRangeValue = $request->dateRange ?? "1m";}
        // dd($selectedMonths);
 
         /*
@@ -266,7 +251,7 @@ class ReportsController extends Controller
         $selectedMonths=array_reverse($selectedMonths);
 
         return view('reports.numOfUnits',compact('clients','totals','totals2',
-            'materials','selectedMaterials','selectedClients','selectedMonths','dateRangeValue','totalsArray'));
+            'materials','selectedMaterials','selectedClients','selectedMonths','totalsArray','from','to'));
     }
     public function repeatsReport(Request $request)
     {
@@ -282,19 +267,15 @@ class ReportsController extends Controller
             $selectedFailureTypes=$request->failureTypeInput;
             $allFailureTypesSelected = false;
         }
-        // Set the time range
-        $selectedMonths = $request->dateRange;
-        if(str_contains($selectedMonths, 'Month')){
-            $numOfMonths  = explode(' Month',$selectedMonths)[0];
-            $selectedMonths= $this->lastMonthsAsYYYYMM($numOfMonths);
-            $dateRangeValue = $numOfMonths.'m';
-        }
-        else if ($request->dateRange)
-        { $selectedMonths=$this->parseMonthsRange($request->dateRange);
-            $dateRangeValue = $request->dateRange;}
-        else {
-            $selectedMonths=$this->lastMonthsAsYYYYMM(1);
-            $dateRangeValue = $request->dateRange ?? "1m";
+        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
+        $to = $request->to ?? now()->format('Y-m-d');
+
+        $start = Carbon::parse($from)->startOfMonth();
+        $end = Carbon::parse($to)->endOfMonth();
+
+        $selectedMonths = [];
+        for ($date = $start; $date->lte($end); $date->addMonth()) {
+            $selectedMonths[] = $date->format('Y-m');
         }
 
         // reverse array to make new to old
@@ -303,8 +284,8 @@ class ReportsController extends Controller
         $perUnitTrigger = $request->perToggle ;
         $countOrPercentage =$request->countOrPercentageToggle ?  false : true;;
         return view('reports.repeats',compact('clients',
-            'materials','selectedMonths','selectedClients','dateRangeValue','selectedFailureTypes',
-            'clientsWithFailures','perUnitTrigger','countOrPercentage','allFailureTypesSelected','allFailureTypes'));
+            'materials','selectedMonths','selectedClients','selectedFailureTypes',
+            'clientsWithFailures','perUnitTrigger','countOrPercentage','allFailureTypesSelected','allFailureTypes','from','to'));
     }
     public function homeScreen(){
 
