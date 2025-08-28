@@ -652,13 +652,8 @@
 
             <div style="float:right;text-align:right; padding-right:4px;padding-top:2px;width:35%">
             <p style="font-size: 8px;font-weight:bold;color:black;text-align:right;margin:0px">{{$case->case_id}}</p>
-            @php
-                $date = date("d-M * g:i a", strtotime(str_replace("T", " ",$case->initial_delivery_date)));
-                $date = explode(' * ', $date);
-
-            @endphp
-            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 1em;padding-bottom: 3px;padding-top: 4px;">{{$date[0]}}</p>
-            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 0.5em;">{{$date[1]}}</p>
+            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 1em;padding-bottom: 3px;padding-top: 4px;">${deliveryDateParts.part1}</p>
+            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 0.5em;">${deliveryDateParts.part2}</p>
             <div style="padding-top:5px;">
                 {{--@if($isRemake)--}}
             {{--<text style="border:1px; border-style:solid;padding:1px;">RM</text>--}}
@@ -761,8 +756,8 @@
                     <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->client->name }}</p>
                     <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->patient_name }}</p>
                     <hr>
-                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date1 }}</p>
-                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date2 }}</p>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">${deliveryDateParts.part1}</p>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">${deliveryDateParts.part2}</p>
                 </div>
             </body>
             </html>
