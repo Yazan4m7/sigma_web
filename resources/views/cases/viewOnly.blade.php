@@ -470,24 +470,6 @@
 
                     <div class="eventTitle">
                         @if ( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null)
-                        {{ $case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials }}
-                        @elseif ($case->logs->where('stage',8)->where("is_completion",3)->first() !== null)
-                        {{ $case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials }}
-                        @else
-                        -
-                        @endif
-                    </div>
-                    <div class="eventTitle">
-                        @if ( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null)
-                            {{ $case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials }}
-                        @elseif ($case->logs->where('stage',8)->where("is_completion",3)->first() !== null)
-                            {{ $case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials }}
-                        @else
-                            -
-                        @endif
-                    </div>
-                    <div class="eventTitle">
-                        @if ( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null)
                             {{ $case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials }}
                         @elseif ($case->logs->where('stage',8)->where("is_completion",3)->first() !== null)
                             {{ $case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials }}
