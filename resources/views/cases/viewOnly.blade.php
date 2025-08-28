@@ -580,18 +580,16 @@
 
 @endsection
 @push('js')
-
-
     <script>
-        $(document).ready(function () {
+        jQuery(document).ready(function($) {
+            // Initialize lightGallery
             $('#lightgallery').lightGallery();
-        });
-        function PrintLabel()
-        {
-
-            //height=192,width=288
-            var mywindow = window.open('', 'PRINT', 'height=600,width=800');
-            mywindow.document.write(`
+            
+            // Define the PrintLabel function and attach to window
+            window.PrintLabel = function() {
+                //height=192,width=288
+                var mywindow = window.open('', 'PRINT', 'height=600,width=800');
+                mywindow.document.write(`
 
             <style>
             @media all{
@@ -732,61 +730,55 @@
 
             </body></html>
             `);
-  mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10*/
-    setTimeout(function(){ mywindow.print(); /*mywindow.close();*/},1000);
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                setTimeout(function(){ mywindow.print(); /*mywindow.close();*/},1000);
 
-    return true;
-}
-        @php
-            $date = date('d-M * g:i a', strtotime(str_replace('T', ' ', $case->initial_delivery_date)));
-            $date = explode(' * ', $date);
-            $date1 = $date[0];
-            $date2 = $date[1];
-        @endphp
+                return true;
+            };
+            
+            // Define the PrintMinimizedLabel function and attach to window
+            window.PrintMinimizedLabel = function() {
+                // open new window for printing
+                var mywindow = window.open('', 'PRINT', 'height=600,width=800');
 
-    <script>
-        function PrintMinimizedLabel() {
-            // open new window for printing
-            var mywindow = window.open('', 'PRINT', 'height=600,width=800');
+                mywindow.document.write(`
+            <html>
+            <head>
+                <style>
+                    @media all {
+                        .kt-invoice__item {display:none;}
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        font-weight: bold;
+                    }
+                    .paddingLeft {padding-left:2px;}
+                </style>
+            </head>
+            <body>
+                <div id="kt-invoice__head" style="display:none;text-align:center;height:100%; overflow:hidden; position:relative;padding:0;">
+                    <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->client->name }}</p>
+                    <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->patient_name }}</p>
+                    <hr>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date1 }}</p>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date2 }}</p>
+                </div>
+            </body>
+            </html>
+        `);
 
-            mywindow.document.write(`
-        <html>
-        <head>
-            <style>
-                @media all {
-                    .kt-invoice__item {display:none;}
-                }
-                body {
-                    font-family: Arial, sans-serif;
-                    font-weight: bold;
-                }
-                .paddingLeft {padding-left:2px;}
-            </style>
-        </head>
-        <body>
-            <div id="kt-invoice__head" style="display:none;text-align:center;height:100%; overflow:hidden; position:relative;padding:0;">
-                <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->client->name }}</p>
-                <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->patient_name }}</p>
-                <hr>
-                <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date1 }}</p>
-                <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date2 }}</p>
-            </div>
-        </body>
-        </html>
-    `);
+                mywindow.document.close();   // finish writing
+                mywindow.focus();            // focus the window
 
-            mywindow.document.close();   // finish writing
-            mywindow.focus();            // focus the window
+                setTimeout(function() {
+                mywindow.print();
+                mywindow.close();
+            }, 1000);
 
-            setTimeout(function() {
-            mywindow.print();
-            mywindow.close();
-        }, 1000);
-
-            return true;
-        }
+                return true;
+            };
+        });
     </script>
-
 @endpush
 
