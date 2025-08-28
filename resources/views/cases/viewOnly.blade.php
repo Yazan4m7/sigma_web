@@ -158,7 +158,6 @@
 
                                         <th data-priority="3" id="tech-companies-1-col-2">Job Type</th>
                                         <th data-priority="1" id="tech-companies-1-col-3">Material</th>
-                                        <th data-priority="2" id="tech-companies-1-col-3a">Type</th>
                                         <th data-priority="3" id="tech-companies-1-col-4">Color</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Style</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Status</th>
@@ -178,7 +177,6 @@
 
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-2">{{$job->jobType->name}}</td>
                                         <td data-priority="1" colspan="1" data-columns="tech-companies-1-col-3">{{$job->material->name}}</td>
-                                        <td data-priority="2" colspan="1" data-columns="tech-companies-1-col-3a">{{$job->subType ? $job->subType->name : 'N/A'}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-4">{{$job->color =='0' ? "No color":$job->color}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">{{$job->style }}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">
@@ -719,7 +717,6 @@
             <tr>
             <th class="tablesHeaders" style="text-align:left" width="200"> Job Type</th>
         <th class="tablesHeaders" style="text-align:left" width="80;padding-left:0px">Material</th>
-            <th class="tablesHeaders" style="text-align:left;padding-left:0px" width="60">Type</th>
             <th class="tablesHeaders jobcolor" style="text-align:left;padding-left:0px" width="40">Color</th>
             <th class="tablesHeaders" style="text-align:left;" width="20">Qty</th>
 
@@ -733,7 +730,6 @@
             <tr style="text-align:center">
             <td class="tableContent" style="text-align:left;font-size:11px" width="200"> {{$job->jobType->name}}</td>
             <td class="tableContent " style="text-align:left;font-size:11px"  width="80">{{ $job->material->name}}</td>
-            <td class="tableContent" style="text-align:left;font-size:11px" width="60">{{$job->subType ? $job->subType->name : '-'}}</td>
             <td class="tableContent jobcolor paddingLeft" style="text-align:left;font-size:11px" width="40">{{$job->color == null ? "-" : $job->color}}</td>
             <td class="tableContent paddingLeft" style="text-align:left;font-size:11px" width="20">{{count(explode(',', $job->unit_num))}}</td>
 
@@ -760,44 +756,51 @@
 
     return true;
 }
-        function PrintMinimizedLabel()
-        {
+        @php
+            $date = date('d-M * g:i a', strtotime(str_replace('T', ' ', $case->initial_delivery_date)));
+            $date = explode(' * ', $date);
+            $date1 = $date[0];
+            $date2 = $date[1];
+        @endphp
 
-            //height=192,width=288
+    <script>
+        function PrintMinimizedLabel() {
+            // open new window for printing
             var mywindow = window.open('', 'PRINT', 'height=600,width=800');
+
             mywindow.document.write(`
-
-    <head>
-    <style>
-    @media all{
-
-      .kt-invoice__item {display:none;}
-           }
-        body {
-            font-family: Arial;
-            font-weight : bold;
-        }
-        .paddingLeft
-        {padding-left:2px;}
-        </style>
+        <html>
+        <head>
+            <style>
+                @media all {
+                    .kt-invoice__item {display:none;}
+                }
+                body {
+                    font-family: Arial, sans-serif;
+                    font-weight: bold;
+                }
+                .paddingLeft {padding-left:2px;}
+            </style>
         </head>
         <body>
- @php
-                $date = date("d-M * g:i a", strtotime(str_replace("T", " ",$case->initial_delivery_date)));
-                $date = explode(' * ', $date);
-            @endphp
-            <div id="kt-invoice__head" style="text-align:center;height:100%; overflow: hidden; position: relative;padding:0px;">
-            <p style="font-size: 29px;font-weight:bold;color:black;margin:0px">{{$case->client->name}}</p>
-            <p style="font-size: 29px;font-weight:bold;color:black;margin:0px">{{$case->patient_name}}</p>
-            <hr>
-            <p style="font-size: 21px;font-weight:bold;color:black;margin:0px;">{{$date[0]}}</p>
-            <p style="font-size: 21px;font-weight:bold;color:black;margin:0px;">{{$date[1]}}</p>
+            <div id="kt-invoice__head" style="display:none;text-align:center;height:100%; overflow:hidden; position:relative;padding:0;">
+                <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->client->name }}</p>
+                <p style="font-size:29px;font-weight:bold;color:black;margin:0;">{{ $case->patient_name }}</p>
+                <hr>
+                <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date1 }}</p>
+                <p style="font-size:21px;font-weight:bold;color:black;margin:0;">{{ $date2 }}</p>
             </div>
-            </body></html>
-            `);
-            mywindow.document.close(); // necessary for IE >= 10
-            mywindow.focus(); // necessary for IE >= 10*/
-            setTimeout(function(){ mywindow.print(); mywindow.close();},1000);
+        </body>
+        </html>
+    `);
+
+            mywindow.document.close();   // finish writing
+            mywindow.focus();            // focus the window
+
+            setTimeout(function() {
+            mywindow.print();
+            mywindow.close();
+        }, 1000);
 
             return true;
         }
