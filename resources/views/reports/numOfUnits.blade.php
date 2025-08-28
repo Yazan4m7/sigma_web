@@ -1,7 +1,7 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Number of units Report'])
 
 @section('content')
-    <link href="{{asset('assets/css/picker.css')}}" rel="stylesheet">
+    
 
 
    <!-- styles to carry on while printing -->
@@ -305,42 +305,10 @@
 @endsection
 
 @push('js')
-<script src="{{asset('assets/js/tether.min.js')}}"></script>
-<script src="{{asset('assets/js/datePicker.js')}}"></script>
 
 <script>
     $(document).ready(function () {
 
-
-        $('.dateRange').rangePicker(
-            {
-                RTL: false,
-                closeOnSelect: true,
-                presets: [{
-                    buttonText: 'Last Month',
-                    displayText: '1 Month',
-                    value: '1m'
-                }, {
-                    buttonText: 'Last 3 Months',
-                    displayText: '3 Months',
-                    value: '3m'
-                }, {
-                    buttonText: 'Last 6 Months',
-                    displayText: '6 Months',
-                    value: '6m'
-                }, {
-                    buttonText: 'Last 12 Months',
-                    displayText: '12 Months',
-                    value: '12m'
-                }],
-                months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-                minDate: [10, 2021],
-                maxDate: [{!! date("m") !!}, {!! date("Y") !!}],
-                setDate: {!! '"'. $dateRangeValue . '"' !!}}
-        )
-            .on('datePicker.done', function (e, result) {
-                console.log(result);
-            });
 
         $("#totalsTableHolder").html($("#totalsTableTempHolder").html());
         $("#totalsTableTempHolder").html("");
