@@ -92,6 +92,10 @@
 </style>
 
     <style>
+        .dt-layout-row{
+            margin: 0px !important;
+        }
+
         .dt-center {
             text-align: center !important;
         }
@@ -650,7 +654,7 @@
                                                                                 -
                                                                                 {{ $job->jobType->name ?? 'No Job Type' }}
                                                                                 -
-                                                                                {{ $job->material->name ?? 'no material' }}{{isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''}}
+                                                                                {{ $job->material->name ?? 'no material' }}
                                                                             {{ $job->color == '0' ? '' : ' - ' . $job->color }}
                                                                             {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
                                                                             {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
@@ -963,7 +967,7 @@
                                                                                     -
                                                                                     {{ $job->jobType->name ?? 'No Job Type' }}
                                                                                     -
-                                                                                    {{ $job->material->name ?? 'no material' }}{{isset($job->subType) && $job->subType->name ? ' (' . $job->subType->name . ')' : ''}}
+                                                                                    {{ $job->material->name ?? 'no material' }}
                                                                                 {{ $job->color == '0' ? '' : ' - ' . $job->color }}
                                                                                 {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
                                                                                 {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
