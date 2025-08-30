@@ -55,62 +55,71 @@
         </div>
         </div>
 
-<div class="container" style="max-width: 1200px;">
-    <div class="card">
     <form style="" class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
     @csrf
     <div>
     <!-- CASE INFO -->
-        <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Doctor:</label>
-                    <select class="selectpicker" name="doctor" data-live-search="true" title="Select a doctor" disabled>
+
+        <div class="row" style="padding-left: 10px;padding-top: 10px">
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
+                <div class="col-md-12 col-xs-12">
+
+
+                    <select  class="selectpicker"  name="doctor"  data-container="body" data-live-search="true"  title="Select a doctor" disabled  >
                         @foreach($clients as $client)
-                            <option value="{{$client->id}}" {{$case->client->id == $client->id ? "selected" : ""}}>{{$client->name}}</option>
+                            <option value="{{$client->id}}" {{$case->client->id == $client->id ? "selected" : ""}} >{{$client->name}}</option>
                         @endforeach
+
                     </select>
+
+                </div> </div>
+            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label >Patient name:</label></div>
+                <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name" value="{{$case->patient_name}}" disabled /></div>
+            </div>
+            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
+                <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
+                <div class="col-md-12 col-xs-12">
+
+                    <label >{{$case->case_id}}</label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+<br/>
+        <div class="row">
+
+            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <input class="form-control SDTP" name="delivery_date"  type="text"   value="{{$case->initial_delivery_date}}" required disabled/>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Patient name:</label>
-                    <input class="form-control" type="text" name="patient_name" value="{{$case->patient_name}}" disabled />
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Case ID:</label>
-                    <input class="form-control" type="text" value="{{$case->case_id}}" disabled />
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Delivery Date:</label>
-                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{$case->initial_delivery_date}}" required disabled/>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Tags:</label>
-                    <select class="select selectpicker" name="tags[]" multiple data-mdb-placeholder="Tags" disabled>
+            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <select class="select selectpicker" name="tags[]" multiple data-mdb-placeholder="Tags" multiple disabled>
                         @foreach($tags as $tag)
                             <option style="color:{{$tag->color}}" value="{{$tag->id}}" {{in_array($tag->id ,$tagsAsArray) ? 'selected' : ''}}>{{$tag->text}}</option>
                         @endforeach
                     </select>
+
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Impression Type:</label>
-                    <select class="form-control" name="impression_type" type="text" data-live-search="true" title="Select impression" disabled>
+            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
+                <div class="col-md-12 col-xs-12"> <select  class="form-control" name="impression_type" type="text"  data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true" disabled >
+
                         @foreach($impressionTypes as $impression)
-                            <option value="{{$impression->id}}" {{ $impression->id == $case->impression_type ? ' selected' : '' }}>
+                            <option value="{{$impression->id}}" {{ $impression->id == $case->impression_type ? ' selected' : ' ' }}>
                                 {{$impression->name}}
                             </option>
                         @endforeach
-                    </select>
-                </div>
+                    </select></div>
             </div>
         </div>
 
@@ -149,6 +158,7 @@
 
                                         <th data-priority="3" id="tech-companies-1-col-2">Job Type</th>
                                         <th data-priority="1" id="tech-companies-1-col-3">Material</th>
+                                        <th data-priority="2" id="tech-companies-1-col-3a">Type</th>
                                         <th data-priority="3" id="tech-companies-1-col-4">Color</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Style</th>
                                         <th data-priority="3" id="tech-companies-1-col-5">Status</th>
@@ -168,6 +178,7 @@
 
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-2">{{$job->jobType->name}}</td>
                                         <td data-priority="1" colspan="1" data-columns="tech-companies-1-col-3">{{$job->material->name}}</td>
+                                        <td data-priority="2" colspan="1" data-columns="tech-companies-1-col-3a">{{$job->subType->name ?? 'No Type'}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-4">{{$job->color =='0' ? "No color":$job->color}}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">{{$job->style }}</td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">
@@ -564,20 +575,18 @@
         </div>
         </div></div>
     </form>
-    </div>
-</div>
 
 
 
 
 
 @endsection
-
+@push('js')
     <script>
         jQuery(document).ready(function($) {
             // Initialize lightGallery
             $('#lightgallery').lightGallery();
-
+            
             // Define the PrintLabel function and attach to window
             window.PrintLabel = function() {
                 //height=192,width=288
@@ -724,7 +733,7 @@
 
                 return true;
             };
-
+            
             // Define the PrintMinimizedLabel function and attach to window
             window.PrintMinimizedLabel = function() {
                 // open new window for printing
@@ -768,5 +777,5 @@
             };
         });
     </script>
-
+@endpush
 
