@@ -77,6 +77,31 @@
             padding-left: 0px !important;
 
         }
+
+        /* Page Beautification Styles */
+        .kt-form.card {
+            padding: 20px;
+        }
+        .kt-portlet__head {
+            border-bottom: 1px solid #ebedf2;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+        }
+        .kt-portlet__head-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #48465b;
+        }
+        .kt-portlet__head-title i {
+            margin-right: 10px;
+            color: #5867dd;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .noteform .row {
+            padding: 0;
+        }
     </style>
 
     <style>
@@ -110,89 +135,73 @@
 
         <input name="id" type="hidden" value="{{ $case->id }}" />
         <!-- CASE INFO -->
-
         <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Doctor:</label>
                     <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
                         title="Select a doctor" data-tap-disabled="true">
-
-
                         @foreach ($clients as $client)
                             <option value="{{ $client->id }}" {{ $case->client->id == $client->id ? 'selected' : '' }}>
                                 {{ $client->name }}</option>
                         @endforeach
-
                     </select>
-
                 </div>
             </div>
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Patient name:</label></div>
-                <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name"
-                        value="{{ $case->patient_name }}" /></div>
-            </div>
-
-
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-                    <label>{{ substr($case->case_id, 0, 7) }}</label>
-                    <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
-                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 7, 2) }}" />
-                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 9, 2) }}" />
-                    <label>_</label>
-                    <input name="caseId4" placeholder="0000"
-                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 12, 4) }}" />
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Patient name:</label>
+                    <input class="form-control" type="text" name="patient_name" value="{{ $case->patient_name }}" />
                 </div>
-
             </div>
-
-        </div>
-
-        <br />
-        <div class="row">
-
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
-                <div class="col-md-12 col-xs-12">
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Case ID:</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ substr($case->case_id, 0, 7) }}</span>
+                        </div>
+                        <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
+                        <input name="caseId2" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ substr($case->case_id, 7, 2) }}" />
+                        <input name="caseId3" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ substr($case->case_id, 9, 2) }}" />
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">_</span>
+                        </div>
+                        <input name="caseId4" class="form-control text-center" style="max-width: 70px;" type="text" value="{{ substr($case->case_id, 12, 4) }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Delivery Date:</label>
                     <input class="form-control SDTP" name="delivery_date" type="text"
                         value="{{ $case->initial_delivery_date }}" required readonly />
                 </div>
             </div>
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
-                <div class="col-md-12 col-xs-12">
-
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Tags:</label>
                     <select class="select selectpicker greyBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
-
                         @foreach ($tags as $tag)
                             <option style="color:{{ $tag->color }}" value="{{ $tag->id }}"
                                 {{ in_array($tag->id, $tagsAsArray) ? 'selected' : '' }}>{{ $tag->text }}</option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
-            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
-                <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
-                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
-
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Impression Type:</label>
+                    <select class="form-control" name="impression_type" type="text" data-container="body"
+                        data-live-search="true" title="Select impression" data-hide-disabled="true">
                         @foreach ($impressionTypes as $impression)
                             <option value="{{ $impression->id }}"
                                 {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
                                 {{ $impression->name }}
                             </option>
                         @endforeach
-                    </select></div>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -202,11 +211,10 @@
         <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
                 <h5 class="kt-portlet__head-title">
-                    <i class="fa  fa-suitcase" style="width:3%"></i> Job information
+                    <i class="fa  fa-suitcase"></i> Job information
                 </h5>
             </div>
         </div>
-        <hr>
 
 
 
@@ -471,7 +479,6 @@
                 </h5>
             </div>
         </div>
-        <hr>
         <!-- NEW JOBS REPEATER -->
         <div id="" style="" class="repeater jobsRepeater">
             <div data-repeater-list="repeat2" class="jobDataRepeaterList">
@@ -691,11 +698,10 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
+                            <i class="fa-regular fa-circle-down"></i> Discount
                         </h5>
                     </div>
                 </div>
-                <hr>
 
                 @php
                     $discountExists = $case->discount != null;
@@ -728,12 +734,11 @@
             <div class="kt-portlet__head">
                 <div class="kt-portlet__head-label">
                     <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
+                        <i class="fa fa-sticky-note"></i> Additional
                         information
                     </h5>
                 </div>
             </div>
-            <hr>
 
             <div class="form-group form-group">
                 <label>Notes:</label>
@@ -749,32 +754,24 @@
                     </div>
                 @endforeach
 
-                <form></form>
-                <form style="" class="noteform " method="POST" enctype="multipart/form-data"
-                    action="{{ route('new-note') }}">
+                <form class="noteform" method="POST" action="{{ route('new-note') }}">
                     @csrf
-                    <div class="row" style="padding:0px">
-                        <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
-                        <div class="col-md-6 col-xs-6">
-                            <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
+                    <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
+                    <div class="input-group">
+                        <input class="form-control" type="text" name="newNote" placeholder="Add a new note..." />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Add Note</button>
                         </div>
-
-                        <div class="col-md-3 col-xs-3" style="margin: 0px">
-                            <button type="submit" class="btn btn-primary">Add note</button>
-                        </div>
-
-
                     </div>
                 </form>
                 <br><br>
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h5 class="kt-portlet__head-title">
-                            <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
+                            <i class="fa fa-photo"></i> Attachments
                         </h5>
                     </div>
                 </div>
-                <hr>
                 <!-- Photos SECTION -->
                 <div class="container" style="margin-top:10px;">
 
@@ -808,14 +805,12 @@
             </div>
 
             <!-- Attachments SECTION -->
-
-            <div class="form-group form-group-last">
-                <label for="images" style="cursor: pointer;padding: 10px 18px 10px 18px;">
-                    <h4><i class="fa-solid fa-circle-plus"></i>
-                    </h4>
-                </label>
-                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
-                    multiple style="cursor: pointer;">
+            <div class="form-group">
+                <label>Add Photos:</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="images" name="images[]" multiple>
+                    <label class="custom-file-label" for="images">Choose files...</label>
+                </div>
             </div>
 
             <br>
@@ -838,9 +833,9 @@
             @endif
 
             <div class="kt-portlet__foot">
-                <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary extraPadding">Submit</button>
-                    <button type="reset" class="btn btn-danger extraPadding">Reset</button>
+                <div class="kt-form__actions text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Update Case</button>
+                    <button type="reset" class="btn btn-secondary btn-lg">Reset</button>
                 </div>
             </div>
         </div>
