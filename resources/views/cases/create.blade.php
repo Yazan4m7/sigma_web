@@ -9,9 +9,8 @@
     <style>
         @media screen and (max-width: 991px) {
             .modal-content .modal-footer button {
-                margin: 0;
-                /*padding-left: 0px;*/
-                /*padding-right: 2px;*/
+                margin: 15px;
+                padding: 10px 50px;
                 width: auto;
                 white-space: break-spaces;
             }
@@ -100,7 +99,28 @@
             }
 
         }
+
+
+        .teethJawsDialog{}
+        .teethJawsDocument{}
+
+
+
+
+
+
     </style>
+
+
+
+
+
+
+
+
+
+
+
     <div class="card">
         @if (config('site_vars.environment') == 'testing')
             <form style="padding:0px" class="kt-form" method="POST" enctype="multipart/form-data"
@@ -483,10 +503,7 @@
             </div>
             <hr>
             <div class="form-group form-group-last">
-                <label for="images" style="cursor: pointer;">
-                    <h4><i class="fa-solid fa-circle-plus"></i>
-                    </h4>
-                </label>
+
                 <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
                     multiple style="cursor: pointer;">
             </div>
@@ -512,7 +529,7 @@
 
             <div class="kt-portlet__foot">
                 <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary extraPadding">Submit</button>
+                    <button type="submit" class="btn btn-primary extraPadding" style="margin: 60px 5px 10px 5px">Submit</button>
 
                 </div>
             </div>
@@ -523,10 +540,10 @@
 
         <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
-            <div class="modal-dialog" role="document" style="margin-top: 5px;">
-                <div class="modal-content">
+            <div class="modal-dialog  teethJawsDocument" role="document" style="margin-top: 5px;">
+                <div class="modal-content teethJawsDialog">
 
-                    <div class="modal-body">
+                    <div class="modal-body" Style="height: 36em;">
 
                         <input type="hidden" value="success" name="dialogNum" class="dialogTag">
                         @php
@@ -547,7 +564,7 @@
                                 height=265px style="position: absolute; top: 17px;left: 0px;">
                             <img class="jaw lowerJaw" alt="lower" src="/assets/teethPics/v2/lower_jaw.png"
                                 height=280px style="position: absolute; top: 295px;left: 17px;">
-un
+
                             <img class="teeth" alt="18" src="/assets/teethPics/v2/18.png"
                                 height={{ $imageSizeM + 8 }}px style="  position: absolute; top: 226px;left: 55px;">
                             @php $teeth = 1; @endphp
@@ -613,64 +630,57 @@ un
                             <div class="main-body" style="padding-top: 50px;width:200px;height:450px">
                                 <h2 style="padding-left:300%" id="teethSelectedH2"></h2>
 
-                                    <img class="teeth" alt="38" src="/assets/teethPics/v2/38.png"
-                                        height={{ $imageSizeL + 1 }}px style="  position: absolute; top:326px;left: 309px;">
-                                    @php $teeth = 1; @endphp
-                                    <img class="teeth" alt="37" src="/assets/teethPics/v2/37.png"
-                                        height={{ $imageSizeL + 6 }}px style="  position: absolute; top:367px;left:299px;">
-                                    @php $teeth = 2; @endphp
-                                    <img class="teeth" alt="36" src="/assets/teethPics/v2/36.png"
-                                        height={{ $imageSizeL + 5 }}px style="  position: absolute; top:412px;left:285px;">
-                                    @php
-                                        $teeth = 3;
-                                        $decrement = $decrement - 1.5;
-                                    @endphp
-                                    <img class="teeth" alt="35" src="/assets/teethPics/v2/35.png"
-                                        height={{ $imageSizeM }}px style="  position: absolute; top: 454px;left:275px;">
-                                    @php $teeth = 4; @endphp
-                                    <img class="teeth" alt="34" src="/assets/teethPics/v2/34.png"
-                                        height={{ $imageSizeM }}px style="  position: absolute; top: 484px;left:263px;">
-                                    @php $teeth = 5; @endphp
-                                    <img class="teeth" alt="33" src="/assets/teethPics/v2/33.png"
-                                        height={{ $imageSizeM + 1 }}px style="  position: absolute; top: 508px;left:247px;">
-                                    @php $teeth = 6; @endphp
-                                    <img class="teeth" alt="32" src="/assets/teethPics/v2/32.png"
-                                        height={{ $imageSizeM }}px
-                                        style="  position: absolute; top: 527px;left: 229px;">
-                                    @php $teeth = 7; @endphp
-                                    <img class="teeth" alt="31" src="/assets/teethPics/v2/31.png"
-                                        height={{ $imageSizeM - 3 }}px style="position: absolute; top:538px;left: 203px;">
-                                    @php $teeth = 8; @endphp
-                                    <img class="teeth" alt="41" src="/assets/teethPics/v2/41.png"
-                                        height={{ $imageSizeM - 2 }}px style="position: absolute; top: 534px;left:176px;">
-                                    @php $teeth = 9; @endphp
-                                    <img class="teeth" alt="42" src="/assets/teethPics/v2/42.png"
-                                        height={{ $imageSizeM }}px style="  position: absolute; top:524px;left: 150px;">
-                                    @php $teeth = 5; @endphp
-                                    <img class="teeth" alt="43" src="/assets/teethPics/v2/43.png"
-                                        height={{ $imageSizeM }}px
-                                        style="  position: absolute; top: 510px;left: 127px;">
-                                    @php $teeth = 4; @endphp
-                                    <img class="teeth" alt="44" src="/assets/teethPics/v2/44.png"
-                                        height={{ $imageSizeM }}px
-                                        style="  position: absolute; top: 485px;left: 108px;">
-                                    @php $teeth = 3; @endphp
-                                    <img class="teeth" alt="45" src="/assets/teethPics/v2/45.png"
-                                        height={{ $imageSizeM + 2 }}px style="  position: absolute; top: 455px;left: 88px;">
-                                    @php $teeth = 2; @endphp
-                                    <img class="teeth" alt="46" src="/assets/teethPics/v2/46.png"
-                                        height={{ $imageSizeL + 4.5 }}px
-                                        style="  position: absolute; top: 415px;left: 68px;">
-                                    @php $teeth = 1; @endphp
-                                    <img class="teeth" alt="47" src="/assets/teethPics/v2/47.png"
-                                        height={{ $imageSizeL + 5 }}px style="  position: absolute; top: 371px;left: 55px;">
-                                    @php $teeth = 0; @endphp
-                                    <img class="teeth" alt="48" src="/assets/teethPics/v2/48.png"
-                                        height={{ $imageSizeL + 1 }}px style="  position: absolute; top: 331px;left:44px;">
-                                    @php $teeth = 16; @endphp
-                                </div>
-                                </div>
-
+                                <img class="teeth" alt="38" src="/assets/teethPics/v2/38.png"
+                                    height={{ $imageSizeL + 1 }}px style="  position: absolute; top:326px;left: 309px;">
+                                @php $teeth = 1; @endphp
+                                <img class="teeth" alt="37" src="/assets/teethPics/v2/37.png"
+                                    height={{ $imageSizeL + 6 }}px style="  position: absolute; top:367px;left:299px;">
+                                @php $teeth = 2; @endphp
+                                <img class="teeth" alt="36" src="/assets/teethPics/v2/36.png"
+                                    height={{ $imageSizeL + 5 }}px style="  position: absolute; top:412px;left:285px;">
+                                @php
+                                    $teeth = 3;
+                                    $decrement = $decrement - 1.5;
+                                @endphp
+                                <img class="teeth" alt="35" src="/assets/teethPics/v2/35.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top: 454px;left:275px;">
+                                @php $teeth = 4; @endphp
+                                <img class="teeth" alt="34" src="/assets/teethPics/v2/34.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top: 484px;left:263px;">
+                                @php $teeth = 5; @endphp
+                                <img class="teeth" alt="33" src="/assets/teethPics/v2/33.png"
+                                    height={{ $imageSizeM + 1 }}px style="  position: absolute; top: 508px;left:247px;">
+                                @php $teeth = 6; @endphp
+                                <img class="teeth" alt="32" src="/assets/teethPics/v2/32.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top: 527px;left: 229px;">
+                                @php $teeth = 7; @endphp
+                                <img class="teeth" alt="31" src="/assets/teethPics/v2/31.png"
+                                    height={{ $imageSizeM - 3 }}px style="position: absolute; top:538px;left: 203px;">
+                                @php $teeth = 8; @endphp
+                                <img class="teeth" alt="41" src="/assets/teethPics/v2/41.png"
+                                    height={{ $imageSizeM - 2 }}px style="position: absolute; top: 534px;left:176px;">
+                                @php $teeth = 9; @endphp
+                                <img class="teeth" alt="42" src="/assets/teethPics/v2/42.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top:524px;left: 150px;">
+                                @php $teeth = 5; @endphp
+                                <img class="teeth" alt="43" src="/assets/teethPics/v2/43.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top: 510px;left: 127px;">
+                                @php $teeth = 4; @endphp
+                                <img class="teeth" alt="44" src="/assets/teethPics/v2/44.png"
+                                    height={{ $imageSizeM }}px style="  position: absolute; top: 485px;left: 108px;">
+                                @php $teeth = 3; @endphp
+                                <img class="teeth" alt="45" src="/assets/teethPics/v2/45.png"
+                                    height={{ $imageSizeM + 2 }}px style="  position: absolute; top: 455px;left: 88px;">
+                                @php $teeth = 2; @endphp
+                                <img class="teeth" alt="46" src="/assets/teethPics/v2/46.png"
+                                    height={{ $imageSizeL + 4.5 }}px style="  position: absolute; top: 415px;left: 68px;">
+                                @php $teeth = 1; @endphp
+                                <img class="teeth" alt="47" src="/assets/teethPics/v2/47.png"
+                                    height={{ $imageSizeL + 5 }}px style="  position: absolute; top: 371px;left: 55px;">
+                                @php $teeth = 0; @endphp
+                                <img class="teeth" alt="48" src="/assets/teethPics/v2/48.png"
+                                    height={{ $imageSizeL + 1 }}px style="  position: absolute; top: 331px;left:44px;">
+                                @php $teeth = 16; @endphp
                             </div>
                         </div>
 
@@ -685,398 +695,404 @@ un
                         <button type="button" class="btn btn-primary" id="submitDialog" onclick="">Save</button>
                     </div>
                 </div>
+
             </div>
+
         </div>
+            </form></div>
 
 
-        <!-- FILES DIALOG -->
 
-        <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
-            style="display: none;" aria-hidden="true" name="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle-1">Upload files </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+    <!-- FILES DIALOG -->
+
+    <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
+        style="display: none;" aria-hidden="true" name="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle-1">Upload files </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
 
-                    </div>
-                    <div class="modal-footer" name="model-footer">
+                </div>
+                <div class="modal-footer" name="model-footer">
 
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="submitDialog" onclick="">Save
-                            changes</button>
-                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="submitDialog" onclick="">Save
+                        changes</button>
                 </div>
             </div>
         </div>
-    @endsection
-    @push('js')
-        <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
-        <script>
-            $(document).ready(function() {
-                $('.selectpicker').selectpicker();
-                $('.selectpicker').selectpicker('refresh');
-                $('.repeater').repeater({
-                    // (Required if there is a nested repeater)
-                    // Specify the configuration of the nested repeaters.
-                    // Nested configuration follows the same format as the base configuration,
-                    // supporting options "defaultValues", "show", "hide", etc.
-                    // Nested repeaters additionally require a "selector" field.
-                    repeaters: [{
-                        // (Required)
-                        // Specify the jQuery selector for this nested repeater
-                        selector: '.abutments-repeater',
-                        show: function() {
-                            $(this).slideDown();
-                        },
-
-                        hide: function(deleteElement) {
-                            $(this).slideUp(deleteElement);
-                        }
-                    }],
+    </div>
 
 
-                    defaultValues: {},
 
+@endsection
+@push('js')
+    <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
+    <script>
+        $(document).ready(function() {
+            $('.selectpicker').selectpicker();
+            $('.selectpicker').selectpicker('refresh');
+            $('.repeater').repeater({
+                // (Required if there is a nested repeater)
+                // Specify the configuration of the nested repeaters.
+                // Nested configuration follows the same format as the base configuration,
+                // supporting options "defaultValues", "show", "hide", etc.
+                // Nested repeaters additionally require a "selector" field.
+                repeaters: [{
+                    // (Required)
+                    // Specify the jQuery selector for this nested repeater
+                    selector: '.abutments-repeater',
                     show: function() {
                         $(this).slideDown();
                     },
-                    initEmpty: false,
+
                     hide: function(deleteElement) {
                         $(this).slideUp(deleteElement);
                     }
-                });
-
-                // removing first job because it causes UI errors with the repeater
-                $(".jobsRepeater").find(".jobRow").first().html("");
-                $("#addJobBtn").click();
-                //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
-                //        $("#addJobBtn2").click();
+                }],
 
 
+                defaultValues: {},
+
+                show: function() {
+                    $(this).slideDown();
+                },
+                initEmpty: false,
+                hide: function(deleteElement) {
+                    $(this).slideUp(deleteElement);
+                }
             });
-        </script>
-        <script>
-            function toggleDiscountPortion(ele) {
 
-                var discountPortion = $(".discountPortion");
-                if (ele.checked) {
-                    discountPortion.show(200);
-                } else {
-                    discountPortion.hide(200);
-                }
+            // removing first job because it causes UI errors with the repeater
+            $(".jobsRepeater").find(".jobRow").first().html("");
+            $("#addJobBtn").click();
+            //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
+            //        $("#addJobBtn2").click();
+
+
+        });
+    </script>
+    <script>
+        function toggleDiscountPortion(ele) {
+
+            var discountPortion = $(".discountPortion");
+            if (ele.checked) {
+                discountPortion.show(200);
+            } else {
+                discountPortion.hide(200);
+            }
+        }
+
+        var teethSelected = [];
+        var lstSelectedJobUNName = "";
+        var repeaterName = ""; // should be something like 'repeat[xx]'
+        function materialChanged(materialDD) {
+            // Material changed - no type handling needed in create case
+            console.log('Material changed:', $(materialDD).val());
+        }
+
+        function jobTypeChanged(jobTypeDD) {
+            var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
+            var jobTypes = {!! json_encode($types->toArray()) !!};
+            var materials = {!! json_encode($materials->toArray()) !!};
+            var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+
+            var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
+
+            var colorsDDName = repeaterName + "[color]";
+            if ($(jobTypeDD).val() == 14) {
+                $("[name='" + colorsDDName + "']").parent().parent().parent().show();
             }
 
-            var teethSelected = [];
-            var lstSelectedJobUNName = "";
-            var repeaterName = ""; // should be something like 'repeat[xx]'
-            function materialChanged(materialDD) {
-                // Material changed - no type handling needed in create case
-                console.log('Material changed:', $(materialDD).val());
+            if (repeaterNumber > 1) {
+                var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
+                var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
+                var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
+
+                //  console.log("selector : " +"[name='repeat[" + (repeaterNumber -1) + "][abutments][0][abutmentUnits][]']");
+            } else {
+                var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
+                var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
+                var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
+                //  console.log("selector : " + "[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
             }
 
-            function jobTypeChanged(jobTypeDD) {
-                var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
-                var jobTypes = {!! json_encode($types->toArray()) !!};
-                var materials = {!! json_encode($materials->toArray()) !!};
-                var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
 
-                var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
+            var materialBox = $("[name='" + repeaterName + "[material_id]']");
+            var openDialogBtn = $("[name='" + repeaterName + "[openDialogBtn]']");
+            var jobTypeSelectedId = $(jobTypeDD).val();
+            var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
 
-                var colorsDDName = repeaterName + "[color]";
-                if ($(jobTypeDD).val() == 14) {
-                    $("[name='" + colorsDDName + "']").parent().parent().parent().show();
-                }
+            // Store currently selected material to preserve selection if possible
+            var currentlySelectedMaterial = materialBox.val();
 
-                if (repeaterNumber > 1) {
-                    var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
-                    var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
-                    var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
+            // Clear material dropdown
+            materialBox.empty();
 
-                    //  console.log("selector : " +"[name='repeat[" + (repeaterNumber -1) + "][abutments][0][abutmentUnits][]']");
-                } else {
-                    var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
-                    var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
-                    var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-                    //  console.log("selector : " + "[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-                }
+            // Add default option for materials
+            materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
 
-                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+            // Populate materials compatible with selected job type
+            $.each(jobTypeMaterials, function(key, value) {
+                materialBox.append($("<option></option>")
+                    .attr("value", value.material_id)
+                    .text(materials.find(x => x.id === value.material_id).name));
+            });
 
-                var materialBox = $("[name='" + repeaterName + "[material_id]']");
-                var openDialogBtn = $("[name='" + repeaterName + "[openDialogBtn]']");
-                var jobTypeSelectedId = $(jobTypeDD).val();
-                var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+            // If the previously selected material is still compatible, reselect it
+            if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
+                materialBox.val(currentlySelectedMaterial);
+            }
+            var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
+            var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
+            var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
+                .val().split(',');
+            if ($(jobTypeDD).find(":selected").val() == 6) {
 
-                // Store currently selected material to preserve selection if possible
-                var currentlySelectedMaterial = materialBox.val();
+                // get to parent of the main repeater and find abutment units box
 
-                // Clear material dropdown
-                materialBox.empty();
+                $(abutmentBox).attr('required', '');
+                $(implantBox).attr('required', '');
 
-                // Add default option for materials
-                materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
+                $(abutmentsArea).css("display", "block");
+                // $(".abutmentsUnitsPicker").find('option').html('');
+                // show the 6th parent of the box which has display none property
+                // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
 
-                // Populate materials compatible with selected job type
-                $.each(jobTypeMaterials, function(key, value) {
-                    materialBox.append($("<option></option>")
-                        .attr("value", value.material_id)
-                        .text(materials.find(x => x.id === value.material_id).name));
+                $.each(currentlySelectedUnits, function(index, value) {
+                    abutmentUnitsBox.append($("<option></option>")
+                        .attr("value", value)
+                        .text(value));
                 });
-
-                // If the previously selected material is still compatible, reselect it
-                if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
-                    materialBox.val(currentlySelectedMaterial);
-                }
-                var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
-                var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
-                var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
-                    .val().split(',');
-                if ($(jobTypeDD).find(":selected").val() == 6) {
-
-                    // get to parent of the main repeater and find abutment units box
-
-                    $(abutmentBox).attr('required', '');
-                    $(implantBox).attr('required', '');
-
-                    $(abutmentsArea).css("display", "block");
-                    // $(".abutmentsUnitsPicker").find('option').html('');
-                    // show the 6th parent of the box which has display none property
-                    // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
-
-                    $.each(currentlySelectedUnits, function(index, value) {
-                        abutmentUnitsBox.append($("<option></option>")
-                            .attr("value", value)
-                            .text(value));
-                    });
-                    abutmentUnitsBox.selectpicker();
-                    $(jobTypeDD).attr("readonly", "true");
-                    $(openDialogBtn).attr("disabled", "true");
-                } else {
-                    $(abutmentBox).removeAttr('required');
-                    $(implantBox).removeAttr('required');
-                    $(abutmentsArea).css("display", "none");
-                    abutmentUnitsBox.val(0);
-                    //            implantBox.val(0);
-                    // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
-                }
+                abutmentUnitsBox.selectpicker();
+                $(jobTypeDD).attr("readonly", "true");
+                $(openDialogBtn).attr("disabled", "true");
+            } else {
+                $(abutmentBox).removeAttr('required');
+                $(implantBox).removeAttr('required');
+                $(abutmentsArea).css("display", "none");
+                abutmentUnitsBox.val(0);
+                //            implantBox.val(0);
+                // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
             }
+        }
 
-            function addAbutmentJob(ele) {
-                // get units selected originally in the job
-                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-                // wait for new repeater row to populate then add unit selected to abutment units box
-                setTimeout(function() {
-                    var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
+        function addAbutmentJob(ele) {
+            // get units selected originally in the job
+            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+            // wait for new repeater row to populate then add unit selected to abutment units box
+            setTimeout(function() {
+                var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
 
 
-                    $.each(teethSelectedAsArr, function(index, value) {
-                        $(lastAbutmentUnitsBox).last().append($("<option></option>")
-                            .attr("value", value)
-                            .text(value));
-                    });
-                    lastAbutmentUnitsBox.selectpicker();
-                }, 500);
+                $.each(teethSelectedAsArr, function(index, value) {
+                    $(lastAbutmentUnitsBox).last().append($("<option></option>")
+                        .attr("value", value)
+                        .text(value));
+                });
+                lastAbutmentUnitsBox.selectpicker();
+            }, 500);
 
-            }
+        }
 
-            $("#submitDialog").click(function() {
+        $("#submitDialog").click(function() {
 
-                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-                var jobTypeBoxName = repeaterName + "[jobType]";
-                var selectBtnName = repeaterName + "[openDialogBtn]";
+            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+            var jobTypeBoxName = repeaterName + "[jobType]";
+            var selectBtnName = repeaterName + "[openDialogBtn]";
 
-                var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
-                var jobTypes = {!! json_encode($types->toArray()) !!};
-                var colorsDDName = repeaterName + "[color]";
-                var styleOptionsName = repeaterName + "[style]";
-                /* Updating dropdowns according to teeth selection
-                 * First if is for jaws, second is for teeth
-                 * @Yazan -
-                 */
-                if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
+            var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
+            var jobTypes = {!! json_encode($types->toArray()) !!};
+            var colorsDDName = repeaterName + "[color]";
+            var styleOptionsName = repeaterName + "[style]";
+            /* Updating dropdowns according to teeth selection
+             * First if is for jaws, second is for teeth
+             * @Yazan -
+             */
+            if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
                     teethSelectedAsArr) !== -1) {
-                    // clear all options
-                    jobTypeBox.empty();
-                    // filter all job types to only jaws.
-                    var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
-                    // fill up the options with the array above.
-                    $.each(jawOnlyTypes, function(key, value) {
-                        jobTypeBox.append($("<option></option>")
-                            .attr("value", value.id)
-                            .text(value.name));
-                    });
-                    // Notify Job type changed function to update materials with which box changed
-                    jobTypeChanged(jobTypeBox);
-                    $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
+                // clear all options
+                jobTypeBox.empty();
+                // filter all job types to only jaws.
+                var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
+                // fill up the options with the array above.
+                $.each(jawOnlyTypes, function(key, value) {
+                    jobTypeBox.append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.name));
+                });
+                // Notify Job type changed function to update materials with which box changed
+                jobTypeChanged(jobTypeBox);
+                $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
 
-                    // set style to none (prevent back-end errors) and hide it
-                    $("[name='" + styleOptionsName + "']").val('None');
-                    $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
+                // set style to none (prevent back-end errors) and hide it
+                $("[name='" + styleOptionsName + "']").val('None');
+                $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
 
-                }
+            }
 
-                // No jaws selected
-                else {
-                    jobTypeBox.empty();
-                    const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
-                    $.each(jawOnlyTypes, function(key, value) {
-                        jobTypeBox.append($("<option></option>")
-                            .attr("value", value.id)
-                            .text(value.name));
-                    });
-                    if (teethSelectedAsArr.length > 1)
-                        $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
-                    else
-                        $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
-                    // Notify Job type changed function to update materials with which box changed
-                    jobTypeChanged(jobTypeBox);
-
-                }
-
-                // Change button label with selected teeth
-                if (teethSelectedAsArr.length > 0)
-                    $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
+            // No jaws selected
+            else {
+                jobTypeBox.empty();
+                const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
+                $.each(jawOnlyTypes, function(key, value) {
+                    jobTypeBox.append($("<option></option>")
+                        .attr("value", value.id)
+                        .text(value.name));
+                });
+                if (teethSelectedAsArr.length > 1)
+                    $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
                 else
-                    $("[name='" + selectBtnName + "']").html("Select Units");
+                    $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
+                // Notify Job type changed function to update materials with which box changed
+                jobTypeChanged(jobTypeBox);
+
+            }
+
+            // Change button label with selected teeth
+            if (teethSelectedAsArr.length > 0)
+                $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
+            else
+                $("[name='" + selectBtnName + "']").html("Select Units");
 
 
-                $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
+            $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
 
-                // close dialog
-                $(".modal").modal('hide');
+            // close dialog
+            $(".modal").modal('hide');
 
-            });
+        });
 
 
-            $(".teeth").click(function() {
+        $(".teeth").click(function() {
 
-                // Check if any jaws is selected, if any remove them from array
-                if (jQuery.inArray("upper", teethSelected) !== -1) {
-                    const jawIndex = teethSelected.indexOf("upper");
-                    teethSelected.splice(jawIndex, 1);
+            // Check if any jaws is selected, if any remove them from array
+            if (jQuery.inArray("upper", teethSelected) !== -1) {
+                const jawIndex = teethSelected.indexOf("upper");
+                teethSelected.splice(jawIndex, 1);
+            }
+            if (jQuery.inArray("lower", teethSelected) !== -1) {
+                const jawIndex = teethSelected.indexOf("lower");
+                teethSelected.splice(jawIndex, 1);
+            }
+
+            // remove the light of the jaws buttons
+            var list = $('.jaw');
+            list.removeClass("checked");
+
+
+            //if not pre selected light up the teeth and add it to array
+            if ($(this).hasClass("checked")) {
+                $(this).removeClass("checked");
+                var teethNumber = $(this).attr("alt");
+                const index = teethSelected.indexOf(teethNumber);
+
+                if (index > -1) {
+                    teethSelected.splice(index, 1);
                 }
-                if (jQuery.inArray("lower", teethSelected) !== -1) {
-                    const jawIndex = teethSelected.indexOf("lower");
-                    teethSelected.splice(jawIndex, 1);
-                }
 
-                // remove the light of the jaws buttons
-                var list = $('.jaw');
+                // remove the selection if previously selected
+            } else {
+                var teethNumber = $(this).attr("alt");
+                teethSelected.push(teethNumber);
+                $(this).addClass("checked");
+                // console.log("Added a teeth" + teethSelected);
+            }
+
+            //console.log("Updating units input : "  + teethSelected);
+
+            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+        });
+        $(".jaw").click(function() {
+
+            if ($(this).hasClass("checked")) {
+                $(this).removeClass("checked");
+                var jaw = $(this).attr("alt");
+                const index = teethSelected.indexOf(jaw);
+
+                if (index > -1) {
+                    teethSelected.splice(index, 1);
+                }
+                var unitNumsBox = $("[id=units]:last").attr("name");
+                $("[name='" + unitNumsBox + "']").val(teethSelected);
+
+            } else {
+
+                var jaw = $(this).attr("alt");
+                // add visuall selection to the jaw the selection
+                $(this).addClass("checked");
+
+                // remove visual selection of all teeth if a jaw is selected
+                var list = $('.teeth');
                 list.removeClass("checked");
 
-
-                //if not pre selected light up the teeth and add it to array
-                if ($(this).hasClass("checked")) {
-                    $(this).removeClass("checked");
-                    var teethNumber = $(this).attr("alt");
-                    const index = teethSelected.indexOf(teethNumber);
-
-                    if (index > -1) {
-                        teethSelected.splice(index, 1);
+                // remove all selected teeth
+                for (var index = 0; index <= teethSelected.length; index++) {
+                    if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
+                        teethSelected.splice(index);
                     }
-
-                    // remove the selection if previously selected
-                } else {
-                    var teethNumber = $(this).attr("alt");
-                    teethSelected.push(teethNumber);
-                    $(this).addClass("checked");
-                    // console.log("Added a teeth" + teethSelected);
                 }
-
-                //console.log("Updating units input : "  + teethSelected);
-
-                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-            });
-            $(".jaw").click(function() {
-
-                if ($(this).hasClass("checked")) {
-                    $(this).removeClass("checked");
-                    var jaw = $(this).attr("alt");
-                    const index = teethSelected.indexOf(jaw);
-
-                    if (index > -1) {
-                        teethSelected.splice(index, 1);
-                    }
-                    var unitNumsBox = $("[id=units]:last").attr("name");
-                    $("[name='" + unitNumsBox + "']").val(teethSelected);
-
-                } else {
-
-                    var jaw = $(this).attr("alt");
-                    // add visuall selection to the jaw the selection
-                    $(this).addClass("checked");
-
-                    // remove visual selection of all teeth if a jaw is selected
-                    var list = $('.teeth');
-                    list.removeClass("checked");
-
-                    // remove all selected teeth
-                    for (var index = 0; index <= teethSelected.length; index++) {
-                        if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
-                            teethSelected.splice(index);
-                        }
-                    }
-                    // add selected jaw to the array and update value
-                    teethSelected.push(jaw);
+                // add selected jaw to the array and update value
+                teethSelected.push(jaw);
 
 
-                }
-
-                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-            });
-
-            function preOpenDialog(element) {
-                // if repeater reached 2 digit or not
-                if (element.name.length == 24) {
-                    lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
-                    repeaterName = element.name.substr(0, 9);
-                } else {
-                    repeaterName = element.name.substr(0, 10);
-                    lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
-                }
-                var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
-                // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
-                if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
-                    teethSelected = currentJobUnits.val().split(',');
-                    // console.log("is defined and its now : " + teethSelected);
-                } else {
-                    // console.log("NOT defined,cleared");
-                    teethSelected = [];
-                }
-                if (teethSelected.length !== 0) {
-                    var teethPreSelected = currentJobUnits.val().split(',');
-                    // console.log("Lighting up : " + teethPreSelected);
-                    // light on and off according to the pre selected
-                    $(".teeth").each(function() {
-                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
-                            // console.log("true");
-                            $(this).addClass("checked");
-                        } else
-                            $(this).removeClass("checked");
-                    });
-                    $(".jaw").each(function() {
-                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
-                            $(this).addClass("checked");
-                        else
-                            $(this).removeClass("checked");
-                    });
-                } else {
-                    $(".teeth").removeClass("checked");
-                    $(".jaw").removeClass("checked");
-                }
             }
 
-        </script>
-        <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
-        {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
-        {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
-        {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
+            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+        });
 
-        <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
-    @endpush
+        function preOpenDialog(element) {
+            // if repeater reached 2 digit or not
+            if (element.name.length == 24) {
+                lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
+                repeaterName = element.name.substr(0, 9);
+            } else {
+                repeaterName = element.name.substr(0, 10);
+                lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
+            }
+            var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
+            // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
+            if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
+                teethSelected = currentJobUnits.val().split(',');
+                // console.log("is defined and its now : " + teethSelected);
+            } else {
+                // console.log("NOT defined,cleared");
+                teethSelected = [];
+            }
+            if (teethSelected.length !== 0) {
+                var teethPreSelected = currentJobUnits.val().split(',');
+                // console.log("Lighting up : " + teethPreSelected);
+                // light on and off according to the pre selected
+                $(".teeth").each(function() {
+                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
+                        // console.log("true");
+                        $(this).addClass("checked");
+                    } else
+                        $(this).removeClass("checked");
+                });
+                $(".jaw").each(function() {
+                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
+                        $(this).addClass("checked");
+                    else
+                        $(this).removeClass("checked");
+                });
+            } else {
+                $(".teeth").removeClass("checked");
+                $(".jaw").removeClass("checked");
+            }
+        }
+    </script>
+    <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
+    {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
+    {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
+    {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
+
+    <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
+@endpush
