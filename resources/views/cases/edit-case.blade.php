@@ -127,7 +127,7 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-
+<div class="container">
     <form style="padding:10px" class="kt-form card" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
@@ -311,7 +311,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Type:</label>
@@ -707,23 +707,29 @@
                     $discountExists = $case->discount != null;
                 @endphp
 
-                <label style="cursor: pointer">
-                    <input type="checkbox" class="discountCB" name="discountCB" value="on"
-                        {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                    Make a Discount {{ $discountExists }}
-                </label>
-
-                <br>
-                <div class="form-group form-group row discountPortion"
-                    style="{{ $discountExists ? '' : 'display:none' }}">
-                    <div class="col-md-3 col-xs-6">
-                        <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
-                            value="{{ $discountExists ? $case->discount->discount : '' }}" />
-                        <small>JOD</small>
+                <div class="discount-section" style="background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input discountCB" id="discountCB" name="discountCB" value="on"
+                            {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
+                        <label class="form-check-label" for="discountCB">Apply a Discount</label>
                     </div>
-                    <div class="col-md-6 col-xs-6">
-                        <input class="form-control" type="text" name="discount_reason"
-                            value=" {{ $discountExists ? $case->discount->reason : '' }}" placeholder="Description" />
+                    <div class="form-group row discountPortion mt-3"
+                        style="{{ $discountExists ? '' : 'display:none' }}">
+                        <div class="col-md-4">
+                            <label>Amount</label>
+                            <div class="input-group">
+                                <input class="form-control" type="number" name="discount_amount" placeholder="Amount"
+                                    value="{{ $discountExists ? $case->discount->discount : '' }}" />
+                                <div class="input-group-append">
+                                    <span class="input-group-text">JOD</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <label>Reason for Discount</label>
+                            <input class="form-control" type="text" name="discount_reason"
+                                value="{{ $discountExists ? trim($case->discount->reason) : '' }}" placeholder="Enter reason" />
+                        </div>
                     </div>
                 </div>
                 <div class="verticalSpacing"></div>
@@ -764,6 +770,7 @@
                         </div>
                     </div>
                 </form>
+            </div>
                 <br><br>
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
