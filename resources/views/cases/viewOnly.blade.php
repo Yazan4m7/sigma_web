@@ -300,13 +300,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             DESIGN
-                            <div class="MonthYear">{{$case->logs->where('stage',1)->where("is_completion",1)->first() ? substr($case->logs->where('stage',1)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',1)->where("is_completion",1)->first() ? $case->logs->where('stage',1)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 1)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
 
@@ -325,13 +332,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             MILLING
-                            <div class="MonthYear">{{$case->logs->where('stage',2)->where("is_completion",1)->first() ? substr($case->logs->where('stage',2)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',2)->where("is_completion",1)->first() ? $case->logs->where('stage',2)->first()->user->name_initials : "-"}}</div>
+                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 2)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -347,13 +361,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             3D Printing
-                            <div class="MonthYear">{{$case->logs->where('stage',3)->where("is_completion",1)->first() ? substr($case->logs->where('stage',3)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',3)->where("is_completion",1)->first() ? $case->logs->where('stage',3)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 3)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -371,13 +392,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Sintering
-                            <div class="MonthYear">{{$case->logs->where('stage',4)->where("is_completion",1)->first() ? substr($case->logs->where('stage',4)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',4)->where("is_completion",1)->first() ? $case->logs->where('stage',4)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 4)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -393,13 +421,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Pressing
-                            <div class="MonthYear">{{$case->logs->where('stage',5)->where("is_completion",1)->first() ? substr($case->logs->where('stage',5)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',5)->where("is_completion",1)->first() ? $case->logs->where('stage',5)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 5)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -417,14 +452,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Finishing
-                            <div class="MonthYear">{{$case->logs->where('stage',6)->where("is_completion",1)->first() ? substr($case->logs->where('stage',6)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">
-                        {{$case->logs->where('stage',6)->where("is_completion",1)->first() ? $case->logs->where('stage',6)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 6)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                   </div>
 
 
@@ -441,13 +482,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             QC
-                            <div class="MonthYear">{{$case->logs->where('stage',7)->where("is_completion",1)->first() ? substr($case->logs->where('stage',7)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-                    <div class="eventTitle">{{$case->logs->where('stage',7)->where("is_completion",1)->first() ? $case->logs->where('stage',7)->first()->user->name_initials : "-"}}</div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 7)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -463,21 +511,19 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Delivery
-                            <div class="MonthYear">{{$case->logs->where('stage',8)->where("is_completion",1)->first() ? substr($case->logs->where('stage',8)->where("is_completion",1)->first()->created_at,0,16) : "-"}}</div>
                         </div>
                     </div>
-
-                    <div class="eventTitle">
-                        @if ( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null)
-                            {{ $case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials }}
-                        @elseif ($case->logs->where('stage',8)->where("is_completion",3)->first() !== null)
-                            {{ $case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials }}
-                        @else
-                            -
-                        @endif
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
+                        @forelse($case->logs->where('stage', 8)->sortBy('created_at') as $log)
+                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @endif
+                        @empty
+                        -
+                        @endforelse
                     </div>
                 </div>
 
