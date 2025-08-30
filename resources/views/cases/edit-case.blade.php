@@ -7,6 +7,28 @@
     <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
+        label {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .kt-form__label > label {
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+        .row-item {
+            margin-bottom: 1rem;
+        }
+        .row-item .kt-form__group--inline {
+            margin-bottom: 0;
+        }
+        .row-item .form-control {
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: .875rem;
+        }
+        .row-item .btn {
+            padding: .375rem .75rem;
+        }
         @media screen and (max-width: 991px) {
             .modal-content .modal-footer button {
                 margin: 0;
@@ -149,7 +171,7 @@
                 <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
                 <div class="col-md-12 col-xs-12">
 
-                    <select class="select selectpicker greenBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
+                    <select class="select selectpicker greyBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
 
                         @foreach ($tags as $tag)
                             <option style="color:{{ $tag->color }}" value="{{ $tag->id }}"
@@ -310,7 +332,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-1">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Color:</label>
@@ -369,65 +391,55 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="kt-form__group--inline"
-                                                    style="display:{{ $job->style == 'None' ? 'None' : 'Block' }}">
-                                                    <div class="kt-form__label">
-                                                        <label>Style:</label>
-                                                    </div>
-                                                    <div class="kt-radio-inline">
-                                                        <label class="kt-radio">
-                                                            <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                                type="radio" class="bridge"
-                                                                name="style{{ $job->id }}" value="Bridge"
-                                                                {{ $job->style == 'Bridge' ? 'checked' : '' }} /> Bridge
-                                                            <span></span>
-                                                        </label>
-                                                        <label class="kt-radio">
-                                                            <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                                type="radio" class="single"
-                                                                {{ $job->style == 'Single' ? 'checked' : '' }}
-                                                                name="style{{ $job->id }}" value="Single" /> Single
-                                                            <span></span>
-                                                        </label>
-                                                        @if ($job->jobType->id == 6)
-                                                            <input type="hidden" name="style{{ $job->id }}"
-                                                                value="{{ $job->style }}">
-                                                        @endif
-                                                    </div>
-
-
-                                                </div>
-
+                                    <div class="col-md-2">
+                                        <div class="kt-form__group--inline"
+                                            style="display:{{ $job->style == 'None' ? 'None' : 'Block' }}">
+                                            <div class="kt-form__label">
+                                                <label>Style:</label>
                                             </div>
-
-                                            <div class="col-md-6" style="margin: auto;">
-                                                <div class="kt-form__group--inline">
-                                                    <div class="kt-form__label">
-                                                        <label></label>
-                                                    </div>
-                                                    <div class="kt-form__control">
-                                                        <b style="color:#2b7b7d">{{ $job->status() }}</b>
-                                                    </div>
-                                                </div>
+                                            <div class="kt-radio-inline">
+                                                <label class="kt-radio">
+                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
+                                                        type="radio" class="bridge"
+                                                        name="style{{ $job->id }}" value="Bridge"
+                                                        {{ $job->style == 'Bridge' ? 'checked' : '' }} /> Bridge
+                                                    <span></span>
+                                                </label>
+                                                <label class="kt-radio">
+                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
+                                                        type="radio" class="single"
+                                                        {{ $job->style == 'Single' ? 'checked' : '' }}
+                                                        name="style{{ $job->id }}" value="Single" /> Single
+                                                    <span></span>
+                                                </label>
+                                                @if ($job->jobType->id == 6)
+                                                    <input type="hidden" name="style{{ $job->id }}"
+                                                        value="{{ $job->style }}">
+                                                @endif
                                             </div>
-                                            <div class="col-md-2" style="padding:0;margin: auto;">
-                                                <div class="kt-form__group--inline">
-                                                    <div class="kt-form__label">
-                                                        <label></label>
-                                                    </div>
-                                                    <div class="kt-form__control">
-                                                        <button data-repeater-delete class="btn btn-danger  btn-sm"
-                                                            type="button" value="Delete" style="height:100%"> <i
-                                                                class="fa fa-trash"></i></span> </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-
                                         </div>
-
+                                    </div>
+                                    <div class="col-md-1" style="text-align: center;">
+                                        <div class="kt-form__group--inline">
+                                            <div class="kt-form__label">
+                                                <label>Status:</label>
+                                            </div>
+                                            <div class="kt-form__control">
+                                                <b style="color:#2b7b7d">{{ $job->status() }}</b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <div class="kt-form__group--inline">
+                                            <div class="kt-form__label">
+                                                <label>&nbsp;</label>
+                                            </div>
+                                            <div class="kt-form__control">
+                                                <button data-repeater-delete class="btn btn-danger btn-sm"
+                                                    type="button" value="Delete" style="height:100%"> <i
+                                                        class="fa fa-trash"></i></span> </button>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     @if (isset($job->abutmentDelivery))
@@ -527,7 +539,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Color:</label>
@@ -583,9 +595,11 @@
 
 
                                 <!-- DELETE BUTTON -->
-                                <div class="col-md-2">
+                                <div class="col-md-1">
                                     <div class="kt-form__group--inline">
-
+                                        <div class="kt-form__label">
+                                            <label>&nbsp;</label>
+                                        </div>
                                         <div class="kt-form__control">
                                             <button data-repeater-delete class="btn deleteBtn btn-sm" type="button"
                                                 value="Delete" style=""><i class="fa fa-trash "
