@@ -307,8 +307,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 1)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -339,8 +339,8 @@
                      <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 2)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -368,8 +368,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 3)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -399,8 +399,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 4)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -428,8 +428,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 5)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -459,8 +459,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 6)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -489,8 +489,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 7)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
@@ -518,8 +518,8 @@
                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
                         @php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; @endphp
                         @forelse($case->logs->where('stage', 8)->sortBy('created_at') as $log)
-                            @if(isset($actionMap[$log->is_completion]) && isset($log->user))
-                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] }}<br>
+                            @if(isset($log->user))
+                                {{ substr($log->created_at, 0, 16) }} {{ $log->user->name_initials }} {{ $actionMap[$log->is_completion] ?? '[ACTION: '.$log->is_completion.']' }}<br>
                             @endif
                         @empty
                         -
