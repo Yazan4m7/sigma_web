@@ -102,6 +102,24 @@
         .noteform .row {
             padding: 0;
         }
+        .form-control:focus, .selectpicker:focus, .btn:focus {
+            box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25) !important;
+            border-color: #888 !important;
+        }
+        .input-group-text {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+        }
+        .discount-section .form-check {
+            padding-left: 1.25rem; /* Align with other form elements */
+        }
+        .kt-form__actions {
+            padding: 1rem 0;
+            text-align: left;
+        }
+        .kt-form__actions .btn {
+            margin-right: 10px;
+        }
     </style>
 
     <style>
@@ -127,7 +145,7 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-<div class="container">
+<div class="container" style="max-width: 1200px;">
     <form style="padding:10px" class="kt-form card" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
@@ -157,17 +175,17 @@
             <div class="col-lg-4 col-md-6">
                 <div class="form-group">
                     <label>Case ID:</label>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <div class="input-group-prepend">
                             <span class="input-group-text">{{ substr($case->case_id, 0, 7) }}</span>
                         </div>
                         <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
-                        <input name="caseId2" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ substr($case->case_id, 7, 2) }}" />
-                        <input name="caseId3" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ substr($case->case_id, 9, 2) }}" />
+                        <input name="caseId2" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ substr($case->case_id, 7, 2) }}" />
+                        <input name="caseId3" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ substr($case->case_id, 9, 2) }}" />
                         <div class="input-group-prepend">
                             <span class="input-group-text">_</span>
                         </div>
-                        <input name="caseId4" class="form-control text-center" style="max-width: 70px;" type="text" value="{{ substr($case->case_id, 12, 4) }}" />
+                        <input name="caseId4" class="form-control text-center" style="min-width: 60px; flex-grow: 1;" type="text" value="{{ substr($case->case_id, 12, 4) }}" />
                     </div>
                 </div>
             </div>
@@ -708,10 +726,12 @@
                 @endphp
 
                 <div class="discount-section" style="background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input discountCB" id="discountCB" name="discountCB" value="on"
-                            {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                        <label class="form-check-label" for="discountCB">Apply a Discount</label>
+                    <div class="form-group mb-0">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input discountCB" id="discountCB" name="discountCB" value="on"
+                                {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
+                            <label class="form-check-label" for="discountCB">Apply a Discount</label>
+                        </div>
                     </div>
                     <div class="form-group row discountPortion mt-3"
                         style="{{ $discountExists ? '' : 'display:none' }}">
@@ -840,9 +860,9 @@
             @endif
 
             <div class="kt-portlet__foot">
-                <div class="kt-form__actions text-center">
-                    <button type="submit" class="btn btn-primary btn-lg">Update Case</button>
-                    <button type="reset" class="btn btn-secondary btn-lg">Reset</button>
+                <div class="kt-form__actions">
+                    <button type="submit" class="btn btn-primary">Update Case</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
                 </div>
             </div>
         </div>

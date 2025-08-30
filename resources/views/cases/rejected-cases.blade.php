@@ -2,6 +2,13 @@
 @section('content')
 
     <style>
+        .modal-footer {
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .modal-footer .btn {
+            margin: 5px;
+        }
         .tooltiptext {
             display: none;
         }
@@ -295,151 +302,41 @@
                                                                     @endforeach
                                                                 @endif
                                                             </div>
-                                                            <div class="modal-footer fullBtnsWidth" >
-                                                                <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-                                                                    @if(!isset($trashedCases))
-                                                                        <div class="row">
-                                                                            <!-------------------------
-                                                                                   ------ View Voucher ------
-                                                                                   -------------------------->
-                                                                            <div class="col-6 padding5px" >
-                                                                                <a  href="{{route('view-voucher',$case->id)}}">
-                                                                                    <button type="button" class="btn btn-info "><i
-                                                                                                class="fas fa-print"></i> View Voucher </button>
-                                                                                </a></div>
-
-                                                                            <!-------------------------
-                                                                            -------- View Case --------
-                                                                            -------------------------->
-                                                                            <div class="col-6 padding5px" >
-                                                                                <a  href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}">
-                                                                                    <button type="button" class="btn btn-info "><i
-                                                                                                class="far fa-file-alt"></i> View Case </button>
-                                                                                </a></div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <!-------------------------
-                                                                            ------- LOCK CASE -------
-                                                                            -------------------------->
-                                                                            @if(Auth()->user()->is_admin )
-                                                                                @if(!$case->locked)
-                                                                                    <div class="col-4 padding5px " >
-                                                                                        <a  href="{{route('lock-case',$case->id)}}">
-                                                                                            <button type="button" class=" btn btn-dark "><i
-                                                                                                        class="fas fa-lock"></i>
-                                                                                                Lock Case</button>
-                                                                                        </a></div>
-                                                                                @endif
-                                                                                @if($case->locked)
-                                                                                    <div class="col-4 padding5px " >
-                                                                                        <a  href="{{route('unlock-case',$case->id)}}">
-                                                                                            <button type="button" class=" btn btn-dark "><i
-                                                                                                        class="fas fa-lock-open"></i>
-                                                                                                Unlock Case
-                                                                                            </button>
-                                                                                        </a></div>
-                                                                                @endif
-                                                                            <!-------------------------
-                                                                                 ------ DELETE CASE ------
-                                                                                 -------------------------->
-                                                                                @if(!$case->locked)
-                                                                                    <div class="col-4 padding5px " >
-                                                                                        <a data-clientName="{{ $case->client->name }}"
-                                                                                           data-patientName="{{ $case->patient_name }}"
-                                                                                           style="color:red" onclick="caseDelConfirmation(event )" href="{{route('delete-case',$case->id)}}">
-                                                                                            <button type="button" class="  btn btn-danger "> <i
-                                                                                                        class="fas fa-trash"></i> Delete Case </button>
-                                                                                        </a></div>
-                                                                                @endif
-                                                                            @endif
-                                                                        <!-------------------------
-                                                                                  -------- Edit CASE --------
-                                                                                  -------------------------->
-                                                                            @if(Auth()->user()->is_admin ||
-                                                                            ($permissions && ($permissions->contains('permission_id', 102))) ||
-                                                                            ($permissions &&
-                                                                            ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115)))
-                                                                            || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))
-                                                                            )
-                                                                                @if(!$case->locked)
-
-                                                                                    <div class="col-4 padding5px" >
-                                                                                        <a  href="{{route('edit-case-view',$case->id)}}">
-                                                                                            <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Edit Case</button>
-                                                                                        </a></div>
-                                                                                @endif
-                                                                            @endif
-
-                                                                        </div>
-                                                                        <div class="row">
-                                                                        @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
-                                                                            <!-------------------------
-                                                                                  ------- Reject CASE -------
-                                                                                  -------------------------->
-                                                                                <div class="col-4 padding5px" >
-                                                                                    <a  href="{{route('reject-case-view',$case->id )}}">
-                                                                                        <button type="button" class="btn btn-outline-danger"><i
-                                                                                                    class="fas fa-times x2"></i>
-                                                                                            Reject case </button>
-                                                                                    </a></div>
+                                                            <div class="modal-footer">
+                                                                @if(!isset($trashedCases))
+                                                                    <a href="{{route('view-voucher',$case->id)}}" class="btn btn-info"><i class="fas fa-print"></i> View Voucher</a>
+                                                                    <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}" class="btn btn-info"><i class="far fa-file-alt"></i> View Case</a>
+                                                                    @if(Auth()->user()->is_admin)
+                                                                        @if(!$case->locked)
+                                                                            <a href="{{route('lock-case',$case->id)}}" class="btn btn-dark"><i class="fas fa-lock"></i> Lock Case</a>
+                                                                        @else
+                                                                            <a href="{{route('unlock-case',$case->id)}}" class="btn btn-dark"><i class="fas fa-lock-open"></i> Unlock Case</a>
                                                                         @endif
-                                                                        <!-------------------------
-                                                                                  ------- Repeat CASE -------
-                                                                                  -------------------------->
-                                                                            @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
-                                                                                <a class="dropdown-item"
-                                                                                   href="{{route('repeat-case-view',$case->id)}}"></a>
-                                                                                <div class="col-4 padding5px" >
-                                                                                    <a  href="{{route('repeat-case-view',$case->id)}}">
-                                                                                        <button type="button" class="btn btn-outline-warning "><i
-                                                                                                    class="fas fa-undo"></i>
-                                                                                            Repeat case </button>
-                                                                                    </a></div>
-                                                                            @endif
-                                                                        <!-------------------------
-                                                                                  ------- Modify CASE -------
-                                                                                  -------------------------->
-                                                                            @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
-                                                                                <div class="col-4 padding5px" >
-                                                                                    <a  href="{{route('modify-case-view',$case->id)}}">
-                                                                                        <button type="button" class="btn btn-outline-warning  "><i
-                                                                                                    class="fa fa-broom "></i>
-                                                                                            Modify case</button>
-                                                                                    </a></div>
-                                                                            @endif
-
-
-                                                                        <!-------------------------
-                                                                                  -------- REDO CASE --------
-                                                                                  -------------------------->
-                                                                            @if(!$case->delivered_to_client && !$case->locked)
-                                                                                @if (Auth()->user()->is_admin  || $permissions->contains('permission_id', 119))
-
-                                                                                    <div class="col-4 padding5px" >
-                                                                                        <a  href="{{route('redo-case-view',$case->id)}}">
-                                                                                            <button type="button" class="btn btn-outline-warning "><i
-                                                                                                        class="fa fa-broom "></i>
-                                                                                                Redo case </button>
-                                                                                        </a></div>
-                                                                                @endif
-                                                                            @endif
-                                                                        </div>
-                                                                    @else
-                                                                    <!-------------------------
-                                                                                ------ RESTORE CASE ------
-                                                                                -------------------------->
-                                                                        <div class="col-12 padding5px" >
-                                                                            <a  href="{{route('restore-case',$case->id)}}">
-                                                                                <button type="button" class="btn btn-danger ">Restore case </button>
-                                                                            </a></div>
+                                                                        @if(!$case->locked)
+                                                                            <a data-clientName="{{ $case->client->name }}" data-patientName="{{ $case->patient_name }}" style="color:white;" onclick="caseDelConfirmation(event)" href="{{route('delete-case',$case->id)}}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Case</a>
+                                                                        @endif
                                                                     @endif
-                                                                    <div class="col-12 padding5px" >
-                                                                        <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>
-                                                                    </div>
-                                                                </div>
-
-
+                                                                    @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
+                                                                        <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit Case</a>
+                                                                    @endif
+                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
+                                                                        <a href="{{route('reject-case-view',$case->id )}}" class="btn btn-outline-danger"><i class="fas fa-times x2"></i> Reject case</a>
+                                                                    @endif
+                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
+                                                                        <a href="{{route('repeat-case-view',$case->id)}}" class="btn btn-outline-warning"><i class="fas fa-undo"></i> Repeat case</a>
+                                                                    @endif
+                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
+                                                                        <a href="{{route('modify-case-view',$case->id)}}" class="btn btn-outline-warning"><i class="fa fa-broom"></i> Modify case</a>
+                                                                    @endif
+                                                                    @if(!$case->delivered_to_client && !$case->locked)
+                                                                        @if (Auth()->user()->is_admin  || $permissions->contains('permission_id', 119))
+                                                                            <a href="{{route('redo-case-view',$case->id)}}" class="btn btn-outline-warning"><i class="fa fa-broom"></i> Redo case</a>
+                                                                        @endif
+                                                                    @endif
+                                                                @else
+                                                                    <a href="{{route('restore-case',$case->id)}}" class="btn btn-danger">Restore case</a>
+                                                                @endif
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                             </div>
 
 

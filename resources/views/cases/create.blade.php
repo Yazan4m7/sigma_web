@@ -112,6 +112,7 @@
 
 
 
+<div class="container" style="max-width: 1200px;">
     <div class="card">
         @if (config('site_vars.environment') == 'testing')
             <form style="padding:0px" class="kt-form" method="POST" enctype="multipart/form-data"
@@ -154,15 +155,15 @@
             <div class="col-lg-4 col-md-6">
                 <div class="form-group">
                     <label class="bold">Case ID:</label>
-                    <div class="input-group">
+                    <div class="input-group flex-nowrap">
                         <div class="input-group-prepend">
                             <span class="input-group-text">{{ Auth()->user()->id . '_' . now()->format('Y') }}</span>
                         </div>
                         <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
-                        <input name="caseId2" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ now()->format('m') }}" required />
-                        <input name="caseId3" class="form-control text-center" style="max-width: 50px;" type="text" value="{{ now()->format('d') }}" required />
+                        <input name="caseId2" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ now()->format('m') }}" required />
+                        <input name="caseId3" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ now()->format('d') }}" required />
                         <div class="input-group-prepend"><span class="input-group-text">_</span></div>
-                        <input name="caseId4" class="form-control" style="max-width: 70px;" placeholder="0000" type="text" required />
+                        <input name="caseId4" class="form-control" style="min-width: 60px; flex-grow: 1;" placeholder="0000" type="text" required />
                     </div>
                     <small class="mandatorySmallTag">* Mandatory</small>
                 </div>
@@ -426,7 +427,8 @@
             </div>
         </div>
         </form>
-
+    </div>
+</div>
         <!-- TEETH PICK DIALOG -->
 
         <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"

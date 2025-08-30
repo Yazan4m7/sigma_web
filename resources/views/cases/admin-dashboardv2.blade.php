@@ -32,7 +32,13 @@
     <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet">
 
    <style>
-
+    .modal-footer {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .modal-footer .btn {
+        margin: 5px;
+    }
     .YSH-button {
     text-decoration: none;
     line-height: 1;
@@ -681,110 +687,30 @@
                                                                 @endforeach
                                                             @endif
                                                         </div>
-                                                        <div class="modal-footer fullBtnsWidth">
-                                                            <div class="row btnsRow"
-                                                                 style=" margin-right: 0px; margin-left: 0px;width:100%">
-                                                                <div class="col-md-3 col-sm-12 padding5px">
-                                                                    <a
-                                                                        href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}">
-                                                                        <button type="button"
-                                                                                class="btn btn-info "><i
-                                                                                class="fas fa-eye"></i> View
-                                                                        </button>
-                                                                    </a>
-                                                                </div>
-
-                                                                @if ($key == 'milling')
-                                                                    <div class="col-md-6 col-sm-12 padding5px">
-                                                                        <button type="button" class="btn btn-success"
-                                                                                data-dismiss="modal"
-                                                                                onclick="openModal('milling',true,'{{ $case->id }}')">
-                                                                            <i class="fas fa-user-plus"></i> Assign To
-                                                                            Me..
-                                                                        </button>
-                                                                    </div>
-                                                                @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
-                                                                    <div class="col-md-6 col-sm-12 padding5px">
-                                                                        <button type="button" class="btn btn-success"
-                                                                                data-dismiss="modal"
-                                                                                onclick="openModal('{{ $key }}',true,'{{ $case->id }}')">
-                                                                            <i class="fas fa-user-plus"></i> Assign To
-                                                                            Me..
-                                                                        </button>
-                                                                    </div>
-                                                                @else
-                                                                    <div class="col-md-6 col-sm-12 padding5px">
-                                                                        <button type="submit" class="btn btn-success"
-                                                                                style="width:100%"><i
-                                                                                class="fas fa-user-plus"></i>
-                                                                            {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}
-                                                                        </button>
-                                                                    </div>
-                                                                @endif
-                                                                <div class="col-md-3 col-sm-12 padding5px"><a
-                                                                        href="{{ route('edit-case-view', $case->id) }}">
-                                                                        <button type="button"
-                                                                                class="btn btn-warning "
-                                                                            {{ $canEditCase ? '' : 'disabled' }}>
-                                                                            <i class="fas fa-edit"></i> Edit Case
-                                                                        </button>
-                                                                    </a></div>
-                                                                @if ($key == 'qc')
-                                                                    <div class="col-12 padding5px">
-                                                                        <a
-                                                                            href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}">
-                                                                            <button type="button"
-                                                                                    class="btn btn-info ">
-                                                                                <i
-                                                                                    class="fa-solid fa-arrow-trend-up"></i>Complete
-                                                                            </button>
-                                                                        </a>
-                                                                    </div>
-                                                                @endif
-
-
-                                                                @if ($key == 'delivery')
-                                                                    @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
-                                                                        @if ($case->jobs[0]->assignee == null)
-                                                                            <div class="col-12 padding5px">
-                                                                                <button type="button"
-                                                                                            class="btn btn-warning"
-                                                                                            onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)">
-                                                                                        Assign to..
-                                                                                    </button>
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="col-12 padding5px">
-                                                                                <button type="button"
-                                                                                            class="btn btn-warning"
-                                                                                            onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)">
-                                                                                        Re-Assign..
-                                                                                    </button>
-                                                                            </div>
-                                                                        @endif
+                                                        <div class="modal-footer">
+                                                            <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fas fa-eye"></i> View</a>
+                                                            @if ($key == 'milling')
+                                                                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('milling',true,'{{ $case->id }}')"><i class="fas fa-user-plus"></i> Assign To Me..</button>
+                                                            @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
+                                                                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('{{ $key }}',true,'{{ $case->id }}')"><i class="fas fa-user-plus"></i> Assign To Me..</button>
+                                                            @else
+                                                                <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
+                                                            @endif
+                                                            <a href="{{ route('edit-case-view', $case->id) }}" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"><i class="fas fa-edit"></i> Edit Case</a>
+                                                            @if ($key == 'qc')
+                                                                <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fa-solid fa-arrow-trend-up"></i>Complete</a>
+                                                            @endif
+                                                            @if ($key == 'delivery')
+                                                                @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
+                                                                    @if ($case->jobs[0]->assignee == null)
+                                                                        <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)">Assign to..</button>
+                                                                    @else
+                                                                        <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)">Re-Assign..</button>
                                                                     @endif
                                                                 @endif
-                                                                @if ($key == 'delivery')
-                                                                    <div class="col-12 padding5px">
-                                                                        <a
-                                                                            href="{{ route('view-voucher', $case->id) }}">
-                                                                            <button type="button"
-                                                                                    class="btn btn-info ">
-                                                                                <i class="fas fa-print"></i> Print
-                                                                                Voucher
-                                                                            </button>
-                                                                        </a>
-                                                                    </div>
-                                                                @endif
-                                                                <div class="col-12 padding5px">
-                                                                    <button type="button" class="btn btn-secondary "
-                                                                            data-dismiss="modal" style="width:100%">
-                                                                        Cancel
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-
-
+                                                                <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-info"><i class="fas fa-print"></i> Print Voucher</a>
+                                                            @endif
+                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -994,149 +920,47 @@
                                                                 @endif
 
                                                             </div>
-                                                            <div class="modal-footer fullBtnsWidth">
-                                                                <div class="row btnsRow"
-                                                                     style=" margin-right: 0px; margin-left: 0px;width:100%">
-                                                                    @if ($key == 'delivery')
-                                                                        <div class="col-12 padding5px">
-
-                                                                            <a class="dropdown-item"
-                                                                               href="{{ route('delivered-in-box', $case->id) }}">
-                                                                                <button type="button"
-                                                                                        class="btn btn-outline-info"
-                                                                                        style="width:100%">Delivered In
-                                                                                    Box
-                                                                                </button>
-                                                                            </a>
-                                                                        </div>
-                                                                    @endif
-                                                                    <div class="col-3 padding5px">
-                                                                        <a
-                                                                            href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}">
-                                                                            <button type="button"
-                                                                                    class="btn btn-info ">
-                                                                                <i class="fas fa-eye"></i> View
-                                                                            </button>
-                                                                        </a>
-                                                                    </div>
-
-                                                                    <div class="col-6 padding5px">
-                                                                        @php
-                                                                            $isAdmin = Auth()->user()->is_admin;
-                                                                            $canBeFinished = true;
-                                                                            $isUserCase = false;
+                                                            <div class="modal-footer">
+                                                                @if ($key == 'delivery')
+                                                                    <a href="{{ route('delivered-in-box', $case->id) }}" class="btn btn-outline-info">Delivered In Box</a>
+                                                                @endif
+                                                                <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fas fa-eye"></i> View</a>
+                                                                @php
+                                                                    $isAdmin = Auth()->user()->is_admin;
+                                                                    $canBeFinished = true;
+                                                                    $isUserCase = false;
+                                                                    $canComplete = false;
+                                                                    if ($case->jobs->where('stage', $stage['numericStage'])->first() && $case->jobs->where('stage', $stage['numericStage'])->first()->assignee == Auth()->user()->id) {
+                                                                        $canComplete = true;
+                                                                        $isUserCase = true;
+                                                                    }
+                                                                    if ($key == 'finishing') {
+                                                                        if ($notReadyA || !$abutmentsReceived) {
                                                                             $canComplete = false;
-                                                                            if (
-                                                                                $case->jobs
-                                                                                    ->where(
-                                                                                        'stage',
-                                                                                        $stage['numericStage'],
-                                                                                    )
-                                                                                    ->first() &&
-                                                                                $case->jobs
-                                                                                    ->where(
-                                                                                        'stage',
-                                                                                        $stage['numericStage'],
-                                                                                    )
-                                                                                    ->first()->assignee ==
-                                                                                    Auth()->user()->id
-                                                                            ) {
-                                                                                $canComplete = true;
-                                                                                $isUserCase = true;
-                                                                            }
-                                                                            if ($key == 'finishing') {
-                                                                                if (
-                                                                                    $notReadyA ||
-                                                                                    !$abutmentsReceived
-                                                                                ) {
-                                                                                    $canComplete = false;
-                                                                                    $canBeFinished = false;
-                                                                                }
-                                                                            }
-                                                                        @endphp
-                                                                        @if ($isAdmin && $canBeFinished && !$isUserCase)
-                                                                            <a class=""
-                                                                               href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}">
-                                                                                <button type="button"
-                                                                                        class="btn btn-success">Override
-                                                                                    Complete
-                                                                                </button>
-                                                                            </a>
-                                                                        @else
-                                                                            <button type="submit"
-                                                                                    class="btn btn-success"
-                                                                                    style="width:100%"
-                                                                                {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Case cannot be completed' }}</button>
-                                                                        @endif
-                                                                    </div>
-                                                                    <div class="col-3 padding5px"><a
-                                                                            href="{{ route('edit-case-view', $case->id) }}">
-                                                                            <button type="button"
-                                                                                    class="btn btn-warning "
-                                                                                {{ $canEditCase ? '' : 'disabled' }}>
-                                                                                Edit Case
-                                                                            </button>
-                                                                        </a></div>
-
-                                                                    @if ($key == 'milling')
-                                                                        <div class="col-12 padding5px">
-                                                                            <button type="button"
-                                                                                    class="btn btn-dark "
-                                                                                    data-toggle="modal"
-                                                                                    data-target="#MEX{{ $case->id }}"
-                                                                                    data-dismiss="modal"
-                                                                                    style="width:100%">
-                                                                                Externally Milled
-                                                                            </button>
-                                                                        </div>
-                                                                </div>
+                                                                            $canBeFinished = false;
+                                                                        }
+                                                                    }
+                                                                @endphp
+                                                                @if ($isAdmin && $canBeFinished && !$isUserCase)
+                                                                    <a href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-success">Override Complete</a>
+                                                                @else
+                                                                    <button type="submit" class="btn btn-success" {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Cannot be completed' }}</button>
+                                                                @endif
+                                                                <a href="{{ route('edit-case-view', $case->id) }}" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}">Edit Case</a>
+                                                                @if ($key == 'milling')
+                                                                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#MEX{{ $case->id }}" data-dismiss="modal">Externally Milled</button>
                                                                 @endif
                                                                 @if ($key == 'delivery')
-                                                                    <div class="col-12 padding5px">
-
-                                                                        <a class="dropdown-item"
-                                                                           href="{{ route('view-voucher', $case->id) }}">
-                                                                            <button type="button"
-                                                                                    class="btn btn-outline-info">Print
-                                                                                voucher
-                                                                            </button>
-                                                                        </a>
-                                                                    </div>
+                                                                    <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-outline-info">Print voucher</a>
                                                                     @if ($case->delivered_to_client == 1)
                                                                         @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 9)))
-                                                                            <div class="col-12 padding5px">
-                                                                                <a class="dropdown-item"
-                                                                                   href="{{ route('receive-voucher', $case->id) }}">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-outline-secondary">
-                                                                                        Receive Voucher
-                                                                                    </button>
-                                                                                </a>
-
-                                                                            </div>
+                                                                            <a href="{{ route('receive-voucher', $case->id) }}" class="btn btn-outline-secondary">Receive Voucher</a>
                                                                         @endif
                                                                     @endif
                                                                 @endif
-                                                                <div class="col-12 padding5px">
-                                                                    <a class=""
-                                                                       href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}">
-                                                                        <button type="button"
-                                                                                class="btn btn-outline-danger">Reset To
-                                                                            Waiting
-                                                                        </button>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="col-12 padding5px">
-                                                                    <button type="button" class="btn btn-secondary "
-                                                                            data-dismiss="modal"
-                                                                            style="width:100%">
-                                                                        Cancel
-                                                                    </button>
-                                                                </div>
+                                                                <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-outline-danger">Reset To Waiting</a>
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                             </div>
-
-
-                                                        </div>
                                                     </div>
 
                                                 </form>

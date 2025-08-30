@@ -55,71 +55,62 @@
         </div>
         </div>
 
+<div class="container" style="max-width: 1200px;">
+    <div class="card">
     <form style="" class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
     @csrf
     <div>
     <!-- CASE INFO -->
-
-        <div class="row" style="padding-left: 10px;padding-top: 10px">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-
-                    <select  class="selectpicker"  name="doctor"  data-container="body" data-live-search="true"  title="Select a doctor" disabled  >
-                        @foreach($clients as $client)
-                            <option value="{{$client->id}}" {{$case->client->id == $client->id ? "selected" : ""}} >{{$client->name}}</option>
-                        @endforeach
-
-                    </select>
-
-                </div> </div>
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label >Patient name:</label></div>
-                <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name" value="{{$case->patient_name}}" disabled /></div>
-            </div>
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-                    <label >{{$case->case_id}}</label>
-
-                </div>
-
-            </div>
-
-        </div>
-
-<br/>
         <div class="row">
-
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
-                <div class="col-md-12 col-xs-12">
-                    <input class="form-control SDTP" name="delivery_date"  type="text"   value="{{$case->initial_delivery_date}}" required disabled/>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Doctor:</label>
+                    <select class="selectpicker" name="doctor" data-live-search="true" title="Select a doctor" disabled>
+                        @foreach($clients as $client)
+                            <option value="{{$client->id}}" {{$case->client->id == $client->id ? "selected" : ""}}>{{$client->name}}</option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
-                <div class="col-md-12 col-xs-12">
-                    <select class="select selectpicker" name="tags[]" multiple data-mdb-placeholder="Tags" multiple disabled>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Patient name:</label>
+                    <input class="form-control" type="text" name="patient_name" value="{{$case->patient_name}}" disabled />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Case ID:</label>
+                    <input class="form-control" type="text" value="{{$case->case_id}}" disabled />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Delivery Date:</label>
+                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{$case->initial_delivery_date}}" required disabled/>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Tags:</label>
+                    <select class="select selectpicker" name="tags[]" multiple data-mdb-placeholder="Tags" disabled>
                         @foreach($tags as $tag)
                             <option style="color:{{$tag->color}}" value="{{$tag->id}}" {{in_array($tag->id ,$tagsAsArray) ? 'selected' : ''}}>{{$tag->text}}</option>
                         @endforeach
                     </select>
-
                 </div>
             </div>
-            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
-                <div class="col-md-12 col-xs-12"> <select  class="form-control" name="impression_type" type="text"  data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true" disabled >
-
+            <div class="col-lg-4 col-md-6">
+                <div class="form-group">
+                    <label>Impression Type:</label>
+                    <select class="form-control" name="impression_type" type="text" data-live-search="true" title="Select impression" disabled>
                         @foreach($impressionTypes as $impression)
-                            <option value="{{$impression->id}}" {{ $impression->id == $case->impression_type ? ' selected' : ' ' }}>
+                            <option value="{{$impression->id}}" {{ $impression->id == $case->impression_type ? ' selected' : '' }}>
                                 {{$impression->name}}
                             </option>
                         @endforeach
-                    </select></div>
+                    </select>
+                </div>
             </div>
         </div>
 
@@ -573,6 +564,8 @@
         </div>
         </div></div>
     </form>
+    </div>
+</div>
 
 
 
