@@ -32,6 +32,8 @@ Route::middleware('ViewPayments')->group(function (): void {
 
 Route::middleware(['web', 'auth'])->group(function (): void {
 
+    Route::get('/docs/{filename}', [App\Http\Controllers\HomeController::class, 'showDoc'])->name('docs.show');
+
     Route::get('/oops', [App\Http\Controllers\SystemController::class, 'oopsScreen'])->name('oops-screen');
 
     Route::get('/home', [App\Http\Controllers\ReportsController::class, 'homeScreen'])->name('homeScreen');
