@@ -162,6 +162,11 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
 
         Route::get('/createDummyCase/{id?}/{amount?}', [App\Http\Controllers\CaseController::class, 'createDummyCase'])->name('createDummyCase');
+        
+        // Configuration routes
+        Route::get('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'index'])->name('configuration.index');
+        Route::post('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'update'])->name('configuration.update');
+        Route::get('/admin/configuration/reset', [App\Http\Controllers\ConfigurationController::class, 'reset'])->name('configuration.reset');
 
             });
 //// External Labs ROUTES
