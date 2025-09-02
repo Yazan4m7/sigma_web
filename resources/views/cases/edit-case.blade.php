@@ -22,11 +22,12 @@
             display: flex !important;
             align-items: center !important;
             min-height: 60px;
-            padding: 10px 15px !important;
+            padding: 12px 16px !important;
             border: 1px solid #e2e8f0 !important;
             border-radius: 12px !important;
             background: #ffffff;
             box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            gap: 12px;
         }
         
         .row-item .kt-form__group--inline {
@@ -35,6 +36,7 @@
             flex-direction: column;
             justify-content: center;
             height: 100%;
+            flex: 1;
         }
         
         .row-item .kt-form__label {
@@ -57,6 +59,7 @@
             border: 1px solid #d1d5db;
             border-radius: 6px;
             transition: all 0.2s ease;
+            width: 100%;
         }
         
         .row-item .form-control:focus {
@@ -95,32 +98,34 @@
         .status-badge {
             display: inline-flex;
             align-items: center;
-            padding: 4px 12px;
+            justify-content: center;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             white-space: nowrap;
-            max-width: 100%;
+            min-width: 80px;
+            text-align: center;
         }
         
         .status-badge.waiting {
-            background: #fef2f2;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             color: #dc2626;
-            border: 1px solid #fecaca;
+            border: 1px solid #f87171;
         }
         
         .status-badge.processing {
-            background: #eff6ff;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             color: #2563eb;
-            border: 1px solid #bfdbfe;
+            border: 1px solid #93c5fd;
         }
         
         .status-badge.completed {
-            background: #f0f9ff;
-            color: #0891b2;
-            border: 1px solid #bae6fd;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #059669;
+            border: 1px solid #6ee7b7;
         }
         
         /* MODERN TOGGLE SWITCHES */
@@ -129,6 +134,7 @@
             align-items: center;
             justify-content: center;
             height: 38px;
+            width: 100%;
         }
         
         .style-toggle {
@@ -139,6 +145,8 @@
             padding: 2px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid #d1d5db;
+            width: 100%;
+            height: 36px;
         }
         
         .style-toggle input[type="radio"] {
@@ -157,10 +165,13 @@
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 16px;
             z-index: 2;
-            min-width: 50px;
+            flex: 1;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .style-toggle input[type="radio"]:checked + .style-toggle-option {
@@ -197,6 +208,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s ease;
+            flex-shrink: 0;
         }
         
         .row-item .btn-danger:hover {
@@ -209,31 +221,53 @@
         .row-item .col-md-2 {
             min-width: 0;
             flex: 0 0 auto;
+            width: auto;
+            padding: 0;
         }
         
         .row-item .col-md-1 {
             min-width: 0;
             flex: 0 0 auto;
+            width: auto;
+            padding: 0;
         }
         
-        /* Ensure proper spacing */
-        .row-item > [class*="col-"] {
-            padding-left: 8px;
-            padding-right: 8px;
+        /* Specific column widths for better alignment */
+        .row-item .units-col {
+            flex: 0 0 140px;
         }
         
-        .row-item > [class*="col-"]:first-child {
-            padding-left: 0;
+        .row-item .jobtype-col {
+            flex: 0 0 120px;
         }
         
-        .row-item > [class*="col-"]:last-child {
-            padding-right: 0;
+        .row-item .material-col {
+            flex: 0 0 120px;
         }
+        
+        .row-item .type-col {
+            flex: 0 0 120px;
+        }
+        
+        .row-item .color-col {
+            flex: 0 0 80px;
+        }
+        
+        .row-item .style-col {
+            flex: 0 0 120px;
+        }
+        
+        .row-item .status-col {
+            flex: 0 0 100px;
+        }
+        
+        .row-item .delete-col {
+            flex: 0 0 50px;
+        }
+        
         @media screen and (max-width: 991px) {
             .modal-content .modal-footer button {
                 margin: 0;
-                /*padding-left: 0px;*/
-                /*padding-right: 2px;*/
                 width: auto;
                 white-space: break-spaces;
             }
@@ -250,7 +284,6 @@
             margin: 0;
             width: 100%;
             height: 100%;
-            /* change this from auto */
             display: block;
         }
 
@@ -433,10 +466,10 @@
                                     style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
                                     <input type="hidden" name="job_id" value="{{ $job->id }}" />
 
-                                    <div class="col-md-2">
-                                        <div class="">
+                                    <div class="units-col">
+                                        <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
-                                                <label class="kt-label m-label--single"></label>
+                                                <label class="kt-label m-label--single">Units:</label>
                                             </div>
                                             <input type="hidden" name="r" id="repeaterID" class="repeaterName" />
 
@@ -448,17 +481,15 @@
                                                 onclick="preOpenDialog(this,{{ $job->id }})">
                                                 {{ $job->unit_num }}
                                             </button>
-
                                         </div>
-
                                     </div>
-                                    <div class="col-md-2">
+                                    
+                                    <div class="jobtype-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label class="kt-label m-label--single">Job type:</label>
                                             </div>
                                             <div class="kt-form__control">
-
                                                 <select {{ $job->jobType->id == 6 ? 'disabled' : '' }}
                                                     class="form-control" id="jobType"
                                                     name="jobType{{ $job->id }}"
@@ -475,18 +506,19 @@
                                                         value="{{ $job->jobType->id }}">
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    
+                                    <div class="material-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Material:</label>
                                             </div>
                                             <div class="kt-form__control">
                                                 <select {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                    class="form-control" id="material_id"
-                                                    name="material_id{{ $job->id }}">
+                                                    class="form-control material-dropdown" id="material_id{{ $job->id }}"
+                                                    name="material_id{{ $job->id }}"
+                                                    onchange="loadTypesForMaterial(this, {{ $job->id }})">
 
                                                     @foreach ($materials as $m)
                                                         <option value="{{ $m->id }}"
@@ -500,10 +532,10 @@
                                                         value="{{ $job->material->id }}">
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    
+                                    <div class="type-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Type:</label>
@@ -532,7 +564,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
+                                    
+                                    <div class="color-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Color:</label>
@@ -588,10 +621,10 @@
                                                         value="{{ $job->color }}">
                                                 @endif
                                             </div>
-
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    
+                                    <div class="style-col">
                                         <div class="kt-form__group--inline"
                                             style="display:{{ $job->style == 'None' ? 'None' : 'Block' }}">
                                             <div class="kt-form__label">
@@ -620,7 +653,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1" style="text-align: center;">
+                                    
+                                    <div class="status-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Status:</label>
@@ -641,7 +675,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
+                                    
+                                    <div class="delete-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>&nbsp;</label>
@@ -658,7 +693,7 @@
                                         <div class="col-md-4">
                                             @foreach ($job->abutmentDelivery as $delivery)
                                                 <p style="margin-bottom: 2px;">{{ $delivery->implant->name ?? 'None' }} -
-                                                    {{ $delivery->abutment->name ?? 'None' }} -
+                                                    {{ $delivery->abut ment->name ?? 'None' }} -
                                                     {{ $delivery->code ?? 'None' }} </p>
                                             @endforeach
                                         </div>
@@ -669,9 +704,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <a href="javascript:;" data-repeater-create="" class="btn btn-info  btn-sm" id="addJobBtn" >
-                        <i class="fa fa-plus-square"></i> Add
-                    </a> -->
         </div>
 
         <br>
@@ -693,19 +725,20 @@
                             <div data-repeater-item class="form-group row align-items-center row-item"
                                 style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
 
-
-                                <div class="col-md-2">
-                                    <div class="kt-form__label">
-                                        <label class="kt-label m-label--single bold">Units:</label>
+                                <div class="units-col">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label class="kt-label m-label--single bold">Units:</label>
+                                        </div>
+                                        <input type="hidden" name="units" id="units" class="hiddenUnitsInput"
+                                            required>
+                                        <button type="button" class="btn btn-secondary slctUnitsBtn" data-toggle="modal"
+                                            data-target="#unitsDialog2" name="openDialogBtn"
+                                            onclick="preOpenDialog2(this)">Select Units</button>
                                     </div>
-                                    <input type="hidden" name="units" id="units" class="hiddenUnitsInput"
-                                        required>
-                                    <button type="button" class="btn btn-secondary slctUnitsBtn" data-toggle="modal"
-                                        data-target="#unitsDialog2" name="openDialogBtn"
-                                        onclick="preOpenDialog2(this)">Select Units</button>
-
                                 </div>
-                                <div class="col-md-2">
+                                
+                                <div class="jobtype-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label class="kt-label m-label--single">Job type:</label>
@@ -718,17 +751,17 @@
                                                 @endforeach
                                             </select>
                                         </div>
-
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                
+                                <div class="material-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Material:</label>
                                         </div>
                                         <div class="kt-form__control">
-                                            <select class="form-control" id="material_id" name="material_id">
-
+                                            <select class="form-control material-dropdown-new" id="material_id" name="material_id"
+                                                onchange="loadTypesForNewJob(this)">
                                                 @foreach ($materials as $m)
                                                     <option value="{{ $m->id }}">
                                                         {{ $m->name }}
@@ -736,10 +769,10 @@
                                                 @endforeach
                                             </select>
                                         </div>
-
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                
+                                <div class="type-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Type:</label>
@@ -751,7 +784,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1">
+                                
+                                <div class="color-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Color:</label>
@@ -781,10 +815,10 @@
                                                 <option value="BL4">BL4</option>
                                             </select>
                                         </div>
-
                                     </div>
                                 </div>
-                                <div class="col-md-2">
+                                
+                                <div class="style-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Style:</label>
@@ -805,9 +839,8 @@
                                     </div>
                                 </div>
 
-
                                 <!-- DELETE BUTTON -->
-                                <div class="col-md-1">
+                                <div class="delete-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>&nbsp;</label>
@@ -1493,6 +1526,12 @@
                     abutmentBox.parent().parent().parent().hide();
                     implantBox.parent().parent().parent().hide();
                 }
+                
+                // Load types for the material when job type changes
+                var materialSelect = $('#material_id' + jobId);
+                if (materialSelect.length > 0) {
+                    loadTypesForMaterial(materialSelect[0], jobId);
+                }
             }
 
 
@@ -1903,44 +1942,6 @@
                 var openDialogBtn = $("[name='" + repeaterName2 + "[openDialogBtn]']");
                 console.log("New job type changed " + $(jobTypeDD).find(":selected").val());
                 
-                // Handle Type dropdown for new job
-                var typeBox = $("[name='" + repeaterName2 + "[type_id]']");
-                if (typeBox.length > 0) {
-                    // Clear and disable type dropdown initially
-                    typeBox.empty();
-                    typeBox.append('<option value="">Select Type</option>');
-                    typeBox.prop('disabled', true);
-                    
-                    // Set up material change handler to load types
-                    materialBox.off('change.typeLoader').on('change.typeLoader', function() {
-                        var materialId = $(this).val();
-                        typeBox.empty();
-                        typeBox.append('<option value="">Select Type</option>');
-                        
-                        if (!materialId) {
-                            typeBox.prop('disabled', true);
-                            typeBox.append('<option value="" disabled>No Material Selected</option>');
-                            return;
-                        }
-                        
-                        var selectedMaterial = materials.find(m => m.id == materialId);
-                        if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
-                            typeBox.prop('disabled', false);
-                            selectedMaterial.types.forEach(function(type) {
-                                typeBox.append('<option value="' + type.id + '">' + type.name + '</option>');
-                            });
-                        } else {
-                            typeBox.prop('disabled', true);
-                            typeBox.append('<option value="" disabled>No Types Available</option>');
-                        }
-                    });
-                    
-                    // If material is already selected, trigger the change event
-                    if (materialBox.val()) {
-                        materialBox.trigger('change.typeLoader');
-                    }
-                }
-                
                 materialChanged();
 
                 if ($(jobTypeDD).find(":selected").val() == 6) {
@@ -2164,13 +2165,12 @@
                 console.log('Type changed for job', jobId, 'to:', $(typeSelect).val());
             }
 
-            // Function to load types when material is changed
+            // Function to load types when material is changed for existing jobs
             function loadTypesForMaterial(materialSelect, jobId) {
                 var materialId = $(materialSelect).val();
                 var typeSelect = $('#type_id' + jobId);
                 
-                console.log('Loading types for material:', materialId, 'jobId:', jobId);
-                console.log('Type select found:', typeSelect.length > 0 ? 'Yes' : 'No');
+                console.log('Loading types for existing job material:', materialId, 'jobId:', jobId);
 
                 // Clear current options
                 typeSelect.empty();
@@ -2184,9 +2184,6 @@
                 // Get material data from controller - materials already loaded with types
                 var materials = @json($materials);
                 var selectedMaterial = materials.find(m => m.id == materialId);
-                
-                console.log('Selected material:', selectedMaterial);
-                console.log('Material types:', selectedMaterial ? selectedMaterial.types : 'No material found');
 
                 if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
                     // Enable dropdown and populate with types
@@ -2196,34 +2193,19 @@
                             typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
                         }
                     });
-                    console.log('Added', selectedMaterial.types.filter(t => t.is_enabled).length, 'types to dropdown');
                 } else {
                     // No types available - disable and show message
                     typeSelect.prop('disabled', true);
                     typeSelect.append('<option value="" disabled>No Types Available</option>');
-                    console.log('No types available for material');
                 }
             }
-
-            // Update existing jobTypeChanged function to also handle types
-            var originalJobTypeChanged = window.jobTypeChanged;
-            window.jobTypeChanged = function(jobTypeDD, jobId) {
-                // Call original function first
-                if (originalJobTypeChanged) {
-                    originalJobTypeChanged(jobTypeDD, jobId);
-                }
-
-                // Handle type dropdown when job type changes
-                var materialSelect = $("[name='material_id" + jobId + "']");
-                if (materialSelect.length > 0) {
-                    loadTypesForMaterial(materialSelect[0], jobId);
-                }
-            };
 
             // Function to handle new job material changes
             function loadTypesForNewJob(materialSelect) {
                 var materialId = $(materialSelect).val();
                 var typeSelect = $(materialSelect).closest('.row-item').find('select[name="type_id"]');
+
+                console.log('Loading types for new job material:', materialId);
 
                 // Clear current options
                 typeSelect.empty();
@@ -2243,7 +2225,9 @@
                     // Enable dropdown and populate with types
                     typeSelect.prop('disabled', false);
                     selectedMaterial.types.forEach(function(type) {
-                        typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                        if (type.is_enabled) { // Only show enabled types
+                            typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                        }
                     });
                 } else {
                     // No types available - disable and show message
@@ -2259,8 +2243,6 @@
                 // Debug materials data
                 var materials = @json($materials);
                 console.log('Materials loaded:', materials.length, 'materials');
-                console.log('First material example:', materials[0]);
-                console.log('Materials with types:', materials.filter(m => m.types && m.types.length > 0).length);
                 
                 // Handle material changes for existing jobs
                 $('select[name^="material_id"]').on('change', function() {
@@ -2277,15 +2259,14 @@
                 });
 
                 // Initialize type dropdowns on page load for existing jobs
-                // Only initialize if type dropdown is empty or shows "Select Type"
                 $('select[name^="material_id"]').each(function() {
                     var name = $(this).attr('name');
                     var jobId = name.replace('material_id', '');
                     var typeSelect = $('#type_id' + jobId);
                     
-                    // Only reload if type dropdown seems uninitialized
-                    if (typeSelect.length > 0 && (typeSelect.find('option').length <= 1 || typeSelect.find('option:first').text() === 'Select Type')) {
-                        console.log('Initializing types for job:', jobId);
+                    // Only reload if type dropdown seems uninitialized or has no selected value
+                    if (typeSelect.length > 0) {
+                        console.log('Initializing types for existing job:', jobId);
                         loadTypesForMaterial(this, jobId);
                     }
                 });
