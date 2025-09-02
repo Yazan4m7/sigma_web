@@ -15,19 +15,219 @@
             font-size: 0.9rem;
             font-weight: 400;
         }
+        
+        /* IMPROVED JOB ROW STYLING */
         .row-item {
             margin-bottom: 1rem;
+            display: flex !important;
+            align-items: center !important;
+            min-height: 60px;
+            padding: 10px 15px !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 12px !important;
+            background: #ffffff;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
         }
+        
         .row-item .kt-form__group--inline {
             margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
         }
+        
+        .row-item .kt-form__label {
+            margin-bottom: 4px;
+        }
+        
+        .row-item .kt-form__label > label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
         .row-item .form-control {
-            height: calc(1.5em + .75rem + 2px);
-            padding: .375rem .75rem;
-            font-size: .875rem;
+            height: 38px !important;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.875rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
+        
+        .row-item .form-control:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
         .row-item .btn {
-            padding: .375rem .75rem;
+            padding: 0.5rem 0.75rem;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Units Button Styling */
+        .slctUnitsBtn {
+            width: 100% !important;
+            height: 38px !important;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: 1px solid #d1d5db;
+            background: #f8fafc;
+            color: #374151;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .slctUnitsBtn:hover {
+            background: #f1f5f9;
+            border-color: #9ca3af;
+            transform: translateY(-1px);
+        }
+        
+        /* STATUS BADGES */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            max-width: 100%;
+        }
+        
+        .status-badge.waiting {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+        
+        .status-badge.processing {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+        
+        .status-badge.completed {
+            background: #f0f9ff;
+            color: #0891b2;
+            border: 1px solid #bae6fd;
+        }
+        
+        /* MODERN TOGGLE SWITCHES */
+        .style-toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+        }
+        
+        .style-toggle {
+            position: relative;
+            display: inline-flex;
+            background: #e5e7eb;
+            border-radius: 20px;
+            padding: 2px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #d1d5db;
+        }
+        
+        .style-toggle input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .style-toggle-option {
+            position: relative;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px;
+            z-index: 2;
+            min-width: 50px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .style-toggle input[type="radio"]:checked + .style-toggle-option {
+            color: #ffffff;
+        }
+        
+        .style-toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: calc(50% - 2px);
+            height: calc(100% - 4px);
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+        }
+        
+        .style-toggle input[type="radio"]:nth-child(2):checked ~ .style-toggle-slider {
+            transform: translateX(calc(100% + 2px));
+        }
+        
+        /* Delete Button Styling */
+        .row-item .btn-danger {
+            background: #fee2e2;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            width: 38px;
+            height: 38px;
+            border-radius: 6px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .row-item .btn-danger:hover {
+            background: #fecaca;
+            border-color: #f87171;
+            transform: translateY(-1px);
+        }
+        
+        /* Column Responsive Widths */
+        .row-item .col-md-2 {
+            min-width: 0;
+            flex: 0 0 auto;
+        }
+        
+        .row-item .col-md-1 {
+            min-width: 0;
+            flex: 0 0 auto;
+        }
+        
+        /* Ensure proper spacing */
+        .row-item > [class*="col-"] {
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        
+        .row-item > [class*="col-"]:first-child {
+            padding-left: 0;
+        }
+        
+        .row-item > [class*="col-"]:last-child {
+            padding-right: 0;
         }
         @media screen and (max-width: 991px) {
             .modal-content .modal-footer button {
@@ -397,21 +597,22 @@
                                             <div class="kt-form__label">
                                                 <label>Style:</label>
                                             </div>
-                                            <div class="kt-radio-inline">
-                                                <label class="kt-radio">
+                                            <div class="style-toggle-container">
+                                                <div class="style-toggle">
                                                     <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                        type="radio" class="bridge"
+                                                        type="radio" id="single_{{ $job->id }}" class="single"
+                                                        name="style{{ $job->id }}" value="Single"
+                                                        {{ $job->style == 'Single' ? 'checked' : '' }} />
+                                                    <label class="style-toggle-option" for="single_{{ $job->id }}">Single</label>
+                                                    
+                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
+                                                        type="radio" id="bridge_{{ $job->id }}" class="bridge"
                                                         name="style{{ $job->id }}" value="Bridge"
-                                                        {{ $job->style == 'Bridge' ? 'checked' : '' }} /> Bridge
-                                                    <span></span>
-                                                </label>
-                                                <label class="kt-radio">
-                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                        type="radio" class="single"
-                                                        {{ $job->style == 'Single' ? 'checked' : '' }}
-                                                        name="style{{ $job->id }}" value="Single" /> Single
-                                                    <span></span>
-                                                </label>
+                                                        {{ $job->style == 'Bridge' ? 'checked' : '' }} />
+                                                    <label class="style-toggle-option" for="bridge_{{ $job->id }}">Bridge</label>
+                                                    
+                                                    <div class="style-toggle-slider"></div>
+                                                </div>
                                                 @if ($job->jobType->id == 6)
                                                     <input type="hidden" name="style{{ $job->id }}"
                                                         value="{{ $job->style }}">
@@ -425,7 +626,18 @@
                                                 <label>Status:</label>
                                             </div>
                                             <div class="kt-form__control">
-                                                <b style="color:#2b7b7d">{{ $job->status() }}</b>
+                                                @php
+                                                    $status = $job->status();
+                                                    $badgeClass = 'processing';
+                                                    if (strpos($status, 'Waiting') !== false) {
+                                                        $badgeClass = 'waiting';
+                                                    } elseif (strpos($status, 'Completed') !== false || strpos($status, 'Delivered') !== false) {
+                                                        $badgeClass = 'completed';
+                                                    }
+                                                @endphp
+                                                <span class="status-badge {{ $badgeClass }}">
+                                                    {{ $status }}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -577,18 +789,18 @@
                                         <div class="kt-form__label">
                                             <label>Style:</label>
                                         </div>
-                                        <div class="kt-radio-inline">
-                                            <label class="kt-radio">
-                                                <input type="radio" class="single" checked="checked" name="style"
-                                                    value="Single"> Single
-                                                <span></span>
-                                            </label>
-                                            <label class="kt-radio">
-                                                <input type="radio" class="bridge" name="style" value="Bridge">
-                                                Bridge
-                                                <span></span>
-                                            </label>
-
+                                        <div class="style-toggle-container">
+                                            <div class="style-toggle">
+                                                <input type="radio" id="new_single" class="single" checked="checked" 
+                                                    name="style" value="Single" />
+                                                <label class="style-toggle-option" for="new_single">Single</label>
+                                                
+                                                <input type="radio" id="new_bridge" class="bridge" 
+                                                    name="style" value="Bridge" />
+                                                <label class="style-toggle-option" for="new_bridge">Bridge</label>
+                                                
+                                                <div class="style-toggle-slider"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
