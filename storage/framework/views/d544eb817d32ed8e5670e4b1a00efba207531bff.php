@@ -1,7 +1,13 @@
-
 <?php $__env->startSection('content'); ?>
 
     <style>
+        .modal-footer {
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+        .modal-footer .btn {
+            margin: 5px;
+        }
         .content{
             background: #ffffff00;
         }
@@ -402,7 +408,7 @@
                                                                         $unit = explode(', ',$job->unit_num);
                                                                     ?>
 
-                                                                    <span><?php echo e($job->unit_num); ?> - <?php echo e($job->jobType->name ?? "No Job Type"); ?> - <?php echo e($job->material->name ?? "no material"); ?><?php echo e(isset($job->subType) && $job->subType->name ? " (" . $job->subType->name . ")" : ""); ?> <?php echo e($job->color =='0' ? "":" - " .$job->color); ?>
+                                                                    <span><?php echo e($job->unit_num); ?> - <?php echo e($job->jobType->name ?? "No Job Type"); ?> - <?php echo e($job->material->name ?? "no material"); ?> <?php echo e($job->color =='0' ? "":" - " .$job->color); ?>
 
                                                                         <?php echo e($job->style == 'None' ? "":" - " .$job->style); ?> <?php echo e(isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): ""); ?><br>
                                                                                     <?php echo e(isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): ""); ?> </span>
@@ -424,191 +430,43 @@
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         <?php endif; ?>
                                                     </div>
-                                                    <div class="modal-footer fullBtnsWidth">
-                                                        <div class="row"
-                                                             style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-                                                            <?php if(!isset($trashedCases)): ?>
-                                                                <div class="row">
-                                                                    <!-------------------------
-                                                                           ------ View Voucher ------
-                                                                           -------------------------->
-                                                                    <div class="col-6 padding5px">
-                                                                        <a href="<?php echo e(route('view-voucher',$case->id)); ?>">
-                                                                            <button type="button" class="btn btn-info ">
-                                                                                <i
-                                                                                    class="fas fa-print"></i> Print
-                                                                                Voucher
-                                                                            </button>
-                                                                        </a></div>
-
-                                                                    <!-------------------------
-                                                                    -------- View Case --------
-                                                                    -------------------------->
-                                                                    <div class="col-6 padding5px">
-                                                                        <a href="<?php echo e(route('view-case',['id' =>$case->id ,'stage' =>-2 ])); ?>">
-                                                                            <button type="button" class="btn btn-info ">
-                                                                                <i
-                                                                                    class="far fa-file-alt"></i> View
-                                                                                Case
-                                                                            </button>
-                                                                        </a></div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <!-------------------------
-                                                                    ------- LOCK CASE -------
-                                                                    -------------------------->
-                                                                    <?php if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130)): ?>
-                                                                        <?php if(!$case->locked): ?>
-                                                                            <div class="col-4 padding5px ">
-                                                                                <a href="<?php echo e(route('lock-case',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class=" btn btn-dark "><i
-                                                                                            class="fas fa-lock"></i>
-                                                                                        Lock Case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                        <?php if($case->locked): ?>
-                                                                            <div class="col-4 padding5px ">
-                                                                                <a href="<?php echo e(route('unlock-case',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class=" btn btn-dark "><i
-                                                                                            class="fas fa-lock-open"></i>
-                                                                                        Unlock Case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-                                                                    <?php if(Auth()->user()->is_admin ): ?>
-
-                                                                        <!-------------------------
-                                                                                 ------ DELETE CASE ------
-                                                                                 -------------------------->
-                                                                        <?php if(!$case->locked): ?>
-                                                                            <div class="col-4 padding5px ">
-                                                                                <a data-clientName="<?php echo e($case->client->name); ?>"
-                                                                                   data-patientName="<?php echo e($case->patient_name); ?>"
-                                                                                   style="color:red"
-                                                                                   onclick="caseDelConfirmation(event )"
-                                                                                   href="<?php echo e(route('delete-case',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class="  btn btn-danger "><i
-                                                                                            class="fas fa-trash"></i>
-                                                                                        Delete Case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-                                                                    <!-------------------------
-                                                                                  -------- Edit CASE --------
-                                                                                  -------------------------->
-                                                                    <?php if(Auth()->user()->is_admin ||
-                                                                    ($permissions && ($permissions->contains('permission_id', 102))) ||
-                                                                    ($permissions &&
-                                                                    ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115)))
-                                                                    || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))
-                                                                    ): ?>
-                                                                        <?php if(!$case->locked): ?>
-
-                                                                            <div class="col-4 padding5px">
-                                                                                <a href="<?php echo e(route('edit-case-view',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-warning "><i
-                                                                                            class="fa-solid fa-pen-to-square"></i>
-                                                                                        Edit Case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-
-                                                                </div>
-                                                                <div class="row">
-                                                                    <?php if(isset($case->actual_delivery_date)): ?>
-                                                                        <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked): ?>
-                                                                            <!-------------------------
-                                                                                  ------- Reject CASE -------
-                                                                                  -------------------------->
-                                                                            <div class="col-4 padding5px">
-                                                                                <a href="<?php echo e(route('reject-case-view',$case->id )); ?>">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-outline-danger">
-                                                                                        <i
-                                                                                            class="fas fa-times x2"></i>
-                                                                                        Reject case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                        <!-------------------------
-                                                                                  ------- Repeat CASE -------
-                                                                                  -------------------------->
-                                                                        <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked): ?>
-
-                                                                            <div class="col-4 padding5px">
-                                                                                <a href="<?php echo e(route('repeat-case-view',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-outline-warning ">
-                                                                                        <i
-                                                                                            class="fas fa-undo"></i>
-                                                                                        Repeat case
-                                                                                    </button>
-                                                                                </a></div>
-
-                                                                        <?php endif; ?>
-                                                                        <!-------------------------
-                                                                                  ------- Modify CASE -------
-                                                                                  -------------------------->
-                                                                        <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked): ?>
-                                                                            <div class="col-4 padding5px">
-                                                                                <a href="<?php echo e(route('modify-case-view',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-outline-warning  ">
-                                                                                        <i
-                                                                                            class="fa fa-broom "></i>
-                                                                                        Modify case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <!-------------------------
-                                                                    -------- REDO CASE --------
-                                                                    -------------------------->
-                                                                    <?php if($case->delivered_to_client == 1): ?>
-                                                                        <?php if(Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)): ?>
-
-                                                                            <div class="col-4 padding5px">
-                                                                                <a href="<?php echo e(route('redo-case-view',$case->id)); ?>">
-                                                                                    <button type="button"
-                                                                                            class="btn btn-outline-warning ">
-                                                                                        <i
-                                                                                            class="fa fa-broom "></i>
-                                                                                        Redo case
-                                                                                    </button>
-                                                                                </a></div>
-                                                                        <?php endif; ?>
-                                                                    <?php endif; ?>
-                                                                </div>
-                                                            <?php else: ?>
-                                                                <!-------------------------
-                                                                                ------ RESTORE CASE ------
-                                                                                -------------------------->
-                                                                <div class="col-12 padding5px">
-                                                                    <a href="<?php echo e(route('restore-case',$case->id)); ?>">
-                                                                        <button type="button" class="btn btn-danger ">
-                                                                            Restore case
-                                                                        </button>
-                                                                    </a></div>
+                                                    <div class="modal-footer">
+                                                        <?php if(!isset($trashedCases)): ?>
+                                                            <a href="<?php echo e(route('view-voucher',$case->id)); ?>" class="btn btn-info"><i class="fas fa-print"></i> Print Voucher</a>
+                                                            <a href="<?php echo e(route('view-case',['id' =>$case->id ,'stage' =>-2 ])); ?>" class="btn btn-info"><i class="far fa-file-alt"></i> View Case</a>
+                                                            <?php if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130)): ?>
+                                                                <?php if(!$case->locked): ?>
+                                                                    <a href="<?php echo e(route('lock-case',$case->id)); ?>" class="btn btn-dark"><i class="fas fa-lock"></i> Lock Case</a>
+                                                                <?php else: ?>
+                                                                    <a href="<?php echo e(route('unlock-case',$case->id)); ?>" class="btn btn-dark"><i class="fas fa-lock-open"></i> Unlock Case</a>
+                                                                <?php endif; ?>
                                                             <?php endif; ?>
-                                                            <div class="col-12 padding5px">
-                                                                <button type="button" class="btn btn-secondary "
-                                                                        data-dismiss="modal" style="width:100%">Cancel
-                                                                </button>
-                                                            </div>
-                                                        </div>
-
-
+                                                            <?php if(Auth()->user()->is_admin && !$case->locked): ?>
+                                                                <a data-clientName="<?php echo e($case->client->name); ?>" data-patientName="<?php echo e($case->patient_name); ?>" style="color:white" onclick="caseDelConfirmation(event)" href="<?php echo e(route('delete-case',$case->id)); ?>" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Case</a>
+                                                            <?php endif; ?>
+                                                            <?php if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked): ?>
+                                                                <a href="<?php echo e(route('edit-case-view',$case->id)); ?>" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit Case</a>
+                                                            <?php endif; ?>
+                                                            <?php if(isset($case->actual_delivery_date)): ?>
+                                                                <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked): ?>
+                                                                    <a href="<?php echo e(route('reject-case-view',$case->id )); ?>" class="btn btn-outline-danger"><i class="fas fa-times x2"></i> Reject case</a>
+                                                                <?php endif; ?>
+                                                                <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked): ?>
+                                                                    <a href="<?php echo e(route('repeat-case-view',$case->id)); ?>" class="btn btn-outline-warning"><i class="fas fa-undo"></i> Repeat case</a>
+                                                                <?php endif; ?>
+                                                                <?php if((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked): ?>
+                                                                    <a href="<?php echo e(route('modify-case-view',$case->id)); ?>" class="btn btn-outline-warning"><i class="fa fa-broom"></i> Modify case</a>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                            <?php if($case->delivered_to_client == 1): ?>
+                                                                <?php if(Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)): ?>
+                                                                    <a href="<?php echo e(route('redo-case-view',$case->id)); ?>" class="btn btn-outline-warning"><i class="fa fa-broom"></i> Redo case</a>
+                                                                <?php endif; ?>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <a href="<?php echo e(route('restore-case',$case->id)); ?>" class="btn btn-danger">Restore case</a>
+                                                        <?php endif; ?>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                     </div>
 
 

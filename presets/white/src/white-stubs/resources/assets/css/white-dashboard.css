@@ -6903,6 +6903,7 @@ button.bg-darker:focus {
 
 .d-flex {
   display: flex !important;
+    justify-content: space-between;
 }
 
 .d-inline-flex {
@@ -16438,7 +16439,7 @@ textarea.form-control:active {
 }
 
 .form-group input[type=file] {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   top: 0;
   right: 0;
@@ -17954,7 +17955,7 @@ Copyright (c) 2015 Daniel Eden
 
 .white-content.bd-docs .bd-example {
   background: linear-gradient(#f5f6fa, #f5f6fa);
-}  
+}
 
 .breadcrumb-item.active {
   color: rgba(34, 42, 66, 0.7);

@@ -81,7 +81,7 @@
                             <option value="">Select Material Type</option>
                             @foreach($types->where('is_enabled', true) as $materialType)
                                 <option value="{{ $materialType->id }}" data-material-id="{{ $materialType->material_id }}">
-                                    {{ $materialType->material?->name ?? 'Unknown Material' }} - {{ $materialType->name }}
+                                    {{ $materialType->material?->name ?? 'Unknown Material' }}
                                 </option>
                             @endforeach
                         </select>

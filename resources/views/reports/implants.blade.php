@@ -88,21 +88,26 @@
     <form class="kt-form filtersPanel bd-callout bd-callout-info sigmaPanel" method="GET" action="{{route('implants-report')}}" style="/*height:30%*/">
 
         <!-- FILTERS -->
-        <div class="container">
-            <div class="row " style="padding-left: 0;padding-top: 0;padding-bottom: 0px">
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-                    <div class="kt-subheader__search" style="">
-                        <label>Date Range:</label>
-                        <input class="form-control dateRange" name="dateRange" autocomplete="off" readonly
-                               value="{{$dateRangeValue ?? "Select Period"}}" style="cursor: pointer;">
-                    </div>
+        <div class="container-fluid">
+            <div class="row g-3" style="margin-bottom: 20px;     flex-direction: row;
+    align-items: flex-end;">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">From Date:</label>
+                    <input class="form-control" type="date" name="from"
+                           value="{{ request('from', $from ?? '') }}"
+                           style="font-size: 14px; height: 38px;">
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-
-                    <div class="dropdown">
-                        <label>Implants:</label>
-                        <select style="width:100%" class="selectpicker clearOnAll" multiple name="implantsInput[]"
-                                id="implantsInput" data-live-search="true" title="All" data-hide-disabled="true">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">To Date:</label>
+                    <input class="form-control" type="date" name="to"
+                           value="{{ request('to', $to ?? '') }}"
+                           style="font-size: 14px; height: 38px;">
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Implants:</label>
+                    <select class="form-select selectpicker clearOnAll" multiple name="implantsInput[]"
+                            id="implantsInput" data-live-search="true" title="All" data-hide-disabled="true"
+                            style="font-size: 14px; height: 38px;">
 
                                 @php
 
@@ -122,15 +127,12 @@
                                 @endif
 
                         </select>
-                    </div>
-
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-
-                    <div class="dropdown">
-                        <label>Abutment:</label>
-                        <select style="width:100%" class="selectpicker clearOnAll" multiple name="abutmentsInput[]"
-                                id="abutmentsInput" data-live-search="true" title="All" data-hide-disabled="true">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Abutment:</label>
+                    <select class="form-select selectpicker clearOnAll" multiple name="abutmentsInput[]"
+                            id="abutmentsInput" data-live-search="true" title="All" data-hide-disabled="true"
+                            style="font-size: 14px; height: 38px;">
 
                                 @php
 
@@ -150,15 +152,13 @@
                                 @endif
 
                         </select>
-                    </div>
-
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
+                <div class="col-lg-2 col-md-3 col-6">
                     @if(isset($clients))
-                        <div class="dropdown">
-                            <label>Doctor:</label>
-                            <select style="width:100%" class="selectpicker clearOnAll" multiple name="doctor[]"
-                                    id="doctor" data-live-search="true" title="All" data-hide-disabled="true">
+                        <label class="form-label fw-semibold">Doctor:</label>
+                        <select class="form-select selectpicker clearOnAll" multiple name="doctor[]"
+                                id="doctor" data-live-search="true" title="All" data-hide-disabled="true"
+                                style="font-size: 14px; height: 38px;">
 
                                     <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>
                                         All
@@ -168,33 +168,25 @@
                                     @endforeach
 
                             </select>
-                        </div>
                     @endif
                 </div>
-                <div class="col-lg-3 col-md-3 col-3 mb-2">
-                    <div class="kt-subheader__search">
-                        <label> Per :</label>
-                        <div class="kt-form__actions">
-                            <input name="perToggle" {{$perUnitTrigger ? "" : "checked"}} class="unstyled" id="toggle" type="checkbox"  data-toggle="toggle" data-on="UNITS" data-off="CASES" data-onstyle="success" data-offstyle="info" >
-                        </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Per:</label>
+                    <div class="form-check form-switch" style="height: 38px; display: flex; align-items: center;">
+                        <input class="form-check-input" type="checkbox" name="perToggle" {{$perUnitTrigger ? "" : "checked"}}
+                               data-toggle="toggle" data-on="UNITS" data-off="CASES" data-onstyle="success" data-offstyle="info">
+                        <label class="form-check-label ms-2">Units/Cases</label>
                     </div>
                 </div>
-            </div>
-            <div class="row actionButtonsRow" style="padding-left: 10px;padding-top: 0;padding-bottom: 0px;    padding-right: 0;">
-                <div class="col-lg-3 col-md-3 col-3" style="padding-left: 0;">
-                    <div class="kt-subheader__search">
-
-                        <div class="kt-form__actions">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-3 " >
-                    <div class="kt-subheader__search">
-
-                        <div class="kt-form__actions">
-                            <button  class="btn btn-secondary printBtn">PRINT</button>
-                        </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Actions:</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4" style="font-size: 14px; height: 38px;">
+                            <i class="fas fa-search me-1"></i>Submit
+                        </button>
+                        <button type="button" class="btn btn-secondary px-4 printBtn" style="font-size: 14px; height: 38px;">
+                            <i class="fas fa-print me-1"></i>Print
+                        </button>
                     </div>
                 </div>
             </div>
@@ -204,7 +196,20 @@
 
 
 
-    <div class="sigmaPanel" style="">
+    <div class="sigmaPanel bg-white rounded shadow-sm p-4 mb-4">
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="mb-0 fw-bold text-primary">
+                        <i class="fas fa-tooth me-2"></i>
+                        Implants Report
+                    </h4>
+                    <div class="badge bg-info fs-6">
+                        {{ $perUnitTrigger ? 'Per Case' : 'Per Unit' }}
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="col-lg-12 col-sm-12">
             <div class=" ">
                 <div class="">

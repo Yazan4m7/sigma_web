@@ -77,49 +77,6 @@
             padding-left: 0px !important;
 
         }
-
-        /* Page Beautification Styles */
-        .kt-form.card {
-            padding: 20px;
-        }
-        .kt-portlet__head {
-            border-bottom: 1px solid #ebedf2;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-        }
-        .kt-portlet__head-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #48465b;
-        }
-        .kt-portlet__head-title i {
-            margin-right: 10px;
-            color: #5867dd;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .noteform .row {
-            padding: 0;
-        }
-        .form-control:focus, .selectpicker:focus, .btn:focus {
-            box-shadow: 0 0 0 0.2rem rgba(158, 158, 158, 0.25) !important;
-            border-color: #888 !important;
-        }
-        .input-group-text {
-            background-color: #e9ecef;
-            border: 1px solid #ced4da;
-        }
-        .discount-section .form-check {
-            padding-left: 1.25rem; /* Align with other form elements */
-        }
-        .kt-form__actions {
-            padding: 1rem 0;
-            text-align: left;
-        }
-        .kt-form__actions .btn {
-            margin-right: 10px;
-        }
     </style>
 
     <style>
@@ -145,7 +102,7 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-<div class="container" style="max-width: 1200px;">
+
     <form style="padding:10px" class="kt-form card" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
@@ -153,73 +110,89 @@
 
         <input name="id" type="hidden" value="{{ $case->id }}" />
         <!-- CASE INFO -->
+
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Doctor:</label>
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
+                <div class="col-md-12 col-xs-12">
+
+
                     <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
                         title="Select a doctor" data-tap-disabled="true">
+
+
                         @foreach ($clients as $client)
                             <option value="{{ $client->id }}" {{ $case->client->id == $client->id ? 'selected' : '' }}>
                                 {{ $client->name }}</option>
                         @endforeach
+
                     </select>
+
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Patient name:</label>
-                    <input class="form-control" type="text" name="patient_name" value="{{ $case->patient_name }}" />
-                </div>
+            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Patient name:</label></div>
+                <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name"
+                        value="{{ $case->patient_name }}" /></div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Case ID:</label>
-                    <div class="input-group flex-nowrap">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">{{ substr($case->case_id, 0, 7) }}</span>
-                        </div>
-                        <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
-                        <input name="caseId2" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ substr($case->case_id, 7, 2) }}" />
-                        <input name="caseId3" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ substr($case->case_id, 9, 2) }}" />
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">_</span>
-                        </div>
-                        <input name="caseId4" class="form-control text-center" style="min-width: 60px; flex-grow: 1;" type="text" value="{{ substr($case->case_id, 12, 4) }}" />
-                    </div>
+
+
+            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
+                <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
+                <div class="col-md-12 col-xs-12">
+
+                    <label>{{ substr($case->case_id, 0, 7) }}</label>
+                    <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
+                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                        type="text" value="{{ substr($case->case_id, 7, 2) }}" />
+                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                        type="text" value="{{ substr($case->case_id, 9, 2) }}" />
+                    <label>_</label>
+                    <input name="caseId4" placeholder="0000"
+                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
+                        type="text" value="{{ substr($case->case_id, 12, 4) }}" />
                 </div>
+
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Delivery Date:</label>
+
+        </div>
+
+        <br />
+        <div class="row">
+
+            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
+                <div class="col-md-12 col-xs-12">
                     <input class="form-control SDTP" name="delivery_date" type="text"
                         value="{{ $case->initial_delivery_date }}" required readonly />
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Tags:</label>
+            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
+                <div class="col-md-12 col-xs-12">
+
                     <select class="select selectpicker greyBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
+
                         @foreach ($tags as $tag)
                             <option style="color:{{ $tag->color }}" value="{{ $tag->id }}"
                                 {{ in_array($tag->id, $tagsAsArray) ? 'selected' : '' }}>{{ $tag->text }}</option>
                         @endforeach
                     </select>
+
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label>Impression Type:</label>
-                    <select class="form-control" name="impression_type" type="text" data-container="body"
-                        data-live-search="true" title="Select impression" data-hide-disabled="true">
+            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
+                <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
+                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
+
                         @foreach ($impressionTypes as $impression)
                             <option value="{{ $impression->id }}"
                                 {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
                                 {{ $impression->name }}
                             </option>
                         @endforeach
-                    </select>
-                </div>
+                    </select></div>
             </div>
         </div>
 
@@ -229,10 +202,11 @@
         <div class="kt-portlet__head">
             <div class="kt-portlet__head-label">
                 <h5 class="kt-portlet__head-title">
-                    <i class="fa  fa-suitcase"></i> Job information
+                    <i class="fa  fa-suitcase" style="width:3%"></i> Job information
                 </h5>
             </div>
         </div>
+        <hr>
 
 
 
@@ -329,7 +303,7 @@
 
                                         </div>
                                     </div>
-                                    <div class="col-md-1">
+                                    <div class="col-md-2">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>Type:</label>
@@ -497,6 +471,7 @@
                 </h5>
             </div>
         </div>
+        <hr>
         <!-- NEW JOBS REPEATER -->
         <div id="" style="" class="repeater jobsRepeater">
             <div data-repeater-list="repeat2" class="jobDataRepeaterList">
@@ -716,40 +691,33 @@
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down"></i> Discount
+                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
                         </h5>
                     </div>
                 </div>
+                <hr>
 
                 @php
                     $discountExists = $case->discount != null;
                 @endphp
 
-                <div class="discount-section" style="background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 15px;">
-                    <div class="form-group mb-0">
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input discountCB" id="discountCB" name="discountCB" value="on"
-                                {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                            <label class="form-check-label" for="discountCB">Apply a Discount</label>
-                        </div>
+                <label style="cursor: pointer">
+                    <input type="checkbox" class="discountCB" name="discountCB" value="on"
+                        {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
+                    Make a Discount {{ $discountExists }}
+                </label>
+
+                <br>
+                <div class="form-group form-group row discountPortion"
+                    style="{{ $discountExists ? '' : 'display:none' }}">
+                    <div class="col-md-3 col-xs-6">
+                        <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
+                            value="{{ $discountExists ? $case->discount->discount : '' }}" />
+                        <small>JOD</small>
                     </div>
-                    <div class="form-group row discountPortion mt-3"
-                        style="{{ $discountExists ? '' : 'display:none' }}">
-                        <div class="col-md-4">
-                            <label>Amount</label>
-                            <div class="input-group">
-                                <input class="form-control" type="number" name="discount_amount" placeholder="Amount"
-                                    value="{{ $discountExists ? $case->discount->discount : '' }}" />
-                                <div class="input-group-append">
-                                    <span class="input-group-text">JOD</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <label>Reason for Discount</label>
-                            <input class="form-control" type="text" name="discount_reason"
-                                value="{{ $discountExists ? trim($case->discount->reason) : '' }}" placeholder="Enter reason" />
-                        </div>
+                    <div class="col-md-6 col-xs-6">
+                        <input class="form-control" type="text" name="discount_reason"
+                            value=" {{ $discountExists ? $case->discount->reason : '' }}" placeholder="Description" />
                     </div>
                 </div>
                 <div class="verticalSpacing"></div>
@@ -760,11 +728,12 @@
             <div class="kt-portlet__head">
                 <div class="kt-portlet__head-label">
                     <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note"></i> Additional
+                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
                         information
                     </h5>
                 </div>
             </div>
+            <hr>
 
             <div class="form-group form-group">
                 <label>Notes:</label>
@@ -780,25 +749,32 @@
                     </div>
                 @endforeach
 
-                <form class="noteform" method="POST" action="{{ route('new-note') }}">
+                <form></form>
+                <form style="" class="noteform " method="POST" enctype="multipart/form-data"
+                    action="{{ route('new-note') }}">
                     @csrf
-                    <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
-                    <div class="input-group">
-                        <input class="form-control" type="text" name="newNote" placeholder="Add a new note..." />
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-primary">Add Note</button>
+                    <div class="row" style="padding:0px">
+                        <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
+                        <div class="col-md-6 col-xs-6">
+                            <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
                         </div>
+
+                        <div class="col-md-3 col-xs-3" style="margin: 0px">
+                            <button type="submit" class="btn btn-primary">Add note</button>
+                        </div>
+
+
                     </div>
                 </form>
-            </div>
                 <br><br>
                 <div class="kt-portlet__head">
                     <div class="kt-portlet__head-label">
                         <h5 class="kt-portlet__head-title">
-                            <i class="fa fa-photo"></i> Attachments
+                            <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
                         </h5>
                     </div>
                 </div>
+                <hr>
                 <!-- Photos SECTION -->
                 <div class="container" style="margin-top:10px;">
 
@@ -832,12 +808,14 @@
             </div>
 
             <!-- Attachments SECTION -->
-            <div class="form-group">
-                <label>Add Photos:</label>
-                <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="images" name="images[]" multiple>
-                    <label class="custom-file-label" for="images">Choose files...</label>
-                </div>
+
+            <div class="form-group form-group-last">
+                <label for="images" style="cursor: pointer;padding: 10px 18px 10px 18px;">
+                    <h4><i class="fa-solid fa-circle-plus"></i>
+                    </h4>
+                </label>
+                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
+                    multiple style="cursor: pointer;">
             </div>
 
             <br>
@@ -861,8 +839,8 @@
 
             <div class="kt-portlet__foot">
                 <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary">Update Case</button>
-                    <button type="reset" class="btn btn-secondary">Reset</button>
+                    <button type="submit" class="btn btn-primary extraPadding">Submit</button>
+                    <button type="reset" class="btn btn-danger extraPadding">Reset</button>
                 </div>
             </div>
         </div>
@@ -1285,9 +1263,12 @@
                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
                 materialBox.empty();
                 $.each(jobTypeMaterials, function(key, value) {
-                    materialBox.append($("<option></option>")
-                        .attr("value", value.material_id)
-                        .text(materials.find(x => x.id === value.material_id).name));
+                    var material = materials.find(x => x.id === value.material_id);
+                    if (material) {
+                        materialBox.append($("<option></option>")
+                            .attr("value", value.material_id)
+                            .text(material.name));
+                    }
                 });
                 console.log("Exisiting job type changed " + abutmentBox.attr('name') + "Selector : " + "[name='" +
                     repeaterName + "[abutment" + jobId + "]']");
@@ -1696,9 +1677,12 @@
 
                 materialBox.empty();
                 $.each(jobTypeMaterials, function(key, value) {
-                    materialBox.append($("<option></option>")
-                        .attr("value", value.material_id)
-                        .text(materials.find(x => x.id === value.material_id).name));
+                    var material = materials.find(x => x.id === value.material_id);
+                    if (material) {
+                        materialBox.append($("<option></option>")
+                            .attr("value", value.material_id)
+                            .text(material.name));
+                    }
                 });
                 var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
                 var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
@@ -1706,12 +1690,46 @@
                     .val().split(',');
                 var openDialogBtn = $("[name='" + repeaterName2 + "[openDialogBtn]']");
                 console.log("New job type changed " + $(jobTypeDD).find(":selected").val());
-                materialChanged();
-
-                // Load types for the new job material dropdown
-                if (materialBox.length > 0) {
-                    loadTypesForNewJob(materialBox[0]);
+                
+                // Handle Type dropdown for new job
+                var typeBox = $("[name='" + repeaterName2 + "[type_id]']");
+                if (typeBox.length > 0) {
+                    // Clear and disable type dropdown initially
+                    typeBox.empty();
+                    typeBox.append('<option value="">Select Type</option>');
+                    typeBox.prop('disabled', true);
+                    
+                    // Set up material change handler to load types
+                    materialBox.off('change.typeLoader').on('change.typeLoader', function() {
+                        var materialId = $(this).val();
+                        typeBox.empty();
+                        typeBox.append('<option value="">Select Type</option>');
+                        
+                        if (!materialId) {
+                            typeBox.prop('disabled', true);
+                            typeBox.append('<option value="" disabled>No Material Selected</option>');
+                            return;
+                        }
+                        
+                        var selectedMaterial = materials.find(m => m.id == materialId);
+                        if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
+                            typeBox.prop('disabled', false);
+                            selectedMaterial.types.forEach(function(type) {
+                                typeBox.append('<option value="' + type.id + '">' + type.name + '</option>');
+                            });
+                        } else {
+                            typeBox.prop('disabled', true);
+                            typeBox.append('<option value="" disabled>No Types Available</option>');
+                        }
+                    });
+                    
+                    // If material is already selected, trigger the change event
+                    if (materialBox.val()) {
+                        materialBox.trigger('change.typeLoader');
+                    }
                 }
+                
+                materialChanged();
 
                 if ($(jobTypeDD).find(":selected").val() == 6) {
 
@@ -1938,6 +1956,9 @@
             function loadTypesForMaterial(materialSelect, jobId) {
                 var materialId = $(materialSelect).val();
                 var typeSelect = $('#type_id' + jobId);
+                
+                console.log('Loading types for material:', materialId, 'jobId:', jobId);
+                console.log('Type select found:', typeSelect.length > 0 ? 'Yes' : 'No');
 
                 // Clear current options
                 typeSelect.empty();
@@ -1945,24 +1966,30 @@
 
                 if (!materialId) {
                     typeSelect.prop('disabled', true);
-                    typeSelect.append('<option value="" disabled>No Material Selected</option>');
                     return;
                 }
 
-                // Get material data from controller
+                // Get material data from controller - materials already loaded with types
                 var materials = @json($materials);
                 var selectedMaterial = materials.find(m => m.id == materialId);
+                
+                console.log('Selected material:', selectedMaterial);
+                console.log('Material types:', selectedMaterial ? selectedMaterial.types : 'No material found');
 
                 if (selectedMaterial && selectedMaterial.types && selectedMaterial.types.length > 0) {
                     // Enable dropdown and populate with types
                     typeSelect.prop('disabled', false);
                     selectedMaterial.types.forEach(function(type) {
-                        typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                        if (type.is_enabled) { // Only show enabled types
+                            typeSelect.append('<option value="' + type.id + '">' + type.name + '</option>');
+                        }
                     });
+                    console.log('Added', selectedMaterial.types.filter(t => t.is_enabled).length, 'types to dropdown');
                 } else {
                     // No types available - disable and show message
                     typeSelect.prop('disabled', true);
-                    typeSelect.append('<option value="" disabled>No Types</option>');
+                    typeSelect.append('<option value="" disabled>No Types Available</option>');
+                    console.log('No types available for material');
                 }
             }
 
@@ -2015,24 +2042,40 @@
 
             // Add change handler for material dropdowns
             $(document).ready(function() {
+                console.log('Initializing type dropdown handlers...');
+                
+                // Debug materials data
+                var materials = @json($materials);
+                console.log('Materials loaded:', materials.length, 'materials');
+                console.log('First material example:', materials[0]);
+                console.log('Materials with types:', materials.filter(m => m.types && m.types.length > 0).length);
+                
                 // Handle material changes for existing jobs
                 $('select[name^="material_id"]').on('change', function() {
                     var name = $(this).attr('name');
                     var jobId = name.replace('material_id', '');
+                    console.log('Material changed for existing job:', jobId);
                     loadTypesForMaterial(this, jobId);
-
                 });
 
                 // Handle material changes for new jobs (within repeater)
                 $(document).on('change', 'select[name="material_id"]', function() {
+                    console.log('Material changed for new job');
                     loadTypesForNewJob(this);
                 });
 
-                // Initialize type dropdowns on page load
+                // Initialize type dropdowns on page load for existing jobs
+                // Only initialize if type dropdown is empty or shows "Select Type"
                 $('select[name^="material_id"]').each(function() {
                     var name = $(this).attr('name');
                     var jobId = name.replace('material_id', '');
-                    loadTypesForMaterial(this, jobId);
+                    var typeSelect = $('#type_id' + jobId);
+                    
+                    // Only reload if type dropdown seems uninitialized
+                    if (typeSelect.length > 0 && (typeSelect.find('option').length <= 1 || typeSelect.find('option:first').text() === 'Select Type')) {
+                        console.log('Initializing types for job:', jobId);
+                        loadTypesForMaterial(this, jobId);
+                    }
                 });
 
                 // Initialize new job type dropdowns on page load

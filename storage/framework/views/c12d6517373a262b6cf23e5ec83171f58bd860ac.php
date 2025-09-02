@@ -177,7 +177,7 @@
 
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-2"><?php echo e($job->jobType->name); ?></td>
                                         <td data-priority="1" colspan="1" data-columns="tech-companies-1-col-3"><?php echo e($job->material->name); ?></td>
-                                        <td data-priority="2" colspan="1" data-columns="tech-companies-1-col-3a"><?php echo e($job->subType ? $job->subType->name : 'N/A'); ?></td>
+                                        <td data-priority="2" colspan="1" data-columns="tech-companies-1-col-3a"><?php echo e($job->subType->name ?? 'No Type'); ?></td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-4"><?php echo e($job->color =='0' ? "No color":$job->color); ?></td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5"><?php echo e($job->style); ?></td>
                                         <td data-priority="3" colspan="1" data-columns="tech-companies-1-col-5">
@@ -299,13 +299,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             DESIGN
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',1)->where("is_completion",1)->first() ? substr($case->logs->where('stage',1)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',1)->where("is_completion",1)->first() ? $case->logs->where('stage',1)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 1)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
 
@@ -324,13 +331,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             MILLING
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',2)->where("is_completion",1)->first() ? substr($case->logs->where('stage',2)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',2)->where("is_completion",1)->first() ? $case->logs->where('stage',2)->first()->user->name_initials : "-"); ?></div>
+                     <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 2)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -346,13 +360,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             3D Printing
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',3)->where("is_completion",1)->first() ? substr($case->logs->where('stage',3)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',3)->where("is_completion",1)->first() ? $case->logs->where('stage',3)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 3)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -370,13 +391,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Sintering
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',4)->where("is_completion",1)->first() ? substr($case->logs->where('stage',4)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',4)->where("is_completion",1)->first() ? $case->logs->where('stage',4)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 4)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -392,13 +420,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Pressing
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',5)->where("is_completion",1)->first() ? substr($case->logs->where('stage',5)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',5)->where("is_completion",1)->first() ? $case->logs->where('stage',5)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 5)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -416,14 +451,20 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Finishing
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',6)->where("is_completion",1)->first() ? substr($case->logs->where('stage',6)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle">
-                        <?php echo e($case->logs->where('stage',6)->where("is_completion",1)->first() ? $case->logs->where('stage',6)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 6)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                   </div>
 
 
@@ -440,13 +481,20 @@
             <div class="event1">
                 <div class="event1Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             QC
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',7)->where("is_completion",1)->first() ? substr($case->logs->where('stage',7)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-                    <div class="eventTitle"><?php echo e($case->logs->where('stage',7)->where("is_completion",1)->first() ? $case->logs->where('stage',7)->first()->user->name_initials : "-"); ?></div>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 7)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                        -
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <svg height="20" width="20">
@@ -462,44 +510,18 @@
 
                 <div class="event2Bubble">
                     <div class="eventTime">
-
                         <div class="Day">
                             Delivery
-                            <div class="MonthYear"><?php echo e($case->logs->where('stage',8)->where("is_completion",1)->first() ? substr($case->logs->where('stage',8)->where("is_completion",1)->first()->created_at,0,16) : "-"); ?></div>
                         </div>
                     </div>
-
-                    <div class="eventTitle">
-                        <?php if( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null): ?>
-                        <?php echo e($case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials); ?>
-
-                        <?php elseif($case->logs->where('stage',8)->where("is_completion",3)->first() !== null): ?>
-                        <?php echo e($case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials); ?>
-
-                        <?php else: ?>
+                    <div class="eventTitle" style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px; white-space: nowrap;">
+                        <?php $actionMap = [0 => '[START]', 1 => '[COMPLETE]', 3 => '[SET]']; ?>
+                        <?php $__empty_1 = true; $__currentLoopData = $case->logs->where('stage', 8)->sortBy('created_at'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                            <?php if(isset($actionMap[$log->is_completion]) && isset($log->user)): ?>
+                                <?php echo e(substr($log->created_at, 0, 16)); ?> <?php echo e($log->user->name_initials); ?> <?php echo e($actionMap[$log->is_completion]); ?><br>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
                         -
-                        <?php endif; ?>
-                    </div>
-                    <div class="eventTitle">
-                        <?php if( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null): ?>
-                            <?php echo e($case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials); ?>
-
-                        <?php elseif($case->logs->where('stage',8)->where("is_completion",3)->first() !== null): ?>
-                            <?php echo e($case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials); ?>
-
-                        <?php else: ?>
-                            -
-                        <?php endif; ?>
-                    </div>
-                    <div class="eventTitle">
-                        <?php if( $case->logs->where('stage',8)->where("is_completion",1)->first() !== null): ?>
-                            <?php echo e($case->logs->where('stage',8)->where("is_completion",1)->first()->user->name_initials); ?>
-
-                        <?php elseif($case->logs->where('stage',8)->where("is_completion",3)->first() !== null): ?>
-                            <?php echo e($case->logs->where('stage',8)->where("is_completion",3)->first()->user->name_initials); ?>
-
-                        <?php else: ?>
-                            -
                         <?php endif; ?>
                     </div>
                 </div>
@@ -605,18 +627,16 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startPush('js'); ?>
-
-
     <script>
-        $(document).ready(function () {
+        jQuery(document).ready(function($) {
+            // Initialize lightGallery
             $('#lightgallery').lightGallery();
-        });
-        function PrintLabel()
-        {
-
-            //height=192,width=288
-            var mywindow = window.open('', 'PRINT', 'height=600,width=800');
-            mywindow.document.write(`
+            
+            // Define the PrintLabel function and attach to window
+            window.PrintLabel = function() {
+                //height=192,width=288
+                var mywindow = window.open('', 'PRINT', 'height=600,width=800');
+                mywindow.document.write(`
 
             <style>
             @media  all{
@@ -679,13 +699,8 @@
 
             <div style="float:right;text-align:right; padding-right:4px;padding-top:2px;width:35%">
             <p style="font-size: 8px;font-weight:bold;color:black;text-align:right;margin:0px"><?php echo e($case->case_id); ?></p>
-            <?php
-                $date = date("d-M * g:i a", strtotime(str_replace("T", " ",$case->initial_delivery_date)));
-                $date = explode(' * ', $date);
-
-            ?>
-            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 1em;padding-bottom: 3px;padding-top: 4px;"><?php echo e($date[0]); ?></p>
-            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 0.5em;"><?php echo e($date[1]); ?></p>
+            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 1em;padding-bottom: 3px;padding-top: 4px;">${deliveryDateParts.part1}</p>
+            <p style="font-size: 10px;font-weight:bolder;color:black;text-align:right;margin:0px;line-height: 0.5em;">${deliveryDateParts.part2}</p>
             <div style="padding-top:5px;">
                 
             
@@ -724,7 +739,6 @@
             <tr>
             <th class="tablesHeaders" style="text-align:left" width="200"> Job Type</th>
         <th class="tablesHeaders" style="text-align:left" width="80;padding-left:0px">Material</th>
-            <th class="tablesHeaders" style="text-align:left;padding-left:0px" width="60">Type</th>
             <th class="tablesHeaders jobcolor" style="text-align:left;padding-left:0px" width="40">Color</th>
             <th class="tablesHeaders" style="text-align:left;" width="20">Qty</th>
 
@@ -738,7 +752,6 @@
             <tr style="text-align:center">
             <td class="tableContent" style="text-align:left;font-size:11px" width="200"> <?php echo e($job->jobType->name); ?></td>
             <td class="tableContent " style="text-align:left;font-size:11px"  width="80"><?php echo e($job->material->name); ?></td>
-            <td class="tableContent" style="text-align:left;font-size:11px" width="60"><?php echo e($job->subType ? $job->subType->name : '-'); ?></td>
             <td class="tableContent jobcolor paddingLeft" style="text-align:left;font-size:11px" width="40"><?php echo e($job->color == null ? "-" : $job->color); ?></td>
             <td class="tableContent paddingLeft" style="text-align:left;font-size:11px" width="20"><?php echo e(count(explode(',', $job->unit_num))); ?></td>
 
@@ -759,55 +772,56 @@
 
             </body></html>
             `);
-  mywindow.document.close(); // necessary for IE >= 10
-    mywindow.focus(); // necessary for IE >= 10*/
-    setTimeout(function(){ mywindow.print(); /*mywindow.close();*/},1000);
+                mywindow.document.close(); // necessary for IE >= 10
+                mywindow.focus(); // necessary for IE >= 10*/
+                setTimeout(function(){ mywindow.print(); /*mywindow.close();*/},1000);
 
-    return true;
-}
-        function PrintMinimizedLabel()
-        {
+                return true;
+            };
+            
+            // Define the PrintMinimizedLabel function and attach to window
+            window.PrintMinimizedLabel = function() {
+                // open new window for printing
+                var mywindow = window.open('', 'PRINT', 'height=600,width=800');
 
-            //height=192,width=288
-            var mywindow = window.open('', 'PRINT', 'height=600,width=800');
-            mywindow.document.write(`
+                mywindow.document.write(`
+            <html>
+            <head>
+                <style>
+                    @media  all {
+                        .kt-invoice__item {display:none;}
+                    }
+                    body {
+                        font-family: Arial, sans-serif;
+                        font-weight: bold;
+                    }
+                    .paddingLeft {padding-left:2px;}
+                </style>
+            </head>
+            <body>
+                <div id="kt-invoice__head" style="display:none;text-align:center;height:100%; overflow:hidden; position:relative;padding:0;">
+                    <p style="font-size:29px;font-weight:bold;color:black;margin:0;"><?php echo e($case->client->name); ?></p>
+                    <p style="font-size:29px;font-weight:bold;color:black;margin:0;"><?php echo e($case->patient_name); ?></p>
+                    <hr>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">${deliveryDateParts.part1}</p>
+                    <p style="font-size:21px;font-weight:bold;color:black;margin:0;">${deliveryDateParts.part2}</p>
+                </div>
+            </body>
+            </html>
+        `);
 
-    <head>
-    <style>
-    @media  all{
+                mywindow.document.close();   // finish writing
+                mywindow.focus();            // focus the window
 
-      .kt-invoice__item {display:none;}
-           }
-        body {
-            font-family: Arial;
-            font-weight : bold;
-        }
-        .paddingLeft
-        {padding-left:2px;}
-        </style>
-        </head>
-        <body>
- <?php
-                $date = date("d-M * g:i a", strtotime(str_replace("T", " ",$case->initial_delivery_date)));
-                $date = explode(' * ', $date);
-            ?>
-            <div id="kt-invoice__head" style="text-align:center;height:100%; overflow: hidden; position: relative;padding:0px;">
-            <p style="font-size: 29px;font-weight:bold;color:black;margin:0px"><?php echo e($case->client->name); ?></p>
-            <p style="font-size: 29px;font-weight:bold;color:black;margin:0px"><?php echo e($case->patient_name); ?></p>
-            <hr>
-            <p style="font-size: 21px;font-weight:bold;color:black;margin:0px;"><?php echo e($date[0]); ?></p>
-            <p style="font-size: 21px;font-weight:bold;color:black;margin:0px;"><?php echo e($date[1]); ?></p>
-            </div>
-            </body></html>
-            `);
-            mywindow.document.close(); // necessary for IE >= 10
-            mywindow.focus(); // necessary for IE >= 10*/
-            setTimeout(function(){ mywindow.print(); mywindow.close();},1000);
+                setTimeout(function() {
+                mywindow.print();
+                mywindow.close();
+            }, 1000);
 
-            return true;
-        }
+                return true;
+            };
+        });
     </script>
-
 <?php $__env->stopPush(); ?>
 
 

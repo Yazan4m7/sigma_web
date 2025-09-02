@@ -2,8 +2,6 @@
 
 @section('content')
     
-
-
    <!-- styles to carry on while printing -->
 <div id="style">
     <style>
@@ -17,58 +15,149 @@
         .row {
             background-color: transparent;
         }
-            .no-left-top-border {
-            border-top-color: transparent;
-            border-top-style: solid;
-            border-top-width: 1px;
-
-            border-left-color: transparent;
-            border-left-style: solid;
-            border-left-width: 1px;
+        
+        /* Professional Units Report Table Styling */
+        .sunriseTable {
+            width: 100%;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(43, 123, 125, 0.15);
+            border: none;
         }
-        td, tr {
-            width: fit-content;
-            height: fit-content;
+        
+        .sunriseTable td, .sunriseTable th {
+            padding: 12px 16px;
+            text-align: center;
+            border: 1px solid #e8f4f5;
+            font-size: 14px;
+            position: relative;
         }
-
-        th, td {
-            /*text-align: left;*/
-            padding: 0px;
-        }
-
-        .dataRow:nth-child(even) {
-            background-color: #d0d0d0
-        }
-        table, th, td {
-            border-collapse: collapse;
-            padding:4px;
-        }
-
-
-        .tableHeaderRow{
-            background-color: #f1f7ed;
-            font-weight: 700;
-        }
-        .subHeaderRow{
-            font-weight: 500;
-            text-align:center;
-            /*background-color: #8e8e8e;*/
-            color:white;
-            padding-top:5px;
-            padding-botton:5px;
-        }
-        .totalsCol{
-            color:black;background-color:#f1f7ed;border-bottom: solid 1px #ddd; padding-left:15px;padding-right:15px;text-align: center;
-        }
-        .totalsRow{
-            color: #404040;
-            text-align: left;
-            border-top: 1px solid #ddd;
+        
+        /* Enhanced month header */
+        .subHeaderRow {
+            background: linear-gradient(135deg, #2b7b7d 0%, #357a7c 100%);
+            color: white;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 16px;
+            text-align: center;
+            border: none;
         }
-        .doctorName{
-            font-weight: bold;
+        
+        .subHeaderRow th {
+            border: none;
+            padding: 16px;
+        }
+        
+        /* Column headers */
+        .tableHeaderRow {
+            background: linear-gradient(135deg, #f1f7ed 0%, #e8f0e5 100%);
+            font-weight: 700;
+            color: #2b7b7d;
+            border-bottom: 3px solid #2b7b7d;
+        }
+        
+        .tableHeaderRow td {
+            padding: 14px 16px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-color: #d0e8d1;
+        }
+        
+        /* Data rows */
+        .dataRow {
+            transition: all 0.3s ease;
+        }
+        
+        .dataRow:hover {
+            background-color: #f8fcfc;
+            box-shadow: 0 2px 8px rgba(43, 123, 125, 0.1);
+        }
+        
+        .dataRow:nth-child(even) {
+            background-color: #f9fdfb;
+        }
+        
+        .dataRow:nth-child(odd) {
+            background-color: #ffffff;
+        }
+        
+        /* Doctor names */
+        .doctorName {
+            font-weight: 600;
+            color: #2b7b7d;
+            text-align: left;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+        
+        /* Data cells */
+        .xl649957 {
+            font-weight: 500;
+            color: #404040;
+        }
+        
+        /* Enhanced totals column */
+        .totalsCol {
+            background: linear-gradient(135deg, #2b7b7d 0%, #357a7c 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            border-left: 3px solid #1a5d5f;
+            position: relative;
+        }
+        
+        .totalsCol::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #4a9a9c, #2b7b7d);
+        }
+        
+        /* Totals row */
+        .totalsRow {
+            background: #f1f7ed;
+            color: #2b7b7d;
+            font-weight: 700;
+            font-size: 15px;
+            border-top: 3px solid #2b7b7d;
+            text-align: center;
+        }
+        
+        /* First cell in totals row */
+        .totalsRow:first-child,
+        tr:last-child .xl669957 {
+            background: linear-gradient(135deg, #2b7b7d 0%, #357a7c 100%);
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Subtle borders */
+        .bottom-Border {
+            border-bottom: 2px solid #2b7b7d;
+        }
+        
+        /* Number formatting */
+        .xl649957:not(.doctorName) {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Add subtle animation to numbers on hover */
+        .dataRow .xl649957:not(.doctorName):hover {
+            transform: scale(1.05);
+            font-weight: 600;
+            color: #2b7b7d;
         }
     </style>
 </div>

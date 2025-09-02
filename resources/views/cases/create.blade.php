@@ -7,99 +7,108 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
     <style>
-        /* General Page Styling */
-        .card {
-            padding: 20px;
-        }
-        .portlet__head {
-            border-bottom: 1px solid #ebedf2;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-        }
-        .portlet__head-title {
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #48465b;
-        }
-        .portlet__head-title i {
-            margin-right: 10px;
-            color: #5867dd;
-        }
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        .form-control, .selectpicker {
-            border: 1px solid #ced4da;
-        }
-        .bold {
-            font-weight: 600;
-        }
-        .mandatorySmallTag {
-            font-size: 0.75rem;
-            color: #dc3545;
-        }
-        hr {
-            margin-top: 0;
-            border-color: #ebedf2;
+        @media screen and (max-width: 991px) {
+            .modal-content .modal-footer button {
+                margin: 15px;
+                padding: 10px 50px;
+                width: auto;
+                white-space: break-spaces;
+            }
         }
 
-        /* Job Repeater Styling */
-        .jobRow .row-item {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 1rem;
-            background-color: #fdfdfd;
-        }
-        .abutmentsRow .row {
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 10px;
-            background-color: #f8f9fa;
-        }
-        .slctUnitsBtn {
-            width: 100%;
-            white-space: normal;
-        }
-        .deleteBtn, .deleteBtn2 {
-            background-color: #f5f5f5;
-            border: 1px solid #ddd;
-            color: #dc3545;
-        }
-        .deleteBtn:hover, .deleteBtn2:hover {
-            background-color: #dc3545;
-            color: white;
-        }
-        #addJobBtn, #addJobBtn2 {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-        #addJobBtn2 {
-            background-color: #17a2b8;
-            border-color: #17a2b8;
+
+        .fa,
+        .fas {
+            color: black;
         }
 
-        /* Teeth Selection Modal */
+
         .checked {
             filter: invert(26%) sepia(73%) saturate(492%) hue-rotate(133deg) brightness(94%) contrast(86%);
         }
+
+
         .hidden {
             display: none;
         }
-        img {
-            max-width: 100%;
+
+
+        h5 {
+            font-weight: bold;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 767px) {
-            .form-group.row > div[class^="col-"] {
-                margin-bottom: 1rem;
-            }
-            .kt-form__actions {
-                text-align: center;
-            }
+        .slctUnitsBtn {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            /* change this from auto */
+            display: block;
+            padding: 10px 5px !important;
+            white-space: break-spaces !important;
         }
+
+
+        .btn:not(.unstyled) {}
+
+
+        .modal.show .modal-dialog {
+            -webkit-transform: translate(0, 0%);
+            transform: translate(0, 0%);
+        }
+
+
+        .row {
+            padding: 0
+        }
+
+
+        .xdsoft_time_box {
+
+            width: 100px !important;
+        }
+
+        .xdsoft_datetimepicker {
+            padding-right: 50px;
+        }
+
+        hr {
+            border-color: rgba(28, 86, 88, 0.81);
+            margin-top: 0px
+        }
+
+        #addJobBtn2 {
+            background-color: #ca0399;
+            border-color: #970371;
+        }
+
+        .purpleBorder {
+            border: 1px solid #e14eca !important;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+
+        }
+
+        img {
+            max-width: unset;
+        }
+
+        @media (min-width: 576px) {
+            .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+
+        }
+
+
+        .teethJawsDialog{}
+        .teethJawsDocument{}
+
+
+
+
+
+
     </style>
 
 
@@ -112,7 +121,6 @@
 
 
 
-<div class="container" style="max-width: 1200px;">
     <div class="card">
         @if (config('site_vars.environment') == 'testing')
             <form style="padding:0px" class="kt-form" method="POST" enctype="multipart/form-data"
@@ -133,71 +141,96 @@
         <hr>
         <!-- ORDER INFO -->
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Doctor:</label>
-                    <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
-                        title="Select a doctor" data-tap-disabled="true">
-                        @foreach ($doctors as $doctor)
-                            <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                        @endforeach
-                    </select>
-                    <small class="mandatorySmallTag">* Mandatory</small>
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Patient name:</label>
-                    <input class="form-control" type="text" name="patient_name" required />
-                    <small class="mandatorySmallTag">* Mandatory</small>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Case ID:</label>
-                    <div class="input-group flex-nowrap">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">{{ Auth()->user()->id . '_' . now()->format('Y') }}</span>
-                        </div>
-                        <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
-                        <input name="caseId2" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ now()->format('m') }}" required />
-                        <input name="caseId3" class="form-control text-center" style="min-width: 40px; flex-grow: 0.5;" type="text" value="{{ now()->format('d') }}" required />
-                        <div class="input-group-prepend"><span class="input-group-text">_</span></div>
-                        <input name="caseId4" class="form-control" style="min-width: 60px; flex-grow: 1;" placeholder="0000" type="text" required />
+                <div class="col-md-12 col-xs-12 padding5px">
+
+                    <div class="dropdown">
+                        <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
+                            title="Select a doctor" data-tap-disabled="true">
+
+
+                            @foreach ($doctors as $doctor)
+                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                            @endforeach
+
+                        </select>
+                        <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
+                        name:</label></div>
+                <div class="col-md-12 col-xs-12 ">
+                    <input class="form-control blueTBBorder" type="text" name="patient_name" required />
                     <small class="mandatorySmallTag">* Mandatory</small>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Impression Type:</label>
-                    <select class="form-control" name="impression_type" type="text" data-container="body"
-                        data-live-search="true" title="Select impression" data-hide-disabled="true">
+            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
+                        ID:</label></div>
+                <div class="col-md-12 col-xs-12">
+
+                    <label>{{ Auth()->user()->id . '_' . now()->format('Y') }}</label>
+                    <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
+                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                        type="text" value="{{ now()->format('m') }}" required />
+                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                        type="text" value="{{ now()->format('d') }}" required />
+                    <label>_</label>
+                    <input name="caseId4" placeholder="0000"
+                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
+                        type="text" required />
+                    <small class="mandatorySmallTag">* Mandatory</small>
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression
+                        Type:</label></div>
+                <div class="col-md-12 col-xs-12"><select class="form-control" name="impression_type" type="text"
+                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
                         @foreach ($impressionTypes as $impression)
-                            <option value="{{ $impression->id }}">{{ $impression->name }}</option>
+                            <option value="{{ $impression->id }}">
+                                {{ $impression->name }}
+                            </option>
                         @endforeach
-                    </select>
-                </div>
+
+                    </select></div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Delivery Date:</label>
-                    @php
-                        $time = new DateTime('tomorrow 13:00');
-                        $time = $time->format('d M, Y h:i a');
-                    @endphp
-                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}" required readonly />
+            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
+                        Date:</label></div>
+                @php
+                    $time = new DateTime('tomorrow 13:00');
+                    // $time = $time->format("Y-m-d\TH:i");
+                    $time = $time->format('d M, Y h:i a');
+                @endphp
+
+                <div class="col-md-12 col-xs-12">
+                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"
+                        required readonly />
                     <small class="mandatorySmallTag">* Mandatory</small>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="form-group">
-                    <label class="bold">Tags:</label>
+            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
+                <div class="col-md-12 col-xs-12">
                     <select class="select selectpicker greyBG" name="tags[]" multiple data-mdb-placeholder="Tags">
                         @foreach ($tags as $tag)
-                            <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}</option>
+                            <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}
+                            </option>
                         @endforeach
                     </select>
+
                 </div>
             </div>
         </div>
@@ -216,126 +249,200 @@
         </div>
         <hr>
         <!-- JOBS REPEATER -->
-        <div class="repeater jobsRepeater">
+        <div id="" style="" class="repeater jobsRepeater">
             <div data-repeater-list="repeat">
                 <div data-repeater-item class="jobRow">
-                    <div class="form-group row align-items-center row-item">
-                        <div class="col-md-2">
-                            <label class="bold">Units:</label>
-                            <input type="hidden" name="units" class="hiddenUnitsInput" required>
-                            <button type="button" class="btn btn-secondary slctUnitsBtn" data-toggle="modal"
-                                data-target="#unitsDialog" name="openDialogBtn" onclick="preOpenDialog(this)">Select Units</button>
-                        </div>
-                        <div class="col-md-2">
-                            <label>Job type:</label>
-                            <select class="form-control" name="jobType" onchange="jobTypeChanged(this)">
-                                @foreach ($types as $type)
-                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <label>Material:</label>
-                            <select class="form-control" name="material_id" onchange="materialChanged(this)">
-                                @foreach ($materials as $m)
-                                    <option value="{{ $m->id }}">{{ $m->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-1">
-                            <label>Color:</label>
-                            <select class="form-control" name="color">
-                                <option value="0" selected>None</option>
-                                <option value="A1">A1</option>
-                                <option value="A2">A2</option>
-                                <option value="A3">A3</option>
-                                <option value="A3.5">A3.5</option>
-                                <option value="A4">A4</option>
-                                <option value="B1">B1</option>
-                                <option value="B2">B2</option>
-                                <option value="B3">B3</option>
-                                <option value="B4">B4</option>
-                                <option value="C1">C1</option>
-                                <option value="C2">C2</option>
-                                <option value="C3">C3</option>
-                                <option value="C4">C4</option>
-                                <option value="D2">D2</option>
-                                <option value="D3">D3</option>
-                                <option value="D4">D4</option>
-                                <option value="BL1">BL1</option>
-                                <option value="BL2">BL2</option>
-                                <option value="BL3">BL3</option>
-                                <option value="BL4">BL4</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <label>Style:</label>
-                            <div class="kt-radio-inline">
-                                <label class="kt-radio">
-                                    <input type="radio" class="single" checked="checked" name="style" value="Single"> Single
-                                    <span></span>
-                                </label>
-                                <label class="kt-radio">
-                                    <input type="radio" class="bridge" name="style" value="Bridge"> Bridge
-                                    <span></span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-md-1 text-right">
-                            <label>&nbsp;</label>
-                            <div>
-                                <button data-repeater-delete class="btn deleteBtn btn-sm" type="button" value="Delete">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="col-md-12 abutment abutmentsArea" style="display:none;">
-                            <!-- inner repeater -->
-                            <div class="abutments-repeater abutmentsRepeater">
-                                <div data-repeater-list="abutments" class="dataRepeaterList">
-                                    <div data-repeater-item class="abutmentsRow">
-                                        <div class="row align-items-end">
-                                            <div class="col-md-3">
-                                                <label>Abt./Implant Units:</label>
-                                                <select class="select abutmentsUnitsPicker greyBG" name="abutmentUnits[]" multiple data-mdb-placeholder="Tags"></select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Implant type:</label>
-                                                <select class="form-control" name="implant">
-                                                    <option value="0" selected>None</option>
-                                                    @foreach ($implants as $implant)
-                                                        <option value="{{ $implant->id }}">{{ $implant->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Abutment type:</label>
-                                                <select class="form-control" name="abutment">
-                                                    <option value="0" selected>None</option>
-                                                    @foreach ($abutments as $abutment)
-                                                        <option value="{{ $abutment->id }}">{{ $abutment->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>Code:</label>
-                                                <input type="text" name="abutmentCode" class="form-control">
-                                            </div>
-                                            <div class="col-md-1 text-right">
-                                                <button data-repeater-delete class="btn deleteBtn2 btn-sm" type="button" value="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </div>
+                    <div class="form-group form-group ">
+                        <div data-repeater-list="repeat" class="col-12 padding5px">
+                            <div data-repeater-item class="form-group row align-items-center row-item"
+                                style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
+
+
+                                <div class="col-md-2">
+                                    <div class="kt-form__label">
+                                        <label class="kt-label m-label--single bold">Units:</label>
+                                    </div>
+                                    <input type="hidden" name="units" id="units" class="hiddenUnitsInput"
+                                        required>
+                                    <button type="button" class="btn btn-secondary slctUnitsBtn" data-toggle="modal"
+                                        data-target="#unitsDialog" name="openDialogBtn"
+                                        onclick="preOpenDialog(this)">Select Units</button>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label class="kt-label m-label--single">Job type:</label>
+                                        </div>
+                                        <div class="kt-form__control">
+                                            <select class="form-control" id="jobType" name="jobType"
+                                                onchange="jobTypeChanged(this)">
+                                                @foreach ($types as $type)
+                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label>Material:</label>
+                                        </div>
+                                        <div class="kt-form__control">
+                                            <select class="form-control" id="material_id" name="material_id"
+                                                onchange="materialChanged(this)">
+
+                                                @foreach ($materials as $m)
+                                                    <option value="{{ $m->id }}">
+                                                        {{ $m->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label>Color:</label>
+                                        </div>
+                                        <div class="kt-form__control">
+                                            <select class="form-control" id="color" name="color">
+                                                <option value="0" selected>None</option>
+                                                <option value="A1">A1</option>
+                                                <option value="A2">A2</option>
+                                                <option value="A3">A3</option>
+                                                <option value="A3.5">A3.5</option>
+                                                <option value="A4">A4</option>
+                                                <option value="B1">B1</option>
+                                                <option value="B2">B2</option>
+                                                <option value="B3">B3</option>
+                                                <option value="B4">B4</option>
+                                                <option value="C1">C1</option>
+                                                <option value="C2">C2</option>
+                                                <option value="C3">C3</option>
+                                                <option value="C4">C4</option>
+                                                <option value="D2">D2</option>
+                                                <option value="D3">D3</option>
+                                                <option value="D4">D4</option>
+                                                <option value="BL1">BL1</option>
+                                                <option value="BL2">BL2</option>
+                                                <option value="BL3">BL3</option>
+                                                <option value="BL4">BL4</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+                                        <div class="kt-form__label">
+                                            <label>Style:</label>
+                                        </div>
+                                        <div class="kt-radio-inline">
+                                            <label class="kt-radio">
+                                                <input type="radio" class="single" checked="checked" name="style"
+                                                    value="Single"> Single
+                                                <span></span>
+                                            </label>
+                                            <label class="kt-radio">
+                                                <input type="radio" class="bridge" name="style" value="Bridge">
+                                                Bridge
+                                                <span></span>
+                                            </label>
+
                                         </div>
                                     </div>
                                 </div>
-                                <a href="javascript:" data-repeater-create="" class="btn btn-info btn-sm mt-2" id="addJobBtn2" onClick="addAbutmentJob(this)">
-                                    <i class="fa fa-plus-square"></i> Add Abutment
-                                </a>
+
+
+                                <!-- DELETE BUTTON -->
+                                <div class="col-md-2">
+                                    <div class="kt-form__group--inline">
+
+                                        <div class="kt-form__control">
+                                            <button data-repeater-delete class="btn deleteBtn btn-sm" type="button"
+                                                value="Delete" style=""><i class="fa fa-trash "
+                                                    style=""></i></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 abutment abutmentsArea" style="display:none;">
+
+                                    <!-- inner repeater -->
+                                    <div class="abutments-repeater abutmentsRepeater">
+                                        <div data-repeater-list="abutments" class="dataRepeaterList">
+                                            <div data-repeater-item class="abutmentsRow">
+                                                <div class="row"
+                                                    style="align-items: flex-end;margin: 10px 0px;border: 1px solid #e14eca;border-radius: 0.5rem; padding: 10px 10px;">
+                                                    <div class="col-md-3">
+                                                        <label class="kt-label m-label--single">Abt./Implant Units:</label>
+                                                        <select class="select abutmentsUnitsPicker greyBG purpleBorder"
+                                                            name="abutmentUnits[]" multiple data-mdb-placeholder="Tags">
+
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="kt-label m-label--single">Implant
+                                                            type:</label>
+                                                        <select class="form-control purpleBorder" id="implant"
+                                                            name="implant">
+                                                            <option value="0" selected>None
+                                                            </option>
+                                                            @foreach ($implants as $implant)
+                                                                <option value="{{ $implant->id }}">{{ $implant->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label class="kt-label m-label--single">Abutment
+                                                            type:</label>
+                                                        <select class="form-control purpleBorder" id="abutment"
+                                                            name="abutment">
+                                                            <option value="0" selected>None</option>
+                                                            @foreach ($abutments as $abutment)
+                                                                <option value="{{ $abutment->id }}">{{ $abutment->name }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-md-2">
+                                                        <label class="kt-label m-label--single">Code:</label>
+
+                                                        <input type="text" name="abutmentCode"
+                                                            class="form-control purpleBorder">
+
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button data-repeater-delete class="btn deleteBtn2 btn-sm"
+                                                            type="button" value="Delete" style=""><i
+                                                                class="fa fa-trash " style=""></i></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm"
+                                            id="addJobBtn2" onClick = "addAbutmentJob(this)">
+                                            <i class="fa fa-plus-square" style="color:white"></i> Add Abutment
+                                        </a>
+
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
             <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
                 <i class="fa fa-plus-square" style="color:white"></i> Add
@@ -421,14 +528,14 @@
             @endif
 
             <div class="kt-portlet__foot">
-                <div class="kt-form__actions text-center">
-                    <button type="submit" class="btn btn-primary btn-lg">Create Case</button>
+                <div class="kt-form__actions">
+                    <button type="submit" class="btn btn-primary extraPadding" style="margin: 60px 5px 10px 5px">Submit</button>
+
                 </div>
             </div>
         </div>
         </form>
-    </div>
-</div>
+
         <!-- TEETH PICK DIALOG -->
 
         <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"

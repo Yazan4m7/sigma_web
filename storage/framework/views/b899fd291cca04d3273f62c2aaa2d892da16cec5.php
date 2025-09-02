@@ -49,7 +49,7 @@
                                 $unit = explode(', ',$job->unit_num);
                             ?>
                             <span>
-                        <?php echo e($job->unit_num); ?> - <?php echo e($job->jobType->name ?? "No Job Type"); ?> - <?php echo e($job->material->name ?? "no material"); ?><?php echo e(isset($job->subType) && $job->subType->name ? " (" . $job->subType->name . ")" : ""); ?>
+                        <?php echo e($job->unit_num); ?> - <?php echo e($job->jobType->name ?? "No Job Type"); ?> - <?php echo e($job->material->name ?? "no material"); ?>
 
                                 <?php echo e($job->color == '0' ? "" : " - " . $job->color); ?>
 

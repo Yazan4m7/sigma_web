@@ -632,7 +632,7 @@
         jQuery(document).ready(function($) {
             // Initialize lightGallery
             $('#lightgallery').lightGallery();
-            
+
             // Define the PrintLabel function and attach to window
             window.PrintLabel = function() {
                 //height=192,width=288
@@ -779,7 +779,7 @@
 
                 return true;
             };
-            
+
             // Define the PrintMinimizedLabel function and attach to window
             window.PrintMinimizedLabel = function() {
                 // open new window for printing

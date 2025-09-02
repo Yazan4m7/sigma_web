@@ -1341,7 +1341,7 @@ YSH-slide-grid {
 
 .dropdown-menu {
    left: -100px !important;
-   transform: translate3d(0px, 28px, 0px) !important;
+   /*transform: translate3d(0px, 28px, 0px) !important;*/
 }
 
 .dropdown-menu:before {

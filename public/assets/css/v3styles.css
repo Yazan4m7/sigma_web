@@ -7,14 +7,14 @@
     display: flex;
 }
 
-/* Device Dialog Layout Breakpoint Variables 
-   
+/* Device Dialog Layout Breakpoint Variables
+
    Adjust these values to control when device layout changes:
-   
+
    --device-dialog-tablet-breakpoint: Controls when devices change from single row to vertical stacking (default: 992px)
-   --device-dialog-mobile-breakpoint: Controls when devices use 2-column grid layout (default: 768px)  
+   --device-dialog-mobile-breakpoint: Controls when devices use 2-column grid layout (default: 768px)
    --device-dialog-small-mobile-breakpoint: Controls when devices use single column layout (default: 480px)
-   
+
    Example: To make devices switch to 2 rows at 1024px instead of 992px:
    --device-dialog-tablet-breakpoint: 1024px;
 */
@@ -220,6 +220,24 @@
     color: #666;
     margin-bottom: 5px;
 }
+
+.row.g-3 {
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #ffffff;
+    flex-direction: row;
+    align-items: flex-end;
+
+}
+
+
+
 
 .waiting-dialog .sigma-form-group {
     margin: 0;

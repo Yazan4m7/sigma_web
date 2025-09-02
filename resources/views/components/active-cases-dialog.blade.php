@@ -81,9 +81,6 @@
                 // Get job type and type (sub-material)
                 if ($job->jobType) {
                     $jobTypeText = $job->jobType->name;
-                    if ($job->subType && is_object($job->subType) && isset($job->subType->name)) {
-                        $jobTypeText .= ' (' . $job->subType->name . ')';
-                    }
                     $jobTypes[] = $jobTypeText;
                 }
             }

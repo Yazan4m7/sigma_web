@@ -92,7 +92,7 @@ class TypeController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'material_id' => 'nullable|exists:materials,id',
+            'material_id' => 'required|exists:materials,id',
             'is_enabled' => 'boolean',
         ]);
 

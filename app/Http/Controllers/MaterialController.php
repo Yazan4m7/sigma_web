@@ -21,16 +21,13 @@ class MaterialController extends Controller
     public function returnCreate()
     {
         $jobTypes =  JobType::all();
-        $types = \App\Type::with('material:id,name')
-            ->enabled()
-            ->whereHas('material')
-            ->get();
+        $types = \App\Type::enabled()->get();
         return view('material.create',compact('jobTypes', 'types'));
     }
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name'     => 'mat_name|max:30',
+            'mat_name' => 'required|max:30',
             'price'    => 'required|numeric',
         ]);
 
@@ -59,16 +56,7 @@ class MaterialController extends Controller
 
         // Handle material types if provided
         if ($request->has('materialTypes') && is_array($request->materialTypes)) {
-            foreach($request->materialTypes as $typeId) {
-                // Create a relationship between this material and the selected types
-                // This would typically be done through a pivot table if needed
-                // For now, we'll just ensure the types exist and are linked to materials
-                $type = \App\Type::find($typeId);
-                if ($type) {
-                    // You could add additional logic here if needed
-                    // For example, creating a material-type relationship table
-                }
-            }
+            $material->types()->sync($request->materialTypes);
         }
 
             return back()->with('success', 'Material has been successfully created');
@@ -79,12 +67,10 @@ class MaterialController extends Controller
         $jobTypes =  JobType::all();
         $material = material::findOrFail($id);
         $matJobTypes =$material->jobtypes->pluck("jobtype_id")->toArray();
-        $types = \App\Type::with('material:id,name')
-            ->enabled()
-            ->whereHas('material')
-            ->get();
+        $types = \App\Type::enabled()->get();
+        $selectedTypes = $material->types->pluck('id')->toArray();
 
-        return view('material.edit',compact('material','matJobTypes','jobTypes', 'types'));
+        return view('material.edit',compact('material','matJobTypes','jobTypes', 'types', 'selectedTypes'));
     }
     public function update(Request $request)
     {
@@ -120,20 +106,43 @@ class MaterialController extends Controller
                 $jt->save();
             }
 
+            // Handle material types update
+            if ($request->has('materialTypes') && is_array($request->materialTypes)) {
+                $material->types()->sync($request->materialTypes);
+            } else {
+                $material->types()->detach(); // Remove all types if none selected
+            }
+
+            // Handle material implants update
+            if ($request->has('materialImplants') && is_array($request->materialImplants)) {
+                $syncData = [];
+                foreach ($request->materialImplants as $implantData) {
+                    $syncData[$implantData['implant_id']] = [
+                        'compatibility_level' => $implantData['compatibility_level'] ?? 'compatible',
+                        'notes' => $implantData['notes'] ?? null,
+                        'is_active' => true
+                    ];
+                }
+                $material->implants()->sync($syncData);
+            } else {
+                $material->implants()->detach(); // Remove all implants if none selected
+            }
+
             return back()->with('success', 'Material has been successfully updated');
 
     }
 
-    public function getTypes($id)
+    public function getTypes($id = null)
     {
-        $material = material::find($id);
-        if (!$material) {
-            return response()->json(['error' => 'Material not found'], 404);
+        if ($id) {
+            $material = material::find($id);
+            if (!$material) {
+                return response()->json(['error' => 'Material not found'], 404);
+            }
+            $types = $material->types()->enabled()->get(['id', 'name']);
+        } else {
+            $types = \App\Type::enabled()->get(['id', 'name']);
         }
-
-        $types = \App\Type::where('material_id', $id)
-            ->enabled()
-            ->get(['id', 'name']);
 
         return response()->json($types);
     }

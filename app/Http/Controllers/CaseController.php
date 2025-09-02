@@ -46,7 +46,7 @@ class CaseController extends Controller
     {
 
     }
-    
+
     public function devicesPage()
     {
         $this->setUserPermissions();
@@ -59,14 +59,14 @@ class CaseController extends Controller
             ->orderBy('sorting_order')
             ->orderBy('name') // Fallback for devices with same/null sorting_order
             ->get();
-        
+
         // Get device counts using EXACT same logic as operations dashboard
         $deviceUnitsCounts = [];
-        
+
         foreach ($devices as $device) {
             $deviceId = $device->id;
             $deviceType = $device->type;
-            
+
             // Create device model instance for countOfUnits method (same as operations dashboard)
             $deviceModel = new device();
             $deviceModel->exists = true;
@@ -110,7 +110,7 @@ class CaseController extends Controller
 
         // Add stage configuration for dialog components
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
-        
+
         return view('devices.devices-page', compact('devices', 'deviceUnitsCounts', 'allCases', 'stageConfig'));
     }
 
@@ -120,7 +120,7 @@ class CaseController extends Controller
     public function updateDeviceOrder(Request $request)
     {
         $deviceIds = $request->input('device_ids');
-        
+
         if (!$deviceIds || !is_array($deviceIds)) {
             return response()->json(['error' => 'Invalid device IDs'], 400);
         }
@@ -386,7 +386,7 @@ class CaseController extends Controller
     {
         $case = sCase::with([
             'jobs.jobType:id,name',
-            'jobs.material:id,name', 
+            'jobs.material:id,name',
             'jobs.material.types:id,name,material_id',
             'jobs.subType:id,name,material_id'
         ])->findOrFail($id);
@@ -955,10 +955,7 @@ class CaseController extends Controller
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
 
         // Get material types for operation dialogs
-        $types = \App\Type::with('material:id,name')
-            ->enabled()
-            ->whereHas('material')
-            ->get();
+        $types = \App\Type::with('material')->enabled()->get();
 
         // Log execution time - can be removed in production
         $executionTime = microtime(true) - $startTime;

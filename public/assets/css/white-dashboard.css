@@ -7127,6 +7127,7 @@ button.bg-darker:focus {
 
 .d-flex {
     display: flex !important;
+    justify-content: space-between;
 }
 
 .d-inline-flex {
@@ -17331,7 +17332,7 @@ textarea.form-control:active {
 }
 
 .form-group input[type=file] {
-    opacity: 0;
+    opacity: 1;
     position: absolute;
     top: 0;
     right: 0;

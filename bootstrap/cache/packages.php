@@ -1,118 +1,125 @@
 <?php return array (
-  'barryvdh/laravel-debugbar' =>
+  'barryvdh/laravel-debugbar' => 
   array (
-    'aliases' =>
+    'aliases' => 
     array (
       'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
     ),
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Barryvdh\\Debugbar\\ServiceProvider',
     ),
   ),
-  'facade/ignition' =>
+  'facade/ignition' => 
   array (
-    'aliases' =>
+    'aliases' => 
     array (
       'Flare' => 'Facade\\Ignition\\Facades\\Flare',
     ),
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Facade\\Ignition\\IgnitionServiceProvider',
     ),
   ),
-  'fruitcake/laravel-cors' =>
+  'fruitcake/laravel-cors' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Fruitcake\\Cors\\CorsServiceProvider',
     ),
   ),
-  'inspector-apm/inspector-laravel' =>
+  'inspector-apm/inspector-laravel' => 
   array (
-    'aliases' =>
+    'aliases' => 
     array (
       'Inspector' => 'Inspector\\Laravel\\Facades\\Inspector',
     ),
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Inspector\\Laravel\\InspectorServiceProvider',
     ),
   ),
-  'jaybizzle/laravel-crawler-detect' =>
+  'jaybizzle/laravel-crawler-detect' => 
   array (
-    'aliases' =>
+    'aliases' => 
     array (
       'Crawler' => 'Jaybizzle\\LaravelCrawlerDetect\\Facades\\LaravelCrawlerDetect',
     ),
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Jaybizzle\\LaravelCrawlerDetect\\LaravelCrawlerDetectServiceProvider',
     ),
   ),
-  'juststeveking/laravel-feature-flags' =>
+  'jeremykenedy/laravel-logger' => 
   array (
-    'providers' =>
+    'providers' => 
+    array (
+      0 => 'jeremykenedy\\LaravelLogger\\LaravelLoggerServiceProvider',
+    ),
+  ),
+  'juststeveking/laravel-feature-flags' => 
+  array (
+    'providers' => 
     array (
       0 => 'JustSteveKing\\Laravel\\FeatureFlags\\FeatureFlagsServiceProvider',
     ),
   ),
-  'laravel/octane' =>
+  'laravel/octane' => 
   array (
-    'aliases' =>
+    'aliases' => 
     array (
       'Octane' => 'Laravel\\Octane\\Facades\\Octane',
     ),
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Octane\\OctaneServiceProvider',
     ),
   ),
-  'laravel/sail' =>
+  'laravel/sail' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Sail\\SailServiceProvider',
     ),
   ),
-  'laravel/sanctum' =>
+  'laravel/sanctum' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
-  'laravel/telescope' =>
+  'laravel/telescope' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
     ),
   ),
-  'laravel/tinker' =>
+  'laravel/tinker' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
-  'laravel/ui' =>
+  'laravel/ui' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Laravel\\Ui\\UiServiceProvider',
     ),
   ),
-  'nesbot/carbon' =>
+  'nesbot/carbon' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'Carbon\\Laravel\\ServiceProvider',
     ),
   ),
-  'nunomaduro/collision' =>
+  'nunomaduro/collision' => 
   array (
-    'providers' =>
+    'providers' => 
     array (
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),

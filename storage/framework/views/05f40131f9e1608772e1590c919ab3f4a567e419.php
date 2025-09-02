@@ -200,6 +200,7 @@
                                  'f-causes-index',
                                  'devices-index',
                                  'sys-config',
+                                 'configuration.index',
                                  'media-index'))
                                 ? 'true' : 'false';
                 ?>
@@ -224,7 +225,7 @@
                     <li class="<?php echo e(Route::currentRouteName() == 'tags-index' ? 'active' : ''); ?>"><a href="<?php echo e(route('tags-index')); ?>"><i class="fa fa-tag"></i><span>Tags</span></a>
                     <li class="<?php echo e(Route::currentRouteName() == 'f-causes-index' ? 'active' : ''); ?>"><a href="<?php echo e(route('f-causes-index')); ?>"><i class="fa-solid fa-repeat"></i><span>Failure Causes</span></a>
                     <li class="<?php echo e(Route::currentRouteName() == 'devices-index' ? 'active' : ''); ?>"><a href="<?php echo e(route('devices-index')); ?>"><i class="fa-solid fa-tachograph-digital"></i><span>Devices</span></a>
-                    
+                    <li class="<?php echo e(Route::currentRouteName() == 'configuration.index' ? 'active' : ''); ?>"><a href="<?php echo e(route('configuration.index')); ?>"><i class="fa-solid fa-screwdriver-wrench"></i><span>System Configuration</span></a>
 
                     </ul>
                     </div>

@@ -97,7 +97,7 @@
                             <option value="">Select Material Type</option>
                             <?php $__currentLoopData = $types->where('is_enabled', true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $materialType): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <option value="<?php echo e($materialType->id); ?>" data-material-id="<?php echo e($materialType->material_id); ?>">
-                                    <?php echo e($materialType->material?->name ?? 'Unknown Material'); ?> - <?php echo e($materialType->name); ?>
+                                    <?php echo e($materialType->material?->name ?? 'Unknown Material'); ?>
 
                                 </option>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

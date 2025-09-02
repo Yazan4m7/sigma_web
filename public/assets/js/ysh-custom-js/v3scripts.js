@@ -13,7 +13,7 @@ jQuery(document).ready(function($) {
     window.selectedMachineId = null;
     window.initialMachineSelection = true;
     window.lastCaseClickedCase= null;
-    $('.sigma-build-radio').on('click', e => e.stopPropagation());
+    $('.sigma-build-radio').on('click', e => e.stopPropagation());});
 
 
     /**

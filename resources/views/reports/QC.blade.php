@@ -90,21 +90,25 @@
 
 
         <!-- FILTERS -->
-        <div class="container">
-            <div class="row " style="padding-left: 0;padding-top: 0;padding-bottom: 0px">
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-                    <div class="kt-subheader__search" style="">
-                        <label>Date Range:</label>
-                        <input class="form-control dateRange" name="dateRange" autocomplete="off" readonly
-                               value="{{$dateRangeValue ?? "Select Period"}}" style="cursor: pointer;">
-                    </div>
+        <div class="container-fluid">
+            <div class="row g-3" style="margin-bottom: 20px;">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">From Date:</label>
+                    <input class="form-control" type="date" name="from" 
+                           value="{{ request('from', $from ?? '') }}" 
+                           style="font-size: 14px; height: 38px;">
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-
-                    <div class="dropdown">
-                        <label>Failure Cause:</label>
-                        <select style="width:100%" class="selectpicker clearOnAll" multiple name="causesInput[]"
-                                id="causesInput" data-live-search="true" title="All" data-hide-disabled="true">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">To Date:</label>
+                    <input class="form-control" type="date" name="to" 
+                           value="{{ request('to', $to ?? '') }}" 
+                           style="font-size: 14px; height: 38px;">
+                </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Failure Cause:</label>
+                    <select class="form-select selectpicker clearOnAll" multiple name="causesInput[]"
+                            id="causesInput" data-live-search="true" title="All" data-hide-disabled="true"
+                            style="font-size: 14px; height: 38px;">
 
 
                                 @if ($allCausesSelected)
@@ -122,15 +126,13 @@
                                 @endif
 
                         </select>
-                    </div>
-
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
+                <div class="col-lg-2 col-md-3 col-6">
                     @if(isset($clients))
-                        <div class="dropdown">
-                            <label>Doctor:</label>
-                            <select style="width:100%" class="selectpicker clearOnAll" multiple name="doctor[]"
-                                    id="doctor" data-live-search="true" title="All" data-hide-disabled="true">
+                        <label class="form-label fw-semibold">Doctor:</label>
+                        <select class="form-select selectpicker clearOnAll" multiple name="doctor[]"
+                                id="doctor" data-live-search="true" title="All" data-hide-disabled="true"
+                                style="font-size: 14px; height: 38px;">
 
                                     <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>
                                         All
@@ -140,15 +142,13 @@
                                     @endforeach
 
                             </select>
-                        </div>
                     @endif
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-2">
-
-                    <div class="dropdown">
-                        <label>Type of failure:</label>
-                        <select style="width:100%" class="selectpicker clearOnAll" multiple name="failureTypeInput[]"
-                                id="failureTypeInput" data-live-search="true" title="All" data-hide-disabled="true">
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Type of failure:</label>
+                    <select class="form-select selectpicker clearOnAll" multiple name="failureTypeInput[]"
+                            id="failureTypeInput" data-live-search="true" title="All" data-hide-disabled="true"
+                            style="font-size: 14px; height: 38px;">
 
                                 <option value="all" {{in_array("all" , $typesSelected) ? 'selected' : ''}}>All</option>
                                 <option value="0" {{in_array(0 , $typesSelected) ? 'selected' : ''}} >Reject</option>
@@ -157,26 +157,16 @@
                                 <option value="3" {{in_array(3 , $typesSelected) ? 'selected' : ''}} >Redo</option>
 
                         </select>
-                    </div>
-
                 </div>
-            </div>
-            <div class="row actionButtonsRow" style="padding-left: 10px;padding-top: 0;padding-bottom: 0px;    padding-right: 0;">
-
-                <div class="col-lg-3 col-md-3 col-3" style="padding-left: 0;">
-                    <div class="kt-subheader__search">
-
-                        <div class="kt-form__actions">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-3 " >
-                    <div class="kt-subheader__search">
-
-                        <div class="kt-form__actions">
-                            <button  class="btn btn-secondary printBtn">PRINT</button>
-                        </div>
+                <div class="col-lg-2 col-md-3 col-6">
+                    <label class="form-label fw-semibold">Actions:</label>
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary px-4" style="font-size: 14px; height: 38px;">
+                            <i class="fas fa-search me-1"></i>Submit
+                        </button>
+                        <button type="button" class="btn btn-secondary px-4 printBtn" style="font-size: 14px; height: 38px;">
+                            <i class="fas fa-print me-1"></i>Print
+                        </button>
                     </div>
                 </div>
             </div>
@@ -184,33 +174,32 @@
     </form>
 
 
-    <div class="sigmaPanel" style="">
-        <div class="row" >
-            <div class="col-lg-12 col-sm-12  row" style="flex-direction: row;padding-bottom:0px">
-                {{--<div class="col-lg-3 col-md-3 col-3 mb-3">--}}
-                    {{--<div class= "vertical">--}}
-                        {{--<span style="font-weight: bold;font-size:15px;">Total Failures:</span><br>--}}
-                        {{--<span style="font-weight:bold;font-size:19px; color:#3b8b45">{{array_sum(array_map("count", $failureLogs));}}</span>--}}
-                        {{--<span style="font-size:13px;color:#3b8b45">Incidents</span>--}}
-                    {{--</div>--}}
-                {{--</div>--}}
-                <div class="col-lg-3 col-md-3 col-3 mb-3">
-                    <div class= "vertical">
-                        <span style="font-weight: bold;font-size:15px;">Total cases:</span><br>
-                        <span style="font-weight:bold;font-size:19px; color:#3b8b45">{{array_sum($amountOfCases) }}</span>
-                        <span style="font-size:13px;color:#3b8b45">Cases</span>
+    <div class="sigmaPanel bg-white rounded shadow-sm p-4 mb-4">
+        <div class="row g-3 mb-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <i class="fas fa-briefcase text-primary me-2" style="font-size: 24px;"></i>
+                            <h5 class="card-title mb-0 fw-bold">Total Cases</h5>
+                        </div>
+                        <h2 class="display-6 text-success fw-bold mb-1">{{array_sum($amountOfCases) }}</h2>
+                        <small class="text-muted">Cases Processed</small>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-3 col-3 mb-3">
-                    <div class= "vertical">
-                        <span style="font-weight: bold;font-size:15px;">Total units:</span><br>
-
-                        <!-- Filled via Jquery because of the calculation is after the display(below span) -->
-                        <span id="numOfUnitsFailed" style="font-weight: bold;font-size:19px;color:red"> </span>
-
-                        <span style="font-size:13px;color:red">Units</span>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card border-0 bg-light h-100">
+                    <div class="card-body text-center">
+                        <div class="d-flex align-items-center justify-content-center mb-2">
+                            <i class="fas fa-cubes text-danger me-2" style="font-size: 24px;"></i>
+                            <h5 class="card-title mb-0 fw-bold">Total Units</h5>
+                        </div>
+                        <h2 class="display-6 text-danger fw-bold mb-1" id="numOfUnitsFailed"></h2>
+                        <small class="text-muted">Units Failed</small>
                     </div>
                 </div>
+            </div>
         </div>
         <div class="col-lg-12 col-sm-12">
 
