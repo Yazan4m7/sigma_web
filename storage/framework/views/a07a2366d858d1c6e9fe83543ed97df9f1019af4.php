@@ -5,38 +5,23 @@
 
 <style>
     /* Minimal Professional Material Types Interface */
-    .types-display-box {
-        border: 1px solid #ddd;
-        background: #fff;
-        padding: 8px 12px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        cursor: pointer;
-        font-size: 14px;
+    .btn-outline-dark {
+        border: 1px solid #333;
         color: #333;
-    }
-
-    .types-display-box:hover {
-        border-color: #999;
-    }
-
-    .manage-types-btn {
-        background: #333;
-        color: white;
-        border: none;
-        padding: 4px 10px;
+        background: white;
+        padding: 4px 12px;
         font-size: 12px;
-        cursor: pointer;
     }
 
-    .manage-types-btn:hover {
-        background: #555;
+    .btn-outline-dark:hover {
+        background: #333;
+        border-color: #333;
+        color: white;
     }
 
-    /* Clean Modal */
+    /* Clean Modal - Simplified */
     .types-modal .modal-dialog {
-        max-width: 800px;
+        max-width: 700px;
     }
 
     .types-modal .modal-content {
@@ -44,30 +29,11 @@
     }
 
     .types-modal .modal-header {
-        background: #f8f9fa;
-        border-bottom: 1px solid #ddd;
-        padding: 12px 16px;
-    }
-
-    .types-modal .modal-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
-        margin: 0;
-    }
-
-    .types-modal .btn-close {
-        background: none;
-        border: none;
-        color: #666;
-        font-size: 16px;
-        padding: 0;
-        width: 20px;
-        height: 20px;
+        display: none;
     }
 
     .types-modal .modal-body {
-        padding: 16px;
+        padding: 0;
         background: white;
     }
 
@@ -75,25 +41,35 @@
         padding: 12px 16px;
         background: #f8f9fa;
         border-top: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
     }
 
-    /* Simple Table */
-    .types-modal .card {
-        border: 1px solid #ddd;
-        margin-bottom: 16px;
+    .types-modal .btn-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: none;
+        border: none;
+        color: #666;
+        font-size: 18px;
+        width: 24px;
+        height: 24px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .types-modal .card-header {
-        background: #f8f9fa;
-        border-bottom: 1px solid #ddd;
-        padding: 10px 12px;
-        font-size: 14px;
-        font-weight: 600;
+    .types-modal .btn-close:hover {
         color: #333;
     }
 
-    .types-modal .card-body {
+    /* Simple Table - Remove card wrapper */
+    .types-modal .table-container {
+        margin: 0;
         padding: 0;
+        position: relative;
     }
 
     #typesTable_wrapper .dataTables_filter,
@@ -340,141 +316,127 @@
         </div>
 
         <div class="row" style="margin-top: 15px;">
-            <div class="kt-portlet__head col-6 ">
+            <div class="col-md-6 col-xs-12" style="align-self: flex-start;">
                 <div class="kt-portlet__head-label">
                     <h6 class="kt-portlet__head-title">
-                        <i class="fa  fa-suitcase" style="width:3%"></i> Stages:
+                        <i class="fa fa-suitcase" style="width:3%"></i> Stages:
                     </h6>
                 </div>
-            </div>
-            <div class="col-6 col-sm-6 col-md-3 mb-3">
-
-
-                <label>Material Types:</label>
-                <div class="types-display-box" onclick="openTypesModal()">
-                    <span class="selected-types-text" id="selectedTypesDisplay">No types selected - Click to manage
-                        types</span>
-                    <button type="button" class="manage-types-btn">Manage Types</button>
+                <hr style="margin-top: 8px; margin-bottom: 15px;">
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Design:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="design">
+                                <input type="checkbox" id="design" name="design" value="1" checked>
+                                <i class="fa"></i>
+                            </label>
+                        </div>
+                    </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Manufacturing:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="noMilling">
+                                <input type="radio" id="noMilling" name="manufacturing" value="0">
+                                <i class="fa"></i>
+                                None
+                            </label>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="milling">
+                                <input type="radio" id="milling" name="manufacturing" value="2">
+                                <i class="fa"></i>
+                                Milling
+                            </label>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="3dPrinting">
+                                <input type="radio" id="3dPrinting" name="manufacturing" value="3" required>
+                                <i class="fa"></i>
+                                3D Printing
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Furnace:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="furnace0">
+                                <input type="radio" id="furnace0" name="furnace" value="0">
+                                <i class="fa"></i>
+                                None
+                            </label>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="furnace1">
+                                <input type="radio" id="furnace1" name="furnace" value="4">
+                                <i class="fa"></i>
+                                Sintering Furnace
+                            </label>
+                        </div>
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="furnace2">
+                                <input type="radio" id="furnace2" name="furnace" value="5" required>
+                                <i class="fa"></i>
+                                Press Furnace
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Finishing:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="finishing">
+                                <input type="checkbox" id="finishing" name="finishing" value="6" checked>
+                                <i class="fa"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Quality Control:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="qc">
+                                <input type="checkbox" id="qc" name="qc" value="7" checked>
+                                <i class="fa"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-6 my-1 control-label">Delivery:</label>
+                    <div class="col-md-6">
+                        <div class="form-check-inline my-1">
+                            <label class="cr-styled" for="delivery">
+                                <input type="checkbox" id="delivery" name="delivery" value="8" checked>
+                                <i class="fa"></i>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 col-xs-12 mb-3">
+                <label>Material Types:</label>
+                <button type="button" class="btn btn-outline-dark btn-sm" onclick="openTypesModal()">
+                    <i class="fas fa-tags"></i> Manage Types
+                </button>
+
+                <!-- Selected Types Display -->
+                <div id="selectedTypesDisplay" style="margin-top: 8px;">
+                    <div class="selected-types-container">
+                        <p class="text-muted text-center">No types selected</p>
+                    </div>
+                </div>
+
                 <div id="selectedTypesInputs">
                     <!-- Hidden inputs for selected types will be added here -->
                 </div>
-
-            </div>
-        </div>
-
-
-        <br />
-
-        <hr style="margin-top: 0;">
-        <div class="form-group row">
-            <label class="col-md-6 my-1 control-label">Design:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="design">
-                        <input type="checkbox" id="design" name="design" value="1" checked>
-                        <i class="fa"></i>
-
-                    </label>
-                </div>
-
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 my-1 control-label">Manufacturing:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="noMilling">
-                        <input type="radio" id="noMilling" name="manufacturing" value="0">
-                        <i class="fa"></i>
-                        None
-                    </label>
-                </div>
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="milling">
-                        <input type="radio" id="milling" name="manufacturing" value="2">
-                        <i class="fa"></i>
-                        Milling
-                    </label>
-                </div>
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="3dPrinting">
-                        <input type="radio" id="3dPrinting" name="manufacturing" value="3" required>
-                        <i class="fa"></i>
-                        3D Printing
-                    </label>
-                </div>
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 my-1 control-label">Furnace:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="furnace0">
-                        <input type="radio" id="furnace0" name="furnace" value="0">
-                        <i class="fa"></i>
-                        None
-                    </label>
-                </div>
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="furnace1">
-                        <input type="radio" id="furnace1" name="furnace" value="4">
-                        <i class="fa"></i>
-                        Sintering Furnace
-                    </label>
-                </div>
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="furnace2">
-                        <input type="radio" id="furnace2" name="furnace" value="5" required>
-                        <i class="fa"></i>
-                        Press Furnace
-                    </label>
-                </div>
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 my-1 control-label">Finishing:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="finishing">
-                        <input type="checkbox" id="finishing" name="finishing" value="6" checked>
-                        <i class="fa"></i>
-
-                    </label>
-                </div>
-
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 my-1 control-label">Quality Control:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="qc">
-                        <input type="checkbox" id="qc" name="qc" value="7" checked>
-                        <i class="fa"></i>
-
-                    </label>
-                </div>
-
-
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-md-2 my-1 control-label">Delivery:</label>
-            <div class="col-md-9">
-                <div class="form-check-inline my-1">
-                    <label class="cr-styled" for="delivery">
-                        <input type="checkbox" id="delivery" name="delivery" value="8" checked>
-                        <i class="fa"></i>
-
-                    </label>
-                </div>
-
-
             </div>
         </div>
         <br />
@@ -494,60 +456,33 @@
     </form>
 <?php $__env->stopSection(); ?>
 
-<!-- Material Types Modal -->
-<div class="modal fade types-modal" id="typesModal" tabindex="-1" role="dialog" aria-labelledby="typesModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+<!-- Material Types Modal - Simplified -->
+<div class="modal fade types-modal" id="typesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="typesModalLabel">
-                    <i class="fas fa-tags"></i> Manage Material Types
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="card">
-                            <div class="card-header bg-light">
-                                <h6 class="mb-0"><i class="fas fa-list"></i> Available Types</h6>
-                            </div>
-                            <div class="card-body">
-                                <table id="typesTable" class="table table-striped table-hover" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Select</th>
-                                            <th>Name</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Data will be loaded via DataTable -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card">
-                            <div class="card-header text-white">
-                                <h6 class="mb-0"><i class="fas fa-check-circle"></i> Selected Types</h6>
-                            </div>
-                            <div class="card-body" style="height: 97.5%;">
-                                <div id="selectedTypesList" class="selected-types-container">
-                                    <p class="text-muted text-center">No types selected</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="table-container">
+                    <table id="typesTable" class="table table-striped table-hover" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Select</th>
+                                <th>Name</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Data will be loaded via DataTable -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-success" id="saveSelectedTypes">
-                    <i class="fas fa-save"></i> Save Selection
+                    <i class="fas fa-save"></i> Save
                 </button>
             </div>
         </div>
@@ -698,8 +633,8 @@
                     ],
                     dom: 'Brtip',
                     buttons: [{
-                        text: '<i class="fas fa-plus"></i> Add New Type',
-                        className: 'btn btn-success btn-sm',
+                        text: '<i class="fas fa-plus"></i> ',
+                        className: 'btn btn-success btn-md',
                         action: function() {
                             showAddTypeModal();
                         }
@@ -748,7 +683,7 @@
 
             function updateSelectedTypesList() {
                 window.updateSelectedTypesList = updateSelectedTypesList;
-                const container = $('#selectedTypesList');
+                const container = $('#selectedTypesDisplay .selected-types-container');
 
                 if (selectedTypes.length === 0) {
                     container.html('<p class="text-muted text-center">No types selected</p>');
@@ -772,8 +707,11 @@
                     const id = parseInt($(this).data('id'));
                     selectedTypes = selectedTypes.filter(t => t.id !== id);
                     updateSelectedTypesList();
-                    // Update checkbox in table
-                    $(`.type-checkbox[data-id="${id}"]`).prop('checked', false);
+                    updateSelectedTypesDisplay();
+                    // Update checkbox in table if table is initialized
+                    if (typesTable) {
+                        $(`.type-checkbox[data-id="${id}"]`).prop('checked', false);
+                    }
                 });
             }
 
@@ -867,7 +805,7 @@
                     <div class="modal-content">
                         <div class="modal-header text-white">
                             <h5 class="modal-title">Add New Material Type</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
+                            <button type="button" class="btn-close" data-dismiss="modal" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
                         </div>
                         <div class="modal-body">
                             <form id="addTypeForm">
@@ -878,7 +816,7 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-success" id="saveNewTypeBtn">
                                 <i class="fas fa-save"></i> Save Type
                             </button>
@@ -959,7 +897,7 @@
                 const alert = $(`
             <div class="alert ${alertClass} alert-dismissible fade show" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 350px;">
                 <i class="fas fa-${icon}"></i> ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                <button type="button" class="btn-close" data-dismiss="alert"></button>
             </div>
         `);
 
@@ -978,30 +916,22 @@
             // Save selected types
             $('#saveSelectedTypes').click(function() {
                 updateSelectedTypesDisplay();
+                updateSelectedTypesList();
                 $('#typesModal').modal('hide');
                 showAlert('success', `Selected ${selectedTypes.length} type(s) for this material`);
             });
 
             function updateSelectedTypesDisplay() {
-                const display = $('#selectedTypesDisplay');
                 const inputsContainer = $('#selectedTypesInputs');
 
                 // Clear existing inputs
                 inputsContainer.empty();
 
-                if (selectedTypes.length === 0) {
-                    display.text('No types selected - Click to manage types');
-                } else {
-                    display.text(
-                        `${selectedTypes.length} type(s) selected: ${selectedTypes.map(t => t.name).join(', ')}`
-                    );
-
-                    // Add hidden inputs for form submission
-                    selectedTypes.forEach(type => {
-                        inputsContainer.append(
-                            `<input type="hidden" name="materialTypes[]" value="${type.id}">`);
-                    });
-                }
+                // Add hidden inputs for form submission
+                selectedTypes.forEach(type => {
+                    inputsContainer.append(
+                        `<input type="hidden" name="materialTypes[]" value="${type.id}">`);
+                });
             }
 
             // Initialize display
@@ -1106,7 +1036,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-primary text-white">
                             <h5 class="modal-title">Add Implant Compatibility</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
+                            <button type="button" class="btn-close" data-dismiss="modal" style="background:none; border:none; color:white; font-size:1.5rem;">&times;</button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-3">
@@ -1149,7 +1079,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-primary" onclick="saveImplantRelation()">
                                 <i class="fas fa-save"></i> Add Implant
                             </button>
@@ -1202,7 +1132,7 @@
                     <div class="modal-content">
                         <div class="modal-header bg-warning text-dark">
                             <h5 class="modal-title">Edit ${implantData.implant_name} Compatibility</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
+                            <button type="button" class="btn-close" data-dismiss="modal">&times;</button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-3">
@@ -1235,7 +1165,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-warning" onclick="updateImplantRelation(${index})">
                                 <i class="fas fa-save"></i> Update
                             </button>
