@@ -1,0 +1,432 @@
+/* SIGMA Reports Modern Professional Styling */
+/* Main color palette: #2b7b7d (SIGMA teal), #f1f7ed (light green), #404040 (dark gray) */
+
+/* CSS Variables - Using master definitions from sigma-reports-master.css */
+
+/* Report Filters Card - Using master definition from sigma-reports-master.css */
+
+.filters-header {
+    border-bottom: 2px solid var(--sigma-border);
+    padding-bottom: 1rem;
+}
+
+.filters-header h5 {
+    color: var(--sigma-primary);
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+.filters-header small {
+    color: var(--sigma-gray);
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+/* Text Colors */
+.text-sigma {
+    color: var(--sigma-primary) !important;
+}
+
+.text-sigma-light {
+    color: var(--sigma-primary-light) !important;
+}
+
+/* Modern Form Controls */
+.form-control-modern {
+    border: 2px solid var(--sigma-border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 14px;
+    height: auto;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+
+.form-control-modern:focus {
+    border-color: var(--sigma-primary);
+    box-shadow: 0 0 0 0.2rem rgba(43, 123, 125, 0.15);
+    background-color: #ffffff;
+}
+
+.form-control-modern:hover {
+    border-color: var(--sigma-primary-light);
+}
+
+/* Select Picker Modern */
+.selectpicker-modern {
+    border: 2px solid var(--sigma-border) !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+}
+
+.selectpicker-modern:focus {
+    border-color: var(--sigma-primary) !important;
+    box-shadow: 0 0 0 0.2rem rgba(43, 123, 125, 0.15) !important;
+}
+
+/* Labels */
+.form-label {
+    color: var(--sigma-text);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.form-label i {
+    color: var(--sigma-primary);
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+}
+
+/* Modern Toggle */
+.modern-toggle-container {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    height: auto;
+}
+
+.modern-toggle {
+    transform: scale(1.2);
+    accent-color: var(--sigma-primary);
+}
+
+.toggle-label {
+    color: var(--sigma-text);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+    height: auto;
+    padding-top: 0.5rem;
+}
+
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-light) 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(43, 123, 125, 0.2);
+}
+
+.btn-primary-modern:hover {
+    background: linear-gradient(135deg, var(--sigma-primary-dark) 0%, var(--sigma-primary) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(43, 123, 125, 0.3);
+}
+
+.btn-primary-modern:active {
+    transform: translateY(0);
+}
+
+.btn-secondary-modern {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 14px;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+.btn-secondary-modern:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    color: white;
+}
+
+/* Professional Data Tables */
+.sigma-table-container {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(43, 123, 125, 0.08);
+    margin-bottom: 2rem;
+}
+
+.sigma-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+}
+
+/* Enhanced month header */
+.table-month-header {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-light) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 1rem;
+    text-align: center;
+    border: none;
+    position: relative;
+}
+
+.table-month-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+/* Column headers */
+.table-header-row {
+    background: linear-gradient(135deg, var(--sigma-light) 0%, #e8f0e5 100%);
+    font-weight: 700;
+    color: var(--sigma-primary);
+    border-bottom: 3px solid var(--sigma-primary);
+}
+
+.table-header-row td, .table-header-row th {
+    padding: 1rem;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid #d0e8d1;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* Data rows */
+.table-data-row {
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--sigma-border);
+}
+
+.table-data-row:hover {
+    background: linear-gradient(135deg, #f8fcfc 0%, #f1f9f1 100%);
+    box-shadow: 0 2px 8px rgba(43, 123, 125, 0.1);
+    transform: scale(1.001);
+}
+
+.table-data-row:nth-child(even) {
+    background-color: #fafcfc;
+}
+
+.table-data-row:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Table cells */
+.table-cell {
+    padding: 0.875rem 1rem;
+    border: 1px solid var(--sigma-border);
+    font-size: 14px;
+    color: var(--sigma-text);
+    text-align: center;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.table-cell:hover {
+    background-color: rgba(43, 123, 125, 0.05);
+    font-weight: 600;
+    color: var(--sigma-primary);
+}
+
+/* Doctor names */
+.table-doctor-name {
+    font-weight: 700;
+    color: var(--sigma-primary);
+    text-align: left;
+    padding-left: 1.5rem;
+    font-size: 14px;
+    background: linear-gradient(90deg, transparent 0%, rgba(43, 123, 125, 0.05) 100%);
+}
+
+/* Enhanced totals column */
+.table-totals-col {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-light) 100%);
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    position: relative;
+    border-left: 4px solid var(--sigma-primary-dark);
+}
+
+.table-totals-col::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #4a9a9c, var(--sigma-primary-dark));
+}
+
+/* Totals row */
+.table-totals-row {
+    background: linear-gradient(135deg, var(--sigma-light) 0%, #e8f0e5 100%);
+    color: var(--sigma-primary);
+    font-weight: 700;
+    font-size: 15px;
+    border-top: 3px solid var(--sigma-primary);
+    text-align: center;
+}
+
+.table-totals-row .table-cell {
+    padding: 1rem;
+    font-weight: 700;
+    color: var(--sigma-primary);
+    background: transparent;
+}
+
+/* Totals row first cell */
+.table-totals-row-label {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-light) 100%);
+    color: white;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 1rem;
+}
+
+/* Number formatting */
+.table-number {
+    font-family: 'Courier New', Courier, monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+/* No data state */
+.no-data-message {
+    text-align: center;
+    color: var(--sigma-success);
+    font-weight: 600;
+    font-size: 16px;
+    padding: 2rem;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #b8dabc;
+    border-radius: 8px;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .report-filters-card {
+        padding: 1rem;
+    }
+
+    .filters-header h5 {
+        font-size: 1.1rem;
+    }
+
+    .table-cell, .table-header-row td {
+        padding: 0.5rem;
+        font-size: 12px;
+    }
+
+    .table-month-header {
+        font-size: 14px;
+        padding: 0.75rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .btn-primary-modern, .btn-secondary-modern {
+        width: 100%;
+        padding: 0.875rem;
+    }
+}
+
+/* Print styles */
+@media print {
+    .report-filters-card {
+        display: none;
+    }
+
+    .sigma-table-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .table-data-row:hover {
+        background: transparent;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .table-month-header {
+        background: #2b7b7d !important;
+        color: white !important;
+    }
+
+    .table-header-row {
+        background: #f1f7ed !important;
+    }
+
+    .table-totals-col {
+        background: #2b7b7d !important;
+        color: white !important;
+    }
+
+    .table-totals-row-label {
+        background: #2b7b7d !important;
+        color: white !important;
+    }
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sigma-table-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Loading state */
+.table-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    position: relative;
+}
+
+.table-loading::after {
+    content: 'Loading...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.9);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    color: var(--sigma-primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

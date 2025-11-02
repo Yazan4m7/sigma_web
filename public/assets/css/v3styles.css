@@ -1,0 +1,1896 @@
+/* Sidebar Active Menu Item Styling */
+.page-sidebar .primary-nav .nav-menu > li.active > a {
+    font-weight: 600 !important;
+    position: relative;
+    overflow: visible;
+}
+
+/* Triangle notch on right side of active menu item */
+.page-sidebar .primary-nav .nav-menu > li.active > a:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 12px 0 12px 12px;
+    border-color: transparent transparent transparent #f5f5f5;
+    z-index: 10;
+}
+
+/* Ensure the notch appears on dark backgrounds */
+body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .primary-nav .nav-menu > li.active > a:after {
+    border-left-color: #f5f5f5;
+}
+
+/* For light sidebar themes */
+.mod-skin-light .page-sidebar .primary-nav .nav-menu > li.active > a:after {
+    border-left-color: #ffffff;
+}
+
+/* Adjust for nav-function-minify mode */
+.nav-function-minify .page-sidebar .primary-nav .nav-menu > li.active > a:after {
+    display: none;
+}
+
+/* Show on hover expansion in minify mode */
+.nav-function-minify .page-sidebar .primary-nav .nav-menu > li.active:hover > a:after {
+    display: block;
+}
+
+/* Prevent auto-opening modals - ensure active class controls visibility */
+.sigma-workflow-modal {
+    display: none;
+}
+
+.sigma-workflow-modal.active {
+    display: flex;
+}
+
+/* Device Dialog Layout Breakpoint Variables
+
+   Adjust these values to control when device layout changes:
+
+   --device-dialog-tablet-breakpoint: Controls when devices change from single row to vertical stacking (default: 992px)
+   --device-dialog-mobile-breakpoint: Controls when devices use 2-column grid layout (default: 768px)
+   --device-dialog-small-mobile-breakpoint: Controls when devices use single column layout (default: 480px)
+
+   Example: To make devices switch to 2 rows at 1024px instead of 992px:
+   --device-dialog-tablet-breakpoint: 1024px;
+*/
+:root {
+    --device-dialog-tablet-breakpoint: 992px;
+    --device-dialog-mobile-breakpoint: 768px;
+    --device-dialog-small-mobile-breakpoint: 480px;
+}
+
+/* Add this to your existing CSS or as a new file */
+
+/* Machine selection dialog enhancements */
+.sigma-machines-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.sigma-machine-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    padding: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+    background: #f6f6f6;
+}
+
+.sigma-machine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-machine-card.selected {
+    border-color: #007bff;
+    background: #f0f7ff;
+    animation: pulse 1.5s infinite;
+}
+
+.sigma-machine-image-container {
+    height: 195px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.sigma-machine-image {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    margin: auto;
+}
+
+.sigma-machine-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+/* Build name input styling */
+.sigma-form-group {
+
+    margin: 15px 0;
+}
+
+.sigma-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.sigma-form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.15s ease;
+}
+
+.sigma-form-control:focus {
+    border-color: #80bdff;
+    outline: none;
+}
+
+/* Info block styling */
+.sigma-info-block {
+    display: flex;
+    align-items: center;
+    background-color: #e9f4fe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 15px 0;
+}
+
+.sigma-info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-right: 12px;
+}
+
+.sigma-info-text {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+/* Button styling that won't conflict */
+.sigma-button {
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.sigma-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+
+
+.sigma-button-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.sigma-button-orange {
+    background-color: #fd7e14;
+    color: white;
+}
+
+/* Pulse animation */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+
+/* Device card enhancements */
+.sigma-devices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px 0;
+}
+
+.sigma-device-card {
+    position: relative;
+}
+
+.sigma-device-card.clickable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        display: flex;
+        flex-wrap: nowrap;
+
+        gap: 15px;
+    }
+
+    .sigma-machine-image-container,
+    .sigma-device-image-container {
+        height: 80px;
+    }
+}
+
+/* 3D printing specific styles */
+.sigma-form-group {
+    margin: 15px 0;
+    display: block;
+    width: 100%;
+}
+
+/* Waiting dialog form styling */
+.waiting-dialog .sigma-inputs-container {
+    padding: 15px 0;
+}
+
+.waiting-dialog .sigma-form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.row.g-3 {
+    border-radius: 5px;
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    position: relative;
+    display: flex;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #ffffff;
+    flex-direction: row;
+    align-items: flex-end;
+
+}
+
+
+
+
+.waiting-dialog .sigma-form-group {
+    margin: 0;
+}
+
+.waiting-dialog .sigma-form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 14px;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.waiting-dialog .sigma-form-control:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+@media (max-width: 768px) {
+    .waiting-dialog .sigma-inputs-container {
+        flex-direction: column !important;
+        gap: 15px !important;
+    }
+}
+
+.sigma-form-label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.sigma-form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.sigma-form-hint {
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+.sigma-info-block {
+    display: flex;
+    align-items: center;
+    background-color: #e9f4fe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 15px 0;
+}
+
+.sigma-info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-right: 12px;
+}
+
+.sigma-info-text {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+/* Fix for 3dprinting class to ensure it's visible */
+#silicon-valley-inputs-container .sigma-form-group {
+    display: block !important;
+}
+
+/* Machine card styling */
+.sigma-machine-card {
+    transition: opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.sigma-machine-card.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.sigma-machine-card.selected {
+    border: 2px solid #4caf50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.7);
+}
+
+/* Form styling */
+.sigma-form-group {
+    display: block !important;
+    margin-bottom: 15px;
+}
+
+.sigma-form-label {
+    display: block !important;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.sigma-form-control {
+    display: block !important;
+    width: 100% !important;
+    padding: 8px !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    box-sizing: border-box !important;
+}
+
+.sigma-form-control:disabled {
+    background-color: #f1f1f1;
+    cursor: not-allowed;
+}
+
+.sigma-form-hint {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* Button styling */
+.sigma-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Machine card styling */
+.sigma-machine-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.sigma-machine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-machine-card.selected {
+    border: 2px solid #4CAF50;
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.sigma-machine-card.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #4CAF50;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Make machine images larger */
+.sigma-machine-image {
+    width: 180px !important;
+    height: 180px !important;
+    object-fit: contain;
+}
+
+/* Build name input styling */
+#sigma-build-name {
+    transition: background-color 0.3s ease;
+}
+
+#sigma-build-name:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+#sigma-build-name:focus {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+/* Button styling */
+.sigma-button {
+    transition: opacity 0.3s ease;
+}
+
+.sigma-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/*////////////////////////////////////////////////////////////////////////////////*/
+/*// 5/6/2025  11:59 PM*/
+/*///////////////////////////////////////////////////////////////////////////////*/
+
+/* Fix for devices display in active tabs */
+.sigma-workflow-container {
+    display: block !important;
+}
+
+/* Make sure device cards in the active tab are visible */
+#active-milling .sigma-workflow-container,
+#active-3dprinting .sigma-workflow-container,
+#active-sintering .sigma-workflow-container,
+#active-pressing .sigma-workflow-container {
+    display: block !important;
+}
+
+/* Override any modal styling that might be hiding the content */
+.sigma-devices-grid {
+    display: grid !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Make sure the device cards stand out visually */
+.sigma-device-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.sigma-device-card.clickable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/*////////////////////////////////// */
+/* 3D printing specific styles DEVICES BLOCK */
+/*////////////////////////////////// */
+
+/*    !* Reset and base *!*/
+/*.YSH-container * {*/
+/*    box-sizing: border-box;*/
+/*}*/
+.YSH-body {
+    margin: 0;
+    /*background-color: #d1d5db;*/
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    min-height: 55vh;
+
+}
+
+.YSH-container {
+    width: -webkit-fill-available;
+
+    border: 1px solid #d1d5db;
+    /* Tailwind gray-300 */
+    border-radius: 0.5rem;
+    background: linear-gradient(to bottom, #ffffff, #154fa5);
+    /* from-gray-100 to-gray-300 */
+    box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.1);
+}
+
+.YSH-header {
+    background-color: #2b7b7d;
+    border-bottom: 1px solid #133f81;
+    text-align: center;
+    font-weight: 600;
+    color: white;
+    /* Tailwind gray-800 */
+    padding: 0.5rem 0.5rem;
+    border-bottom: 1px solid #d1d5db;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+    user-select: none;
+}
+
+.YSH-content {
+    max-width: 100%;
+    width: -webkit-fill-available;
+    box-shadow: inset 0 2px 4px rgba(60, 60, 60, 0.1);
+    max-height: 95%;
+    border: 1px solid #d1d5db;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(to bottom, #ffffff, #d1d5db);
+    /* from-gray-200 to-gray-300 */
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+}
+
+.YSH-device {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex: 0 0 auto;
+    /*width: 275px; !* Increased from 160px *!*/
+    /*height: 373px;*/
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    flex-wrap: nowrap;
+}
+
+.YSH-device.clickable:hover {
+    transform: translateY(-5px), scale(1.2);
+
+}
+
+.YSH-device.clickable:active {
+    /*transform: translateY(-2px);*/
+}
+
+/* Selected state for devices */
+.YSH-device.selected .YSH-image-wrapper {
+    background: radial-gradient(circle at center, rgba(52, 152, 219, 0.2) 0%, transparent 70%);
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.6);
+}
+
+.YSH-device.selected .YSH-image-wrapper img {
+    transform: scale(1.05);
+    filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.3));
+}
+
+.YSH-image-wrapper {
+    position: relative;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(240, 240, 240, 0.3));
+    overflow: hidden;
+    width: -webkit-fill-available;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Light effect from top */
+.YSH-image-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+    z-index: 1;
+    pointer-events: none;
+}
+
+.YSH-image-wrapper img {
+    display: block;
+    width: auto;
+    /*height: 282px; !* Increased by 25% from 180px *!*/
+    /*max-height: 275px; !* Increased by 25% from 220px *!*/
+    object-fit: cover;
+    transition: transform 0.6s ease, filter 0.3s ease;
+    filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.2));
+}
+
+.YSH-badge-container {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 0.1rem;
+    display: flex;
+    gap: 0.1rem;
+}
+
+.YSH-badge {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+}
+
+.YSH-badge-blue {
+    background-color: #1e40af;
+    /* Tailwind blue-800 */
+}
+
+.YSH-badge-red {
+    background-color: #dc2626;
+    /* Tailwind red-600 */
+}
+
+.YSH-checkmark {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: black;
+    user-select: none;
+}
+
+.YSH-device-name {
+    margin-top: 0.75rem;
+    font-weight: 700;
+    color: #111827;
+    /* Tailwind gray-900 */
+    user-select: none;
+    font-size: 1.125rem;
+    text-align: center;
+}
+
+/* Inactive/Disabled Device State */
+.YSH-device.inactive.hidden {
+    opacity: 0.75;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+    transition: all 0.3s ease;
+}
+
+.YSH-device.inactive:hover {
+    transform: none;
+    /* Override hover transform */
+    filter: grayscale(50%);
+}
+
+.YSH-device.inactive .YSH-image-wrapper {
+    background: linear-gradient(to bottom, rgba(220, 220, 220, 0.4), rgba(200, 200, 200, 0.2));
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.YSH-device.inactive .YSH-image-wrapper::before {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+}
+
+.YSH-device.inactive .YSH-device-name {
+    cursor: auto;
+    color: #6B7280;
+    /* Tailwind gray-500 */
+}
+
+.YSH-device.inactive .YSH-badge .hidden {
+    display: none;
+}
+
+/* Disabled machine image styling */
+.machine-img.grayscale {
+    cursor: auto;
+    filter: grayscale(100%) blur(0.5px);
+    transition: filter 0.3s ease;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .YSH-content {
+        background: linear-gradient(to bottom, #ffffff, #d1d5db);
+        /* from-gray-200 to-gray-300 */
+        flex-wrap: wrap;
+        gap: 2rem;
+        padding: 1rem;
+        justify-content: center;
+        align-items: flex-end;
+    }
+
+
+
+
+
+    .YSH-badge {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 1rem;
+    }
+
+    .YSH-device-name {
+        font-size: 1.125rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .YSH-device {
+        flex: 0 0 90%;
+    }
+}
+
+/* workflow-styles.css */
+
+/* Base modal styles */
+.sigma-workflow-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: blur(5px);
+    /* Prevent modal from closing unexpectedly */
+    pointer-events: auto;
+}
+
+.sigma-workflow-modal.active {
+    display: flex !important;
+    opacity: 1;
+}
+
+/* Ensure all modals are hidden by default */
+.sigma-workflow-modal:not(.active) {
+    display: none !important;
+    opacity: 0;
+}
+
+.sigma-workflow-dialog {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    /*width: 45%;*/
+    max-width: 1000px;
+    max-height: 90vh;
+    /* height: 85%;*/
+    display: flex;
+    flex-direction: column;
+    /* GPU acceleration for smooth 60fps animations */
+    transform: translate3d(0, 20px, 0) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    /* Performance optimizations */
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+.sigma-workflow-modal.active .sigma-workflow-dialog {
+    transform: translate3d(0, 0, 0) scale(1);
+}
+
+.sigma-workflow-dialog.fade-in {
+    animation: dialogFadeIn 0.4s forwards;
+}
+
+.sigma-workflow-dialog.fade-out {
+    animation: dialogFadeOut 0.4s forwards;
+}
+
+@keyframes dialogFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes dialogFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9);
+    }
+}
+
+/* Header styles */
+.sigma-workflow-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #eaeaea;
+    background-color: #f8f9fa;
+    background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.sigma-workflow-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #212529;
+    margin: 0;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.sigma-close-button {
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.25rem;
+    color: #6c757d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-close-button:hover {
+    color: #dc3545;
+    background: white;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    transform: scale(1.05);
+}
+
+/* Body styles */
+.sigma-workflow-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Machine grid styles */
+.sigma-machines-grid {
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.sigma-machine-card {
+    border-radius: 10px;
+    border: 2px solid transparent;
+    padding: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+    background: #f6f6f6;
+}
+
+.sigma-machine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-machine-card.selected {
+    border-color: #007bff;
+    background: #f0f7ff;
+}
+
+.sigma-machine-image-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.sigma-machine-image {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    margin: auto;
+}
+
+.sigma-machine-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+/* Form styles */
+.sigma-form-group {
+    margin-bottom: 20px;
+}
+
+.sigma-form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #333;
+}
+
+.sigma-form-control {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.sigma-form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.sigma-form-control.error {
+    border-color: #dc3545;
+}
+
+.sigma-form-hint {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-top: 4px;
+}
+
+/* Info block styles */
+.sigma-info-block {
+    display: flex;
+    align-items: center;
+    background-color: #e9f4fe;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+}
+
+.sigma-info-icon {
+    font-size: 1.25rem;
+    color: #007bff;
+    margin-right: 12px;
+}
+
+.sigma-info-text {
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+/* Footer styles */
+.sigma-workflow-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #eaeaea;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Button styles */
+.sigma-button {
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.sigma-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+
+
+.sigma-button-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.sigma-button-success:not(:disabled):hover {
+    background-color: #218838;
+}
+
+.sigma-button-orange {
+    background-color: #fd7e14;
+    color: white;
+}
+
+.sigma-button-orange:not(:disabled):hover {
+    background-color: #e76b06;
+}
+
+/* Modern Loading Indicator */
+#sigma-loading-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    max-width: 30vw;
+    min-width: 250px;
+    background: #ffffff;
+    border: 1px solid #e3e6f0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: none;
+    flex-direction: column;
+    padding: 16px;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+#sigma-loading-indicator.active {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sigma-loading-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
+.sigma-loading-animation {
+    flex-shrink: 0;
+}
+
+.sigma-spinner-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sigma-spinner {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.sigma-dot {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 50%;
+    animation: dotRotate 1.2s linear infinite;
+}
+
+.sigma-dot-1 {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 0s;
+}
+
+.sigma-dot-2 {
+    top: 3.6px;
+    right: 3.6px;
+    animation-delay: 0.15s;
+}
+
+.sigma-dot-3 {
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    animation-delay: 0.3s;
+}
+
+.sigma-dot-4 {
+    bottom: 3.6px;
+    right: 3.6px;
+    animation-delay: 0.45s;
+}
+
+.sigma-dot-5 {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    animation-delay: 0.6s;
+}
+
+.sigma-dot-6 {
+    bottom: 3.6px;
+    left: 3.6px;
+    animation-delay: 0.75s;
+}
+
+.sigma-dot-7 {
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    animation-delay: 0.9s;
+}
+
+.sigma-dot-8 {
+    top: 3.6px;
+    left: 3.6px;
+    animation-delay: 1.05s;
+}
+
+.sigma-loading-text {
+    text-align: left;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
+    flex: 1;
+}
+
+.sigma-loading-title {
+    color: #1e293b;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 0;
+    letter-spacing: 0.3px;
+}
+
+.sigma-loading-subtitle {
+    color: #64748b;
+    font-weight: 400;
+    font-size: 12px;
+    opacity: 0.8;
+    margin-top: 2px;
+}
+
+/* Animations */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes dotRotate {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        background: #3b82f6;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+        background: #8b5cf6;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        background: #3b82f6;
+    }
+}
+
+/* Toast notification */
+.sigma-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 10001;
+    max-width: 300px;
+    font-size: 14px;
+    border-left: 4px solid #007bff;
+}
+
+.sigma-toast.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sigma-toast.success {
+    border-left-color: #28a745;
+}
+
+.sigma-toast.warning {
+    border-left-color: #ffc107;
+}
+
+.sigma-toast.error {
+    border-left-color: #dc3545;
+}
+
+.sigma-toast.info {
+    border-left-color: #17a2b8;
+}
+
+/* Delivery dialog specific styles */
+.delivery-dialog .modal-dialog,
+
+/* Fix for delivery dialog flickering */
+#DeliveryDialog {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    display: none;
+    /* Ensure it's hidden by default */
+}
+
+#DeliveryDialog.active {
+    visibility: visible !important;
+    display: flex !important;
+    opacity: 1 !important;
+}
+
+#DeliveryDialog:not(.active) {
+    visibility: hidden;
+    opacity: 0;
+    display: none !important;
+}
+
+/* Delivery Dialog - Driver Selection */
+.sigma-drivers-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px 0;
+}
+
+.sigma-driver-card {
+    width: 140px;
+    height: auto;
+    padding: 5px;
+    /*border: 2px solid #eaeaea;*/
+    border-radius: 12px;
+    /*box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);*/
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sigma-driver-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.sigma-driver-card.selected {
+    /*border-color: var(--main-orange);*/
+    /*background-color: rgba(255, 165, 0, 0.05);*/
+    /*box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.3);*/
+
+}
+
+.sigma-driver-image-container {
+    /* height: 100px; */
+    border-radius: 10%;
+    /* overflow: hidden; */
+    margin-bottom: 5px;
+    /*background-color: #f5f5f5;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 3px solid #eaeaea; */
+    /*transition: all 0.3s ease;*/
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sigma-driver-card.selected .sigma-driver-image-container {
+    /*border-color: var(--main-orange);*/
+    /*box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.3);*/
+
+}
+
+.sigma-driver-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.sigma-driver-image.grayscale {
+    filter: grayscale(100%);
+    opacity: 0.8;
+}
+
+.sigma-driver-card.selected .sigma-driver-image {
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.sigma-driver-name {
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+/* Waiting dialog specific styles */
+
+
+.waiting-dialog .sigma-machines-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    /* Horizontal layout with no wrapping */
+    justify-content: center;
+    /* Center the devices horizontally */
+    align-items: center;
+    gap: 20px;
+    /* Consistent gap between devices */
+    padding: 20px;
+    overflow-x: auto;
+    /* Added horizontal scrolling if needed */
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.waiting-dialog .sigma-machine-card {
+    width: 200px;
+    /* Optimal width for device visibility */
+    min-width: 200px;
+    /* Ensure consistent sizing */
+    max-width: 200px;
+    height: auto;
+    padding: 12px;
+    border: 2px solid #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    flex: 0 0 auto;
+    /* Don't grow or shrink */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.waiting-dialog .sigma-machine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+.waiting-dialog .sigma-machine-card.selected {
+    border-color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.05);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.waiting-dialog .sigma-machine-image-container {
+    width: 100%;
+    height: 195px;
+    /* Enlarged height by 30% for better visibility */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    /* Reduced margin */
+    padding: 8px;
+    /* Reduced padding */
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+
+.waiting-dialog .sigma-machine-image {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.15));
+}
+
+.waiting-dialog .sigma-machine-card:hover .sigma-machine-image {
+    transform: scale(1.05);
+}
+
+.waiting-dialog .sigma-machine-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    /* Reduced font size for compact display */
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    margin-top: auto;
+    /* Push to bottom of flex container */
+}
+
+.delivery-dialog .modal-content,
+.delivery-dialog .sigma-workflow-body {
+    padding: 0;
+}
+
+.delivery-cases-container {
+    margin: 0;
+    padding: 0;
+    max-height: 65vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border: 1px solid #eaeaea;
+}
+
+.delivery-header-row {
+    background-color: #3f51b5;
+    color: white;
+    font-weight: 500;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.delivery-header-row th {
+    padding: 15px 12px;
+    border-bottom: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 13px;
+}
+
+.delivery-case-item {
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background-color: white;
+}
+
+.delivery-case-item:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+.delivery-case-item:hover {
+    background-color: #f0f7ff;
+}
+
+.delivery-case-item.selected {
+    background-color: rgba(63, 81, 181, 0.08);
+    box-shadow: inset 0 0 0 1px #3f51b5;
+}
+
+.delivery-case-item td {
+    padding: 15px 12px;
+    vertical-align: middle;
+    position: relative;
+}
+
+.delivery-case-item td input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.delivery-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eaeaea;
+}
+
+.delivery-action-btn {
+    min-width: 100px;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 12px 24px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-action-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-action-btn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress indicators */
+.delivery-progress {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.delivery-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 33.333%;
+}
+
+.delivery-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+.delivery-step-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    color: #777;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.delivery-step.completed .delivery-step-circle {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.delivery-step.active .delivery-step-circle {
+    background-color: #3f51b5;
+    color: white;
+    box-shadow: 0 0 0 5px rgba(63, 81, 181, 0.2);
+}
+
+.delivery-step-label {
+    font-weight: 500;
+    color: #555;
+    text-align: center;
+}
+
+.delivery-step.completed .delivery-step-label {
+    color: #4CAF50;
+}
+
+.delivery-step.active .delivery-step-label {
+    color: #3f51b5;
+    font-weight: 600;
+}
+
+
+
+/**************** NEO BUTTOn ***************/
+/* NEON BUTTON STYLES - Safe integration */
+/* NEON BUTTON STYLES - Filled version */
+.neon-action-button {
+    position: relative;
+    padding: 10px 32px;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: white;
+    background: var(--main-blue);
+    border: 2px solid var(--main-blue);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(44, 168, 255, 0.4), 0 0 40px rgba(44, 168, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    font-family: "Poppins", sans-serif;
+    line-height: inherit;
+
+}
+
+.neon-action-button:hover {
+    color: white;
+    background: #0760b6;
+    box-shadow:
+        0 0 30px rgba(44, 168, 255, 0.8),
+        0 0 60px rgba(44, 168, 255, 0.6),
+        0 0 90px rgba(44, 168, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+    border-color: #00bfff;
+    transform: translateY(-2px);
+}
+
+.neon-action-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.neon-action-button:hover::before {
+    left: 100%;
+}
+
+.neon-action-button:focus {
+    outline: none;
+    box-shadow:
+        0 0 30px rgba(44, 168, 255, 0.8),
+        0 0 60px rgba(44, 168, 255, 0.6),
+        0 0 90px rgba(44, 168, 255, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.neon-action-button:active {
+    transform: translateY(-1px);
+    transition: transform 0.1s ease;
+}
+
+/* ============================================================================
+   RESPONSIVE SIGMA WORKFLOW DIALOG STYLING
+   Added by Claude - Making sigma-workflow-dialog responsive for better mobile UX
+   ============================================================================ */
+
+/* Base responsive adjustments for all screen sizes */
+@media screen and (max-width: 1200px) {
+    .sigma-workflow-dialog {
+        width: 55vw !important;
+        /* Slightly wider on smaller desktops */
+    }
+}
+
+@media screen and (max-width: var(--device-dialog-tablet-breakpoint)) {
+    .sigma-workflow-dialog {
+        width: 70vw !important;
+        /* Even wider on tablets */
+        max-height: 85vh !important;
+        /* Reduce height to fit better */
+    }
+
+    /* Stack machine cards vertically on tablets */
+    .sigma-machines-grid {
+        flex-direction: column !important;
+        gap: 15px !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        padding: 10px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: row !important;
+        /* Horizontal layout on tablets */
+        padding: 10px !important;
+        max-width: 100% !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 60px !important;
+        width: 60px !important;
+        margin-right: 15px !important;
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+    }
+}
+
+@media screen and (max-width: var(--device-dialog-mobile-breakpoint)) {
+
+    /* Mobile first approach - full responsive mobile layout */
+    .sigma-workflow-dialog {
+        width: 95vw !important;
+        max-width: none !important;
+        max-height: 90vh !important;
+        margin: 10px !important;
+        border-radius: 12px !important;
+    }
+
+    /* Header adjustments for mobile */
+    .sigma-workflow-header {
+        padding: 15px 20px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 1.1rem !important;
+        flex: 1 !important;
+        margin-right: 10px !important;
+    }
+
+    .sigma-close-button {
+        font-size: 24px !important;
+        padding: 5px !important;
+        min-width: 30px !important;
+        height: 30px !important;
+    }
+
+    /* Body content mobile optimization */
+    .sigma-workflow-body {
+        padding: 15px !important;
+        overflow-y: auto !important;
+        flex: 1 !important;
+    }
+
+    /* Machine grid mobile layout */
+    .sigma-machines-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        /* 2 columns on mobile */
+        gap: 10px !important;
+        max-height: 250px !important;
+        overflow-y: auto !important;
+        padding: 5px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: column !important;
+        padding: 8px !important;
+        min-height: 80px !important;
+        text-align: center !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 40px !important;
+        width: 100% !important;
+        margin-bottom: 5px !important;
+        margin-right: 0 !important;
+    }
+
+    .sigma-machine-image {
+        max-height: 35px !important;
+    }
+
+    .sigma-machine-name {
+        font-size: 0.8rem !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        /* Allow text wrapping on mobile */
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+
+    /* Form elements mobile optimization */
+    .sigma-form-group {
+        margin: 10px 0 !important;
+    }
+
+    .sigma-form-control {
+        padding: 12px !important;
+        font-size: 16px !important;
+        /* Prevent zoom on iOS */
+        border-radius: 6px !important;
+    }
+
+    /* Footer mobile adjustments */
+    .sigma-workflow-footer {
+        padding: 15px 20px !important;
+        border-top: 1px solid #eaeaea !important;
+    }
+
+    .sigma-button {
+        width: 100% !important;
+        /* Full width buttons on mobile */
+        padding: 12px 20px !important;
+        font-size: 1rem !important;
+    }
+}
+
+@media screen and (max-width: var(--device-dialog-small-mobile-breakpoint)) {
+
+    /* Extra small mobile devices */
+    .sigma-workflow-dialog {
+        width: 95vw !important;
+        max-height: 95vh !important;
+        margin: 5px !important;
+        border-radius: 8px !important;
+    }
+
+    .sigma-workflow-header {
+        padding: 12px 15px !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 1rem !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 12px !important;
+    }
+
+    /* Single column layout for very small screens */
+    .sigma-machines-grid {
+        grid-template-columns: 1fr !important;
+        /* Single column on very small screens */
+        max-height: 200px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: row !important;
+        /* Horizontal layout for better space usage */
+        min-height: 60px !important;
+        text-align: left !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 35px !important;
+        width: 35px !important;
+        margin-right: 10px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .sigma-machine-name {
+        font-size: 0.75rem !important;
+        flex: 1 !important;
+    }
+
+    .sigma-workflow-footer {
+        padding: 12px 15px !important;
+    }
+}
+
+/* ============================================================================
+   END RESPONSIVE SIGMA WORKFLOW DIALOG STYLING
+   ============================================================================ */

@@ -1,0 +1,334 @@
+svg {
+    width: unset !important;
+}
+
+.Timeline {
+    display: flex;
+    align-items: center;
+    min-height: 220px;
+    height: 21rem;
+    /* padding-left: 20px; */
+    /* margin-top: 70px; */
+    margin-bottom: 40px;
+    position: relative;
+    /* width: 200%; */
+    max-width: 2400px;
+    transform-origin: left center;
+}
+
+.event1,
+.event2, .event3 {
+    position: relative;
+}
+
+.event1Bubble {
+    position: absolute;
+    background-color: rgba(158, 158, 158, 0.1);
+    width: 200px;
+    min-height: 50px;
+    top: auto;
+    bottom: 100%;
+    margin-bottom: 10px;
+    left: -10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(158, 158, 158, 0.64);
+    padding: 6px;
+}
+
+.event2Bubble {
+    position: absolute;
+    background-color: rgba(158, 158, 158, 0.1);
+    width: 200px;
+    min-height: 50px;
+    left: -12px;
+    top: 100%;
+    margin-top: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 5px rgba(158, 158, 158, 0.64);
+    padding: 6px;
+}
+
+.event1Bubble:after,
+.event1Bubble:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.event2Bubble:after,
+.event2Bubble:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent;
+}
+
+.event1Bubble:before {
+    bottom: -11px;
+    left: 15px;
+    border-top-color: rgba(222, 222, 222, 0.66);
+    border-width: 11px;
+    border-bottom: 0;
+}
+
+.event1Bubble:after {
+    bottom: -9px;
+    left: 15px;
+    border-top-color: rgba(158, 158, 158, 0.1);
+    border-width: 11px;
+    border-bottom: 0;
+}
+
+.event2Bubble:before {
+    top: -11px;
+    left: 15px;
+    border-bottom-color: rgba(222, 222, 222, 0.66);
+    border-top: 0;
+    border-width: 11px;
+    transform: none;
+}
+
+.event2Bubble:after {
+    top: -9px;
+    left: 15px;
+    border-bottom-color: rgba(158, 158, 158, 0.1);
+    border-top: 0;
+    border-width: 11px;
+    transform: none;
+}
+
+.eventTime {
+    display: flex;
+}
+
+.DayDigit {
+    font-size: 27px;
+    font-family: "Arial Black", Gadget, sans-serif;
+    margin-left: 10px;
+    color: #4C4A4A;
+}
+
+.Day {
+    margin-left: 6px !important;
+    font-size: 13px;
+    margin-left: 0px;
+    font-weight: bold;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #4C4A4A;
+}
+
+.MonthYear {
+    font-weight: 600;
+    line-height: 10px;
+    color: #9E9E9E;
+    font-size: 9px;
+}
+
+.eventTitle {
+    font-family: "Arial Black", Gadget, sans-serif;
+    color: #a71930;
+    font-size: 10px;
+    text-transform: uppercase;
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    margin-left: 0px;
+    margin-top: 0px;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* Case History Action Styles */
+.history-log-entry {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 6px;
+    line-height: 1.2;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgba(158, 158, 158, 0.15);
+    width: 100%;
+    vertical-align: top;
+}
+
+.history-log-entry:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.employee-initials {
+    color: #a71930;
+    font-weight: bold;
+    font-size: 11px;
+    width: 65px;
+    display: block;
+    margin-right: 8px;
+    line-height: 1.2;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    align-self: flex-start;
+    margin-top: 0;
+}
+
+.action-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex: 1;
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.action-label {
+    font-weight: bold;
+    font-size: 9px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.action-label.action-set,
+.action-label.action-nest,
+.action-label.action-take,
+.tooltip-action.action-set,
+.tooltip-action.action-nest,
+.tooltip-action.action-take {
+    color: #fd7e14 !important; /* Orange text - same as system */
+}
+
+.action-label.action-start,
+.tooltip-action.action-start {
+    color: #007bff !important; /* Blue text - system color */
+}
+
+.action-label.action-complete,
+.tooltip-action.action-complete {
+    color: #28a745 !important; /* Green text */
+}
+
+.action-date {
+    color: #666;
+    font-size: 7.5px;
+    font-weight: normal;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* Tooltip on hover for history log entries */
+.history-log-entry {
+    position: relative;
+    cursor: pointer;
+}
+
+.history-log-entry .tooltip-content {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    line-height: 1.6;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    left: 100%;
+    margin-left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.history-log-entry:hover .tooltip-content {
+    opacity: 1;
+}
+
+.tooltip-content .tooltip-employee {
+    color: #ff6b8a;
+    font-weight: bold;
+    font-size: 15px;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.tooltip-content .tooltip-action {
+    font-weight: bold;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.tooltip-content .tooltip-date {
+    color: #ccc;
+    font-size: 11px;
+    font-weight: normal;
+    display: block;
+}
+
+.time {
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 50px;
+    font-size: 8px;
+    margin-top: -3px;
+    margin-left: -5px;
+    color: #9E9E9E;
+}
+
+.eventAuthor {
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #9E9E9E;
+    font-size: 8px;
+    width: 100px;
+    top: -8px;
+    left: 63px;
+}
+
+.event2Author {
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #9E9E9E;
+    font-size: 8px;
+    width: 100px;
+    top: 96px;
+    left: -32px;
+}
+
+.time2{
+    position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 50px;
+    font-size: 8px;
+    margin-top: -31px;
+    margin-left: -5px;
+    color: #9E9E9E;
+}
+
+
+
+.futureGray{
+    /*filter: grayscale(1);*/
+    /*-webkit-filter: grayscale(1);*/
+
+}
+
+.futureOpacity{
+    /*-webkit-filter: opacity(.3);*/
+    /*filter: opacity(.3);*/
+
+}

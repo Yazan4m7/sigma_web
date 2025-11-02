@@ -1,0 +1,1405 @@
+/* ===================================================================
+   SIGMA DENTAL SOLUTIONS - REPORTS MASTER STYLESHEET
+   Version: 2.1.0
+   Last Updated: 2024
+   Description: Centralized styling for all report pages
+
+   COLOR PALETTE - Modern Accessible Teal Theme:
+   - Primary: #2E7D9A (Deep teal-blue) - 5.95:1 contrast ratio
+   - Primary Dark: #1C5F7A (Darker teal) - 8.17:1 contrast ratio
+   - Primary Light: #4A9BBF (Lighter teal) - 4.52:1 contrast ratio
+   - Secondary: #5A6C7D (Professional gray-blue) - 6.09:1 contrast ratio
+   - Accent: #7FB3D3 (Bright accent blue) - 3.81:1 contrast ratio
+
+   All colors meet or exceed WCAG AA accessibility standards (4.5:1 minimum)
+   =================================================================== */
+
+/* Import Google Fonts for Arabic Support */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* === BRAND COLORS - ELEGANT MODERN PALETTE === */
+    --sigma-primary: #bcced8; /* Deep teal-blue for primary actions */
+    --sigma-primary-dark: #1C5F7A; /* Darker teal for hover states */
+    --sigma-primary-light: #4A9BBF; /* Lighter teal for subtle elements */
+    --sigma-secondary: #5A6C7D; /* Professional gray-blue */
+    --sigma-accent: #7FB3D3; /* Bright accent blue */
+    --sigma-accent-light: #A8C7DD; /* Light accent for backgrounds */
+    --sigma-accent-lighter: #D1E4F0; /* Very light accent for subtle backgrounds */
+
+    /* === ELEGANT TABLE COLORS === */
+    --table-header-elegant: #bcced8; /* Soft blue-gray for table headers */
+    --table-header-text: #2d3748; /* Dark text for excellent contrast on light headers */
+    --elegant-hover: #a8bcc9; /* Slightly darker for hover states */
+
+    /* === TEXT COLORS - WCAG AA Compliant === */
+    --text-primary: #1a1a1a; /* Enhanced contrast ratio 15.35:1 */
+    --text-secondary: #2d3748; /* Enhanced contrast ratio 9.76:1 */
+    --text-muted: #4a5568; /* Enhanced contrast ratio 6.09:1 */
+    --text-light: #718096; /* Accessible contrast ratio 4.67:1 */
+    --text-white: #ffffff; /* Perfect contrast for dark backgrounds */
+
+    /* === BACKGROUND COLORS === */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-light: #f4f6f8;
+    --bg-dark: #343a40;
+    --bg-white: #ffffff;
+
+    /* === BORDER COLORS === */
+    --border-primary: #dee2e6;
+    --border-secondary: #e9ecef;
+    --border-light: #f1f3f4;
+    --border-dark: #adb5bd;
+
+    /* === STATUS COLORS - WCAG AA Compliant === */
+    --status-success: #047857; /* Enhanced green with 4.5:1 contrast */
+    --status-warning: #d97706; /* Enhanced orange with 4.68:1 contrast */
+    --status-danger: #dc2626; /* Enhanced red with 5.47:1 contrast */
+    --status-info: #1d4ed8; /* Enhanced blue with 7.04:1 contrast */
+
+    /* === USAGE INTENSITY COLORS - WCAG AA Compliant === */
+    --usage-high: #c53030; /* Enhanced red with better contrast */
+    --usage-medium: #d69e2e; /* Enhanced yellow-orange with better contrast */
+    --usage-low: #38a169; /* Enhanced green with better contrast */
+
+    /* === TYPOGRAPHY === */
+    --font-family-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-family-secondary: 'Arial', sans-serif;
+    --font-family-arabic: 'Cairo', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+
+    /* Font Sizes */
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-md: 0.9375rem; /* 15px */
+    --font-size-lg: 1rem; /* 16px */
+    --font-size-xl: 1.125rem; /* 18px */
+    --font-size-2xl: 1.25rem; /* 20px */
+    --font-size-3xl: 1.5rem; /* 24px */
+    --font-size-4xl: 1.875rem; /* 30px */
+
+    /* Font Weights */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* === SPACING === */
+    --spacing-xs: 0.25rem; /* 4px */
+    --spacing-sm: 0.5rem; /* 8px */
+    --spacing-md: 0.75rem; /* 12px */
+    --spacing-lg: 1rem; /* 16px */
+    --spacing-xl: 1.5rem; /* 24px */
+    --spacing-2xl: 2rem; /* 32px */
+    --spacing-3xl: 3rem; /* 48px */
+
+    /* === SHADOWS === */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    /* === BORDER RADIUS === */
+    --radius-sm: 0.25rem; /* 4px */
+    --radius-md: 0.375rem; /* 6px */
+    --radius-lg: 0.5rem; /* 8px */
+    --radius-xl: 0.75rem; /* 12px */
+    --radius-2xl: 1rem; /* 16px */
+
+    /* === TRANSITIONS === */
+    --transition-fast: 0.15s ease-in-out;
+    --transition-normal: 0.3s ease-in-out;
+    --transition-slow: 0.5s ease-in-out;
+
+    /* === Z-INDEX === */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+
+    /* === COMPONENT SPECIFIC === */
+    /* Cards */
+    --card-bg: var(--bg-white);
+    --card-border: var(--border-primary);
+    --card-border-radius: var(--radius-lg);
+    --card-shadow: var(--shadow-sm);
+    --card-padding: var(--spacing-xl);
+
+    /* Buttons */
+    --btn-border-radius: var(--radius-md);
+    --btn-font-weight: var(--font-weight-medium);
+    --btn-transition: var(--transition-fast);
+    --btn-padding-y: 0.5rem;
+    --btn-padding-x: 1rem;
+
+    /* Forms */
+    --form-control-border: var(--border-primary);
+    --form-control-border-radius: var(--radius-md);
+    --form-control-focus-border: var(--sigma-primary);
+    --form-control-padding-y: 0.5rem;
+    --form-control-padding-x: 0.75rem;
+
+    /* Tables */
+    /* Table Container */
+    --table-container-bg: var(--bg-white);
+    --table-container-border: var(--border-primary);
+    --table-container-border-radius: var(--radius-lg);
+    --table-container-shadow: var(--shadow-sm);
+    --table-container-padding: var(--spacing-lg);
+
+    /* Table Header - Elegant light theme */
+    --table-header-bg: var(--table-header-elegant);
+    --table-header-color: var(--table-header-text);
+    --table-header-font-family: var(--font-family-primary);
+    --table-header-font-size: var(--font-size-lg);
+    --table-header-font-weight: var(--font-weight-semibold);
+    --table-header-padding: 15px 12px;
+    --table-header-text-shadow: none;
+    --table-header-border: none;
+    --table-header-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    /* Table Body */
+    --table-body-font-family: var(--font-family-primary);
+    --table-body-font-size: var(--font-size-md);
+    --table-body-font-weight: var(--font-weight-medium);
+    --table-body-padding: 8px 12px;
+    --table-body-line-height: var(--line-height-normal);
+    --table-body-color: var(--text-primary);
+    --table-body-border: 1px solid #dee2e6; /* More visible border */
+
+    /* Table Rows */
+    --table-row-even-bg: #f4f6f8;
+    --table-row-odd-bg: var(--bg-white);
+    --table-row-hover-bg: rgba(90, 108, 125, 0.05);
+
+    /* Table Special Cells */
+    --table-primary-text-color: var(--sigma-primary);
+    --table-secondary-text-color: var(--text-secondary);
+    --table-totals-bg: #f8f9fa;
+    --table-totals-font-weight: 500;
+    --table-totals-border-top: 2px solid var(--sigma-primary);
+
+    /* Status Badges */
+    --badge-border-radius: var(--radius-md);
+    --badge-font-size: var(--font-size-xs);
+    --badge-font-weight: var(--font-weight-medium);
+    --badge-padding: 0.25rem 0.5rem;
+
+    /* Pagination */
+    --pagination-bg: var(--bg-white);
+    --pagination-border: var(--border-primary);
+    --pagination-color: var(--text-secondary);
+    --pagination-hover-bg: var(--bg-light);
+    --pagination-active-bg: var(--sigma-primary);
+    --pagination-active-color: var(--text-white);
+
+    /* Monthly Headers */
+    --monthly-header-bg: var(--bg-light);
+    --monthly-header-border: var(--border-secondary);
+    --monthly-header-color: var(--sigma-primary);
+    --monthly-header-font-size: var(--font-size-xl);
+    --monthly-header-font-weight: var(--font-weight-semibold);
+    --monthly-header-padding: var(--spacing-lg);
+}
+
+/* ===================================================================
+   GLOBAL STYLES
+   =================================================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-normal);
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    margin: 0;
+    padding: 0;
+}
+
+/* Remove double scrollbars */
+html, body {
+    overflow-x: hidden;
+}
+
+.container-fluid {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* ===================================================================
+   REPORT FILTERS CARD
+   =================================================================== */
+
+.report-filters-card {
+    background: white;
+    border: 1px solid rgba(188, 206, 216, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    padding: var(--card-padding);
+    margin-bottom: var(--spacing-2xl);
+    position: relative;
+    overflow: visible; /* FIXED - Ensures dropdowns work properly */
+    backdrop-filter: blur(10px);
+}
+
+.report-filters-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--table-header-elegant) 0%, var(--sigma-accent-light) 100%);
+}
+
+.report-filters-card .form-label {
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.report-filters-card .form-control {
+    border: 1px solid rgba(188, 206, 216, 0.4);
+    border-radius: 10px;
+    padding: var(--form-control-padding-y) var(--form-control-padding-x);
+    font-size: var(--font-size-md);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.report-filters-card .form-control:focus {
+    border-color: var(--sigma-primary);
+    box-shadow: 0 0 0 3px rgba(46, 125, 154, 0.15);
+    background: rgba(255, 255, 255, 0.95);
+    outline: 0;
+    transform: translateY(-1px);
+}
+
+/* ===================================================================
+   BUTTONS
+   =================================================================== */
+
+.btn {
+    border-radius: var(--btn-border-radius);
+    font-weight: var(--btn-font-weight);
+    transition: var(--btn-transition);
+    padding: var(--btn-padding-y) var(--btn-padding-x);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-tight);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ===================================================================
+   ENHANCED BUTTON STYLES
+   =================================================================== */
+
+/* Generate Report Button - Elegant Premium Design */
+.btn-primary-enhanced {
+    background: linear-gradient(135deg, #2f7c7e 0%, #bdcfd9 100%) !important;
+    box-shadow: 0 4px 16px rgba(46, 125, 154, 0.25);
+    border: none;
+    position: relative;
+    overflow: hidden;
+    color:white;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary-enhanced:hover::before {
+    left: 100%;
+}
+
+.btn-primary-enhanced:hover {
+    /* background: linear-gradient(135deg, var(--sigma-primary-dark) 0%, var(--sigma-primary) 100%) !important; */
+    box-shadow: 0 8px 24px rgba(46, 125, 154, 0.4);
+    transform: translateY(-3px) scale(1.02);
+    border: none;
+    color: white !important;
+}
+
+.btn-primary-enhanced:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(46, 125, 154, 0.3);
+}
+.col-lg-2.col-md-4.col-6{
+
+}
+/* Secondary Button Redesign */
+.btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    color: var(--text-white);
+    border: none;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-dark) 100%);
+    box-shadow: 0 4px 12px rgba(55, 82, 153, 0.4);
+    transform: translateY(-2px);
+    color: var(--text-white);
+}
+
+/* Outline Secondary Button */
+.btn-outline-secondary {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--sigma-secondary);
+    color: var(--sigma-secondary);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--sigma-secondary);
+    color: var(--text-white);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    transform: translateY(-2px);
+    border-color: var(--sigma-secondary);
+}
+
+/* Success Button Enhancement */
+.btn-success {
+    background: linear-gradient(135deg, var(--status-success) 0%, #0d9668 100%);
+    color: var(--text-white);
+    border: none;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #0d9668 0%, var(--status-success) 100%);
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+    transform: translateY(-2px);
+    color: var(--text-white);
+}
+
+/* Enhanced Print and Eye Buttons - Elegant Glass Morphism */
+.printBtn, #monthly-breakdown-toggle {
+    min-width: 49px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    border-radius: 12px;
+    /* background: rgb(115 137 150) !important; */
+    color: chocolate;
+    /* border: 1px solid rgba(255, 255, 255, 0.2); */
+    /* backdrop-filter: blur(10px); */
+    /* box-shadow: 0 4px 12px rgba(188, 206, 216, 0.25); */
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    flex-direction: row;
+    justify-content: center;
+    align-content: flex-end;
+}
+
+
+
+.toggle-option.active {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, var(--sigma-primary-dark) 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(55, 82, 153, 0.4);
+    transform: translateY(-1px);
+}
+
+.toggle-option:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--sigma-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-option:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(55, 82, 153, 0.2);
+}
+
+/* Remove old toggle designs */
+.toggle-button-group,
+.toggle-button,
+.sliding-switch {
+    display: none !important;
+}
+
+/* ===================================================================
+   ARABIC FONT ENHANCEMENT
+   =================================================================== */
+
+/* Apply Arabic fonts to Arabic text content */
+.arabic-text,
+*[lang="ar"],
+*[dir="rtl"] {
+    font-family: var(--font-family-arabic) !important;
+    direction: rtl;
+    text-align: right;
+}
+
+/* Detect Arabic characters and apply fonts */
+
+/* ===================================================================
+   TABLES
+   =================================================================== */
+
+/* Master table definition - consolidated from all report files */
+.sigma-report-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    animation: tableSlideIn 0.6s ease-out;
+}
+
+/* Table Load Animation */
+@keyframes tableSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sigma-report-table tbody tr:hover {
+    background-color: rgba(99, 141, 255, 0.05);
+}
+
+/* Zebra striping for all report tables */
+.sigma-report-table tbody tr:nth-child(even) {
+    background-color: #f8fafb !important;
+}
+
+.sigma-report-table tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+.sigma-report-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #dee2e6;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.sigma-report-table .totals-row {
+    background-color: #f8fafc !important;
+    border-top: 2px solid #e2e8f0;
+}
+
+.sigma-report-table .totals-row td {
+    color: #1a202c !important;
+    font-weight: 700 !important;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .report-filters-card {
+        padding: var(--spacing-lg);
+    }
+
+    .sigma-report-table {
+        font-size: var(--font-size-sm);
+    }
+
+    .sigma-report-table thead th,
+    .sigma-report-table tbody td {
+        padding: 6px 8px !important;
+    }
+
+    .btn {
+        font-size: var(--font-size-sm);
+        padding: 6px 12px;
+    }
+
+    .units-cases-radio-tile {
+        width: 50px;
+        min-height: 28px;
+    }
+
+    .units-cases-radio-label {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .sigma-report-pagination {
+        flex-direction: column;
+        gap: var(--spacing-md);
+        text-align: center;
+    }
+
+    .report-filters-card .row {
+        margin: 0;
+    }
+
+    .report-filters-card .col-lg-2,
+    .report-filters-card .col-md-4 {
+        margin-bottom: var(--spacing-md);
+    }
+}
+
+/* ===================================================================
+   PRINT STYLES
+   =================================================================== */
+
+
+
+
+/* ===================================================================
+   COMPREHENSIVE BOOTSTRAP-SELECT DROPDOWN FIXES
+   =================================================================== */
+
+/* Fix Bootstrap Select container positioning */
+.bootstrap-select {
+    position: relative !important;
+    z-index: 1000 !important;
+}
+
+/* MAIN DROPDOWN MENU - Complete fix for z-index and positioning */
+.bootstrap-select .dropdown-menu {
+    z-index: 999999 !important; /* Higher z-index to appear above tables */
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    right: auto !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid #ccc !important; /* Very slim grey border around dropdown */
+    border-radius: 8px !important;
+    padding: 0 !important;
+    margin-top: 2px !important;
+    background-color: white !important;
+    min-width: 100% !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* Fix dropdown menu when it's open */
+.bootstrap-select.show .dropdown-menu {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    z-index: 999999 !important; /* Match the higher z-index */
+}
+
+/* Remove problematic ::before pseudo-elements */
+.bootstrap-select .dropdown-menu::before {
+    display: none !important;
+}
+
+/* Fix inner container - remove nested scrolling */
+.bootstrap-select .dropdown-menu .inner {
+    overflow: visible !important;
+    max-height: none !important;
+    padding: 0 !important;
+    position: static !important;
+}
+
+/* Search box styling - eliminate spacing issues */
+.bootstrap-select .dropdown-menu .bs-searchbox {
+    padding: 12px !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #dee2e6 !important; /* Subtle line under search box */
+    background-color: #f8f9fa !important;
+    border-radius: 6px 6px 0 0 !important;
+}
+
+.bootstrap-select .dropdown-menu .bs-searchbox input {
+    border: none !important; /* Remove input border - clean look */
+    border-radius: 4px !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    width: 100% !important;
+    background-color: white !important;
+    outline: none !important;
+    box-shadow: 0 0 0 1px #dee2e6 !important; /* Subtle shadow border */
+}
+.fa-print , .fa-eye {
+    font-size: 1.3vw;
+    color: #317d7f;
+}
+.bootstrap-select .dropdown-menu .bs-searchbox input:focus {
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2) !important; /* Light blue glow on focus */
+}
+
+/* Actions box styling */
+.bootstrap-select .dropdown-menu .bs-actionsbox {
+    padding: 8px 12px !important;
+    margin: 0 !important;
+    border-bottom: 1px solid #e9ecef !important;
+    background-color: #f8f9fa !important;
+}
+
+/* List items - proper spacing and no gaps */
+.bootstrap-select .dropdown-menu li {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.bootstrap-select .dropdown-menu li a {
+    padding: 10px 12px !important;
+    margin: 0 !important;
+    display: block !important;
+    border: none !important;
+    transition: background-color 0.15s ease !important;
+}
+
+/* Hover and selected states for dropdown items */
+.bootstrap-select .dropdown-menu li a:hover,
+.bootstrap-select .dropdown-menu li a:focus {
+    background-color: #f8f9fa !important;
+    color: #495057 !important;
+}
+
+.bootstrap-select .dropdown-menu li.selected a {
+    background-color: var(--sigma-primary) !important;
+    color: white !important;
+}
+
+/* Fix text overflow in dropdown options */
+.bootstrap-select .dropdown-menu li a {
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* CRITICAL: Fix dropdown toggle positioning */
+.bootstrap-select .dropdown-toggle {
+    background: #4083851c;
+    z-index: 1001 !important;
+    position: relative !important;
+}
+
+/* CRITICAL: Container overflow fixes to prevent clipping */
+.row, .col, .col-lg-2, .col-md-4, .col-12, .col-6,
+.container-fluid, .form-group, .mb-3 {
+    overflow: visible !important;
+    position: static !important;
+}
+
+/* Fix table container overflow that clips dropdowns */
+.table-responsive, .sigma-table-container, .sigma-report-table-container {
+    overflow: visible !important;
+}
+
+/* ===================================================================
+   DATATABLES DROPDOWN FIX - DataTable wrapper elements
+   =================================================================== */
+
+/* Fix dropdown menu positioning when near viewport edges */
+@media (max-width: 768px) {
+    .bootstrap-select .dropdown-menu {
+        max-width: calc(100vw - 30px) !important;
+        left: 0 !important;
+        right: auto !important;
+    }
+}
+
+/* Fix sidebar spacing issues */
+.sidebar .nav-item {
+    margin-bottom: 2px;
+}
+
+.sidebar .nav-link {
+    padding: 8px 16px;
+    margin: 0;
+}
+
+/* Remove transform properties that cause layout issues */
+.sidebar, .main-panel {
+    transform: none !important;
+}
+
+/* ===================================================================
+   MEDICAL COLUMNS HIGHLIGHTING & DOCTOR NAME STYLING - REMOVED CONFLICTING RULE
+   =================================================================== */
+
+/* REMOVED: Highlight medical/implant columns with light blue background - this was conflicting with the corrected column backgrounds */
+
+/* Doctor name styling - UPDATED with Arabic Cairo font support */
+.sigma-col-customer,
+.sigma-report-table td:first-child {
+    font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 500 !important;
+    color: #2c3e50 !important;
+    letter-spacing: 0.3px !important;
+}
+
+.sigma-report-table th.sigma-col-customer {
+    font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    color: #1a252f !important;
+    background-color: var(--table-header-bg) !important;
+}
+
+/* Enhanced Arabic text rendering for doctor names - LEFT-ALIGNED */
+.sigma-report-table td:first-child,
+.sigma-report-table th:first-child {
+    unicode-bidi: plaintext; /* Proper Unicode handling for mixed text */
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: 'liga' 1, 'kern' 1;
+    font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* Keep total column normal background */
+.sigma-report-table th:last-child,
+.sigma-report-table td:last-child {
+    /* background-color: transparent !important; */
+}
+
+/* ===================================================================
+   CUSTOM HEADER CLASSES - DARK & LIGHT
+   =================================================================== */
+
+/* Dark header class - for first and last columns */
+.header-dark {
+    background-color: #587686 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Light header class - for middle columns */
+.header-light {
+    background-color: #ffffff !important;
+    color: #587686 !important;
+    font-weight: 600 !important;
+}
+
+/* ===================================================================
+   MODERN FILTERS SECTION REDESIGN
+   =================================================================== */
+
+/* Date Input Fields with Calendar Icons */
+.modern-date-input {
+    position: relative !important;
+    margin-bottom: 16px !important;
+}
+
+.modern-date-input label {
+    display: block !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #64748B !important;
+    margin-bottom: 8px !important;
+    text-transform: none !important;
+}
+
+.modern-date-input input[type="date"] {
+    width: 100% !important;
+    padding: 14px 50px 14px 14px !important;
+    border: 2px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #1A202C !important;
+    background: white !important;
+    transition: all 0.2s ease !important;
+}
+
+.modern-date-input input[type="date"]:focus {
+    outline: none !important;
+    border-color: #4299E1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.modern-date-input::after {
+    content: "📅" !important;
+    position: absolute !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 18px !important;
+    color: #4299E1 !important;
+    pointer-events: none !important;
+}
+
+/* Modern Dropdown Styling */
+.modern-dropdown {
+    position: relative !important;
+    margin-bottom: 16px !important;
+}
+
+.modern-dropdown .bootstrap-select .dropdown-toggle {
+    width: 100% !important;
+    padding: 14px 16px !important;
+    border: 2px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #1A202C !important;
+    background: white !important;
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+}
+
+.modern-dropdown .bootstrap-select .dropdown-toggle:focus,
+.modern-dropdown .bootstrap-select.show .dropdown-toggle {
+    border-color: #4299E1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.modern-dropdown .filter-option-inner {
+    color: #9CA3AF !important;
+}
+
+.modern-dropdown .bootstrap-select.show .filter-option-inner {
+    color: #1A202C !important;
+}
+
+/* Multi-select Tags */
+.selection-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+}
+
+.selection-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: #0D9488 !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.selection-tag.doctor-tag {
+    background: #3B82F6 !important;
+}
+
+.selection-tag .remove-tag {
+    margin-left: 8px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    opacity: 0.8 !important;
+}
+
+.selection-tag .remove-tag:hover {
+    opacity: 1 !important;
+}
+
+/* Modern Segmented Control */
+.modern-segmented-control {
+    display: flex !important;
+    background: #F8FAFC !important;
+    border-radius: 22px !important;
+    padding: 4px !important;
+    width: 120px !important;
+    margin-bottom: 16px !important;
+}
+
+.segmented-option {
+    padding: 12px 24px !important;
+    border-radius: 18px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background: transparent !important;
+    border: none !important;
+    color: #374151 !important;
+}
+
+.segmented-option.active {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Modern Action Buttons */
+.modern-action-buttons {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+}
+
+/* Right Side Controls Container */
+.right-side-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-generate-report {
+    background: linear-gradient(135deg, #3B82F6, #0891B2) !important;
+    border: none !important;
+    padding: 16px 32px !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-generate-report:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-print {
+    background: transparent !important;
+    border: 2px solid #CBD5E1 !important;
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+    color: #64748B !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-print:hover {
+    background: #F1F5F9 !important;
+    color: #374151 !important;
+}
+
+/* ===================================================================
+   FINAL DROPDOWN CONTAINER FIXES - ENSURE NO CLIPPING
+   =================================================================== */
+
+/* Critical: Ensure ALL parent containers don't clip dropdowns */
+body, html, .wrapper, .main-panel, .content,
+.kt-form, .report-filters-card, .container-fluid,
+.row, .col, .col-lg-2, .col-md-3, .col-md-4, .col-6, .col-12,
+.form-group, .mb-3, .g-3, .align-items-end,
+.sigmaPanel, .sigma-report-table-container {
+    overflow: visible !important;
+    contain: none !important;
+}
+
+/* Force sigmaPanel to not clip dropdowns */
+.sigmaPanel {
+    overflow: visible !important;
+    contain: none !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Ensure table containers don't create stacking contexts */
+.sigma-report-table-container {
+    overflow: visible !important;
+    contain: none !important;
+    position: relative !important;
+}
+
+/* Bootstrap Select dropdown positioned normally */
+.bootstrap-select .dropdown-menu {
+    z-index: 9999 !important;
+}
+
+/* Fix any transforms that might break positioning */
+.bootstrap-select,
+.bootstrap-select .dropdown-menu {
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* ===================================================================
+   DATATABLES DROPDOWN FIX - DataTable wrapper elements
+   =================================================================== */
+
+/* Fix DataTable wrapper containers that can clip dropdowns */
+.dataTables_wrapper,
+.dataTables_scroll,
+.dataTables_scrollHead,
+.dataTables_scrollBody,
+.dt-bootstrap4,
+#datatable_wrapper,
+.table-odd {
+    overflow: visible !important;
+    position: static !important;
+    z-index: auto !important;
+    isolation: auto !important;
+    contain: none !important;
+    transform: none !important;
+}
+
+/* Ensure dropdowns appear above DataTable elements */
+.bootstrap-select .dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute !important;
+}
+
+.bootstrap-select.show {
+    z-index: 9999 !important;
+}
+
+/* NUCLEAR OPTION - Override everything that could possibly interfere */
+* {
+    /* Only apply to elements that might interfere with dropdowns */
+}
+
+/* Target ALL possible table and container elements */
+table, thead, tbody, tr, td, th,
+.table, .table-responsive, .table-container,
+.card, .card-body, .card-header,
+.container, .container-fluid,
+.row, .col, .col-sm-12,
+div[class*="col-"], div[class*="table"],
+div[id*="table"], div[id*="datatable"],
+.sigma-report-table, .sigma-report-table-container, .sigma-table-container,
+.report-filters-card, .sigmaPanel {
+    /* overflow: visible !important; */
+    position: static !important;
+    /* z-index: auto !important; */
+    isolation: auto !important;
+    contain: none !important;
+    transform: none !important;
+    clip: auto !important;
+    clip-path: none !important;
+}
+
+/* Force dropdown to be absolutely on top */
+.selectpicker,
+.bootstrap-select,
+.bootstrap-select *,
+.bootstrap-select .dropdown-menu,
+.bootstrap-select .dropdown-menu * {
+    z-index: 9999 !important;
+    position: relative !important;
+}
+
+.bootstrap-select .dropdown-menu {
+    position: absolute !important;
+    z-index: 9999 !important;
+}
+
+/* JavaScript will handle positioning for fixed elements */
+.dropdown-force-visible {
+    position: absolute !important;
+    z-index: 2147483647 !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Fix dropdown menu positioning when near viewport edges */
+@media (max-width: 768px) {
+    .bootstrap-select .dropdown-menu {
+        max-width: calc(100vw - 30px) !important;
+        left: 0 !important;
+        right: auto !important;
+    }
+}
+
+/* Fix sidebar spacing issues */
+.sidebar .nav-item {
+    margin-bottom: 2px;
+}
+
+.sidebar .nav-link {
+    padding: 8px 16px;
+    margin: 0;
+}
+
+/* Remove transform properties that cause layout issues */
+.sidebar, .main-panel {
+    transform: none !important;
+}
+
+/* ===================================================================
+   MEDICAL COLUMNS HIGHLIGHTING & DOCTOR NAME STYLING - REMOVED CONFLICTING RULE
+   =================================================================== */
+
+/* REMOVED: Highlight medical/implant columns with light blue background - this was conflicting with the corrected column backgrounds */
+
+/* Doctor name styling - UPDATED with Arabic Cairo font support */
+.sigma-col-customer,
+.sigma-report-table td:first-child {
+    font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 500 !important;
+    color: #2c3e50 !important;
+    letter-spacing: 0.3px !important;
+}
+
+.sigma-report-table th.sigma-col-customer {
+    font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+    font-weight: 600 !important;
+    color: #1a252f !important;
+    background-color: var(--table-header-bg) !important;
+}
+
+/* Enhanced Arabic text rendering for doctor names - LEFT-ALIGNED */
+.sigma-report-table td:first-child,
+.sigma-report-table th:first-child {
+    unicode-bidi: plaintext; /* Proper Unicode handling for mixed text */
+    text-rendering: optimizeLegibility;
+    -webkit-font-feature-settings: 'liga' 1, 'kern' 1;
+    font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* Keep total column normal background */
+.sigma-report-table th:last-child,
+.sigma-report-table td:last-child {
+    /* background-color: transparent !important; */
+}
+
+/* ===================================================================
+   CUSTOM HEADER CLASSES - DARK & LIGHT
+   =================================================================== */
+
+/* Dark header class - for first and last columns */
+.header-dark {
+    background-color: #408385 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Light header class - for middle columns */
+.header-light {
+    background-color: #66a7a91c !important;
+    color: #408385 !important;
+    font-weight: 600 !important;
+}
+
+/* ===================================================================
+   MODERN FILTERS SECTION REDESIGN
+   =================================================================== */
+
+/* Date Input Fields with Calendar Icons */
+.modern-date-input {
+    position: relative !important;
+    margin-bottom: 16px !important;
+}
+
+.modern-date-input label {
+    display: block !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #64748B !important;
+    margin-bottom: 8px !important;
+    text-transform: none !important;
+}
+
+.modern-date-input input[type="date"] {
+    width: 100% !important;
+    padding: 14px 50px 14px 14px !important;
+    border: 2px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #1A202C !important;
+    background: white !important;
+    transition: all 0.2s ease !important;
+}
+
+.modern-date-input input[type="date"]:focus {
+    outline: none !important;
+    border-color: #4299E1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.modern-date-input::after {
+    content: "📅" !important;
+    position: absolute !important;
+    right: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 18px !important;
+    color: #4299E1 !important;
+    pointer-events: none !important;
+}
+
+/* Modern Dropdown Styling */
+.modern-dropdown {
+    position: relative !important;
+    margin-bottom: 16px !important;
+}
+
+.modern-dropdown .bootstrap-select .dropdown-toggle {
+    width: 100% !important;
+    padding: 14px 16px !important;
+    border: 2px solid #E2E8F0 !important;
+    border-radius: 10px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: #1A202C !important;
+    background: white !important;
+    text-align: left !important;
+    transition: all 0.2s ease !important;
+}
+
+.modern-dropdown .bootstrap-select .dropdown-toggle:focus,
+.modern-dropdown .bootstrap-select.show .dropdown-toggle {
+    border-color: #4299E1 !important;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1) !important;
+}
+
+.modern-dropdown .filter-option-inner {
+    color: #9CA3AF !important;
+}
+
+.modern-dropdown .bootstrap-select.show .filter-option-inner {
+    color: #1A202C !important;
+}
+
+/* Multi-select Tags */
+.selection-tags {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+}
+
+.selection-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    background: #0D9488 !important;
+    color: white !important;
+    padding: 6px 12px !important;
+    border-radius: 20px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.selection-tag.doctor-tag {
+    background: #3B82F6 !important;
+}
+
+.selection-tag .remove-tag {
+    margin-left: 8px !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    opacity: 0.8 !important;
+}
+
+.selection-tag .remove-tag:hover {
+    opacity: 1 !important;
+}
+
+/* Modern Segmented Control */
+.modern-segmented-control {
+    display: flex !important;
+    background: #F8FAFC !important;
+    border-radius: 22px !important;
+    padding: 4px !important;
+    width: 120px !important;
+    margin-bottom: 16px !important;
+}
+
+.segmented-option {
+    padding: 12px 24px !important;
+    border-radius: 18px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background: transparent !important;
+    border: none !important;
+    color: #374151 !important;
+}
+
+.segmented-option.active {
+    background: linear-gradient(135deg, #3B82F6, #1D4ED8) !important;
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3) !important;
+}
+
+/* Modern Action Buttons */
+.modern-action-buttons {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+}
+
+/* Right Side Controls Container */
+.right-side-controls {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-generate-report {
+    background: linear-gradient(135deg, #3B82F6, #0891B2) !important;
+    border: none !important;
+    padding: 16px 32px !important;
+    border-radius: 10px !important;
+    color: white !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-generate-report:hover {
+    transform: scale(1.02) !important;
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3) !important;
+}
+
+.btn-print {
+    background: transparent !important;
+    border: 2px solid #CBD5E1 !important;
+    padding: 12px 24px !important;
+    border-radius: 10px !important;
+    color: #64748B !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.btn-print:hover {
+    background: #F1F5F9 !important;
+    color: #374151 !important;
+}

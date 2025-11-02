@@ -1,0 +1,7 @@
+# SIGMA Reports Test Results
+
+**Test Date:** Mon Oct 20 14:37:03 +03 2025
+**Base URL:** http://127.0.0.1:8000
+
+| Report | Test | HTTP Status | Errors | Result |
+|--------|------|-------------|--------|--------|

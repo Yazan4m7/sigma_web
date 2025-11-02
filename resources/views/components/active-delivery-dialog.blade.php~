@@ -1,0 +1,67 @@
+<div class="silicon-valley-delivery-modal modal-overlay" id="DeliveryDialog" tabindex="-1" role="dialog">
+    <div class="silicon-valley-delivery-dialog">
+        <button class="blackbox-close-button" onclick="closeModal('DeliveryDialog')" data-dismiss="modal">X</button>
+        <!-- Begin images -->
+        <h2 class="dialog-title-black-box">PICK DELIVERY EMP</h2>
+
+         <div class="blackbox-images inline">
+            <div class="blackbox-image-container bb-inline-img"  onclick="">
+                <img alt="Image 1"  src="https://e7.pngegg.com/pngimages/980/886/png-clipart-male-portrait-avatar-computer-icons-icon-design-avatar-flat-face-icon-people-head.png" width="150"/>
+                <p>Name </p>
+
+            </div>
+            <div class="blackbox-image-container bb-inline-img inactive" onclick="">
+                <img alt="Image 2"  src="https://e7.pngegg.com/pngimages/980/886/png-clipart-male-portrait-avatar-computer-icons-icon-design-avatar-flat-face-icon-people-head.png" width="150"/>
+                <p>Name</p>
+
+            </div>
+            <div class="blackbox-image-container bb-inline-img"  onclick="">
+                <img alt="Image 3" src="https://e7.pngegg.com/pngimages/980/886/png-clipart-male-portrait-avatar-computer-icons-icon-design-avatar-flat-face-icon-people-head.png" width="150"/>
+                <p>Name</p>
+            </div>
+        </div>
+
+        <div class="silicon-valley-container">
+            <div class="silicon-valley-face" onclick="selectFace(this)">
+                <img src="https://pngimg.com/d/face_PNG5645.png" alt="Employee 1">
+            </div>
+            <div class="silicon-valley-face" onclick="selectFace(this)">
+                <img src="https://pngimg.com/d/face_PNG5645.png" alt="Employee 2">
+            </div>
+            <div class="silicon-valley-face" onclick="selectFace(this)">
+                <img src="https://pngimg.com/d/face_PNG5645.png" alt="Employee 3">
+            </div>
+            <div class="silicon-valley-overlay" id="silicon-valley-overlay">
+                Assigning, please wait...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function selectFace(element) {
+        // Remove 'silicon-valley-selected' class from all faces
+        document.querySelectorAll('.silicon-valley-face').forEach(face => {
+            face.classList.remove('silicon-valley-selected');
+
+        });
+        // Add 'silicon-valley-selected' class to the clicked face
+        element.classList.add('silicon-valley-selected');
+
+        // Show overlay
+        document.getElementById('silicon-valley-overlay').classList.add('silicon-valley-active');
+        // Simulate form submission
+        setTimeout(() => {
+            // Hide overlay after 3 seconds (simulate backend processing)
+            document.getElementById('silicon-valley-overlay').classList.remove('silicon-valley-active');
+            // Enable all faces again
+
+        });
+    }
+
+    ,
+    3000
+    )
+
+    }
+</script>

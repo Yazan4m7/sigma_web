@@ -1,0 +1,39 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(node:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)",
+      "Bash(php artisan route:list:*)",
+      "Bash(mkdir:*)",
+      "Bash(php artisan make:migration:*)",
+      "Bash(php artisan config:clear:*)",
+      "Bash(php artisan serve:*)",
+      "Bash(curl:*)",
+      "Read(/mnt/c/Users/Yazan/Pictures/Screenshots/**)",
+      "Bash(git checkout:*)",
+      "Read(/mnt/c/Users/Yazan/Pictures/Screenshots/**)",
+      "Bash(php artisan view:clear:*)",
+      "Bash(php artisan tinker:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_install",
+      "Read(//mnt/c/Users/Yazan/Pictures/Screenshots/**)",
+      "Bash(php -l:*)",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_type",
+      "Bash(php artisan:*)",
+      "Bash(cat:*)",
+      "Bash(awk:*)",
+      "Bash(git log:*)",
+      "Bash(composer dump-autoload:*)",
+      "Bash(chmod:*)",
+      "Bash(tee:*)",
+      "Bash(./test-master-report-curl.sh)",
+      "Bash(mysql:*)"
+    ],
+    "deny": []
+  }
+}

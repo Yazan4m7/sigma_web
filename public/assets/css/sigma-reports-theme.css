@@ -1,0 +1,508 @@
+/* ========================================
+   SIGMA Reports - Unified Theme CSS
+   ======================================== */
+
+/* Modern Toggle Switch Styling */
+.toggle-switch-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    
+}
+.fa-eye.printBtn {
+    right: 4vw;
+}
+.fa-print.printBtn {
+    bottom: 1vw;
+    right: 2vw;
+}
+/* Bootstrap Dropdown Fixes */
+.dropdown-menu::before {
+    display: none !important;
+}
+
+.dropdown-menu {
+    padding-top: 0 !important;
+    padding-bottom: 4px !important;
+    z-index: 9999 !important;
+    position: absolute !important;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dropdown {
+    position: relative;
+    z-index: 1050 !important;
+}
+
+.bootstrap-select .dropdown-menu {
+    z-index: 9999 !important;
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+}
+
+.table-responsive {
+    overflow: visible !important;
+}
+
+.bootstrap-select > .dropdown-toggle {
+    z-index: 1 !important;
+}
+
+/* Fix placeholder text */
+.filter-option-inner {
+    color: #6c757d !important;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+.bootstrap-select .dropdown-toggle:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 0.2rem rgba(99, 141, 255, 0.25) !important;
+}
+.toggle-label-left.active {
+    color: #638dff;
+    font-weight: 600;
+}
+
+.toggle-label-right.active {
+    color: #638dff;
+    font-weight: 600;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-checkbox {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #e9ecef;
+    transition: 0.3s;
+    border-radius: 24px;
+    border: 2px solid #dee2e6;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-checkbox:checked + .toggle-slider {
+    background-color: #638dff;
+    border-color: #638dff;
+}
+
+.toggle-checkbox:checked + .toggle-slider:before {
+    transform: translateX(20px);
+}
+
+.toggle-slider:hover {
+    box-shadow: 0 0 8px rgba(99, 141, 255, 0.3);
+}
+
+/* Table Header Styling */
+.sigma-report-table thead th {
+    /* background-color: #869dd8 !important; */
+    /* color: #2c3041 !important; */
+    font-weight: 600;
+    padding: 12px 8px;
+    text-align: center;
+}
+
+.sigma-report-table th.sigma-col-customer {
+    background-color: #869dd8 !important;
+    color: #2c3041 !important;
+    text-align: left;
+}
+
+.sigma-report-table th.text-center {
+    color: none;
+}
+
+/* Generate Report Button Gradient Styling */
+.btn-primary-enhanced {
+    height: 4.5vh !important;
+    width: 15vw;
+    background: linear-gradient(270deg, #408385 0%, #2a686a 100%) !important;
+    border: none;
+    color: white !important;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35); */
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary-enhanced::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #b9b9b9 50%, #575757 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 10px;
+}
+
+.btn-primary-enhanced:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(202, 253, 251, 0.45);
+    color: white !important;
+}
+
+.btn-primary-enhanced:hover::before {
+    opacity: 1;
+}
+
+.btn-primary-enhanced:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(110, 164, 219, 0.35);
+    color: white !important;
+}
+
+.btn-primary-enhanced:focus {
+    box-shadow: 0 4px 14px rgba(76, 132, 93, 0.35), 0 0 0 3px rgba(70, 126, 229, 0.45);
+    color: white !important;
+    outline: none;
+}
+
+.btn-primary-enhanced i,
+.btn-primary-enhanced span {
+    position: relative;
+    z-index: 1;
+}
+.table.dataTable thead .sorting_desc {
+    background-repeat: no-repeat !important;
+}
+
+/* Icon Alignment Standardization */
+.printBtn i,
+#monthly-breakdown-toggle i,
+#toggleMonthlyBtn i {
+    font-size: 16px !important;
+    margin-right: -17px;
+    vertical-align: middle;
+}
+
+/* Remove text from print buttons for consistency */
+.printBtn {
+    justify-content: center;
+}
+
+/* Monthly button consistency */
+#monthly-breakdown-toggle,
+#toggleMonthlyBtn {
+    transition: all 0.3s ease;
+}
+
+/* Filter Label Icons - Standardized Dark Grey Color */
+.report-filters-card label i {
+    color: #2b7b7d !important;
+}
+
+.month-title i {
+    color: #6c757d !important;
+}
+
+/* Dropdown Improvements */
+.bootstrap-select .dropdown-menu {
+    max-width: none;
+    width: 100%;
+}
+
+.bootstrap-select .dropdown-menu .inner {
+    min-height: auto !important;
+    max-height: 200px !important;
+}
+
+/* Units/Cases Toggle Cards */
+.toggle-cards-container {
+    display: flex;
+    /* border-radius: 6px; */
+    overflow: hidden;
+    /* border: 1px solid #dee2e6; */
+}
+
+.toggle-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 11px;
+    font-weight: 500;
+    min-width: 60px;
+}
+
+.toggle-card i {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.toggle-card.active {
+    background: #638dff;
+    color: white;
+}
+
+.toggle-card:hover:not(.active) {
+    background: #e9ecef;
+}
+
+/* Report Table Improvements - Using master definition from sigma-reports-master.css */
+
+/* Table with select all checkbox animation */
+.sigma-report-table:has(th input[type="checkbox"]),
+.printable:has(th input[type="checkbox"]),
+table:has(th input[type="checkbox"]) {
+    animation: tableSlideDown 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes tableSlideDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+}
+
+.sigma-report-table tbody tr:hover {
+    background-color: rgba(99, 141, 255, 0.05);
+}
+
+.sigma-report-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #dee2e6;
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.sigma-report-table .totals-row {
+    background-color: #f8fafc !important;
+    border-top: 2px solid #e2e8f0;
+}
+
+.sigma-report-table .totals-row td {
+    color: #1a202c !important;
+    font-weight: 700 !important;
+    font-size: 14px;
+}
+
+.sigma-report-table .totals-row strong {
+    color: #2d3748 !important;
+}
+
+/* Responsive Design */
+@media (min-width: 992px) {
+    .row.g-3.align-items-end > div {
+        flex: 0 0 auto;
+        width: 16.666%;
+    }
+}
+
+/* Print Button Styling */
+.printBtn {
+    /* left: 10px; */
+    position: absolute !important;
+    /* background-color: #6c757d; */
+    /* border-color: #6c757d; */
+    color: #317d7f;
+    transition: all 0.3s ease;
+    font-size: 1.3vw;
+}
+
+.printBtn:hover {
+    /* background-color: #5a6268; */
+    /* border-color: #545b62; */
+    /* color: white; */
+}
+
+/* Monthly Toggle Button */
+#monthly-breakdown-toggle {
+    transition: all 0.3s ease;
+}
+
+#monthly-breakdown-toggle.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+#monthly-breakdown-toggle.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+#monthly-breakdown-toggle.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Form Control Improvements */
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: #638dff;
+    box-shadow: 0 0 0 0.2rem rgba(99, 141, 255, 0.25);
+}
+
+/* English Text Font Styling */
+.sigma-report-table th,
+.sigma-report-table td,
+.btn,
+label {
+    font-family: calibari sans-serif;
+    font-weight: 500;
+}
+
+.sigma-report-table .primary-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+/* Icon Size Improvements */
+.printBtn i,
+#toggleMonthlyBtn i {
+    font-size: 24px !important;
+}
+
+.btn i {
+    font-size: 16px;
+}
+
+/* Report Filter Card */
+.report-filters-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Shimmer Loading Effects */
+.shimmer-container {
+    position: relative;
+    overflow: hidden;
+    background: #f6f7f8;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.shimmer {
+    background: linear-gradient(90deg, #f6f7f8 25%, #edeef1 50%, #f6f7f8 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Sidebar Shimmer */
+.sidebar-shimmer {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.sidebar-shimmer.tab-item {
+    height: 45px;
+    border-radius: 6px;
+}
+
+/* Content Area Shimmer */
+.content-shimmer {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.content-shimmer.header {
+    height: 32px;
+    width: 60%;
+}
+
+.content-shimmer.row {
+    height: 20px;
+    width: 100%;
+}
+
+.content-shimmer.row.short {
+    width: 75%;
+}
+
+.content-shimmer.card {
+    height: 120px;
+    border-radius: 8px;
+}
+
+/* Table Shimmer */
+.table-shimmer {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+}
+
+/* Dashboard Loading State */
+.dashboard-loading {
+    opacity: 0;
+    animation: dashboardFadeIn 0.5s ease-out 0.8s forwards;
+}
+
+@keyframes dashboardFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

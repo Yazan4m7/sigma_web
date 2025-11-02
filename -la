@@ -1,0 +1,19 @@
+[0;1;32m●[0m php8.3-fpm.service - The PHP 8.3 FastCGI Process Manager
+     Loaded: loaded (/lib/systemd/system/php8.3-fpm.service; disabled; vendor preset: enabled)
+     Active: [0;1;32mactive (running)[0m since Thu 2025-07-17 16:08:26 UTC; 2 days ago
+       Docs: man:php-fpm8.3(8)
+   Main PID: 4095284 (php-fpm8.3)
+     Status: "Processes active: 0, idle: 3, Requests: 5197, slow: 0, Traffic: 0.00req/sec"
+      Tasks: 4 (limit: 2324)
+     Memory: 138.3M
+     CGroup: /system.slice/php8.3-fpm.service
+             ├─  18573 php-fpm: pool www
+             ├─  25246 php-fpm: pool www
+             ├─  31028 php-fpm: pool www
+             └─4095284 php-fpm: master process (/etc/php/8.3/fpm/php-fpm.conf)
+
+Jul 17 16:08:26 sigma systemd[1]: php8.3-fpm.service: Succeeded.
+Jul 17 16:08:26 sigma systemd[1]: Stopped The PHP 8.3 FastCGI Process Manager.
+Jul 17 16:08:26 sigma systemd[1]: Starting The PHP 8.3 FastCGI Process Manager...
+Jul 17 16:08:26 sigma php-fpm8.3[4095284]: [17-Jul-2025 16:08:26] NOTICE: PHP message: PHP Warning:  Module "curl" is already loaded in Unknown on line 0
+Jul 17 16:08:26 sigma systemd[1]: Started The PHP 8.3 FastCGI Process Manager.

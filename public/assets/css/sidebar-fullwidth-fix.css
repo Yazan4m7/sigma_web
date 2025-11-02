@@ -1,0 +1,70 @@
+/* Sidebar Full Width Fix - Makes sidebar fill left, top, and bottom without margins */
+
+.sidebar,
+.off-canvas-sidebar {
+    /* Remove all margins on left, top, bottom */
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+
+    /* Make full height */
+    height: 100vh !important;
+
+    /* Remove border radius for flush edges */
+    border-radius: 0 !important;
+
+    /* Keep existing properties */
+    top: 0;
+    left: 0;
+
+    /* Maintain consistent width */
+    width: 230px !important;
+}
+
+/* Adjust sidebar wrapper max-height to account for full viewport height */
+.sidebar .sidebar-wrapper,
+.off-canvas-sidebar .sidebar-wrapper {
+    max-height: 100vh !important;
+}
+
+/* Extend logo divider to 100% width */
+.sidebar .logo:after,
+.off-canvas-sidebar .logo:after {
+    right: 0 !important;
+    width: 100% !important;
+}
+
+/* Ensure logo image displays properly without duplication */
+.sidebar .logo img {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Hide any potential duplicate logo elements */
+.sidebar .logo-tim {
+    display: none !important;
+}
+
+/* Ensure only one logo container */
+.sidebar .logo ~ .logo {
+    display: none !important;
+}
+
+/* Fix device image sizing on operations dashboard */
+.sigma-device-img-container {
+    height: 160px !important; /* Increased from 140px */
+}
+
+.sigma-device-img-container img {
+    max-width: 130% !important;
+    max-height: 120% !important;
+}
+
+/* Increase device image container height for single and dual device displays */
+.devices-count-1 .sigma-device-img-container {
+    height: 200px !important; /* Increased from 180px */
+}
+
+.devices-count-2 .sigma-device-img-container {
+    height: 180px !important;
+}

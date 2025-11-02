@@ -1,0 +1,140 @@
+/* OPERATIONS DASHBOARD TABLE FIX */
+/* Ensures tables in operations dashboard are not affected by modal dialog CSS */
+
+/* Reset any potential conflicts for operations dashboard tables */
+.operations-dashboard table,
+.operations-dashboard .dataTable,
+.operations-dashboard .dataTables_wrapper,
+.operations-dashboard tbody,
+.operations-dashboard thead,
+.operations-dashboard tr,
+.operations-dashboard td,
+.operations-dashboard th,
+#admin-dashboardv2 table,
+#admin-dashboardv2 .dataTable,
+#admin-dashboardv2 .dataTables_wrapper,
+#admin-dashboardv2 tbody,
+#admin-dashboardv2 thead,
+#admin-dashboardv2 tr,
+#admin-dashboardv2 td,
+#admin-dashboardv2 th,
+[class*="admin-dashboard"] table,
+[class*="admin-dashboard"] .dataTable,
+[class*="admin-dashboard"] .dataTables_wrapper,
+[class*="admin-dashboard"] tbody,
+[class*="admin-dashboard"] thead,
+[class*="admin-dashboard"] tr,
+[class*="admin-dashboard"] td,
+[class*="admin-dashboard"] th {
+    /* Reset any dialog-related properties */
+    display: initial !important;
+    flex: initial !important;
+    width: initial !important;
+    min-width: initial !important;
+    max-width: initial !important;
+    flex-direction: initial !important;
+    flex-wrap: initial !important;
+    gap: initial !important;
+    align-items: initial !important;
+    justify-content: initial !important;
+}
+
+/* Ensure DataTables styling works properly */
+.operations-dashboard .dataTable,
+#admin-dashboardv2 .dataTable,
+[class*="admin-dashboard"] .dataTable {
+    display: table !important;
+    width: 100% !important;
+}
+
+.operations-dashboard .dataTable tbody,
+#admin-dashboardv2 .dataTable tbody,
+[class*="admin-dashboard"] .dataTable tbody {
+    display: table-row-group !important;
+}
+
+.operations-dashboard .dataTable thead,
+#admin-dashboardv2 .dataTable thead,
+[class*="admin-dashboard"] .dataTable thead {
+    display: table-header-group !important;
+}
+
+.operations-dashboard .dataTable tr,
+#admin-dashboardv2 .dataTable tr,
+[class*="admin-dashboard"] .dataTable tr {
+    display: table-row !important;
+}
+
+.operations-dashboard .dataTable td,
+.operations-dashboard .dataTable th,
+#admin-dashboardv2 .dataTable td,
+#admin-dashboardv2 .dataTable th,
+[class*="admin-dashboard"] .dataTable td,
+[class*="admin-dashboard"] .dataTable th {
+    display: table-cell !important;
+}
+
+/* Clickable elements in operations dashboard */
+.operations-dashboard .clickable,
+.operations-dashboard td.clickable,
+.operations-dashboard tr.clickable,
+#admin-dashboardv2 .clickable,
+#admin-dashboardv2 td.clickable,
+#admin-dashboardv2 tr.clickable,
+[class*="admin-dashboard"] .clickable,
+[class*="admin-dashboard"] td.clickable,
+[class*="admin-dashboard"] tr.clickable {
+    /* Ensure clickable elements maintain proper table display */
+    cursor: pointer !important;
+}
+
+.operations-dashboard td.clickable,
+#admin-dashboardv2 td.clickable,
+[class*="admin-dashboard"] td.clickable {
+    display: table-cell !important;
+}
+
+.operations-dashboard tr.clickable,
+#admin-dashboardv2 tr.clickable,
+[class*="admin-dashboard"] tr.clickable {
+    display: table-row !important;
+}
+
+/* DataTables wrapper */
+.operations-dashboard .dataTables_wrapper,
+#admin-dashboardv2 .dataTables_wrapper,
+[class*="admin-dashboard"] .dataTables_wrapper {
+    display: block !important;
+    width: 100% !important;
+}
+
+/* Any flex containers that might be affecting tables */
+.operations-dashboard .container,
+.operations-dashboard .row,
+.operations-dashboard .col,
+#admin-dashboardv2 .container,
+#admin-dashboardv2 .row,
+#admin-dashboardv2 .col,
+[class*="admin-dashboard"] .container,
+[class*="admin-dashboard"] .row,
+[class*="admin-dashboard"] .col {
+    /* Reset modal-related flex properties */
+    flex-direction: initial !important;
+    gap: initial !important;
+    align-items: initial !important;
+    justify-content: initial !important;
+}
+
+/* Ensure operations dashboard specific styling takes precedence */
+body:has(.operations-dashboard) table,
+body:has(#admin-dashboardv2) table,
+body:has([class*="admin-dashboard"]) table {
+    display: table !important;
+}
+
+body:has(.operations-dashboard) .dataTable,
+body:has(#admin-dashboardv2) .dataTable,
+body:has([class*="admin-dashboard"]) .dataTable {
+    display: table !important;
+    width: 100% !important;
+}

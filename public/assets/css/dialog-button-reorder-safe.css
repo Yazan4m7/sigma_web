@@ -1,0 +1,108 @@
+/* SAFE DIALOG BUTTON REORDERING SYSTEM */
+/* Only affects actual modal dialog footer buttons, not clickable table elements */
+
+/* PROTECT ONLY CLICKABLE TABLE ELEMENTS FROM MODAL BUTTON STYLING */
+/* Only target clickable elements that might be mistaken for dialog buttons */
+td.clickable:not(.modal-footer *):not(.modal *),
+tr.clickable:not(.modal-footer *):not(.modal *),
+.clickable:not(.modal-footer *):not(.modal *):not(button):not(.btn) {
+    /* Only protect clickable elements that are NOT inside modals */
+    flex: none !important;
+
+    width: auto !important;
+    min-width: auto !important;
+    max-width: none !important;
+}
+
+/* Specific protection for table rows */
+tr.clickable:not(.modal-footer *):not(.modal *) {
+    display: table-row !important;
+}
+
+/* Specific protection for clickable divs and other elements */
+.clickable:not(.modal-footer *):not(.modal *):not(button):not(.btn):not(td):not(tr) {
+    display: block !important;
+}
+
+/* SPECIFIC TARGETING: Only modal footers with buttons inside modals */
+.modal .modal-footer,
+.YSH-slide-panel .modal-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+/* Button container within modal footers only */
+.modal .modal-footer .row,
+.YSH-slide-panel .modal-footer .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0;
+}
+
+/* 2-Button Pattern: 50% each */
+.modal .modal-footer .row .col-md-6:nth-child(1):nth-last-child(2),
+.modal .modal-footer .row .col-md-6:nth-child(2):nth-last-child(1),
+.modal .modal-footer .row .col-6:nth-child(1):nth-last-child(2),
+.modal .modal-footer .row .col-6:nth-child(2):nth-last-child(1) {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: calc(50% - 0.25rem);
+    max-width: calc(50% - 0.25rem);
+}
+
+/* 3-Button Pattern: 33.333% each */
+.modal .modal-footer .row .col-md-4:nth-child(1):nth-last-child(3),
+.modal .modal-footer .row .col-md-4:nth-child(2):nth-last-child(2),
+.modal .modal-footer .row .col-md-4:nth-child(3):nth-last-child(1),
+.modal .modal-footer .row .col-4:nth-child(1):nth-last-child(3),
+.modal .modal-footer .row .col-4:nth-child(2):nth-last-child(2),
+.modal .modal-footer .row .col-4:nth-child(3):nth-last-child(1) {
+    flex: 1 1 calc(33.333% - 0.334rem);
+    min-width: calc(33.333% - 0.334rem);
+    max-width: calc(33.333% - 0.334rem);
+}
+
+/* 1-Button Pattern: 100% width */
+.modal .modal-footer .row .col-12:nth-child(1):nth-last-child(1),
+.modal .modal-footer .row .col-md-12:nth-child(1):nth-last-child(1) {
+    flex: 1 1 100%;
+    width: 100%;
+}
+
+/* Ensure buttons fill their containers */
+.modal .modal-footer button,
+.modal .modal-footer .btn,
+.YSH-slide-panel .modal-footer button,
+.YSH-slide-panel .modal-footer .btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+
+    .modal .modal-footer .row,
+    .YSH-slide-panel .modal-footer .row {
+        flex-direction: column;
+    }
+
+    .modal .modal-footer .row>[class*="col-"],
+    .YSH-slide-panel .modal-footer .row>[class*="col-"] {
+        flex: 1 1 100%;
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Remove any conflicting styles */
+.modal .modal-footer .row>[class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}

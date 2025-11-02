@@ -1,0 +1,232 @@
+/* Bootstrap Select Dropdown Fixes */
+
+/* Remove extra shadow containers and fix clipped checkmarks */
+.bootstrap-select .dropdown-menu {
+    border: 1px solid #ccc !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Reduced shadow */
+    background-color: white !important;
+    border-radius: 4px !important;
+    overflow: visible !important;
+    padding: 0 !important;
+}
+
+/* Fix for inner dropdown container that was causing extra shadows */
+.bootstrap-select .dropdown-menu.inner {
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Ensure proper positioning and no clipping */
+.bootstrap-select {
+    position: relative !important;
+    overflow: visible !important;
+}
+
+.bootstrap-select .btn-group {
+    overflow: visible !important;
+}
+
+/* Fix checkmark positioning and visibility */
+.bootstrap-select.show-tick .dropdown-menu li.selected a span.check-mark {
+    position: absolute !important;
+    right: 15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    display: inline-block !important;
+    color: #007bff !important;
+    font-weight: bold !important;
+    width: 16px !important;
+    height: 16px !important;
+    overflow: visible !important;
+    background: none !important;
+    border: none !important;
+    text-decoration: none !important;
+}
+
+/* Remove default checkmark and add clean custom one */
+.bootstrap-select.show-tick .dropdown-menu li.selected a span.check-mark:before {
+    content: none !important;
+}
+
+.bootstrap-select.show-tick .dropdown-menu li.selected a span.check-mark:after {
+    content: '✓' !important;
+    font-size: 14px !important;
+    line-height: 16px !important;
+    color: #007bff !important;
+    background: transparent !important;
+    text-shadow: none !important;
+    border: none !important;
+}
+
+/* Fix text spacing when checkmark is present */
+.bootstrap-select.show-tick .dropdown-menu li a span.text {
+    margin-right: 40px !important;
+    display: block !important;
+    overflow: visible !important;
+}
+
+/* Remove any clipping from parent containers */
+.dropdown-menu li {
+    overflow: visible !important;
+}
+
+.dropdown-menu li a {
+    overflow: visible !important;
+    position: relative !important;
+    padding: 8px 20px 8px 12px !important;
+    white-space: nowrap !important;
+}
+
+/* Ensure container doesn't clip content */
+.report-filters-card,
+.container-fluid,
+.row,
+.col-lg-2,
+.col-md-4,
+.col-12 {
+    overflow: visible !important;
+}
+
+/* Fix dropdown button styling */
+.bootstrap-select .dropdown-toggle {
+    /* color: burlywood !important; */
+    background-color: transparent !important;
+    border: 1px solid #ced4da !important;
+    color: #495057 !important;
+    text-align: left !important;
+    overflow: visible !important;
+}
+
+.bootstrap-select .dropdown-toggle:focus,
+.bootstrap-select .dropdown-toggle:active {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    border-color: #80bdff !important;
+    background-color: white !important;
+}
+
+/* Fix hover states */
+.bootstrap-select .dropdown-menu li a:hover {
+    background-color: #f8f9fa !important;
+    color: #495057 !important;
+}
+
+.bootstrap-select .dropdown-menu li.selected a {
+    background-color: #e7f3ff !important;
+    color: #007bff !important;
+}
+
+/* Ensure search box is properly styled */
+.bs-searchbox .form-control {
+    border: 1px solid #ced4da !important;
+    border-radius: 4px !important;
+    margin: 5px !important;
+    width: calc(100% - 10px) !important;
+}
+
+/* Fix z-index issues */
+.bootstrap-select .dropdown-menu {
+    z-index: 9999 !important;
+}
+
+.bootstrap-select.open .dropdown-menu {
+    display: block !important;
+}
+
+/* Prevent double borders/shadows */
+.bootstrap-select .dropdown-menu .dropdown-menu {
+    box-shadow: none !important;
+    border: none !important;
+}
+
+/* Ultimate scroll jumping prevention */
+.bootstrap-select .dropdown-menu.inner {
+    /* Disable all scrolling behaviors that could cause jumping */
+    scroll-behavior: auto !important;
+    overflow-anchor: none !important;
+    scroll-snap-type: none !important;
+
+    /* Force stable positioning */
+    position: relative !important;
+    transform: none !important;
+    will-change: auto !important;
+
+    /* Disable smooth scrolling */
+    -webkit-overflow-scrolling: auto !important;
+    overscroll-behavior: none !important;
+}
+
+/* Disable focus scrolling on list items */
+.bootstrap-select .dropdown-menu li,
+.bootstrap-select .dropdown-menu li a {
+    scroll-margin: 0 !important;
+    scroll-snap-align: none !important;
+    scroll-margin-block: 0 !important;
+    scroll-margin-inline: 0 !important;
+    scroll-padding: 0 !important;
+
+    /* Prevent focus from triggering scroll */
+    outline: none !important;
+}
+
+/* Prevent selected items from auto-scrolling into view */
+.bootstrap-select .dropdown-menu li.selected,
+.bootstrap-select .dropdown-menu li.selected a,
+.bootstrap-select .dropdown-menu li.active,
+.bootstrap-select .dropdown-menu li.active a {
+    scroll-behavior: auto !important;
+    scroll-margin: 0 !important;
+    scroll-snap-align: none !important;
+    outline: none !important;
+}
+
+/* Completely disable scroll-into-view behavior */
+.bootstrap-select .dropdown-menu li a:focus {
+    outline: none !important;
+    scroll-margin: 0 !important;
+}
+
+/* Force stable dropdown positioning */
+.bootstrap-select .dropdown-menu {
+    transform: none !important;
+    will-change: auto !important;
+    transition: none !important;
+}
+
+.bootstrap-select.open .dropdown-menu {
+    position: absolute !important;
+    transform: none !important;
+    will-change: auto !important;
+}
+
+/* Fix blue dash/background behind checkmark */
+.bootstrap-select.show-tick .dropdown-menu li.selected a {
+    background-color: #e7f3ff !important;
+    color: #007bff !important;
+    position: relative !important;
+}
+
+/* Remove any pseudo-elements that might create the blue dash */
+.bootstrap-select.show-tick .dropdown-menu li.selected a:before,
+.bootstrap-select.show-tick .dropdown-menu li.selected a:after {
+    display: none !important;
+}
+
+/* Ensure only our custom checkmark shows */
+.bootstrap-select.show-tick .dropdown-menu li.selected a span.check-mark {
+    z-index: 10 !important;
+}
+
+/* Hide any default Bootstrap Select checkmark icons */
+.bootstrap-select .dropdown-menu li.selected a .glyphicon,
+.bootstrap-select .dropdown-menu li.selected a .fa,
+.bootstrap-select .dropdown-menu li.selected a i {
+    display: none !important;
+}
+
+/* Alternative: If there's a specific icon causing the dash */
+.bootstrap-select .dropdown-menu li.selected a [class*="glyphicon"],
+.bootstrap-select .dropdown-menu li.selected a [class*="fa-"],
+.bootstrap-select .dropdown-menu li.selected a [class*="icon-"] {
+    display: none !important;
+}
