@@ -1,0 +1,1175 @@
+/**
+ * RESPONSIVE.CSS
+ * Full responsive styles for operations-dialog component
+ * Mobile-first approach with progressive enhancement
+ *
+ * Breakpoints:
+ * - Base: 0px (mobile)
+ * - Small: 576px
+ * - Medium: 768px
+ * - Large: 992px
+ * - XL: 1200px
+ */
+
+/* ============================================
+   RESET & BASE STYLES (Mobile First - 0px+)
+   ============================================ */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Prevent horizontal scrolling on all devices */
+html {
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    /* Account for mobile browser UI */
+    min-height: -webkit-fill-available;
+}
+
+/* ============================================
+   OPERATIONS DASHBOARD TABLE (Mobile Base)
+   ============================================ */
+
+.operations-dashboard,
+#admin-dashboardv2,
+[class*="admin-dashboard"] {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+/* Tables should never cause horizontal scroll */
+.operations-dashboard table,
+#admin-dashboardv2 table,
+[class*="admin-dashboard"] table {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
+}
+
+.operations-dashboard .dataTables_wrapper,
+#admin-dashboardv2 .dataTables_wrapper,
+[class*="admin-dashboard"] .dataTables_wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* ============================================
+   WORKFLOW MODAL & DIALOG (Mobile Base)
+   ============================================ */
+
+.sigma-workflow-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    /* Full viewport height accounting for mobile browser UI */
+    height: 100vh;
+    height: -webkit-fill-available;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sigma-workflow-modal.active {
+    display: flex !important;
+}
+
+/* Dialog - Mobile first */
+.sigma-workflow-dialog {
+    background: white;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 100%;
+    max-height: 90vh;
+    max-height: calc(100vh - 2rem);
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   DIALOG HEADER (Mobile Base)
+   ============================================ */
+
+.sigma-workflow-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    background: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.sigma-workflow-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin: 0;
+    color: #1f2937;
+    flex: 1;
+}
+
+.sigma-close-button {
+    background: transparent;
+    border: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin: -0.25rem;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s;
+}
+
+.sigma-close-button:hover {
+    background-color: #f3f4f6;
+    color: #1f2937;
+}
+
+/* ============================================
+   DIALOG BODY (Mobile Base)
+   ============================================ */
+
+.sigma-workflow-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 1rem;
+}
+
+/* ============================================
+   MACHINES GRID (Mobile Base - Vertical Stack)
+   ============================================ */
+
+/* Default for .sigma-devices-grid (active tabs) - single column below 400px */
+.sigma-devices-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0; /* No gap for single column layout */
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* For active tabs: 2 columns from 400px to 573px */
+@media (min-width: 400px) and (max-width: 573px) {
+    .sigma-devices-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+/* For active tabs: 3 columns from 574px and up */
+@media (min-width: 574px) {
+    .sigma-devices-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+    }
+}
+
+/* For waiting dialog machines: ensure single column below 480px */
+.sigma-machines-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* ============================================
+   MACHINE IMAGES (Mobile Base)
+   ============================================ */
+
+.sigma-machine-image-container,
+.sigma-device-image-container,
+.sigma-device-img-container {
+    width: 100%;
+    height: auto; /* Make height responsive */
+    aspect-ratio: 1 / 1; /* Maintain a square aspect ratio, can be adjusted */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.sigma-machine-image,
+.sigma-device-image,
+.active-device-img,
+.machine-img {
+    width: 100%; /* Use full width of the container */
+    height: 100%; /* Use full height of the container */
+    object-fit: contain;
+}
+
+.sigma-machine-name,
+.sigma-device-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1f2937;
+    text-align: center;
+    margin: 0;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+/* ============================================
+   FORM INPUTS (Mobile Base)
+   ============================================ */
+
+.sigma-inputs-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.sigma-form-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+.sigma-form-control {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sigma-form-control:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* ============================================
+   DIALOG FOOTER (Mobile Base)
+   ============================================ */
+
+.sigma-workflow-footer {
+    padding: 1rem;
+    border-top: 1px solid #e5e7eb;
+    flex-shrink: 0;
+    background: white;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+
+.sigma-button,
+.sigma-action-button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
+
+.sigma-button:not(:disabled) {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.sigma-button:not(:disabled):hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.sigma-button:disabled {
+    background: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ============================================
+   BUILD ROWS / EXPANDED TILES (Mobile Base)
+   ============================================ */
+
+.YSH-build-row,
+.sigma-build-row {
+    background: #ffffff;
+    border-radius: 0.75rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.YSH-build-header,
+.YSH-build-header-inactive,
+.sigma-build-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    gap: 0.5rem;
+}
+
+.YSH-build-header {
+    background: #3b82f6;
+    color: white;
+}
+
+.YSH-build-header-inactive {
+    background: #f59e0b;
+    color: white;
+}
+
+.YSH-build-title,
+.sigma-build-title {
+    flex: 1;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.YSH-build-date,
+.sigma-build-date {
+    font-size: 0.8125rem;
+    white-space: nowrap;
+}
+
+.YSH-build-jobs-indicator,
+.YSH-build-jobs-indicator-inactive,
+.sigma-build-jobs-count {
+    background: white;
+    color: #424242;
+    font-size: 0.8125rem;
+    border-radius: 50%;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    padding: 0 0.5rem;
+}
+
+.toggle-build-btn {
+    background: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.toggle-build-btn i {
+    transition: transform 0.3s ease;
+    font-size: 1.125rem;
+}
+
+.YSH-build-row.active .toggle-build-btn i {
+    transform: rotate(180deg);
+}
+
+/* Build Body - Expandable */
+.YSH-build-body,
+.sigma-build-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    background: #f9fafb;
+}
+
+.YSH-build-row.active .YSH-build-body,
+.sigma-build-row.expanded .sigma-build-details {
+    max-height: 100vh;
+    padding: 0.75rem 1rem;
+}
+
+/* ============================================
+   JOB ROWS (Mobile Base)
+   ============================================ */
+
+.YSH-jobs-table,
+.sigma-build-cases {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.YSH-job-row,
+.sigma-case-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border-left: 3px solid #3b82f6;
+}
+
+.sigma-job-checkbox,
+.sigma-checkbox {
+    transform: scale(1.2);
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.sigma-job-case,
+.sigma-case-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sigma-job-doctor,
+.sigma-case-doctor {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: #1f2937;
+}
+
+.sigma-job-patient,
+.sigma-case-patient {
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+.sigma-job-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.sigma-job-units,
+.sigma-case-units {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.sigma-job-type,
+.sigma-job-material {
+    font-size: 0.8125rem;
+    color: #6b7280;
+}
+
+/* ============================================
+   DEVICE BADGES (Mobile Base)
+   ============================================ */
+
+.sigma-device-badges {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    z-index: 5;
+}
+
+.sigma-device-badge {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-badge-active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.sigma-badge-waiting {
+    background: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+}
+
+/* ============================================
+   SLIDE PANEL (Mobile Base)
+   ============================================ */
+
+.YSH-slide-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 99991;
+    display: none;
+}
+
+.YSH-slide-overlay.YSH-active {
+    display: block;
+}
+
+.YSH-slide-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    background: white;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+    transition: right 0.3s ease;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    z-index: 99992;
+}
+
+.YSH-slide-overlay.YSH-active .YSH-slide-panel {
+    right: 0;
+}
+
+.YSH-slide-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 10;
+}
+
+.YSH-slide-body {
+    padding: 1rem;
+}
+
+.YSH-close-slide {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    color: #6b7280;
+}
+
+/* ============================================
+   TABS (Mobile Base)
+   ============================================ */
+
+.macaw-tabs.macaw-aurora-tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    border: none;
+    flex-shrink: 0;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+    width: 100%;
+    padding: 1rem;
+}
+
+/* Silk Tabs (Inner tabs - Active/Waiting) */
+.macaw-tabs.macaw-silk-tabs {
+    width: 100%;
+}
+
+.macaw-tabs.macaw-silk-tabs > [role="tablist"] {
+    display: flex;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"] {
+    flex: 1;
+    padding: 0.625rem 0.5rem;
+    font-size: 0.8125rem;
+    text-align: center;
+}
+
+/* ============================================
+   TABLES (Mobile Base)
+   ============================================ */
+
+.waitingTable,
+.activeTable,
+.sunriseTable {
+    width: 100%;
+    font-size: 0.8125rem;
+}
+
+.waitingTable thead th,
+.activeTable thead th,
+.sunriseTable thead th {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.25rem;
+    white-space: nowrap;
+}
+
+.waitingTable tbody td,
+.activeTable tbody td,
+.sunriseTable tbody td {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.8125rem;
+}
+
+/* Hide columns on mobile to prevent horizontal scroll */
+.innerSpan4DeskTop {
+    display: none;
+}
+
+.innerSpan4Mobile {
+    display: inline;
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINT: 576px (Small)
+   ============================================ */
+
+@media (min-width: 576px) {
+    /* Dialog gets slightly wider */
+    .sigma-workflow-dialog {
+        max-width: 95%;
+        border-radius: 1.25rem;
+    }
+
+    /* Machines grid - 2 columns */
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    /* Larger machine images */
+    .sigma-machine-image-container,
+    .sigma-device-image-container,
+    .sigma-device-img-container {
+        height: 10rem;
+    }
+
+    /* Form inputs side-by-side */
+    .sigma-inputs-container {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    .sigma-form-group {
+        flex: 1;
+    }
+
+    /* Slide panel narrower */
+    .YSH-slide-panel {
+        max-width: 400px;
+    }
+
+    /* Job rows can be horizontal */
+    .YSH-job-row,
+    .sigma-case-item {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sigma-job-case,
+    .sigma-case-info {
+        flex-direction: row;
+        gap: 1rem;
+        flex: 1;
+    }
+
+    .sigma-job-info {
+        text-align: right;
+    }
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINT: 768px (Medium/Tablet)
+   ============================================ */
+
+@media (min-width: 768px) {
+    /* Dialog gets more width */
+    .sigma-workflow-dialog {
+        max-width: 720px;
+        border-radius: 1.5rem;
+    }
+
+    /* Padding increases */
+    .sigma-workflow-header,
+    .sigma-workflow-footer {
+        padding: 1.25rem 1.5rem;
+    }
+
+    .sigma-workflow-body {
+        padding: 1.5rem;
+    }
+
+    /* Machines grid - 3 columns */
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+
+    /* Larger images */
+    .sigma-machine-image-container,
+    .sigma-device-image-container,
+    .sigma-device-img-container {
+        height: 11rem;
+    }
+
+    .sigma-machine-name,
+    .sigma-device-name {
+        font-size: 0.9375rem;
+    }
+
+    /* Button styling */
+    .sigma-button,
+    .sigma-action-button {
+        font-size: 1rem;
+        padding: 0.875rem 2rem;
+    }
+
+    /* Tabs layout changes */
+    .macaw-tabs.macaw-aurora-tabs {
+        flex-direction: row;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+        flex-direction: column;
+        width: 20%;
+        border-bottom: none;
+        border-right: 1px solid #e5e7eb;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        padding: 1rem;
+        font-size: 0.9375rem;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+        width: 80%;
+        padding: 1.25rem;
+    }
+
+    /* Show desktop headers */
+    .innerSpan4DeskTop {
+        display: inline;
+    }
+
+    .innerSpan4Mobile {
+        display: none;
+    }
+
+    /* Table font sizes return to normal */
+    .waitingTable,
+    .activeTable,
+    .sunriseTable {
+        font-size: 0.875rem;
+    }
+
+    .waitingTable thead th,
+    .activeTable thead th,
+    .sunriseTable thead th {
+        font-size: 0.8125rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .waitingTable tbody td,
+    .activeTable tbody td,
+.sunriseTable tbody td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
+    }
+
+    /* Build rows */
+    .YSH-build-header,
+    .YSH-build-header-inactive,
+    .sigma-build-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .YSH-build-title,
+    .sigma-build-title {
+        font-size: 1rem;
+    }
+
+    .YSH-build-date,
+    .sigma-build-date {
+        font-size: 0.875rem;
+    }
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINT: 992px (Large/Desktop)
+   ============================================ */
+
+@media (min-width: 992px) {
+    /* Dialog maximum width */
+    .sigma-workflow-dialog {
+        max-width: 900px;
+    }
+
+    /* Machines grid - 4 columns */
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    /* Even larger images */
+    .sigma-machine-image-container,
+    .sigma-device-image-container,
+    .sigma-device-img-container {
+        height: 12rem;
+    }
+
+    /* Slide panel */
+    .YSH-slide-panel {
+        max-width: 500px;
+    }
+
+    /* Show all table columns */
+    .waitingTable tr > *,
+    .activeTable tr > * {
+        display: table-cell !important;
+    }
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINT: 1200px (XL/Large Desktop)
+   ============================================ */
+
+@media (min-width: 1200px) {
+    /* Maximum dialog width */
+    .sigma-workflow-dialog {
+        max-width: 1000px;
+    }
+
+    /* More padding */
+    .sigma-workflow-header,
+    .sigma-workflow-footer {
+        padding: 1.5rem 2rem;
+    }
+
+    .sigma-workflow-body {
+        padding: 2rem;
+    }
+
+    /* Machines grid stays at 4 columns but with more gap */
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        gap: 2rem;
+    }
+
+    /* Maximum image size */
+    .sigma-machine-image-container,
+    .sigma-device-image-container,
+    .sigma-device-img-container {
+        height: 13rem;
+    }
+
+    .sigma-machine-name,
+    .sigma-device-name {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================
+   LANDSCAPE ORIENTATION ADJUSTMENTS
+   ============================================ */
+
+@media (max-height: 600px) and (orientation: landscape) {
+    /* Reduce dialog padding in landscape */
+    .sigma-workflow-header,
+    .sigma-workflow-footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .sigma-workflow-body {
+        padding: 1rem;
+    }
+
+    /* Smaller images in landscape */
+    .sigma-machine-image-container,
+    .sigma-device-image-container,
+    .sigma-device-img-container {
+        height: 6rem;
+    }
+
+    /* Machines in landscape - more columns */
+    .sigma-machines-grid,
+    .sigma-devices-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+
+    /* Reduce build row padding */
+    .YSH-build-header,
+    .YSH-build-header-inactive {
+        padding: 0.5rem 0.75rem;
+    }
+
+    /* Dialog max height adjustment */
+    .sigma-workflow-dialog {
+        max-height: 95vh;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+    .sigma-workflow-modal,
+    .YSH-slide-overlay,
+    .sigma-close-button,
+    .toggle-build-btn {
+        display: none !important;
+    }
+
+    .sigma-workflow-dialog {
+        box-shadow: none;
+        max-width: 100%;
+    }
+}
+
+/* ============================================
+   HIGH CONTRAST MODE
+   ============================================ */
+
+@media (prefers-contrast: high) {
+    .sigma-machine-card,
+    .sigma-device-card {
+        border-width: 3px;
+    }
+
+    .sigma-button:not(:disabled) {
+        border: 2px solid #1e40af;
+    }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .sigma-workflow-modal {
+        transition: none;
+    }
+
+    .YSH-slide-panel {
+        transition: none;
+    }
+
+    .toggle-build-btn i {
+        transition: none;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT (Optional)
+   ============================================ */
+
+@media (prefers-color-scheme: dark) {
+    .sigma-workflow-dialog {
+        background: #1f2937;
+        color: #f9fafb;
+    }
+
+    .sigma-workflow-header,
+    .sigma-workflow-footer {
+        background: #111827;
+        border-color: #374151;
+    }
+
+    .sigma-workflow-title {
+        color: #f9fafb;
+    }
+
+    .sigma-close-button {
+        color: #d1d5db;
+    }
+
+    .sigma-close-button:hover {
+        background-color: #374151;
+        color: #f9fafb;
+    }
+
+    .sigma-machine-card,
+    .sigma-device-card {
+        background: #374151;
+        border-color: #4b5563;
+    }
+
+    .sigma-machine-card:hover,
+    .sigma-device-card:hover {
+        background: #4b5563;
+        border-color: #60a5fa;
+    }
+
+    .sigma-form-control {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+
+    .YSH-build-row,
+    .sigma-build-row {
+        background: #1f2937;
+    }
+
+    .YSH-build-body,
+    .sigma-build-details {
+        background: #111827;
+    }
+
+    .YSH-job-row,
+    .sigma-case-item {
+        background: #1f2937;
+    }
+
+    .YSH-slide-panel {
+        background: #1f2937;
+    }
+}
+
+/* ============================================
+   ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Focus visible styles */
+.sigma-machine-card:focus-visible,
+.sigma-device-card:focus-visible,
+.sigma-button:focus-visible,
+.sigma-close-button:focus-visible {
+    outline: 3px solid #3b82f6;
+    outline-offset: 2px;
+}
+
+/* Skip to content for keyboard users */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ============================================
+   SAFARI-SPECIFIC FIXES
+   ============================================ */
+
+/* Fix for Safari bottom bar overlap */
+@media (-webkit-touch-callout: none) {
+    .sigma-workflow-modal {
+        padding-bottom: env(safe-area-inset-bottom, 1rem);
+    }
+
+    .sigma-workflow-dialog {
+        max-height: calc(100vh - env(safe-area-inset-bottom) - 2rem);
+    }
+
+    .YSH-slide-panel {
+        padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+}
+
+/* ============================================
+   CHROME-SPECIFIC FIXES
+   ============================================ */
+
+/* Scrollbar styling for Chrome */
+@supports selector(::-webkit-scrollbar) {
+    .sigma-workflow-body::-webkit-scrollbar,
+    .YSH-slide-body::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-track,
+    .YSH-slide-body::-webkit-scrollbar-track {
+        background: #f3f4f6;
+        border-radius: 4px;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-thumb,
+    .YSH-slide-body::-webkit-scrollbar-thumb {
+        background: #d1d5db;
+        border-radius: 4px;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-thumb:hover,
+    .YSH-slide-body::-webkit-scrollbar-thumb:hover {
+        background: #9ca3af;
+    }
+}

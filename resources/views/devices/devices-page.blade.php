@@ -1,4 +1,5 @@
 @extends('layouts.app', ['pageSlug' => 'devices'])
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @php
     // Load global configuration for device styling
@@ -642,6 +643,7 @@
                     <input type="number" id="deviceNameFontSize" value="14" min="10" max="21" onchange="updateConfig()" style="width: 60px; margin-left: 8px;">
                 </div>
             </div>
+            <button class="btn btn-primary" id="saveOrderBtn" style="display: none;" onclick="saveDeviceOrder()">Save Order</button>
         </div>
     </div>
 
@@ -654,10 +656,10 @@
 </div>
 
 <!-- Include waiting dialog components for device-using stages only -->
-<x-waiting-dialog title="Select Milling Machine" btnText="NEST" type="milling" :devices="$devices" stageId="2" :showBuildName="true"/>
-<x-waiting-dialog title="Select 3D Printer" btnText="SET" type="3dprinting" :devices="$devices" stageId="3" :showBuildName="true"/>
-<x-waiting-dialog title="Select Sintering Furnace" btnText="START" type="sintering" :devices="$devices" stageId="4" :showBuildName="false"/>
-<x-waiting-dialog title="Select Pressing Furnace" btnText="SET" type="pressing" :devices="$devices" stageId="5" :showBuildName="true"/>
+<x-waiting-dialog title="Select Milling Machine" btnText="NEST" type="milling" :devices="$devices" stageId="2" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select 3D Printer" btnText="SET" type="3dprinting" :devices="$devices" stageId="3" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select Sintering Furnace" btnText="START" type="sintering" :devices="$devices" stageId="4" :showBuildName="false" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select Pressing Furnace" btnText="SET" type="pressing" :devices="$devices" stageId="5" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
 
 <x-waiting-3dprinting-dialog title="3D Printing Setup" :devices="$devices" stageId="3"/>
 
@@ -1173,6 +1175,7 @@
 
         const container = document.querySelector('.devices-page-container');
         console.log('🎯 container:', container);
+        const saveOrderBtn = document.getElementById('saveOrderBtn');
 
         // Target the correct container based on grouping mode
         let devicesGrid;
@@ -1187,6 +1190,7 @@
         }
 
         if (sortableMode && devicesGrid) {
+            saveOrderBtn.style.display = 'block';
             console.log('Enabling sortable mode...');
             console.log('devicesGrid:', devicesGrid);
             console.log('Sortable available:', typeof Sortable !== 'undefined');
@@ -1218,18 +1222,6 @@
                     },
                     onEnd: function(evt) {
                         console.log('🟡 Drag ended, old index:', evt.oldIndex, 'new index:', evt.newIndex);
-
-                        // Get the new order of device IDs
-                        const deviceIds = Array.from(devicesGrid.children).map(card =>
-                            card.dataset.deviceId
-                        );
-
-                        console.log('New device order:', deviceIds);
-
-                        if (evt.oldIndex !== evt.newIndex) {
-                            // Send new order to server
-                            updateDeviceOrder(deviceIds);
-                        }
                     }
                 });
 
@@ -1240,6 +1232,7 @@
                 document.getElementById('sortableMode').checked = false;
             }
         } else {
+            saveOrderBtn.style.display = 'none';
             container.classList.remove('sortable-mode');
 
             // Re-enable device click handlers
@@ -1258,6 +1251,16 @@
         }
     }
 
+    function saveDeviceOrder() {
+        const devicesGrid = document.getElementById('devicesGrid');
+        const deviceIds = Array.from(devicesGrid.children).map(card =>
+            card.dataset.deviceId
+        );
+
+        console.log('New device order:', deviceIds);
+        updateDeviceOrder(deviceIds);
+    }
+
     function updateDeviceOrder(deviceIds) {
         fetch('/devices/reorder', {
             method: 'POST',
@@ -1274,6 +1277,8 @@
                 // Show success message
                 if (typeof showToast === 'function') {
                     showToast('Device order updated successfully', 'success');
+                } else {
+                    alert('Device order updated successfully');
                 }
             } else {
                 console.error('Failed to update device order:', data.error);

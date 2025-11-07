@@ -13,7 +13,7 @@
 <div class="sidebar-left" >
     <div class="sidebar-left-info">
 @php
-    $permissions = Cache::get('user'.Auth()->user()->id);
+    $permissions = safe_permissions();
 @endphp
 
         <div class="user-box">

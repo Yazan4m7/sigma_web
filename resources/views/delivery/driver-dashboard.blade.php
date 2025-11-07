@@ -172,7 +172,7 @@
                                                             Actions
                                                         </button>
                                                         @php
-                                                            $permissions = Cache::get('user'.Auth()->user()->id);
+                                                            $permissions = safe_permissions();
                                                         @endphp
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 

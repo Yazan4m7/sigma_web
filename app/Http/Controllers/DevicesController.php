@@ -35,7 +35,7 @@ class DevicesController extends Controller
         try {
             $device->name = $request->device_name;
             $device->type = $request->device_type;
-            $device->sorting_order =$request->device_order;
+            $device->sorting_order = 0;
             $device->save();
 
             if ($request->hasFile('device_image')) {
@@ -61,7 +61,8 @@ class DevicesController extends Controller
     {
 
         $device = device::findOrFail($id);
-        return view('devices.edit2',compact('device'));
+        $devices_of_same_type = device::where('type', $device->type)->orderBy('sorting_order')->get();
+        return view('devices.edit2',compact('device', 'devices_of_same_type'));
     }
     public function update(Request $request)
     {
@@ -74,7 +75,6 @@ class DevicesController extends Controller
             }
             $device->name = $request->device_name;
             $device->type = $request->device_type;
-            $device->sorting_order=$request->device_order;
             $device->save();
             if ($request->hasFile('device_image')) {
                 try {
@@ -174,6 +174,21 @@ class DevicesController extends Controller
         }
     }
 
+    public function updateDeviceOrder(Request $request)
+    {
+        $deviceIds = $request->input('device_ids');
 
+        foreach ($deviceIds as $index => $deviceId) {
+            device::where('id', $deviceId)->update(['sorting_order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function getDevicesByType($type)
+    {
+        $devices = device::where('type', $type)->orderBy('sorting_order')->get();
+        return response()->json($devices);
+    }
 
 }

@@ -509,8 +509,8 @@
                                 ['name' => 'Design', 'stage' => 1, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
                                 ['name' => 'Milling', 'stage' => 2, 'type' => '3-phase'], // 2.1=nest, 2.2=start, 2.3=complete
                                 ['name' => '3D Printing', 'stage' => 3, 'type' => '3-phase'], // 3.1=set, 3.2=start, 3.3=complete
-                                ['name' => 'Sintering', 'stage' => 4, 'type' => '3-phase'], // 4.1=set, 4.2=start, 4.3=complete
-                                ['name' => 'Pressing', 'stage' => 5, 'type' => '2-phase'], // 5.1=start, 5.2=complete
+                                ['name' => 'Sintering', 'stage' => 4, 'type' => '2-phase'], // 4.1=set, 4.2=start, 4.3=complete
+                                ['name' => 'Pressing', 'stage' => 5, 'type' => '3-phase'], // 5.1=start, 5.2=complete
                                 ['name' => 'Finishing', 'stage' => 6, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
                                 ['name' => 'QC', 'stage' => 7, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
                             ];
@@ -573,6 +573,25 @@
 
             <div class="Timeline">
 
+                @php
+                    function renderLog($log, $actionText, $actionClass) {
+                        if (!$log || !isset($log->user)) return;
+                        $formattedDate = \Carbon\Carbon::parse($log->created_at)->format('g:i A') . ' - ' . strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
+                        echo '<div class="history-log-entry">
+                                <span class="employee-initials">' . $log->user->name_initials . '</span>
+                                <div class="action-info">
+                                    <span class="action-label ' . $actionClass . '">' . $actionText . '</span>
+                                    <span class="action-date">' . $formattedDate . '</span>
+                                </div>
+                                <div class="tooltip-content">
+                                    <span class="tooltip-employee">' . $log->user->name . '</span>
+                                    <span class="tooltip-action ' . $actionClass . '">' . $actionText . '</span>
+                                    <span class="tooltip-date">' . $formattedDate . '</span>
+                                </div>
+                            </div>';
+                    }
+                @endphp
+
                 <svg height="5" width="13">
                     <line x1="0" y1="0" x2="13" y2="0"
                         style="stroke:#004165;stroke-width:5" />
@@ -588,32 +607,20 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', 1)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        $actionClass = $log->is_completion == 0 ? 'action-start' : 'action-complete';
-                                        $actionText = $log->is_completion == 0 ? 'START' : 'COMPLETE';
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $designLogs = $case->logs->where('stage', 1);
+                                $startLog = $designLogs->where('is_completion', 0)->sortByDesc('created_at')->first();
+                                $completeLog = $designLogs->where('is_completion', 1)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -621,7 +628,6 @@
                     <svg height="20" width="20">
                         <circle cx="10" cy="11" r="5" fill="#004165" />
                     </svg>
-                    {{-- <div class="time">9 : 27 AM</div> --}}
 
                 </div>
 
@@ -640,42 +646,24 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', '>', 2)->where('stage', '<', 3)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-
-                                        if ($log->stage == 2.1) {
-                                     $actionClass = 'action-nest';
-                                     $actionText = 'NEST';
-                                 } elseif ($log->stage == 2.2) {
-                                     $actionClass = 'action-start';
-                                     $actionText = 'START';
-                                 } else {
-                                     $actionClass = 'action-complete';
-                                     $actionText = 'COMPLETE';
-                                 }
-
-                                 $formattedDate =
-                                     \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                     ' - ' .
-                                     strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $millingLogs = $case->logs->where('stage', '>=', 2)->where('stage', '<', 3);
+                                $nestLog = $millingLogs->where('stage', 2.1)->sortByDesc('created_at')->first();
+                                $startLog = $millingLogs->where('stage', 2.2)->sortByDesc('created_at')->first();
+                                $completeLog = $millingLogs->where('stage', 2.3)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($nestLog)
+                                {!! renderLog($nestLog, 'NEST', 'action-nest') !!}
+                            @endif
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$nestLog && !$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -699,40 +687,24 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', '>', 3)->where('stage', '<', 4)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        if ($log->stage == 3.1) {
-                                            $actionClass = 'action-set';
-                                            $actionText = 'SET';
-                                        } elseif ($log->stage == 3.2) {
-                                            $actionClass = 'action-start';
-                                            $actionText = 'START';
-                                        } else {
-                                            $actionClass = 'action-complete';
-                                            $actionText = 'COMPLETE';
-                                        }
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $printingLogs = $case->logs->where('stage', '>=', 3)->where('stage', '<', 4);
+                                $setLog = $printingLogs->where('stage', 3.1)->sortByDesc('created_at')->first();
+                                $startLog = $printingLogs->where('stage', 3.2)->sortByDesc('created_at')->first();
+                                $completeLog = $printingLogs->where('stage', 3.3)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($setLog)
+                                {!! renderLog($setLog, 'SET', 'action-set') !!}
+                            @endif
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$setLog && !$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -758,37 +730,23 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', '>', 4)->where('stage', '<', 5)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                       if (!$log->is_completion|| $log->stage = 4.1) {
-                                            $actionClass = 'action-start';
-                                            $actionText = 'START';
-                                        } else {
-                                            $actionClass = 'action-complete';
-                                            $actionText = 'COMPLETE';
-                                        }
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $sinteringLogs = $case->logs->where('stage','>', 4)->where('stage', '<', 5);;
+//
+//
+                               $startLog = $sinteringLogs->where('stage','<=', 4.1)->sortByDesc('created_at')->first();
+                                $completeLog = $sinteringLogs->where('stage','>=', 4.2)->sortByDesc('created_at')->first();
+//
+                            @endphp
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -812,40 +770,30 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', '>', 5)->where('stage', '<', 6)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        if ($log->stage == 5.1) {
-                                            $actionClass = 'action-set';
-                                            $actionText = 'SET';
-                                        } elseif ($log->stage == 5.2) {
-                                            $actionClass = 'action-start';
-                                            $actionText = 'START';
-                                        } else {
-                                            $actionClass = 'action-complete';
-                                            $actionText = 'COMPLETE';
-                                        }
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
+                            <div class="eventTitle"
+                                 style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
+                                @php
+                                    $pressingLogs = $case->logs->where('stage', '>=', 5)->where('stage', '<', 6);
+
+                                    // Match the 3-phase pattern of other stages (e.g., 3.1, 3.2, 3.3)
+                                    $setLog = $pressingLogs->where('stage', 5.1)->sortByDesc('created_at')->first();
+                                    $startLog = $pressingLogs->where('stage', 5.2)->sortByDesc('created_at')->first();
+                                    $completeLog = $pressingLogs->where('stage', 5.3)->sortByDesc('created_at')->first();
+                                @endphp
+
+                                @if ($setLog)
+                                    {!! renderLog($setLog, 'SET', 'action-set') !!}
                                 @endif
-                            @empty
-                                -
-                            @endforelse
+                                @if ($startLog)
+                                    {!! renderLog($startLog, 'START', 'action-start') !!}
+                                @endif
+                                @if ($completeLog)
+                                    {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                                @endif
+                                @if (!$setLog && !$startLog && !$completeLog)
+                                    -
+                                @endif
+                            </div>
                         </div>
                     </div>
 
@@ -871,32 +819,20 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', 6)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        $actionClass = $log->is_completion == 0 ? 'action-start' : 'action-complete';
-                                        $actionText = $log->is_completion == 0 ? 'START' : 'COMPLETE';
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $finishingLogs = $case->logs->where('stage', 6);
+                                $startLog = $finishingLogs->where('is_completion', 0)->sortByDesc('created_at')->first();
+                                $completeLog = $finishingLogs->where('is_completion', 1)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -921,32 +857,20 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @forelse($case->logs->where('stage', 7)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        $actionClass = $log->is_completion == 0 ? 'action-start' : 'action-complete';
-                                        $actionText = $log->is_completion == 0 ? 'START' : 'COMPLETE';
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $qcLogs = $case->logs->where('stage', 7);
+                                $startLog = $qcLogs->where('is_completion', 0)->sortByDesc('created_at')->first();
+                                $completeLog = $qcLogs->where('is_completion', 1)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($startLog)
+                                {!! renderLog($startLog, 'START', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$startLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 
@@ -970,44 +894,24 @@
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
-                            @php $assignOpBuilt=0; @endphp
-                            @forelse($case->logs->where('stage','>', 8)->sortBy('created_at') as $log)
-                                @if (isset($log->user))
-                                    @php
-                                        if($log->stage == 8.1 && $assignOpBuilt) continue;
-
-                                        if ($log->stage == 8.1) {
-                                            $actionClass = 'action-take';
-                                            $actionText = 'ASSIGN';
-                                            $assignOpBuilt=1;
-                                        } elseif ($log->stage == 8.2) {
-                                            $actionClass = 'action-start';
-                                            $actionText = 'TAKE';
-                                        } else {
-                                            $actionClass = 'action-complete';
-                                            $actionText = 'COMPLETE';
-                                        }
-                                        $formattedDate =
-                                            \Carbon\Carbon::parse($log->created_at)->format('g:i A') .
-                                            ' - ' .
-                                            strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
-                                    @endphp
-                                    <div class="history-log-entry">
-                                        <span class="employee-initials">{{ $log->user->name_initials }}</span>
-                                        <div class="action-info">
-                                            <span class="action-label {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="action-date">{{ $formattedDate }}</span>
-                                        </div>
-                                        <div class="tooltip-content">
-                                            <span class="tooltip-employee">{{ $log->user->name }}</span>
-                                            <span class="tooltip-action {{ $actionClass }}">{{ $actionText }}</span>
-                                            <span class="tooltip-date">{{ $formattedDate }}</span>
-                                        </div>
-                                    </div>
-                                @endif
-                            @empty
+                            @php
+                                $deliveryLogs = $case->logs->where('stage', '>=', 8);
+                                $assignLog = $deliveryLogs->where('stage', 8.1)->sortByDesc('created_at')->first();
+                                $takeLog = $deliveryLogs->where('stage', 8.2)->sortByDesc('created_at')->first();
+                                $completeLog = $deliveryLogs->where('stage', 8.3)->sortByDesc('created_at')->first();
+                            @endphp
+                            @if ($assignLog)
+                                {!! renderLog($assignLog, 'ASSIGN', 'action-take') !!}
+                            @endif
+                            @if ($takeLog)
+                                {!! renderLog($takeLog, 'TAKE', 'action-start') !!}
+                            @endif
+                            @if ($completeLog)
+                                {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
+                            @endif
+                            @if (!$assignLog && !$takeLog && !$completeLog)
                                 -
-                            @endforelse
+                            @endif
                         </div>
                     </div>
 

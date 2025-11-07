@@ -27,7 +27,7 @@
         }
     </style>
     @php
-        $permissions = Cache::get('user'.Auth()->user()->id);
+        $permissions = safe_permissions();
 
     @endphp
     <form class="kt-form" method="GET" action="{{route('abutments-delivery-index')}}">

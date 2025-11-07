@@ -135,7 +135,8 @@
     <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
     <link href="{{ asset('assets') }}/css/sweetalert2.min.css" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/custom-select-colors.css') }}" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 
 
     <!-- Theme CSS -->
@@ -144,6 +145,7 @@
     <link href="{{ asset('assets') }}/css/nucleo-icons.css" rel="stylesheet"/>
 
     <!-- Custom CSS -->
+    <link href="{{ asset('css/responsive-images.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/callouts.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet"/>
@@ -229,4 +231,5 @@
 
 </body>
 @include('layouts.footer')
+<script src="{{ asset('js/responsive-images.js') }}"></script>
 </html>

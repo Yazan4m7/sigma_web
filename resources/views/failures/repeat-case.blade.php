@@ -49,7 +49,7 @@
         }
     </style>
     @php
-        $permissions = Cache::get('user'.Auth()->user()->id);
+        $permissions = safe_permissions();
     @endphp
 
 

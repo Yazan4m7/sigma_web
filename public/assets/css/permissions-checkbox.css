@@ -1,0 +1,220 @@
+/**
+ * PERMISSIONS CHECKBOX STYLING
+ * Custom checkbox list with red/green rounded icons
+ */
+
+/* Container with fixed height and scroll */
+.permissions-container {
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border: 1px solid #e3e8ee;
+    border-radius: 8px;
+    padding: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* Individual permission item */
+.permission-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.permission-item:hover {
+    background-color: #f8f9fa;
+}
+
+.permission-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Hide the default checkbox */
+.permission-checkbox {
+    display: none;
+}
+
+/* Label that acts as the clickable area */
+.permission-label {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+/* The custom rounded icon */
+.permission-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #dc3545;
+    background-color: #dc3545;
+    margin-right: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* X mark for unchecked state (red) */
+.permission-icon::before {
+    content: '✕';
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+/* When checkbox is checked - green with checkmark */
+.permission-checkbox:checked + .permission-label .permission-icon {
+    border-color: #28a745;
+    background-color: #28a745;
+}
+
+.permission-checkbox:checked + .permission-label .permission-icon::before {
+    content: '✓';
+    font-size: 16px;
+}
+
+/* Permission name text */
+.permission-name {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 500;
+    flex: 1;
+}
+
+/* Disabled state */
+.permission-checkbox:disabled + .permission-label {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.permission-checkbox:disabled + .permission-label .permission-icon {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Scrollbar styling */
+.permissions-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.permissions-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.permissions-container::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 4px;
+}
+
+.permissions-container::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+}
+
+/* Hover effect on icon */
+.permission-label:hover .permission-icon {
+    transform: scale(1.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Active/pressed state */
+.permission-label:active .permission-icon {
+    transform: scale(0.95);
+}
+
+/* Focus state for accessibility */
+.permission-checkbox:focus + .permission-label .permission-icon {
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+}
+
+.permission-checkbox:checked:focus + .permission-label .permission-icon {
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .permissions-container {
+        max-height: 270px;
+        padding: 8px;
+    }
+
+    .permission-item {
+        padding: 5px 10px;
+        margin-bottom: 3px;
+    }
+
+    .permission-icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 10px;
+    }
+
+    .permission-icon::before {
+        font-size: 12px;
+    }
+
+    .permission-checkbox:checked + .permission-label .permission-icon::before {
+        font-size: 14px;
+    }
+
+    .permission-name {
+        font-size: 13px;
+    }
+}
+
+/* Animation for check/uncheck */
+@keyframes checkBounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.permission-checkbox:checked + .permission-label .permission-icon {
+    animation: checkBounce 0.3s ease;
+}
+
+/* Empty state message (if needed) */
+.permissions-container:empty::after {
+    content: 'No permissions available';
+    display: block;
+    text-align: center;
+    padding: 20px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* Count indicator (optional - can be added with JS) */
+.permissions-count {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    background: #e3e8ee;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #5a6c7d;
+    font-weight: 600;
+}
+
+/* Selected count styling */
+.permissions-selected-count {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    background: #28a745;
+    color: white;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}

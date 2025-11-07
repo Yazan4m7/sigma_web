@@ -154,9 +154,9 @@
 .machine-img{
     max-width: 1000px;
     object-fit: contain;
-    width:192px;
+    width: 100%;
     height:180px;
-    /*max-height: 220px;*/
+    /* max-height: 220px; */
 }
 /* Slide animation */
 @keyframes slideIn {

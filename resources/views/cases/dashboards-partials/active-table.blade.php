@@ -390,7 +390,7 @@
 
                                 <!-- Row 2: View (25%) | Complete (50%) | Edit (25%) -->
                                 <div class="col-3 padding5px" style="display: flex;">
-                                    <a href="{{route('view-case', ['id' => $case->id, 'stage' =>$stage["numericStage"]])}}" style="width:100%; display: flex;">
+                                    <a href="{{route('view-case', ['id' => $case->id, 'stage' => -2])}}" style="width:100%; display: flex;">
                                         <button type="button" class="btn btn-info" style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
                                     </a>
                                 </div>

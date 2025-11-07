@@ -365,7 +365,7 @@
 </style>
 
 @php
-$permissions = Cache::get('user'.Auth()->user()->id);
+$permissions = safe_permissions();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
     <div class="container-fluid noPadOnMobile">

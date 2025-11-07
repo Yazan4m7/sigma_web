@@ -17,7 +17,7 @@ class RedoCaseMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth()->check()) {
-            $permissions = Cache::get('user'.Auth()->user()->id);
+            $permissions = safe_permissions();
             if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 119))) {
                 return $next($request);
             }else{

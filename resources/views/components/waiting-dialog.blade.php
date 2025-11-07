@@ -33,17 +33,19 @@
 
         <!-- Machine selection grid -->
         <div class="sigma-workflow-body">
-            <div class="sigma-machines-grid">
+            <div class="row g-2 justify-content-center sigma-machines-row">
                 @foreach($devices->where('type', $stageId) as $device)
-                    <div class="sigma-machine-card {{ $type }}"
-                         onclick="selectMachine(this, '{{ $type }}', {{ $device['id'] }})">
-                        <div class="sigma-machine-image-container">
-                            <img src="{{ asset($device['img']) }}"
-                                 alt="{{ $device['name'] }}"
-                                 class="sigma-machine-image"
-                                 onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:12px;text-align:center;padding:10px;\'>Image Not Found</div>';">
+                    <div class="col-4 sigma-machine-col">
+                        <div class="sigma-machine-card {{ $type }}"
+                             onclick="selectMachine(this, '{{ $type }}', {{ $device['id'] }})">
+                            <div class="sigma-machine-image-container">
+                                <img src="{{ asset($device['img']) }}"
+                                     alt="{{ $device['name'] }}"
+                                     class="sigma-machine-image"
+                                     onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML = '<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:12px;text-align:center;padding:10px;\'>Image Not Found</div>';">
+                            </div>
+                            <div class="sigma-machine-name">{{ $device['name'] }}</div>
                         </div>
-                        <div class="sigma-machine-name">{{ $device['name'] }}</div>
                     </div>
                 @endforeach
             </div>
@@ -53,29 +55,24 @@
 
             <!-- Build name and Type selection inputs (NOT for sintering - only device images) -->
             @if($type != 'sintering')
-                <div class="row sigma-inputs-container">
-            <div class="sigma-form-group col-md-6 col-6" style="display: flex; gap: 10px; align-items: end;">
-
-                    <input
-                           id="sigma-build-name-{{ $type }}"
-                           class="sigma-form-control"
-                           placeholder="Enter {{$buildFieldName[$type] ?? 'Build'}} name"
-                           oninput="validateAndSetBuildName('{{ $type }}')">
-
-
-            </div>
-                <!-- Material Type selection for milling, pressing, 3dprinting -->
-                @if(in_array($type, ['milling', 'pressing', '3dprinting']))
-
-                    <div class="sigma-form-group col-md-6 col-6" style="flex: 1;">
-
-                        <select id="sigma-material-type-{{ $type }}"
-                                class="sigma-form-control"
-                                onchange="validateMaterialTypeSelection('{{ $type }}')">
-                            <option value="">Loading types...</option>
-                        </select>
+                <div class="row g-2 sigma-inputs-container">
+                    <div class="sigma-form-group col-6 sigma-input-col" style="display: flex; gap: 10px; align-items: end;">
+                        <input
+                               id="sigma-build-name-{{ $type }}"
+                               class="sigma-form-control"
+                               placeholder="Enter {{$buildFieldName[$type] ?? 'Build'}} name"
+                               oninput="validateAndSetBuildName('{{ $type }}')">
                     </div>
-                @endif
+                    <!-- Material Type selection for milling, pressing, 3dprinting -->
+                    @if(in_array($type, ['milling', 'pressing', '3dprinting']))
+                        <div class="sigma-form-group col-6 sigma-input-col" style="flex: 1;">
+                            <select id="sigma-material-type-{{ $type }}"
+                                    class="sigma-form-control"
+                                    onchange="validateMaterialTypeSelection('{{ $type }}')">
+                                <option value="">Loading types...</option>
+                            </select>
+                        </div>
+                    @endif
                 </div>
             @endif
 

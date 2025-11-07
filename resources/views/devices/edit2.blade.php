@@ -1,13 +1,29 @@
 @extends('layouts.app', ['pageSlug' => 'Edit ' . $device->name]) <!-- Assuming $device is passed to the view -->
+@push('css')
+<style>
+    .image-picker {
+        max-width: 250%;
+        max-height: 250%;
+        box-shadow: 0 0 10px 0;
+        position: absolute;
+    }
+    .device-card {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .device-card img {
+        width: 50px;
+        height: 50px;
+        margin-right: 1rem;
+    }
+</style>
+@endpush
 @section('content')
-    <style>
-        .image-picker {
-            max-width: 250%;
-            max-height: 250%;
-            box-shadow: 0 0 10px 0;
-            position: absolute;
-        }
-    </style>
     <form method="POST" action="{{ route('edit-device', $device->id) }}" class="card" enctype="multipart/form-data" id="device-form">
         @csrf
 {{--        @method('PUT') <!-- Assuming  -->--}}
@@ -39,13 +55,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-2 col-l-2 col-xl-2">
-                <div class="col-md-12 col-xs-12"><label>Device Order:</label></div>
-                {{-- <small>Order out of devices of same type</small> --}}
-                <div class="col-md-12 col-xs-12">
-                    <input class="form-control btn dropdown-toggle btn-light" type="number" name="device_order" value="{{ $device->sorting_order }}" required />
-                </div>
-            </div>
+
             <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
                 <div class="col-md-12 col-xs-12"><label>Device Image:</label></div>
                 <label for="image-picker">
@@ -69,12 +79,58 @@
             </div>
         </div>
     </form>
+
+    <div class="card">
+        <div class="kt-portlet__head">
+            <div class="kt-portlet__head-label">
+                <h6 class="kt-portlet__head-title">
+                    <i class="fa fa-sort" style="width:3%"></i> Sort Devices
+                </h6>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="devices-list" class="list-group">
+                @foreach($devices_of_same_type as $d)
+                    <div class="device-card list-group-item" data-id="{{ $d->id }}">
+                        <img src="{{ asset($d->img) }}" alt="{{ $d->name }}">
+                        <span>{{ $d->name }}</span>
+                    </div>
+                @endforeach
+            </div>
+            <button class="btn btn-primary mt-3" id="save-order">Save Order</button>
+        </div>
+    </div>
 @endsection
 
 @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('form').parsley();
+
+            const el = document.getElementById('devices-list');
+            const sortable = Sortable.create(el, {
+                animation: 150,
+            });
+
+            $('#save-order').on('click', function(){
+                const deviceIds = sortable.toArray();
+                $.ajax({
+                    url: '{{ route("devices-reorder") }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        device_ids: deviceIds
+                    },
+                    success: function(response){
+                        if(response.success){
+                            alert('Order saved successfully');
+                        } else {
+                            alert('Failed to save order');
+                        }
+                    }
+                });
+            });
         });
 
         $("#image-picker").change(function (event) {

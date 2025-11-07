@@ -31,6 +31,13 @@
     <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/v3styles.css" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet">
+    <!-- Responsive CSS - Mobile-first approach for full device compatibility -->
+    <link href="{{ asset('assets') }}/css/responsive.css" rel="stylesheet">
+    <link href="{{ asset('assets') }}/css/waiting-dialog-responsive.css" rel="stylesheet">
+
+
+
+
 
    <style>
        @media  (max-width: 480px){
@@ -41,13 +48,20 @@
            margin: 0 15px;
            /* Minimum width for proper machine display */
        }}
-       @media  (min-width: 480px){
+       @media  (max-width: 700px){
        .sigma-workflow-dialog {
            max-width: none !important;
            width: auto !important;
-           min-width: 700px !important;
+
            /* Minimum width for proper machine display */
        }}
+       @media  (min-width: 700px){
+           .sigma-workflow-dialog {
+               max-width: none !important;
+               width: 45%
+
+               /* Minimum width for proper machine display */
+           }}
 
     /* Use Animate.css for Case Completion modal */
     .modal.fade .modal-dialog {
@@ -1379,7 +1393,7 @@
                                                             </div>
                                                     </div>
 
-                                                </form>
+                                                    </div></form>
                                             </div>
                                             {{--                                            /////////// v2 DIALOG --}}
                                         @endforeach

@@ -78,7 +78,7 @@
                     </div>
 
                     @php
-                        $permissions = Cache::get('user'.Auth()->user()->id);
+                        $permissions = safe_permissions();
                         $canEditCase = false;
                         if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))))
                         $canEditCase = true;

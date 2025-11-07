@@ -57,7 +57,7 @@
 @section('content')
 @php
 $color= "#212529";
-$permissions = Cache::get('user'.Auth()->user()->id);
+$permissions = safe_permissions();
 @endphp
 <div class="row ">
     <div class="col-lg-12 col-sm-12 stuffContainer">

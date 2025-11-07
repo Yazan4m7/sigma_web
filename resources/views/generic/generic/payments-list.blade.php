@@ -85,7 +85,7 @@
 
                                         <tbody>
                                         @php
-                                            $permissions = Cache::get('user'.Auth()->user()->id);
+                                            $permissions = safe_permissions();
                                         @endphp
                                         @foreach($payments as $payment)
                                             <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$payment->id}}">

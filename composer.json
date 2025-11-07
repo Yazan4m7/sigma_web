@@ -13,6 +13,7 @@
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "inspector-apm/inspector-laravel": "^4.9",
+        "intervention/image": "^3.11",
         "juststeveking/laravel-feature-flags": "^0.3.0",
         "laravel/framework": "^8.54",
         "laravel/octane": "^1.5",
@@ -41,7 +42,8 @@
         },
         "files": [
             "app/Helpers/helpers.php",
-            "app/Helpers/ConfigHelper.php"
+            "app/Helpers/ConfigHelper.php",
+            "app/Helpers/ImageHelper.php"
         ]
     },
     "autoload-dev": {

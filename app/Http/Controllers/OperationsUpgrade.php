@@ -143,12 +143,12 @@ class OperationsUpgrade extends Controller
         'PRINTING_START' => 3.2,
         'PRINTING_COMPLETE' => 3.3,
         // Sintering
-        'SINTERING_SET' => 4.1,
-        'SINTERING_START' => 4.2,
-        'SINTERING_COMPLETE' => 4.3,
+        'SINTERING_START' => 4.1,
+        'SINTERING_COMPLETE' => 4.2,
         // Pressing
-        'PRESSING_START' => 5.1,
-        'PRESSING_COMPLETE' => 5.2,
+        'PRESSING_SET' => 5.1,
+        'PRESSING_START' => 5.2,
+        'PRESSING_COMPLETE' => 5.3,
         // Delivery
         'DELIVERY_ASSIGN' => 8.1,
         'DELIVERY_ACCEPT' => 8.2,
@@ -858,10 +858,10 @@ class OperationsUpgrade extends Controller
                     $logStage = $this->stageActions['PRINTING_SET'];
                 }
                 if ($stage == 4) {
-                    $logStage = $this->stageActions['SINTERING_SET'];
+                    $logStage = $this->stageActions['SINTERING_START'];
                 }
                 if ($stage == 5) {
-                    $logStage = $this->stageActions['PRESSING_START'];
+                    $logStage = $this->stageActions['PRESSING_SET'];
                 }
                 if ($stage == 8) {
                     $logStage = $this->stageActions['DELIVERY_ASSIGN'];

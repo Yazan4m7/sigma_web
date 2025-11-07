@@ -352,7 +352,7 @@ class ReportsController extends Controller
     public function homeScreen(){
 
 
-        $permissions = Cache::get('user'.Auth()->user()->id);
+        $permissions = safe_permissions();
 
          if(Auth()->user()->is_admin == 1 ||($permissions && $permissions->contains('permission_id', 123)))
             return $this->adminHomeScreen();
@@ -590,7 +590,9 @@ class ReportsController extends Controller
 
         // Apply basic filters
         if ($request->filled('doctor') && !in_array('all', (array)$request->doctor)) {
-            $query->whereIn('doctor_id', (array)$request->doctor);
+            $query->whereHas('client', function($q) use ($request) {
+                $q->whereIn('rep_doctor', (array)$request->doctor);
+            });
         }
 
         if ($request->filled('material') && !in_array('all', (array)$request->material)) {
@@ -601,7 +603,7 @@ class ReportsController extends Controller
 
         if ($request->filled('job_type') && !in_array('all', (array)$request->job_type)) {
             $query->whereHas('jobs', function($q) use ($request) {
-                $q->whereIn('type', (array)$request->job_type);
+                $q->whereIn('job_type_id', (array)$request->job_type);
             });
         }
 
@@ -655,16 +657,28 @@ class ReportsController extends Controller
             // 'all' - no filter applied
         }
 
-        // Workflow stage filter - specific stages only (1-8)
+        // Workflow stage filter - specific stages only (1-8) or completed
         if ($request->filled('status') && !in_array('all', (array)$request->status)) {
-            $stages = array_filter((array)$request->status, function($status) {
-                return is_numeric($status);
-            });
-            if (!empty($stages)) {
-                // Cases that have at least one job in any of the selected stages
-                $query->whereHas('jobs', function($q) use ($stages) {
-                    $q->whereIn('stage', $stages);
+            $statuses = (array)$request->status;
+
+            // Check if 'completed' is in the status array
+            if (in_array('completed', $statuses)) {
+                // Completed cases: all jobs at stage -1 AND actual_delivery_date not null
+                $query->whereNotNull('actual_delivery_date')
+                      ->whereDoesntHave('jobs', function($q) {
+                          $q->where('stage', '!=', -1);
+                      });
+            } else {
+                // Numeric stages only (1-8)
+                $stages = array_filter($statuses, function($status) {
+                    return is_numeric($status);
                 });
+                if (!empty($stages)) {
+                    // Cases that have at least one job in any of the selected stages
+                    $query->whereHas('jobs', function($q) use ($stages) {
+                        $q->whereIn('stage', $stages);
+                    });
+                }
             }
         }
 
@@ -682,46 +696,69 @@ class ReportsController extends Controller
 
         // Number of units range filter
         if ($request->filled('units_from') || $request->filled('units_to')) {
-            $query->whereHas('jobs', function($q) use ($request) {
-                if ($request->filled('units_from')) {
-                    $q->havingRaw('COUNT(jobs.id) >= ?', [$request->units_from]);
-                }
-                if ($request->filled('units_to')) {
-                    $q->havingRaw('COUNT(jobs.id) <= ?', [$request->units_to]);
-                }
+            $unitsFrom = $request->filled('units_from') ? $request->units_from : 0;
+            $unitsTo = $request->filled('units_to') ? $request->units_to : 999999;
+
+            $query->where(function($q) use ($unitsFrom, $unitsTo) {
+                $q->whereHas('jobs', function($jobQuery) use ($unitsFrom, $unitsTo) {
+                    $jobQuery->selectRaw('case_id')
+                             ->groupBy('case_id')
+                             ->havingRaw('SUM(units) BETWEEN ? AND ?', [$unitsFrom, $unitsTo]);
+                });
             });
         }
 
-        // Employee filters (based on actual schema)
-        if ($request->filled('employee_filters')) {
-            foreach ($request->employee_filters as $filter) {
-                if (isset($filter['stage']) && isset($filter['employee'])) {
+        // Employee filters (filter by case logs based on stage)
+        if ($request->filled('employees')) {
+            foreach ($request->employees as $filter) {
+                if (isset($filter['stage']) && isset($filter['employee_id'])) {
                     $stage = $filter['stage'];
-                    $employeeId = $filter['employee'];
+                    $employeeId = $filter['employee_id'];
 
-                    // Apply employee filter based on available fields
-                    switch ($stage) {
-                        case 'assignee':
-                            $query->whereHas('jobs', function($q) use ($employeeId) {
-                                $q->where('assignee', $employeeId);
-                            });
-                            break;
-                        case 'delivery':
-                            $query->whereHas('jobs', function($q) use ($employeeId) {
-                                $q->where('delivery_accepted', $employeeId);
-                            });
-                            break;
+                    // Map stage names to stage numbers
+                    $stageMap = [
+                        'design' => 1,
+                        'milling' => 2,
+                        'printing' => 3,
+                        'sintering' => 4,
+                        'pressing' => 5,
+                        'finishing' => 6,
+                        'qc' => 7,
+                        'delivery' => 8
+                    ];
+
+                    if (isset($stageMap[$stage])) {
+                        $stageNumber = $stageMap[$stage];
+                        // Filter by case logs where employee worked on this stage
+                        $query->whereHas('caseLogs', function($q) use ($employeeId, $stageNumber) {
+                            $q->where('user_id', $employeeId)
+                              ->where('action_stage', $stageNumber);
+                        });
                     }
                 }
             }
         }
 
         // Device filters (devices are linked through builds, not directly on jobs)
-        if ($request->filled('device_filters')) {
-            foreach ($request->device_filters as $filter) {
-                if (isset($filter['type']) && isset($filter['device'])) {
-                    $deviceType = $filter['type'];
-                    $deviceId = $filter['device'];
+        if ($request->filled('devices')) {
+            foreach ($request->devices as $filter) {
+                if (isset($filter['stage']) && isset($filter['device_id'])) {
+                    $stage = $filter['stage'];
+                    $deviceId = $filter['device_id'];
+
+                    // Stage mapping to device type
+                    $stageMap = [
+                        'design' => 'design',
+                        'milling' => 'mill',
+                        'printing' => 'print',
+                        'sintering' => 'sinter',
+                        'pressing' => 'press',
+                        'finishing' => 'finishing',
+                        'qc' => 'qc',
+                        'delivery' => 'delivery'
+                    ];
+
+                    $deviceType = isset($stageMap[$stage]) ? $stageMap[$stage] : $stage;
 
                     // Apply device filter based on device type
                     // Devices are associated via builds: milling_build, printing_build, pressing_build

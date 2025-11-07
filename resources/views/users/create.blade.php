@@ -1,4 +1,9 @@
 @extends('layouts.app' ,[ 'pageSlug' =>'New User'])
+
+@push('css')
+    <link href="{{ asset('assets/css/permissions-checkbox.css') }}" rel="stylesheet">
+@endpush
+
 @section('content')
 
     <div class="row card">
@@ -17,81 +22,128 @@
                 <form class="kt-form" method="POST" action="{{route('new-user')}}" enctype="multipart/form-data">
                     @csrf
                     <div class="kt-portlet__body">
-                        <div class="form-group">
-                            <label>User first name</label>
-                            <input type="text" class="form-control" name="first_name" placeholder="Enter the first name" value="{{old('first_name')}}">
-                            @if ($errors->has('first_name'))
-                                <span class="help-block" style="color: red">{{ $errors->first('first_name') }}</span>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label>User last name</label>
-                            <input type="text" class="form-control" name="last_name" placeholder="Enter the first name" value="{{old('last_name')}}">
-                            @if ($errors->has('last_name'))
-                                <span class="help-block" style="color: red">{{ $errors->first('last_name') }}</span>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label>Name initials</label>
-                            <input type="text" class="form-control" name="name_initials" placeholder="E.g. : Y. Moh." value="{{old('name_initials')}}">
-
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Enter the username" value="{{old('username')}}">
-                            @if ($errors->has('username'))
-                                <span class="help-block" style="color: red">{{ $errors->first('username') }}</span>
-                            @endif
-                        </div>
-                        <div class="form-group row">
-                            <label for="example-tel-input" class="col-2 col-form-label">User Phone Number</label>
-                            <div class="col-10">
-                                <input class="form-control" type="tel" name="phone" id="example-tel-input" value="{{old('phone')}}">
+                        <!-- Basic Information -->
+                        <h5 class="text-muted mb-3">Basic Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <input type="text" class="form-control" name="first_name" placeholder="Enter first name" value="{{old('first_name')}}">
+                                    @if ($errors->has('first_name'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('first_name') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <input type="text" class="form-control" name="last_name" placeholder="Enter last name" value="{{old('last_name')}}">
+                                    @if ($errors->has('last_name'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('last_name') }}</span>
+                                    @endif
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>User Email address</label>
-                            <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email" value="{{old('email')}}">
-                            @if ($errors->has('email'))
-                                <span class="help-block" style="color: red">{{ $errors->first('email') }}</span>
-                            @endif
+                            <label>Name Initials</label>
+                            <input type="text" class="form-control" name="name_initials" placeholder="E.g. : Y. Moh." value="{{old('name_initials')}}">
                         </div>
-                        <div class="form-group">
-                            <label for="is_admin">Admin</label>
-                            <input type="checkbox" class="form-control" id="is_admin" name="is_admin">
-                            @if ($errors->has('is_admin'))
-                                <span class="help-block" style="color: red">{{ $errors->first('is_admin') }}</span>
-                            @endif
+
+                        <!-- Contact Information -->
+                        <h5 class="text-muted mb-3 mt-4">Contact Information</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input class="form-control" type="tel" name="phone" placeholder="Enter phone number" value="{{old('phone')}}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email" value="{{old('email')}}">
+                                    @if ($errors->has('email'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('email') }}</span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" name="password" placeholder="Password">
-                            @if ($errors->has('password'))
-                                <span class="help-block" style="color: red">{{ $errors->first('password') }}</span>
-                            @endif
+
+                        <!-- Account Settings -->
+                        <h5 class="text-muted mb-3 mt-4">Account Settings</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input type="text" class="form-control" name="username" placeholder="Enter username" value="{{old('username')}}">
+                                    @if ($errors->has('username'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('username') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="is_admin">Admin Privileges</label>
+                                    <div>
+                                        <input type="checkbox" class="form-control" id="is_admin" name="is_admin" style="width: 20px; display: inline-block;">
+                                        <span class="ml-2 text-muted">Grant administrator access</span>
+                                    </div>
+                                    @if ($errors->has('is_admin'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('is_admin') }}</span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Confirm Password</label>
-                            <input type="password" class="form-control" name="password_confirmation" placeholder="Password">
-                            @if ($errors->has('password_confirmation'))
-                                <span class="help-block" style="color: red">{{ $errors->first('password_confirmation') }}</span>
-                            @endif
+
+                        <!-- Security -->
+                        <h5 class="text-muted mb-3 mt-4">Security</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="password" class="form-control" name="password" placeholder="Enter password">
+                                    @if ($errors->has('password'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('password') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Confirm Password</label>
+                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password">
+                                    @if ($errors->has('password_confirmation'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('password_confirmation') }}</span>
+                                    @endif
+                                </div>
+                            </div>
                         </div>
+
+                        <!-- Permissions -->
+                        <h5 class="text-muted mb-3 mt-4">Permissions</h5>
                         <div class="form-group" id="disable">
-                            <label for="Permission">Permission</label>
-                            <select class="form-control selectpicker" id="Permission" multiple name="permission[]">
+                            <label for="Permission">User Permissions</label>
+                            <div class="permissions-container">
                                 @foreach($permissions as $perm)
-                                    <option value="{{$perm->id}}">{{$perm->name}}</option>
+                                    <div class="permission-item">
+                                        <input type="checkbox"
+                                               class="permission-checkbox"
+                                               id="perm-{{$perm->id}}"
+                                               name="permission[]"
+                                               value="{{$perm->id}}">
+                                        <label for="perm-{{$perm->id}}" class="permission-label">
+                                            <span class="permission-icon"></span>
+                                            <span class="permission-name">{{$perm->name}}</span>
+                                        </label>
+                                    </div>
                                 @endforeach
-                            </select>
+                            </div>
                         </div>
 
+                        <!-- Profile Image -->
+                        <h5 class="text-muted mb-3 mt-4">Profile Image</h5>
                         <div class="form-group">
-                            <label>Profile Image</label>
-
+                            <x-user-image-picker></x-user-image-picker>
                         </div>
-
-                        <x-user-image-picker></x-user-image-picker>
                     </div>
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
@@ -115,8 +167,8 @@
                 return;
             }
 
-            // Check if permission ID 131 is selected
-            const hasDeliveryPermission = $('#Permission option[value="131"]:selected').length > 0;
+            // Check if permission ID 131 is selected (using checkbox now)
+            const hasDeliveryPermission = $('#perm-131').is(':checked');
 
             if (hasDeliveryPermission) {
                 $('.delivery-driver-section').show();
@@ -147,19 +199,19 @@
             checkDeliveryDriverPermission();
 
             // Check delivery driver permission when permissions change
-            $('#Permission').on('change', function() {
+            $('.permission-checkbox').on('change', function() {
                 checkDeliveryDriverPermission();
             });
         });
 
         $('#is_admin').on('change', function() {
             if(this.checked){
-                $('#Permission').attr('disabled', true);
+                $('.permission-checkbox').prop('disabled', true);
                 $('#disable').css('visibility', 'hidden');
                 // Hide delivery driver section if admin
                 $('.delivery-driver-section').hide();
             } else {
-                $('#Permission').attr('disabled', false);
+                $('.permission-checkbox').prop('disabled', false);
                 $('#disable').css('visibility', 'visible');
                 // Recheck permissions
                 checkDeliveryDriverPermission();

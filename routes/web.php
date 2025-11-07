@@ -1,4 +1,5 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -90,7 +91,7 @@ Route::get('/reports/material', [App\Http\Controllers\ReportsController::class, 
 
 // Cases, Operations, Notes, etc. all open
 Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
-Route::get('/view/{id}/{stage?}', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
+Route::get('/view/{id}', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
 Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
 Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])->name('assign-to-me');
 Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
@@ -181,7 +182,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
     Route::middleware('ViewDevicesMonitor')->group(function (): void {
         Route::get('/devices', [App\Http\Controllers\CaseController::class, 'devicesPage'])->name('devices-page');
-        Route::post('/devices/reorder', [App\Http\Controllers\CaseController::class, 'updateDeviceOrder'])->name('devices-reorder');
+Route::post('/devices/reorder', [App\Http\Controllers\DevicesController::class, 'updateDeviceOrder'])->name('devices-reorder');
+Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::class, 'getDevicesByType'])->name('devices-by-type');
     });
 
     Route::get('search', [App\Http\Controllers\CaseController::class, 'globalSearch'])->name('global-search');
@@ -503,7 +505,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
 
     // CASES ROUTES
-    Route::get('/view/{id}/{stage?}', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
+    Route::get('/view/{id}/-2', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
     Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
 
     // CASE FLOW ROUTES

@@ -1,0 +1,54 @@
+  .img-res .sigma-machine-image-container .sigma-machine-image-container{
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important; /* Fixes potential extra space below the image */
+}
+
+/* Desktop-first styles */
+  .waiting-dialog .sigma-machine-card {
+       min-width: initial !important;
+       max-width: initial !important;
+      }
+
+
+  /* Media query for mobile */
+@media (max-width: 700px) {
+    .machine-img , .sigma-machine-image-container {
+     
+    }
+}
+
+
+@media (max-width: 508px) {
+    .machine-img , .sigma-machine-image-container {
+        flex-wrap: nowrap !important;
+        /* width: 116px !important; */
+        /* height: 127px !important; */
+    }
+}
+
+
+
+@media (max-width: 450px) {
+    flex-wrap: nowrap !important;
+}
+
+
+@media (max-width: 325px) {
+
+    .YSH-content {
+        flex-wrap: nowrap !important;
+        gap: 0 !important;
+        padding: 0 !important;
+        justify-content: center !important;
+        align-items: flex-end !important;
+        width: 90px !important;
+        height: auto !important;
+
+    }
+
+    main {
+        width: min-content !important;
+    }
+
+}

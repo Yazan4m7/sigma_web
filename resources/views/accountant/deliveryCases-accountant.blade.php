@@ -22,7 +22,7 @@
     @php
         if(!isset($_COOKIE['deliMonitorDBTab']))
         $_COOKIE['deliMonitorDBTab']='#tab1';
-    $permissions = Cache::get('user'.Auth()->user()->id);
+    $permissions = safe_permissions();
     @endphp
     <style>
         .tab-pane{padding:0}

@@ -133,6 +133,7 @@ class CaseController extends Controller
             \DB::transaction(function () use ($deviceIds) {
                 foreach ($deviceIds as $index => $deviceId) {
                     device::where('id', $deviceId)->update(['sorting_order' => $index + 1]);
+
                 }
             });
 
@@ -157,11 +158,11 @@ class CaseController extends Controller
         'PRINTING_SET'      => 3.1,
         'PRINTING_START'    => 3.2,
         'PRINTING_COMPLETE' => 3.3,
-        // Sintering
-        'SINTERING_SET'      => 4.1,
-        'SINTERING_START'    => 4.2,
-        'SINTERING_COMPLETE' => 4.3,
-        // Pressing
+        // Sintering (2 logs: START, COMPLETE)
+        'SINTERING_START'    => 4.1,
+        'SINTERING_COMPLETE' => 4.2,
+        // Pressing (3 logs: SET, START, COMPLETE)
+        'PRESSING_SET'      => 5.0,
         'PRESSING_START'    => 5.1,
         'PRESSING_COMPLETE' => 5.2,
         // Delivery

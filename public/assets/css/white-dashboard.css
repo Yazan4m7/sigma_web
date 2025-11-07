@@ -13243,7 +13243,7 @@ fieldset[disabled] .btnWD-link.active {
 
 img {
     /* max-height: 250px; */
-    /* max-width: 27%; */
+    max-width: 101%;
     /* border-radius: 0.2857rem; */
     margin: 0;
 }

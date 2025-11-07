@@ -32,7 +32,8 @@
       "Bash(chmod:*)",
       "Bash(tee:*)",
       "Bash(./test-master-report-curl.sh)",
-      "Bash(mysql:*)"
+      "Bash(mysql:*)",
+      "Bash(composer require:*)"
     ],
     "deny": []
   }
