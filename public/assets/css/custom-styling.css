@@ -533,8 +533,8 @@ blueTBBorder{
 
 /* Main box margin, for the sidebar and top banner*/
 .main-panel > .content {
-    padding: 15px;
-    margin: 78px 13px 30px 280px;
+    padding: 25px;
+    margin: 78px 0 0 0;
     min-height: calc(100vh - 70px);
 }
 .deleteBtn{

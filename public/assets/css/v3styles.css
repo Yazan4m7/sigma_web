@@ -597,7 +597,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     position: relative;
     flex: 0 0 auto;
     /*width: 275px; !* Increased from 160px *!*/
-    height: 373px;
+    /* height: 373px; */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     flex-wrap: nowrap;
@@ -677,6 +677,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     justify-content: center;
     align-items: center;
     user-select: none;
+    /* max-width: unset; */
 }
 
 .YSH-badge-blue {

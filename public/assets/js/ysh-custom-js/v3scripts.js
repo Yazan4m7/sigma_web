@@ -713,6 +713,7 @@ function closeDeviceDialog(deviceId) {
 
 /**
  * Toggle build details visibility
+ * Auto-closes all other expanded build headers before opening the clicked one
  *
  * @param {HTMLElement} header - The build header element
  */
@@ -721,16 +722,33 @@ function toggleBuildDetails(header) {
     const details = buildRow.querySelector('.sigma-build-details');
     const toggleIcon = header.querySelector('.sigma-build-toggle i');
 
-    // Use class toggle for smooth CSS transitions
-    buildRow.classList.toggle('expanded');
+    // Check if this row is currently expanded
+    const isCurrentlyExpanded = buildRow.classList.contains('expanded');
 
-    // Update icon
-    if (buildRow.classList.contains('expanded')) {
-        toggleIcon.classList.remove('fa-chevron-down');
-        toggleIcon.classList.add('fa-chevron-up');
-    } else {
-        toggleIcon.classList.remove('fa-chevron-up');
-        toggleIcon.classList.add('fa-chevron-down');
+    // ALWAYS close all other expanded build rows first
+    const allBuildRows = document.querySelectorAll('.sigma-build-row.expanded');
+    allBuildRows.forEach(row => {
+        // Close all expanded rows
+        row.classList.remove('expanded');
+
+        // Reset all toggle icons to chevron-down
+        const icon = row.querySelector('.sigma-build-toggle i');
+        if (icon) {
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    });
+
+    // If the clicked row was NOT expanded, expand it now
+    // (If it was already expanded, we just closed it above, so keep it closed)
+    if (!isCurrentlyExpanded) {
+        buildRow.classList.add('expanded');
+
+        // Update icon to chevron-up
+        if (toggleIcon) {
+            toggleIcon.classList.remove('fa-chevron-down');
+            toggleIcon.classList.add('fa-chevron-up');
+        }
     }
 }
 

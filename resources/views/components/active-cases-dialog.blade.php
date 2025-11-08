@@ -118,6 +118,10 @@ foreach($buildData as $data)
 Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 @endphp
 <style>
+    .row.info-case-row{
+
+    }
+
     .animated-button {
         position: relative;
         display: flex;
@@ -590,11 +594,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                         @foreach($data['cases'] as $caseData)
 
                                             <div class="sigma-case-item">
-                                                <div class="sigma-case-info-row">
-                                                    <div class="sigma-case-doctor">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
-                                                    <div class="sigma-case-patient">{{ $caseData['case']->patient_name }}</div>
-                                                    <div class="sigma-case-units">{{ $caseData['unitCount'] }}</div>
-                                                    <div class="sigma-case-view">
+                                                <div class=" row info-case-row">
+                                                    <div class=" col-3 ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
+                                                    <div class=" col-3 ">{{ $caseData['case']->patient_name }}</div>
+                                                    <div class=" col-3 ">{{ $caseData['unitCount'] }}</div>
+                                                    <div class="col-3 ">
                                                         <button class="sigma-case-view-btn"
                                                                 onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
                                                             <i class="fas fa-eye"></i>

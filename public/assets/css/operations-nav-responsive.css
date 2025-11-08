@@ -1,0 +1,263 @@
+/**
+ * ============================================================================
+ * OPERATIONS DASHBOARD NAVIGATION - RESPONSIVE
+ * Mobile-First: Moves stage navigation from left sidebar to top horizontal tabs on phones
+ * ============================================================================
+ */
+
+/*
+ * PHONE LAYOUTS (Below 768px)
+ * Move navigation from left to top for better table space
+ */
+@media (max-width: 767px) {
+    /* Main tab container - switch to vertical stacking */
+    .macaw-tabs.macaw-aurora-tabs {
+        flex-direction: column !important;
+        /* Stack navigation on top, content below */
+    }
+
+    /* Navigation menu - horizontal instead of vertical */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+        width: 100% !important;
+        /* Full width */
+        flex-direction: row !important;
+        /* Horizontal layout */
+        order: 1;
+        /* Ensure it's on top */
+        overflow-x: auto;
+        /* Allow horizontal scroll if many stages */
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scrolling on iOS */
+        border-bottom: 2px solid var(--tab-border-color);
+        margin-top: 0 !important;
+        /* Remove top margin */
+    }
+
+    /* Individual stage buttons - horizontal layout */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        flex: 0 0 auto;
+        /* Don't grow, don't shrink, auto width */
+        min-width: 80px;
+        /* Minimum width for each tab */
+        max-width: 120px;
+        /* Maximum width to prevent too wide */
+        padding: 0.6rem 0.4rem !important;
+        /* Compact padding for horizontal */
+        border-bottom: none !important;
+        /* Remove vertical borders */
+        border-right: 1px solid var(--tab-border-color) !important;
+        /* Add right borders */
+        justify-content: center !important;
+        /* Center content */
+        text-align: center !important;
+    }
+
+    /* Last tab - no right border */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:last-child {
+        border-right: none !important;
+    }
+
+    /* Active tab - bottom border instead of left */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"] {
+        border-left: none !important;
+        /* Remove left border */
+        border-bottom: 4px solid var(--tab-active-border-color) !important;
+        /* Add bottom border */
+        padding-left: 0.4rem !important;
+        /* Reset padding */
+    }
+
+    /* Content area - full width below navigation */
+    .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+        width: 100% !important;
+        /* Full width */
+        order: 2;
+        /* Ensure it's below navigation */
+        padding: 0.75rem 0.5rem !important;
+        /* Reduced padding for mobile */
+    }
+
+    /* Stage sidebar positioning */
+    .stageSidebar {
+        margin-top: 0 !important;
+        /* Remove top margin on mobile */
+    }
+
+    /* Icon and stage name layout */
+    .iconSpan {
+        flex-direction: column !important;
+        /* Stack icon and name vertically */
+        align-items: center !important;
+        gap: 2px !important;
+    }
+
+    /* Stage names - show them on mobile in horizontal layout */
+    .stageName {
+        display: block !important;
+        /* Override the display:none from existing CSS */
+        font-size: 0.7rem !important;
+        /* Small text */
+        white-space: nowrap;
+        /* Don't wrap */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+    }
+
+    /* Icon sizing for horizontal layout */
+    .iconSpan > i {
+        font-size: 20px !important;
+    }
+
+    .iconSpan > svg,
+    .millingIcon {
+        width: 1.2rem !important;
+        height: 1.2rem !important;
+    }
+
+    /* Badge positioning for horizontal tabs */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        display: flex;
+        gap: 2px;
+        flex-wrap: nowrap;
+        margin-top: 2px;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
+        font-size: 0.65rem !important;
+        padding: 0.15em 0.3em !important;
+        margin: 0 !important;
+    }
+}
+
+/*
+ * SMALL PHONES (Below 360px)
+ * More aggressive space optimization
+ */
+@media (max-width: 359px) {
+    /* Even more compact tabs */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 70px !important;
+        max-width: 100px !important;
+        padding: 0.5rem 0.3rem !important;
+    }
+
+    /* Smaller icons */
+    .iconSpan > i {
+        font-size: 18px !important;
+    }
+
+    .iconSpan > svg,
+    .millingIcon {
+        width: 1rem !important;
+        height: 1rem !important;
+    }
+
+    /* Even smaller stage names */
+    .stageName {
+        font-size: 0.65rem !important;
+    }
+
+    /* Tiny badges */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
+        font-size: 0.6rem !important;
+        padding: 0.1em 0.25em !important;
+    }
+}
+
+/*
+ * MEDIUM PHONES (360px - 575px)
+ * Slightly more space
+ */
+@media (min-width: 360px) and (max-width: 575px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 85px !important;
+        max-width: 110px !important;
+    }
+
+    .stageName {
+        font-size: 0.75rem !important;
+    }
+}
+
+/*
+ * LARGE PHONES / SMALL TABLETS (576px - 767px)
+ * More comfortable spacing
+ */
+@media (min-width: 576px) and (max-width: 767px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 95px !important;
+        max-width: 130px !important;
+        padding: 0.7rem 0.5rem !important;
+    }
+
+    .stageName {
+        font-size: 0.8rem !important;
+    }
+
+    .iconSpan > i {
+        font-size: 22px !important;
+    }
+
+    .iconSpan > svg,
+    .millingIcon {
+        width: 1.3rem !important;
+        height: 1.3rem !important;
+    }
+}
+
+/*
+ * TABLETS AND UP (768px+)
+ * Keep vertical sidebar layout (default behavior from main CSS)
+ */
+@media (min-width: 768px) {
+    /* No overrides needed - let the original CSS handle it */
+    /* Navigation stays vertical on left at 20% width */
+    /* Content area stays at 80% width */
+}
+
+/**
+ * SCROLLBAR STYLING FOR HORIZONTAL NAVIGATION
+ * Make it less intrusive on mobile
+ */
+@media (max-width: 767px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar {
+        height: 4px;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 2px;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+}
+
+/**
+ * ACCESSIBILITY: Ensure touch targets are large enough
+ * Minimum 44x44px for comfortable tapping
+ */
+@media (max-width: 767px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-height: 44px;
+        /* Ensure minimum touch target size */
+    }
+}
+
+/**
+ * PERFORMANCE: GPU acceleration for smooth animations
+ */
+@media (max-width: 767px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        will-change: scroll-position;
+    }
+}

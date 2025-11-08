@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGMA Sidebar - Standalone</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,1,0" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================================================
+           RESET & BASE STYLES
+           ============================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f5f7;
+            color: #525f7f;
+            overflow-x: hidden;
+        }
+
+        /* ============================================================================
+           WRAPPER & LAYOUT
+           ============================================================================ */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* ============================================================================
+           SIDEBAR STYLES
+           ============================================================================ */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #1e1e2e 0%, #27293d 100%);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-wrapper {
+            position: relative;
+            height: 100%;
+            overflow: auto;
+            width: 100%;
+            padding-bottom: 30px;
+        }
+
+        /* Scrollbar styling */
+        .sidebar-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Logo */
+        .logo {
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo a {
+            display: inline-block;
+        }
+
+        .logo img {
+            width: 88%;
+            max-width: 180px;
+            height: auto;
+        }
+
+        /* Navigation */
+        .nav {
+            list-style: none;
+            padding: 15px 0;
+            margin: 0;
+        }
+
+        .nav > li,
+        .nav > div {
+            position: relative;
+        }
+
+        .nav > li > a,
+        .nav > div > li > a {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin: 2px 15px;
+            border-radius: 4px;
+        }
+
+        .nav > li > a:hover,
+        .nav > div > li > a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        /* Active state */
+        .nav > li.active > a,
+        .nav > div > li.active > a {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Icons */
+        .nav i,
+        .nav .material-symbols-outlined {
+            font-size: 1.1rem;
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+            color: inherit;
+        }
+
+        .googleIconInSideBar {
+            font-size: 1.3rem !important;
+        }
+
+        /* Text spans */
+        .nav span {
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+        }
+
+        /* Horizontal rules */
+        .nav hr {
+            border: 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 0.5rem 15px;
+        }
+
+        /* Dropdown menus */
+        .nav a[data-toggle="collapse"] {
+            position: relative;
+        }
+
+        .nav .caret {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: inline-block;
+            width: 0;
+            height: 0;
+            margin-left: 2px;
+            vertical-align: middle;
+            border-top: 4px dashed;
+            border-right: 4px solid transparent;
+            border-left: 4px solid transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .nav a[aria-expanded="true"] .caret {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        /* Collapsible sections */
+        .collapse {
+            display: none;
+            overflow: hidden;
+        }
+
+        .collapse.show {
+            display: block;
+        }
+
+        /* Sub-menu */
+        .nav .pl-4 {
+            padding-left: 1rem;
+        }
+
+        .nav .collapse .nav {
+            padding: 5px 0;
+        }
+
+        .nav .collapse .nav li {
+            list-style: none;
+        }
+
+        .nav .collapse .nav li a {
+            display: flex;
+            align-items: center;
+            padding: 8px 15px 8px 35px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.8125rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav .collapse .nav li a:hover {
+            color: #fff;
+            padding-left: 40px;
+        }
+
+        .nav .collapse .nav li.active a {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .nav .collapse .nav li a i {
+            font-size: 0.875rem;
+            margin-right: 8px;
+        }
+
+        /* ============================================================================
+           MAIN PANEL (Content Area)
+           ============================================================================ */
+        .main-panel {
+            margin-left: 260px;
+            width: calc(100% - 260px);
+            min-height: 100vh;
+            background: #f4f5f7;
+            transition: all 0.3s ease;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #525f7f;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .navbar-user i {
+            font-size: 1.1rem;
+            color: #525f7f;
+            cursor: pointer;
+        }
+
+        .navbar-user i:hover {
+            color: #1e1e2e;
+        }
+
+        /* Content area */
+        .content {
+            padding: 30px;
+        }
+
+        /* Page placeholder */
+        .page-placeholder {
+            background: #fff;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            min-height: 500px;
+        }
+
+        .page-placeholder h1 {
+            color: #1e1e2e;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .page-placeholder p {
+            color: #8898aa;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .page-placeholder .content-area {
+            border: 2px dashed #e9ecef;
+            border-radius: 6px;
+            padding: 60px 20px;
+            text-align: center;
+            color: #adb5bd;
+            font-size: 0.9rem;
+            margin-top: 30px;
+        }
+
+        /* ============================================================================
+           MOBILE RESPONSIVENESS
+           ============================================================================ */
+        @media (max-width: 991px) {
+            .sidebar {
+                transform: translateX(-260px);
+            }
+
+            .sidebar.nav-open {
+                transform: translateX(0);
+            }
+
+            .main-panel {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                font-size: 1.5rem;
+                color: #525f7f;
+                cursor: pointer;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+
+        /* ============================================================================
+           UTILITY CLASSES
+           ============================================================================ */
+        .mt-1 { margin-top: 0.25rem; }
+        .mb-0 { margin-bottom: 0; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-wrapper">
+                <!-- Logo Section -->
+                <div class="logo">
+                    <a href="#home">
+                        <!-- Replace with your logo or text -->
+                        <h2 style="color: #fff; margin: 0; font-size: 1.5rem;">SIGMA</h2>
+                    </a>
+                </div>
+
+                <!-- Navigation Menu -->
+                <ul class="nav">
+                    <!-- Home Page -->
+                    <div style="padding:0;">
+                        <li class="active">
+                            <a href="#home">
+                                <i class="fa-solid fa-house"></i>
+                                <span>Home Screen</span>
+                            </a>
+                            <hr>
+                        </li>
+                    </div>
+
+                    <!-- Operations Dashboard -->
+                    <div style="padding:0">
+                        <li>
+                            <a href="#dashboard">
+                                <span class="material-symbols-outlined googleIconInSideBar">dashboard</span>
+                                <span>OPERATIONS DASHBOARD</span>
+                            </a>
+                        </li>
+                        <hr>
+                    </div>
+
+                    <!-- Create Case -->
+                    <li>
+                        <a href="#create-case">
+                            <i class="fa fa-plus-square"></i>
+                            <span>Create Case</span>
+                        </a>
+                    </li>
+
+                    <!-- Cases -->
+                    <li>
+                        <a href="#cases">
+                            <i class="fa fa-suitcase"></i>
+                            <span>Cases</span>
+                        </a>
+                    </li>
+
+                    <!-- Collect Payments -->
+                    <li>
+                        <a href="#collect-payments">
+                            <i class="fa fa-money"></i>
+                            <span>Collect Payments</span>
+                        </a>
+                    </li>
+
+                    <!-- Delivery Schedule -->
+                    <li>
+                        <a href="#delivery-schedule">
+                            <i class="fa-regular fa-clock"></i>
+                            <span>Delivery Schedule</span>
+                        </a>
+                    </li>
+
+                    <!-- Delivery Monitor -->
+                    <li>
+                        <a href="#delivery-monitor">
+                            <i class="fa fa-car"></i>
+                            <span>Delivery Monitor</span>
+                        </a>
+                    </li>
+
+                    <!-- Abutments Delivery -->
+                    <li>
+                        <a href="#abutments-delivery">
+                            <i class="fa-solid fa-bullseye"></i>
+                            <span>Abutments Delivery</span>
+                        </a>
+                    </li>
+
+                    <!-- Cases Monitor -->
+                    <li>
+                        <a href="#cases-monitor">
+                            <i class="fa-solid fa-table-cells-large"></i>
+                            <span>Cases Monitor</span>
+                        </a>
+                    </li>
+
+                    <!-- Devices Monitor -->
+                    <li>
+                        <a href="#devices-monitor">
+                            <i class="fa-solid fa-desktop"></i>
+                            <span>Devices Monitor</span>
+                        </a>
+                    </li>
+
+                    <!-- Doctors -->
+                    <li>
+                        <a href="#doctors">
+                            <i class="fa fa-user-md"></i>
+                            <span>Doctors</span>
+                        </a>
+                    </li>
+
+                    <!-- My Collections -->
+                    <li>
+                        <a href="#my-collections">
+                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                            <span>My Collections</span>
+                        </a>
+                    </li>
+
+                    <!-- Rejected Cases -->
+                    <li>
+                        <a href="#rejected-cases">
+                            <i class="fa fa-times"></i>
+                            <span>Rejected Cases</span>
+                        </a>
+                    </li>
+
+                    <!-- Reports (Dropdown) -->
+                    <li>
+                        <a data-toggle="collapse" href="#reports-menu" aria-expanded="false">
+                            <i class="fab fa-laravel"></i>
+                            <span>Reports</span>
+                            <b class="caret mt-1"></b>
+                        </a>
+                        <div class="collapse" id="reports-menu">
+                            <ul class="nav pl-4">
+                                <li>
+                                    <a href="#master-report">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>Master Report</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#units-report">
+                                        <i class="fas fa-calculator"></i>
+                                        <span>Number Of Units</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#job-types-report">
+                                        <i class="fas fa-briefcase"></i>
+                                        <span>Job Types</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#qc-report">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>QC</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#repeats-report">
+                                        <i class="fas fa-redo"></i>
+                                        <span>Repeats</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#implants-report">
+                                        <i class="fas fa-tooth"></i>
+                                        <span>Implants</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#materials-report">
+                                        <i class="fas fa-cubes"></i>
+                                        <span>Materials Report</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Accountancy (Dropdown) -->
+                    <li>
+                        <a data-toggle="collapse" href="#accountancy-menu" aria-expanded="false">
+                            <i class="fa-solid fa-dollar-sign"></i>
+                            <span>Accountancy</span>
+                            <b class="caret mt-1"></b>
+                        </a>
+                        <div class="collapse" id="accountancy-menu">
+                            <ul class="nav pl-4">
+                                <li>
+                                    <a href="#receive-payments">
+                                        <i class="fa-solid fa-money-bill-transfer"></i>
+                                        <span>Receive Payments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#invoices">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                        <span>Invoices</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#payments">
+                                        <i class="fa fa-credit-card"></i>
+                                        <span>Payments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#take-payment">
+                                        <i class="fa fa-user-md"></i>
+                                        <span>Take A Payment</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- Configuration (Dropdown) -->
+                    <li>
+                        <a data-toggle="collapse" href="#config-menu" aria-expanded="false">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Configuration</span>
+                            <b class="caret mt-1"></b>
+                        </a>
+                        <div class="collapse" id="config-menu">
+                            <ul class="nav pl-4">
+                                <li>
+                                    <a href="#gallery-media">
+                                        <i class="fa-solid fa-video"></i>
+                                        <span>Gallery Media</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#materials">
+                                        <i class="fa fa-cubes"></i>
+                                        <span>Materials</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#job-types">
+                                        <i class="fa fa-object-group"></i>
+                                        <span>Job Types</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#users">
+                                        <i class="fa fa-users"></i>
+                                        <span>Users</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#external-labs">
+                                        <i class="fa fa-building"></i>
+                                        <span>External Labs</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#implants">
+                                        <i class="fa-solid fa-tooth"></i>
+                                        <span>Implants</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#abutments">
+                                        <i class="fa-brands fa-connectdevelop"></i>
+                                        <span>Abutments</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#tags">
+                                        <i class="fa fa-tag"></i>
+                                        <span>Tags</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#failure-causes">
+                                        <i class="fa-solid fa-repeat"></i>
+                                        <span>Failure Causes</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#devices">
+                                        <i class="fa-solid fa-tachograph-digital"></i>
+                                        <span>Devices</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="navbar-brand">Dashboard</div>
+                <div class="navbar-user">
+                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="content">
+                <div class="page-placeholder">
+                    <h1>Page Content Area</h1>
+                    <p>This is a placeholder for your page content. Replace this section with your actual page content (forms, tables, charts, etc.)</p>
+
+                    <div class="content-area">
+                        <i class="fas fa-file-alt" style="font-size: 3rem; margin-bottom: 15px; display: block;"></i>
+                        <strong>Your Content Goes Here</strong>
+                        <p style="margin-top: 10px;">Create, Edit, View, Delete operations<br>Tables, Forms, Charts, Cards, etc.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // ============================================================================
+        // SIDEBAR MENU FUNCTIONALITY
+        // ============================================================================
+
+        // Toggle dropdowns
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all collapse triggers
+            const collapseTriggers = document.querySelectorAll('[data-toggle="collapse"]');
+
+            collapseTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                    // Toggle the collapse
+                    if (isExpanded) {
+                        targetElement.classList.remove('show');
+                        this.setAttribute('aria-expanded', 'false');
+                    } else {
+                        targetElement.classList.add('show');
+                        this.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+
+            // Active state management
+            const navLinks = document.querySelectorAll('.nav a:not([data-toggle="collapse"])');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't prevent default for demo purposes
+                    // e.preventDefault();
+
+                    // Remove active class from all li elements
+                    document.querySelectorAll('.nav > li, .nav > div > li').forEach(li => {
+                        li.classList.remove('active');
+                    });
+
+                    // Add active class to parent li
+                    const parentLi = this.closest('li');
+                    if (parentLi) {
+                        parentLi.classList.add('active');
+                    }
+                });
+            });
+        });
+
+        // Mobile sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.toggle('nav-open');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const toggleButton = document.querySelector('.mobile-menu-toggle');
+
+            if (window.innerWidth <= 991) {
+                if (!sidebar.contains(event.target) && !toggleButton.contains(event.target)) {
+                    sidebar.classList.remove('nav-open');
+                }
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth > 991) {
+                sidebar.classList.remove('nav-open');
+            }
+        });
+    </script>
+</body>
+</html>

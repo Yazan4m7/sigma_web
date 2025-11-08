@@ -1,0 +1,334 @@
+/* ============================================================================
+   SIGMA WORKFLOW DIALOG - FULL BOOTSTRAP RESPONSIVE
+   Optimized for all screen sizes especially iPhones
+   ============================================================================ */
+
+/* ============================================================================
+   DIALOG BASE STYLES - Mobile First Approach
+   ============================================================================ */
+
+.sigma-workflow-modal {
+    padding: 10px !important;
+}
+
+.sigma-workflow-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* ============================================================================
+   RESPONSIVE BREAKPOINTS - Bootstrap Standard + iPhone Specific
+   ============================================================================ */
+
+/* Extra Small devices (phones, less than 576px) */
+@media (max-width: 575px) {
+    .sigma-workflow-modal {
+        padding: 5px !important;
+    }
+
+    .sigma-workflow-dialog {
+        width: 98vw !important;
+        max-height: 95vh !important;
+        margin: 0 !important;
+        border-radius: 8px !important;
+    }
+
+    .sigma-workflow-header {
+        padding: 12px 15px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 1rem !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .sigma-close-button {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1.1rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 12px !important;
+        max-height: calc(95vh - 120px) !important;
+        overflow-y: auto !important;
+    }
+
+    .sigma-workflow-footer {
+        padding: 12px 15px !important;
+    }
+
+    .sigma-button {
+        width: 100% !important;
+        padding: 10px 16px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .sigma-workflow-dialog {
+        width: 95vw !important;
+        max-width: 540px !important;
+        max-height: 90vh !important;
+    }
+
+    .sigma-workflow-header {
+        padding: 15px 18px !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 1.15rem !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 15px !important;
+        max-height: calc(90vh - 130px) !important;
+    }
+
+    .sigma-workflow-footer {
+        padding: 15px 18px !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .sigma-workflow-dialog {
+        width: 85vw !important;
+        max-width: 720px !important;
+        max-height: 85vh !important;
+    }
+
+    .sigma-workflow-header {
+        padding: 18px 20px !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 1.3rem !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 18px !important;
+        max-height: calc(85vh - 140px) !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .sigma-workflow-dialog {
+        width: 75vw !important;
+        max-width: 900px !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 20px !important;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .sigma-workflow-dialog {
+        width: 50vw !important;
+        max-width: 1000px !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 24px !important;
+    }
+}
+
+/* ============================================================================
+   IPHONE SPECIFIC OPTIMIZATIONS
+   ============================================================================ */
+
+/* iPhone SE (320px width) */
+@media (max-width: 320px) {
+    .sigma-workflow-dialog {
+        width: 100vw !important;
+        max-height: 100vh !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+
+    .sigma-workflow-header {
+        padding: 10px 12px !important;
+    }
+
+    .sigma-workflow-title {
+        font-size: 0.9rem !important;
+    }
+
+    .sigma-close-button {
+        width: 28px !important;
+        height: 28px !important;
+        font-size: 1rem !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 10px !important;
+    }
+
+    .sigma-workflow-footer {
+        padding: 10px 12px !important;
+    }
+}
+
+/* iPhone 6/7/8 (375px width) */
+@media (min-width: 321px) and (max-width: 375px) {
+    .sigma-workflow-dialog {
+        width: 98vw !important;
+        border-radius: 10px !important;
+    }
+
+    .sigma-workflow-body {
+        padding: 12px !important;
+    }
+}
+
+/* iPhone X/XS/11 Pro/12 mini (375px-390px width) */
+@media (min-width: 376px) and (max-width: 390px) {
+    .sigma-workflow-dialog {
+        width: 96vw !important;
+    }
+}
+
+/* iPhone 12/13/14 (390px-428px width) */
+@media (min-width: 391px) and (max-width: 428px) {
+    .sigma-workflow-dialog {
+        width: 95vw !important;
+    }
+}
+
+/* iPhone 12/13/14 Pro Max (428px+ width) */
+@media (min-width: 429px) and (max-width: 575px) {
+    .sigma-workflow-dialog {
+        width: 92vw !important;
+        max-width: 500px !important;
+    }
+}
+
+/* ============================================================================
+   BUILD DETAILS ROWS - RESPONSIVE
+   ============================================================================ */
+
+.sigma-build-row {
+    transition: all 0.3s ease !important;
+}
+
+.sigma-build-header {
+    cursor: pointer !important;
+    padding: 12px 15px !important;
+}
+
+@media (max-width: 575px) {
+    .sigma-build-header {
+        padding: 10px 12px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .sigma-build-details {
+        padding: 8px 12px !important;
+    }
+
+    .sigma-build-toggle {
+        font-size: 0.8rem !important;
+    }
+}
+
+@media (max-width: 360px) {
+    .sigma-build-header {
+        flex-wrap: wrap !important;
+        gap: 5px !important;
+    }
+
+    .sigma-build-details table {
+        font-size: 0.75rem !important;
+    }
+}
+
+/* ============================================================================
+   ACTIVE CASES TABLE - RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    .sigma-build-details table {
+        display: block !important;
+        overflow-x: auto !important;
+        white-space: nowrap !important;
+    }
+
+    .sigma-build-details thead {
+        display: none !important;
+    }
+
+    .sigma-build-details tr {
+        display: block !important;
+        margin-bottom: 10px !important;
+        border: 1px solid #ddd !important;
+        border-radius: 6px !important;
+    }
+
+    .sigma-build-details td {
+        display: block !important;
+        text-align: right !important;
+        padding: 8px !important;
+        border-bottom: 1px solid #eee !important;
+    }
+
+    .sigma-build-details td:before {
+        content: attr(data-label) !important;
+        float: left !important;
+        font-weight: bold !important;
+        color: #666 !important;
+    }
+
+    .sigma-build-details td:last-child {
+        border-bottom: none !important;
+    }
+}
+
+/* ============================================================================
+   SCROLLBAR STYLING FOR MOBILE
+   ============================================================================ */
+
+@media (max-width: 767px) {
+    .sigma-workflow-body::-webkit-scrollbar {
+        width: 4px !important;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-track {
+        background: #f1f1f1 !important;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-thumb {
+        background: #888 !important;
+        border-radius: 2px !important;
+    }
+
+    .sigma-workflow-body::-webkit-scrollbar-thumb:hover {
+        background: #555 !important;
+    }
+}
+
+/* ============================================================================
+   SAFE AREA INSETS FOR NOTCHED PHONES (iPhone X and newer)
+   ============================================================================ */
+
+@supports (padding: max(0px)) {
+    @media (max-width: 575px) {
+        .sigma-workflow-modal {
+            padding-left: max(10px, env(safe-area-inset-left)) !important;
+            padding-right: max(10px, env(safe-area-inset-right)) !important;
+            padding-bottom: max(10px, env(safe-area-inset-bottom)) !important;
+        }
+
+        .sigma-workflow-footer {
+            padding-bottom: max(12px, env(safe-area-inset-bottom)) !important;
+        }
+    }
+}

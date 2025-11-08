@@ -20,8 +20,11 @@
 
 
 
-<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc " id="{{ $type }}-waiting" tabindex="-1" role="dialog">
-    <div class="sigma-workflow-dialog">
+@php
+    $deviceCount = $devices->where('type', $stageId)->count();
+@endphp
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc machines-count-{{ $deviceCount }}" id="{{ $type }}-waiting" tabindex="-1" role="dialog" onclick="handleWaitingDialogBackdropClick(event, '{{ $type }}')">
+    <div class="sigma-workflow-dialog" onclick="event.stopPropagation()">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
             <h2 class="sigma-workflow-title">{{ $title }}</h2>

@@ -148,6 +148,8 @@ $(document).ready(function() {
     <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js" defer></script>
     <!-- UI Components & Features -->
     <script src="{{asset('assets/js/sweetalert2.min.js')}}"></script>
+    <!-- SweetAlert Global Safety Configuration - Must load after SweetAlert -->
+    <script src="{{asset('assets/js/sweetalert-global-config.js')}}"></script>
     <script src="{{asset('assets/js/sidebar-scroll.js')}}"></script>
 
 

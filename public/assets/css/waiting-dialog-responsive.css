@@ -61,30 +61,76 @@
 
 /* ============================================================================
    MODAL DIALOG WIDTH - Responsive Sizing
+   Adjusts width based on number of machine images
    ============================================================================ */
 
-/* Large screens (1050px+): Standard width */
+/* Default: For 3+ images - Large screens (1050px+) */
 @media (min-width: 1050px) {
     .waiting-dialog .sigma-workflow-dialog {
-        max-width: 900px !important;
-        width: 60vw !important;
+        max-width: 900px;
+        /* min-width: 9px; */
+        width: fit-content !important;
+    }
+
+    /* 2 images: Reduce dialog width */
+    .waiting-dialog.machines-count-2 .sigma-workflow-dialog {
+        max-width: 650px !important;
+        width: 45vw !important;
+    }
+
+    /* 1 image: Even smaller dialog width */
+    .waiting-dialog.machines-count-1 .sigma-workflow-dialog {
+        max-width: 500px !important;
+        width: 40vw !important;
     }
 }
 
-/* Medium-Large screens (700px - 1050px): Use more screen space */
-@media (min-width: 700px) and (max-width: 1049px) {
+/* Medium-Large screens (768px - 1050px) */
+@media (min-width: 768px) and (max-width: 1049px) {
     .waiting-dialog .sigma-workflow-dialog {
         max-width: none !important;
         width: 85vw !important;
     }
+
+    /* 2 images: Reduce width */
+    .waiting-dialog.machines-count-2 .sigma-workflow-dialog {
+        width: 65vw !important;
+        max-width: 600px !important;
+    }
+
+    /* 1 image: Smaller width */
+    .waiting-dialog.machines-count-1 .sigma-workflow-dialog {
+        width: 50vw !important;
+        max-width: 500px !important;
+    }
 }
 
-/* Small-Medium screens (361px - 699px): Almost full width */
-@media (min-width: 361px) and (max-width: 699px) {
+/* Small-Medium screens (576px - 767px): Comfortable width */
+@media (min-width: 576px) and (max-width: 767px) {
+    .waiting-dialog .sigma-workflow-dialog {
+        max-width: none !important;
+        width: 90vw !important;
+    }
+
+    /* 2 images: Slightly smaller */
+    .waiting-dialog.machines-count-2 .sigma-workflow-dialog {
+        width: 75vw !important;
+    }
+
+    /* 1 image: Smaller */
+    .waiting-dialog.machines-count-1 .sigma-workflow-dialog {
+        width: 65vw !important;
+    }
+}
+
+/* Small screens (361px - 575px): Almost full width */
+@media (min-width: 361px) and (max-width: 575px) {
     .waiting-dialog .sigma-workflow-dialog {
         max-width: none !important;
         width: 95vw !important;
     }
+
+    /* Keep full width on small screens for better usability */
 }
 
 /* Very small screens (<=360px): Full width */
@@ -94,6 +140,8 @@
         width: 98vw !important;
         margin: 5px !important;
     }
+
+    /* Keep full width on very small screens */
 }
 
 /* ============================================================================
@@ -120,9 +168,19 @@
 
 /* Override Bootstrap's col-4 completely */
 .waiting-dialog .sigma-machine-col {
-    flex: none !important;
+    flex: 1;
     max-width: none !important;
     padding: 0 !important;
+}
+
+/* ============================================================================
+   SINGLE CARD SPECIAL HANDLING - Prevent card from stretching
+   ============================================================================ */
+.waiting-dialog.machines-count-1 .sigma-machine-col {
+    max-width: 300px !important;
+    width: 300px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* ============================================================================
@@ -134,6 +192,19 @@
     .waiting-dialog .sigma-machine-col {
         width: calc(33.333333% - 16px) !important;
         margin: 8px !important;
+    }
+
+    /* If only 2 images, center them and make them reasonable size */
+    .waiting-dialog .sigma-machine-col:nth-child(2):last-child,
+    .waiting-dialog .sigma-machine-col:nth-child(1):nth-last-child(2) {
+        width: calc(33.333333% - 16px) !important;
+    }
+
+    /* If only 1 image, limit card width */
+    .waiting-dialog.machines-count-1 .sigma-machine-col {
+        width: auto !important;
+        max-width: 300px !important;
+        margin: 8px auto !important;
     }
 
     .waiting-dialog .sigma-machine-card {
@@ -156,6 +227,19 @@
         margin: 7px !important;
     }
 
+    /* If only 2 images, keep at 33% width */
+    .waiting-dialog .sigma-machine-col:nth-child(2):last-child,
+    .waiting-dialog .sigma-machine-col:nth-child(1):nth-last-child(2) {
+        width: calc(33.333333% - 14px) !important;
+    }
+
+    /* If only 1 image, limit card width */
+    .waiting-dialog.machines-count-1 .sigma-machine-col {
+        width: auto !important;
+        max-width: 280px !important;
+        margin: 7px auto !important;
+    }
+
     .waiting-dialog .sigma-machine-card {
         padding: 12px;
     }
@@ -174,6 +258,19 @@
     .waiting-dialog .sigma-machine-col {
         width: calc(33.333333% - 12px) !important;
         margin: 6px !important;
+    }
+
+    /* If only 2 images, keep at 33% width */
+    .waiting-dialog .sigma-machine-col:nth-child(2):last-child,
+    .waiting-dialog .sigma-machine-col:nth-child(1):nth-last-child(2) {
+        width: calc(33.333333% - 12px) !important;
+    }
+
+    /* If only 1 image, limit card width */
+    .waiting-dialog.machines-count-1 .sigma-machine-col {
+        width: auto !important;
+        max-width: 260px !important;
+        margin: 6px auto !important;
     }
 
     .waiting-dialog .sigma-machine-card {
@@ -196,6 +293,19 @@
         margin: 5px !important;
     }
 
+    /* If only 2 images, keep at 33% width */
+    .waiting-dialog .sigma-machine-col:nth-child(2):last-child,
+    .waiting-dialog .sigma-machine-col:nth-child(1):nth-last-child(2) {
+        width: calc(33.333333% - 10px) !important;
+    }
+
+    /* If only 1 image, limit card width */
+    .waiting-dialog.machines-count-1 .sigma-machine-col {
+        width: auto !important;
+        max-width: 240px !important;
+        margin: 5px auto !important;
+    }
+
     .waiting-dialog .sigma-machine-card {
         padding: 8px;
     }
@@ -214,6 +324,20 @@
     .waiting-dialog .sigma-machine-col {
         width: calc(33.333333% - 8px) !important;
         margin: 4px !important;
+    }
+
+    /* If only 2 images, keep at 33% width */
+    .waiting-dialog .sigma-machine-col:nth-child(2):last-child,
+    .waiting-dialog .sigma-machine-col:nth-child(1):nth-last-child(2) {
+        width: calc(33.333333% - 8px) !important;
+    }
+
+    /* If only 1 image, limit card width */
+    .waiting-dialog.machines-count-1 .sigma-machine-col {
+        width: auto !important;
+        max-width: 220px !important;
+        margin: 4px auto !important;
+
     }
 
     .waiting-dialog .sigma-machine-card {

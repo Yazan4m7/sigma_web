@@ -97,6 +97,14 @@ function handleDialogBackdropClick(event, deviceId) {
     }
 }
 
+// Handle waiting dialog backdrop click for dismissal
+function handleWaitingDialogBackdropClick(event, type) {
+    // Only close if clicking on the backdrop itself, not child elements
+    if (event.target === event.currentTarget) {
+        closeModal({id: type, isWaiting: true});
+    }
+}
+
 // Function to handle radio button changes
 function buildRadioChange(radio, type, deviceId) {
     type = CSS.escape(type);
