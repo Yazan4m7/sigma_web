@@ -50,6 +50,18 @@ class AppServiceProvider extends ServiceProvider
         Job::observe(JobObserver::class);
         View::composer('*', function ($view) {
             $view->with('stageConfig', OperationsUpgrade::STAGE_CONFIG);
+            
+            // Share active employees for admin impersonation
+            // Exclude soft-deleted users and admins
+            if (auth()->check() && auth()->user()->is_admin) {
+                $view->with('activeEmployees', \App\User::where('status', 1)
+                    ->where('is_admin', 0) // Exclude admins
+                    ->whereNull('deleted_at') // Exclude soft-deleted users
+                    ->select('id', 'first_name', 'last_name', 'name_initials')
+                    ->orderBy('first_name')
+                    ->orderBy('last_name')
+                    ->get());
+            }
         });
     }
 }

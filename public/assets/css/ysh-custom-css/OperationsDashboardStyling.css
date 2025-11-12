@@ -986,6 +986,15 @@ YSH-slide-grid {
    color: var(--tab-active-text-color);
 }
 
+/* Mobile: Prevent unwanted scrolling on tabpanel */
+@media (max-width: 767px) {
+   .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+       overflow: visible !important;
+       overflow-x: visible !important;
+       overflow-y: visible !important;
+   }
+}
+
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a,
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a:visited {
    cursor: pointer;
@@ -1083,10 +1092,8 @@ YSH-slide-grid {
        padding: 0.625rem 0.7rem !important;
    }
 
-
-   [role="tabpanel"] {
-       overflow-x: scroll;
-   }
+   /* Remove overflow scroll on mobile - responsive CSS will handle it */
+   /* Don't force scrolling on mobile devices */
 }
 
 @media only screen and (min-width: 768px) {

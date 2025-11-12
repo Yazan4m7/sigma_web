@@ -498,10 +498,10 @@ function initializeSingleTable(table) {
         }
 
         // Lightweight DataTable initialization
-        $table.DataTable({
+        var dataTable = $table.DataTable({
             searching: false,
             ordering: false,
-             autoWidth: false,
+            autoWidth: false,
             responsive: true,
             lengthChange: false,
 //             stateSave: true,
@@ -513,10 +513,19 @@ function initializeSingleTable(table) {
             language: {
                 emptyTable: "No data available"
             },
+            drawCallback: function() {
+                // Ensure pagination is visible after drawing
+                $(this).closest('.dataTables_wrapper').find('.dataTables_paginate, .dataTables_info').css('visibility', 'visible');
+            }
   //           lengthMenu: [[25, 50, 100], [25, 50, 100]]
         });
 
         $table.addClass("nowrap hover compact stripe");
+
+        // Adjust column widths after initialization
+        setTimeout(function() {
+            dataTable.columns.adjust().draw(false);
+        }, 100);
 
     } catch (error) {
         console.error("Error initializing DataTable:", error);
@@ -525,10 +534,17 @@ function initializeSingleTable(table) {
 
 // Single efficient initialization approach
 $(document).ready(function () {
-    // Only one initialization call with a reasonable delay
+    // Wait for tabs to be visible before initializing DataTables
     setTimeout(function() {
         initializeVisibleTables();
-    }, 300);
+
+        // Re-initialize when tab changes
+        $('[role="tab"]').on('click', function() {
+            setTimeout(function() {
+                initializeVisibleTables();
+            }, 150);
+        });
+    }, 600);
 });
 
 // Export function globally so it can be called from blade templates

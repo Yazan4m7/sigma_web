@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" integrity="sha512-siarrzI1u3pCqFG2LEzi87McrBmq6Tp7juVsdmGY1Dr8Saw+ZBAzDzrGwX3vgxX1NkioYNCFOVC0GpDPss10zQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
-    @import url(https://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+    @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700&display=swap');
 
     @media screen and (min-width: 999px) {
         .logo-col {
@@ -11,6 +11,11 @@
         }
         .logo{
 
+        }
+
+        #searchText{
+            position: absolute;
+            top: 20px;
         }
         /* Ensure sidebar logo is clickable on large screens */
         .sidebar .logo {
@@ -110,13 +115,13 @@
         /*font-size: 15px;*/
     }
     #wrapp {
-        margin-bottom: 60px ;
-        display: inline-block;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
         position: relative;
-        /*height: 80px;*/
-        float: right;
+        height: 100%;
         padding: 0;
-        position: relative;
+        margin: 0;
     }
 
     #wrapp input[type="text"] {
@@ -124,20 +129,17 @@
         font-size: 14px;
         display: inline-block;
         font-family: "Lato", sans-serif;
-        border: 1px solid transparent;
+        border: 1px solid rgba(43, 123, 125, 0.2);
         border-radius: 6px;
         outline: none;
         color: #2b7b7d;
         padding: 8px 12px;
         padding-right: 40px;
-        width: 0px;
-        position: absolute;
-        top: 3px;
-        right: -74px;
-        background: rgba(255, 255, 255, 0.9);
+        width: 200px;
+        background: rgba(255, 255, 255, 0.95);
         z-index: 1;
         transition: all .3s cubic-bezier(0.4, 0.0, 0.2, 1);
-        cursor: pointer;
+        cursor: text;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
@@ -152,36 +154,67 @@
     }
 
     #wrapp input[type="text"]:focus {
-        width: 220px;
-        z-index: 1;
+        width: 240px;
         border-color: #2b7b7d;
         background: #ffffff;
-        cursor: text;
         box-shadow: 0 4px 12px rgba(43, 123, 125, 0.15);
     }
+
+    .SBF2 {
+        position: relative;
+        display: flex;
+        align-items: center;
+
+    }
+
     #wrapp #search_submit {
-        height: 47px;
-        width: 63px;
-        display: inline-block;
-        color:red;
-        float: right;
+        height: 24px;
+        width: 24px;
+        display: block;
         background: url({{ asset('assets') }}/5613.png) center center no-repeat;
         text-indent: -10000px;
         border: none;
         position: absolute;
-        top: 0;
-        right: -90px;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
         z-index: 2;
         pointer-events: none;
-        cursor: pointer;
         opacity: 0.6;
-        cursor: pointer;
         transition: opacity .4s ease;
-        background-size: 50%;
+        background-size: contain;
     }
 
     #wrapp #search_submit:hover {
         opacity: 0.8;
+    }
+
+    /* Responsive search box */
+    @media (max-width: 991px) {
+        #wrapp input[type="text"] {
+            width: 160px;
+            font-size: 13px;
+        }
+
+        #wrapp input[type="text"]:focus {
+            width: 180px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        #wrapp {
+            justify-content: center;
+        }
+
+        #wrapp input[type="text"] {
+            width: 100%;
+            max-width: 220px;
+        }
+
+        #wrapp input[type="text"]:focus {
+            width: 100%;
+            max-width: 240px;
+        }
     }
 
 
@@ -272,6 +305,9 @@
         border: 1px solid rgba(43, 123, 125, 0.1);
         padding: 0;
         margin-top: 8px;
+        right: 0 !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     .user-info-header {
@@ -288,7 +324,7 @@
         display: flex;
         align-items: center;
         padding: 16px;
-        color: #1f5f61;
+        background: linear-gradient(135deg, #2b7b7d 0%, #1f5f61 100%);
         border-radius: 8px 8px 0 0;
     }
 
@@ -362,6 +398,49 @@
         opacity: 1;
     }
 
+    /* Fix 3 dots button and dropdown positioning */
+    .dotsDiv {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .dotsDiv .navbar-toggler {
+        padding: 8px;
+        border: none;
+        background: transparent;
+        margin: 0;
+    }
+
+    .dotsDiv .navbar-toggler:focus {
+        outline: none;
+    }
+
+    .dotsDiv .navbar-collapse {
+    margin-bottom: 4px;
+    }
+
+    .dropdown.nav-item {
+        position: relative;
+    }
+
+    .dropdown-navbar {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        z-index: 1051;
+    }
+
+    /* Ensure dropdown aligns to right edge */
+    @media (max-width: 991px) {
+        .dotsDiv .navbar-collapse {
+            position: fixed;
+            right: 15px;
+            top: 60px;
+            background: transparent;
+        }
+    }
+
 </style>
 
 @php
@@ -369,12 +448,12 @@ $permissions = safe_permissions();
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
     <div class="container-fluid noPadOnMobile">
-        <div class="row headerRow" style="display:flex;">
+        <div class="row headerRow" style="display:flex;align-items: baseline;">
 
             <!-- Logo and title -->
-            <div class="col-lg-7 col-md-7 noPadOnMobile">
+            <div class="col-lg-7 col-md-7 noPadOnMobile" style="padding-left: 0">
                 <div class="container-fluid noPadOnMobile" style="padding-left: 0;">
-                    <div class="row left-toggler-container" style="background-color:transparent;padding: 0;flex-wrap: nowrap;align-items: center;">
+                    <div class="row left-toggler-container" id="left-toggler" style="background-color:transparent;padding: 0;flex-wrap: nowrap;align-items: center;">
 
                         <!-- Logo and mobile bars -->
                     <div class=" logo-col noPadOnMobile" style="position: relative; z-index: 1050;">
@@ -411,7 +490,7 @@ $permissions = safe_permissions();
             </form>
             </div>
 {{--            <x-weather-widget></x-weather-widget>--}}
-            <div class="col-1 col-sm-1  mb-1 noPadOnMobile dotsDiv" style="position: relative; z-index: 1040;">
+            <div class="col-1 col-sm-1  mb-1 noPadOnMobile dotsDiv" style="position: relative; z-index: 1040;padding-left: 0;">
                     <button style= "flex-grow: 3" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
                     <span class="navbar-toggler-bar navbar-kebab"></span>
                     <span class="navbar-toggler-bar navbar-kebab"></span>

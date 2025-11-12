@@ -30,19 +30,35 @@
     <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/v3styles.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet">
     <!-- Responsive CSS - Mobile-first approach for full device compatibility -->
     <link href="{{ asset('assets') }}/css/responsive.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/waiting-dialog-responsive.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/devices-block-responsive.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/dialog-bootstrap-responsive.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet">
-
-
-
-
+    <!-- Operations Dashboard Navigation - Responsive CSS for mobile stage icons -->
+    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet"/>
 
    <style>
+       @media  (max-width: 480px){
+       .sigma-workflow-dialog {
+           max-width: none !important;
+           width: auto !important;
+           min-width: -webkit-fill-available;
+           margin: 0 15px;
+           /* Minimum width for proper machine display */
+       }}
+       @media  (max-width: 700px){
+       .sigma-workflow-dialog {
+           max-width: none !important;
+           width: auto !important;
+
+           /* Minimum width for proper machine display */
+       }}
+       @media  (min-width: 700px){
+           .sigma-workflow-dialog {
+               max-width: none !important;
+               width: 45%
+
+               /* Minimum width for proper machine display */
+           }}
+
     /* Use Animate.css for Case Completion modal */
     .modal.fade .modal-dialog {
         transform: none !important;
@@ -701,7 +717,7 @@
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->
-            <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
+            <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;min-height: 133vw">
                 <!-- Simple shimmer loading overlay -->
                 <div class="dashboard-shimmer-overlay loading" id="dashboardShimmer"></div>
 
@@ -926,12 +942,13 @@
 
                                             <td class="clickable" data-toggle="modal"
                                                 data-target="#waitingDialog{{ $key . $case->id }}">
-
-{{--                                                @foreach ($case->tags as $tag)--}}
-{{--                                                    <i title="{{$tag->originalTagRecord != null ? $tag->originalTagRecord->text : "" }}"--}}
-{{--                                                       style="color:{{ $tag != null ? "": $tag->originalTagRecord->color }}"--}}
-{{--                                                       class="{{ $tag->originalTagRecord->icon }}  fa-lg"></i>--}}
-{{--                                                @endforeach--}}
+                                                <div style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                                    @foreach ($case->tags as $tag)
+                                                        <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                            style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                            class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                    @endforeach
+                                                </div>
                                             </td>
                                         </tr>
                                         {{--                                        {{dd("key  is  " . $key)}} --}}
@@ -1198,12 +1215,13 @@
                                                     </p>
                                                 </td>
                                                 <td class="">
-
-{{--                                                    @foreach ($case->tags as $tag)--}}
-{{--                                                         <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : "-"}}"--}}
-{{--                                                           style="color:{{ $tag = null ? "": $tag->originalTagRecord->color }}"--}}
-{{--                                                           class="{{ $tag->originalTagRecord->icon }}  fa-lg"></i>--}}
-{{--                                                    @endforeach--}}
+                                                    <div style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                                        @foreach ($case->tags as $tag)
+                                                            <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                        @endforeach
+                                                    </div>
                                                 </td>
                                             </tr>
   <!-- Active case actions Dialog -->
@@ -1373,7 +1391,7 @@
                                                             </div>
                                                     </div>
 
-                                                    </div></form>
+                                                </form>
                                             </div>
                                             {{--                                            /////////// v2 DIALOG --}}
                                         @endforeach

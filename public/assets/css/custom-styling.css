@@ -1,6 +1,12 @@
 /*
     Manual Adjustment the styling of the website
  */
+
+/* Hide footer to extend body to maximum bottom */
+.footer {
+    display: none !important;
+}
+
 .btn-secondary:hover{
     color: #ffffff;
     backround-color: #4e8789;
@@ -140,6 +146,10 @@ font-weight: unset !important;
     color: #ffffff;
 }
 .white-content .navbar.navbar-transparent .navbar-brand {
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0px;
+    color: #525f7f !important;
     color: #104c4e;
 }
 #casesTable_filter > label {
@@ -373,19 +383,32 @@ table {
 }
 .pageTitleContainer{
     /* border-top: blue solid 57px; */
-    border-left: 2px solid;
+    /* border-left: 2px solid; */
     border-image: linear-gradient(to bottom, #2b7b7d, #019399) 0 1;
-    background: linear-gradient(272deg, #ffffff00 0%, #ffffff 50%);
-    padding-right: 0px;
-    border-bottom-left-radius: 4px;
-    border-top-left-radius: 4px;
+    background: linear-gradient(272deg, #ffffff 0%, #ffffff 50%);
+    /* padding-right: 0px; */
+    /* border-bottom-left-radius: 4px; */
+    /* border-top-left-radius: 4px; */
     max-width:80%;
     flex: 0 0 80%;
-    margin-left: 11px;
+    /* margin-left: 11px; */
     /* temporary until adding breadcrumb*/
     padding-bottom: 10px;
-    padding-top: 10px;
+    padding-top: 5px;
 }
+
+/* Make page title take full width on larger screens */
+@media (min-width: 992px) {
+    .left-toggler-container .logo-col {
+        display: none !important;
+    }
+
+    .left-toggler-container .pageTitleContainer {
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
 .waitingBadge{
     background-color: #cd5c5c
 }
@@ -427,7 +450,7 @@ body{/* font-family: 'Rubik', sans-serif; *//* font-family: 'Nunito Sans', sans-
 .pageTitle{
     /* font-family: 'SegoeUI'; */
     position: initial !important;
-    letter-spacing: 2px;
+    /* letter-spacing: 2px; */
     font-size:20px;
     /*font-weight: 700 !important;*/
     /*position: initial !important;*/
@@ -746,3 +769,4 @@ blueTBBorder{
     /*display: none;*/
     /*text-align: center;*/
 }
+

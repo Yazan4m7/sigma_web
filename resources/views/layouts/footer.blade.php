@@ -1,4 +1,5 @@
 <footer class="footer">
+
     <script>
         // Show the spinner as soon as the page starts loading
         // window.addEventListener('beforeunload', function() {
@@ -135,8 +136,8 @@ $(document).ready(function() {
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
 
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b0187a4476.js" crossorigin="anonymous"></script>
+    <!-- Font Awesome (Kit disabled - 403 error, using CDN versions loaded in pages) -->
+    {{-- <script src="https://kit.fontawesome.com/b0187a4476.js" crossorigin="anonymous"></script> --}}
     <script src="{{asset('assets/js/fontawesome-iconpicker.js')}}"></script>
 
     <!-- Third-party Utilities -->
@@ -483,48 +484,63 @@ $(document).ready(function() {
         // Select the navbar-toggle div and overlay (support both .navbar-toggle and .navbar-toggler)
         const navbarToggle = document.querySelector('.navbar-toggle') || document.querySelector('.navbar-toggler');
         const overlay = document.getElementById('overlay');
-        try{
-        // Toggle "toggled" class and show/hide overlay on click
-        if (navbarToggle) {
-            navbarToggle.addEventListener('click', function () {
-                console.log("nav clicked");
 
-                // Check current state
+        try {
+            // Function to close sidebar
+            function closeSidebar() {
+                document.documentElement.classList.remove('nav-open');
+                if (navbarToggle) navbarToggle.classList.remove('toggled');
+                if (overlay) overlay.classList.remove('active');
+                console.log("closing sidebar");
+            }
+
+            // Function to open sidebar
+            function openSidebar() {
+                document.documentElement.classList.add('nav-open');
+                if (navbarToggle) navbarToggle.classList.add('toggled');
+                if (overlay) overlay.classList.add('active');
+                console.log("opening sidebar");
+            }
+
+            // Toggle "toggled" class and show/hide overlay on click
+            if (navbarToggle) {
+                navbarToggle.addEventListener('click', function () {
+                    console.log("nav clicked");
+                    const isOpen = document.documentElement.classList.contains('nav-open');
+
+                    setTimeout(() => {
+                        if (isOpen) {
+                            closeSidebar();
+                        } else {
+                            openSidebar();
+                        }
+                    }, 10);
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
                 const isOpen = document.documentElement.classList.contains('nav-open');
+                const sidebar = document.querySelector('.sidebar');
+                const clickedInsideSidebar = sidebar && sidebar.contains(e.target);
+                const clickedToggle = navbarToggle && navbarToggle.contains(e.target);
 
-                // Toggle the "toggled" class for animation
-                navbarToggle.classList.toggle('toggled');
-
-                setTimeout(() => {
-                    // Toggle sidebar open/close based on current state
-                    if (isOpen) {
-                        // Currently open, so close it
-                        document.documentElement.classList.remove('nav-open');
-                        console.log("closing sidebar - removing nav-open class");
-                        if (overlay) overlay.classList.remove('active'); // Hide overlay
-                    } else {
-                        // Currently closed, so open it
-                        document.documentElement.classList.add('nav-open');
-                        console.log("opening sidebar - adding nav-open class");
-                        if (overlay) overlay.classList.add('active');
-                    }
-                }, 10);
+                // Only close if: sidebar is open, click is outside sidebar, and not on toggle button
+                if (isOpen && !clickedInsideSidebar && !clickedToggle && window.innerWidth <= 991) {
+                    closeSidebar();
+                }
             });
-        }
+
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
+                    closeSidebar();
+                }
+            });
 
         } catch (e) {
             console.log(e);
         }
-
-
-        // // Close overlay and remove "toggled" class when overlay is clicked
-        // overlay.addEventListener('click', function () {
-        //     console.log("overlay clicked");
-        //     // $('.bodyClick').remove();
-        //     document.documentElement.classList.remove('nav-open');
-        //     navbarToggle.classList.remove('toggled'); // Remove "toggled" class
-        //     overlay.classList.remove('active'); // Hide overlay
-        // });
     </script>
 
     <ul class="nav">

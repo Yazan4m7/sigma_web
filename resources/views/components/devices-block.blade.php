@@ -53,7 +53,7 @@
 
                         <div class="YSH-device {{ $hasActiveJobs ? 'clickable' : 'inactive' }}"
                             onclick="{{ $hasActiveJobs || $hasWaitingJobs ? "handleClick(this, '{$device['id']}', '{$type}')" : 'showNoJobsMessage()' }}">
-                            <div class="">
+                            <div class="YSH-image-wrapper">
                                 <img class="{{ !$hasActiveJobs ? 'grayscale' : '' }} machine-img" alt="Some device :)"
                                     src="{{ asset(isset($device['img']) ? $device['img'] : 'devicesImages/no_device_img.PNG') }}"
                                     onerror="this.onerror=null; this.src='devicesImages/no_device_img.PNG';" />
@@ -68,7 +68,6 @@
                                             {{ isset($waitingUnitsOrBuilds) ? $waitingUnitsOrBuilds : '-' }}</div>
                                     @endif
                                 </div>
-
                             </div>
                             <div class="YSH-device-name">
                                 {{ isset($device['name']) ? $device['name'] : 'Unknown Device' }} </div>

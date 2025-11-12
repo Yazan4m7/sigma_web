@@ -9,10 +9,10 @@
 .YSH-content {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: center !important;
     gap: 0 !important;
     overflow-x: hidden !important;
     padding: 2rem !important;
+    justify-content: center;
 }
 
 .YSH-device {
@@ -189,7 +189,7 @@
    ============================================================================ */
 @media (max-width: 640px) {
     .YSH-container {
-        margin: 0.5rem !important;
+        margine-top: 0.5rem !important;
     }
 
     .YSH-header {
@@ -198,7 +198,7 @@
     }
 
     .YSH-content {
-        gap: 1rem !important;
+        gap: 0rem !important;
     }
 }
 

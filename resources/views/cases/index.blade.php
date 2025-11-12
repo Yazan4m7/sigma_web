@@ -582,10 +582,10 @@
                                 showDenyButton: true,
                                 confirmButtonText: 'Delete Case',
                                 denyButtonText: 'Cancel'
-                            }).then((willDelete) => {
-                                if (willDelete) {
+                            }).then((result) => {
+                                if (result.isConfirmed) {
                                     window.location = urlToRedirect;
-                                } else {
+                                } else if (result.isDenied) {
                                     swal.fire("Case NOT deleted.");
                                 }
                             });

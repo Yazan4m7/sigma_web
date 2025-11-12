@@ -9,6 +9,8 @@
 |
 */
 
+use App\Http\Controllers\Usercontroller;
+
 Route::get('/', function () {
     return redirect('/home');
 });
@@ -31,7 +33,13 @@ Route::get('/register', function () {
 // Auth::routes();
 // Route::get('/login-attempt', '\App\Http\Controllers\Auth\LoginController@authenticate')->name('login-attempt');
 // Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-
+Route::middleware(['web', 'auth'])->group(function (): void {
+    // Important: Define specific route before parameterized route
+    Route::get('/admin/impersonate/leave', [UserController::class, 'stopImpersonate'])
+        ->name('impersonate.leave');
+    Route::get('/admin/impersonate/{id}', [UserController::class, 'impersonate'])
+        ->name('impersonate.start');
+});
 // Public routes
 Route::get('/new-case', [App\Http\Controllers\CaseController::class, 'create'])->name('new-case-view');
 Route::get('/t-p', [App\Http\Controllers\CaseController::class, 'teethPopup'])->name('teeth-selecion-popup');
@@ -146,24 +154,14 @@ Route::middleware('ViewPayments')->group(function (): void {
 });
 
 Route::middleware(['web', 'auth'])->group(function (): void {
-
     Route::get('/docs/{filename}', [App\Http\Controllers\HomeController::class, 'showDoc'])->name('docs.show');
-
     Route::get('/oops', [App\Http\Controllers\SystemController::class, 'oopsScreen'])->name('oops-screen');
-
     Route::get('/home', [App\Http\Controllers\ReportsController::class, 'homeScreen'])->name('homeScreen');
-
     Route::get('/payments-with-collectors', [App\Http\Controllers\AccountantController::class, 'paymentsWithCollectors'])->name('payments-with-collectors');
-
     Route::get('/reset-case/{id}/{stage}', [App\Http\Controllers\CaseController::class, 'resetCaseToWaiting'])->name('reset-to-waiting');
-
     Route::get('/complete-by-admin/{id}/{stage}', [App\Http\Controllers\CaseController::class, 'completeByAdmin'])->name('complete-by-admin');
-
-
     Route::get('/lab-workflow', [App\Http\Controllers\CaseController::class, 'adminDashboard'])->name('admin-dashboard');
-
     Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])->name('admin-dashboard-v2');
-
     // Type management routes
     Route::resource('admin/types', App\Http\Controllers\TypeController::class)->names([
         'index' => 'types.index',
@@ -465,6 +463,7 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
         Route::get('/dentist/cases', [App\Http\Controllers\ClientsController::class, 'doctorCases'])->name('dentist-cases');
         Route::get('/dentist/payments', [App\Http\Controllers\ClientsController::class, 'doctorPayments'])->name('dentist-payments');
         Route::get('/payments/delete{id}', [App\Http\Controllers\ClientsController::class, 'deletePayment'])->name('delete-payment');
+        Route::get('/discount/delete/{id}', [App\Http\Controllers\ClientsController::class, 'deleteDiscount'])->name('delete-discount');
 
         // MEDIA ROUTES
         Route::get('/media/index', [App\Http\Controllers\MediaController::class, 'index'])->name('media-index');

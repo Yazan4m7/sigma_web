@@ -17,6 +17,49 @@
             font-weight: 400;
         }
 
+        /* Repeater Item Layout Fix */
+        .row-item {
+            display: flex;
+
+            align-items: flex-end;
+
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+
+            margin-bottom: 10px;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            justify-content: space-between;
+        }
+
+        .row-item > div {
+            flex: 1 1 150px;
+        }
+
+        /* Bridge/Single Toggle Contrast Fix */
+        .style-toggle {
+            background-color: #e9ecef;
+            border-radius: 20px;
+            padding: 4px;
+        }
+
+        .style-toggle-option {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .style-toggle input[type="radio"]:checked + .style-toggle-option {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 16px;
+        }
+
+        .style-toggle-slider {
+            background-color: transparent;
+        }
+
         /* CASE EDIT PAGE - CLEAN FUNCTIONAL LAYOUT */
 
         /* Header Section */
@@ -55,7 +98,7 @@
 
         .row-item > div {
             flex: 0 0 auto;
-            min-width: 100px;
+            /*min-width: 100px;*/
         }
 
         /* Specific column widths */
@@ -247,7 +290,7 @@
             .jobRow .col-12.padding5px {
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 0px;
             }
 
             .row-item > div,
@@ -421,7 +464,7 @@
 
         .row-item > div {
             flex: 1 1 0;
-            padding: 0 8px;
+            padding: 0 0;
         }
 
         .row-item .delete-col {
@@ -671,7 +714,7 @@
                                     $unit = explode(', ', $job->unit_num);
                                 @endphp
                                 <div data-repeater-item class="form-group row align-items-center row-item"
-                                    style="padding:15px">
+                                    >
                                     <input type="hidden" name="job_id" value="{{ $job->id }}" />
 
                                     <div class="units-col">
@@ -729,11 +772,21 @@
                                                     name="material_id{{ $job->id }}"
                                                     onchange="loadTypesForMaterial(this, {{ $job->id }})">
 
+                                                    @php
+                                                        // Filter materials to only show those compatible with this job type
+                                                        $compatibleMaterialIds = $jobTypeMaterials
+                                                            ->where('jobtype_id', $job->jobType->id)
+                                                            ->pluck('material_id')
+                                                            ->toArray();
+                                                    @endphp
+
                                                     @foreach ($materials as $m)
-                                                        <option value="{{ $m->id }}"
-                                                            {{ $job->material_id == $m->id ? 'selected' : '' }}>
-                                                            {{ $m->name }}
-                                                        </option>
+                                                        @if (in_array($m->id, $compatibleMaterialIds))
+                                                            <option value="{{ $m->id }}"
+                                                                {{ $job->material_id == $m->id ? 'selected' : '' }}>
+                                                                {{ $m->name }}
+                                                            </option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                                 @if ($job->jobType->id == 6)
@@ -1730,6 +1783,10 @@
                 var materialBox = $("[name='" + repeaterName + "[material_id" + jobId + "]']");
                 var jobTypeSelectedId = $(jobTypeDD).val();
                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+
+                // Store currently selected material to preserve if compatible
+                var currentlySelectedMaterial = materialBox.val();
+
                 materialBox.empty();
                 $.each(jobTypeMaterials, function(key, value) {
                     var material = materials.find(x => x.id === value.material_id);
@@ -1739,6 +1796,14 @@
                             .text(material.name));
                     }
                 });
+
+                // If previously selected material is still compatible, reselect it
+                if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
+                    materialBox.val(currentlySelectedMaterial);
+                } else if (jobTypeMaterials.length > 0) {
+                    // Auto-select first material if available
+                    materialBox.val(jobTypeMaterials[0].material_id);
+                }
                 console.log("Exisiting job type changed " + abutmentBox.attr('name') + "Selector : " + "[name='" +
                     repeaterName + "[abutment" + jobId + "]']");
 
@@ -2247,15 +2312,27 @@
                 var jobTypeSelectedId = $(jobTypeDD).val();
                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
 
-                // materialBox.empty();
-                // $.each(jobTypeMaterials, function(key, value) {
-                //     var material = materials.find(x => x.id === value.material_id);
-                //     if (material) {
-                //         materialBox.append($("<option></option>")
-                //             .attr("value", value.material_id)
-                //             .text(material.name));
-                //     }
-                // });
+                // Store currently selected material to preserve if compatible
+                var currentlySelectedMaterial = materialBox.val();
+
+                // Filter materials by job type
+                materialBox.empty();
+                $.each(jobTypeMaterials, function(key, value) {
+                    var material = materials.find(x => x.id === value.material_id);
+                    if (material) {
+                        materialBox.append($("<option></option>")
+                            .attr("value", value.material_id)
+                            .text(material.name));
+                    }
+                });
+
+                // If previously selected material is still compatible, reselect it
+                if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
+                    materialBox.val(currentlySelectedMaterial);
+                } else if (jobTypeMaterials.length > 0) {
+                    // Auto-select first material if available
+                    materialBox.val(jobTypeMaterials[0].material_id);
+                }
                 var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
                 var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
                 var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")

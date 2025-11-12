@@ -509,7 +509,7 @@
                                 ['name' => 'Design', 'stage' => 1, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
                                 ['name' => 'Milling', 'stage' => 2, 'type' => '3-phase'], // 2.1=nest, 2.2=start, 2.3=complete
                                 ['name' => '3D Printing', 'stage' => 3, 'type' => '3-phase'], // 3.1=set, 3.2=start, 3.3=complete
-                                ['name' => 'Sintering', 'stage' => 4, 'type' => '2-phase'], // 4.1=set, 4.2=start, 4.3=complete
+                                ['name' => 'Sintering', 'stage' => 4, 'type' => '3-phase'], // 4.1=set, 4.2=start, 4.3=complete
                                 ['name' => 'Pressing', 'stage' => 5, 'type' => '3-phase'], // 5.1=start, 5.2=complete
                                 ['name' => 'Finishing', 'stage' => 6, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
                                 ['name' => 'QC', 'stage' => 7, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
@@ -731,20 +731,21 @@
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
                             @php
-                                $sinteringLogs = $case->logs->where('stage','>', 4)->where('stage', '<', 5);;
-//
-//
-                               $startLog = $sinteringLogs->where('stage','<=', 4.1)->sortByDesc('created_at')->first();
-                                $completeLog = $sinteringLogs->where('stage','>=', 4.2)->sortByDesc('created_at')->first();
-//
+                                $sinteringLogs = $case->logs->where('stage', '>=', 4)->where('stage', '<', 5);
+                                $setLog = $sinteringLogs->where('stage', 4.1)->sortByDesc('created_at')->first();
+                                $startLog = $sinteringLogs->where('stage', 4.2)->sortByDesc('created_at')->first();
+                                $completeLog = $sinteringLogs->where('stage', 4.3)->sortByDesc('created_at')->first();
                             @endphp
+                            @if ($setLog)
+                                {!! renderLog($setLog, 'SET', 'action-set') !!}
+                            @endif
                             @if ($startLog)
                                 {!! renderLog($startLog, 'START', 'action-start') !!}
                             @endif
                             @if ($completeLog)
                                 {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
                             @endif
-                            @if (!$startLog && !$completeLog)
+                            @if (!$setLog && !$startLog && !$completeLog)
                                 -
                             @endif
                         </div>

@@ -144,12 +144,23 @@
         }
 
         @media (min-width: 576px) {
+            div.col-lg-7.col-md-7.noPadOnMobile
+            {flex-wrap: wrap;}
+            /*.logo-col .noPadOnMobile{*/
+            /*    display:none;*/
+            /*}*/
             .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
 
         }
+        @media screen and (min-width: 1000px) {
+       #left-toggler {
+            flex-wrap: wrap !important;
+        }
+        }
+
 
 
         .teethJawsDialog{}
@@ -912,7 +923,7 @@
 
             var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
 
-            var colorsDDName = repeaterName + "[color]";
+            var colorsDDName = thisRowRepeaterName + "[color]";
             if ($(jobTypeDD).val() == 14) {
                 $("[name='" + colorsDDName + "']").parent().parent().parent().show();
             }
@@ -921,19 +932,16 @@
                 var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
                 var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
                 var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
-
-                //  console.log("selector : " +"[name='repeat[" + (repeaterNumber -1) + "][abutments][0][abutmentUnits][]']");
             } else {
                 var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
                 var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
                 var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-                //  console.log("selector : " + "[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
             }
 
             var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
 
-            var materialBox = $("[name='" + repeaterName + "[material_id]']");
-            var openDialogBtn = $("[name='" + repeaterName + "[openDialogBtn]']");
+            var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
+            var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
             var jobTypeSelectedId = $(jobTypeDD).val();
             var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
 
@@ -956,6 +964,9 @@
             // If the previously selected material is still compatible, reselect it
             if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
                 materialBox.val(currentlySelectedMaterial);
+            } else if (jobTypeMaterials.length > 0) {
+                // Auto-select first material if available
+                materialBox.val(jobTypeMaterials[0].material_id);
             }
             var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
             var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");

@@ -368,6 +368,37 @@ class ClientsController extends Controller
         return back()->with('success', 'Payment removed.');
     }
 
+    public function deleteDiscount($id){
+        $invoice = invoice::where('id',$id)->first();
+
+        // Check if invoice exists
+        if(!$invoice){
+            return back()->with('error', 'Discount invoice not found.');
+        }
+
+        // Check if it's actually a discount (case_id = -1)
+        if($invoice->case_id != -1){
+            return back()->with('error', 'This is not a discount invoice.');
+        }
+
+        // Get the doctor/client
+        $doctor = client::where('id', $invoice->doctor_id)->first();
+
+        if(!$doctor){
+            return back()->with('error', 'Doctor not found.');
+        }
+
+        // Reverse the discount effect on doctor's balance
+        // Since discount amount is negative, subtracting it will increase the balance
+        $doctor->balance = $doctor->balance - $invoice->amount;
+        $doctor->save();
+
+        // Soft delete the invoice
+        $invoice->delete();
+
+        return back()->with('success', 'Discount removed successfully. Doctor balance updated.');
+    }
+
     public function doctorInvoices(Request $request)
     {
         if ($request->from && $request->to) {

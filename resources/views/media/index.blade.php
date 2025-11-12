@@ -135,11 +135,11 @@
             showDenyButton: true,
             confirmButtonText: 'Delete',
             denyButtonText: 'Cancel'
-        }).then((willDelete) => {
-            if (willDelete) {
+        }).then((result) => {
+            if (result.isConfirmed) {
                 window.location = urlToRedirect;
-            } else {
-                swal.fire("Case NOT deleted.");
+            } else if (result.isDenied) {
+                swal.fire("Media NOT deleted.");
     }
     });
 

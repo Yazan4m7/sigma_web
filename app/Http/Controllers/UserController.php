@@ -9,11 +9,44 @@ use App\UserPermission;
 use App\Permission;
 use DB;
 use Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+
+    public function impersonate($userId)
+    {
+        // optional: check if current user is admin
+        if (!auth()->user()->is_admin) {
+            abort(403, 'Unauthorized');
+        }
+
+        // store the admin’s ID so you can return later
+        session(['impersonator_id' => auth()->id()]);
+
+        // log in as the target user
+        Auth::loginUsingId($userId);
+
+        return redirect('/home'); // Redirect to home after impersonation
+    }
+
+    public function stopImpersonate()
+    {
+        // Check if currently impersonating
+        if (!session()->has('impersonator_id')) {
+            abort(403, 'Not currently impersonating');
+        }
+
+        $adminId = session('impersonator_id');
+        session()->forget('impersonator_id');
+        Auth::loginUsingId($adminId);
+
+        return redirect('/')->with('success', 'Returned to admin account');
+    }
+
+
     public function index(Request $request)
     {
 

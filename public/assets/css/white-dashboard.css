@@ -634,7 +634,7 @@ pre code {
 .container-fluid {
     width: 100%;
     padding-right: 15px;
-    padding-left: 15px;
+    padding-left: 0;
     margin-right: auto;
     margin-left: auto;
 }
@@ -4557,17 +4557,16 @@ input[type="button"].btnWD-block {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
 }
 
 .navbar-brand {
-    display: inline-block;
+    /* display: inline-block; */
     padding-top: 0.406813rem;
     padding-bottom: 0.406813rem;
     margin-right: -2.0625rem;
     font-size: 0.99925rem;
     line-height: inherit;
-    white-space: nowrap;
+    /* white-space: nowrap; */
 }
 
 .navbar-brand:hover,
@@ -4752,6 +4751,10 @@ input[type="button"].btnWD-block {
     .navbar-expand-lg .navbar-collapse {
         display: flex !important;
         flex-basis: auto;
+        align-items: stretch;
+        align-content: flex-start;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     .navbar-expand-lg .navbar-toggler {
@@ -8293,7 +8296,7 @@ button.bg-darker:focus {
 
 .mb-1,
 .my-1 {
-    margin-bottom: 0.25rem !important;
+    margin-bottom: 0px !important;
 }
 
 .ml-1,
@@ -14195,7 +14198,7 @@ img {
 }
 
 .navbar {
-    padding: 10px 30px 10px 15px;
+    padding: 0px 30px 10px 0px;
     width: 100%;
     /* z-index: 1030; */
     background: #1a1e34;
@@ -14293,12 +14296,12 @@ img {
 .navbar .navbar-brand {
     position: fixed;
     top: 15px;
-    padding-top: .3125rem;
-    padding-bottom: .3125rem;
+    /* padding-top: .3125rem; */
+    /* padding-bottom: .3125rem; */
     color: #ffffff;
     /* margin-left: 17px;*/
     margin-top: 3px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     font-size: 1rem;
     /* Yazan Signture */
 }
@@ -15914,14 +15917,7 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active > a:not([data-toggle="collapse"]):before,
 .off-canvas-sidebar .nav li.active > a:not([data-toggle="collapse"]):before {
-    content: " ";
-    position: absolute;
-    height: 6px;
-    width: 6px;
-    top: 18px;
-    left: -4px;
-    background: #ffffff;
-    border-radius: 50%;
+
 }
 
 .sidebar .nav li.active > a[data-toggle="collapse"],
@@ -15951,14 +15947,7 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active > a[data-toggle="collapse"] + div .nav .active a:before,
 .off-canvas-sidebar .nav li.active > a[data-toggle="collapse"] + div .nav .active a:before {
-    content: " ";
-    position: absolute;
-    height: 6px;
-    width: 6px;
-    top: 17px;
-    left: -4px;
-    background: #ffffff;
-    border-radius: 50%;
+
 }
 
 .sidebar .nav li.active > a[data-toggle="collapse"]:before,
@@ -16421,11 +16410,11 @@ table.tablesorter thead tr .headerSortDown {
 
     .nav-open .main-panel {
         right: 0;
-        -webkit-transform: translate3d(260px, 0, 0);
+        -webkit-transform: translate3d(75px, 0, 0);
         -moz-transform: translate3d(260px, 0, 0);
         -o-transform: translate3d(260px, 0, 0);
         -ms-transform: translate3d(260px, 0, 0);
-        transform: translate3d(260px, 0, 0);
+        /* transform: translate3d(260px, 0, 0); */
     }
 
     .nav-open .sidebar {

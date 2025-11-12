@@ -117,21 +117,27 @@
                                     <tbody>
                                     @foreach($invoices as $invoice)
                                         @if(isset($invoice->case))
-                                        <tr role="row" class="odd" onclick="window.location='{{route('view-invoice', $invoice->case->id)}}';">
-                                            @else
-                                            <tr role="row" class="odd" onclick="alert('This case has no invoice.');">
-                                            @endif
+                                        <tr role="row" class="odd" onclick="window.location='{{route('view-invoice', $invoice->case->id)}}';" style="cursor: pointer;">
                                             <td class="sorting_1">{{$invoice->id}}</td>
                                             <td>{{$invoice->client->name}}</td>
-                                            <td>{{isset($invoice->case) ? $invoice->case->patient_name :$invoice->discount_title }}</td>
+                                            <td>{{$invoice->case->patient_name}}</td>
                                             <td>{{$invoice->amount}} JOD</td>
-                                            @if (isset($invoice->case) && isset($invoice->case->actual_delivery_date) )
-                                            <td> {{$invoice->case->actualDeliveryDate()}}&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice->case->actualDeliveryTime()}}</td>
+                                            @if (isset($invoice->case->actual_delivery_date))
+                                            <td>{{$invoice->case->actualDeliveryDate()}}&nbsp;&nbsp;&nbsp;&nbsp;{{$invoice->case->actualDeliveryTime()}}</td>
                                             @else
                                             <td>-</td>
                                             @endif
-
                                         </tr>
+                                        @else
+                                        {{-- This is a discount invoice --}}
+                                        <tr role="row" class="odd discount-invoice-row" data-invoice-id="{{$invoice->id}}" style="background-color: #f8f9fa; border-left: 3px solid #6c757d; cursor: pointer;" title="Click to delete this discount">
+                                            <td class="sorting_1">{{$invoice->id}}</td>
+                                            <td>{{$invoice->client->name}}</td>
+                                            <td><i class="fa fa-tag" style="color: #6c757d; margin-right: 5px;"></i>{{$invoice->discount_title}}</td>
+                                            <td>{{$invoice->amount}} JOD</td>
+                                            <td>-</td>
+                                        </tr>
+                                        @endif
                                     @endforeach
                                     </tbody>
                                 </table></div></div></div>
@@ -182,6 +188,47 @@ $(document).ready(function() {
             //{ dom: 'Bfrtip', buttons: ['colvis', 'excel', 'print'] }
             //  "bJQueryUI": true
             // "sDom": 'l<"H"Rf>t<"F"ip>'
+        });
+
+        // Handle discount invoice row clicks with SweetAlert
+        $(document).on('click', '.discount-invoice-row', function(e) {
+            e.stopPropagation();
+            const invoiceId = $(this).data('invoice-id');
+            const deleteUrl = '{{route("delete-discount", ":id")}}'.replace(':id', invoiceId);
+
+            Swal.fire({
+                title: 'Delete Discount?',
+                html: '<p>Are you sure you want to delete this discount?</p><p class="text-muted">This will update the doctor\'s balance.</p>',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: '<i class="fa fa-trash"></i> Yes, delete it',
+                cancelButtonText: '<i class="fa fa-times"></i> Cancel',
+                customClass: {
+                    confirmButton: 'btn btn-danger',
+                    cancelButton: 'btn btn-secondary'
+                },
+                buttonsStyling: false,
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        });
+
+        // Add hover effect for discount rows
+        $(document).on('mouseenter', '.discount-invoice-row', function() {
+            $(this).css({
+                'background-color': '#e9ecef',
+                'border-left-color': '#dc3545'
+            });
+        }).on('mouseleave', '.discount-invoice-row', function() {
+            $(this).css({
+                'background-color': '#f8f9fa',
+                'border-left-color': '#6c757d'
+            });
         });
 });
     </script>

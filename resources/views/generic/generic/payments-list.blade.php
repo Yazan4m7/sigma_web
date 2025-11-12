@@ -217,12 +217,12 @@
                 confirmButtonText: 'Delete Payment',
                 denyButtonText: `Cancel`,
             })
-                .then((willDelete) => {
+                .then((result) => {
                     // redirect with javascript here as per your logic after showing the alert using the urlToRedirect value
-                    if (willDelete.isConfirmed) {
+                    if (result.isConfirmed) {
                         window.location = urlToRedirect;
                         //swal.fire("Poof! Your imaginary file has been deleted!");
-                    } else {
+                    } else if (result.isDenied) {
                        swal.fire("Payment not deleted.");
                     }
                 });

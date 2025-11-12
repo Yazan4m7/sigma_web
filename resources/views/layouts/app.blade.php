@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400..700&display=swap" rel="stylesheet" crossorigin="anonymous">
 
 
     <title>{{ $pageSlug ?? config('site_vars.projectNameShort') }}</title>
@@ -15,9 +15,14 @@
 <!-- CSS -->
 <link rel="stylesheet" href="{{ asset('custom-CSS-JS/style1.css') }}">
 <link rel="stylesheet" href="{{ asset('custom-CSS-JS/style2.css') }}">
+    <!-- Font Awesome 6+ -->
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
 
 
-
+    <!-- Georgia is a system font, not a Google Font - removed invalid link that was causing 403 -->
 
 
 <!-- ############################################################# -->
@@ -33,7 +38,7 @@
 <!-- ############################################################# -->
 
 
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet" crossorigin="anonymous">
 
     <!-- Core JavaScript Libraries (Load jQuery first to prevent $ undefined errors) -->
     <script src="{{ asset('white') }}/js/core/jquery.min.js"></script>
@@ -107,13 +112,13 @@
     </style>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,300" rel="stylesheet" type="text/css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Raleway&family=Rubik:wght@500&display=swap"
-          rel="stylesheet">
+          rel="stylesheet" crossorigin="anonymous">
     <link href="http://fonts.cdnfonts.com/css/montserrat" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet'>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet"/>
+    <link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" crossorigin="anonymous"/>
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
 
     <!-- Core Framework CSS -->
@@ -152,8 +157,12 @@
     <link href="{{ asset('assets') }}/css/sidebar-fix.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/sidebar-fullwidth-fix.css" rel="stylesheet"/>
     <link href="{{ asset('css/sidebar-collapse.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets') }}/css/sidebar-layout-improvements.css" rel="stylesheet"/>
+    <link href="{{ asset('assets') }}/css/impersonation-banner.css" rel="stylesheet"/>
     <link href="{{ asset('css') }}/georgia-font.css" rel="stylesheet"/>
     <link href="{{ asset('css/ysh-custom-css/machine-images.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/processing-overlay.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/impersonate-button.css') }}" rel="stylesheet"/>
     <link rel="icon" type="image/png" href="{{asset('assets/sigma_favico.png')}}"/>
 
     <!-- Dynamic styling -->
@@ -165,9 +174,90 @@
 </head>
 {{--<div class="overlay" id="overlay"></div>--}}
 <body {{--onload="myFunction()"--}} class="white-content{{$class ?? ''}}">
+<!-- Floating buttons container -->
+<div class="floating-buttons-container">
+    @if(in_array(request()->getHost(), ['localhost', '127.0.0.1']))
+        <div class="floating-badge localhost-badge">
+            LOCAL HOST
+        </div>
+    @endif
+    
+    @auth()
+        @if(auth()->user()->is_admin && isset($activeEmployees) && $activeEmployees->count() > 0)
+            <!-- Impersonation Button -->
+            <div class="impersonate-button-wrapper">
+                <button class="impersonate-button" id="impersonateButton" title="Sign in as User">
+                    <i class="fas fa-user-secret"></i>
+                    <span class="impersonate-button-text">Sign In As</span>
+                </button>
+                
+                <!-- Employee List Dropdown -->
+                <div class="employee-list-dropdown" id="employeeListDropdown">
+                    <div class="employee-list-header">
+                        <i class="fas fa-users"></i>
+                        <span>Select Employee</span>
+                    </div>
+                    <div class="employee-list-search">
+                        <input type="text" id="employeeSearchInput" placeholder="Search employees..." autocomplete="off">
+                    </div>
+                    <div class="employee-list-items" id="employeeListItems">
+                        @foreach($activeEmployees as $employee)
+                            <a href="{{ route('impersonate.start', $employee->id) }}" class="employee-item" data-name="{{ strtolower($employee->first_name . ' ' . $employee->last_name) }}">
+                                <div class="employee-item-avatar">
+                                    {{ strtoupper(substr($employee->first_name, 0, 1)) }}
+                                </div>
+                                <div class="employee-item-info">
+                                    <div class="employee-item-name">{{ $employee->first_name }} {{ $employee->last_name }}</div>
+                                    @if($employee->name_initials)
+                                        <div class="employee-item-initials">{{ $employee->name_initials }}</div>
+                                    @endif
+                                </div>
+                            </a>
+                        @endforeach
+                    </div>
+                    @if($activeEmployees->isEmpty())
+                        <div class="employee-list-empty">
+                            No employees available
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
+    @endauth
+</div>
+<div class="processing-overlay" id="processingOverlay">
+    <div class="processing-spinner"></div>
+    <div class="processing-done">
+        <i class="fa fa-check-circle"></i>
+    </div>
+</div>
 
 
 @auth()
+    <!-- Impersonation Banner -->
+    @if(session()->has('impersonator_id'))
+        <div class="impersonation-banner">
+            <div class="impersonation-banner-content">
+                <div class="impersonation-info">
+                    <svg class="impersonation-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <div class="impersonation-text">
+                        <span class="impersonation-label">Viewing as</span>
+                        <span class="impersonation-user">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
+                    </div>
+                </div>
+                <a href="{{ route('impersonate.leave') }}" class="impersonation-return-btn">
+                    <svg class="return-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Return to Admin Account
+                </a>
+            </div>
+        </div>
+    @endif
+
     <!-- Loading Overlay -->
     <!-- Loading Spinner Overlay -->
     {{--    <div class="YSH-spinner-overlay" id="loadingOverlay" style="display: none;">--}}
@@ -234,4 +324,80 @@
 </body>
 @include('layouts.footer')
 <script src="{{ asset('js/responsive-images.js') }}"></script>
+<script>
+    function showProcessingOverlay() {
+        const processingOverlay = document.getElementById('processingOverlay');
+        if (processingOverlay) {
+            processingOverlay.classList.add('active');
+        }
+    }
+
+    function showDoneAndReload() {
+        const processingOverlay = document.getElementById('processingOverlay');
+        if (processingOverlay) {
+            processingOverlay.classList.add('done');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.addEventListener('submit', function () {
+                showProcessingOverlay();
+            });
+        });
+
+        // Impersonate Button Functionality
+        const impersonateButton = document.getElementById('impersonateButton');
+        const employeeListDropdown = document.getElementById('employeeListDropdown');
+        const employeeSearchInput = document.getElementById('employeeSearchInput');
+        const employeeItems = document.querySelectorAll('.employee-item');
+
+        if (impersonateButton && employeeListDropdown) {
+            // Toggle dropdown on button click
+            impersonateButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                employeeListDropdown.classList.toggle('active');
+                
+                // Focus search input when dropdown opens
+                if (employeeListDropdown.classList.contains('active') && employeeSearchInput) {
+                    setTimeout(() => {
+                        employeeSearchInput.focus();
+                    }, 100);
+                }
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!impersonateButton.contains(e.target) && !employeeListDropdown.contains(e.target)) {
+                    employeeListDropdown.classList.remove('active');
+                }
+            });
+
+            // Search functionality
+            if (employeeSearchInput) {
+                employeeSearchInput.addEventListener('input', function(e) {
+                    const searchTerm = e.target.value.toLowerCase().trim();
+                    
+                    employeeItems.forEach(item => {
+                        const employeeName = item.getAttribute('data-name') || '';
+                        if (employeeName.includes(searchTerm)) {
+                            item.classList.remove('hidden');
+                        } else {
+                            item.classList.add('hidden');
+                        }
+                    });
+                });
+            }
+
+            // Prevent dropdown from closing when clicking inside
+            employeeListDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+    });
+</script>
 </html>

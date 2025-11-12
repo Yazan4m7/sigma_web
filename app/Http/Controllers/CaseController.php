@@ -162,9 +162,9 @@ class CaseController extends Controller
         'SINTERING_START'    => 4.1,
         'SINTERING_COMPLETE' => 4.2,
         // Pressing (3 logs: SET, START, COMPLETE)
-        'PRESSING_SET'      => 5.0,
-        'PRESSING_START'    => 5.1,
-        'PRESSING_COMPLETE' => 5.2,
+        'PRESSING_SET'      => 5.1,
+        'PRESSING_START'    => 5.2,
+        'PRESSING_COMPLETE' => 5.3,
         // Delivery
         'DELIVERY_ASSIGN'   => 8.1,
         'DELIVERY_ACCEPT'   => 8.2,

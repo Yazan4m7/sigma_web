@@ -7,6 +7,7 @@
     left: 0 !important;
     height: 100% !important;
     z-index: 100 !important;
+    overflow: hidden !important;
 }
 
 .main-panel {
@@ -15,30 +16,95 @@
     width: calc(100% - 80px) !important;
 }
 
+/* Logo styling - Fixed positioning */
+.sidebar .logo-container {
+    height: 80px !important;
+    flex-shrink: 0 !important;
+    overflow: visible !important;
+}
+
 .sidebar .logo {
-    height: 80px; /* Adjust to match logo height */
+    position: relative !important;
+    padding: 15px !important;
+    text-align: center !important;
+    height: 80px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: visible !important;
+}
+
+.sidebar .logo a {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 50px !important;
+    width: 50px !important;
+}
+
+.sidebar .logo .logo-expanded {
     opacity: 0 !important;
     visibility: hidden !important;
     transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+    position: absolute !important;
+    max-width: 100% !important;
+    height: auto !important;
 }
 
+.sidebar .logo .logo-collapsed {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out !important;
+    max-width: 50px !important;
+    max-height: 50px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+}
+
+/* Navigation items - No movement */
 .sidebar .nav li {
-    height: 50px; /* Adjust to match item height */
+    position: relative !important;
+}
+
+.sidebar-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+}
+
+.sidebar .nav {
+    flex-grow: 1 !important;
+    /* overflow-y: auto !important; */
 }
 
 .sidebar .nav li a {
     display: flex !important;
     align-items: center !important;
+    padding: 10px 15px !important;
+    margin: 2px 15px !important;
+    border-radius: 4px !important;
+    transition: background 0.3s ease !important;
 }
 
+.sidebar .nav li:first-child a {
+    margin-top: 2px !important;
+}
+
+/* Icons - Fixed width and centered */
 .sidebar .nav li a i,
 .sidebar .nav li a .material-symbols-outlined {
-    flex-shrink: 0 !important;
-    margin-right: 15px !important;
     width: 30px !important;
     text-align: center !important;
+    flex-shrink: 0 !important;
+    margin-right: 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 
+/* Text - Hidden by default */
 .sidebar .nav li a span:not(.googleIconInSideBar) {
     opacity: 0 !important;
     visibility: hidden !important;
@@ -56,12 +122,274 @@
     width: calc(100% - 260px) !important;
 }
 
-.wrapper.sidebar-hover .sidebar .logo {
+.wrapper.sidebar-hover .sidebar .logo a {
+    width: 180px !important;
+    height: auto !important;
+}
+
+.wrapper.sidebar-hover .sidebar .logo .logo-expanded {
     opacity: 1 !important;
     visibility: visible !important;
+    position: static !important;
+    max-width: 180px !important;
+    width: 88% !important;
+}
+
+.wrapper.sidebar-hover .sidebar .logo .logo-collapsed {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    position: absolute !important;
 }
 
 .wrapper.sidebar-hover .sidebar .nav li a span {
     opacity: 1 !important;
     visibility: visible !important;
+}
+
+/* Pin Button Styling */
+.sidebar-pin-button {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 1100;
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.sidebar-pin-button i {
+    font-size: 16px;
+    color: #9ca3af;
+    transition: all 0.3s ease;
+}
+
+/* Show pin button when sidebar is expanded or pinned */
+.wrapper.sidebar-hover .sidebar-pin-button,
+.wrapper.sidebar-pinned .sidebar-pin-button {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hover effect on pin button */
+.sidebar-pin-button:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.sidebar-pin-button:hover i {
+    color: #6b7280;
+}
+
+/* Pinned state styling */
+.sidebar-pin-button.pinned i {
+    transform: rotate(45deg);
+    color: #10b981 !important;
+}
+
+.sidebar-pin-button.pinned:hover i {
+    color: #059669 !important;
+}
+
+/* Pinned State - Keep sidebar expanded */
+.wrapper.sidebar-pinned .sidebar {
+    width: 260px !important;
+}
+
+.wrapper.sidebar-pinned .main-panel {
+    margin-left: 260px !important;
+    width: calc(100% - 260px) !important;
+}
+
+.wrapper.sidebar-pinned .sidebar .logo a {
+    width: 180px !important;
+    height: auto !important;
+}
+
+.wrapper.sidebar-pinned .sidebar .logo .logo-expanded {
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;
+    max-width: 180px !important;
+    width: 88% !important;
+}
+
+.wrapper.sidebar-pinned .sidebar .logo .logo-collapsed {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    position: absolute !important;
+}
+
+.wrapper.sidebar-pinned .sidebar .nav li a span {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Responsive - Mobile Sidebar */
+@media (max-width: 991px) {
+    /* Hide sidebar by default on mobile */
+    .sidebar {
+        position: fixed !important;
+        left: -260px !important;
+        width: 260px !important;
+        height: 100vh !important;
+        top: 0 !important;
+        z-index: 1050 !important;
+        transition: left 0.35s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        will-change: left;
+    }
+
+    /* Show full sidebar when nav is open */
+    html.nav-open .sidebar {
+        left: 0 !important;
+    }
+
+    /* Always show expanded sidebar content on mobile */
+    .sidebar .logo a {
+        width: 180px !important;
+        height: auto !important;
+    }
+
+    .sidebar .logo .logo-expanded {
+        opacity: 1 !important;
+        visibility: visible !important;
+        position: static !important;
+        max-width: 180px !important;
+        width: 88% !important;
+    }
+
+    .sidebar .logo .logo-collapsed {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        position: absolute !important;
+    }
+
+    .sidebar .nav li a span:not(.googleIconInSideBar) {
+        opacity: 1 !important;
+        visibility: visible !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+
+    /* Main panel takes full width on mobile */
+    .main-panel {
+        margin-left: 0 !important;
+        width: 100% !important;
+        transition: transform 0.3s ease-in-out !important;
+    }
+
+    /* Don't push content on mobile, keep it in place */
+    html.nav-open .main-panel {
+        transform: none !important;
+    }
+
+    /* Hide pin button on mobile */
+    .sidebar-pin-button {
+        display: none !important;
+    }
+
+    /* Fix navbar z-index */
+    .navbar {
+        z-index: 1030 !important;
+    }
+
+    /* Prevent body scroll when sidebar is open */
+    html.nav-open body {
+        overflow: hidden !important;
+    }
+
+    /* Ensure sidebar scrolls independently */
+    .sidebar {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    .sidebar .sidebar-wrapper {
+        height: 100%;
+        overflow: visible !important;
+    }
+
+    /* Fix navigation to allow overflow for expandable menus */
+    .sidebar .nav {
+        overflow: visible !important;
+        flex-grow: 1 !important;
+        padding-bottom: 30px !important;
+    }
+
+    /* Fix collapsible menus in sidebar on mobile */
+    .sidebar .nav .collapse {
+        overflow: visible !important;
+        transition: max-height 0.3s ease !important;
+    }
+
+    .sidebar .nav .collapse.show {
+        max-height: none !important;
+        overflow: visible !important;
+    }
+
+    /* Ensure nested menu items are visible and properly styled */
+    .sidebar .nav .collapse ul.nav {
+        padding-left: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .sidebar .nav .collapse ul.nav li {
+        padding-left: 15px !important;
+    }
+
+    .sidebar .nav .collapse ul.nav li a {
+        padding-left: 45px !important;
+        font-size: 0.875rem !important;
+    }
+
+    /* Fix caret icons positioning */
+    .sidebar .nav li a .caret {
+        position: absolute !important;
+        right: 20px !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        transition: transform 0.2s ease !important;
+    }
+
+    /* Rotate caret when expanded */
+    .sidebar .nav li a[aria-expanded="true"] .caret {
+        transform: translateY(-50%) rotate(180deg) !important;
+    }
+
+    /* Make links easier to tap on mobile */
+    .sidebar .nav li a {
+        min-height: 44px !important;
+        padding: 12px 15px !important;
+        touch-action: manipulation !important;
+    }
+
+    /* Improve horizontal scrollbar */
+    .sidebar::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
 }

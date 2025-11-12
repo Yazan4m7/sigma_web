@@ -1,36 +1,29 @@
 
 <div class="sidebar">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,1,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,1,0" crossorigin="anonymous" />
 
     @php
         $permissions = Cache::get('user'.Auth()->user()->id);
     @endphp
     <div class="sidebar-wrapper">
         <!-- Logo Section -->
-        <div class="logo" style="padding: 20px 15px; text-align: center;">
-            <a href="{{ route('home') }}" class="simple-text logo-normal">
-                <img src="{{ asset('assets') }}/images/logo_horiz.svg" alt="SIGMA Logo" style="width: 88%; max-width: 180px; height: auto;" />
-            </a>
+        <div class="logo-container">
+            <div class="logo">
+                <!-- Pin Button - Outside the link -->
+                <button type="button" id="sidebar-pin-btn" class="sidebar-pin-button" title="Pin sidebar">
+                    <i class="fa fa-thumbtack"></i>
+                </button>
+
+                <a href="{{ route('home') }}" class="simple-text logo-normal">
+                    <img src="{{ asset('assets') }}/images/logo_horiz.svg" alt="SIGMA Logo" class="logo-expanded" />
+                    <img src="{{ asset('assets') }}/images/green.png" alt="SIGMA Logo Compact" class="logo-collapsed" />
+                </a>
+            </div>
         </div>
 
         <ul class="nav">
 
-                @if(($permissions && $permissions->contains('permission_id', 123)) || Auth()->user()->is_admin)
-                    <div class="homePageOptionInSideBar" style="padding:0;">
 
-                        <li class="{{Route::currentRouteName() == 'home' ? 'active' : ''}}" >
-                                                            <a style="
-                                    margin-right: 0px;
-                                    padding-right: 0px !important;
-                                     padding-left: 0px !important;
-                                " href="{{route('home')}}">
-                                <i class="fa-solid fa-house"></i>
-                                <span>Home Screen</span>
-                            </a>
-                            <hr style="border-color:#b4b4b4;margin-top: 0.5rem;margin-bottom: 0.5rem;">
-                    </div>
-
-                @endif
                     @if(($permissions && $permissions->contains('permission_id', 106)) || Auth()->user()->is_admin)
                         <div class="" style="padding:0" >
 

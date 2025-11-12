@@ -1,0 +1,145 @@
+/**
+ * ============================================================================
+ * SIDEBAR LAYOUT IMPROVEMENTS
+ * Applies the clean layout from exported sidebar to the main application
+ * Preserves existing sidebar colors
+ * ============================================================================
+ */
+
+/* ============================================================================
+   NAVIGATION MENU ITEMS - Spacing and Layout
+   ============================================================================ */
+
+.sidebar .nav > li > a,
+.sidebar .nav > div > li > a {
+    display: flex !important;
+    padding: 10px 15px !important;
+    margin: 2px 15px !important;
+    border-radius: 4px !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+}
+
+/* Hover state */
+.sidebar .nav > li > a:hover,
+.sidebar .nav > div > li > a:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #fff !important;
+}
+
+/* ============================================================================
+   ACTIVE MENU ITEM - Highlighted Selection
+   ============================================================================ */
+
+.sidebar .nav > li.active > a,
+.sidebar .nav > div > li.active > a {
+    background: rgb(255 255 255 / 29%) !important;
+    color: #fff !important;
+    box-shadow: 0;
+    border-radius: 0;
+    height: -webkit-fill-available;
+}
+
+/* ============================================================================
+   ICONS - Better Alignment and Spacing
+   ============================================================================ */
+
+.sidebar .nav i,
+.sidebar .nav .material-symbols-outlined {
+    font-size: 1.1rem !important;
+    margin-right: 10px !important;
+    width: 20px !important;
+    text-align: center !important;
+    color: inherit !important;
+}
+
+.sidebar .nav .googleIconInSideBar {
+    font-size: 1.3rem !important;
+    margin-right: 10px !important;
+}
+
+/* ============================================================================
+   TEXT - Font Styling and Spacing
+   ============================================================================ */
+
+.sidebar .nav span {
+    /* font-size: 0.875rem !important; */
+    /* font-weight: 400 !important; */
+    /* letter-spacing: 0.3px !important; */
+}
+
+/* ============================================================================
+   SUB-MENU (Dropdowns) - Reports, Accountancy, Configuration
+   ============================================================================ */
+
+.sidebar .nav .collapse .nav li a {
+    padding: 8px 15px 8px 35px !important;
+    font-size: 0.8125rem !important;
+    transition: all 0.3s ease !important;
+    border-radius: 4px !important;
+    margin: 1px 15px !important;
+}
+
+.sidebar .nav .collapse .nav li a:hover {
+    padding-left: 40px !important;
+}
+
+.sidebar .nav .collapse .nav li.active a {
+    color: #fff !important;
+    font-weight: 500 !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.sidebar .nav .collapse .nav li a i {
+    font-size: 0.875rem !important;
+    margin-right: 8px !important;
+}
+
+/* ============================================================================
+   NAVBAR - Title Styling
+   ============================================================================ */
+
+.navbar-brand {
+    font-size: 1.25rem !important;
+    font-weight: 500 !important;
+    color: #525f7f !important;
+}
+
+/* ============================================================================
+   HORIZONTAL RULES - Subtle Dividers
+   ============================================================================ */
+
+.sidebar hr {
+    border: 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin: 0.5rem 15px !important;
+}
+
+/* ============================================================================
+   SCROLLBAR - Cleaner Look
+   ============================================================================ */
+
+.sidebar .sidebar-wrapper::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.sidebar .sidebar-wrapper::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.sidebar .sidebar-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 3px !important;
+}
+
+.sidebar .sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* ============================================================================
+   LOGO SECTION - Border Bottom
+   ============================================================================ */
+
+.sidebar .logo {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}

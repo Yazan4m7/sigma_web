@@ -226,3 +226,50 @@
 
     }
 
+/* ============================================================================
+   SIGMA CASE ITEM RESPONSIVE - 2x2 Grid on Small Screens
+   ============================================================================ */
+
+/* Small screens (below 768px) - Make 2x2 grid */
+@media (max-width: 767px) {
+    .sigma-case-item .info-case-row {
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+
+    /* All columns become 50% width (2 per row) */
+    .sigma-case-item .info-case-row > div {
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding: 8px 12px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Top row: Doctor and Patient */
+    .sigma-case-item .info-case-row > div:nth-child(1),
+    .sigma-case-item .info-case-row > div:nth-child(2) {
+        border-bottom: 1px solid #eee;
+    }
+
+    /* Add some spacing between rows */
+    .sigma-case-item .info-case-row > div:nth-child(3),
+    .sigma-case-item .info-case-row > div:nth-child(4) {
+        padding-top: 8px !important;
+    }
+
+    /* Center the eye button */
+    .sigma-case-item .info-case-row > div:nth-child(4) {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+}
+
+/* Very small screens (below 480px) - More compact */
+@media (max-width: 479px) {
+    .sigma-case-item .info-case-row > div {
+        padding: 6px 8px !important;
+        font-size: 0.9rem !important;
+    }
+}
+

@@ -38,11 +38,11 @@
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
         flex: 0 0 auto;
         /* Don't grow, don't shrink, auto width */
-        min-width: 80px;
-        /* Minimum width for each tab */
-        max-width: 120px;
+        min-width: 65px;
+        /* Minimum width for each tab - reduced to fit 8 stages */
+        max-width: 95px;
         /* Maximum width to prevent too wide */
-        padding: 0.6rem 0.4rem !important;
+        padding: 0.5rem 0.3rem !important;
         /* Compact padding for horizontal */
         border-bottom: none !important;
         /* Remove vertical borders */
@@ -76,6 +76,33 @@
         /* Ensure it's below navigation */
         padding: 0.75rem 0.5rem !important;
         /* Reduced padding for mobile */
+        overflow: visible !important;
+        /* Prevent unwanted scrolling on mobile */
+        overflow-x: visible !important;
+        /* Prevent horizontal scrolling */
+        overflow-y: visible !important;
+        /* Prevent vertical scrolling */
+    }
+    
+    /* Prevent scrollable area in devices/tables on mobile */
+    .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] > * {
+        overflow: visible !important;
+        max-width: 100% !important;
+    }
+    
+    /* Ensure YSH containers don't cause scrolling */
+    .YSH-body,
+    .YSH-container,
+    .YSH-content {
+        overflow: visible !important;
+        max-width: 100% !important;
+    }
+    
+    /* Ensure tables don't cause scrolling */
+    .activeTable,
+    .waitingTable {
+        overflow: visible !important;
+        max-width: 100% !important;
     }
 
     /* Stage sidebar positioning */
@@ -89,20 +116,21 @@
         flex-direction: column !important;
         /* Stack icon and name vertically */
         align-items: center !important;
-        gap: 2px !important;
+        gap: 1px !important;
     }
 
     /* Stage names - show them on mobile in horizontal layout */
     .stageName {
         display: block !important;
         /* Override the display:none from existing CSS */
-        font-size: 0.7rem !important;
+        font-size: 0.65rem !important;
         /* Small text */
         white-space: nowrap;
         /* Don't wrap */
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 100%;
+        line-height: 1.1 !important;
     }
 
     /* Icon sizing for horizontal layout */
@@ -126,7 +154,7 @@
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
         font-size: 0.65rem !important;
-        padding: 0.15em 0.3em !important;
+        /* padding: 0.15em 0.3em !important; */
         margin: 0 !important;
     }
 }
@@ -136,16 +164,53 @@
  * More aggressive space optimization
  */
 @media (max-width: 359px) {
-    /* Even more compact tabs */
+    /* Even more compact tabs to fit 8 stages */
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
-        min-width: 70px !important;
-        max-width: 100px !important;
-        padding: 0.5rem 0.3rem !important;
+        min-width: 45px !important;
+        max-width: 60px !important;
+        padding: 0.4rem 0.2rem !important;
     }
 
     /* Smaller icons */
     .iconSpan > i {
-        font-size: 18px !important;
+        font-size: 16px !important;
+    }
+
+    .iconSpan > svg,
+    .millingIcon {
+        width: 0.9rem !important;
+        height: 0.9rem !important;
+    }
+
+    /* Even smaller stage names */
+    .stageName {
+        font-size: 0.55rem !important;
+    }
+
+    /* Tiny badges */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
+        font-size: 0.55rem !important;
+        padding: 0.1em 0.2em !important;
+    }
+}
+
+/*
+ * MEDIUM PHONES (360px - 575px)
+ * Slightly more space but still fit 8 stages
+ */
+@media (min-width: 360px) and (max-width: 575px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 50px !important;
+        max-width: 70px !important;
+        padding: 0.45rem 0.25rem !important;
+    }
+
+    .stageName {
+        font-size: 0.6rem !important;
+    }
+
+    .iconSpan > i {
+        font-size: 17px !important;
     }
 
     .iconSpan > svg,
@@ -153,57 +218,31 @@
         width: 1rem !important;
         height: 1rem !important;
     }
-
-    /* Even smaller stage names */
-    .stageName {
-        font-size: 0.65rem !important;
-    }
-
-    /* Tiny badges */
-    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
-        font-size: 0.6rem !important;
-        padding: 0.1em 0.25em !important;
-    }
-}
-
-/*
- * MEDIUM PHONES (360px - 575px)
- * Slightly more space
- */
-@media (min-width: 360px) and (max-width: 575px) {
-    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
-        min-width: 85px !important;
-        max-width: 110px !important;
-    }
-
-    .stageName {
-        font-size: 0.75rem !important;
-    }
 }
 
 /*
  * LARGE PHONES / SMALL TABLETS (576px - 767px)
- * More comfortable spacing
+ * More comfortable spacing - can fit 8 stages without scroll
  */
 @media (min-width: 576px) and (max-width: 767px) {
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
-        min-width: 95px !important;
-        max-width: 130px !important;
-        padding: 0.7rem 0.5rem !important;
+        min-width: 70px !important;
+        max-width: 95px !important;
+        padding: 0.55rem 0.35rem !important;
     }
 
     .stageName {
-        font-size: 0.8rem !important;
+        font-size: 0.7rem !important;
     }
 
     .iconSpan > i {
-        font-size: 22px !important;
+        font-size: 19px !important;
     }
 
     .iconSpan > svg,
     .millingIcon {
-        width: 1.3rem !important;
-        height: 1.3rem !important;
+        width: 1.2rem !important;
+        height: 1.2rem !important;
     }
 }
 
