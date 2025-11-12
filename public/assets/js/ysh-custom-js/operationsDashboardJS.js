@@ -1,7 +1,4 @@
 
-
-
-
 let deviceSelected = 0;
 let selectedCases = [];
 let currentModalId = 0;
@@ -353,53 +350,20 @@ function selectAll(ele, classname) {
 
 // Function to initialize DataTables safely
 var dataTableInitialized = false;
+var initializedTables = new Set();
 
 function initializeDataTables() {
     // Prevent multiple initialization attempts
-    if (dataTableInitialized) {
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
+        console.warn("jQuery or DataTables not loaded. Cannot initialize.");
         return;
     }
 
-    // Check if jQuery is available first
-    if (typeof $ === 'undefined') {
-        console.warn("jQuery is not loaded. Cannot initialize DataTables.");
-        return;
-    }
-
-    // Check if DataTables is available before trying to initialize
-    if (typeof $.fn.DataTable !== 'function') {
-        console.warn("DataTables plugin is not loaded. Tables will display without DataTable functionality.");
-        return;
-    }
-
-    // Mark as initialized to prevent duplicate attempts
-    dataTableInitialized = true;
-
-    // Use the optimized function
-    initializeVisibleTables();
-
-}
-
-// Optimized initialization with caching
-var initializedTables = new Set();
-
-function initializeVisibleTables() {
-    // ✅ Check if DataTables is available
-    if (typeof $.fn.DataTable === 'undefined') {
-        console.log('DataTables not yet loaded, retrying...');
-        setTimeout(initializeVisibleTables, 100); // retry after 100ms
-        return;
-    }
-
-    // 🗑️ This does nothing (should be removed)
-    // setTimeout(function(){}, 1000);
-
-    var tables = $('.sunriseTable');
-
-    tables.each(function() {
+    $('.sunriseTable').each(function() {
         var tableId = this.id || $(this).index();
-
-        if (initializedTables.has(tableId)) return;
+        if (initializedTables.has(tableId)) {
+            return; // Skip if already initialized
+        }
 
         var $table = $(this);
         var $parent = $table.closest('[role="tabpanel"]');
@@ -411,6 +375,21 @@ function initializeVisibleTables() {
             }
         }
     });
+}
+
+function forceInitializeAllTables() {
+    console.log("Forcing initialization of all DataTables...");
+    initializedTables.clear(); // Reset and re-initialize all
+    initializeDataTables();
+
+    // Verify initialization
+    let initializedCount = 0;
+    $('.sunriseTable').each(function() {
+        if ($.fn.DataTable.isDataTable(this)) {
+            initializedCount++;
+        }
+    });
+    console.log(`Verification: ${initializedCount} out of 12 tables are initialized.`);
 }
 
 
@@ -520,6 +499,10 @@ function initializeSingleTable(table) {
   //           lengthMenu: [[25, 50, 100], [25, 50, 100]]
         });
 
+        $table.on('responsive-resize', function (e, datatable, columns) {
+            dataTable.columns.adjust().draw(false);
+        });
+
         $table.addClass("nowrap hover compact stripe");
 
         // Adjust column widths after initialization
@@ -532,24 +515,9 @@ function initializeSingleTable(table) {
     }
 }
 
-// Single efficient initialization approach
-$(document).ready(function () {
-    // Wait for tabs to be visible before initializing DataTables
-    setTimeout(function() {
-        initializeVisibleTables();
-
-        // Re-initialize when tab changes
-        $('[role="tab"]').on('click', function() {
-            setTimeout(function() {
-                initializeVisibleTables();
-            }, 150);
-        });
-    }, 600);
-});
-
 // Export function globally so it can be called from blade templates
-window.initializeVisibleTables = initializeVisibleTables;
-window.initializeSingleTable = initializeSingleTable;
+window.initializeDataTables = initializeDataTables;
+window.forceInitializeAllTables = forceInitializeAllTables;
 
 // ESC key handler for dialog dismissal
 document.addEventListener('keydown', function(event) {
@@ -568,18 +536,37 @@ try {
     $(".macaw-aurora-tabs").macawTabs({
         autoVerticalOrientation: true,
         tabPanelTransitionLogic: true,
-        tabPanelTransitionTimeoutDuration: 10
+        tabPanelTransitionTimeoutDuration: 10,
+        onTabActivation: function() {
+            forceInitializeAllTables();
+        }
     });
 
     // Nested Tabs
     $(".macaw-silk-tabs").macawTabs({
         autoVerticalOrientation: false,
+        onTabActivation: function() {
+            forceInitializeAllTables();
+        }
     });
 
 
 } catch (e) {
     console.error("Error initializing tabs:", e);
 }
+
+// Add direct click listeners to tab buttons
+$(document).ready(function() {
+    // Outer tabs
+    $('.stageSidebar button[role="tab"]').on('click', function() {
+        forceInitializeAllTables();
+    });
+
+    // Inner tabs
+    $('.macaw-silk-tabs [role="tab"]').on('click', function() {
+        forceInitializeAllTables();
+    });
+});
 
 // Original document ready code continues below...
 
@@ -704,6 +691,9 @@ $(document).ready(function () {
 
     // Initial layout adjustment
     adjustDialogLayout();
+    
+    // Initialize tables on page load
+    initializeDataTables();
 });
 
 function adjustDialogLayout() {

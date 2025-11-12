@@ -1,4 +1,5 @@
 @extends('layouts.app', ['pageSlug' => config('site_vars.labWorkFlowLabel')])
+
 @php
     // Load global configuration
     $deviceConfig = config('app_config.device_images', [
@@ -713,6 +714,7 @@
     @endphp
         <!-- Begin .site-wrapper -->
     <div class="site-wrapper">
+    <button onclick="forceInitializeAllTables()" style="position: fixed; bottom: 10px; left: 10px; z-index: 9999;" class="btn btn-danger">Init Tables</button>
         <!-- Begin waiting milling dialog -->
         <!-- Begin Main -->
         <main style="background-color: white">

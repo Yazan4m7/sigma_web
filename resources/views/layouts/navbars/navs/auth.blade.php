@@ -459,7 +459,7 @@ $permissions = safe_permissions();
                     <div class=" logo-col noPadOnMobile" style="position: relative; z-index: 1050;">
                         <div class="" style="display: flex; align-items: center; gap: 10px;">
                             <div class="navbar-toggle d-inline d-lg-none">
-                                <button type="button" class="navbar-toggler ">
+                                <button type="button" class="navbar-toggler" id="sidebar-hamburger">
                                     <span class="navbar-toggler-bar bar1"></span>
                                     <span class="navbar-toggler-bar bar2"></span>
                                     <span class="navbar-toggler-bar bar3"></span>

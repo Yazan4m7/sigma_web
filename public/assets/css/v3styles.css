@@ -643,10 +643,10 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 .YSH-image-wrapper img {
     display: block;
-    width: auto;
+    /* width: auto; */
     /*height: 282px; !* Increased by 25% from 180px *!*/
     /*max-height: 275px; !* Increased by 25% from 220px *!*/
-    object-fit: cover;
+    /* object-fit: cover; */
     transition: transform 0.6s ease, filter 0.3s ease;
     filter: drop-shadow(0 10px 8px rgba(0, 0, 0, 0.2));
 }

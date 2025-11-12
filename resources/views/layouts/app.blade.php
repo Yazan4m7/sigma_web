@@ -272,6 +272,7 @@
     {{--    </div>--}}
     <div class="wrapper" {{--onload="myFunction()"--}}>
         @include('layouts.navbars.leftsidebar')
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <div class="main-panel">
             @include('layouts.navbars.navbar')

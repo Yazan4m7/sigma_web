@@ -48,3 +48,38 @@
     0% { opacity: 0.5; }
     100% { opacity: 1; }
 }
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 990px) {
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 230px;
+    transform: translateX(-100%);
+    transition: transform 0.34s cubic-bezier(0.4,0,0.2,1);
+    z-index: 1051;
+  }
+  body.sidebar-expanded .sidebar,
+  .wrapper.sidebar-expanded .sidebar {
+    transform: translateX(0);
+    z-index: 1051;
+    /* Optional: add box-shadow or effect for visible sidebar */
+  }
+  .sidebar.sidebar-sliding-out {
+    transform: translateX(-100%);
+    z-index: 1051;
+  }
+  body.sidebar-expanded .sidebar-overlay,
+  .wrapper.sidebar-expanded .sidebar-overlay,
+  body.sidebar-open .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.33);
+    z-index: 1040;
+    transition: opacity 0.15s;
+  }
+}

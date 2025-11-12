@@ -65,9 +65,9 @@
                 @if(($permissions && $permissions->contains('permission_id', 109)) || Auth()->user()->is_admin)
                     <li class="{{Route::currentRouteName() == 'delivery-schedule' ? 'active' : ''}}"><a href="{{route('delivery-schedule')}}"> <i class="fa-regular fa-clock"></i> <span>Delivery Schedule</span></a>
                 @endif
-                @if(($permissions && $permissions->contains('permission_id', 9)) || Auth()->user()->is_admin)
-                    <li class="{{Route::currentRouteName() == 'deli-cases-accountant-index' ? 'active' : ''}}"><a href="{{route('deli-cases-accountant-index')}}"><i class="fa fa-car" aria-hidden="true"></i><span>Delivery Monitor</span></a></li>
-                @endif
+{{--                @if(($permissions && $permissions->contains('permission_id', 9)) || Auth()->user()->is_admin)--}}
+{{--                    <li class="{{Route::currentRouteName() == 'deli-cases-accountant-index' ? 'active' : ''}}"><a href="{{route('deli-cases-accountant-index')}}"><i class="fa fa-car" aria-hidden="true"></i><span>Delivery Monitor</span></a></li>--}}
+{{--                @endif--}}
                 @if(($permissions && $permissions->contains('permission_id', 125)) || Auth()->user()->is_admin)
                     <li class="{{Route::currentRouteName() == 'abutments-delivery-index' ? 'active' : ''}}"><a href="{{route('abutments-delivery-index')}}"><i class="fa-solid fa-bullseye"></i><span>Abutments Delivery</span></a></li>
                 @endif
