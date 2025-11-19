@@ -646,12 +646,9 @@ class ReportsController extends Controller
                           $q->where('stage', '!=', -1);
                       });
             } elseif ($completionStatus === 'in_progress') {
-                // In-progress cases: at least one job NOT at stage -1 OR actual_delivery_date is null
-                $query->where(function($q) {
-                    $q->whereNull('actual_delivery_date')
-                      ->orWhereHas('jobs', function($jobQ) {
-                          $jobQ->where('stage', '!=', -1);
-                      });
+                // In-progress cases: at least one job NOT at stage -1
+                $query->whereHas('jobs', function($jobQ) {
+                    $jobQ->where('stage', '!=', -1);
                 });
             }
             // 'all' - no filter applied
@@ -668,17 +665,17 @@ class ReportsController extends Controller
                       ->whereDoesntHave('jobs', function($q) {
                           $q->where('stage', '!=', -1);
                       });
-            } else {
-                // Numeric stages only (1-8)
-                $stages = array_filter($statuses, function($status) {
-                    return is_numeric($status);
+            }
+
+            // Numeric stages only (1-8)
+            $stages = array_filter($statuses, function($status) {
+                return is_numeric($status);
+            });
+            if (!empty($stages)) {
+                // Cases that have at least one job in any of the selected stages
+                $query->whereHas('jobs', function($q) use ($stages) {
+                    $q->whereIn('stage', $stages);
                 });
-                if (!empty($stages)) {
-                    // Cases that have at least one job in any of the selected stages
-                    $query->whereHas('jobs', function($q) use ($stages) {
-                        $q->whereIn('stage', $stages);
-                    });
-                }
             }
         }
 
@@ -709,11 +706,12 @@ class ReportsController extends Controller
         }
 
         // Employee filters (filter by case logs based on stage)
-        if ($request->filled('employees')) {
-            foreach ($request->employees as $filter) {
-                if (isset($filter['stage']) && isset($filter['employee_id'])) {
-                    $stage = $filter['stage'];
-                    $employeeId = $filter['employee_id'];
+        $employeeFilters = $request->input('employee_filters', $request->input('employees', []));
+        if (!empty($employeeFilters)) {
+            foreach ($employeeFilters as $filter) {
+                $stage = $filter['stage'] ?? null;
+                $employeeId = $filter['employee_id'] ?? $filter['employee'] ?? null;
+                if ($stage && $employeeId) {
 
                     // Map stage names to stage numbers
                     $stageMap = [
@@ -740,11 +738,12 @@ class ReportsController extends Controller
         }
 
         // Device filters (devices are linked through builds, not directly on jobs)
-        if ($request->filled('devices')) {
-            foreach ($request->devices as $filter) {
-                if (isset($filter['stage']) && isset($filter['device_id'])) {
-                    $stage = $filter['stage'];
-                    $deviceId = $filter['device_id'];
+        $deviceFilters = $request->input('device_filters', $request->input('devices', []));
+        if (!empty($deviceFilters)) {
+            foreach ($deviceFilters as $filter) {
+                $stage = $filter['stage'] ?? $filter['type'] ?? null;
+                $deviceId = $filter['device_id'] ?? $filter['device'] ?? null;
+                if ($stage && $deviceId) {
 
                     // Stage mapping to device type
                     $stageMap = [

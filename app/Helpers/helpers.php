@@ -9,7 +9,7 @@ if (!function_exists('safe_permissions')) {
 
         // If user is not logged in, redirect immediately
         if (!$user) {
-            redirect()->route('login')->send();
+            redirect()->route('login-attempt')->send();
             exit;
         }
 
@@ -19,7 +19,7 @@ if (!function_exists('safe_permissions')) {
         // If permissions not found, force logout and redirect
         if (!$permissions) {
             Auth::logout();
-            redirect()->route('login')->send();
+            redirect()->route('login-attempt')->send();
             exit;
         }
 

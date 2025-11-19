@@ -34,6 +34,7 @@ use App\caseLog;
 use App\User;
 use App\lab;
 use App\editLog;
+use App\Services\AuditLogger;
 
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
@@ -415,6 +416,19 @@ class CaseController extends Controller
 
         //DB::rollBack();
         DB::commit();
+
+        AuditLogger::log(
+            'case_created',
+            $case,
+            [
+                'case_id' => $case->id,
+                'case_number' => $case->case_id,
+                'doctor_id' => $case->doctor_id,
+                'job_count' => $case->jobs()->count(),
+            ],
+            sprintf('Case %s created', $case->case_id)
+        );
+
         return redirect('operations-dashboard')->with('success', "Case Saved Successfully!");
 //        return redirect('operations-dashboard');
 //        return back()->with('success', "Case Saved Successfully!");
@@ -635,6 +649,19 @@ class CaseController extends Controller
                 $this->reflectCaseChanges($request->id);
                 $debug = "invoice updated";
             }
+
+            $case->refresh();
+            AuditLogger::log(
+                'case_updated',
+                $case,
+                [
+                    'case_id' => $case->id,
+                    'case_number' => $case->case_id,
+                    'doctor_id' => $case->doctor_id,
+                ],
+                sprintf('Case %s updated', $case->case_id)
+            );
+
             return back()->with('success', 'Case has been updated successfully ');
         } else {
             return back()->with('error', 'Something went wrong');
@@ -879,12 +906,14 @@ class CaseController extends Controller
                     return $case->jobs->where('stage', 5)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aFinishing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 6)->whereNotNull('assignee')->isNotEmpty();
+                // Non-admin users only see their own assigned active cases in Finishing stage
+                $aFinishing = $allCases->filter(function ($case) use ($currentUserId) {
+                    return $case->jobs->where('stage', 6)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aQC = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 7)->whereNotNull('assignee')->isNotEmpty();
+                // Non-admin users only see their own assigned active cases in QC stage
+                $aQC = $allCases->filter(function ($case) use ($currentUserId) {
+                    return $case->jobs->where('stage', 7)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
                 $aDelivery = $allCases->filter(function ($case) use ($currentUserId) {
@@ -1085,6 +1114,7 @@ class CaseController extends Controller
     public function assignToMe($caseId, $stage, $returnMessages = true)
     {
         $jobs = job::where("case_id", $caseId)->where("stage", $stage)->whereNull('assignee')->get();
+        $assignmentsCount = $jobs->count();
         if (!$jobs) return $this->getAssignmentRedirect()->with('error', 'Case has no jobs, add jobs first.');
         foreach ($jobs as $job) {
             if ($stage != 2 && $stage != 3)
@@ -1103,6 +1133,28 @@ class CaseController extends Controller
         if ($stage == 8) { $logStage = $this->stageActions['DELIVERY_ASSIGN']; }
         $log = new caseLog(['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $logStage, 'is_completion' => $isCompletion]);
         $log->save();
+
+        if ($assignmentsCount > 0) {
+            if ($case = sCase::find($caseId)) {
+                AuditLogger::log(
+                    'case_assigned',
+                    $case,
+                    [
+                        'case_id' => $case->id,
+                        'case_number' => $case->case_id,
+                        'stage' => $stage,
+                        'jobs_assigned' => $assignmentsCount,
+                    ],
+                    sprintf(
+                        'Case %s assigned to %s for stage %s',
+                        $case->case_id ?? $case->id,
+                        $this->describeUser(),
+                        $stage
+                    )
+                );
+            }
+        }
+
         if ($returnMessages)
             return $this->getAssignmentRedirect()->with('success', "Case has been assigned to you!");
     }
@@ -1648,21 +1700,23 @@ class CaseController extends Controller
 
     public function deliverySchedule(Request $request)
     {
+        $query = sCase::with([
+            'client:id,name',
+            'jobs:id,case_id,unit_num,material_id,stage'
+        ])
+            ->where('delivered_to_client', '=', 0)
+            ->orderBy('cases.initial_delivery_date', 'ASC');
+
         if ($request->from && $request->to) {
             $data['from'] = $request->from;
             $data['to'] = $request->to;
-            $cases = sCase::with('client')->whereBetween(
-                'initial_delivery_date', array($data['from'], $data['to']))
-                ->where('delivered_to_client', '=', 0)
-                ->orderBy('cases.initial_delivery_date', 'ASC')->get();
         } else {
             $data['from'] = today()->subDays(356)->toDateString() . ' 00:00';
             $data['to'] = today()->addDays(1)->toDateString() . ' 23:59';
-            $cases = sCase::with('client')->whereBetween(
-                'initial_delivery_date', array($data['from'], $data['to']))
-                ->where('delivered_to_client', '=', 0)
-                ->orderBy('cases.initial_delivery_date', 'ASC')->get();
         }
+
+        $cases = $query->whereBetween('initial_delivery_date', [$data['from'], $data['to']])->get();
+
         return view('delivery.delivery-schedule', compact('cases', 'data'));
     }
 
@@ -1707,6 +1761,8 @@ class CaseController extends Controller
     {
         $case = sCase::where('id', $id)->first();
         DB::beginTransaction();
+        $caseNumber = $case->case_id ?? $id;
+        $doctorId = $case->doctor_id ?? null;
         $case->jobs()->delete();
         $case->notes()->delete();
         $case->photos()->delete();
@@ -1717,6 +1773,20 @@ class CaseController extends Controller
         caseLog::where('case_id', $id)->delete();
 
         DB::commit();
+
+        AuditLogger::log(
+            'case_deleted',
+            [
+                'type' => sCase::class,
+                'id' => $id,
+            ],
+            [
+                'case_id' => $id,
+                'case_number' => $caseNumber,
+                'doctor_id' => $doctorId,
+            ],
+            sprintf('Case %s deleted', $caseNumber)
+        );
 
         return back()->with('success', 'Case and all its information deleted successfully.');
     }
@@ -1762,6 +1832,7 @@ class CaseController extends Controller
     {
         $case = sCase::findOrFail($caseId);
         $case->update(['locked' => 1]);
+        $this->createTag($case, 16);
         return back()->with('success', 'Case locked successfully.');
 
     }
@@ -2314,5 +2385,35 @@ class CaseController extends Controller
                 'message' => 'Error getting material types: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    protected function describeUser(?User $user = null): string
+    {
+        $user = $user ?? Auth()->user();
+
+        if (!$user) {
+            return 'system';
+        }
+
+        if (!empty($user->name_initials)) {
+            return $user->name_initials;
+        }
+
+        $parts = array_filter([
+            $user->first_name ?? null,
+            $user->last_name ?? null,
+        ]);
+
+        $fullName = trim(implode(' ', $parts));
+
+        if ($fullName !== '') {
+            return $fullName;
+        }
+
+        if (!empty($user->username)) {
+            return $user->username;
+        }
+
+        return (string) $user->id;
     }
 }

@@ -684,38 +684,37 @@
             ],
         ];
         if (!Auth()->user()->is_admin) {
-            if (!$permissions->contains('permission_id', 1)) {
+            if (!($permissions && $permissions->contains('permission_id', 1))) {
                 unset($stages['design']);
             }
-            if (!$permissions->contains('permission_id', 2)) {
+            if (!($permissions && $permissions->contains('permission_id', 2))) {
                 unset($stages['milling']);
             }
-            if (!$permissions->contains('permission_id', 3)) {
+            if (!($permissions && $permissions->contains('permission_id', 3))) {
                 unset($stages['3dprinting']);
             }
-            if (!$permissions->contains('permission_id', 4)) {
+            if (!($permissions && $permissions->contains('permission_id', 4))) {
                 unset($stages['sintering']);
             }
-            if (!$permissions->contains('permission_id', 5)) {
+            if (!($permissions && $permissions->contains('permission_id', 5))) {
                 unset($stages['pressing']);
             }
-            if (!$permissions->contains('permission_id', 6)) {
+            if (!($permissions && $permissions->contains('permission_id', 6))) {
                 unset($stages['finishing']);
             }
-            if (!$permissions->contains('permission_id', 7)) {
+            if (!($permissions && $permissions->contains('permission_id', 7))) {
                  unset($stages['qc']);
                  unset($stages['QC']);
                   unset($stages['Qc']);
             }
-            if (!$permissions->contains('permission_id', 8)) {
+            if (!($permissions && $permissions->contains('permission_id', 8))) {
                 unset($stages['delivery']);
             }
         }
     @endphp
         <!-- Begin .site-wrapper -->
     <div class="site-wrapper">
-    <button onclick="forceInitializeAllTables()" style="position: fixed; bottom: 10px; left: 10px; z-index: 9999;" class="btn btn-danger">Init Tables</button>
-        <!-- Begin waiting milling dialog -->
+      <!-- Begin waiting milling dialog -->
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->

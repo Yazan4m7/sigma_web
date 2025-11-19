@@ -7,6 +7,215 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
     <style>
+        :root {
+            --surface-bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --border-muted: #e3e8f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+            --accent: #1b6ef3;
+            --accent-soft: rgba(27, 110, 243, 0.15);
+        }
+
+        .create-case-page {
+            background: #1f46a900;
+            border-radius: 18px;
+            padding: 1rem 2rem 2rem 2rem;
+            margin-top: 1rem;
+        }
+
+        .form-section-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-muted);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-header h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+
+        .form-section-card label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-control,
+        textarea.form-control,
+        .selectpicker,
+        .bootstrap-select .btn {
+            border-radius: 10px;
+            border: 1px solid var(--border-muted);
+            box-shadow: none !important;
+            min-height: 44px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .form-control:focus,
+        textarea.form-control:focus,
+        .bootstrap-select .btn:focus,
+        .bootstrap-select .btn:active,
+        .bootstrap-select.open>.dropdown-toggle {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
+            outline: none !important;
+        }
+
+        .slctUnitsBtn,
+        .btn-primary,
+        .btn-success {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+            color: #fff !important;
+            border-radius: 999px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 0.6rem 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .slctUnitsBtn:hover,
+        .btn-primary:hover,
+        .btn-success:hover {
+            background: #1553b7 !important;
+            border-color: #1553b7 !important;
+        }
+
+        .repeater .row-item {
+            border-radius: 16px;
+            border: 1px solid var(--border-muted);
+            padding: 1rem;
+            margin-bottom: 1rem;
+
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+        }
+
+        .mandatorySmallTag {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .deleteBtn,
+        .deleteBtn2 {
+            border-radius: 12px;
+            border: 1px solid transparent;
+            background: #fef2f2;
+            color: #b91c1c;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .deleteBtn:hover,
+        .deleteBtn2:hover {
+            background: #fee2e2;
+            color: #7f1d1d;
+        }
+
+        input[type="file"].form-control {
+            padding: 0.4rem 0.75rem;
+            height: auto;
+        }
+
+        .toggle-discount {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-switch input:checked+.switch-slider {
+            background-color: var(--accent);
+        }
+
+        .toggle-switch input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .discountPortion {
+            border: 1px solid var(--border-muted);
+            border-radius: 16px;
+            padding: 1rem;
+            background: #f9fafc;
+        }
+
+        .verticalSpacing {
+            margin-top: 1.5rem;
+        }
+
+        .primary-submit {
+            width: 100%;
+            max-width: 320px;
+            margin: 40px auto 10px;
+            display: block;
+            font-size: 1rem;
+            padding: 0.85rem 2.5rem;
+            border-radius: 999px;
+            box-shadow: 0 18px 35px rgba(27, 110, 243, 0.35);
+        }
+
         /* ============================================
            TEETH PICKER DIALOG - SAVE BUTTON STYLING
            ============================================ */
@@ -51,7 +260,17 @@
             background-color: #5a6268 !important;
             border-color: #5a6268 !important;
         }
-
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #ffffff00;
+            background-clip: border-box;
+            border: 0.0625rem solid rgba(34, 42, 66, 0.05);
+            border-radius: 1.2857rem;
+        }
         @media screen and (max-width: 991px) {
             .modal-content .modal-footer button {
                 margin: 15px;
@@ -140,7 +359,7 @@
         }
 
         img {
-            max-width: unset;
+            max-height: unset;
         }
 
         @media (min-width: 576px) {
@@ -172,6 +391,7 @@
 
 
     </style>
+    <div class="create-case-page">
 
 
 
@@ -185,13 +405,15 @@
 
     <div class="card">
         @if (config('site_vars.environment') == 'testing')
-            <form style="padding:0px" class="kt-form" method="POST" enctype="multipart/form-data"
+            <form style="padding:0" class="kt-form" method="POST" enctype="multipart/form-data"
                 action="{{ route('create-and-send-case-to') }}">
             @else
                 <form style="padding:10px" class="kt-form" method="POST" enctype="multipart/form-data"
                     action="{{ route('new-case-post') }}">
         @endif
         @csrf
+
+        <div class="form-section-card ">
         <div class="portlet__head">
             <div class="portlet__head-label">
                 <h5 class="portlet__head-title">
@@ -200,124 +422,125 @@
                 </h5>
             </div>
         </div>
-        <hr>
-        <!-- ORDER INFO -->
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
+
+
+        <div class=" ">
+            <div>
+                <p class="section-subtitle">Case Details</p>
+                <h5>Order Information</h5>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
+                    </div>
+                    <div class="col-md-12 col-xs-12 padding5px">
+
+                        <div class="dropdown">
+                            <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
+                                title="Select a doctor" data-tap-disabled="true">
+
+
+                                @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <small class="mandatorySmallTag">* Mandatory</small>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-12 col-xs-12 padding5px">
-
-                    <div class="dropdown">
-                        <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
-                            title="Select a doctor" data-tap-disabled="true">
-
-
-                            @foreach ($doctors as $doctor)
-                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                            @endforeach
-
-                        </select>
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
+                            name:</label></div>
+                    <div class="col-md-12 col-xs-12 ">
+                        <input class="form-control blueTBBorder" type="text" name="patient_name" required />
                         <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
-                        name:</label></div>
-                <div class="col-md-12 col-xs-12 ">
-                    <input class="form-control blueTBBorder" type="text" name="patient_name" required />
-                    <small class="mandatorySmallTag">* Mandatory</small>
-                </div>
-            </div>
-            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
-                        ID:</label></div>
-                <div class="col-md-12 col-xs-12">
+                <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
+                            ID:</label></div>
+                    <div class="col-md-12 col-xs-12">
 
-                    <label>{{ Auth()->user()->id . '_' . now()->format('Y') }}</label>
-                    <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
-                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ now()->format('m') }}" required />
-                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ now()->format('d') }}" required />
-                    <label>_</label>
-                    <input name="caseId4" placeholder="0000"
-                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
-                        type="text" required />
-                    <small class="mandatorySmallTag">* Mandatory</small>
+                        <label>{{ Auth()->user()->id . '_' . now()->format('Y') }}</label>
+                        <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
+                        <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                            type="text" value="{{ now()->format('m') }}" required />
+                        <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                            type="text" value="{{ now()->format('d') }}" required />
+                        <label>_</label>
+                        <input name="caseId4" placeholder="0000"
+                            style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
+                            type="text" required />
+                        <small class="mandatorySmallTag">* Mandatory</small>
+                    </div>
+
                 </div>
 
+
             </div>
 
+
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression
+                            Type:</label></div>
+                    <div class="col-md-12 col-xs-12"><select class="form-control" name="impression_type" type="text"
+                            data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
+                            @foreach ($impressionTypes as $impression)
+                                <option value="{{ $impression->id }}">
+                                    {{ $impression->name }}
+                                </option>
+                            @endforeach
+
+                        </select></div>
+                </div>
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
+                            Date:</label></div>
+                    @php
+                        $time = new DateTime('tomorrow 13:00');
+                        // $time = $time->format("Y-m-d\TH:i");
+                        $time = $time->format('d M, Y h:i a');
+                    @endphp
+
+                    <div class="col-md-12 col-xs-12">
+                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"
+                            required readonly />
+                        <small class="mandatorySmallTag">* Mandatory</small>
+                    </div>
+                </div>
+                <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <select class="select selectpicker greyBG" name="tags[]" multiple data-mdb-placeholder="Tags">
+                            @foreach ($tags as $tag)
+                                <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+            </div>
 
         </div>
 
+            <div class="section-divider"></div>
 
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression
-                        Type:</label></div>
-                <div class="col-md-12 col-xs-12"><select class="form-control" name="impression_type" type="text"
-                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
-                        @foreach ($impressionTypes as $impression)
-                            <option value="{{ $impression->id }}">
-                                {{ $impression->name }}
-                            </option>
-                        @endforeach
 
-                    </select></div>
-            </div>
-            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
-                        Date:</label></div>
-                @php
-                    $time = new DateTime('tomorrow 13:00');
-                    // $time = $time->format("Y-m-d\TH:i");
-                    $time = $time->format('d M, Y h:i a');
-                @endphp
-
-                <div class="col-md-12 col-xs-12">
-                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"
-                        required readonly />
-                    <small class="mandatorySmallTag">* Mandatory</small>
-                </div>
-            </div>
-            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
-                <div class="col-md-12 col-xs-12">
-                    <select class="select selectpicker greyBG" name="tags[]" multiple data-mdb-placeholder="Tags">
-                        @foreach ($tags as $tag)
-                            <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                </div>
-            </div>
         </div>
-        <div class="verticalSpacing"></div>
+            <!--REPEATER -->
 
-        <!-- JOB INFO ICON-->
-
-
-        <div class="portlet__head">
-            <div class="portlet__head-label">
-                <h5 class="portlet__head-title">
-                    <i class="fa-solid fa-boxes-stacked" style="height:3%;color:inherit"></i> Jobs
-                    information
-                </h5>
-            </div>
-        </div>
-        <hr>
-        <!-- JOBS REPEATER -->
-        <div id="" style="" class="repeater jobsRepeater">
-            <div data-repeater-list="repeat">
-                <div data-repeater-item class="jobRow">
-                    <div class="form-group form-group ">
-                        <div data-repeater-list="repeat" class="col-12 padding5px">
-                            <div data-repeater-item class="form-group row align-items-center row-item"
-                                style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
+            <div class="form-section-card">
+                <p class="section-subtitle">Production</p>
+                <h5>Jobs Information</h5>
+                <div id="" style="" class="repeater jobsRepeater">
+                    <div data-repeater-list="repeat">
+                        <div data-repeater-item class="jobRow">
+                            <div class="form-group form-group ">
+                                <div data-repeater-list="repeat" class="col-12 padding5px">
+                                    <div data-repeater-item class="form-group row align-items-center row-item">
 
 
                                 <div class="col-md-2">
@@ -483,7 +706,7 @@
                                                     </div>
                                                     <div class="col-md-1">
                                                         <button data-repeater-delete class="btn deleteBtn2 btn-sm"
-                                                            type="button" value="Delete" style=""><i
+                                                            type="button" value="Delete" style=""><span><i
                                                                 class="fa fa-trash " style=""></i></span>
                                                         </button>
                                                     </div>
@@ -506,25 +729,40 @@
                 </div>
 
             </div>
-            <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
-                <i class="fa fa-plus-square" style="color:white"></i> Add
-            </a>
-            <div class="verticalSpacing"></div>
-            <!-- DISCOUNTS SECTION -->
+            <div class="text-left">
+                <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
+                    <i class="fa fa-plus-square" style="color:white"></i> Add Job
+                </a>
+            </div>
+        </div>
+            </div>
+
+            </div>
+        <div class="verticalSpacing"></div>
+
+
+
+
+
+
+
+
+
+        <!-- DISCOUNTS / NOTES / ATTACHMENTS -->
+        <div class="form-section-card form-section-stack">
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
-                        </h5>
-                    </div>
+                <div>
+                    <p class="section-subtitle">Billing</p>
+                    <h5>Discount</h5>
+                    <label class="toggle-discount mb-0">
+                        <span class="toggle-switch">
+                            <input type="checkbox" class="discountCB" name="discountCB"
+                                onclick='toggleDiscountPortion(this)' />
+                            <span class="switch-slider"></span>
+                        </span>
+                        Enable Discount
+                    </label>
                 </div>
-                <hr>
-                <label style="cursor: pointer">
-                    <input type="checkbox" class="discountCB" name="discountCB" onclick='toggleDiscountPortion(this)' />
-                    Make a Discount
-                </label>
-                <br>
                 <div class="form-group form-group row discountPortion" style="display:none">
                     <div class="col-md-3 col-xs-6">
                         <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)" />
@@ -535,40 +773,38 @@
                             placeholder="Explanation of discount" /></textarea>
                     </div>
                 </div>
-                <div class="verticalSpacing"></div>
+                <div class="section-divider"></div>
             @endif
 
-            <!-- NOTES SECTION -->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
-                        information
-                    </h5>
+            <div>
+                <p class="section-subtitle">Communication</p>
+                <h5>Additional Information</h5>
+                <div class="form-group form-group-last">
+                    <label for="exampleTextarea">Note</label>
+                    <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
                 </div>
             </div>
-            <hr>
-            <br>  <br>  <br>  <br>
-            <div class="form-group form-group-last">
-                <label for="exampleTextarea">Note</label>
-                <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
-            </div>
-            <div class="verticalSpacing"></div>
-            <!-- Attachments SECTION -->
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
-                    </h5>
+
+            <div class="section-divider"></div>
+
+            <div>
+                <p class="section-subtitle">References</p>
+                <h5>Attachments</h5>
+                <div class="form-group form-group-last">
+                    <input type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple
+                        style="cursor: pointer;">
                 </div>
             </div>
-            <hr>
-            <div class="form-group form-group-last">
-                <br>  <br>
-                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
-                    multiple style="cursor: pointer;">
-            </div>
+        </div>
+
+
+
+
+
+
+
+
+
 
             <br>
             @if (config('site_vars.environment') == 'testing')
@@ -589,14 +825,14 @@
                 </div>
             @endif
 
-
-        </div>
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
                             <button type="submit" class="btn btn-primary extraPadding" style="margin: 60px 5px 10px 5px">Submit</button>
 
                         </div>
                     </div>
+        </div>
+
         </form>
 
         <!-- TEETH PICK DIALOG -->
@@ -794,6 +1030,8 @@
 
 
 @endsection
+</div>
+
 @push('js')
     <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
     <script>

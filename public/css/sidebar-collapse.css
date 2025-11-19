@@ -12,7 +12,7 @@
 
 .main-panel {
     margin-left: 80px !important;
-    transition: margin-left 0.3s ease-in-out !important;
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
     width: calc(100% - 80px) !important;
 }
 
@@ -115,11 +115,12 @@
 /* Expanded State */
 .wrapper.sidebar-hover .sidebar {
     width: 260px !important;
+    box-shadow: none !important;
 }
 
 .wrapper.sidebar-hover .main-panel {
-    margin-left: 260px !important;
-    width: calc(100% - 260px) !important;
+        margin-left: 260px !important;
+        width: calc(100% - 260px) !important;
 }
 
 .wrapper.sidebar-hover .sidebar .logo a {

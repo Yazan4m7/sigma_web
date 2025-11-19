@@ -539,7 +539,7 @@ blueTBBorder{
     background-clip: border-box;
     border: 0.0625rem solid rgba(34, 42, 66, 0.05);
     border-radius: 0.2857rem;
-    background: white;
+    /* background: white; */
     height: fit-content !important;
 }
 .container{
@@ -556,7 +556,7 @@ blueTBBorder{
 
 /* Main box margin, for the sidebar and top banner*/
 .main-panel > .content {
-    padding: 25px;
+    /* padding: 25px; */
     margin: 78px 0 0 0;
     min-height: calc(100vh - 70px);
 }
@@ -600,7 +600,7 @@ blueTBBorder{
     }
 
     .main-panel .content {
-        margin-left: 8px;
+        /* margin-left: 8px; */
     }
 }
 /****************************************************/

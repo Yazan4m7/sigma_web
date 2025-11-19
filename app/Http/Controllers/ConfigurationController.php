@@ -143,7 +143,7 @@ class ConfigurationController extends Controller
             'two_factor_auth' => false,
             'session_timeout' => 120,
             'max_login_attempts' => 5,
-            'audit_logging' => false,
+            'audit_logging' => true,
         ];
 
         if (Storage::exists('config/site_config.json')) {

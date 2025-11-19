@@ -1220,7 +1220,7 @@
                 <label style="cursor: pointer">
                     <input type="checkbox" class="discountCB" name="discountCB" value="on"
                         {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                    Make a Discount {{ $discountExists }}
+                     <h3>Make a Discount</h3>
                 </label>
 
                 <br>

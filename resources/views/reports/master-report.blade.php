@@ -5,6 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/fixedcolumns/4.0.2/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
     <style>
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -253,6 +254,27 @@
             box-shadow: 0 2px 8px rgba(102, 126, 234, 0.15);
             transform: translateY(-1px);
         }
+        .filter-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .filter-pill.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .filter-pill.muted {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        .columns-dropdown .dropdown-menu {
+            transform: none !important;
+            transition: none !important;
+            right: 0 !important;
+            left: auto !important;
+        }
         .flatpickr-wrapper {
             position: relative;
             display: initial !important;
@@ -446,6 +468,16 @@
             z-index: 10 !important;
             /* FIX: Background must be applied for sticky to cover content */
             background-color: #408385 !important;
+        }
+
+        /* Disable manual sticky when FixedColumns is active (class added in JS) */
+        #master-report-table.using-fixed-columns thead th:nth-child(1),
+        #master-report-table.using-fixed-columns thead th:nth-child(2),
+        #master-report-table.using-fixed-columns tbody td:nth-child(1),
+        #master-report-table.using-fixed-columns tbody td:nth-child(2) {
+            position: static !important;
+            left: auto !important;
+            z-index: auto !important;
         }
 
         /* FIX: Removed rules for :nth-child(3) */
@@ -764,7 +796,7 @@
                                 <button type="button" class="modern-input" style="width: 100%; text-align: left; background: white; border: 1px solid #d1d5db; color: #374151; height: 36px; padding: 8px 12px; border-radius: 6px;" data-toggle="modal" data-target="#employeesFilterModal">
                                     Configure Employee Filters
                                 </button>
-                                <div id="employees-filter-summary" class="filter-summary" style="font-size: 12px; color: #6b7280; margin-top: 4px;">No employee filters applied</div>
+                                <div id="employees-filter-summary" class="filter-summary filter-pill muted" style="font-size: 12px; margin-top: 4px;">No employee filters applied</div>
                             </div>
                         </div>
 
@@ -778,7 +810,7 @@
                                 <button type="button" class="modern-input" style="width: 100%; text-align: left; background: white; border: 1px solid #d1d5db; color: #374151; height: 36px; padding: 8px 12px; border-radius: 6px;" data-toggle="modal" data-target="#devicesFilterModal">
                                     Configure Device Filters
                                 </button>
-                                <div id="devices-filter-summary" class="filter-summary" style="font-size: 12px; color: #6b7280; margin-top: 4px;">All devices included</div>
+                                <div id="devices-filter-summary" class="filter-summary filter-pill muted" style="font-size: 12px; margin-top: 4px;">All devices included</div>
                             </div>
                         </div>
 
@@ -821,9 +853,9 @@
     </div> @if($cases->count() > 0)
         <div class="modern-card" style="margin-top: 16px;">
             <div class="card-header" style="border-bottom: 1px solid #e2e8f0; padding: 12px 24px; background: white;">
-                <div class="d-flex justify-content-between align-items-center"> <h4 style="font-weight: 600; color: #1a202c; margin: 0;">Report Results</h4>
+                        <div class="d-flex justify-content-between align-items-center"> <h4 style="font-weight: 600; color: #1a202c; margin: 0;">Report Results</h4>
                     <div class="d-flex align-items-center gap-3">
-                        <div class="dropdown">
+                        <div class="dropdown columns-dropdown">
                             <button class="btn" type="button" id="columnVisibilityDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: white; border: 1px solid #e5e7eb; color: #374151; padding: 8px 16px; font-size: 13px; border-radius: 6px; transition: all 0.2s ease;">
                                 <i class="fas fa-columns" style="margin-right: 6px;"></i>
                                 Columns
@@ -843,7 +875,7 @@
                                     <label class="form-check-label" for="col-patient">Patient</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-material" data-column="3" checked>
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-material" data-column="3">
                                     <label class="form-check-label" for="col-material">Material</label>
                                 </div>
                                 <div class="form-check">
@@ -1096,7 +1128,7 @@
                     </tbody>
                     <tfoot>
                     <tr class="totals-row">
-                        <td colspan="21" class="text-right"><strong>Total Cases: {{$cases->count()}}</strong></td>
+                        <td colspan="20" class="text-right"><strong>Total Cases: {{$cases->count()}}</strong></td>
                         <td class="text-center"><strong>{{$cases->sum(function($case) { return abs($case->invoice->amount ?? 0); })}}</strong></td>
                         <td></td>
                     </tr>
@@ -1183,6 +1215,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
             <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
             <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+            <script src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
 
             <script>
                 // Initialize completion toggle
@@ -1190,6 +1223,7 @@
                     const $toggle = $('#completion_toggle');
                     const $hidden = $('#show_completed_hidden');
                     const currentValue = $toggle.attr('data-value') || 'all';
+                    $hidden.val(currentValue);
 
                     // Set initial active state
                     updateToggleState(currentValue);
@@ -1200,6 +1234,18 @@
                         $toggle.attr('data-value', value);
                         $hidden.val(value);
                         updateToggleState(value);
+                    });
+
+                    // Fallback: clicking the toggle cycles values
+                    $toggle.on('click', function(e) {
+                        // Ignore clicks that originated from an option span (handled above)
+                        if ($(e.target).hasClass('toggle-option')) return;
+                        const values = ['all', 'completed', 'in_progress'];
+                        const current = $toggle.attr('data-value') || 'all';
+                        const next = values[(values.indexOf(current) + 1) % values.length];
+                        $toggle.attr('data-value', next);
+                        $hidden.val(next);
+                        updateToggleState(next);
                     });
 
                     function updateToggleState(value) {
@@ -1576,12 +1622,15 @@
                         ],
                         pageLength: 25,
                         responsive: false,
-                        scrollX: false, // FIX: Set to false. Scrolling is handled by the CSS on .sigma-report-table-container
-                        scrollY: false,
-                        scrollCollapse: false,
+                        scrollX: true, // Let DataTables manage horizontal scroll for header/body sync
+                        scrollY: '60vh',
+                        scrollCollapse: true,
                         autoWidth: false,
                         order: [[0, 'asc']],
                         orderCellsTop: true,
+                        fixedColumns: {
+                            leftColumns: 2
+                        },
                         columnDefs: [
                             { targets: '_all', className: 'text-center' },
                             { targets: [0, 1], className: 'text-left' }, // FIX: Only first 2 columns are text-left
@@ -1612,12 +1661,16 @@
                                 const isVisible = $(this).is(':checked');
                                 window.masterReportTable.column(columnIndex).visible(isVisible);
                             });
+                            if (window.masterReportTable.fixedColumns) {
+                                window.masterReportTable.fixedColumns().relayout();
+                            }
                             // Fix sticky column positions after table is drawn and visibility is set
                             fixStickyColumnPositions();
                         }
                     });
 
                     window.masterReportTable.buttons().container().appendTo('.export-buttons');
+                    $('#master-report-table').addClass('using-fixed-columns');
 
                     // Apply header styling immediately after initialization
                     setTimeout(() => {
@@ -1637,14 +1690,30 @@
 
                         // Fix sticky column positions
                         fixStickyColumnPositions();
+                        if (window.masterReportTable.fixedColumns) {
+                            window.masterReportTable.fixedColumns().relayout();
+                        }
                         // Load preferences *after* table is built
                         loadColumnPreferences();
+                        // Re-apply column visibility based on checkboxes after preferences load
+                        $('.column-toggle').each(function() {
+                            const columnIndex = $(this).data('column');
+                            const isVisible = $(this).is(':checked');
+                            window.masterReportTable.column(columnIndex).visible(isVisible);
+                        });
+                        if (window.masterReportTable.fixedColumns) {
+                            window.masterReportTable.fixedColumns().relayout();
+                        }
                     }, 100);
                     @endif
                 }
 
                 // FIX: Modified this function to only handle 2 columns
                 function fixStickyColumnPositions() {
+                    // Skip custom sticky math when FixedColumns plugin is active
+                    if (window.masterReportTable && window.masterReportTable.fixedColumns) {
+                        return;
+                    }
                     let leftOffset = 0;
                     const $table = $('#master-report-table');
 
@@ -1880,10 +1949,10 @@
                     const summary = document.getElementById('employees-filter-summary');
                     if (activeFilters > 0) {
                         summary.textContent = `${activeFilters} employee filter(s) applied`;
-                        summary.className = 'filter-summary text-success';
+                        summary.className = 'filter-summary filter-pill active';
                     } else {
                         summary.textContent = 'No employee filters applied';
-                        summary.className = 'filter-summary text-muted';
+                        summary.className = 'filter-summary filter-pill muted';
                     }
                 }
 
@@ -1922,10 +1991,10 @@
                     const summary = document.getElementById('devices-filter-summary');
                     if (activeFilters > 0) {
                         summary.textContent = `${activeFilters} device filter(s) applied`;
-                        summary.className = 'filter-summary text-success';
+                        summary.className = 'filter-summary filter-pill active';
                     } else {
                         summary.textContent = 'All devices included';
-                        summary.className = 'filter-summary text-muted';
+                        summary.className = 'filter-summary filter-pill muted';
                     }
                 }
 

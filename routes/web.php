@@ -39,6 +39,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('impersonate.leave');
     Route::get('/admin/impersonate/{id}', [UserController::class, 'impersonate'])
         ->name('impersonate.start');
+    Route::get('/admin/audit-logs', [App\Http\Controllers\AuditLogController::class, 'index'])
+        ->name('audit-logs.index');
 });
 // Public routes
 Route::get('/new-case', [App\Http\Controllers\CaseController::class, 'create'])->name('new-case-view');
@@ -254,6 +256,7 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
 
     Route::middleware('EditCases')->group(function (): void {
         Route::get('/case/view-for-editing/{id}', [App\Http\Controllers\CaseController::class, 'returnEdit'])->name('edit-case-view');
+        Route::get('/cases/view/{id}', [App\Http\Controllers\CaseController::class, 'view'])->name('cases.view');
         Route::post('/case/edit', [App\Http\Controllers\CaseController::class, 'edit'])->name('edit-case');
     });
 
@@ -280,6 +283,12 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
         Route::get('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'index'])->name('configuration.index');
         Route::post('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'update'])->name('configuration.update');
         Route::get('/admin/configuration/reset', [App\Http\Controllers\ConfigurationController::class, 'reset'])->name('configuration.reset');
+
+        Route::get('/tools/invoice-check', [App\Http\Controllers\ToolsController::class, 'invoiceCheck'])->name('tools.invoice-check');
+        Route::post('/tools/invoice-check/issue', [App\Http\Controllers\ToolsController::class, 'issueInvoiceForCase'])->name('tools.invoice-check.issue');
+        Route::post('/tools/invoice-check/apply', [App\Http\Controllers\ToolsController::class, 'applyInvoiceForCase'])->name('tools.invoice-check.apply');
+        Route::get('/tools/create-case', [App\Http\Controllers\ToolsController::class, 'createCaseTool'])->name('tools.create-case');
+        Route::post('/tools/create-case', [App\Http\Controllers\ToolsController::class, 'storeCaseTool'])->name('tools.store-case');
 
     });
 //// External Labs ROUTES
@@ -583,6 +592,5 @@ Route::get('/cases/lock/{id}', [App\Http\Controllers\CaseController::class, 'loc
 Route::get('/cases/unlock/{id}', [App\Http\Controllers\CaseController::class, 'unlockCase'])->name('unlock-case');
 
 //});
-
 
 

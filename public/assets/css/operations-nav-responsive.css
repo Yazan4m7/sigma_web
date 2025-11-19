@@ -154,7 +154,7 @@
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
         font-size: 0.65rem !important;
-        /* padding: 0.15em 0.3em !important; */
+        padding: 0.15em 0.3em !important;
         margin: 0 !important;
     }
 }

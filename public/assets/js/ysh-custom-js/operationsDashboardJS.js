@@ -379,17 +379,28 @@ function initializeDataTables() {
 
 function forceInitializeAllTables() {
     console.log("Forcing initialization of all DataTables...");
-    initializedTables.clear(); // Reset and re-initialize all
-    initializeDataTables();
 
-    // Verify initialization
-    let initializedCount = 0;
+    // Destroy all existing instances
     $('.sunriseTable').each(function() {
         if ($.fn.DataTable.isDataTable(this)) {
-            initializedCount++;
+            $(this).DataTable().destroy();
         }
     });
-    console.log(`Verification: ${initializedCount} out of 12 tables are initialized.`);
+
+    // Reset tracking
+    initializedTables.clear();
+
+    // Re-initialize
+    initializeDataTables();
+
+    // Verify after short delay (in case init is async)
+    setTimeout(() => {
+        let initializedCount = 0;
+        $('.sunriseTable').each(function() {
+            if ($.fn.DataTable.isDataTable(this)) initializedCount++;
+        });
+        console.log(`Verification: ${initializedCount} out of 12 tables initialized.`);
+    }, 300);
 }
 
 

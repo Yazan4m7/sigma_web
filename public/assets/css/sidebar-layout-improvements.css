@@ -10,19 +10,19 @@
    NAVIGATION MENU ITEMS - Spacing and Layout
    ============================================================================ */
 
-.sidebar .nav > li > a,
-.sidebar .nav > div > li > a {
+.sidebar .nav>li>a,
+.sidebar .nav>div>li>a {
     display: flex !important;
-    padding: 10px 15px !important;
-    margin: 2px 15px !important;
+    padding: 5px 15px !important;
+    margin: 1px 15px !important;
     border-radius: 4px !important;
     transition: all 0.3s ease !important;
     text-decoration: none !important;
 }
 
 /* Hover state */
-.sidebar .nav > li > a:hover,
-.sidebar .nav > div > li > a:hover {
+.sidebar .nav>li>a:hover,
+.sidebar .nav>div>li>a:hover {
     background: rgba(255, 255, 255, 0.1) !important;
     color: #fff !important;
 }
@@ -31,8 +31,8 @@
    ACTIVE MENU ITEM - Highlighted Selection
    ============================================================================ */
 
-.sidebar .nav > li.active > a,
-.sidebar .nav > div > li.active > a {
+.sidebar .nav>li.active>a,
+.sidebar .nav>div>li.active>a {
     background: rgb(255 255 255 / 29%) !important;
     color: #fff !important;
     box-shadow: 0;
@@ -73,15 +73,15 @@
    ============================================================================ */
 
 .sidebar .nav .collapse .nav li a {
-    padding: 8px 15px 8px 35px !important;
+    padding: 4px 15px 4px 10px !important;
     font-size: 0.8125rem !important;
     transition: all 0.3s ease !important;
     border-radius: 4px !important;
-    margin: 1px 15px !important;
+    margin: 0px 15px !important;
 }
 
 .sidebar .nav .collapse .nav li a:hover {
-    padding-left: 40px !important;
+    padding-left: 12px !important;
 }
 
 .sidebar .nav .collapse .nav li.active a {

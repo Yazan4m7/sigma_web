@@ -2,6 +2,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.querySelector('.sidebar');
     const wrapper = document.querySelector('.wrapper');
     const pinBtn = document.getElementById('sidebar-pin-btn');
+    const collapseExpandedSubmenus = () => {
+        if (!sidebar) return;
+        const openSubmenus = sidebar.querySelectorAll('.collapse.show');
+        openSubmenus.forEach((submenu) => {
+            // Prefer Bootstrap collapse if available to keep states in sync
+            if (window.jQuery && typeof jQuery(submenu).collapse === 'function') {
+                jQuery(submenu).collapse('hide');
+            } else {
+                submenu.classList.remove('show');
+                submenu.style.height = null;
+            }
+
+            // Reset toggle aria-expanded state if we can find it
+            if (submenu.id) {
+                const toggler = sidebar.querySelector(`[data-target="#${submenu.id}"], [href="#${submenu.id}"]`);
+                if (toggler) {
+                    toggler.setAttribute('aria-expanded', 'false');
+                }
+            }
+        });
+    };
 
     // Check if sidebar should be pinned from localStorage
     const isPinned = localStorage.getItem('sidebarPinned') === 'true';
@@ -13,6 +34,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (pinBtn) {
                 pinBtn.classList.add('pinned');
             }
+        }
+        // If not pinned, start with all submenus closed so navigation to a new page doesn't re-open them
+        if (!wrapper.classList.contains('sidebar-pinned')) {
+            collapseExpandedSubmenus();
         }
 
         // Pin button click handler
@@ -44,6 +69,18 @@ document.addEventListener('DOMContentLoaded', function () {
         sidebar.addEventListener('mouseleave', function () {
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.remove('sidebar-hover');
+                collapseExpandedSubmenus();
+            }
+        });
+
+        // Close any open submenu when clicking a child link (non-collapse toggles)
+        sidebar.addEventListener('click', function (e) {
+            if (wrapper.classList.contains('sidebar-pinned')) return;
+            const link = e.target.closest('.collapse .nav li a');
+            if (!link) return;
+            const isCollapseToggle = link.hasAttribute('data-toggle') || link.getAttribute('data-target');
+            if (!isCollapseToggle) {
+                collapseExpandedSubmenus();
             }
         });
     }

@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Http\Controllers\OperationsUpgrade;
 use App\job;
+use App\note;
 use App\Observers\JobObserver;
+use App\Observers\NoteObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -48,6 +50,7 @@ class AppServiceProvider extends ServiceProvider
         View::share('modify', 'Modify');
         View::share('repeat', 'Repeat');
         Job::observe(JobObserver::class);
+        note::observe(NoteObserver::class);
         View::composer('*', function ($view) {
             $view->with('stageConfig', OperationsUpgrade::STAGE_CONFIG);
             

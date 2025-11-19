@@ -385,7 +385,7 @@
                                                         <div class="form-group row" style="margin-bottom: 0px">
                                                             <div class="form-group col-6 " style="margin-bottom: 0px">
                                                                 <label for="doctor">Doctor: </label>
-                                                                <h5 id="doctor" class="patient-doctor-names">{{$case->client->name}}</h5>
+                                                                <h5 id="doctor" class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
                                                             </div>
                                                             <div class="form-group col-6 " style="margin-bottom: 0px">
                                                                 <label for="pat">Patient: </label>
@@ -463,7 +463,7 @@
                                                                 @endif
                                                                 @if(Auth()->user()->is_admin && !$case->locked)
                                                                 <div class="col-4" style="padding: 5px;">
-                                                                    <a data-clientName="{{ $case->client->name }}"
+                                                                    <a data-clientName="{{ $case->client->name ?? "-" }}"
                                                                        data-patientName="{{ $case->patient_name }}"
                                                                        style="color:white; width: 100%;"
                                                                        onclick="caseDelConfirmation(event)"

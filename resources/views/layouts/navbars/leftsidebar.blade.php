@@ -29,9 +29,7 @@
 
                              <li class="{{Route::currentRouteName() == 'admin-dashboard-v2' ? 'active' : ''}}" >
                                 <a href="{{route('admin-dashboard-v2')}}" style=" margin-right: 0px;">
-                                    <span class="material-symbols-outlined googleIconInSideBar">
-                                    dashboard
-                                    </span>
+                                    <i class="fas fa-project-diagram"></i>
                                     <span>OPERATIONS DASHBOARD</span>
                                 </a>
 
@@ -208,7 +206,10 @@
                                  'devices-index',
                                  'sys-config',
                                  'configuration.index',
-                                 'media-index'))
+                                 'media-index',
+                                 'audit-logs.index',
+                                 'tools.invoice-check',
+                                 'tools.create-case'))
                                 ? 'true' : 'false';
                 @endphp
 
@@ -232,7 +233,35 @@
                     <li class="{{Route::currentRouteName() == 'tags-index' ? 'active' : ''}}"><a href="{{route('tags-index')}}"><i class="fa fa-tag"></i><span>Tags</span></a>
                     <li class="{{Route::currentRouteName() == 'f-causes-index' ? 'active' : ''}}"><a href="{{route('f-causes-index')}}"><i class="fa-solid fa-repeat"></i><span>Failure Causes</span></a>
                     <li class="{{Route::currentRouteName() == 'devices-index' ? 'active' : ''}}"><a href="{{route('devices-index')}}"><i class="fa-solid fa-tachograph-digital"></i><span>Devices</span></a>
-
+                    <li>
+                        <a data-toggle="collapse" href="#toolsList" aria-expanded="false">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span class="nav-link-text">Tools</span>
+                            <b class="caret mt-1"></b>
+                        </a>
+                        <div class="collapse" id="toolsList">
+                            <ul class="nav pl-4">
+                                <li class="{{Route::currentRouteName() == 'audit-logs.index' ? 'active' : ''}}">
+                                    <a href="{{route('audit-logs.index')}}">
+                                        <i class="fa fa-user-secret"></i>
+                                        <p>Audit Log</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.invoice-check' ? 'active' : ''}}">
+                                    <a href="{{route('tools.invoice-check')}}">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                        <p>Invoices Check</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.create-case' ? 'active' : ''}}">
+                                    <a href="{{route('tools.create-case')}}">
+                                        <i class="fa-solid fa-plus-square"></i>
+                                        <p>Create Case</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     </ul>
                     </div>
                 </li>
@@ -242,5 +271,3 @@
         </ul>
     </div>
 </div>
-
-

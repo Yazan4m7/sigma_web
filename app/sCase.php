@@ -147,17 +147,22 @@ class sCase extends Model
     {
         // -2 means no stage is specified
         // if no stage is specified and job is still before finishing count all jobs
-        if($stage == -2 )$jobs = $this->jobs;
-        else $jobs = $this->jobs->where("stage",$stage);
+        $jobs = $stage == -2 ? $this->jobs : $this->jobs->where('stage', $stage);
 
-        $amountOfUnits =0;
-        foreach($jobs as $job)
-            if($stage != 3)
-            {if($job->material->count_as_unit)
-            $amountOfUnits += count(explode(',',$job->unit_num));
+        $amountOfUnits = 0;
+        foreach ($jobs as $job) {
+            $unitCount = count(array_filter(explode(',', (string) $job->unit_num), function ($value) {
+                return trim($value) !== '';
+            }));
+
+            if ($stage != 3) {
+                if ($job->material && $job->material->count_as_unit) {
+                    $amountOfUnits += $unitCount;
+                }
+            } else {
+                $amountOfUnits += $unitCount;
             }
-            else
-            $amountOfUnits += count(explode(',',$job->unit_num));
+        }
 
         return $amountOfUnits;
     }
