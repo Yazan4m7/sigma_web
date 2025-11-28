@@ -16,7 +16,7 @@
 
 @push('css')
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -25,300 +25,322 @@
     <link href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.dataTables.css" rel="stylesheet">
 
 
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
-{{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/>--}}
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet"/>
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" />
+    {{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/> --}}
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/operations-dashboard-table-fix.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/v3styles.css" rel="stylesheet">
     <!-- Responsive CSS - Mobile-first approach for full device compatibility -->
     <link href="{{ asset('assets') }}/css/responsive.css" rel="stylesheet">
     <!-- Operations Dashboard Navigation - Responsive CSS for mobile stage icons -->
-    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet"/>
-
-   <style>
-       @media  (max-width: 480px){
-       .sigma-workflow-dialog {
-           max-width: none !important;
-           width: auto !important;
-           min-width: -webkit-fill-available;
-           margin: 0 15px;
-           /* Minimum width for proper machine display */
-       }}
-       @media  (max-width: 700px){
-       .sigma-workflow-dialog {
-           max-width: none !important;
-           width: auto !important;
-
-           /* Minimum width for proper machine display */
-       }}
-       @media  (min-width: 700px){
-           .sigma-workflow-dialog {
-               max-width: none !important;
-               width: 45%
-
-               /* Minimum width for proper machine display */
-           }}
-
-    /* Use Animate.css for Case Completion modal */
-    .modal.fade .modal-dialog {
-        transform: none !important;
-        /* Will be animated by Animate.css classes */
-    }
-
-    .modal-content {
-        border-radius: 25px !important;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        border: none;
-    }
-
-    /* Modal footer rounded bottom corners */
-    .modal-footer {
-        border-bottom-left-radius: 25px !important;
-        border-bottom-right-radius: 25px !important;
-    }
-
-    /* Modal header styling with divider */
-    .modal-header {
-        border-bottom: 1px solid #dee2e6 !important;
-        padding-bottom: 12px;
-    }
-
-    /* Modal title styling */
-    .modal-title {
-        color: #2d5f6d;
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 0;
-    }
-
-    /* Skip to delivery icon styling */
-    .skip-to-delivery-icon {
-        font-size: 20px;
-        color: #2d5f6d;
-        transition: color 0.3s ease;
-    }
-    .skip-to-delivery-icon:hover {
-        color: #1a3d47;
-    }
-
-    /* Close button styling - more visible */
-    .modal-header button.close {
-        font-size: 32px;
-        font-weight: 300;
-        color: #000;
-        opacity: 0.8;
-        text-shadow: none;
-    }
-    .modal-header button.close:hover {
-        opacity: 1;
-        color: #000;
-    }
-
-    /* Doctor/Patient names styling */
-    .patient-doctor-names {
-        color: #2d5f6d;
-        font-weight: 600;
-    }
-
-    /* Scrollable section for jobs and notes only */
-    .scrollable-content {
-        max-height: 40vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    /* Notes container styling */
-    .form-control.note-container {
-        background-color: #e8f0f2;
-        border: 1px solid #b8d4db;
-        color: #212529;
-    }
-
-    .modal-footer {
-        display: block;
-        padding: 1rem;
-        border-top: 1px solid #dee2e6;
-    }
-    .modal-footer .row {
-        margin: 0;
-    }
-    .modal-footer .col-6,
-    .modal-footer .col-4,
-    .modal-footer .col-12 {
-        padding: 5px;
-    }
-    .modal-footer .btn {
-        width: 100%;
-        margin: 3px;
-        font-weight: 400;
-        padding: 10px 12px;
-        border: none;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-    /* Button color improvements with proper contrast */
-    .modal-footer .btn-info {
-        background-color: #17a2b8;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
-    }
-    .modal-footer .btn-info:hover {
-        background-color: #138496;
-        box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
-    }
-
-    .modal-footer .btn-success {
-        background-color: #28a745;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
-    }
-    .modal-footer .btn-success:hover {
-        background-color: #218838;
-        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
-    }
-    .modal-footer .btn-success:disabled {
-        background-color: #6c757d;
-        color: #ffffff !important;
-        opacity: 0.6;
-    }
-
-    .modal-footer .btn-warning {
-        background-color: #ffc107;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
-    }
-    .modal-footer .btn-warning:hover {
-        background-color: #e0a800;
-        color: #ffffff !important;
-        box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
-    }
-
-    .modal-footer .btn-dark {
-        background-color: #343a40;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
-    }
-    .modal-footer .btn-dark:hover {
-        background-color: #23272b;
-        box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
-    }
-
-    .modal-footer .btn-outline-info {
-        border: 2px solid #17a2b8;
-        background-color: transparent;
-        color: #17a2b8 !important;
-    }
-    .modal-footer .btn-outline-info:hover {
-        background-color: #17a2b8;
-        color: #ffffff !important;
-        box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
-    }
-
-    .modal-footer .btn-outline-danger {
-        border: 2px solid #dc3545;
-        background-color: transparent;
-        color: #dc3545 !important;
-    }
-    .modal-footer .btn-outline-danger:hover {
-        background-color: #dc3545;
-        color: #ffffff !important;
-        box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-    }
-
-    .modal-footer .btn-outline-secondary {
-        border: 2px solid #6c757d;
-        background-color: transparent;
-        color: #6c757d !important;
-    }
-    .modal-footer .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: #ffffff !important;
-        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-    }
-
-    .modal-footer .btn-secondary {
-        background-color: #6c757d;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
-    }
-    .modal-footer .btn-secondary:hover {
-        background-color: #5a6268;
-        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
-    }
-
-    /* Icon spacing */
-    .modal-footer .btn i {
-        margin-right: 6px;
-    }
-    .YSH-button {
-    text-decoration: none;
-    line-height: 1;
-    border-radius: 1.5rem;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 10px 10px 20px rgba(0,0,0,.05);
-    background-color: #fff;
-    color: #121212;
-    border: none;
-    cursor: pointer;
-    }
-
-    .YSH-button-decor {
-    position: absolute;
-    inset: 0;
-    background-color: var(--clr);
-    transform: translateX(-100%);
-    transition: transform .3s;
-    z-index: 0;
-    }
-
-    .YSH-button-content {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    position: relative;
-    overflow: hidden;
-    }
-
-    .YSH-button__icon {
-    width: 48px;
-    height: 40px;
-    background-color: var(--clr);
-    display: grid;
-    place-items: center;
-    }
-
-    .YSH-button__text {
-    display: inline-block;
-    transition: color .2s;
-    padding: 2px 1.5rem 2px;
-    padding-left: .75rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 150px;
-    }
-
-    .YSH-button:hover .YSH-button__text {
-    color: #fff;
-    }
-
-    .YSH-button:hover .YSH-button-decor {
-    transform: translate(0);
-    }
-</style>
+    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/waiting-dialog-merged.css" rel="stylesheet" />
 
     <style>
-        .dt-layout-row{
+        @media (max-width: 480px) {
+            .sigma-workflow-dialog {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sigma-workflow-dialog {
+                max-width: none !important;
+                width: auto !important;
+
+                /* Minimum width for proper machine display */
+            }
+        }
+
+        @media (min-width: 700px) {
+            .sigma-workflow-dialog {
+                max-width: none !important;
+                width: 45%
+                    /* Minimum width for proper machine display */
+            }
+        }
+
+        /* Use Animate.css for Case Completion modal */
+        .modal.fade .modal-dialog {
+            transform: none !important;
+            /* Will be animated by Animate.css classes */
+        }
+
+        .modal-content {
+            border-radius: 25px !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: none;
+        }
+
+        /* Modal footer rounded bottom corners */
+        .modal-footer {
+            border-bottom-left-radius: 25px !important;
+            border-bottom-right-radius: 25px !important;
+        }
+
+        /* Modal header styling with divider */
+        .modal-header {
+            border-bottom: 1px solid #dee2e6 !important;
+            padding-bottom: 12px;
+        }
+
+        /* Modal title styling */
+        .modal-title {
+            color: #2d5f6d;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+        /* Skip to delivery icon styling */
+        .skip-to-delivery-icon {
+            font-size: 20px;
+            color: #2d5f6d;
+            transition: color 0.3s ease;
+        }
+
+        .skip-to-delivery-icon:hover {
+            color: #1a3d47;
+        }
+
+        /* Close button styling - more visible */
+        .modal-header button.close {
+            font-size: 32px;
+            font-weight: 300;
+            color: #000;
+            opacity: 0.8;
+            text-shadow: none;
+        }
+
+        .modal-header button.close:hover {
+            opacity: 1;
+            color: #000;
+        }
+
+        /* Doctor/Patient names styling */
+        .patient-doctor-names {
+            color: #2d5f6d;
+            font-weight: 600;
+        }
+
+        /* Scrollable section for jobs and notes only */
+        .scrollable-content {
+            max-height: 40vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* Notes container styling */
+        .form-control.note-container {
+            background-color: #e8f0f2;
+            border: 1px solid #b8d4db;
+            color: #212529;
+        }
+
+        .modal-footer {
+            display: block;
+            padding: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .modal-footer .row {
+            margin: 0;
+        }
+
+        .modal-footer .col-6,
+        .modal-footer .col-4,
+        .modal-footer .col-12 {
+            padding: 5px;
+        }
+
+        .modal-footer .btn {
+            width: 100%;
+            margin: 3px;
+            font-weight: 400;
+            padding: 10px 12px;
+            border: none;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        /* Button color improvements with proper contrast */
+        .modal-footer .btn-info {
+            background-color: #17a2b8;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+        }
+
+        .modal-footer .btn-info:hover {
+            background-color: #138496;
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+        }
+
+        .modal-footer .btn-success {
+            background-color: #28a745;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+        }
+
+        .modal-footer .btn-success:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+        }
+
+        .modal-footer .btn-success:disabled {
+            background-color: #6c757d;
+            color: #ffffff !important;
+            opacity: 0.6;
+        }
+
+        .modal-footer .btn-warning {
+            background-color: #ffc107;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+        }
+
+        .modal-footer .btn-warning:hover {
+            background-color: #e0a800;
+            color: #ffffff !important;
+            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+        }
+
+        .modal-footer .btn-dark {
+            background-color: #343a40;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+        }
+
+        .modal-footer .btn-dark:hover {
+            background-color: #23272b;
+            box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+        }
+
+        .modal-footer .btn-outline-info {
+            border: 2px solid #17a2b8;
+            background-color: transparent;
+            color: #17a2b8 !important;
+        }
+
+        .modal-footer .btn-outline-info:hover {
+            background-color: #17a2b8;
+            color: #ffffff !important;
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        .modal-footer .btn-outline-danger {
+            border: 2px solid #dc3545;
+            background-color: transparent;
+            color: #dc3545 !important;
+        }
+
+        .modal-footer .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: #ffffff !important;
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .modal-footer .btn-outline-secondary {
+            border: 2px solid #6c757d;
+            background-color: transparent;
+            color: #6c757d !important;
+        }
+
+        .modal-footer .btn-outline-secondary:hover {
+            background-color: #6c757d;
+            color: #ffffff !important;
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        .modal-footer .btn-secondary {
+            background-color: #6c757d;
+            color: #ffffff !important;
+            box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+        }
+
+        .modal-footer .btn-secondary:hover {
+            background-color: #5a6268;
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Icon spacing */
+        .modal-footer .btn i {
+            margin-right: 6px;
+        }
+
+        .YSH-button {
+            text-decoration: none;
+            line-height: 1;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 10px 10px 20px rgba(0, 0, 0, .05);
+            background-color: #fff;
+            color: #121212;
+            border: none;
+            cursor: pointer;
+        }
+
+        .YSH-button-decor {
+            position: absolute;
+            inset: 0;
+            background-color: var(--clr);
+            transform: translateX(-100%);
+            transition: transform .3s;
+            z-index: 0;
+        }
+
+        .YSH-button-content {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .YSH-button__icon {
+            width: 48px;
+            height: 40px;
+            background-color: var(--clr);
+            display: grid;
+            place-items: center;
+        }
+
+        .YSH-button__text {
+            display: inline-block;
+            transition: color .2s;
+            padding: 2px 1.5rem 2px;
+            padding-left: .75rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .YSH-button:hover .YSH-button__text {
+            color: #fff;
+        }
+
+        .YSH-button:hover .YSH-button-decor {
+            transform: translate(0);
+        }
+    </style>
+
+    <style>
+        .dt-layout-row {
             margin: 0px !important;
         }
 
         .dt-center {
             text-align: center !important;
         }
-        tr > th.dt-orderable-none.dt-type-numeric > div > span{
+
+        tr>th.dt-orderable-none.dt-type-numeric>div>span {
             text-align: center !important;
         }
 
@@ -334,30 +356,30 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: {{ $deviceConfig["container_gap"] ?? '15px' }};
+            gap: {{ $deviceConfig['container_gap'] ?? '15px' }};
             width: 100%;
         }
 
         .device-item {
             width: 100%;
-            max-width: {{ $deviceConfig["max_width"] ?? '150px' }};
+            max-width: {{ $deviceConfig['max_width'] ?? '150px' }};
             text-align: center;
-            margin-bottom: {{ $deviceConfig["margin_bottom"] ?? '15px' }};
+            margin-bottom: {{ $deviceConfig['margin_bottom'] ?? '15px' }};
             transition: all 0.3s ease;
         }
 
         .device-item img {
-            width: {{ $deviceConfig["width"] ?? '100%' }};
-            height: {{ $deviceConfig["height"] ?? 'auto' }};
-            max-width: {{ $deviceConfig["max_width"] ?? '150px' }};
-            padding: {{ $deviceConfig["padding"] ?? '10px' }};
-            border-radius: {{ $deviceConfig["border_radius"] ?? '8px' }};
-            background: {{ $deviceConfig["background"] ?? 'transparent' }};
+            width: {{ $deviceConfig['width'] ?? '100%' }};
+            height: {{ $deviceConfig['height'] ?? 'auto' }};
+            max-width: {{ $deviceConfig['max_width'] ?? '150px' }};
+            padding: {{ $deviceConfig['padding'] ?? '10px' }};
+            border-radius: {{ $deviceConfig['border_radius'] ?? '8px' }};
+            background: {{ $deviceConfig['background'] ?? 'transparent' }};
             object-fit: contain;
         }
 
         .device-item:hover {
-            transform: {{ $deviceConfig["hover_effect"] ? 'scale(1.05)' : 'none' }};
+            transform: {{ $deviceConfig['hover_effect'] ? 'scale(1.05)' : 'none' }};
             box-shadow: none !important;
         }
 
@@ -375,21 +397,21 @@
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .device-item {
-                max-width: {{ $deviceConfig["responsive_sizes"]["tablet"] ?? '120px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['tablet'] ?? '120px' }};
             }
 
             .device-item img {
-                max-width: {{ $deviceConfig["responsive_sizes"]["tablet"] ?? '120px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['tablet'] ?? '120px' }};
             }
         }
 
         @media (max-width: 576px) {
             .device-item {
-                max-width: {{ $deviceConfig["responsive_sizes"]["mobile"] ?? '100px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['mobile'] ?? '100px' }};
             }
 
             .device-item img {
-                max-width: {{ $deviceConfig["responsive_sizes"]["mobile"] ?? '100px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['mobile'] ?? '100px' }};
             }
         }
 
@@ -397,11 +419,10 @@
             max-width: 0 !important;
         }
 
-        td > p {
+        td>p {
             margin-bottom: 5px;
-        !important;
+            !important;
         }
-
     </style>
 
     <style>
@@ -411,6 +432,7 @@
                 opacity: 0;
                 transform: translate3d(0, -20px, 0);
             }
+
             to {
                 opacity: 1;
                 transform: translate3d(0, 0, 0);
@@ -426,8 +448,13 @@
 
     <style>
         @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: 200px 0; }
+            0% {
+                background-position: -200px 0;
+            }
+
+            100% {
+                background-position: 200px 0;
+            }
         }
 
         .loading * {
@@ -455,18 +482,19 @@
         .loading li::after {
             content: '';
             position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: linear-gradient(
-                to right,
-                #e0e0e0 0%,
-                #f6f6f6 20%,
-                #e0e0e0 40%,
-                #e0e0e0 100%
-            );
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right,
+                    #e0e0e0 0%,
+                    #f6f6f6 20%,
+                    #e0e0e0 40%,
+                    #e0e0e0 100%);
             background-size: 800px 100%;
             animation: shimmer 1.5s infinite linear;
         }
+
         /* Loading shimmer overlay */
         /*.dashboard-shimmer-overlay {*/
         /*    position: absolute;*/
@@ -491,7 +519,6 @@
             display: none;
         }
     </style>
-
 @endpush
 
 
@@ -554,20 +581,20 @@
         }
     </script>
 
-    {{--    @php--}}
-    {{--        try {--}}
-    {{--    @endphp--}}
+    {{--    @php --}}
+    {{--        try { --}}
+    {{--    @endphp --}}
 
 
     @php
         $color = '#01292b';
-            //dd($devices);
+        //dd($devices);
 
-            $permissions = Cache::get('user' . Auth()->user()->id);
-            $canEditCase = false;
-            if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102))) {
-                $canEditCase = true;
-            }
+        $permissions = Cache::get('user' . Auth()->user()->id);
+        $canEditCase = false;
+        if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102))) {
+            $canEditCase = true;
+        }
     @endphp
     @php
         $stages = [
@@ -703,22 +730,22 @@
                 unset($stages['finishing']);
             }
             if (!($permissions && $permissions->contains('permission_id', 7))) {
-                 unset($stages['qc']);
-                 unset($stages['QC']);
-                  unset($stages['Qc']);
+                unset($stages['qc']);
+                unset($stages['QC']);
+                unset($stages['Qc']);
             }
             if (!($permissions && $permissions->contains('permission_id', 8))) {
                 unset($stages['delivery']);
             }
         }
     @endphp
-        <!-- Begin .site-wrapper -->
+    <!-- Begin .site-wrapper -->
     <div class="site-wrapper">
-      <!-- Begin waiting milling dialog -->
+        <!-- Begin waiting milling dialog -->
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->
-            <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;min-height: 133vw">
+            <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
                 <!-- Simple shimmer loading overlay -->
                 <div class="dashboard-shimmer-overlay loading" id="dashboardShimmer"></div>
 
@@ -729,18 +756,18 @@
                             $keyId = strtolower($key);
                             $displayKey = $key;
 
-                        $displayKey=  ( $key == "3dprinting")? "Printing" : $displayKey;
-                        $displayKey=  ( $key == "Qc")? "QC" : $displayKey;
+                            $displayKey = $key == '3dprinting' ? 'Printing' : $displayKey;
+                            $displayKey = $key == 'Qc' ? 'QC' : $displayKey;
                         @endphp
                         <button role="tab" aria-selected="false" aria-controls="{{ $keyId . 'label' }}"
-                                id="{{ $keyId }}" style="" onclick="setOuterTab(this)">
+                            id="{{ $keyId }}" style="" onclick="setOuterTab(this)">
                             <span class="iconSpan" style="display: flex;align-items: center;">{!! $stage['icon'] !!}
                                 <span style=" padding-left:6px" class="stageName"> {{ $displayKey }}</span></span>
                             <div>
                                 <span class="badge bg-info m-1 activeBadge"
-                                      style="padding: 0.25em 0.4em;">{{ count($stage['activeCases']) }}</span>
+                                    style="padding: 0.25em 0.4em;">{{ count($stage['activeCases']) }}</span>
                                 <span class="badge bg-info m-1 waitingBadge"
-                                      style="padding: 0.25em 0.4em;">{{ count($stage['waitingCases']) }} </span>
+                                    style="padding: 0.25em 0.4em;">{{ count($stage['waitingCases']) }} </span>
                             </div>
                         </button>
                     @endforeach
@@ -753,7 +780,7 @@
                     @endphp
                     {{--                <h1>{{$key}}</h1> --}}
                     <div class="notransition" tabindex="0" role="tabpanel" aria-labelledby="{{ $key }}"
-                         id="{{ $key . 'label' }}" hidden>
+                        id="{{ $key . 'label' }}" hidden>
                         <!-- Begin .macaw-tabs -->
                         <div class="macaw-tabs macaw-silk-tabs notransition">
                             @include('cases.dashboards-partials.tabs', ['key' => $key, 'stage' => $stage])
@@ -762,412 +789,102 @@
                             {{-- ----------------waiting TABLE--------------- --}}
                             {{-- ----------------waiting TABLE--------------- --}}
                             <div tabindex="0" role="tabpanel" hidden aria-labelledby="{{ 'waiting-' . $key . 'label' }}"
-                                 id="{{ 'waiting-' . $key }}">
+                                id="{{ 'waiting-' . $key }}">
 
                                 @switch(strtolower($key))
                                     @case('milling')
-                                        <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          :typesByMaterial="$typesByMaterial"
-                                                          stageId="2"/>
+                                        <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="2" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn milling"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('milling',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('milling',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('3dprinting')
                                         @php $key = "3dprinting"; @endphp
-                                        <x-waiting-3dprinting-dialog title="Choose Printer" btnText="SET"
-                                                                     type="3dprinting"
-                                                                     :devices="$devices"
-                                                                     stageId="3" showBuildName="true"/>
+                                        <x-waiting-3dprinting-dialog title="Choose Printer" btnText="SET" type="3dprinting"
+                                            :devices="$devices" stageId="3" showBuildName="true" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('3dprinting',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('3dprinting',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('sintering')
-                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          :typesByMaterial="$typesByMaterial"
-                                                          stageId="4"/>
+                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="4" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('sintering',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('sintering',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('pressing')
-                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          :typesByMaterial="$typesByMaterial"
-                                                          stageId="5"/>
+                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="5" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('pressing',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('pressing',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('delivery')
                                         @php
-                                        // Define this BEFORE using it - includes admins and users with permission 129
-                                        $isDeliveryAndAssignable = (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)));
+                                            // Define this BEFORE using it - includes admins and users with permission 129
+                                            $isDeliveryAndAssignable =
+                                                Auth()->user()->is_admin ||
+                                                ($permissions && $permissions->contains('permission_id', 129));
                                         @endphp
 
-                                        <x-waiting-delivery-dialog title="Assign to" btnText="{{$isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN'}}"
-                                                                   :drivers="$drivers" stageId="5"/>
+                                        <x-waiting-delivery-dialog title="Assign to"
+                                            btnText="{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}" :drivers="$drivers"
+                                            stageId="5" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn delivery"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('DeliveryDialog',false)">{{$isDeliveryAndAssignable ? "ASSIGN TO" : "ASSIGN"}}
+                                            style="display:none; margin:5px;"
+                                            onclick="openModal('DeliveryDialog',false)">{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}
                                         </button>
-                                        @break
+                                    @break
                                 @endswitch
                                 <table class="{{ $key }} waitingTable sunriseTable" style="width:100%">
                                     <thead>
-                                    <tr>
-                                        {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
-                                        @if ($key != 'delivery' || $isDeliveryAndAssignable)
-                                        @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                            {{-- Checkbox column header --}}
+                                        <tr>
+                                            {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                            @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                    {{-- Checkbox column header --}}
 
-                                            @if (count($stage['waitingCases']) != 0)
-
-                                                <th class="no-sort text-center" style="width: 50px;">
-                                                    <input type="checkbox" class="selectAllCases {{$key}}" value="0"
-                                                           name="selectAllCases"
-                                                           onchange="selectAll(this, '{{ $key }}')"/>
-                                                </th>
+                                                    @if (count($stage['waitingCases']) != 0)
+                                                        <th class="no-sort text-center" style="width: 50px;">
+                                                            <input type="checkbox"
+                                                                class="selectAllCases {{ $key }}" value="0"
+                                                                name="selectAllCases"
+                                                                onchange="selectAll(this, '{{ $key }}')" />
+                                                        </th>
+                                                    @endif
+                                                @endif
                                             @endif
-                                        @endif
-                                     @endif
-                                        <th>Doctor</th>
-                                        <th>Patient</th>
-                                        <th class="deliveryDateHeader"><span
-                                                class="innerSpan4Mobile">D.Date</span><span
-                                                class="innerSpan4DeskTop">Delivery Date</span></th>
+                                            <th>Doctor</th>
+                                            <th>Patient</th>
+                                            <th class="deliveryDateHeader"><span
+                                                    class="innerSpan4Mobile">D.Date</span><span
+                                                    class="innerSpan4DeskTop">Delivery Date</span></th>
                                             @if ($key == 'delivery')
                                                 <th> Assigned To</th>
                                             @endif
-                                        <th>#</th>
+                                            <th>#</th>
 
-                                        <th>Tags</th>
-                                    </tr>
+                                            <th>Tags</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
 
-                                    @foreach ($stage['waitingCases'] as $case)
-                                        <tr style="color:{{ $color }}">
-                                            @php
-                                                // Normalize key case
-                                                $key = strtolower($key);
-
-                                            @endphp
-
-
-
-                                            @if ($key == 'finishing')
+                                        @foreach ($stage['waitingCases'] as $case)
+                                            <tr style="color:{{ $color }}">
                                                 @php
-                                                    $notReadyA = false;
-                                                    $abutmentsReceived = $case->abutmentsReceived();
-                                                    if (!$case->allUnitsAtFinishing()) {
-                                                        $notReadyA = true;
-                                                    }
+                                                    // Normalize key case
+                                                    $key = strtolower($key);
 
                                                 @endphp
-                                            @endif
-                                            {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
-                                            @if ($key != 'delivery' || $isDeliveryAndAssignable)
-                                            @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                                <td class="no-sort">
-                                                    <input type="checkbox"
-                                                           data-type="{{$key}}"
-                                                           data-group-id="{{$key}}"
-                                                           class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{$key}}"
-                                                           value="{{ $case->id }}"
-                                                           name="CheckBoxes{{ $key }}[]"
-                                                           onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
-
-                                                </td>
-                                            @endif
-                                            @endif
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
-                                            </td>
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->patient_name }}
-                                                    @if ($key == 'finishing')
-                                                        @if ($notReadyA)
-                                                            <span
-                                                                style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
-                                                                    Not <br>
-                                                                    Ready
-                                                                </span>
-                                                        @endif
-                                                        @if (!$abutmentsReceived)
-                                                            <span
-                                                                style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
-                                                                    Abutment <br>
-                                                                    Missing
-                                                                </span>
-                                                        @endif
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">
-                                                    {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}</p>
-                                            </td>
-                                            <!-- Assigned to for delivery stage -->
-                                            @if ($key == 'delivery')
-                                                <td class="clickable" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">
-                                                        {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
-                                                            ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
-                                                            : 'None' }}
-                                                    </p>
-                                                </td>
-                                            @endif
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
-                                            </td>
-
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <div style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
-                                                    @foreach ($case->tags as $tag)
-                                                        <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
-                                                            style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
-                                                            class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
-                                                    @endforeach
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        {{--                                        {{dd("key  is  " . $key)}} --}}
-                                        {{-- BEGIN WAITING DIALOG --}}
-                                        <div class="modal fade" tabindex="-1" role="dialog"
-                                             id="waitingDialog{{ $key . $case->id }}">
-                                            <form
-                                                action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-                                                method="GET">
-                                                @csrf
-                                                <input type="hidden" name="case_id" value="{{ $case->id }}">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Case Completion</h5>
-                                                            @if (Auth()->user()->is_admin)
-                                                                <div class="tooltipY">
-                                                                    <a
-                                                                        href="{{ route('finish-case-completely', ['caseId' => $case->id]) }}">
-                                                                        <i class="fa-solid fa-forward-fast skip-to-delivery-icon"></i>
-                                                                    </a>
-                                                                    <span class="tooltiptextY">Skip To Delivery
-                                                                            Stage</span>
-                                                                </div>
-                                                            @endif
-                                                            <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="false">&times;</span>
-                                                            </button>
-
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Sticky Doctor/Patient section -->
-                                                            <div class="form-group row" style="margin-bottom: 0px">
-                                                                <div class="form-group col-6 "
-                                                                     style="margin-bottom: 0px">
-                                                                    <label for="doctor">Doctor: </label>
-                                                                    <h5 id="doctor" class="patient-doctor-names">{{ $case->client?->name }}</h5>
-                                                                </div>
-                                                                <div class="form-group col-6 "
-                                                                     style="margin-bottom: 0px">
-                                                                    <label for="pat">Patient: </label>
-                                                                    <h5 id="pat" class="patient-doctor-names">{{ $case->patient_name }}</h5>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-
-                                                            <!-- Scrollable Jobs and Notes section -->
-                                                            <div class="scrollable-content">
-                                                                <div class="form-group row">
-                                                                    <div class=" col-12 ">
-                                                                        <label><b>Jobs:</b></label><br>
 
 
-                                                                        @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
-                                                                            @php
-                                                                                $unit = explode(', ', $job->unit_num);
-                                                                                // Check if this job goes through the current stage based on material
-                                                                                $showJob = $job->goesThroughStage($stage['numericStage']);
-                                                                            @endphp
 
-                                                                            @if($showJob)
-                                                                            <span>{{ $job->unit_num }}
-                                                                                    -
-                                                                                    {{ $job->jobType->name ?? 'No Job Type' }}
-                                                                                    -
-                                                                                    {{ $job->material->name ?? 'no material' }}
-                                                                                {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                                {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                                {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
-                                                                                    <br>
-                                                                                    {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                                </span>
-                                                                            @endif
-                                                                        @endforeach
-                                                                    </div>
-                                                                </div>
-                                                                @if (count($case->notes) > 0)
-                                                                    <hr>
-                                                                    <label><b>Notes:</b></label><br>
-                                                                    @foreach ($case->notes as $note)
-                                                                        <div class="form-control note-container"
-                                                                             style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
-                                                                             disabled>
-
-                                                                                <span
-                                                                                    class="noteHeader" style="font-weight:600">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-
-                                                                            <span
-                                                                                class="noteText">{{ $note->note }}</span>
-                                                                        </div>
-                                                                    @endforeach
-                                                                @endif
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <div class="row btnsRow">
-                                                                <!-- Row 1: View (25%) | Action (50%) | Edit (25%) -->
-                                                                <div class="col-3 padding5px" style="display: flex;">
-                                                                    <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" style="width:100%; display: flex;">
-                                                                        <button type="button" class="btn btn-info" style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
-                                                                    </a>
-                                                                </div>
-                                                                <div class="col-6 padding5px" style="display: flex;">
-                                                                    @if ($key == 'milling')
-                                                                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('milling',true,'{{ $case->id }}')" style="width:100%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user-plus"></i> Assign To Me</button>
-                                                                    @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
-                                                                        <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('{{ $key }}',true,'{{ $case->id }}')" style="width:100%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user-plus"></i> Assign To Me</button>
-                                                                    @else
-                                                                        <button type="submit" class="btn btn-success" style="width:100%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user-plus"></i> {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="col-3 padding5px" style="display: flex;">
-                                                                    <a href="{{ route('edit-case-view', $case->id) }}" style="width:100%; display: flex;">
-                                                                        <button type="button" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}" style="width:100%; display: flex; align-items: center; justify-content: center;">Edit Case</button>
-                                                                    </a>
-                                                                </div>
-
-                                                                <!-- Row 2: QC Complete (100%) OR Delivery Assign (100%) -->
-                                                                @if ($key == 'qc')
-                                                                    <div class="col-12">
-                                                                        <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info" style="width:100%"><i class="fa-solid fa-arrow-trend-up"></i> Assign & Complete</a>
-                                                                    </div>
-                                                                @endif
-
-                                                                @if ($key == 'delivery')
-                                                                    @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
-                                                                        @if ($case->jobs[0]->assignee == null)
-                                                                            <div class="col-12">
-                                                                                <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)" style="width:100%">Assign to..</button>
-                                                                            </div>
-                                                                        @else
-                                                                            <div class="col-12">
-                                                                                <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)" style="width:100%">Re-Assign..</button>
-                                                                            </div>
-                                                                        @endif
-                                                                    @endif
-                                                                @endif
-
-                                                                <!-- Row 3: Delivery Print Voucher (100%) -->
-                                                                @if ($key == 'delivery')
-                                                                    <div class="col-12">
-                                                                        <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-info" style="width:100%"><i class="fas fa-print"></i> Print Voucher</a>
-                                                                    </div>
-                                                                @endif
-
-                                                                <!-- Row 4: Cancel (100%) -->
-                                                                <div class="col-12">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100%">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    @endforeach
-
-
-                                    <!-- Begin Active tab -->
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            {{-- ----------------ACTIVE TABLE--------------- --}}
-                            {{-- ----------------ACTIVE TABLE--------------- --}}
-                            {{-- ----------------ACTIVE TABLE--------------- --}}
-                            <div tabindex="0" role="tabpanel" aria-labelledby="{{ 'active-' . $key . 'label' }}"
-                                 id="{{ 'active-' . $key }}" hidden>
-                                @php
-                                    $key = strtolower($key);
-
-                                    $millingActiveDialogBuilt = false;
-                                    $sinteringActiveDialogBuilt = false;
-                                    $printingActiveDialogBuilt = false;
-                                    $pressingActiveDialogBuilt = false;
-
-                                @endphp
-                                @if ($key == 'milling')
-
-                                    <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
-                                                     :devices="$devices" stageId="2" :counts="$deviceUnitsCounts"/>
-
-                                @elseif($key == '3dprinting')
-
-                                    <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
-                                                     units="3" :devices="$devices" stageId="3"
-                                                     :counts="$deviceUnitsCounts"/>
-
-                                @elseif($key == 'sintering')
-                                    <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
-                                                     :devices="$devices" stageId="4" :counts="$deviceUnitsCounts"/>
-
-                                @elseif($key == 'pressing')
-                                    <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
-                                                     :devices="$devices" stageId="5" :counts="$deviceUnitsCounts"/>
-
-                                @else
-                                    <!-- ACTIVE DELIVERY TABLES -->
-                                    <!-- ACTIVE DELIVERY TABLES -->
-                                    <!-- ACTIVE DELIVERY TABLES -->
-                                    <table class=" activeTable sunriseTable" style="width:100%;">
-                                        <thead>
-                                        <tr>
-                                            <th>Doctor</th>
-                                            <th>Patient</th>
-                                            <th class="deliveryToHeader">Delivery Date</th>
-                                            <th class="assignedToHeader">Assigned To</th>
-                                            <th class="">#</th>
-                                            <th class="">Tags</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        @foreach ($stage['activeCases'] as $case)
-                                            <tr class="clickable" style="color:{{ $color }}"
-                                                data-toggle="modal"
-                                                data-target="#confirmCompletion{{ $key . $case->id }}">
                                                 @if ($key == 'finishing')
                                                     @php
                                                         $notReadyA = false;
@@ -1175,48 +892,74 @@
                                                         if (!$case->allUnitsAtFinishing()) {
                                                             $notReadyA = true;
                                                         }
+
                                                     @endphp
                                                 @endif
-                                                <td>
-                                                    <p class="">{{ $case->client ? $case->client->name : 'No Client' }}</p>
+                                                {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                                @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                    @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                        <td class="no-sort">
+                                                            <input type="checkbox" data-type="{{ $key }}"
+                                                                data-group-id="{{ $key }}"
+                                                                class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
+                                                                value="{{ $case->id }}"
+                                                                name="CheckBoxes{{ $key }}[]"
+                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
+
+                                                        </td>
+                                                    @endif
+                                                @endif
+                                                <td class="clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
                                                 </td>
-                                                <td>
-                                                    <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
+                                                <td class="clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->patient_name }}
+                                                        @if ($key == 'finishing')
                                                             @if ($notReadyA)
                                                                 <span
-                                                                    style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
-                                                                        Not <br>
-                                                                        Ready
-                                                                    </span>
+                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                                    Not <br>
+                                                                    Ready
+                                                                </span>
                                                             @endif
-
                                                             @if (!$abutmentsReceived)
                                                                 <span
-                                                                    style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
-                                                                        Abutment <br>
-                                                                        Missing
-                                                                    </span>
+                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                                    Abutment <br>
+                                                                    Missing
+                                                                </span>
                                                             @endif
                                                         @endif
-
                                                     </p>
                                                 </td>
-                                                <td class="">
+                                                <td class="clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <p class="">
                                                         {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
                                                     </p>
                                                 </td>
-                                                <td>
-                                                    <p class="">
-                                                        {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
-                                                    </p>
+                                                <!-- Assigned to for delivery stage -->
+                                                @if ($key == 'delivery')
+                                                    <td class="clickable" data-toggle="modal"
+                                                        data-target="#waitingDialog{{ $key . $case->id }}">
+                                                        <p class="">
+                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
+                                                                ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
+                                                                : 'None' }}
+                                                        </p>
+                                                    </td>
+                                                @endif
+                                                <td class="clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
                                                 </td>
-                                                <td class="">
-                                                    <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
-                                                    </p>
-                                                </td>
-                                                <td class="">
-                                                    <div style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+
+                                                <td class="clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <div
+                                                        style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
                                                         @foreach ($case->tags as $tag)
                                                             <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
                                                                 style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
@@ -1225,42 +968,50 @@
                                                     </div>
                                                 </td>
                                             </tr>
-  <!-- Active case actions Dialog -->
+                                            {{--                                        {{dd("key  is  " . $key)}} --}}
+                                            {{-- BEGIN WAITING DIALOG --}}
                                             <div class="modal fade" tabindex="-1" role="dialog"
-                                                 id="confirmCompletion{{ $key . $case->id }}">
+                                                id="waitingDialog{{ $key . $case->id }}">
                                                 <form
-
-
-                                                    action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-
-
+                                                    action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
                                                     method="GET">
                                                     @csrf
-                                                    <input type="hidden" name="case_id"
-                                                            value="{{ $case->id }}">
+                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Case Completion</h5>
-
+                                                                @if (Auth()->user()->is_admin)
+                                                                    <div class="tooltipY">
+                                                                        <a
+                                                                            href="{{ route('finish-case-completely', ['caseId' => $case->id]) }}">
+                                                                            <i
+                                                                                class="fa-solid fa-forward-fast skip-to-delivery-icon"></i>
+                                                                        </a>
+                                                                        <span class="tooltiptextY">Skip To Delivery
+                                                                            Stage</span>
+                                                                    </div>
+                                                                @endif
                                                                 <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
+                                                                    data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="false">&times;</span>
                                                                 </button>
+
                                                             </div>
                                                             <div class="modal-body">
                                                                 <!-- Sticky Doctor/Patient section -->
-                                                                <div class="form-group row"
-                                                                     style="margin-bottom: 0px">
+                                                                <div class="form-group row" style="margin-bottom: 0px">
                                                                     <div class="form-group col-6 "
-                                                                         style="margin-bottom: 0px">
+                                                                        style="margin-bottom: 0px">
                                                                         <label for="doctor">Doctor: </label>
-                                                                        <h5 id="doctor" class="patient-doctor-names">{{ $case->client?->name }}</h5>
+                                                                        <h5 id="doctor" class="patient-doctor-names">
+                                                                            {{ $case->client?->name }}</h5>
                                                                     </div>
                                                                     <div class="form-group col-6 "
-                                                                         style="margin-bottom: 0px">
+                                                                        style="margin-bottom: 0px">
                                                                         <label for="pat">Patient: </label>
-                                                                        <h5 id="pat" class="patient-doctor-names">{{ $case->patient_name }}</h5>
+                                                                        <h5 id="pat" class="patient-doctor-names">
+                                                                            {{ $case->patient_name }}</h5>
                                                                     </div>
                                                                 </div>
                                                                 <hr>
@@ -1279,18 +1030,20 @@
                                                                                         $job->unit_num,
                                                                                     );
                                                                                     // Check if this job goes through the current stage based on material
-                                                                                    $showJob = $job->goesThroughStage($stage['numericStage']);
+                                                                                    $showJob = $job->goesThroughStage(
+                                                                                        $stage['numericStage'],
+                                                                                    );
                                                                                 @endphp
 
-                                                                                @if($showJob)
-                                                                                <span>{{ $job->unit_num }}
+                                                                                @if ($showJob)
+                                                                                    <span>{{ $job->unit_num }}
                                                                                         -
                                                                                         {{ $job->jobType->name ?? 'No Job Type' }}
                                                                                         -
                                                                                         {{ $job->material->name ?? 'no material' }}
-                                                                                    {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                                    {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                                    {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
+                                                                                        {{ $job->color == '0' ? '' : ' - ' . $job->color }}
+                                                                                        {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
+                                                                                        {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
                                                                                         <br>
                                                                                         {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
                                                                                     </span>
@@ -1303,99 +1056,448 @@
                                                                         <label><b>Notes:</b></label><br>
                                                                         @foreach ($case->notes as $note)
                                                                             <div class="form-control note-container"
-                                                                                 style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
-                                                                                 disabled>
+                                                                                style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                disabled>
 
-                                                                                    <span
-                                                                                        class="noteHeader" style="font-weight:600">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                                                                <span class="noteHeader"
+                                                                                    style="font-weight:600">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+
                                                                                 <span
                                                                                     class="noteText">{{ $note->note }}</span>
                                                                             </div>
                                                                         @endforeach
                                                                     @endif
                                                                 </div>
-
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <div class="row">
-                                                                    @php
-                                                                        $isAdmin = Auth()->user()->is_admin;
-                                                                        $canBeFinished = true;
-                                                                        $isUserCase = false;
-                                                                        $canComplete = false;
-                                                                        if ($case->jobs->where('stage', $stage['numericStage'])->first() && $case->jobs->where('stage', $stage['numericStage'])->first()->assignee == Auth()->user()->id) {
-                                                                            $canComplete = true;
-                                                                            $isUserCase = true;
-                                                                        }
-                                                                        if ($key == 'finishing') {
-                                                                            if ($notReadyA || !$abutmentsReceived) {
-                                                                                $canComplete = false;
-                                                                                $canBeFinished = false;
-                                                                            }
-                                                                        }
-                                                                    @endphp
-
-
-                                                                    <!-- Row 2: View (25%) | Complete (50%) | Edit (25%) -->
+                                                                <div class="row btnsRow">
+                                                                    <!-- Row 1: View (25%) | Action (50%) | Edit (25%) -->
                                                                     <div class="col-3 padding5px" style="display: flex;">
-                                                                        <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" style="width:100%; display: flex;">
-                                                                            <button type="button" class="btn btn-info" style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
+                                                                        <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                            style="width:100%; display: flex;">
+                                                                            <button type="button" class="btn btn-info"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
                                                                         </a>
                                                                     </div>
-
                                                                     <div class="col-6 padding5px" style="display: flex;">
-                                                                        @if ($isAdmin && $canBeFinished && !$isUserCase)
-                                                                            <a href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" style="width:100%; display: flex;">
-                                                                                <button type="button" class="btn btn-success" style="width:100%; display: flex; align-items: center; justify-content: center;">overide omplete</button>
-                                                                            </a>
+                                                                        @if ($key == 'milling')
+                                                                            <button type="button" class="btn btn-success"
+                                                                                data-dismiss="modal"
+                                                                                onclick="openModal('milling',true,'{{ $case->id }}')"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i> Assign To
+                                                                                Me</button>
+                                                                        @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
+                                                                            <button type="button" class="btn btn-success"
+                                                                                data-dismiss="modal"
+                                                                                onclick="openModal('{{ $key }}',true,'{{ $case->id }}')"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i> Assign To
+                                                                                Me</button>
                                                                         @else
-                                                                            <button type="submit" class="btn btn-success" style="width:100%; display: flex; align-items: center; justify-content: center;" {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Case cannot be completed' }}</button>
+                                                                            <button type="submit" class="btn btn-success"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i>
+                                                                                {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
                                                                         @endif
                                                                     </div>
-
                                                                     <div class="col-3 padding5px" style="display: flex;">
-                                                                        <a href="{{ route('edit-case-view', $case->id) }}" style="width:100%; display: flex;">
-                                                                            <button type="button" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}" style="width:100%; display: flex; align-items: center; justify-content: center;">Edit Case</button>
+                                                                        <a href="{{ route('edit-case-view', $case->id) }}"
+                                                                            style="width:100%; display: flex;">
+                                                                            <button type="button"
+                                                                                class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">Edit
+                                                                                Case</button>
                                                                         </a>
                                                                     </div>
-                                                                    <!-- Row 1: Delivery status (100%) - Layout 3 only -->
+
+                                                                    <!-- Row 2: QC Complete (100%) OR Delivery Assign (100%) -->
+                                                                    @if ($key == 'qc')
+                                                                        <div class="col-12">
+                                                                            <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                class="btn btn-info" style="width:100%"><i
+                                                                                    class="fa-solid fa-arrow-trend-up"></i>
+                                                                                Assign & Complete</a>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if ($key == 'delivery')
+                                                                        @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
+                                                                            @if ($case->jobs[0]->assignee == null)
+                                                                                <div class="col-12">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning"
+                                                                                        onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)"
+                                                                                        style="width:100%">Assign
+                                                                                        to..</button>
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="col-12">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning"
+                                                                                        onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)"
+                                                                                        style="width:100%">Re-Assign..</button>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endif
+
+                                                                    <!-- Row 3: Delivery Print Voucher (100%) -->
                                                                     @if ($key == 'delivery')
                                                                         <div class="col-12">
-                                                                            <a href="{{ route('delivered-in-box', $case->id) }}" class="btn btn-outline-info" style="width:100%">Delivered In Box</a>
+                                                                            <a href="{{ route('view-voucher', $case->id) }}"
+                                                                                class="btn btn-info" style="width:100%"><i
+                                                                                    class="fas fa-print"></i> Print
+                                                                                Voucher</a>
                                                                         </div>
                                                                     @endif
 
-                                                                    <!-- Row 3: Print Voucher (100%) - Layout 3 only -->
-                                                                    @if ($key == 'delivery')
-                                                                        <div class="col-12">
-                                                                            <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-outline-info" style="width:100%">Print Voucher</a>
-                                                                        </div>
-                                                                    @endif
-
-                                                                    <!-- Row 4: Externally Milled (100%) - Layout 5 only -->
-                                                                    @if ($key == 'milling')
-                                                                        <div class="col-12">
-                                                                            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#MEX{{ $case->id }}" data-dismiss="modal" style="width:100%">Externally Milled</button>
-                                                                        </div>
-                                                                    @endif
-
-                                                                    <!-- Row 5: Reset To Waiting (100%) -->
+                                                                    <!-- Row 4: Cancel (100%) -->
                                                                     <div class="col-12">
-                                                                        <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-outline-danger" style="width:100%">Reset To Waiting</a>
-                                                                    </div>
-
-                                                                    <!-- Row 6: Cancel (100%) -->
-                                                                    <div class="col-12">
-                                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width:100%">Cancel</button>
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal"
+                                                                            style="width:100%">Cancel</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                     </div>
-
                                                 </form>
                                             </div>
-                                            {{--                                            /////////// v2 DIALOG --}}
                                         @endforeach
+
+
+                                        <!-- Begin Active tab -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {{-- ----------------ACTIVE TABLE--------------- --}}
+                            {{-- ----------------ACTIVE TABLE--------------- --}}
+                            {{-- ----------------ACTIVE TABLE--------------- --}}
+                            <div tabindex="0" role="tabpanel" aria-labelledby="{{ 'active-' . $key . 'label' }}"
+                                id="{{ 'active-' . $key }}" hidden>
+                                @php
+                                    $key = strtolower($key);
+
+                                    $millingActiveDialogBuilt = false;
+                                    $sinteringActiveDialogBuilt = false;
+                                    $printingActiveDialogBuilt = false;
+                                    $pressingActiveDialogBuilt = false;
+
+                                @endphp
+                                @if ($key == 'milling')
+                                    <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
+                                        :devices="$devices" stageId="2" :counts="$deviceUnitsCounts" />
+                                @elseif($key == '3dprinting')
+                                    <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
+                                        units="3" :devices="$devices" stageId="3" :counts="$deviceUnitsCounts" />
+                                @elseif($key == 'sintering')
+                                    <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
+                                        :devices="$devices" stageId="4" :counts="$deviceUnitsCounts" />
+                                @elseif($key == 'pressing')
+                                    <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
+                                        :devices="$devices" stageId="5" :counts="$deviceUnitsCounts" />
+                                @else
+                                    <!-- ACTIVE DELIVERY TABLES -->
+                                    <!-- ACTIVE DELIVERY TABLES -->
+                                    <!-- ACTIVE DELIVERY TABLES -->
+                                    <table class=" activeTable sunriseTable" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Doctor</th>
+                                                <th>Patient</th>
+                                                <th class="deliveryToHeader">Delivery Date</th>
+                                                <th class="assignedToHeader">Assigned To</th>
+                                                <th class="">#</th>
+                                                <th class="">Tags</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach ($stage['activeCases'] as $case)
+                                                <tr class="clickable" style="color:{{ $color }}"
+                                                    data-toggle="modal"
+                                                    data-target="#confirmCompletion{{ $key . $case->id }}">
+                                                    @if ($key == 'finishing')
+                                                        @php
+                                                            $notReadyA = false;
+                                                            $abutmentsReceived = $case->abutmentsReceived();
+                                                            if (!$case->allUnitsAtFinishing()) {
+                                                                $notReadyA = true;
+                                                            }
+                                                        @endphp
+                                                    @endif
+                                                    <td>
+                                                        <p class="">
+                                                            {{ $case->client ? $case->client->name : 'No Client' }}</p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
+                                                                @if ($notReadyA)
+                                                                    <span
+                                                                        style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
+                                                                        Not <br>
+                                                                        Ready
+                                                                    </span>
+                                                                @endif
+
+                                                                @if (!$abutmentsReceived)
+                                                                    <span
+                                                                        style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
+                                                                        Abutment <br>
+                                                                        Missing
+                                                                    </span>
+                                                                @endif
+                                                            @endif
+
+                                                        </p>
+                                                    </td>
+                                                    <td class="">
+                                                        <p class="">
+                                                            {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                        </p>
+                                                    </td>
+                                                    <td>
+                                                        <p class="">
+                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="">
+                                                        <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="">
+                                                        <div
+                                                            style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                                            @foreach ($case->tags as $tag)
+                                                                <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                    style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                    class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                            @endforeach
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!-- Active case actions Dialog -->
+                                                <div class="modal fade" tabindex="-1" role="dialog"
+                                                    id="confirmCompletion{{ $key . $case->id }}">
+                                                    <form
+                                                        action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                        method="GET">
+                                                        @csrf
+                                                        <input type="hidden" name="case_id"
+                                                            value="{{ $case->id }}">
+                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Case Completion</h5>
+
+                                                                    <button type="button" class="close"
+                                                                        data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="false">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <!-- Sticky Doctor/Patient section -->
+                                                                    <div class="form-group row"
+                                                                        style="margin-bottom: 0px">
+                                                                        <div class="form-group col-6 "
+                                                                            style="margin-bottom: 0px">
+                                                                            <label for="doctor">Doctor: </label>
+                                                                            <h5 id="doctor"
+                                                                                class="patient-doctor-names">
+                                                                                {{ $case->client?->name }}</h5>
+                                                                        </div>
+                                                                        <div class="form-group col-6 "
+                                                                            style="margin-bottom: 0px">
+                                                                            <label for="pat">Patient: </label>
+                                                                            <h5 id="pat"
+                                                                                class="patient-doctor-names">
+                                                                                {{ $case->patient_name }}</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
+
+                                                                    <!-- Scrollable Jobs and Notes section -->
+                                                                    <div class="scrollable-content">
+                                                                        <div class="form-group row">
+                                                                            <div class=" col-12 ">
+                                                                                <label><b>Jobs:</b></label><br>
+
+
+                                                                                @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
+                                                                                    @php
+                                                                                        $unit = explode(
+                                                                                            ', ',
+                                                                                            $job->unit_num,
+                                                                                        );
+                                                                                        // Check if this job goes through the current stage based on material
+                                                                                        $showJob = $job->goesThroughStage(
+                                                                                            $stage['numericStage'],
+                                                                                        );
+                                                                                    @endphp
+
+                                                                                    @if ($showJob)
+                                                                                        <span>{{ $job->unit_num }}
+                                                                                            -
+                                                                                            {{ $job->jobType->name ?? 'No Job Type' }}
+                                                                                            -
+                                                                                            {{ $job->material->name ?? 'no material' }}
+                                                                                            {{ $job->color == '0' ? '' : ' - ' . $job->color }}
+                                                                                            {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
+                                                                                            {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
+                                                                                            <br>
+                                                                                            {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
+                                                                                        </span>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                        @if (count($case->notes) > 0)
+                                                                            <hr>
+                                                                            <label><b>Notes:</b></label><br>
+                                                                            @foreach ($case->notes as $note)
+                                                                                <div class="form-control note-container"
+                                                                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                    disabled>
+
+                                                                                    <span class="noteHeader"
+                                                                                        style="font-weight:600">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                                                                    <span
+                                                                                        class="noteText">{{ $note->note }}</span>
+                                                                                </div>
+                                                                            @endforeach
+                                                                        @endif
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        @php
+                                                                            $isAdmin = Auth()->user()->is_admin;
+                                                                            $canBeFinished = true;
+                                                                            $isUserCase = false;
+                                                                            $canComplete = false;
+                                                                            if (
+                                                                                $case->jobs
+                                                                                    ->where(
+                                                                                        'stage',
+                                                                                        $stage['numericStage'],
+                                                                                    )
+                                                                                    ->first() &&
+                                                                                $case->jobs
+                                                                                    ->where(
+                                                                                        'stage',
+                                                                                        $stage['numericStage'],
+                                                                                    )
+                                                                                    ->first()->assignee ==
+                                                                                    Auth()->user()->id
+                                                                            ) {
+                                                                                $canComplete = true;
+                                                                                $isUserCase = true;
+                                                                            }
+                                                                            if ($key == 'finishing') {
+                                                                                if ($notReadyA || !$abutmentsReceived) {
+                                                                                    $canComplete = false;
+                                                                                    $canBeFinished = false;
+                                                                                }
+                                                                            }
+                                                                        @endphp
+
+
+                                                                        <!-- Row 2: View (25%) | Complete (50%) | Edit (25%) -->
+                                                                        <div class="col-3 padding5px"
+                                                                            style="display: flex;">
+                                                                            <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                style="width:100%; display: flex;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-info"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-6 padding5px"
+                                                                            style="display: flex;">
+                                                                            @if ($isAdmin && $canBeFinished && !$isUserCase)
+                                                                                <a href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                    style="width:100%; display: flex;">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-success"
+                                                                                        style="width:100%; display: flex; align-items: center; justify-content: center;">overide
+                                                                                        omplete</button>
+                                                                                </a>
+                                                                            @else
+                                                                                <button type="submit"
+                                                                                    class="btn btn-success"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;"
+                                                                                    {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Case cannot be completed' }}</button>
+                                                                            @endif
+                                                                        </div>
+
+                                                                        <div class="col-3 padding5px"
+                                                                            style="display: flex;">
+                                                                            <a href="{{ route('edit-case-view', $case->id) }}"
+                                                                                style="width:100%; display: flex;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">Edit
+                                                                                    Case</button>
+                                                                            </a>
+                                                                        </div>
+                                                                        <!-- Row 1: Delivery status (100%) - Layout 3 only -->
+                                                                        @if ($key == 'delivery')
+                                                                            <div class="col-12">
+                                                                                <a href="{{ route('delivered-in-box', $case->id) }}"
+                                                                                    class="btn btn-outline-info"
+                                                                                    style="width:100%">Delivered In Box</a>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 3: Print Voucher (100%) - Layout 3 only -->
+                                                                        @if ($key == 'delivery')
+                                                                            <div class="col-12">
+                                                                                <a href="{{ route('view-voucher', $case->id) }}"
+                                                                                    class="btn btn-outline-info"
+                                                                                    style="width:100%">Print Voucher</a>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 4: Externally Milled (100%) - Layout 5 only -->
+                                                                        @if ($key == 'milling')
+                                                                            <div class="col-12">
+                                                                                <button type="button"
+                                                                                    class="btn btn-dark"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#MEX{{ $case->id }}"
+                                                                                    data-dismiss="modal"
+                                                                                    style="width:100%">Externally
+                                                                                    Milled</button>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 5: Reset To Waiting (100%) -->
+                                                                        <div class="col-12">
+                                                                            <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                class="btn btn-outline-danger"
+                                                                                style="width:100%">Reset To Waiting</a>
+                                                                        </div>
+
+                                                                        <!-- Row 6: Cancel (100%) -->
+                                                                        <div class="col-12">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary"
+                                                                                data-dismiss="modal"
+                                                                                style="width:100%">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                {{--                                            /////////// v2 DIALOG --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 @endif
@@ -1409,31 +1511,27 @@
                 @foreach ($devices as $device)
                     @switch($device['type'])
                         @case(2)
-                            <x-active-cases-dialog title="Milling Jobs" btnText="COMPLETE" type="milling"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Milling Jobs" btnText="COMPLETE" type="milling" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @case(3)
-                            <x-active-cases-dialog title="Printer Builds" btnText="COMPLETE" type="3dprinting"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="true"/>
-                            @break
+                            <x-active-cases-dialog title="Printer Builds" btnText="COMPLETE" type="3dprinting" :deviceId="$device['id']"
+                                :isBuilds="true" />
+                        @break
 
                         @case(4)
-                            <x-active-cases-dialog title="Sintering Jobs" btnText="COMPLETE" type="sintering"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Sintering Jobs" btnText="COMPLETE" type="sintering" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @case(5)
-                            <x-active-cases-dialog title="Pressing Jobs" btnText="COMPLETE" type="pressing"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Pressing Jobs" btnText="COMPLETE" type="pressing" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @default
-                            @break
+                        @break
                     @endswitch
                 @endforeach
             </div>
@@ -1449,10 +1547,10 @@
             <form id="hiddenForm{{ $stage }}" action="#" method="POST">
                 @csrf
                 <input type="hidden" name="deviceId-{{ $stage }}" id="deviceId-{{ $stage }}"
-                       value="">
+                    value="">
                 <input type="hidden" name="type" value="{{ $stage }}">
                 <input type="hidden" name="WaitingPopupCheckBoxes{{ $stage }}[]"
-                       id="WaitingPopupCheckBoxes{{ $stage }}" value="">
+                    id="WaitingPopupCheckBoxes{{ $stage }}" value="">
 
                 @if ($stage == '3dprinting')
                     <input type="hidden" name="buildName" id="hidden3dprintingBuildName" value="">
@@ -1465,7 +1563,7 @@
 
         <!-- Generic loading dialog -->
         <div id="loadingDialog" class="modal" tabindex="-1" role="dialog"
-             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
+            style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
@@ -1476,11 +1574,11 @@
             </div>
         </div>
     </div>
-    {{--    @php--}}
-    {{--        } catch (Exception $e) {--}}
-    {{--            dd($e->getMessage(), $e->getTraceAsString());--}}
-    {{--        }--}}
-    {{--    @endphp--}}
+    {{--    @php --}}
+    {{--        } catch (Exception $e) { --}}
+    {{--            dd($e->getMessage(), $e->getTraceAsString()); --}}
+    {{--        } --}}
+    {{--    @endphp --}}
 @endsection
 
 
@@ -1563,6 +1661,7 @@
 
         /* Table enhancements (removable) */
         .table-enhancement {
+
             /* Subtle row hover effect */
             .sunriseTable tbody tr:hover {
                 background-color: #f8f9fa !important;
@@ -1627,7 +1726,7 @@
 
 
 
-        .waitingTable > thead {
+        .waitingTable>thead {
             height: 4.9vh;
         }
 
@@ -1654,6 +1753,20 @@
             width: 100% !important;
         }
 
+        /* Mobile: when columns hide, stretch remaining columns to fill width */
+        @media (max-width: 768px) {
+            .sunriseTable.dataTable {
+                table-layout: fixed !important;
+            }
+
+            .sunriseTable.dataTable th,
+            .sunriseTable.dataTable td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
 
 
         /* Force equal column widths and prevent expansion of empty columns */
@@ -1667,7 +1780,7 @@
 
 
             p {
-                margin: 2px !important;
+                /*margin: 2px !important;*/
             }
 
             /* Patient and Doctor column spacing */
@@ -1720,7 +1833,7 @@
     <!-- ✅ DataTables core JS -->
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 
-
+    <script></script>
     <!-- ✅ Your Initialization Script -->
     <script>
         $(document).ready(function () {
@@ -1730,7 +1843,43 @@
                 console.warn('initializeVisibleTables is not defined');
             }
         });
+        function initializeVisibleTables() {
+            // ✅ Check if DataTables is available
+            if (typeof $.fn.DataTable === 'undefined') {
+                console.log('DataTables not yet loaded, retrying...');
+                setTimeout(initializeVisibleTables,
+                    100); // retry after 100ms        setTimeout(initializeVisibleTables, 100); // retry after 100ms
+                return;
+            }
+
+            // 🗑️ This does nothing (should be removed)
+            // setTimeout(function(){}, 1000);
+
+            var tables = $('.sunriseTable');
+
+            tables.each(function() {
+                var tableId = this.id || $(this).index();
+
+                if (initializedTables.has(tableId)) return;
+
+
+                var $table = $(this);
+                var $parent = $table.closest('[role="tabpanel"]');
+
+            });
+
+
+        }
+
+            $(document).ready(function() {
+                if (typeof initializeVisibleTables === 'function') {
+                    initializeVisibleTables();
+                } else {
+                    console.warn('initializeVisibleTables is not defined');
+                }
+            });
     </script>
+
 
     <script>
         // Simple shimmer loading controller
@@ -1779,8 +1928,8 @@
     </script>
 
     <!-- Then load Macaw Tabs -->
-    <script
-        src="{{ asset('https://cdn.jsdelivr.net/gh/htmlcssfreebies/macaw-tabs@v1.0.4/dist/js/macaw-tabs.js') }}"></script>
+    <script src="{{ asset('https://cdn.jsdelivr.net/gh/htmlcssfreebies/macaw-tabs@v1.0.4/dist/js/macaw-tabs.js') }}">
+    </script>
 
     <!-- Then load your custom scripts -->
     <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js"></script>
@@ -1883,11 +2032,8 @@
 
             }, 100);
         }
-
     </script>
     <script>
-
-
         const container = document.getElementById('dashboardShimmer');
 
         function startLoading() {
@@ -1903,7 +2049,7 @@
         setTimeout(stopLoading, 2000); // remove shimmer after 2s
 
         // Apply device image configuration when document is ready
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize Macaw Tabs if available
             if (typeof MacawTabs !== 'undefined') {
                 MacawTabs.init();
@@ -1914,43 +2060,43 @@
             if (typeof jQuery !== 'undefined') {
                 // Apply to all device images
                 jQuery('.device-item img').css({
-                    'width': '{{ $deviceConfig["width"] }}',
-                    'max-width': '{{ $deviceConfig["max_width"] }}',
-                    'height': '{{ $deviceConfig["height"] }}',
-                    'padding': '{{ $deviceConfig["padding"] }}',
-                    'border-radius': '{{ $deviceConfig["border_radius"] }}',
-                    'background': '{{ $deviceConfig["background"] }}',
+                    'width': '{{ $deviceConfig['width'] }}',
+                    'max-width': '{{ $deviceConfig['max_width'] }}',
+                    'height': '{{ $deviceConfig['height'] }}',
+                    'padding': '{{ $deviceConfig['padding'] }}',
+                    'border-radius': '{{ $deviceConfig['border_radius'] }}',
+                    'background': '{{ $deviceConfig['background'] }}',
                     'object-fit': 'contain'
                 });
 
                 // Apply to device containers
                 jQuery('.device-container').css({
-                    'gap': '{{ $deviceConfig["container_gap"] ?? "15px" }}',
+                    'gap': '{{ $deviceConfig['container_gap'] ?? '15px' }}',
                     'width': '100%'
                 });
 
                 // Remove hover effects if disabled in config
-                @if(!$deviceConfig["hover_effect"])
-                jQuery('.device-item').hover(
-                    function () {
-                        jQuery(this).css({
-                            'box-shadow': 'none',
-                            'transform': 'none'
-                        });
-                    },
-                    function () {
-                        jQuery(this).css({
-                            'box-shadow': 'none',
-                            'transform': 'none'
-                        });
-                    }
-                );
+                @if (!$deviceConfig['hover_effect'])
+                    jQuery('.device-item').hover(
+                        function() {
+                            jQuery(this).css({
+                                'box-shadow': 'none',
+                                'transform': 'none'
+                            });
+                        },
+                        function() {
+                            jQuery(this).css({
+                                'box-shadow': 'none',
+                                'transform': 'none'
+                            });
+                        }
+                    );
                 @endif
 
                 // Ensure images don't break out of containers
                 jQuery('.device-item').css({
                     'overflow': 'hidden',
-                    'max-width': '{{ $deviceConfig["max_width"] }}'
+                    'max-width': '{{ $deviceConfig['max_width'] }}'
                 });
 
                 // Setup dialog reset functionality
@@ -1963,11 +2109,11 @@
          */
         function setupDialogResetHandlers() {
             // Store original states when a modal is opened
-            jQuery('.modal').on('show.bs.modal', function () {
+            jQuery('.modal').on('show.bs.modal', function() {
                 var $modal = jQuery(this);
 
                 // Store original button states
-                $modal.find('button').each(function () {
+                $modal.find('button').each(function() {
                     var $btn = jQuery(this);
                     $btn.data('original-disabled', $btn.prop('disabled'));
                     $btn.data('original-text', $btn.text());
@@ -1975,7 +2121,7 @@
                 });
 
                 // Store original input values
-                $modal.find('input, textarea, select').each(function () {
+                $modal.find('input, textarea, select').each(function() {
                     var $input = jQuery(this);
                     $input.data('original-value', $input.val());
                     $input.data('original-checked', $input.prop('checked'));
@@ -1983,7 +2129,7 @@
                 });
 
                 // Store original image states
-                $modal.find('img').each(function () {
+                $modal.find('img').each(function() {
                     var $img = jQuery(this);
                     $img.data('original-src', $img.attr('src'));
                     $img.data('original-class', $img.attr('class'));
@@ -1991,7 +2137,7 @@
                 });
 
                 // Store device selection states
-                $modal.find('.device-item').each(function () {
+                $modal.find('.device-item').each(function() {
                     var $device = jQuery(this);
                     $device.data('original-class', $device.attr('class'));
                     $device.data('original-style', $device.attr('style'));
@@ -1999,18 +2145,18 @@
                 });
 
                 // Store checkbox states
-                $modal.find('input[type="checkbox"]').each(function () {
+                $modal.find('input[type="checkbox"]').each(function() {
                     var $checkbox = jQuery(this);
                     $checkbox.data('original-checked', $checkbox.prop('checked'));
                 });
             });
 
             // Reset to original state when a modal is hidden
-            jQuery('.modal').on('hidden.bs.modal', function () {
+            jQuery('.modal').on('hidden.bs.modal', function() {
                 var $modal = jQuery(this);
 
                 // Reset buttons
-                $modal.find('button').each(function () {
+                $modal.find('button').each(function() {
                     var $btn = jQuery(this);
                     if ($btn.data('original-disabled') !== undefined) {
                         $btn.prop('disabled', $btn.data('original-disabled'));
@@ -2024,7 +2170,7 @@
                 });
 
                 // Reset inputs
-                $modal.find('input, textarea, select').each(function () {
+                $modal.find('input, textarea, select').each(function() {
                     var $input = jQuery(this);
                     if ($input.data('original-value') !== undefined) {
                         $input.val($input.data('original-value'));
@@ -2038,7 +2184,7 @@
                 });
 
                 // Reset images
-                $modal.find('img').each(function () {
+                $modal.find('img').each(function() {
                     var $img = jQuery(this);
                     if ($img.data('original-src')) {
                         $img.attr('src', $img.data('original-src'));
@@ -2052,7 +2198,7 @@
                 });
 
                 // Reset device selections
-                $modal.find('.device-item').each(function () {
+                $modal.find('.device-item').each(function() {
                     var $device = jQuery(this);
                     if ($device.data('original-class')) {
                         $device.attr('class', $device.data('original-class'));
@@ -2071,7 +2217,7 @@
                 });
 
                 // Reset checkboxes
-                $modal.find('input[type="checkbox"]').each(function () {
+                $modal.find('input[type="checkbox"]').each(function() {
                     var $checkbox = jQuery(this);
                     if ($checkbox.data('original-checked') !== undefined) {
                         $checkbox.prop('checked', $checkbox.data('original-checked'));

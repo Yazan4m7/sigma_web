@@ -594,7 +594,21 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                         @foreach($data['cases'] as $caseData)
 
                                             <div class="sigma-case-item">
-                                                <div class=" row info-case-row">
+                                                @php
+                                                    $tooltipParts = [];
+                                                    if ($caseData['case']->client?->name) {
+                                                        $tooltipParts[] = 'Doctor: ' . $caseData['case']->client->name;
+                                                    }
+                                                    if ($caseData['case']->patient_name) {
+                                                        $tooltipParts[] = 'Patient: ' . $caseData['case']->patient_name;
+                                                    }
+                                                    $tooltipParts[] = 'Units: ' . $caseData['unitCount'];
+                                                    if (!empty($caseData['jobTypes'])) {
+                                                        $tooltipParts[] = 'Jobs: ' . $caseData['jobTypes'];
+                                                    }
+                                                    $caseTooltip = implode(' | ', $tooltipParts);
+                                                @endphp
+                                                <div class=" row info-case-row" title="{{ $caseTooltip }}">
                                                     <div class=" col-3 ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
                                                     <div class=" col-3 ">{{ $caseData['case']->patient_name }}</div>
                                                     <div class=" col-3 ">{{ $caseData['unitCount'] }}</div>

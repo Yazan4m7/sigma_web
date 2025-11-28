@@ -2,6 +2,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebar = document.querySelector('.sidebar');
     const wrapper = document.querySelector('.wrapper');
     const pinBtn = document.getElementById('sidebar-pin-btn');
+    const overlay = document.getElementById('sidebarOverlay');
+    const hamburgerBtn = document.getElementById('sidebar-hamburger');
+    const MOBILE_BREAKPOINT = 991;
+
+    const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
+
+    function toggleSidebarOverlay(isVisible) {
+        if (!overlay) return;
+        const showOverlay = isVisible && isMobile();
+        overlay.classList.toggle('sidebar-overlay--visible', showOverlay);
+        overlay.setAttribute('aria-hidden', showOverlay ? 'false' : 'true');
+    }
+
+    function lockBodyScroll(shouldLock) {
+        document.body.classList.toggle('no-scroll', shouldLock);
+        document.documentElement.classList.toggle('no-scroll', shouldLock);
+    }
+
     const collapseExpandedSubmenus = () => {
         if (!sidebar) return;
         const openSubmenus = sidebar.querySelectorAll('.collapse.show');
@@ -24,141 +42,139 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
-    // Check if sidebar should be pinned from localStorage
-    const isPinned = localStorage.getItem('sidebarPinned') === 'true';
+    function closeMobileSidebar() {
+        if (!wrapper) return;
+        wrapper.classList.remove('sidebar-expanded');
+        document.body.classList.remove('sidebar-expanded');
+        document.documentElement.classList.remove('nav-open');
+        collapseExpandedSubmenus();
+        lockBodyScroll(false);
+        toggleSidebarOverlay(false);
+    }
 
-    if (sidebar && wrapper) {
-        // Apply pinned state on load
-        if (isPinned) {
+    function openMobileSidebar() {
+        if (!wrapper) return;
+        wrapper.classList.add('sidebar-expanded');
+        document.body.classList.add('sidebar-expanded');
+        document.documentElement.classList.add('nav-open');
+        lockBodyScroll(true);
+        toggleSidebarOverlay(true);
+    }
+
+    // Check if sidebar should be pinned from localStorage
+    let userPinnedPreference = localStorage.getItem('sidebarPinned') === 'true';
+
+    function applyPinnedState() {
+        if (!wrapper) return;
+        if (!isMobile() && userPinnedPreference) {
             wrapper.classList.add('sidebar-pinned');
             if (pinBtn) {
                 pinBtn.classList.add('pinned');
             }
+        } else {
+            wrapper.classList.remove('sidebar-pinned');
+            if (pinBtn) {
+                pinBtn.classList.remove('pinned');
+            }
         }
+    }
+
+    function syncSidebarForViewport() {
+        if (isMobile()) {
+            // Force overlay mode on mobile even if user pinned on desktop
+            wrapper?.classList.remove('sidebar-pinned');
+            pinBtn?.classList.remove('pinned');
+            if (!wrapper?.classList.contains('sidebar-expanded')) {
+                lockBodyScroll(false);
+                toggleSidebarOverlay(false);
+                document.documentElement.classList.remove('nav-open');
+            }
+        } else {
+            closeMobileSidebar();
+            applyPinnedState();
+        }
+    }
+
+    if (sidebar && wrapper) {
+        // Apply pinned state on load (desktop only)
+        applyPinnedState();
+
         // If not pinned, start with all submenus closed so navigation to a new page doesn't re-open them
         if (!wrapper.classList.contains('sidebar-pinned')) {
             collapseExpandedSubmenus();
         }
 
-        // Pin button click handler
-        if (pinBtn) {
-            console.log('Pin button found, attaching event listener');
-            pinBtn.addEventListener('click', function (e) {
-                console.log('Pin button clicked!');
-                e.preventDefault();
-                e.stopPropagation();
-
-                const isPinnedNow = wrapper.classList.toggle('sidebar-pinned');
-                this.classList.toggle('pinned');
-
-                console.log('Sidebar pinned:', isPinnedNow);
-                // Save to localStorage
-                localStorage.setItem('sidebarPinned', isPinnedNow);
-            });
-        } else {
-            console.log('Pin button NOT found');
-        }
-
         // Hover functionality (only when not pinned)
         sidebar.addEventListener('mouseenter', function () {
+            if (isMobile()) return;
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.add('sidebar-hover');
             }
         });
 
         sidebar.addEventListener('mouseleave', function () {
+            if (isMobile()) return;
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.remove('sidebar-hover');
                 collapseExpandedSubmenus();
             }
         });
 
-        // Close any open submenu when clicking a child link (non-collapse toggles)
+        // Close submenus and the mobile drawer when a non-toggle link is clicked
         sidebar.addEventListener('click', function (e) {
-            if (wrapper.classList.contains('sidebar-pinned')) return;
-            const link = e.target.closest('.collapse .nav li a');
+            if (wrapper.classList.contains('sidebar-pinned') && !isMobile()) return;
+            const link = e.target.closest('.nav li a');
             if (!link) return;
             const isCollapseToggle = link.hasAttribute('data-toggle') || link.getAttribute('data-target');
-            if (!isCollapseToggle) {
+            const isNestedLink = !!link.closest('.collapse .nav');
+
+            if (!isCollapseToggle && isNestedLink) {
                 collapseExpandedSubmenus();
             }
-        });
-    }
-
-    // Only update overlay when explicit pin/hamburger opening
-    function updateSidebarOverlayExplicit() {
-        const overlay = document.getElementById('sidebarOverlay');
-        const isMobile = window.innerWidth < 990;
-        const isSidebarOpen = wrapper.classList.contains('sidebar-pinned') || wrapper.classList.contains('sidebar-expanded');
-        if (overlay && isMobile) {
-            if (isSidebarOpen) {
-                document.body.classList.add('sidebar-expanded');
-                wrapper.classList.add('sidebar-expanded');
-                overlay.style.display = 'block';
-            } else {
-                document.body.classList.remove('sidebar-expanded');
-                wrapper.classList.remove('sidebar-expanded');
-                overlay.style.display = 'none';
+            if (!isCollapseToggle && isMobile()) {
+                closeMobileSidebar();
             }
-        } else if (overlay) {
-            overlay.style.display = 'none';
-            document.body.classList.remove('sidebar-expanded');
-            wrapper.classList.remove('sidebar-expanded');
-        }
-    }
-
-    // Explicit sidebar open (hamburger or pin),
-    // Remove overlay updates from hover events and nav link clicks.
-    if (pinBtn) {
-        pinBtn.addEventListener('click', function () {
-            // Toggle "sidebar-pinned" state
-            const isPinnedNow = wrapper.classList.toggle('sidebar-pinned');
-            this.classList.toggle('pinned');
-            localStorage.setItem('sidebarPinned', isPinnedNow);
-            updateSidebarOverlayExplicit();
         });
     }
-    // TODO: If you have a hamburger or mobile sidebar open button, add click event for that here:
-    // document.getElementById('sidebar-hamburger').addEventListener('click', ...)
-    // Call updateSidebarOverlayExplicit() when opened or closed
-    window.addEventListener('resize', updateSidebarOverlayExplicit);
-    // Initial call
-    updateSidebarOverlayExplicit();
+
+    // Pin button click handler
+    if (pinBtn) {
+        pinBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            userPinnedPreference = !userPinnedPreference;
+            localStorage.setItem('sidebarPinned', userPinnedPreference);
+            applyPinnedState();
+            if (!userPinnedPreference) {
+                collapseExpandedSubmenus();
+            }
+            toggleSidebarOverlay(false);
+            lockBodyScroll(false);
+        });
+    }
 
     // Hamburger mobile open/close overlay logic
-    var hamburgerBtn = document.getElementById('sidebar-hamburger');
     if (hamburgerBtn && wrapper) {
         hamburgerBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            if (window.innerWidth < 990) {
-                var expanded = wrapper.classList.toggle('sidebar-expanded');
-                if(expanded) {
-                    document.body.classList.add('sidebar-expanded');
-                    if (overlay) overlay.style.display = 'block';
-                } else {
-                    document.body.classList.remove('sidebar-expanded');
-                    if (overlay) overlay.style.display = 'none';
-                }
+            if (!isMobile()) return;
+            const expanded = wrapper.classList.contains('sidebar-expanded');
+            if (expanded) {
+                closeMobileSidebar();
+            } else {
+                openMobileSidebar();
             }
         });
     }
 
-    // Overlay click closes sidebar on mobile
-    const overlay = document.getElementById('sidebarOverlay');
+    // Overlay tap closes sidebar on mobile
     if (overlay) {
-        overlay.addEventListener('click', function () {
-            const sidebarEl = document.querySelector('.sidebar');
-            if (sidebarEl) {
-                sidebarEl.classList.add('sidebar-sliding-out');
-            }
-            overlay.style.display = 'none';
-            setTimeout(function () {
-                wrapper.classList.remove('sidebar-expanded');
-                document.body.classList.remove('sidebar-expanded');
-                if (sidebarEl) {
-                    sidebarEl.classList.remove('sidebar-sliding-out');
-                }
-            }, 340); // Match the CSS transition duration
+        overlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            closeMobileSidebar();
         });
     }
+
+    window.addEventListener('resize', syncSidebarForViewport);
+    syncSidebarForViewport();
 });

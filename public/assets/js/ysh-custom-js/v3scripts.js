@@ -2545,24 +2545,51 @@ function updateActionXXXXXButtonState(deviceId, type) {
 }
 
 function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
-    // Store the stage type for the panel to use (default to 3dprinting for backward compatibility)
+    // Store the stage type for the panel to use (consumed by form submissions elsewhere)
     window.currentPanelStage = stageType;
 
     const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-active');
     const panel = document.getElementById('YSH-slide-panel-' + caseId);
-    panel.style.right = '0%';
-}
 
+    if (!overlay || !panel) {
+        console.warn('Slide panel missing for case', caseId, 'stage', stageType);
+        return;
+    }
+
+    // Move overlay to body once to avoid modal stacking/transform issues
+    if (!overlay.dataset.movedToBody) {
+        document.body.appendChild(overlay);
+        overlay.dataset.movedToBody = '1';
+    }
+
+    overlay.classList.remove('YSH-closing');
+    overlay.style.display = 'block';
+
+    // Kick off slide-in with the next paint
+    requestAnimationFrame(() => {
+        overlay.classList.add('YSH-active');
+        panel.style.right = '0';
+    });
+}
 
 function YSH_closeSlidePanel(caseId) {
     const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-closing');
     const panel = document.getElementById('YSH-slide-panel-' + caseId);
+
+    if (!overlay || !panel) {
+        return;
+    }
+
+    overlay.classList.remove('YSH-active');
+    overlay.classList.add('YSH-closing');
     panel.style.right = '-100%';
-    overlay.addEventListener('animationend', () => {
-        overlay.classList.remove('YSH-active', 'YSH-closing');
-    }, {
-        once: true
-    });
+
+    // Hide after animation completes
+    const finishClose = () => {
+        overlay.style.display = 'none';
+        overlay.classList.remove('YSH-closing');
+    };
+
+    overlay.addEventListener('animationend', finishClose, { once: true });
+    overlay.addEventListener('transitionend', finishClose, { once: true });
 }

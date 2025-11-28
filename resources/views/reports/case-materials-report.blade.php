@@ -4,6 +4,10 @@
 @section('content')
     <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{route('materials-report')}}">
@@ -38,10 +42,13 @@
                             <i class="fas fa-chart-line me-2"></i>  &nbsp;   Generate Report
                         </button>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end">
-
-                            <i class="fas fa-print me-2"></i>
-
+                    <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end gap-2">
+                        <button type="button" id="exportExcelBtn" class="btn btn-success" style="display: none;">
+                            <i class="fas fa-file-excel me-2"></i> Export to Excel
+                        </button>
+                        <button type="button" onclick="window.print()" class="btn btn-secondary">
+                            <i class="fas fa-print me-2"></i> Print
+                        </button>
                     </div>
                 </div>
             </div>
@@ -116,24 +123,54 @@
 
 
 @push('js')
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
 <script type="text/javascript">
-    //        $(document).ready(function() {
-    //            $('#datatable').DataTable({
-    //                dom: 'Bfrtip',
-    //                buttons: [ 'csv', 'excel', 'pdf', 'print' ],
-    //                "pageLength": 25,
-    //                "searching": false,
-    //                "lengthChange": false,
-    //                "order": [[ 4, "desc" ]]
-    //            });
-    //        });
     $(document).ready(function() {
+        // Initialize DataTable with Excel export
+        var table = $('#datatable').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i> Export to Excel',
+                    className: 'btn btn-success',
+                    title: 'Materials Report',
+                    filename: 'materials_report_' + new Date().toISOString().split('T')[0],
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ],
+            "pageLength": 50,
+            "searching": true,
+            "lengthChange": true,
+            "order": [[ 0, "asc" ]],
+            "language": {
+                "search": "Search:",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
+        });
 
-
-            //{ dom: 'Bfrtip', buttons: ['colvis', 'excel', 'print'] }
-            //  "bJQueryUI": true
-            // "sDom": 'l<"H"Rf>t<"F"ip>'
+        // Show export button when table is ready
+        $('#exportExcelBtn').show();
+        
+        // Trigger DataTable export on custom button click
+        $('#exportExcelBtn').on('click', function() {
+            table.button('.buttons-excel').trigger();
+        });
 
         // FORCE DROPDOWN POSITIONING - Fix for DataTable interference
         function forceDropdownPositioning() {

@@ -11,6 +11,8 @@
  * - XL: 1200px
  */
 
+@import "../assets/css/sigma-machine-cards.css";
+
 /* ============================================
    RESET & BASE STYLES (Mobile First - 0px+)
    ============================================ */
@@ -196,20 +198,10 @@ body {
     }
 }
 
-/* For waiting dialog machines: ensure single column below 480px */
-.sigma-machines-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    width: 100%;
-    margin-bottom: 1rem;
-}
-
 /* ============================================
    MACHINE IMAGES (Mobile Base)
    ============================================ */
 
-.sigma-machine-image-container,
 .sigma-device-image-container,
 .sigma-device-img-container {
     width: 100%;
@@ -222,7 +214,6 @@ body {
     position: relative;
 }
 
-.sigma-machine-image,
 .sigma-device-image,
 .active-device-img,
 .machine-img {
@@ -231,7 +222,6 @@ body {
     object-fit: contain;
 }
 
-.sigma-machine-name,
 .sigma-device-name {
     font-size: 0.875rem;
     font-weight: 600;
@@ -692,14 +682,12 @@ body {
     }
 
     /* Machines grid - 2 columns */
-    .sigma-machines-grid,
     .sigma-devices-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
     }
 
     /* Larger machine images */
-    .sigma-machine-image-container,
     .sigma-device-image-container,
     .sigma-device-img-container {
         height: 10rem;
@@ -750,7 +738,11 @@ body {
         max-width: 720px;
         border-radius: 1.5rem;
     }
-
+    .input-icon {
+        position: absolute;
+        left: 1.00rem !important;
+        top: 50%;
+    }
     /* Padding increases */
     .sigma-workflow-header,
     .sigma-workflow-footer {
@@ -762,20 +754,17 @@ body {
     }
 
     /* Machines grid - 3 columns */
-    .sigma-machines-grid,
     .sigma-devices-grid {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.25rem;
     }
 
     /* Larger images */
-    .sigma-machine-image-container,
     .sigma-device-image-container,
     .sigma-device-img-container {
         height: 11rem;
     }
 
-    .sigma-machine-name,
     .sigma-device-name {
         font-size: 0.9375rem;
     }
@@ -868,14 +857,12 @@ body {
     }
 
     /* Machines grid - 4 columns */
-    .sigma-machines-grid,
     .sigma-devices-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 1.5rem;
     }
 
     /* Even larger images */
-    .sigma-machine-image-container,
     .sigma-device-image-container,
     .sigma-device-img-container {
         height: 12rem;
@@ -914,19 +901,16 @@ body {
     }
 
     /* Machines grid stays at 4 columns but with more gap */
-    .sigma-machines-grid,
     .sigma-devices-grid {
         gap: 2rem;
     }
 
     /* Maximum image size */
-    .sigma-machine-image-container,
     .sigma-device-image-container,
     .sigma-device-img-container {
         height: 13rem;
     }
 
-    .sigma-machine-name,
     .sigma-device-name {
         font-size: 1rem;
     }
@@ -948,14 +932,12 @@ body {
     }
 
     /* Smaller images in landscape */
-    .sigma-machine-image-container,
     .sigma-device-image-container,
     .sigma-device-img-container {
         height: 6rem;
     }
 
     /* Machines in landscape - more columns */
-    .sigma-machines-grid,
     .sigma-devices-grid {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 0.75rem;
@@ -996,7 +978,6 @@ body {
    ============================================ */
 
 @media (prefers-contrast: high) {
-    .sigma-machine-card,
     .sigma-device-card {
         border-width: 3px;
     }
@@ -1061,13 +1042,11 @@ body {
         color: #f9fafb;
     }
 
-    .sigma-machine-card,
     .sigma-device-card {
         background: #374151;
         border-color: #4b5563;
     }
 
-    .sigma-machine-card:hover,
     .sigma-device-card:hover {
         background: #4b5563;
         border-color: #60a5fa;
@@ -1104,7 +1083,6 @@ body {
    ============================================ */
 
 /* Focus visible styles */
-.sigma-machine-card:focus-visible,
 .sigma-device-card:focus-visible,
 .sigma-button:focus-visible,
 .sigma-close-button:focus-visible {

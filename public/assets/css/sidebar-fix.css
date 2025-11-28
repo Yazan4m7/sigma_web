@@ -2,15 +2,17 @@
 
 /* Make sidebar wrapper scrollable with full height */
 .sidebar .sidebar-wrapper {
-    height: 100vh;
-    overflow-y:scroll;
-        scrollbar-width: none;
+    height: auto;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: none;
     overflow-x: hidden;
     position: relative;
-    /* max-height: none !important; */
-
-    padding-bottom: 100px;
-    /* Extra padding at bottom to ensure visibility of expanded items */
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+    /* Space for the last item without creating extra page scroll */
 }
 
 /* Customize scrollbar appearance */
@@ -51,13 +53,30 @@
 
 .sidebar-overlay {
   display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.33);
+  pointer-events: none;
+  touch-action: none;
+  z-index: 1040;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-@media (max-width: 990px) {
+.sidebar-overlay.sidebar-overlay--visible {
+  opacity: 1;
+  display: block;
+  pointer-events: auto;
+}
+
+@media (max-width: 991px) {
   .sidebar {
     position: fixed;
     top: 0; left: 0; bottom: 0;
-    width: 230px;
+    width: 260px;
     transform: translateX(-100%);
     transition: transform 0.34s cubic-bezier(0.4,0,0.2,1);
     z-index: 1051;
@@ -76,10 +95,15 @@
   .wrapper.sidebar-expanded .sidebar-overlay,
   body.sidebar-open .sidebar-overlay {
     display: block;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.33);
-    z-index: 1040;
-    transition: opacity 0.15s;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  body.sidebar-expanded .main-panel,
+  .wrapper.sidebar-expanded .main-panel,
+  html.nav-open .main-panel {
+    margin-left: 0 !important;
+    width: 100% !important;
+    transform: none !important;
   }
 }

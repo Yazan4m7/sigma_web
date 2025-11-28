@@ -123,7 +123,11 @@
         padding: 0;
         margin: 0;
     }
+    .fa-user{
+        display:none;
+        left: 5.05rem !important;
 
+    }
     #wrapp input[type="text"] {
         height: 38px;
         font-size: 14px;

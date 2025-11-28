@@ -20,6 +20,34 @@
     text-decoration: none !important;
 }
 
+/* Prevent Safari/iOS from stretching the first sidebar button on some devices */
+@media (max-width: 600px) {
+
+    .sidebar .nav>li>a,
+    .sidebar .nav>div>li>a {
+        height: auto !important;
+        min-height: 48px !important;
+        max-height: 120px !important;
+        flex: 0 0 auto !important;
+        align-items: center !important;
+        line-height: 1.25 !important;
+        overflow: hidden !important;
+    }
+}
+
+/* Prevent oversized tap highlight blocks on iOS Safari */
+@media (max-width: 991px) {
+
+    .sidebar .nav>li>a,
+    .sidebar .nav>div>li>a {
+        max-height: 68px !important;
+        align-items: center !important;
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0.12);
+        -webkit-touch-callout: none;
+        overflow: hidden;
+    }
+}
+
 /* Hover state */
 .sidebar .nav>li>a:hover,
 .sidebar .nav>div>li>a:hover {
@@ -37,7 +65,7 @@
     color: #fff !important;
     box-shadow: 0;
     border-radius: 0;
-    height: -webkit-fill-available;
+    height: auto !important;
 }
 
 /* ============================================================================
@@ -73,15 +101,15 @@
    ============================================================================ */
 
 .sidebar .nav .collapse .nav li a {
-    padding: 4px 15px 4px 10px !important;
-    font-size: 0.8125rem !important;
+    padding: 4px 12px 4px 8px !important;
+    font-size: inherit !important;
     transition: all 0.3s ease !important;
     border-radius: 4px !important;
-    margin: 0px 15px !important;
+    margin: 0px 10px !important;
 }
 
 .sidebar .nav .collapse .nav li a:hover {
-    padding-left: 12px !important;
+    padding-left: 10px !important;
 }
 
 .sidebar .nav .collapse .nav li.active a {
@@ -93,6 +121,46 @@
 .sidebar .nav .collapse .nav li a i {
     font-size: 0.875rem !important;
     margin-right: 8px !important;
+}
+
+/* Tighten space below grouped collapses (Reports/Accountancy) */
+.sidebar .nav .collapse {
+    margin-bottom: 6px !important;
+}
+
+@media (max-width: 991px) {
+    /* Keep consistent sizing and reduce indent on mobile */
+    .sidebar .nav li a {
+        font-size: 0.85rem !important;
+        padding: 10px 12px !important;
+        margin: 2px 12px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sidebar .nav .collapse .nav li {
+        padding-left: 4px !important;
+    }
+
+    .sidebar .nav .collapse .nav li a {
+        padding: 6px 10px 6px 24px !important;
+        margin: 0 8px !important;
+        font-size: 0.95rem !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .sidebar .nav .collapse .nav li a span {
+        display: inline-block !important;
+    }
+
+    .sidebar .nav .collapse .nav li a i {
+        margin-right: 10px !important;
+    }
+
+    .sidebar .nav .collapse {
+        margin-bottom: 4px !important;
+    }
 }
 
 /* ============================================================================

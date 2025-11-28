@@ -322,7 +322,6 @@
 <script>
     $(document).ready(function () {
         let isPageLoaded = false;
-        let formSubmitted = false;
 
         console.log('Job Types Report: Page loading started');
 
@@ -343,12 +342,6 @@
                 return false;
             }
 
-            // Prevent double submissions
-            if (formSubmitted) {
-                console.log('Form already submitted, ignoring click');
-                return false;
-            }
-
             const isUnits = $(this).attr('id') === 'units-toggle';
             console.log('Switching to:', isUnits ? 'Units' : 'Cases');
 
@@ -366,7 +359,6 @@
             // Get current form data and submit
             const form = $('.kt-form')[0];
             if (form) {
-                formSubmitted = true;
                 console.log('Submitting form with perToggle:', isUnits ? '1' : '0');
                 form.submit();
             }

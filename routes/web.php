@@ -513,7 +513,6 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
     Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
 
     // CASES ROUTES
-    Route::get('/view/{id}/-2', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
     Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
 
     // CASE FLOW ROUTES

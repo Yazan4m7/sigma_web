@@ -45,6 +45,8 @@
 [class*="admin-dashboard"] .dataTable {
     display: table !important;
     width: 100% !important;
+    table-layout: auto !important;
+    margin: 0 !important;
 }
 
 .operations-dashboard .dataTable tbody,
@@ -106,6 +108,8 @@
 [class*="admin-dashboard"] .dataTables_wrapper {
     display: block !important;
     width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 /* Any flex containers that might be affecting tables */
@@ -137,4 +141,115 @@ body:has(#admin-dashboardv2) .dataTable,
 body:has([class*="admin-dashboard"]) .dataTable {
     display: table !important;
     width: 100% !important;
+}
+
+/* DataTables v2 layout cleanup (removes padding/gap that pushes tables on mobile) */
+#admin-dashboardv2 .dt-container,
+#admin-dashboardv2 .dt-layout,
+#admin-dashboardv2 .dt-layout-row,
+#admin-dashboardv2 .dt-layout-cell,
+#admin-dashboardv2 .dt-layout-table {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+#admin-dashboardv2 .dt-layout-row {
+    display: flex !important;
+}
+
+#admin-dashboardv2 .dt-layout-cell {
+    flex: 1 1 auto !important;
+}
+
+#admin-dashboardv2 .dt-layout-table {
+    flex: 1 1 auto !important;
+}
+
+/* Kill colgroup width overflows that shift tables horizontally */
+#admin-dashboardv2 .sunriseTable colgroup col {
+    width: auto !important;
+}
+
+/* Force responsive-hidden columns to stay visible (show the two hidden columns) */
+#admin-dashboardv2 .sunriseTable col.dt-hidden,
+#admin-dashboardv2 .sunriseTable th.dt-hidden,
+#admin-dashboardv2 .sunriseTable td.dt-hidden {
+    display: table-cell !important;
+    width: auto !important;
+    padding: inherit !important;
+    margin: 0 !important;
+}
+
+/* Mobile: force full-width table without padding from layout wrappers */
+@media (max-width: 991px) {
+    #admin-dashboardv2 .dt-container,
+    #admin-dashboardv2 .dt-layout,
+    #admin-dashboardv2 .dt-layout-row,
+    #admin-dashboardv2 .dt-layout-cell,
+    #admin-dashboardv2 .dt-layout-table {
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+    }
+
+    #admin-dashboardv2 .sunriseTable {
+        table-layout: fixed !important;
+    }
+
+    /* Neutralize colgroup-based widths on small screens */
+    #admin-dashboardv2 .sunriseTable colgroup,
+    #admin-dashboardv2 .sunriseTable colgroup col {
+        display: block !important;
+        width: auto !important;
+    }
+}
+#admin-dashboardv2 .dt-container,
+#admin-dashboardv2 .dt-layout,
+#admin-dashboardv2 .dt-layout-row,
+#admin-dashboardv2 .dt-layout-cell,
+#admin-dashboardv2 .dt-layout-table {
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+    justify-content: flex-start !important;
+    align-items: stretch !important;
+    width: 100% !important;
+}
+
+#admin-dashboardv2 .dt-layout-row {
+    display: block !important;
+    width: 100% !important;
+}
+
+#admin-dashboardv2 .dt-layout-cell,
+#admin-dashboardv2 .dt-layout-table {
+    display: block !important;
+    width: 100% !important;
+    flex: 1 1 auto !important;
+}
+
+/* Kill colgroup width overflows that shift tables horizontally */
+#admin-dashboardv2 .sunriseTable colgroup col {
+    width: auto !important;
+}
+
+/* Mobile: force full-width table without padding from layout wrappers */
+@media (max-width: 991px) {
+    #admin-dashboardv2 .dt-container,
+    #admin-dashboardv2 .dt-layout,
+    #admin-dashboardv2 .dt-layout-row,
+    #admin-dashboardv2 .dt-layout-cell,
+    #admin-dashboardv2 .dt-layout-table {
+        padding: 0 !important;
+        margin: 0 !important;
+        gap: 0 !important;
+    }
+
+    #admin-dashboardv2 .sunriseTable {
+        table-layout: fixed !important;
+    }
 }

@@ -239,20 +239,32 @@
     /* Hide sidebar by default on mobile */
     .sidebar {
         position: fixed !important;
-        left: -260px !important;
+        left: 0 !important;
         width: 260px !important;
-        height: 100vh !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
         top: 0 !important;
         z-index: 1050 !important;
-        transition: left 0.35s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
+        transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
         box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
-        will-change: left;
+        will-change: transform;
+        transform: translateX(-100%);
     }
 
     /* Show full sidebar when nav is open */
-    html.nav-open .sidebar {
+    html.nav-open .sidebar,
+    body.sidebar-expanded .sidebar,
+    .wrapper.sidebar-expanded .sidebar {
+        transform: translateX(0);
+    }
+
+    /* Disable pinned layout on mobile (overlay only) */
+    .wrapper.sidebar-pinned .sidebar,
+    .wrapper.sidebar-hover .sidebar {
+        transform: translateX(-100%);
         left: 0 !important;
     }
 
@@ -281,6 +293,7 @@
         visibility: visible !important;
         white-space: normal !important;
         word-wrap: break-word !important;
+        font-size: 0.770rem;
     }
 
     /* Main panel takes full width on mobile */
@@ -291,8 +304,13 @@
     }
 
     /* Don't push content on mobile, keep it in place */
-    html.nav-open .main-panel {
+    html.nav-open .main-panel,
+    .wrapper.sidebar-expanded .main-panel,
+    .wrapper.sidebar-pinned .main-panel,
+    .wrapper.sidebar-hover .main-panel {
         transform: none !important;
+        margin-left: 0 !important;
+        width: 100% !important;
     }
 
     /* Hide pin button on mobile */
@@ -318,12 +336,17 @@
     }
 
     .sidebar .sidebar-wrapper {
-        height: 100%;
-        overflow: visible !important;
+        height: auto !important;
+        min-height: 100vh !important;
+        min-height: 100dvh !important;
+        max-height: 100dvh !important;
+        box-sizing: border-box;
+        overflow: auto !important;
     }
 
     /* Fix navigation to allow overflow for expandable menus */
     .sidebar .nav {
+        font-size: 50px;
         overflow: visible !important;
         flex-grow: 1 !important;
         padding-bottom: 30px !important;
@@ -331,19 +354,21 @@
 
     /* Fix collapsible menus in sidebar on mobile */
     .sidebar .nav .collapse {
-        overflow: visible !important;
-        transition: max-height 0.3s ease !important;
+        /* overflow: visible !important; */
+        /* transition: max-height 0.3s ease !important; */
     }
 
     .sidebar .nav .collapse.show {
         max-height: none !important;
         overflow: visible !important;
+        font-size: 7.7px !important;
     }
 
     /* Ensure nested menu items are visible and properly styled */
     .sidebar .nav .collapse ul.nav {
         padding-left: 0 !important;
         margin-left: 0 !important;
+        font-size: 32px;
     }
 
     .sidebar .nav .collapse ul.nav li {

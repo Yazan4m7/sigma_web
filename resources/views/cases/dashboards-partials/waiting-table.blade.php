@@ -1,135 +1,53 @@
 
 <style>
-/*.selectAllCases{position:absolute; left: 40% !important;  bottom:0px; }*/
+    /* Compact, breakpoint-driven waiting dialog */
+    .waiting-dialog .modal-content { border-radius: 20px; }
+    .waiting-dialog .modal-header { border-bottom: 1px solid #dee2e6; }
+    .waiting-dialog .modal-footer { border-top: 1px solid #dee2e6; }
+    .waiting-dialog .btn { width: 100%; }
+    .waiting-dialog .patient-doctor-names { color: #2d5f6d; font-weight: 600; }
+    .waiting-dialog .scrollable-content { max-height: 40vh; overflow-y: auto; }
+    .waiting-dialog .note-container { background: #e8f0f2; border: 1px solid #b8d4db; }
+    .waiting-actions { width: 100%; margin: 0; }
+    .waiting-actions > [class*='col-'] { display: flex; }
+    .waiting-actions .btn { flex: 1; }
 
-    /* Modal footer button styling with proper contrast */
-    .fullBtnsWidth .btn {
-        font-weight: 400;
-        padding: 10px 12px;
-        border: none;
-        transition: all 0.3s ease;
-        font-size: 14px;
-    }
-
-    /* Modal dialog border radius - all corners uniform */
-    .modal-content {
-        border-radius: 25px !important;
-    }
-
-    /* Modal footer rounded bottom corners */
-    .modal-footer {
-        border-bottom-left-radius: 25px !important;
-        border-bottom-right-radius: 25px !important;
-    }
-
-    /* Modal header styling with divider */
-    .modal-header {
-        border-bottom: 1px solid #dee2e6 !important;
-        padding-bottom: 12px;
+    /* 1) <=400px */
+    @media (max-width: 400px) {
+        .waiting-dialog .modal-dialog { width: 95vw; margin: 0.5rem auto; }
+        .waiting-dialog .modal-body { padding: 0.85rem; }
+        .waiting-dialog .modal-title { font-size: 16px; }
+        .waiting-actions .col-3, .waiting-actions .col-6, .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
+        .waiting-actions .btn { margin-bottom: 8px; }
     }
 
-    /* Modal title styling */
-    .modal-title {
-        color: #2d5f6d;
-        font-weight: 600;
-        font-size: 18px;
-        margin-bottom: 0;
+    /* 2) 401-576px */
+    @media (min-width: 401px) and (max-width: 576px) {
+        .waiting-dialog .modal-dialog { width: 92vw; margin: 0.75rem auto; }
+        .waiting-actions .col-3 { flex: 0 0 50%; max-width: 50%; }
+        .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
+        .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
     }
 
-    /* Skip to delivery icon styling */
-    .skip-to-delivery-icon {
-        font-size: 20px;
-        color: #2d5f6d;
-        transition: color 0.3s ease;
-    }
-    .skip-to-delivery-icon:hover {
-        color: #1a3d47;
+    /* 3) 577-768px */
+    @media (min-width: 577px) and (max-width: 768px) {
+        .waiting-dialog .modal-dialog { width: 88vw; }
+        .waiting-dialog .modal-body { padding: 1rem 1.25rem; }
+        .waiting-actions .col-3 { flex: 0 0 33.333%; max-width: 33.333%; }
+        .waiting-actions .col-6 { flex: 0 0 33.333%; max-width: 33.333%; }
     }
 
-    /* Close button styling - more visible */
-    .modal-header button.close {
-        font-size: 32px;
-        font-weight: 300;
-        color: #000;
-        opacity: 0.8;
-        text-shadow: none;
-    }
-    .modal-header button.close:hover {
-        opacity: 1;
-        color: #000;
+    /* 4) 769-992px */
+    @media (min-width: 769px) and (max-width: 992px) {
+        .waiting-dialog .modal-dialog { width: 75vw; }
+        .waiting-actions .col-3 { flex: 0 0 25%; max-width: 25%; }
+        .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
     }
 
-    /* Doctor/Patient names styling */
-    .patient-doctor-names {
-        color: #2d5f6d;
-        font-weight: 600;
-    }
-
-    /* Scrollable section for jobs and notes only */
-    .scrollable-content {
-        max-height: 40vh;
-        overflow-y: auto;
-        overflow-x: hidden;
-    }
-
-    /* Notes container styling */
-    .form-control.note-container {
-        background-color: #e8f0f2;
-        border: 1px solid #b8d4db;
-        color: #212529;
-    }
-
-    .fullBtnsWidth {
-        border-top: 1px solid #dee2e6;
-    }
-
-    .fullBtnsWidth .btn-info {
-        background-color: #17a2b8;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
-        margin: 3px;
-    }
-    .fullBtnsWidth .btn-info:hover {
-        background-color: #138496;
-        box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
-    }
-
-    .fullBtnsWidth .btn-success {
-        background-color: #28a745;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
-        margin: 3px;
-    }
-    .fullBtnsWidth .btn-success:hover {
-        background-color: #218838;
-        box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
-    }
-
-    .fullBtnsWidth .btn-warning {
-        background-color: #ffc107;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
-        margin: 3px;
-    }
-    .fullBtnsWidth .btn-warning:hover {
-        background-color: #e0a800;
-        color: #ffffff !important;
-        box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
-    }
-
-    .fullBtnsWidth .btn-secondary {
-        background-color: #6c757d;
-        color: #ffffff !important;
-        box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
-        margin: 3px;
-    }
-    .fullBtnsWidth .btn-secondary:hover {
-        background-color: #5a6268;
-        box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
-    }
-
-    .fullBtnsWidth .btn i {
-        margin-right: 6px;
+    /* 5) >=1200px */
+    @media (min-width: 1200px) {
+        .waiting-dialog .modal-dialog { max-width: 640px; }
+        .waiting-dialog .modal-body { padding: 1.25rem 1.5rem; }
     }
 </style>
 @php
@@ -231,7 +149,7 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
 
 
         {{--BEGIN WAITING DIALOG --}}
-        <div class="modal fade" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
+        <div class="modal fade waiting-dialog" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
             <form action="{{$key=="Delivery" ? route('delivery-accept', $case->id) : route('assign-to-me',['caseId'=> $case->id,'stage'=>$stage["numericStage"]] )}}"
                 method="GET">
                 @csrf
@@ -310,24 +228,23 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                             </div>
                         </div>
                         <div class="modal-footer fullBtnsWidth">
-                            <div class="row btnsRow"
-                                style=" margin-right: 0px; margin-left: 0px;width:100%">
+                            <div class="row btnsRow waiting-actions">
                                 <!-- Row 1: View (25%) | Action (50%) | Edit (25%) -->
-                                <div class="col-3 padding5px" style="display: flex;">
-                                    <a href="{{route('view-case', ['id' => $case->id, 'stage' => -2])}}" style="width:100%; display: flex;">
-                                        <button type="button" class="btn btn-info" style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
+                                <div class="col-3 padding5px">
+                                    <a href="{{route('view-case', ['id' => $case->id, 'stage' => -2])}}" style="width:100%;">
+                                        <button type="button" class="btn btn-info">View</button>
                                     </a>
                                 </div>
-                                <div class="col-6 padding5px" style="display: flex;">
+                                <div class="col-6 padding5px">
                                     @if ($key == "milling")
-                                        <button type="button" data-toggle="modal" class="btn btn-success" data-dismiss="modal" onclick="openModal('MillingDialog')" style="width:100%; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-hexagon-nodes"></i> Nest</button>
+                                        <button type="button" data-toggle="modal" class="btn btn-success" data-dismiss="modal" onclick="openModal('MillingDialog')"><i class="fa-solid fa-hexagon-nodes"></i> Nest</button>
                                     @else
-                                        <button type="submit" class="btn btn-success" style="width:100%; display: flex; align-items: center; justify-content: center;"><i class="fas fa-user-plus"></i> {{$key == "delivery" ? 'Take' : 'Assign To Me'}}</button>
+                                        <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> {{$key == "delivery" ? 'Take' : 'Assign To Me'}}</button>
                                     @endif
                                 </div>
-                                <div class="col-3 padding5px" style="display: flex;">
-                                    <a href="{{route('edit-case-view',$case->id)}}" style="width:100%; display: flex;">
-                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}} style="width:100%; display: flex; align-items: center; justify-content: center;">Edit Case</button>
+                                <div class="col-3 padding5px">
+                                    <a href="{{route('edit-case-view',$case->id)}}" style="width:100%;">
+                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}}>Edit Case</button>
                                     </a>
                                 </div>
 
@@ -335,7 +252,7 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                 @if ($key == "qc")
                                     <div class="col-12 padding5px">
                                         <a href="{{route('assign-and-finish',['caseId'=> $case->id,'stage'=>$stage["numericStage"]])}}">
-                                            <button type="button" class="btn btn-info" style="width:100%"><i class="fa-solid fa-arrow-trend-up"></i> Assign & Complete</button>
+                                            <button type="button" class="btn btn-info"><i class="fa-solid fa-arrow-trend-up"></i> Assign & Complete</button>
                                         </a>
                                     </div>
                                 @endif

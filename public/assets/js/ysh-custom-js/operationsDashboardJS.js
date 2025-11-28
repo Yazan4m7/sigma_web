@@ -352,6 +352,24 @@ function selectAll(ele, classname) {
 var dataTableInitialized = false;
 var initializedTables = new Set();
 
+function attemptInitializeTable(table) {
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
+        console.warn("jQuery or DataTables not loaded. Cannot initialize single table.");
+        return;
+    }
+
+    var tableId = table.id || $(table).index();
+    if (initializedTables.has(tableId)) {
+        return;
+    }
+
+    if (!$.fn.DataTable.isDataTable(table)) {
+        initializeSingleTable(table);
+    }
+
+    initializedTables.add(tableId);
+}
+
 function initializeDataTables() {
     // Prevent multiple initialization attempts
     if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
@@ -369,38 +387,84 @@ function initializeDataTables() {
         var $parent = $table.closest('[role="tabpanel"]');
 
         if ($table.is(':visible') || ($parent.length && !$parent.attr('hidden'))) {
-            if (!$.fn.DataTable.isDataTable(this)) {
-                initializeSingleTable(this);
-                initializedTables.add(tableId);
-            }
+            attemptInitializeTable(this);
         }
     });
 }
 
-function forceInitializeAllTables() {
-    console.log("Forcing initialization of all DataTables...");
+function initializeTablesInPanel(panelElement) {
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
+        return;
+    }
 
-    // Destroy all existing instances
-    $('.sunriseTable').each(function() {
-        if ($.fn.DataTable.isDataTable(this)) {
-            $(this).DataTable().destroy();
-        }
+    const $panel = $(panelElement);
+    if (!$panel.length) {
+        return;
+    }
+
+    $panel.find('.sunriseTable').each(function() {
+        attemptInitializeTable(this);
+    });
+}
+
+function setupTabPanelObserver() {
+    if (typeof MutationObserver === 'undefined') {
+        return;
+    }
+
+    const panels = document.querySelectorAll('.macaw-aurora-tabs [role="tabpanel"], .macaw-silk-tabs [role="tabpanel"]');
+    if (!panels.length) {
+        return;
+    }
+
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.attributeName === 'hidden' && !mutation.target.hasAttribute('hidden')) {
+                initializeTablesInPanel(mutation.target);
+            }
+        });
     });
 
-    // Reset tracking
-    initializedTables.clear();
-
-    // Re-initialize
-    initializeDataTables();
-
-    // Verify after short delay (in case init is async)
-    setTimeout(() => {
-        let initializedCount = 0;
-        $('.sunriseTable').each(function() {
-            if ($.fn.DataTable.isDataTable(this)) initializedCount++;
+    panels.forEach(function(panel) {
+        observer.observe(panel, {
+            attributes: true,
+            attributeFilter: ['hidden']
         });
-        console.log(`Verification: ${initializedCount} out of 12 tables initialized.`);
-    }, 300);
+
+        if (!panel.hasAttribute('hidden')) {
+            initializeTablesInPanel(panel);
+        }
+    });
+}
+
+function forceInitializeAllTables(options = {}) {
+    // const destroyExisting = options.destroyExisting === true;
+    //
+    // if (destroyExisting) {
+    //     console.log("Destroying and re-initializing all DataTables...");
+    //     $('.sunriseTable').each(function() {
+    //         if ($.fn.DataTable.isDataTable(this)) {
+    //             $(this).DataTable().destroy();
+    //         }
+    //     });
+    //     initializedTables.clear();
+    // } else {
+    //     console.log("Ensuring DataTables exist for visible panels...");
+    // }
+    //
+    // initializeDataTables();
+    //
+    // if (destroyExisting) {
+    //     setTimeout(() => {
+    //         let initializedCount = 0;
+    //         $('.sunriseTable').each(function() {
+    //             if ($.fn.DataTable.isDataTable(this)) initializedCount++;
+    //         });
+    //         console.log(`Verification: ${initializedCount} tables initialized after force destroy.`);
+    //     }, 300);
+    // }
+
+
 }
 
 
@@ -428,6 +492,7 @@ function initializeSingleTable(table) {
         const $headerRow = $thead.find('tr').first();
         const $headerCells = $headerRow.find('th');
 
+        const isMobileWidth = window.matchMedia('(max-width: 991px)').matches;
         // BOOLEAN: Check if first column has checkbox
         let hasCheckbox = $headerCells.first().find('input[type="checkbox"]').length > 0;
 
@@ -435,64 +500,14 @@ function initializeSingleTable(table) {
         let columnCount = $headerCells.length;
 
         // Lightweight column configuration
-        let columnDefs = [];
-
-        // Simple width configuration based on checkbox and column count
-        if (hasCheckbox && columnCount === 7) {
-            columnDefs = [
-                { width: "5%", targets: 0},
-                { width: "20%", targets: 1 },
-                { width: "20%", targets: 2 },
-                {className: 'dt-center', width: "20%", targets: 3 },
-                {className: 'dt-center', width: "10%", targets: 4 },
-                {className: 'dt-center', width: "15%", targets: 5 },
-                {className: 'dt-center', width: "10%", targets: 6 }
-            ];
-        } else if (hasCheckbox && columnCount === 6) {
-            columnDefs = [
-                { width: "5%", targets: 0 },// checkbox
-                { width: "20%", targets: 1, },
-                { width: "20%", targets: 2 },
-                { className: 'dt-center',width: "20%", targets: 3 },
-                { className: 'dt-center',width: "10%", targets: 4 },
-                { className: 'dt-center', width: "25%", targets: 5 },
-
-            ];
-        } else if (!hasCheckbox && columnCount === 6) {
-            columnDefs = [
-                { width: "30%", targets: 0 },
-                { width: "20%", targets: 1 },
-                {className: 'dt-center', width: "20%", targets: 2 },
-                { className: 'dt-center',width: "10%", targets: 3 },
-                {className: 'dt-center', width: "10%", targets: 4 },
-                {className: 'dt-center', width: "10%", targets: 5 }
-            ];
-        } else if (!hasCheckbox && columnCount === 5) {
-            columnDefs = [
-                { width: "25%", targets: 0 },// doctor
-                { width: "20%", targets: 1 },// patient
-                {className: 'dt-center', width: "20%", targets: 2 },//deli
-                {className: 'dt-center', width: "10%", targets: 3 },// # of units
-                {className: 'dt-center', width: "25%", targets: 4 } // tags
-            ];
-        } else {
-            // Default configuration
-            for (let i = 0; i < columnCount; i++) {
-                let config = { width: (100 / columnCount) + "%", targets: i };
-                if (hasCheckbox && i === 0) {
-                    config.width = "50px";
-                    config.orderable = true;
-                }
-                columnDefs.push(config);
-            }
-        }
+        let columnDefs = []; // leave empty to avoid width forcing, especially on mobile
 
         // Lightweight DataTable initialization
         var dataTable = $table.DataTable({
             searching: false,
             ordering: false,
-            autoWidth: false,
-            responsive: true,
+            autoWidth: true,
+            responsive: false,
             lengthChange: false,
 //             stateSave: true,
             pageLength: 10,
@@ -514,12 +529,19 @@ function initializeSingleTable(table) {
             dataTable.columns.adjust().draw(false);
         });
 
+        // Ensure all columns remain visible (DataTables can hide columns when responsive or columnDefs set widths)
+        dataTable.columns().every(function () {
+            this.visible(true, false);
+        });
+        dataTable.columns.adjust().draw(false);
+
         $table.addClass("nowrap hover compact stripe");
 
         // Adjust column widths after initialization
         setTimeout(function() {
             dataTable.columns.adjust().draw(false);
         }, 100);
+        dataTableInitialized = true;
 
     } catch (error) {
         console.error("Error initializing DataTable:", error);
@@ -685,7 +707,7 @@ for (let i = 1; i < 11; i++) {
 $("[id^='active']").click(function (e) {
     // Store just the ID value (not prefixing with 'inner')
     Cookies.set('inner' + $(this).attr('href'), $(this).attr('id'));
-    console.log("set cookie for : " + 'inner' + $(this).attr('href') + ' => ' + $(this).attr('id'));
+    // console.log("set cookie for : " + 'inner' + $(this).attr('href') + ' => ' + $(this).attr('id'));
 });
 
 
@@ -694,6 +716,8 @@ let escapedKey = "NotAvailable";
 $(document).ready(function () {
     enableAllChoices();
     disableTextInput();
+
+    setupTabPanelObserver();
 
     // Make the dialog responsive on window resize
     $(window).resize(function () {
@@ -1360,9 +1384,9 @@ function showNoJobsMessage() {
 // Also try when window is fully loaded (fallback for DataTables)
 $(window).on('load', function() {
     // Try one more time when window is fully loaded
-    if (!dataTableInitialized) {
-        initializeDataTables();
-    }
+    // if (!dataTableInitialized) {
+    //     initializeDataTables();
+    // }
     // Reset global variables - Ensure these are not causing unintended side effects
     // window.selectedBuildId = null; // Consider if this is necessary or causing issues
     // selectedBuildId = null; // Consider if this is necessary or causing issues

@@ -96,13 +96,21 @@ ease-out;
 
         .form-input-modern {
             width: 85%;
-    padding: 0.5rem 0rem 0.5rem 3rem;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #ffffff;
-    color: #2d3748;
+            padding: 0.5rem 0rem 0.5rem 3.35rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            color: #2d3748;
+        }
+
+        .form-input-modern:-webkit-autofill,
+        .form-input-modern:-webkit-autofill:hover,
+        .form-input-modern:-webkit-autofill:focus {
+            -webkit-text-fill-color: #2d3748;
+            box-shadow: 0 0 0 1000px #ffffff inset;
+            transition: background-color 5000s ease-in-out 0s;
         }
 
         .form-input-modern:focus {
@@ -118,35 +126,37 @@ ease-out;
 
         .input-icon {
             position: absolute;
-    left: 2.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #a0aec0;
-    font-size: 1.0rem;
-    transition: color 0.3s
-ease;
+            left: 1.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #76839e;
+            font-size: 1.05rem;
+            transition: color 0.3s ease, opacity 0.2s ease;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0.95;
         }
 
         .form-group-modern:focus-within .input-icon {
-            color: #667eea;
+            color: #2b7b7d;
+            opacity: 1;
         }
 
         .login-button {
             text-align: center;
-    width: 60%;
-    padding: 0.6rem 0.5rem;
-    background: linear-gradient(135deg, #38b449 0%, #38b449 100%);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.12rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s
-ease;
-    margin-top: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+            width: 60%;
+            padding: 0.55rem 0.5rem;
+            background: linear-gradient(135deg, #38b449 0%, #2f9c3f 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
         }
 
         .login-button:hover {
@@ -199,11 +209,12 @@ ease;
         .floating-elements::after {
             content: '';
             position: absolute;
-            width: 200px;
-            height: 200px;
-            background: rgba(255, 255, 255, 0.05);
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05));
             border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
+            animation: float 7s ease-in-out infinite;
+            filter: blur(0.5px);
         }
 
         .floating-elements::before {
@@ -280,8 +291,15 @@ ease;
                 <div class="form-group-modern {{ $errors->has('username') ? 'has-error' : '' }}">
                     <i class="fas fa-user input-icon"></i>
                     <input type="text"
+                           id="login-username"
                            name="username"
                            autocomplete="username"
+                           autocapitalize="none"
+                           autocorrect="off"
+                           spellcheck="false"
+                           inputmode="text"
+                           enterkeyhint="next"
+                           autofocus
                            class="form-input-modern"
                            placeholder="Enter your username"
                            value="{{ old('username') }}"
@@ -297,8 +315,13 @@ ease;
                 <div class="form-group-modern {{ $errors->has('password') ? 'has-error' : '' }}">
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password"
+                           id="login-password"
                            name="password"
                            autocomplete="current-password"
+                           autocapitalize="none"
+                           autocorrect="off"
+                           spellcheck="false"
+                           enterkeyhint="go"
                            class="form-input-modern"
                            placeholder="Enter your password"
                            required>

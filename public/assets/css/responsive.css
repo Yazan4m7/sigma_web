@@ -6,8 +6,8 @@
 
 /* Desktop-first styles */
   .waiting-dialog .sigma-machine-card {
-       min-width: initial !important;
-       max-width: initial !important;
+       /* min-width: initial !important; */
+       /* max-width: initial !important; */
       }
 
 

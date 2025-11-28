@@ -474,6 +474,7 @@ $json = json_decode($response, true);
     {
 
 
+
         $fcmsendUrl = 'https://fcm.googleapis.com/v1/projects/sigma-f8312/messages:send';
         //dd($token);
         // Create the notification message

@@ -33,6 +33,11 @@
     .page-header:before {
       background-color: rgba(0,0,0,.3);
     }
+    .fas{
+
+      left: 2.8rem !important;
+
+    }
   </style>
 </head>
 

@@ -101,7 +101,10 @@
     /* Ensure tables don't cause scrolling */
     .activeTable,
     .waitingTable {
-        overflow: visible !important;
+        font-size:18px;
+        // no effect, change font
+        font-weight:500;
+        overflow: clip !important;
         max-width: 100% !important;
     }
 

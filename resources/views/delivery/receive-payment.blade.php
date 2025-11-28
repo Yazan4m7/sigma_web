@@ -1,7 +1,13 @@
 @extends('layouts.app' ,[ 'pageSlug' =>'Receive Payments'])
 
 @section('content')
+<style>
+    .modal{
 
+        z-index: 9999999;
+    }
+
+</style>
 
        <form  class="kt-form" method="GET" action="{{route('payments-with-collectors')}}">
 

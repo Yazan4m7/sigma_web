@@ -1,5 +1,7 @@
 <footer class="footer">
 
+    <script src="{{ asset('assets/js/submit-lock.js') }}" defer></script>
+
     <script>
         // Show the spinner as soon as the page starts loading
         // window.addEventListener('beforeunload', function() {

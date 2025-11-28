@@ -22,6 +22,7 @@
                             <label>From:</label>
 
                             <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
+                            <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 mb-3">
@@ -146,13 +147,13 @@
                                                                     <!-----------------------
                                                                      -------------------------->
                                                                     @if(!isset($payment->recieved_on))
-                                                                    <div class="col-12 padding5px" >
+                                                                    <div class="col-6 padding5px" >
                                                                         <a href="{{route('receive-payment',$payment->id )}}">
                                                                             <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Receive From Delivery</button>
                                                                         </a></div>
                                                                     @endif
                                                                     @if(Auth()->user()->is_admin)
-                                                                        <div class="col-12 padding5px" >
+                                                                        <div class="col-6 padding5px" >
                                                                             <a  onclick="confirmation(event)"  href="{{route('delete-payment',$payment->id )}}"  style="color:red">
                                                                                 <button type="button" class="btn btn-danger "><i class="fa-solid fa-pen-to-square"></i> Delete Payment</button>
                                                                             </a>

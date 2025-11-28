@@ -433,7 +433,7 @@ th{
 body{/* font-family: 'Rubik', sans-serif; *//* font-family: 'Nunito Sans', sans-serif; *//* font-weight: 300; */}
 .sidebar , .sidebar .nav li>a{
     font-family: 'Nunito Sans', sans-serif;
-    font-size:11px;
+    font-size: 10px;
 }
 #kt_repeater_1{
     overflow: overlay;

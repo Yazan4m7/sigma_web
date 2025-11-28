@@ -188,7 +188,7 @@ class CaseController extends Controller
 //        dd($from,$to);
 
         // Build query for IN-PROGRESS cases (NO date filter, only doctor filter)
-        $inProgressQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at'])
+        $inProgressQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
             ->whereNull('actual_delivery_date');  // In-progress cases (stage != 8)
 
         // Apply doctor filter to in-progress cases if specified
@@ -197,7 +197,7 @@ class CaseController extends Controller
         }
 
         // Build query for COMPLETED cases (filter by actual_delivery_date with date range)
-        $completedQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at'])
+        $completedQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
             ->whereNotNull('actual_delivery_date')  // Completed cases (stage = 8)
             ->whereBetween('actual_delivery_date', [$from . ' 00:00', $to . ' 23:59']);  // Apply date range to completed cases
 
@@ -1251,7 +1251,7 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8) $this->applyInvoice($job);
+//        if ($nextStage == 8) $this->applyInvoice($job);
 
         // if all jobs are finished, apply invoice and set date delivered
         if ($nextStage == -1) {
@@ -1390,7 +1390,8 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8){ $this->applyInvoice($job);
+        if ($nextStage == 8){
+
         $job->is_set=null; $job->assignee=$assignee;$job->is_set=null;}
 
         // if all jobs are finished, apply invoice and set date delivered
@@ -1563,15 +1564,40 @@ class CaseController extends Controller
 
     public function applyInvoice($job)
     {
-        $case = sCase::with('invoice')->where('id', $job->case_id)->get();
-        $patientName = $case[0]->patient_name;
-        $client = $case[0]->client;
+        $case = sCase::with(['invoice', 'client', 'jobs'])->find($job->case_id);
+
+        if (!$case) {
+            return;
+        }
+
+        // Only notify/apply invoices after the case is actually completed
+        $allJobsCompleted = $case->jobs->every(function ($job) {
+            return $job->stage == -1;
+        });
+
+        if (!$allJobsCompleted) {
+            return;
+        }
+        if($case->notification_sent == 1) {
+            return;
+        }
+        else{
+            $case->notification_sent = 1;
+            $case->save();
+        }
+
+        $patientName = $case->patient_name;
+        $client = $case->client;
         $clientTokens = MobileNotificationToken::where("client_id", $client->id)->get();
+
         foreach ($clientTokens as $token) {
-            if ($case[0]->delivered_in_box)
+            if ($case->delivered_in_box) {
+//                dd("Sent in-box notification for case id :  " . $case->id);
                 $this->sendCaseNotification($token->token, "Case has been delivered in box", "Case of $patientName has been delivered In-Box", "1");
-            else
+            } else {
+//                dd("Sent notification for case id :  " . $case->id);
                 $this->sendCaseNotification($token->token, "Case has been delivered", "Case of $patientName has been delivered", "1");
+            }
         }
 
 //        if ($case[0]->delivered_in_box) {
@@ -1582,23 +1608,20 @@ class CaseController extends Controller
 //            $this->sendCaseNotification($client->doc_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
 //            $this->sendCaseNotification($client->clinic_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
 //        }
-        if ($case[0]->contains_modification) return;
-        $allJobsCompleted = true;
-        foreach ($case[0]->jobs as $job)
-            if ($job->stage != -1)
-                $allJobsCompleted = false;
-
-        if ($allJobsCompleted) {
-            $client = $case[0]->client;
-            $invoice = $case[0]->invoice;
-            $client->balance = $client->balance + ($invoice->amount ?? 0);
-            $invoice->status = 1;
-            $invoice->date_applied = now();
-            $invoice->save();
-            $client->save();
-
-
+        if ($case->contains_modification) {
+            return;
         }
+
+        $invoice = $case->invoice;
+        if (!$invoice) {
+            return;
+        }
+
+        $client->balance = $client->balance + ($invoice->amount ?? 0);
+        $invoice->status = 1;
+        $invoice->date_applied = now();
+        $invoice->save();
+        $client->save();
     }
 
     public function invoicesList(Request $request)
@@ -1702,7 +1725,12 @@ class CaseController extends Controller
     {
         $query = sCase::with([
             'client:id,name',
-            'jobs:id,case_id,unit_num,material_id,stage'
+            'jobs' => function ($query) {
+                $query->with([
+                    'jobType:id,name',
+                    'material:id,name',
+                ]);
+            },
         ])
             ->where('delivered_to_client', '=', 0)
             ->orderBy('cases.initial_delivery_date', 'ASC');
@@ -1832,7 +1860,10 @@ class CaseController extends Controller
     {
         $case = sCase::findOrFail($caseId);
         $case->update(['locked' => 1]);
-        $this->createTag($case, 16);
+        if (Auth::check()) {
+            $case->tags()->where('tag_id', 14)->delete();
+            $this->createTag($case, 16);
+        }
         return back()->with('success', 'Case locked successfully.');
 
     }
@@ -1841,7 +1872,10 @@ class CaseController extends Controller
     {
         $case = sCase::findOrFail($caseId);
         $case->update(['locked' => 0]);
-        $this->createTag($case, 14);
+        if (Auth::check()) {
+            $case->tags()->where('tag_id', 16)->delete();
+            $this->createTag($case, 14);
+        }
 
         return back()->with('success', 'Case un-locked successfully.');
 
@@ -1937,8 +1971,8 @@ class CaseController extends Controller
         return back()->with('success', 'Case has been overridden & completed successfully.');
     }
 
-    public function testNotification($type = 2)
-    {
+//    public function testNotification($type = 2)
+//    {
         //   $docClient = DB::select('SELECT * FROM clients WHERE phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
         //   $clinicAccount = DB::select('SELECT * FROM clients WHERE clinic_phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
 
@@ -1948,43 +1982,43 @@ class CaseController extends Controller
         // print_r($docClient[0] ?? "NO DOC **" );
         // print_r("--------------");
         //   print_r($clinicAccount[0]);
-        $client = client::where("id", 1)->first();
-        $patient_name = "يزن شريتح";
+//        $client = client::where("id", 1)->first();
+//        $patient_name = "يزن شريتح";
         // 1=> inbox  2=> case delivered  3=> new payment
-
-        echo("test $type");
-        echo(" doc not : " . $client->doc_notification_token);
-        echo(" clinic not : " . $client->clinic_notification_token);
-        switch ($type) {
-            case 1:
-                if ($client->doc_notification_token)
-                    $this->sendCaseNotification($client->doc_notification_token, "Case Delivered In-Box",
-                        "Case of $patient_name has been delivered in box "
-                    );
-                if ($client->clinic_notification_token)
-                    $this->sendCaseNotification($client->clinic_notification_token, "Case Delivered In-Box",
-                        "Case of $patient_name has been delivered in box ");
-                break;
-            case 2:
-                if ($client->doc_notification_token)
-                    $this->sendCaseNotification($client->doc_notification_token,
-                        "Case Delivered", "Case of $patient_name has been delivered");
-                if ($client->clinic_notification_token)
-                    $this->sendCaseNotification($client->clinic_notification_token,
-                        "Case Delivered", "Case of $patient_name has been delivered");
-                break;
-            case 3:
-                if ($client->doc_notification_token)
-                    $this->sendPaymentNotification($client->doc_notification_token,
-                        "Payment Received",
-                        "100 " . "JOD has been received",
-                    );
-                break;
-            default:
-                dd("Enter Notification Type [ 0 => ");
-        }
-        echo("end switch");
-    }
+//
+//        echo("test $type");
+//        echo(" doc not : " . $client->doc_notification_token);
+//        echo(" clinic not : " . $client->clinic_notification_token);
+//        switch ($type) {
+//            case 1:
+//                if ($client->doc_notification_token)
+//                    $this->sendCaseNotification($client->doc_notification_token, "Case Delivered In-Box",
+//                        "Case of $patient_name has been delivered in box "
+//                    );
+//                if ($client->clinic_notification_token)
+//                    $this->sendCaseNotification($client->clinic_notification_token, "Case Delivered In-Box",
+//                        "Case of $patient_name has been delivered in box ");
+//                break;
+//            case 2:
+//                if ($client->doc_notification_token)
+//                    $this->sendCaseNotification($client->doc_notification_token,
+//                        "Case Delivered", "Case of $patient_name has been delivered");
+//                if ($client->clinic_notification_token)
+//                    $this->sendCaseNotification($client->clinic_notification_token,
+//                        "Case Delivered", "Case of $patient_name has been delivered");
+//                break;
+//            case 3:
+//                if ($client->doc_notification_token)
+//                    $this->sendPaymentNotification($client->doc_notification_token,
+//                        "Payment Received",
+//                        "100 " . "JOD has been received",
+//                    );
+//                break;
+//            default:
+//
+//        }
+//        echo("end switch");
+//    }
 
     public function finishCaseCompletely($caseId)
     {

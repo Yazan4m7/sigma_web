@@ -38,10 +38,10 @@
             </div>
 
             <!-- Build name and Material Type inputs -->
-            <div class="sigma-inputs-container row" style="display: flex; gap: 10px; align-items: end;">
+            <div class="sigma-inputs-container " style="display: flex; gap: 10px; align-items: end;">
 
                 <!-- Build name input -->
-                <div class="sigma-form-group col-md-6 col-6" style="flex: 1;">
+                <div class="sigma-form-group " style="flex: 1;">
 
                     <input type="text"
                            id="sigma-build-name-3dprinting"
@@ -51,7 +51,7 @@
                 </div>
 
                 <!-- Material Type selection for 3D printing -->
-                <div class="sigma-form-group col-md-6 col-6" style="">
+                <div class="sigma-form-group " style="flex: 1;">
 
 
 

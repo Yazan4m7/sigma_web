@@ -681,8 +681,9 @@ YSH-slide-grid {
     }
    .sigma-machines-grid,
    .sigma-devices-grid {
-       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+       display: flex;
        gap: 15px;
+       align-items: flex-end;
    }
 
    .sigma-machine-image-container,
@@ -1471,16 +1472,17 @@ img {
        padding-right: 6px;
    }
 
-   .activeTable tr > *:nth-child(3),
+   .activeTable tr > *:nth-child(4),
    .activeTable tr > *:nth-child(5),
    .activeTable tr > *:nth-child(6) {
        display: none;
    }
-
    .waitingTable tr > *:nth-child(4),
-   .waitingTable tr > *:nth-child(5) {
-       display: none;
+   .waitingTable tr > *:nth-child(5),
+   .waitingTable tr > *:nth-child(6) {
+      display: none;
    }
+
 
    .innerSpan4DeskTop {
        display: none;

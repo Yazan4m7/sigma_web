@@ -34,6 +34,36 @@
             font-weight: 500;
         }
 
+        /* Jobs list (table-like layout without table element) */
+        .job-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 4px 10px;
+            background: linear-gradient(180deg, #fdfefe 0%, #f4f6f8 100%);
+            border: 1px solid #e3e6ea;
+            border-radius: 8px;
+            padding: 8px 10px;
+            margin-top: 6px;
+        }
+
+        .job-grid-row {
+            display: contents;
+        }
+
+        .job-grid-cell {
+            font-size: 12px;
+            color: #202733;
+            padding: 4px 0;
+            border-bottom: 1px solid #e8ecf0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .job-grid-row:last-of-type .job-grid-cell {
+            border-bottom: none;
+        }
+
         /* Custom CSS for tighter spacing on mobile */
         @media screen and (max-width: 767px) {
             
@@ -462,22 +492,18 @@
                                                         <div class=" col-12 ">
                                                             <label><b>Jobs:</b></label><br>
 
-
-
-                                                            @foreach ($case->jobs as $job)
-                                                                @php
-                                                                    $unit = explode(', ', $job->unit_num);
-                                                                @endphp
-
-                                                                <span>{{ $job->unit_num }} -
-                                                                    {{ $job->jobType->name ?? 'No Job Type' }} -
-                                                                    {{ $job->material->name ?? 'no material' }}
-                                                                    {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                    {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                    {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}<br>
-                                                                    {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                </span>
-                                                            @endforeach
+                                                            <div class="job-grid">
+                                                                @foreach ($case->jobs as $job)
+                                                                    <div class="job-grid-row">
+                                                                        <span class="job-grid-cell" title="{{ $job->unit_num ?? '-' }}">{{ $job->unit_num ?? '-' }}</span>
+                                                                        @php $jobTypeName = optional($job->jobType)->name ?? ($job->type ? 'Type '.$job->type : '-'); @endphp
+                                                                        <span class="job-grid-cell" title="{{ $jobTypeName }}">{{ $jobTypeName }}</span>
+                                                                        <span class="job-grid-cell" title="{{ $job->material->name ?? '-' }}">{{ $job->material->name ?? '-' }}</span>
+                                                                        @php $jobColor = is_null($job->color) ? '' : trim($job->color); @endphp
+                                                                        <span class="job-grid-cell" title="{{ $jobColor !== '' ? $jobColor : '-' }}">{{ $jobColor !== '' ? $jobColor : '-' }}</span>
+                                                                    </div>
+                                                                @endforeach
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     @if (count($case->notes) > 0)

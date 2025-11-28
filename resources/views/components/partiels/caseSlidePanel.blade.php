@@ -24,7 +24,7 @@
                 <hr>
                 <div class="form-group row">
                     <div class="col-12">
-                        <label><b>Jobs:</b></label><br>
+                        <label class="ysh-jobs-label"><b>Stage jobs</b></label>
                         @php
                             // Convert stage type to stage number
                             $stageNumber = match($stageType) {
@@ -35,20 +35,55 @@
                                 'delivery' => 8,
                                 default => 3
                             };
+                            $stageLabel = match($stageType) {
+                                'milling' => 'Milling',
+                                '3dprinting' => '3D Printing',
+                                'sintering' => 'Sintering',
+                                'pressing' => 'Pressing',
+                                'delivery' => 'Delivery',
+                                default => 'Workflow'
+                            };
+                            $jobsAtStage = $case->jobs->where('stage', $stageNumber);
                         @endphp
-                        @foreach($case->jobs->where('stage', $stageNumber) as $job)
-                            @php
-                                $unit = explode(', ',$job->unit_num);
-                            @endphp
-                            <span>
-                        {{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}}
-                                {{$job->color == '0' ? "" : " - " . $job->color}}
-                                {{$job->style == 'None' ? "" : " - " . $job->style}}
-                                {{ isset($job->implantR) && $job->jobType->id == 6 ? (" - Implant Type: " . $job->implantR->name) : "" }}
-                                {{ isset($job->abutmentR) && $job->jobType->id == 6 ? (" Abutment Type: " . $job->abutmentR->name) : "" }}
-                        <br>
-                    </span>
-                        @endforeach
+                        <div class="ysh-jobs-meta">
+                            <span class="ysh-jobs-stage">{{$stageLabel}}</span>
+                            <span class="ysh-jobs-count">{{$jobsAtStage->count()}} job{{$jobsAtStage->count() === 1 ? '' : 's'}}</span>
+                        </div>
+                        <div class="ysh-job-list">
+                            @forelse($jobsAtStage as $job)
+                                @php
+                                    $unitNumbers = $job->unit_num ?? '';
+                                    $unitCount = $unitNumbers ? count(explode(',', $unitNumbers)) : 0;
+                                    $metaChips = array_filter([
+                                        $job->material->name ?? null,
+                                        ($job->color && $job->color !== '0') ? $job->color : null,
+                                        ($job->style && $job->style !== 'None') ? $job->style : null,
+                                        (isset($job->implantR) && $job->jobType->id == 6) ? 'Implant: ' . $job->implantR->name : null,
+                                        (isset($job->abutmentR) && $job->jobType->id == 6) ? 'Abutment: ' . $job->abutmentR->name : null,
+                                    ]);
+                                @endphp
+                                <div class="ysh-job-card">
+                                    <div class="ysh-job-main">
+                                        <div class="ysh-job-type">{{$job->jobType->name ?? "No Job Type"}}</div>
+                                        <div class="ysh-job-badges">
+                                            <span class="ysh-chip ysh-chip-quiet">{{$unitCount ?: 'n/a'}} unit{{$unitCount === 1 ? '' : 's'}}</span>
+                                            @if($unitNumbers)
+                                                <span class="ysh-chip ysh-chip-code">{{$unitNumbers}}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    @if(count($metaChips) > 0)
+                                        <div class="ysh-job-meta">
+                                            @foreach($metaChips as $chip)
+                                                <span class="ysh-chip">{{$chip}}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            @empty
+                                <div class="ysh-job-empty">No jobs for this stage yet.</div>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
 
@@ -58,8 +93,8 @@
                     @foreach($case->notes as $note)
                         <div class="form-control"
                              style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px">
-                                                                    <span
-                                                                        class="noteHeader">{{ '[' . substr($note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] :' }}</span><br>
+                            <span
+                                class="noteHeader">{{ '[' . substr($note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] :' }}</span><br>
                             <span class="noteText">{{$note->note}}</span>
                         </div>
                     @endforeach
@@ -107,3 +142,112 @@
     </div>
 </div>
 
+@once
+    <style>
+        .ysh-jobs-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1f2937;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .ysh-jobs-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 6px 0 10px;
+            color: #475569;
+            font-size: 13px;
+        }
+
+        .ysh-jobs-stage {
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .ysh-jobs-count {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+
+        .ysh-job-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ysh-job-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #f8fafc;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        }
+
+        .ysh-job-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .ysh-job-type {
+            font-weight: 700;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        .ysh-job-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .ysh-job-meta {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+
+        .ysh-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 999px;
+            background: #e5e7eb;
+            color: #334155;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+
+        .ysh-chip-quiet {
+            background: #e0f2fe;
+            color: #0ea5e9;
+            font-weight: 700;
+        }
+
+        .ysh-chip-code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            letter-spacing: 0.02em;
+        }
+
+        .ysh-job-empty {
+            padding: 10px 12px;
+            border: 1px dashed #e5e7eb;
+            background: #f8fafc;
+            border-radius: 8px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+    </style>
+@endonce

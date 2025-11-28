@@ -105,6 +105,24 @@
             border-color: #1553b7 !important;
         }
 
+        .submit-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #1b6ef3 0%, #8739f9 100%) !important;
+            box-shadow: 0 18px 35px rgba(27, 110, 243, 0.35) !important;
+            padding: 0.95rem 2.8rem;
+            border-radius: 999px;
+        }
+
+        .submit-button i {
+            font-size: 1.1rem;
+        }
+
         .repeater .row-item {
             border-radius: 16px;
             border: 1px solid var(--border-muted);
@@ -414,21 +432,13 @@
         @csrf
 
         <div class="form-section-card ">
-        <div class="portlet__head">
-            <div class="portlet__head-label">
-                <h5 class="portlet__head-title">
-                    <i class="fa-solid fa-folder-closed" style="height:3%;color:inherit"></i> Case
-                    information
-                </h5>
-            </div>
-        </div>
 
 
         <div class=" ">
-            <div>
-                <p class="section-subtitle">Case Details</p>
+
                 <h5>Order Information</h5>
-            </div>
+
+
             <div class="row">
                 <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
                     <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
@@ -526,14 +536,14 @@
 
         </div>
 
-            <div class="section-divider"></div>
+            <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
 
 
         </div>
             <!--REPEATER -->
 
-            <div class="form-section-card">
-                <p class="section-subtitle">Production</p>
+            <div class="form-section-card" style="margin-top: 2rem;">
+
                 <h5>Jobs Information</h5>
                 <div id="" style="" class="repeater jobsRepeater">
                     <div data-repeater-list="repeat">
@@ -737,7 +747,7 @@
         </div>
             </div>
 
-            </div>
+
         <div class="verticalSpacing"></div>
 
 
@@ -752,7 +762,7 @@
         <div class="form-section-card form-section-stack">
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
                 <div>
-                    <p class="section-subtitle">Billing</p>
+
                     <h5>Discount</h5>
                     <label class="toggle-discount mb-0">
                         <span class="toggle-switch">
@@ -773,11 +783,13 @@
                             placeholder="Explanation of discount" /></textarea>
                     </div>
                 </div>
-                <div class="section-divider"></div>
+                <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
             @endif
 
-            <div>
-                <p class="section-subtitle">Communication</p>
+            <div style="margin-top: 2rem;">
+
+
+
                 <h5>Additional Information</h5>
                 <div class="form-group form-group-last">
                     <label for="exampleTextarea">Note</label>
@@ -785,10 +797,10 @@
                 </div>
             </div>
 
-            <div class="section-divider"></div>
+            <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
 
-            <div>
-                <p class="section-subtitle">References</p>
+            <div style="margin-top: 2rem;">
+
                 <h5>Attachments</h5>
                 <div class="form-group form-group-last">
                     <input type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple
@@ -827,11 +839,13 @@
 
                     <div class="kt-portlet__foot">
                         <div class="kt-form__actions">
-                            <button type="submit" class="btn btn-primary extraPadding" style="margin: 60px 5px 10px 5px">Submit</button>
+                            <button type="submit" class="btn btn-primary submit-button extraPadding" style="margin: 60px auto 10px;">
+                                <i class="fa fa-paper-plane" style="color:white"></i> Submit Case
+                            </button>
 
                         </div>
                     </div>
-        </div>
+
 
         </form>
 
@@ -993,16 +1007,11 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" style="flex: 1; font-weight: normal !important; font-size: 13px !important; background-color: #6c757d !important; border-color: #6c757d !important;    padding: 8px 3px !important; text-align: center;">Close</button>
                     </div>
                 </div>
-
             </div>
-
         </div>
             </form></div>
 
-
-
     <!-- FILES DIALOG -->
-
     <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
         style="display: none;" aria-hidden="true" name="dialog">
         <div class="modal-dialog" role="document">

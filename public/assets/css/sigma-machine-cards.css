@@ -1,0 +1,253 @@
+/* Canonical styling for sigma machine grids and cards */
+:root {
+    --device-dialog-tablet-breakpoint: 992px;
+    --device-dialog-mobile-breakpoint: 568px;
+    --device-dialog-small-mobile-breakpoint: 380px;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 10px rgba(0, 123, 255, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(0, 123, 255, 0);
+    }
+}
+
+.sigma-machines-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20%, 1fr));
+    gap: 20px;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.sigma-machine-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    padding: 12px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+    background: #f6f6f6;
+}
+
+.sigma-machine-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.sigma-machine-card.selected {
+    border-color: #007bff;
+    background: #f0f7ff;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.7);
+    animation: pulse 1.5s infinite;
+}
+
+.sigma-machine-card.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.sigma-machine-image-container {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.sigma-machine-image {
+    width: 208px !important;
+    height: 129px !important;
+    max-height: none;
+    object-fit: contain;
+    margin: auto;
+}
+
+.sigma-machine-name {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.sigma-workflow-modal .sigma-machine-card .sigma-machine-image {
+    width: 208px !important;
+    height: 129px !important;
+    max-height: none;
+    object-fit: contain;
+    margin: auto;
+}
+
+.waiting-dialog .sigma-machines-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.waiting-dialog .sigma-machine-card {
+    width: 130px;
+    max-width: 200px;
+    height: auto;
+    padding: 12px;
+    border: 2px solid #eaeaea;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+.waiting-dialog .sigma-machine-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.waiting-dialog .sigma-machine-card.selected {
+    border-color: #4CAF50;
+    background-color: rgba(76, 175, 80, 0.05);
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.waiting-dialog .sigma-machine-image-container {
+    width: 100%;
+    height: 195px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.waiting-dialog .sigma-machine-image {
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.15));
+}
+
+.waiting-dialog .sigma-machine-card:hover .sigma-machine-image,
+.sigma-workflow-modal .sigma-machine-card:hover .sigma-machine-image {
+    transform: scale(1.05);
+}
+
+.waiting-dialog .sigma-machine-name {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: #333;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    margin-top: auto;
+}
+
+@media screen and (max-width: var(--device-dialog-tablet-breakpoint)) {
+    .sigma-machines-grid {
+        flex-direction: column !important;
+        gap: 15px !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        padding: 10px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: row !important;
+        padding: 10px !important;
+        max-width: 100% !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 60px !important;
+        width: 60px !important;
+        margin-right: 15px !important;
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+    }
+}
+
+@media screen and (max-width: var(--device-dialog-mobile-breakpoint)) {
+    .sigma-machines-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 10px !important;
+        max-height: 250px !important;
+        overflow-y: auto !important;
+        padding: 5px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: column !important;
+        padding: 8px !important;
+        min-height: 80px !important;
+        text-align: center !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 40px !important;
+        width: 100% !important;
+        margin-bottom: 5px !important;
+        margin-right: 0 !important;
+    }
+
+    .sigma-machine-image {
+        max-height: 35px !important;
+    }
+
+    .sigma-machine-name {
+        font-size: 0.8rem !important;
+        line-height: 1.2 !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+    }
+}
+
+@media screen and (max-width: var(--device-dialog-small-mobile-breakpoint)) {
+    .sigma-machines-grid {
+        grid-template-columns: 1fr !important;
+        max-height: 200px !important;
+    }
+
+    .sigma-machine-card {
+        flex-direction: row !important;
+        min-height: 60px !important;
+        text-align: left !important;
+    }
+
+    .sigma-machine-image-container {
+        height: 35px !important;
+        width: 35px !important;
+        margin-right: 10px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .sigma-machine-name {
+        font-size: 0.75rem !important;
+        flex: 1 !important;
+    }
+}

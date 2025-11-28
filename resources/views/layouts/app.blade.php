@@ -81,6 +81,10 @@
         .dropdown-menu .dropdown-menu-right {
             transform: translate3d(0px, 34px, 0px) !important;
         }
+        .pageTitleContainer {
+            background: linear-gradient(272deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%) !important;
+            background: transparent;
+        }
 
 
         .noto-naskh-arabic {
@@ -158,11 +162,11 @@
     <link href="{{ asset('assets') }}/css/sidebar-fullwidth-fix.css" rel="stylesheet"/>
     <link href="{{ asset('css/sidebar-collapse.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/sidebar-layout-improvements.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/impersonation-banner.css" rel="stylesheet"/>
+    
     <link href="{{ asset('css') }}/georgia-font.css" rel="stylesheet"/>
     <link href="{{ asset('css/ysh-custom-css/machine-images.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/processing-overlay.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/impersonate-button.css') }}" rel="stylesheet"/>
+    
     <link rel="icon" type="image/png" href="{{asset('assets/sigma_favico.png')}}"/>
 
     <!-- Dynamic styling -->
@@ -170,67 +174,20 @@
 
     <!-- Page-specific CSS -->
     @stack('css')
+    <style>
+        /* Disable legacy overlays but keep the sidebar overlay available */
+        [class*="overlay"]:not(.sidebar-overlay),
+        [id*="overlay"]:not(#sidebarOverlay) {
+            display: none !important;
+            pointer-events: none !important;
+        }
+    </style>
 
 </head>
 {{--<div class="overlay" id="overlay"></div>--}}
 <body {{--onload="myFunction()"--}} class="white-content{{$class ?? ''}}">
-<!-- Floating buttons container -->
-<div class="floating-buttons-container">
-    @if(in_array(request()->getHost(), ['localhost', '127.0.0.1']))
-        <div class="floating-badge localhost-badge">
-            LOCAL HOST
-        </div>
-    @endif
-    
-    @auth()
-        @if(auth()->user()->is_admin && isset($activeEmployees) && $activeEmployees->count() > 0)
-            <!-- Impersonation Button -->
-            <div class="impersonate-button-wrapper">
-                <button class="impersonate-button" id="impersonateButton" title="Sign in as User">
-                    <i class="fas fa-user-secret"></i>
-                    <span class="impersonate-button-text">Sign In As</span>
-                </button>
-                
-                <!-- Employee List Dropdown -->
-                <div class="employee-list-dropdown" id="employeeListDropdown">
-                    <div class="employee-list-header">
-                        <i class="fas fa-users"></i>
-                        <span>Select Employee</span>
-                    </div>
-                    <div class="employee-list-search">
-                        <input type="text" id="employeeSearchInput" placeholder="Search employees..." autocomplete="off">
-                    </div>
-                    <div class="employee-list-items" id="employeeListItems">
-                        @foreach($activeEmployees as $employee)
-                            <a href="{{ route('impersonate.start', $employee->id) }}" class="employee-item" data-name="{{ strtolower($employee->first_name . ' ' . $employee->last_name) }}">
-                                <div class="employee-item-avatar">
-                                    {{ strtoupper(substr($employee->first_name, 0, 1)) }}
-                                </div>
-                                <div class="employee-item-info">
-                                    <div class="employee-item-name">{{ $employee->first_name }} {{ $employee->last_name }}</div>
-                                    @if($employee->name_initials)
-                                        <div class="employee-item-initials">{{ $employee->name_initials }}</div>
-                                    @endif
-                                </div>
-                            </a>
-                        @endforeach
-                    </div>
-                    @if($activeEmployees->isEmpty())
-                        <div class="employee-list-empty">
-                            No employees available
-                        </div>
-                    @endif
-                </div>
-            </div>
-        @endif
-    @endauth
-</div>
-<div class="processing-overlay" id="processingOverlay">
-    <div class="processing-spinner"></div>
-    <div class="processing-done">
-        <i class="fa fa-check-circle"></i>
-    </div>
-</div>
+<!-- Floating buttons container removed -->
+{{-- Processing overlay removed --}}
 
 
 @auth()
@@ -272,7 +229,7 @@
     {{--    </div>--}}
     <div class="wrapper" {{--onload="myFunction()"--}}>
         @include('layouts.navbars.leftsidebar')
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <div class="sidebar-overlay" id="sidebarOverlay" aria-hidden="true"></div>
 
         <div class="main-panel">
             @include('layouts.navbars.navbar')
@@ -306,7 +263,7 @@
 
 
     <div class="wrapper wrapper-full-page animate-bottom" {{-- style="display:none;"--}} >
-        <div class="overlay" id="overlay"></div>
+        {{-- Overlay removed --}}
         <div class="full-page {{ $contentClass ?? '' }}">
 
             <div class="content">
@@ -327,20 +284,11 @@
 <script src="{{ asset('js/responsive-images.js') }}"></script>
 <script>
     function showProcessingOverlay() {
-        const processingOverlay = document.getElementById('processingOverlay');
-        if (processingOverlay) {
-            processingOverlay.classList.add('active');
-        }
+        return; // overlays disabled
     }
 
     function showDoneAndReload() {
-        const processingOverlay = document.getElementById('processingOverlay');
-        if (processingOverlay) {
-            processingOverlay.classList.add('done');
-            setTimeout(() => {
-                location.reload();
-            }, 1000);
-        }
+        return; // overlays disabled
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -351,54 +299,6 @@
             });
         });
 
-        // Impersonate Button Functionality
-        const impersonateButton = document.getElementById('impersonateButton');
-        const employeeListDropdown = document.getElementById('employeeListDropdown');
-        const employeeSearchInput = document.getElementById('employeeSearchInput');
-        const employeeItems = document.querySelectorAll('.employee-item');
-
-        if (impersonateButton && employeeListDropdown) {
-            // Toggle dropdown on button click
-            impersonateButton.addEventListener('click', function(e) {
-                e.stopPropagation();
-                employeeListDropdown.classList.toggle('active');
-                
-                // Focus search input when dropdown opens
-                if (employeeListDropdown.classList.contains('active') && employeeSearchInput) {
-                    setTimeout(() => {
-                        employeeSearchInput.focus();
-                    }, 100);
-                }
-            });
-
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!impersonateButton.contains(e.target) && !employeeListDropdown.contains(e.target)) {
-                    employeeListDropdown.classList.remove('active');
-                }
-            });
-
-            // Search functionality
-            if (employeeSearchInput) {
-                employeeSearchInput.addEventListener('input', function(e) {
-                    const searchTerm = e.target.value.toLowerCase().trim();
-                    
-                    employeeItems.forEach(item => {
-                        const employeeName = item.getAttribute('data-name') || '';
-                        if (employeeName.includes(searchTerm)) {
-                            item.classList.remove('hidden');
-                        } else {
-                            item.classList.add('hidden');
-                        }
-                    });
-                });
-            }
-
-            // Prevent dropdown from closing when clicking inside
-            employeeListDropdown.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-        }
     });
 </script>
 </html>
