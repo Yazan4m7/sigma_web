@@ -23,6 +23,13 @@
             border-radius: .5rem;
         }
 
+        /* Force readable dropdown text on light backgrounds */
+        .audit-filter .custom-select,
+        .audit-filter .custom-select option {
+            color: #1f2937;
+            background-color: #fff;
+        }
+
         .audit-table thead th {
             border-top: none;
             text-transform: uppercase;
@@ -43,6 +50,28 @@
             font-size: .75rem;
             max-height: 150px;
             overflow: auto;
+        }
+
+        .audit-table td.details-column {
+            max-width: 280px;
+            min-width: 220px;
+            vertical-align: top;
+            white-space: normal;
+        }
+
+        .audit-table td.details-column details {
+            margin-top: .4rem;
+        }
+
+        .audit-table td.details-column summary {
+            cursor: pointer;
+        }
+
+        .audit-table td.details-column .properties-block {
+            max-height: 120px;
+            font-size: .72rem;
+            overflow: auto;
+            white-space: pre-wrap;
         }
     </style>
 @endpush
@@ -151,10 +180,63 @@
                                         <td>
                                             {{ $log->description ?? '—' }}
                                         </td>
-                                        <td>
+                                        <td class="details-column">
+                                            @php
+                                                $metadata = $log->properties ?? [];
+                                                $isCaseLog = \Illuminate\Support\Str::endsWith($log->subject_type ?? '', 'sCase');
+                                                $deviceMeta = data_get($metadata, 'device');
+                                                $payloadMeta = data_get($metadata, 'payload');
+                                                $payloadFull = null;
+
+                                                if ($payloadMeta !== null) {
+                                                    if (is_scalar($payloadMeta)) {
+                                                        $payloadFull = (string) $payloadMeta;
+                                                    } else {
+                                                        $payloadFull = json_encode($payloadMeta, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
+                                                        if ($payloadFull === false) {
+                                                            $payloadFull = json_encode($payloadMeta, JSON_UNESCAPED_SLASHES);
+                                                        }
+                                                    }
+                                                }
+
+                                                $payloadSnippet = is_string($payloadFull)
+                                                    ? \Illuminate\Support\Str::limit($payloadFull, 120)
+                                                    : null;
+
+                                                $remainingMetadata = $metadata;
+                                                if ($isCaseLog) {
+                                                    unset($remainingMetadata['device'], $remainingMetadata['payload']);
+                                                }
+                                            @endphp
+
                                             <div><strong>Agent:</strong> {{ \Illuminate\Support\Str::limit($log->user_agent ?? '—', 60) }}</div>
-                                            @if (!empty($log->properties))
-                                                <pre class="mt-2 mb-0">{{ json_encode($log->properties, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}</pre>
+                                            @if ($isCaseLog && $deviceMeta)
+                                                <div class="text-muted small mt-1">
+                                                    <strong>Device:</strong>
+                                                    {{ is_string($deviceMeta) ? $deviceMeta : json_encode($deviceMeta, JSON_UNESCAPED_SLASHES) }}
+                                                </div>
+                                            @endif
+
+                                            @if ($payloadFull !== null)
+                                                <div class="text-muted small mt-1">
+                                                    <strong>Payload:</strong>
+                                                    <span title="{{ e($payloadFull) }}">
+                                                        {{ $payloadSnippet ?? $payloadFull }}
+                                                    </span>
+                                                </div>
+                                                <details class="text-muted small">
+                                                    <summary>View payload</summary>
+                                                    <pre class="properties-block mb-0">{{ $payloadFull }}</pre>
+                                                </details>
+                                            @endif
+
+                                            @if (!empty($remainingMetadata))
+                                                <details class="text-muted small">
+                                                    <summary>More metadata</summary>
+                                                    <pre class="properties-block mb-0">{{ json_encode($remainingMetadata, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}</pre>
+                                                </details>
+                                            @elseif (!($isCaseLog && ($deviceMeta || $payloadFull !== null)))
+                                                <span class="text-muted small d-block mt-1">No extra data</span>
                                             @endif
                                         </td>
                                     </tr>

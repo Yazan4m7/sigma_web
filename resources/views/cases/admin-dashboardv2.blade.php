@@ -1816,68 +1816,31 @@
         }
     </style>
     <!-- ✅ jQuery (must be first) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <!-- ✅ Bootstrap Bundle -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
 
-    <!-- ✅ DataTables Core -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-
     <!-- ✅ DataTables CSS (classic) -->
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
 
-    <!-- ✅ jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
     <!-- ✅ DataTables core JS -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/jquery.dataTables.min.js"></script>
 
     <script></script>
-    <!-- ✅ Your Initialization Script -->
+    <!-- ✅ Simple DataTables init on ready -->
     <script>
         $(document).ready(function () {
-            if (typeof initializeVisibleTables === 'function') {
-                initializeVisibleTables();
-            } else {
-                console.warn('initializeVisibleTables is not defined');
-            }
-        });
-        function initializeVisibleTables() {
-            // ✅ Check if DataTables is available
             if (typeof $.fn.DataTable === 'undefined') {
-                console.log('DataTables not yet loaded, retrying...');
-                setTimeout(initializeVisibleTables,
-                    100); // retry after 100ms        setTimeout(initializeVisibleTables, 100); // retry after 100ms
+                console.warn('DataTables not yet loaded.');
                 return;
             }
-
-            // 🗑️ This does nothing (should be removed)
-            // setTimeout(function(){}, 1000);
-
-            var tables = $('.sunriseTable');
-
-            tables.each(function() {
-                var tableId = this.id || $(this).index();
-
-                if (initializedTables.has(tableId)) return;
-
-
-                var $table = $(this);
-                var $parent = $table.closest('[role="tabpanel"]');
-
-            });
-
-
-        }
-
-            $(document).ready(function() {
-                if (typeof initializeVisibleTables === 'function') {
-                    initializeVisibleTables();
-                } else {
-                    console.warn('initializeVisibleTables is not defined');
+            $('.sunriseTable').each(function() {
+                if (!$.fn.DataTable.isDataTable(this)) {
+                    $(this).DataTable();
                 }
             });
+        });
     </script>
 
 

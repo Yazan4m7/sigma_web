@@ -9,7 +9,7 @@
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
-            <h2 class="sigma-workflow-title waiting">{{ $title }}</h2>
+            <span class="sigma-workflow-title waiting">{{ $title }}</span>
             <button class="sigma-close-button" onclick="closeModal({id: '3dprinting', isWaiting:true})">
                 <span aria-hidden="true">&times;</span>
             </button>

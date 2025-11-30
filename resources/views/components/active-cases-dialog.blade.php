@@ -161,7 +161,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -55%);
         width: 20px;
         height: 20px;
         background-color: greenyellow;
@@ -353,7 +353,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         }
 
         .sigma-build-units {
-            font-size: 14px;
+            font-size: 13px;
             padding: 3px 6px;
         }
     }
@@ -364,9 +364,9 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        padding: 12px 32px;
+        padding: 14px 36px;
         border: none;
-        border-radius: 8px;
+        border-radius: 14px;
         font-size: 16px;
         font-weight: 600;
         text-transform: uppercase;
@@ -374,19 +374,19 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         overflow: hidden;
-        min-width: 120px;
-        height: 48px;
+        min-width: 170px;
+        height: 62px;
         outline: none;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 22px 36px rgba(20, 108, 115, 0.3);
     }
 
     .sigma-animated-submit-button.start-mode {
-        background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        background: linear-gradient(135deg, #1a8b92 0%, #0f6d73 100%);
         color: white;
     }
 
     .sigma-animated-submit-button.complete-mode {
-        background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+        background: linear-gradient(135deg, #239347 0%, #167737 100%);
         color: white;
     }
 
@@ -421,7 +421,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         height: 0;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.3);
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -55%);
         transition: width 0.6s, height 0.6s;
     }
 
@@ -434,7 +434,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -55%);
         opacity: 0;
         transition: opacity 0.3s;
     }
@@ -508,126 +508,130 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
      onclick="handleDialogBackdropClick(event, '{{ $deviceId }}')">
     <div class="sigma-workflow-dialog" onclick="event.stopPropagation()" style="will-change: transform, opacity;">
         <div class="sigma-workflow-header">
-            <h2 class="sigma-workflow-title">{{ $title }}</h2>
+            <span class="sigma-workflow-title">{{ $title }}</span>
             <button class="sigma-close-button" onclick="closeDeviceDialog('{{ $deviceId }}')">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
 
         <div class="sigma-workflow-body">
+            <div class="sigma-dialog-intro">
+                <h3>{{ $title }}</h3>
+                <p>Select a build to review its cases, then start or complete the batch when ready.</p>
+            </div>
+
             <div class="sigma-jobs-container">
 
 
+                @php
+                    $stageIcons = [
+                        'milling' => 'fa-cogs',
+                        '3dprinting' => 'fa-print',
+                        'sintering' => 'fa-fire',
+                        'pressing' => 'fa-hand-paper',
+                    ];
+                @endphp
+
                 <div class="sigma-builds-list">
-
-                    @foreach($buildData as $data)
-
+                    @forelse($buildData as $data)
                         @php
-                            $caseActive = ($data['build']->started_at !=null);
+                            $caseActive = ($data['build']->started_at != null);
+                            $totalUnits = collect($data['cases'])->sum('unitCount');
+                            $caseCount = count($data['cases']);
+                            $buildLabel = $type === 'sintering'
+                                ? ($data['build']->created_at ? $data['build']->created_at->format('M d, Y') : 'Recent Build')
+                                : ($data['build']->name ?: 'Build');
+                            $iconClass = $stageIcons[$type] ?? 'fa-layer-group';
                         @endphp
-                        <div class="sigma-build-row">
-                            <div class="sigma-build-header"
-                                 style="background-color: var({{ $caseActive ? '--main-blue' : '--main-orange' }}); "
-                                 onclick=" toggleBuildDetails(this)">
-                                <div class="sigma-job-checkbox" onclick="event.preventDefault();">
-                                    @if($caseActive)
-                                        <input type="checkbox"
-                                               name="jobId[]"
-                                               value="{{$data['build']->id }}"
-                                               data-group-id="{{$deviceId}}"
-                                               class='sigma-checkbox {{ $deviceId }}
-                                                checkboxes-group-{{$deviceId}} {{$stageConfig[$type]['multiple-active']?'multiple-choice' :'single-choice'  }}
-                                                checkboxes-group-{{$deviceId}}
-                                                 {{ $type }}   active-blue-row'
-                                               onclick="event.stopPropagation();"
-                                               checked disabled
-                                        />
-                                        <input type="hidden" name="jobId[]" value="{{$data['build']->id }}"
-                                               class="value-holder checkboxes-group-{{$deviceId}} active-values-holder-{{$deviceId}} sigma-checkbox {{$type}}"
-                                               checked/>
-                                    @else
-                                        <input type="checkbox"
-                                               name="jobId[]"
-                                               onclick="event.stopPropagation();"
-                                               data-group-id="{{$deviceId}}"
-                                               value="{{$data['build']->id }}"
-                                               class="sigma-checkbox {{ $deviceId }} {{ $type }} checkboxes-group-{{$deviceId}}  {{$stageConfig[$type]['multiple-active']?'multiple-choice' :'single-choice' }} inactive-orange-row"
+                        <div class="sigma-build-row {{ $caseActive ? 'build-active' : 'build-waiting' }}">
+                            <div class="tile-header {{ $caseActive ? 'tile-active' : 'tile-waiting' }}" onclick="toggleBuildDetails(this)">
+                                <div class="tile-title">
+                                    <label class="tile-checkbox" onclick="event.stopPropagation();">
+                                        @if($caseActive)
+                                            <input type="checkbox"
+                                                   name="jobId[]"
+                                                   value="{{$data['build']->id }}"
+                                                   data-group-id="{{$deviceId}}"
+                                                   class="sigma-checkbox {{ $deviceId }} checkboxes-group-{{$deviceId}} {{ $stageConfig[$type]['multiple-active'] ? 'multiple-choice' : 'single-choice' }} {{ $type }} active-blue-row"
+                                                   checked
+                                                   disabled>
+                                            <input type="hidden" name="jobId[]" value="{{$data['build']->id }}"
+                                                   class="value-holder checkboxes-group-{{$deviceId}} active-values-holder-{{$deviceId}} sigma-checkbox {{$type}}"
+                                                   checked/>
+                                        @else
+                                            <input type="checkbox"
+                                                   name="jobId[]"
+                                                   data-group-id="{{$deviceId}}"
+                                                   value="{{$data['build']->id }}"
+                                                   class="sigma-checkbox {{ $deviceId }} {{ $type }} checkboxes-group-{{$deviceId}} {{ $stageConfig[$type]['multiple-active'] ? 'multiple-choice' : 'single-choice' }} inactive-orange-row"
+                                                   {{$hasActiveJobs ? 'disabled' : ''}}>
+                                        @endif
+                                        <span class="checkmark"></span>
+                                    </label>
 
-                                        {{$hasActiveJobs ? 'disabled' : ''}}
-                                        "
-                                        >
-
-                                    @endif
+                                    <div class="tile-text">
+                                        <div class="tile-name">{{ $buildLabel }}</div>
+                                        <div class="tile-subtext">{{ $caseCount }} cases • {{ $totalUnits }} units</div>
+                                    </div>
                                 </div>
-
-                                @php
-                                    // Calculate total units for all stages
-                                    $totalUnits = 0;
-                                    foreach ($data['cases'] as $caseData) {
-                                        $totalUnits += $caseData['unitCount'];
-                                    }
-                                @endphp
-
-                                @if($type == 'sintering')
-                                    {{-- For sintering, show formatted date instead of build name --}}
-                                    <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? $data['build']->created_at->format('M d, Y') : 'Recent Build' }}</div>
-                                @else
-                                    {{-- For other stages, show build info --}}
-                                    <div class="sigma-build-title">{{ $data['build']->name }}</div>
-                                @endif
-
-                                <div class="sigma-build-units">{{ $totalUnits }}</div>
-                                <div class="sigma-build-toggle">
-                                    <i class="fas fa-chevron-down"></i>
+                                <div class="tile-controls">
+                                    <span class="tile-badge">{{ $data['jobCount'] }}</span>
+                                    <span class="sigma-build-toggle tile-arrow"><i class="fas fa-chevron-down"></i></span>
                                 </div>
                             </div>
 
                             <div class="sigma-build-details">
                                 <div class="sigma-build-cases">
-
-                                    @if(count($data['cases']) == 0)
+                                    @if($caseCount === 0)
                                         <div class="sigma-empty-case-message">
                                             No cases found in this build
                                         </div>
                                     @else
-
                                         @foreach($data['cases'] as $caseData)
-
-                                            <div class="sigma-case-item">
-                                                @php
-                                                    $tooltipParts = [];
-                                                    if ($caseData['case']->client?->name) {
-                                                        $tooltipParts[] = 'Doctor: ' . $caseData['case']->client->name;
-                                                    }
-                                                    if ($caseData['case']->patient_name) {
-                                                        $tooltipParts[] = 'Patient: ' . $caseData['case']->patient_name;
-                                                    }
-                                                    $tooltipParts[] = 'Units: ' . $caseData['unitCount'];
-                                                    if (!empty($caseData['jobTypes'])) {
-                                                        $tooltipParts[] = 'Jobs: ' . $caseData['jobTypes'];
-                                                    }
-                                                    $caseTooltip = implode(' | ', $tooltipParts);
-                                                @endphp
-                                                <div class=" row info-case-row" title="{{ $caseTooltip }}">
-                                                    <div class=" col-3 ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
-                                                    <div class=" col-3 ">{{ $caseData['case']->patient_name }}</div>
-                                                    <div class=" col-3 ">{{ $caseData['unitCount'] }}</div>
-                                                    <div class="col-3 ">
-                                                        <button class="sigma-case-view-btn"
-                                                                onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
+                                            @php
+                                                $tooltipParts = [];
+                                                if ($caseData['case']->client?->name) {
+                                                    $tooltipParts[] = 'Doctor: ' . $caseData['case']->client->name;
+                                                }
+                                                if ($caseData['case']->patient_name) {
+                                                    $tooltipParts[] = 'Patient: ' . $caseData['case']->patient_name;
+                                                }
+                                                $tooltipParts[] = 'Units: ' . $caseData['unitCount'];
+                                                if (!empty($caseData['jobTypes'])) {
+                                                    $tooltipParts[] = 'Jobs: ' . $caseData['jobTypes'];
+                                                }
+                                                $caseTooltip = implode(' | ', $tooltipParts);
+                                            @endphp
+                                            <div class="sigma-case-item tile-child" title="{{ $caseTooltip }}">
+                                                <div class="case-grid">
+                                                    <div class="case-grid-cell case-name">
+                                                        {{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}
+                                                    </div>
+                                                    <div class="case-grid-cell case-patient">
+                                                        {{ $caseData['case']->patient_name }}
+                                                    </div>
+                                                    <div class="case-grid-cell case-units">
+                                                        {{ $caseData['unitCount'] }} units
+                                                    </div>
+                                                    <div class="case-grid-cell case-action">
+                                                        <button type="button"
+                                                                class="sigma-case-view-btn"
+                                                                onclick="event.stopPropagation(); YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}'); return false;">
                                                             <i class="fas fa-eye"></i>
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         @endforeach
-
                                     @endif
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                        <div class="sigma-empty-case-message" style="margin: 12px;">
+                            No active builds available for this device.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -682,6 +686,22 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
 
 <style>
+    /* Scoped palette */
+    .sigma-workflow-modal {
+        background: radial-gradient(circle at top, rgba(229, 234, 243, 0.9), rgba(208, 214, 223, 0.95));
+    }
+
+    .sigma-workflow-dialog {
+        --main-blue: #1d4ed8;
+        --main-orange: #d97706;
+        --main-green: #15803d;
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid rgba(15, 23, 42, 0.05);
+        box-shadow: 0 40px 80px rgba(15, 23, 42, 0.18);
+        overflow: hidden;
+    }
+
     /* Empty state styling */
     .sigma-empty-state {
         display: flex;
@@ -731,95 +751,216 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         border: 1px dashed #ced4da;
     }
 
-    /* Build list styling */
+    /* Build list styling - modern tiles */
     .sigma-builds-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        padding: 16px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 18px;
+        padding: 10px 6px 24px;
     }
 
     .sigma-build-row {
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        border-radius: 18px;
+        background: transparent;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        padding: 2px;
     }
 
-    /*.sigma-build-header {*/
-    /*    display: flex;*/
-    /*    align-items: center;*/
-    /*    padding: 16px;*/
-    /*    gap: 15px;*/
-    /*    cursor: pointer;*/
-    /*    transition: background-color 0.2s;*/
-    /*    position: relative;*/
-    /*}*/
-
-    .sigma-build-header:hover {
-        opacity: 0.9;
-    }
-
-    .sigma-build-radio {
-        flex-shrink: 0;
-    }
-
-
-    .sigma-build-title {
-        font-weight: 600;
-        color: white;
-        flex-grow: 1;
-    }
-
-    .sigma-build-info {
+    .tile-header {
         display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-        margin-right: 20px;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 20px 18px 28px;
+        background: #fff;
+        cursor: pointer;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 18px;
+        position: relative;
+        min-height: 74px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
     }
 
-    .sigma-build-date {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.8);
+    .sigma-build-row:hover .tile-header {
+        box-shadow: 0 26px 55px rgba(15, 23, 42, 0.18);
+        transform: translateY(-2px);
     }
 
-    .sigma-build-jobs-count {
-        font-weight: 500;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.2);
-        padding: 3px 8px;
-        border-radius: 20px;
-        font-size: 0.8rem;
-        margin-top: 4px;
+    .tile-header::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 6px;
+        border-top-left-radius: 18px;
+        border-bottom-left-radius: 18px;
+        background: linear-gradient(180deg, rgba(29, 78, 216, 0.9), rgba(29, 78, 216, 0.4));
     }
 
-    .sigma-build-toggle {
-        margin-left: auto;
+    .sigma-build-row.build-active .tile-header::before {
+        background: linear-gradient(180deg, rgba(29, 78, 216, 0.9), rgba(29, 78, 216, 0.4));
+    }
+
+    .sigma-build-row.build-waiting .tile-header::before {
+        background: linear-gradient(180deg, rgba(217, 119, 6, 0.9), rgba(217, 119, 6, 0.4));
+    }
+
+    .tile-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+    }
+
+    .tile-checkbox {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #0f172a;
+    }
+
+    .sigma-build-row.build-active .tile-checkbox {
+        color: var(--main-blue, #1d4ed8);
+    }
+
+    .sigma-build-row.build-waiting .tile-checkbox {
+        color: var(--main-orange, #d97706);
+    }
+
+    .tile-checkbox input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid currentColor;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fff;
+        position: relative;
+    }
+
+    .tile-checkbox input[type="checkbox"]:checked {
+        background: currentColor;
+        border-color: currentColor;
+    }
+
+    .tile-checkbox input[type="checkbox"]:checked::after {
+        content: '✓';
+        position: absolute;
+        color: #fff;
+        font-size: 13px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%);
+    }
+
+    .tile-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .tile-name {
+        font-weight: 700;
+        font-size: 18px;
+        color: #1f2937;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .tile-subtext {
+        font-size: 15px;
+        color: #6b7280;
+    }
+
+    .sigma-build-row.build-active .tile-name,
+    .sigma-build-row.build-active .tile-subtext {
+        color: var(--main-blue, #1d4ed8);
+    }
+
+    .sigma-build-row.build-waiting .tile-name,
+    .sigma-build-row.build-waiting .tile-subtext {
+        color: var(--main-orange, #d97706);
+    }
+
+    .tile-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .sigma-dialog-intro {
+        padding: 8px 12px 24px;
+        text-align: left;
+    }
+
+    .sigma-dialog-intro h3 {
+        margin: 0;
+        font-size: 1.35rem;
+        color: #134a4d;
+        font-weight: 600;
+    }
+
+    .sigma-dialog-intro p {
+        margin: 6px 0 0;
+        color: #6c7a89;
+        font-size: 0.95rem;
+    }
+
+    .sigma-workflow-header {
+        background: linear-gradient(180deg, #f4fafb 0%, #eef2f5 100%);
+        border-bottom: 1px solid rgba(15, 23, 42, 0.05);
+        box-shadow: none;
+        color: #0f6468;
+        padding: 24px 28px 12px;
+    }
+
+    .sigma-workflow-title {
+        font-size: 2rem;
+        letter-spacing: 0.03em;
+        font-weight: 700;
+    }
+
+    .sigma-workflow-body {
+        padding: 20px 28px 32px;
+        background: #f9fbfd;
+    }
+
+    .tile-badge {
+        background: #f1f5f9;
+        color: #1f2937;
+        font-size: 12px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 999px;
+        min-width: auto;
+        text-align: center;
+        box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
     }
 
     .sigma-build-toggle i {
-        color: white;
-        transition: transform 0.3s;
+        color: #9ca3af;
+        transition: transform 0.3s ease;
     }
 
     .sigma-build-details {
         max-height: 0;
         overflow: hidden;
-        padding: 0 16px;
-        background-color: #f8f9fa;
-        /* GPU acceleration for smooth 60fps animations */
+        padding: 0 20px;
+        background: #f4f6fb;
+        border-radius: 16px;
         transform: translate3d(0, 0, 0);
-        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                    padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                    opacity 0.25s ease;
+        transition: max-height 0.35s ease, padding 0.35s ease, opacity 0.25s ease;
         opacity: 0;
         will-change: max-height, opacity;
-        backface-visibility: hidden;
     }
 
     .sigma-build-row.expanded .sigma-build-details {
-        max-height: 2000px; /* Large enough for content */
-        padding: 0 16px 16px;
+        max-height: 600px;
+        padding: 0 20px 16px;
         opacity: 1;
     }
 
@@ -827,88 +968,111 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         transform: rotate(180deg);
     }
 
-    /* Performance optimization for build rows */
-    .sigma-build-row {
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-        will-change: transform;
-    }
-
-    .sigma-case-info-row {
-        transform: translate3d(0, 0, 0);
-        backface-visibility: hidden;
-    }
-
     .sigma-build-cases {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        margin-top: 10px;
+        margin-top: 12px;
     }
 
     .sigma-case-item {
-        display: flex;
-        justify-content: space-between;
+        background: #ffffff;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+        padding: 10px 14px;
+        border-radius: 12px;
+        border-left: 6px solid transparent;
+        border: 1px solid rgba(15, 23, 42, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .sigma-build-row.build-active .sigma-case-item {
+        border-left-color: var(--main-blue, #1d4ed8);
+    }
+
+    .sigma-build-row.build-waiting .sigma-case-item {
+        border-left-color: var(--main-orange, #d97706);
+    }
+
+    .sigma-case-item.tile-child {
+        background: #fbfcff;
+        border-left-color: inherit;
+        box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    }
+
+    .case-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(120px, 1fr));
         align-items: center;
-        background-color: white;
-        padding: 12px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        gap: 12px;
     }
 
-    .sigma-case-info {
+    .case-grid-cell {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #0f172a;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .case-grid-cell.case-units {
+        color: var(--main-orange, #c2410c);
+        font-weight: 700;
+    }
+
+    .case-grid-cell.case-action {
+        text-align: right;
+        justify-self: end;
+    }
+
+    .sigma-case-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+    }
+
+    .case-main {
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
 
-    .sigma-case-doctor {
-        font-weight: 500;
-        color: #333;
+    .case-title {
+        font-weight: 800;
+        color: #1f2937;
+        font-size: 17px;
     }
 
-    .sigma-case-patient {
-        font-size: 0.9em;
-        color: #666;
+    .case-subtitle {
+        color: #6b7280;
+        font-size: 16px;
     }
 
-    .sigma-case-details {
+    .case-meta {
         display: flex;
-        flex-direction: column;
-        gap: 4px;
-        margin-top: 4px;
+        align-items: center;
+        gap: 10px;
     }
 
-    .sigma-case-jobs-count {
-        font-size: 0.85rem;
-        color: #0056b3;
-        font-weight: 500;
-        margin-left:40px;
-    }
-
-    .sigma-case-job-types {
-        font-size: 0.75rem;
-        color: #6c757d;
-        font-style: italic;
-        background-color: #f8f9fa;
-        padding: 2px 6px;
-        border-radius: 4px;
-        display: inline-block;
+    .case-units {
+        font-weight: 800;
+        color: var(--main-orange, #eab308);
+        font-size: 15px;
     }
 
     .sigma-case-view-btn {
-        background: none;
+        background: var(--main-blue, #3b82f6);
         border: none;
-        color: #6c757d;
+        padding: 10px 12px;
+        border-radius: 8px;
         cursor: pointer;
-        padding: 8px;
-        border-radius: 50%;
-        transition: background-color 0.2s, color 0.2s;
+        color: #fff;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
-    .sigma-case-view-btn:hover {
-        background-color: #007bff;
-        color: white;
+    .sigma-case-view-btn:active,
+    .sigma-case-view-btn:focus {
+        background: var(--main-green, #16a34a);
+        color: #fff;
     }
 
     /* Regular jobs list styling */

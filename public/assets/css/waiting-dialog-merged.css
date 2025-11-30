@@ -9,7 +9,7 @@
 .waiting-dialog .sigma-machine-card {
     width: 100%;
     height: auto;
-    padding: 8px;
+    padding: 6px;
     border: 2px solid #eaeaea;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -348,7 +348,7 @@ align-items: flex-end;
     }
 
     .waiting-dialog .sigma-machine-card {
-        padding: 6px;
+        /* padding: 6px; */
         border-width: 1px;
     }
 

@@ -11,11 +11,42 @@
 .modal-footer{
     padding: 0 !important;
 }
-@media screen and (max-width: 768px) {
-    table {
-        table-layout: fixed;
-    }
-}
+        @media screen and (max-width: 768px) {
+            table {
+                table-layout: fixed;
+            }
+        }
+
+        /* cohesive table styling */
+        .sunriseTable thead th {
+            background: #0f8c8d;
+            color: #fff;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            text-transform: none;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .sunriseTable tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .sunriseTable tbody tr:hover {
+            background: rgba(15, 140, 141, 0.08);
+        }
+
+        .sunriseTable td {
+            font-size: 0.97rem;
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .mobile-access-panel {
+            padding: 18px;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+        }
 </style>
     @php
         $permissions = safe_permissions();

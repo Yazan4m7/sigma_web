@@ -96,6 +96,7 @@
     .YSH-content {
         overflow: visible !important;
         max-width: 100% !important;
+        min-width: min-content;
     }
     
     /* Ensure tables don't cause scrolling */

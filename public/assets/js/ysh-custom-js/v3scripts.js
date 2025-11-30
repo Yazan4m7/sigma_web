@@ -2545,31 +2545,32 @@ function updateActionXXXXXButtonState(deviceId, type) {
 }
 
 function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
-    // Store the stage type for the panel to use (consumed by form submissions elsewhere)
-    window.currentPanelStage = stageType;
+    try {
+        window.currentPanelStage = stageType;
 
-    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    const panel = document.getElementById('YSH-slide-panel-' + caseId);
+        const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+        const panel = document.getElementById('YSH-slide-panel-' + caseId);
 
-    if (!overlay || !panel) {
-        console.warn('Slide panel missing for case', caseId, 'stage', stageType);
-        return;
+        if (!overlay || !panel) {
+            console.warn('Slide panel missing for case', caseId, 'stage', stageType);
+            return;
+        }
+
+        if (!overlay.dataset.movedToBody) {
+            document.body.appendChild(overlay);
+            overlay.dataset.movedToBody = '1';
+        }
+
+        overlay.classList.remove('YSH-closing');
+        overlay.style.display = 'block';
+
+        requestAnimationFrame(() => {
+            overlay.classList.add('YSH-active');
+            panel.style.right = '0';
+        });
+    } catch (e) {
+        console.error('Error opening slide panel:', e);
     }
-
-    // Move overlay to body once to avoid modal stacking/transform issues
-    if (!overlay.dataset.movedToBody) {
-        document.body.appendChild(overlay);
-        overlay.dataset.movedToBody = '1';
-    }
-
-    overlay.classList.remove('YSH-closing');
-    overlay.style.display = 'block';
-
-    // Kick off slide-in with the next paint
-    requestAnimationFrame(() => {
-        overlay.classList.add('YSH-active');
-        panel.style.right = '0';
-    });
 }
 
 function YSH_closeSlidePanel(caseId) {

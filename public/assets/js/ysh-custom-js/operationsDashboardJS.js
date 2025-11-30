@@ -81,7 +81,9 @@ function setInnerTab(btnElement) {
     $(btnElement).attr('aria-selected', true).removeAttr('tabindex');
 
     // Initialize DataTables for the newly visible panel
-
+    setTimeout(() => {
+        initializeDataTables();
+    }, 50);
 }
 
 // setOuterTab function is now defined in the main dashboard view file
@@ -348,122 +350,30 @@ function selectAll(ele, classname) {
 
 
 
-// Function to initialize DataTables safely
-var dataTableInitialized = false;
-var initializedTables = new Set();
-
-function attemptInitializeTable(table) {
-    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
-        console.warn("jQuery or DataTables not loaded. Cannot initialize single table.");
-        return;
-    }
-
-    var tableId = table.id || $(table).index();
-    if (initializedTables.has(tableId)) {
-        return;
-    }
-
-    if (!$.fn.DataTable.isDataTable(table)) {
-        initializeSingleTable(table);
-    }
-
-    initializedTables.add(tableId);
-}
-
 function initializeDataTables() {
-    // Prevent multiple initialization attempts
     if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
+
+
         console.warn("jQuery or DataTables not loaded. Cannot initialize.");
         return;
     }
+    setTimeout(() => {
+
 
     $('.sunriseTable').each(function() {
-        var tableId = this.id || $(this).index();
-        if (initializedTables.has(tableId)) {
-            return; // Skip if already initialized
-        }
-
-        var $table = $(this);
-        var $parent = $table.closest('[role="tabpanel"]');
-
-        if ($table.is(':visible') || ($parent.length && !$parent.attr('hidden'))) {
-            attemptInitializeTable(this);
+        if (!$.fn.DataTable.isDataTable(this)) {
+            $(this).DataTable();
         }
     });
+    }, 300);
 }
 
-function initializeTablesInPanel(panelElement) {
-    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
-        return;
-    }
+function setupTabPanelObserver() {}
 
-    const $panel = $(panelElement);
-    if (!$panel.length) {
-        return;
-    }
-
-    $panel.find('.sunriseTable').each(function() {
-        attemptInitializeTable(this);
-    });
-}
-
-function setupTabPanelObserver() {
-    if (typeof MutationObserver === 'undefined') {
-        return;
-    }
-
-    const panels = document.querySelectorAll('.macaw-aurora-tabs [role="tabpanel"], .macaw-silk-tabs [role="tabpanel"]');
-    if (!panels.length) {
-        return;
-    }
-
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.attributeName === 'hidden' && !mutation.target.hasAttribute('hidden')) {
-                initializeTablesInPanel(mutation.target);
-            }
-        });
-    });
-
-    panels.forEach(function(panel) {
-        observer.observe(panel, {
-            attributes: true,
-            attributeFilter: ['hidden']
-        });
-
-        if (!panel.hasAttribute('hidden')) {
-            initializeTablesInPanel(panel);
-        }
-    });
-}
-
-function forceInitializeAllTables(options = {}) {
-    // const destroyExisting = options.destroyExisting === true;
-    //
-    // if (destroyExisting) {
-    //     console.log("Destroying and re-initializing all DataTables...");
-    //     $('.sunriseTable').each(function() {
-    //         if ($.fn.DataTable.isDataTable(this)) {
-    //             $(this).DataTable().destroy();
-    //         }
-    //     });
-    //     initializedTables.clear();
-    // } else {
-    //     console.log("Ensuring DataTables exist for visible panels...");
-    // }
-    //
-    // initializeDataTables();
-    //
-    // if (destroyExisting) {
-    //     setTimeout(() => {
-    //         let initializedCount = 0;
-    //         $('.sunriseTable').each(function() {
-    //             if ($.fn.DataTable.isDataTable(this)) initializedCount++;
-    //         });
-    //         console.log(`Verification: ${initializedCount} tables initialized after force destroy.`);
-    //     }, 300);
-    // }
-
+function forceInitializeAllTables() {
+    setTimeout(() => {
+        initializeDataTables();
+    }, 50);
 
 }
 
@@ -592,13 +502,15 @@ try {
 $(document).ready(function() {
     // Outer tabs
     $('.stageSidebar button[role="tab"]').on('click', function() {
-        forceInitializeAllTables();
+       // forceInitializeAllTables();
     });
 
     // Inner tabs
     $('.macaw-silk-tabs [role="tab"]').on('click', function() {
-        forceInitializeAllTables();
+    //    forceInitializeAllTables();
     });
+
+    initializeDataTables();
 });
 
 // Original document ready code continues below...
@@ -714,21 +626,21 @@ $("[id^='active']").click(function (e) {
 
 let escapedKey = "NotAvailable";
 $(document).ready(function () {
-    enableAllChoices();
-    disableTextInput();
-
-    setupTabPanelObserver();
-
-    // Make the dialog responsive on window resize
-    $(window).resize(function () {
-        adjustDialogLayout();
-    });
-
-    // Initial layout adjustment
-    adjustDialogLayout();
-    
-    // Initialize tables on page load
-    initializeDataTables();
+    // enableAllChoices();
+    // disableTextInput();
+    //
+    // setupTabPanelObserver();
+    //
+    // // Make the dialog responsive on window resize
+    // $(window).resize(function () {
+    //     adjustDialogLayout();
+    // });
+    //
+    // // Initial layout adjustment
+    // adjustDialogLayout();
+    //
+    // // Initialize tables on page load
+    // initializeDataTables();
 });
 
 function adjustDialogLayout() {

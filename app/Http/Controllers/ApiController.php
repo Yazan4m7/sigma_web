@@ -477,7 +477,7 @@ class ApiController {
         }
         if (isset($clinicAccount)) {
             $log = new signinLog();
-            $log->client_id = $docClient->id;
+            $log->client_id = $clinicAccount->id;
             $log->ip_address = $_SERVER['REMOTE_ADDR'];
             $log->device = $request->device;
             $log->date = now();

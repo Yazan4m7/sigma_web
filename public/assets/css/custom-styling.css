@@ -223,6 +223,10 @@ h5, .h5 {
 .sidebar .nav li > a, .off-canvas-sidebar .nav li > a {
     padding:5px 2px !important;
 }
+
+.navbar-brand.pageTitle {
+    text-transform: capitalize;
+}
 .kt-nav__link-text,.dropdown-item{
     cursor: pointer;
 }
@@ -769,4 +773,3 @@ blueTBBorder{
     /*display: none;*/
     /*text-align: center;*/
 }
-

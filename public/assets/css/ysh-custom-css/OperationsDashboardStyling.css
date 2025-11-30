@@ -152,11 +152,11 @@
   border : white solid 1px;
 }
 .machine-img{
-    max-width: 100%;
+    /* max-width: 100%; */
     object-fit: contain;
-    width: 100%;
-    height: auto;
-    max-height: 200px;
+    /* width: 100%; */
+    /* height: auto; */
+    /* max-height: 200px; */
 }
 /* Slide animation */
 @keyframes slideIn {
@@ -884,10 +884,32 @@ YSH-slide-grid {
         * Style
         --------
         */
+  display: flex;
+
+  width: 100%;
+
+}
+
+.macaw-tabs.macaw-aurora-tabs {
+   align-items: stretch;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
    display: flex;
+   flex-direction: column;
+   align-items: stretch;
+}
 
-   width: 100%;
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body {
+   flex: 1;
+   min-height: 100%;
+   display: flex;
+   flex-direction: column;
+}
 
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
+   flex: 1;
+   min-height: 100%;
 }
 
 .site-wrapper {
