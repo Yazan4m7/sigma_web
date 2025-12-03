@@ -1330,6 +1330,8 @@
                         .attr("value", value.id)
                         .text(value.name));
                 });
+                $("[name='" + styleOptionsName + "']").parent().parent().parent().show();
+                $("[name='" + colorsDDName + "']").parent().parent().parent().show();
                 if (teethSelectedAsArr.length > 1)
                     $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
                 else

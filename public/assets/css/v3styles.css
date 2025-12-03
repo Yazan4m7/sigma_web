@@ -135,8 +135,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 
 .sigma-button-success {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #1b7cd8 0%, #1e8ce9 100%);
     color: white;
+    border: none;
 }
 
 .sigma-button-orange {
@@ -529,10 +530,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 .YSH-image-wrapper img {
     display: block;
-    /* width: 100%; */
-    height: auto;
-    max-width: 100%;
-    max-height: 170px;
+    width: 100%;
+    max-width: 240px;
+    height: 180px;
     object-fit: contain;
     transition: transform 0.3s ease, filter 0.3s ease;
     filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.15));
@@ -630,7 +630,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 }
 
 .YSH-device.inactive .YSH-image-wrapper::before {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    /*background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));*/
 }
 
 .YSH-device.inactive .YSH-device-name {
@@ -676,6 +676,11 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
         padding: 0.5rem;
     }
 
+    .YSH-image-wrapper img {
+        max-width: 195px;
+        height: 150px;
+    }
+
     .YSH-badge-container {
       /* width: 46%; */
       /* aspect-ratio: auto; */
@@ -698,9 +703,12 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 }
 
 @media (max-width: 400px) {
-    /*.YSH-device {*/
-    /*    flex: 0 0 90%;*/
-    /*}*/
+    .YSH-image-wrapper img {
+        max-width: 165px;
+        height: 135px;
+        width: 148% !important;
+        max-width: 145% !important;
+    }
 }
 
 /* workflow-styles.css */
@@ -927,12 +935,13 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 
 .sigma-button-success {
-    background-color: #28a745;
+    background: linear-gradient(135deg, #1b7cd8 0%, #1e8ce9 100%);
     color: white;
+    border: none;
 }
 
 .sigma-button-success:not(:disabled):hover {
-    background-color: #218838;
+    background: linear-gradient(135deg, #1b7cd8 10%, #1871c6 100%);
 }
 
 .sigma-button-orange {

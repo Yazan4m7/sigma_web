@@ -166,6 +166,70 @@
     .fullBtnsWidth .btn i {
         margin-right: 6px;
     }
+
+    .case-action-dialog .modal-dialog {
+        margin: 1.25rem auto 1.75rem;
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    .case-action-dialog .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 40px);
+        border-radius: 20px;
+    }
+
+    .case-action-dialog .modal-footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .case-action-dialog .modal-body {
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 1rem 1.25rem;
+    }
+
+    .case-action-dialog .scrollable-content {
+        flex: 1 1 auto;
+        max-height: clamp(220px, 45vh, 420px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: -4px;
+        padding-right: 4px;
+    }
+
+    .case-action-dialog .modal-top-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 0.35rem;
+    }
+
+    .case-action-dialog .modal-top-actions .modal-close {
+        border: none;
+        background: transparent;
+        font-size: 1.75rem;
+        line-height: 1;
+        color: #000;
+        opacity: 0.65;
+        margin-left: auto;
+        padding: 0;
+    }
+
+    .case-action-dialog .modal-top-actions .modal-close:hover {
+        opacity: 1;
+    }
+
+    @media (max-width: 576px) {
+        .case-action-dialog .modal-dialog {
+            margin: 0.85rem auto 1.5rem;
+        }
+
+        .case-action-dialog .modal-body {
+            padding: 0.75rem 1rem;
+        }
+    }
 </style>
 
 <table class=" activeTable sunriseTable" style="width:100%;">
@@ -287,7 +351,7 @@
         </div>
         @endif
         <!-- Active case actions Dialog -->
-        <div class="modal fade" tabindex="-1" role="dialog"
+        <div class="modal fade case-action-dialog" tabindex="-1" role="dialog"
             id="confirmCompletion{{$key.$case->id}}">
             <form action="{{$key == "delivery" ? route('delivery-accept', $case->id) : route('finish-case',['caseId'=> $case->id,'stage'=>$stage["numericStage"]] )}}"
                 method="GET">
@@ -295,15 +359,13 @@
                 <input type="hidden" name="case_id" value="{{$case->id}}">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Case Completion</h5>
-
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
                         <div class="modal-body">
+                            <div class="modal-top-actions">
+                                <button type="button" class="close modal-close" data-dismiss="modal"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <!-- Sticky Doctor/Patient section -->
                             <div class="form-group row" style="margin-bottom: 0px">
                                 <div class="form-group col-6 "
@@ -408,7 +470,7 @@
 
                                 <div class="col-3 padding5px" style="display: flex;">
                                     <a href="{{route('edit-case-view',$case->id)}}" style="width:100%; display: flex;">
-                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}} style="width:100%; display: flex; align-items: center; justify-content: center;">Edit Case</button>
+                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}} style="width:100%; display: flex; align-items: center; justify-content: center;">Edit</button>
                                     </a>
                                 </div>
 

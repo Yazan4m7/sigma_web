@@ -1,4 +1,4 @@
-@php use App\Build;use App\job;use App\sCase;use App\Http\Controllers\OperationsUpgrade; @endphp
+@php use App\Build;use App\job;use App\sCase;use App\Http\Controllers\OperationsUpgrade;use Illuminate\Support\Str; @endphp
 
 @props([
     'title',
@@ -380,10 +380,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         box-shadow: 0 22px 36px rgba(20, 108, 115, 0.3);
     }
 
-    .sigma-animated-submit-button.start-mode {
-        background: linear-gradient(135deg, #1a8b92 0%, #0f6d73 100%);
-        color: white;
-    }
+
 
     .sigma-animated-submit-button.complete-mode {
         background: linear-gradient(135deg, #239347 0%, #167737 100%);
@@ -542,6 +539,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                 ? ($data['build']->created_at ? $data['build']->created_at->format('M d, Y') : 'Recent Build')
                                 : ($data['build']->name ?: 'Build');
                             $iconClass = $stageIcons[$type] ?? 'fa-layer-group';
+                            $statusLabel = $caseActive ? 'Active build' : 'Ready to start';
                         @endphp
                         <div class="sigma-build-row {{ $caseActive ? 'build-active' : 'build-waiting' }}">
                             <div class="tile-header {{ $caseActive ? 'tile-active' : 'tile-waiting' }}" onclick="toggleBuildDetails(this)">
@@ -571,7 +569,15 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
                                     <div class="tile-text">
                                         <div class="tile-name">{{ $buildLabel }}</div>
-                                        <div class="tile-subtext">{{ $caseCount }} cases • {{ $totalUnits }} units</div>
+                                        <div class="tile-subtext">
+                                            <span>{{ $caseCount }} {{ Str::plural('case', $caseCount) }}</span>
+                                            <span class="subtext-separator">•</span>
+                                            <span>{{ $totalUnits }} {{ Str::plural('unit', $totalUnits) }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="tile-status {{ $caseActive ? 'status-active' : 'status-waiting' }}">
+                                        <span class="status-dot"></span>
+                                        <span class="status-text">{{ $statusLabel }}</span>
                                     </div>
                                 </div>
                                 <div class="tile-controls">
@@ -616,8 +622,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                                     <div class="case-grid-cell case-action">
                                                         <button type="button"
                                                                 class="sigma-case-view-btn"
+                                                                title="Preview case"
+                                                                aria-label="Preview case"
                                                                 onclick="event.stopPropagation(); YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}'); return false;">
-                                                            <i class="fas fa-eye"></i>
+                                                            <i class="fas fa-eye" aria-hidden="true"></i>
+                                                            <span class="sr-only">Preview case</span>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -770,14 +779,15 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 18px 20px 18px 28px;
-        background: #fff;
+        gap: 16px;
+        padding: 18px 20px 18px 24px;
+        background: #f9fafc;
         cursor: pointer;
-        border: 1px solid rgba(15, 23, 42, 0.08);
+        border: 1px solid rgba(15, 23, 42, 0.06);
         border-radius: 18px;
         position: relative;
-        min-height: 74px;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+        min-height: 88px;
+        box-shadow: 0 24px 45px rgba(15, 23, 42, 0.12);
     }
 
     .sigma-build-row:hover .tile-header {
@@ -805,11 +815,22 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         background: linear-gradient(180deg, rgba(217, 119, 6, 0.9), rgba(217, 119, 6, 0.4));
     }
 
+    .sigma-build-row.build-active .tile-header {
+        background: linear-gradient(135deg, rgba(229, 239, 255, 0.95), rgba(216, 227, 253, 0.9));
+        border-color: rgba(37, 99, 235, 0.18);
+    }
+
+    .sigma-build-row.build-waiting .tile-header {
+        background: linear-gradient(135deg, rgba(255, 248, 236, 0.95), rgba(255, 241, 219, 0.9));
+        border-color: rgba(217, 119, 6, 0.18);
+    }
+
     .tile-title {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
         min-width: 0;
+        width: 100%;
     }
 
     .tile-checkbox {
@@ -860,6 +881,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         display: flex;
         flex-direction: column;
         min-width: 0;
+        flex: 1;
     }
 
     .tile-name {
@@ -873,7 +895,51 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
     .tile-subtext {
         font-size: 15px;
-        color: #6b7280;
+        color: #64748b;
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 600;
+    }
+
+    .subtext-separator {
+        opacity: 0.6;
+    }
+
+    .tile-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: 1px solid transparent;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: currentColor;
+    }
+
+    .status-active {
+        background: rgba(29, 78, 216, 0.15);
+        color: #1d4ed8;
+        border-color: rgba(29, 78, 216, 0.3);
+    }
+
+    .status-waiting {
+        background: rgba(217, 119, 6, 0.15);
+        color: #d97706;
+        border-color: rgba(217, 119, 6, 0.35);
     }
 
     .sigma-build-row.build-active .tile-name,
@@ -930,15 +996,27 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .tile-badge {
-        background: #f1f5f9;
+        background: rgba(15, 23, 42, 0.04);
         color: #1f2937;
         font-size: 12px;
-        font-weight: 600;
-        padding: 3px 10px;
+        font-weight: 700;
+        padding: 4px 12px;
         border-radius: 999px;
         min-width: auto;
         text-align: center;
         box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.08);
+    }
+
+    .sigma-build-row.build-active .tile-badge {
+        background: rgba(29, 78, 216, 0.1);
+        color: #1d4ed8;
+        box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.25);
+    }
+
+    .sigma-build-row.build-waiting .tile-badge {
+        background: rgba(217, 119, 6, 0.12);
+        color: #b45309;
+        box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.25);
     }
 
     .sigma-build-toggle i {
@@ -977,20 +1055,22 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
     .sigma-case-item {
         background: #ffffff;
-        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
-        padding: 10px 14px;
-        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.08);
+        padding: 12px 16px;
+        border-radius: 16px;
         border-left: 6px solid transparent;
-        border: 1px solid rgba(15, 23, 42, 0.06);
+        border: 1px solid rgba(15, 23, 42, 0.05);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .sigma-build-row.build-active .sigma-case-item {
         border-left-color: var(--main-blue, #1d4ed8);
+        background: linear-gradient(120deg, rgba(231, 238, 255, 0.65), rgba(255, 255, 255, 0.95));
     }
 
     .sigma-build-row.build-waiting .sigma-case-item {
         border-left-color: var(--main-orange, #d97706);
+        background: linear-gradient(120deg, rgba(255, 247, 235, 0.8), rgba(255, 255, 255, 0.95));
     }
 
     .sigma-case-item.tile-child {
@@ -1003,7 +1083,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         display: grid;
         grid-template-columns: repeat(4, minmax(120px, 1fr));
         align-items: center;
-        gap: 12px;
+        gap: 14px;
     }
 
     .case-grid-cell {
@@ -1016,8 +1096,12 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .case-grid-cell.case-units {
-        color: var(--main-orange, #c2410c);
+        color: var(--main-orange, #b45309);
         font-weight: 700;
+        text-align: center;
+        background: rgba(250, 189, 92, 0.15);
+        padding: 6px 10px;
+        border-radius: 999px;
     }
 
     .case-grid-cell.case-action {
@@ -1060,18 +1144,24 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .sigma-case-view-btn {
-        background: var(--main-blue, #3b82f6);
+        background: linear-gradient(135deg, #1d4ed8, #0f62ff);
         border: none;
         padding: 10px 12px;
-        border-radius: 8px;
+        border-radius: 10px;
         cursor: pointer;
         color: #fff;
-        transition: background 0.2s ease, color 0.2s ease;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 10px 18px rgba(15, 98, 255, 0.35);
+    }
+
+    .sigma-case-view-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 24px rgba(15, 98, 255, 0.45);
     }
 
     .sigma-case-view-btn:active,
     .sigma-case-view-btn:focus {
-        background: var(--main-green, #16a34a);
+        background: linear-gradient(135deg, #0a3fa8, #0b5fd0);
         color: #fff;
     }
 

@@ -26,12 +26,19 @@
             border-left: 1px solid #aaaaaa;
         }
 
+        .delivery-time-value {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            color: #202733;
+        }
+
         .delivery-date-time {
-            display: none;
+            display: block;
             font-size: 11px;
-            color: #6c757d;
             margin-top: 3px;
             font-weight: 500;
+            letter-spacing: 0.02em;
         }
 
         /* Jobs list (table-like layout without table element) */
@@ -64,14 +71,15 @@
             border-bottom: none;
         }
 
+        .text-overdue,
+        .text-overdue .delivery-time-value,
+        .text-overdue .delivery-date-time {
+            color: red !important;
+        }
+
         /* Custom CSS for tighter spacing on mobile */
         @media screen and (max-width: 767px) {
             
-            /* Show time on second line in Delivery Date column on mobile */
-            .delivery-date-time {
-                display: block !important;
-            }
-
             .delivery-filters .col-3,
             .delivery-actions .col-3 {
                 flex: 0 0 50% !important;
@@ -157,14 +165,6 @@
                 width: 100% !important;
             }
 
-            /* Hide Delivery Time and Units, leave Doctor/Patient/Date/Status */
-            #datatable thead th:nth-child(4),
-            #datatable thead th:nth-child(5),
-            #datatable tbody td:nth-child(4),
-            #datatable tbody td:nth-child(5) {
-                display: none !important;
-            }
-
             #datatable thead th,
             #datatable tbody td {
                 padding: 8px 6px !important;
@@ -177,17 +177,19 @@
             #datatable thead th:nth-child(1),
             #datatable thead th:nth-child(2),
             #datatable thead th:nth-child(3),
-            #datatable thead th:nth-child(6),
+            #datatable thead th:nth-child(4),
+            #datatable thead th:nth-child(5),
             #datatable tbody td:nth-child(1),
             #datatable tbody td:nth-child(2),
             #datatable tbody td:nth-child(3),
-            #datatable tbody td:nth-child(6) {
-                width: 25% !important;
+            #datatable tbody td:nth-child(4),
+            #datatable tbody td:nth-child(5) {
+                width: 20% !important;
             }
 
             /* Keep Status column visible and allow wrapping */
-            #datatable thead th:nth-child(6),
-            #datatable tbody td:nth-child(6) {
+            #datatable thead th:nth-child(5),
+            #datatable tbody td:nth-child(5) {
                 display: table-cell !important;
                 white-space: normal !important;
                 overflow: visible !important;
@@ -213,17 +215,6 @@
 
             .table-responsive {
                 padding: 0 !important;
-            }
-
-            #datatable thead th:nth-child(1),
-            #datatable thead th:nth-child(2),
-            #datatable thead th:nth-child(3),
-            #datatable thead th:nth-child(6),
-            #datatable tbody td:nth-child(1),
-            #datatable tbody td:nth-child(2),
-            #datatable tbody td:nth-child(3),
-            #datatable tbody td:nth-child(6) {
-                width: 25% !important;
             }
 
             .input-group,
@@ -355,7 +346,6 @@
                                     <th><span>Doctor Name</span></th>
                                     <th><span>Patient Name</span></th>
                                     <th><span>Delivery Date</span></th>
-                                    <th><span>Delivery Time</span></th>
                                     <th><span># Of units</span></th>
                                     <th class="statusCol"><span>Status</span></th>
 
@@ -367,35 +357,32 @@
                                 @foreach ($cases as $case)
                                     @php
                                         $status = $case->status();
-                                        $color = '#595d6e';
-                                        if (strtotime($case->initial_delivery_date) < strtotime('now')) {
-                                            $color = 'red';
-                                        }
+                                        $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
+                                        $color = $isOverdue ? 'red' : '#595d6e';
 
                                     @endphp
                                     <tr data-row="{{ $case->id }}" class="odd clickable" data-toggle="modal"
                                         data-target="#actionsDialog{{ $case->id }}">
 
-                                        <td style="color:{{ $color }} !important">
+                                        <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
                                             <span>{{ $case->client->name }}</span>
                                         </td>
 
-                                        <td style="color:{{ $color }} !important">
+                                        <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
                                             <span>{{ $case->patient_name }}</span>
                                         </td>
                                         @php
                                             $date = explode('T', $case->initial_delivery_date);
                                         @endphp
-                                        <td style="color:{{ $color }} !important">
-                                            <span>{{ isset($date[0]) ? $date[0] : '-' }}</span>
+                                        <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
+                                            <span class="delivery-time-value">
+                                                {{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}
+                                            </span>
                                             <div class="delivery-date-time">
-                                                {{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '' }}
+                                                {{ isset($date[0]) ? $date[0] : '-' }}
                                             </div>
                                         </td>
-                                        <td style="color:{{ $color }} !important">
-                                            <span>{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
-                                        </td>
-                                        <td style="color:{{ $color }} !important">
+                                        <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
                                             <span>{{ $case->unitsAmount() }}</span>
                                         </td>
                                         <td>
@@ -623,7 +610,7 @@
                 "lengthChange": false,
                 "columnDefs": [{
                     "width": "20%",
-                    "targets": 5
+                    "targets": 4
                 }]
             });
         });
@@ -660,7 +647,6 @@
                                     <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Doctor Name</span></th>
                                     <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Patient Name</span></th>
                                     <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Date</span></th>
-                                    <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Time</span></th>
                                    <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Status at print time</span></th>
                                 </tr>
                                 </thead>
@@ -668,10 +654,8 @@
                                   @foreach ($cases as $case)
                     @php
                         $status = $case->status();
-                        $color = '#595d6e';
-                        if (strtotime($case->initial_delivery_date) < strtotime('now')) {
-                            $color = 'red';
-                        }
+                        $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
+                        $color = $isOverdue ? 'red' : '#595d6e';
 
                     @endphp
                 <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
@@ -683,8 +667,10 @@
                                                 $date = explode('T', $case->initial_delivery_date);
 
                                             @endphp
-                <td ><span >{{ isset($date[0]) ? $date[0] : '-' }}</span></td>
-                                            <td ><span >{{ date('g:i a', strtotime($date[1])) }}</span></td>
+                <td >
+                    <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
+                    <span style="display:block;font-size:11px;color:{{ $color }};margin-top:3px;">{{ isset($date[0]) ? $date[0] : '-' }}</span>
+                </td>
 
                                             <td >
                                                     @if (str_contains($status, 'Completed'))

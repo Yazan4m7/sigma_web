@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" integrity="sha512-siarrzI1u3pCqFG2LEzi87McrBmq6Tp7juVsdmGY1Dr8Saw+ZBAzDzrGwX3vgxX1NkioYNCFOVC0GpDPss10zQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-oBWY6ZtpeLSFhoNvgQgQki71R+xVQ1BM8DT6vKrrO5evYv7FpC18JNpDutLCRa14Q6gttxyPjdvGdT9O9thKFQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700&display=swap');
@@ -348,6 +348,30 @@
         object-fit: cover;
     }
 
+    .photo.placeholder-avatar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f2f4;
+        color: #9ca3af;
+    }
+
+    .photo.placeholder-avatar i {
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    .avatar-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f1f2f4;
+        color: #9ca3af;
+        font-size: 22px;
+    }
+
     .user-details {
         display: flex;
         flex-direction: column;
@@ -449,6 +473,9 @@
 
 @php
 $permissions = safe_permissions();
+$user = Auth::user();
+$hasProfilePhoto = $user && $user->has_photo;
+$profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_picture.png') : null;
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
     <div class="container-fluid noPadOnMobile">
@@ -505,9 +532,15 @@ $permissions = safe_permissions();
 
                         <li class="dropdown nav-item">
                             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" style=" background-color:transparent;border:none;padding: 8px 12px">
-                                <div class="photo">
-                                    <img src="{{ asset('white') }}/img/anime3.png" alt="{{ __('Profile Photo') }}">
-                                </div>
+                                @if($hasProfilePhoto)
+                                    <div class="photo">
+                                        <img src="{{ $profileImage }}" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
+                                    </div>
+                                @else
+                                    <div class="photo placeholder-avatar" aria-hidden="true">
+                                        <i class="fa fa-user"></i>
+                                    </div>
+                                @endif
 
                                 <p class="d-lg-none"></p>
                             </a>
@@ -515,7 +548,13 @@ $permissions = safe_permissions();
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
                                         <div class="user-avatar-large">
-                                            <img src="{{ asset('white') }}/img/anime3.png" alt="{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}">
+                                            @if($hasProfilePhoto)
+                                                <img src="{{ $profileImage }}" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
+                                            @else
+                                                <div class="avatar-placeholder" aria-hidden="true">
+                                                    <i class="fa fa-user"></i>
+                                                </div>
+                                            @endif
                                         </div>
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>

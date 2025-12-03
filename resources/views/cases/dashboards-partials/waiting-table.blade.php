@@ -12,6 +12,60 @@
     .waiting-actions > [class*='col-'] { display: flex; }
     .waiting-actions .btn { flex: 1; }
 
+    .case-action-dialog .modal-dialog {
+        margin: 1.25rem auto 1.75rem;
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    .case-action-dialog .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 40px);
+        border-radius: 20px;
+    }
+
+    .case-action-dialog .modal-footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .case-action-dialog .modal-body {
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 1rem 1.25rem;
+    }
+
+    .case-action-dialog .scrollable-content {
+        flex: 1 1 auto;
+        max-height: clamp(220px, 45vh, 420px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: -4px;
+        padding-right: 4px;
+    }
+
+    .case-action-dialog .modal-top-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 0.35rem;
+        gap: 0.5rem;
+    }
+
+    .case-action-dialog .modal-top-actions .modal-close {
+        border: none;
+        background: transparent;
+        font-size: 1.75rem;
+        line-height: 1;
+        color: #000;
+        opacity: 0.65;
+        padding: 0;
+    }
+
+    .case-action-dialog .modal-top-actions .modal-close:hover {
+        opacity: 1;
+    }
+
     /* 1) <=400px */
     @media (max-width: 400px) {
         .waiting-dialog .modal-dialog { width: 95vw; margin: 0.5rem auto; }
@@ -149,30 +203,28 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
 
 
         {{--BEGIN WAITING DIALOG --}}
-        <div class="modal fade waiting-dialog" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
+        <div class="modal fade waiting-dialog case-action-dialog" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
             <form action="{{$key=="Delivery" ? route('delivery-accept', $case->id) : route('assign-to-me',['caseId'=> $case->id,'stage'=>$stage["numericStage"]] )}}"
                 method="GET">
                 @csrf
                 <input type="hidden" name="case_id" value="{{$case->id}}">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Case Completion</h5>
-                            @if(Auth()->user()->is_admin )
-                            <div class="tooltipY">
-                                <a href="{{route('finish-case-completely',['caseId' => $case->id])}}">
-                                    <i class="fa-solid fa-forward-fast skip-to-delivery-icon"></i>
-                                </a>
-                                <span class="tooltiptextY">Send To Delivery</span>
-                            </div>
-                            @endif
-                            <button type="button" class="close" data-dismiss="modal"
-                                aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-
-                        </div>
                         <div class="modal-body">
+                            <div class="modal-top-actions">
+                                @if(Auth()->user()->is_admin )
+                                <div class="tooltipY">
+                                    <a href="{{route('finish-case-completely',['caseId' => $case->id])}}">
+                                        <i class="fa-solid fa-forward-fast skip-to-delivery-icon"></i>
+                                    </a>
+                                    <span class="tooltiptextY">Send To Delivery</span>
+                                </div>
+                                @endif
+                                <button type="button" class="close modal-close" data-dismiss="modal"
+                                    aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <!-- Sticky Doctor/Patient section -->
                             <div class="form-group row" style="margin-bottom: 0px">
                                 <div class="form-group col-6 " style="margin-bottom: 0px">
@@ -244,7 +296,7 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                 </div>
                                 <div class="col-3 padding5px">
                                     <a href="{{route('edit-case-view',$case->id)}}" style="width:100%;">
-                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}}>Edit Case</button>
+                                        <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}}>Edit</button>
                                     </a>
                                 </div>
 

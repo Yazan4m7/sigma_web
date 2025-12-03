@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\sCase;
 use App\client;
 use App\job;
+use App\JobType;
+use App\material;
 use App\materialJobtype;
 use App\AuditLog;
 use App\User;
@@ -55,7 +57,11 @@ class ToolsController extends Controller
 
     public function createCaseTool()
     {
-        return view('tools.create-case');
+        $jobTypes = JobType::select('id', 'name', 'teeth_or_jaw')->orderBy('name')->get();
+        $materials = material::select('id', 'name')->orderBy('name')->get();
+        $jobTypeMaterials = materialJobtype::select('jobtype_id', 'material_id')->get();
+
+        return view('tools.create-case', compact('jobTypes', 'materials', 'jobTypeMaterials'));
     }
 
     public function issueInvoiceForCase(Request $request)
@@ -135,13 +141,54 @@ class ToolsController extends Controller
     {
         $request->validate([
             'stage' => 'required|integer|min:1|max:8',
-            'amount' => 'required|integer|min:1',
+            'phase' => 'nullable|integer|min:0',
+            'amount' => 'required|integer|min:1|max:50',
             'jaw_teeth' => 'required|string|in:jaw,teeth',
+            'jaw_selection' => 'required_if:jaw_teeth,jaw|in:upper,lower,both',
+            'units' => 'required_if:jaw_teeth,teeth|string|nullable',
+            'job_type_id' => 'required|exists:job_types,id',
+            'material_id' => 'required|exists:materials,id',
         ]);
 
         $stage = $request->input('stage');
         $amount = $request->input('amount');
         $jawTeeth = $request->input('jaw_teeth');
+        $jobTypeId = (int) $request->input('job_type_id');
+        $materialId = (int) $request->input('material_id');
+
+        $jobType = JobType::find($jobTypeId);
+        if (!$jobType) {
+            return back()->with('error', 'Selected job type is invalid.');
+        }
+
+        // Enforce jaw vs teeth compatibility
+        $expectedFlag = $jawTeeth === 'jaw' ? 1 : 0;
+        if ((int) $jobType->teeth_or_jaw !== $expectedFlag) {
+            return back()->with('error', 'Selected job type is not allowed for the chosen jaw/teeth option.');
+        }
+
+        // Enforce material belongs to job type
+        $materialAllowed = materialJobtype::where('jobtype_id', $jobTypeId)
+            ->where('material_id', $materialId)
+            ->exists();
+        if (!$materialAllowed) {
+            return back()->with('error', 'Selected material is not linked to the chosen job type.');
+        }
+
+        $units = '';
+        if ($jawTeeth === 'jaw') {
+            $jaw = $request->input('jaw_selection');
+            $units = $jaw === 'both' ? 'upper,lower' : $jaw;
+        } else {
+            $rawUnits = $request->input('units', '');
+            $unitList = array_filter(array_map('trim', explode(',', $rawUnits)), function ($val) {
+                return $val !== '';
+            });
+            if (count($unitList) === 0) {
+                return back()->with('error', 'Please provide at least one tooth unit.');
+            }
+            $units = implode(',', $unitList);
+        }
 
         DB::beginTransaction();
         try {
@@ -156,28 +203,19 @@ class ToolsController extends Controller
                 $case->created_by = auth()->id() ?? 1;
                 $case->save();
 
-                $units = ($jawTeeth == 'teeth')
-                    ? $faker->randomElement(['1', '1,2', '1,2,3'])
-                    : $faker->randomElement(['upper', "lower,upper", "lower"]);
-
-                $jobCount = rand(1, 2);
-                for ($j = 0; $j < $jobCount; $j++) {
-                    $materialJobType = materialJobtype::inRandomOrder()->first();
-
-                    $newJob = new job([
-                        'unit_num' => $units,
-                        'type' => $materialJobType->jobtype_id,
-                        'color' => "A1",
-                        'style' => "Single",
-                        'abutment' => $faker->randomElement([0, 1]),
-                        'implant' => $faker->randomElement([0, 1]),
-                        'material_id' => $materialJobType->material_id,
-                        'case_id' => $case->id,
-                        'doctor_id' => $case->doctor_id,
-                        'stage' => $stage,
-                    ]);
-                    $newJob->save();
-                }
+                $newJob = new job([
+                    'unit_num' => $units,
+                    'type' => $jobTypeId,
+                    'color' => "A1",
+                    'style' => "Single",
+                    'abutment' => 0,
+                    'implant' => 0,
+                    'material_id' => $materialId,
+                    'case_id' => $case->id,
+                    'doctor_id' => $case->doctor_id,
+                    'stage' => $stage,
+                ]);
+                $newJob->save();
             }
             DB::commit();
             return back()->with('success', "$amount dummy case(s) created successfully!");

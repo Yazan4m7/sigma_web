@@ -21,10 +21,6 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.dataTables.css" rel="stylesheet">
-
-
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" />
     {{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/> --}}
     <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet" />
@@ -789,7 +785,7 @@
                             {{-- ----------------waiting TABLE--------------- --}}
                             {{-- ----------------waiting TABLE--------------- --}}
                             <div tabindex="0" role="tabpanel" hidden aria-labelledby="{{ 'waiting-' . $key . 'label' }}"
-                                id="{{ 'waiting-' . $key }}">
+                                id="{{ 'waiting-' . $key }}" class="stage-panel-pane">
 
                                 @switch(strtolower($key))
                                     @case('milling')
@@ -842,7 +838,8 @@
                                         </button>
                                     @break
                                 @endswitch
-                                <table class="{{ $key }} waitingTable sunriseTable" style="width:100%">
+                                <div class="stage-panel-scroll">
+                                <table class="{{ $key }}  waitingTable sunriseTable" style="width:100%">
                                     <thead>
                                         <tr>
                                             {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
@@ -1170,13 +1167,14 @@
                                         <!-- Begin Active tab -->
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
 
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             <div tabindex="0" role="tabpanel" aria-labelledby="{{ 'active-' . $key . 'label' }}"
-                                id="{{ 'active-' . $key }}" hidden>
+                                id="{{ 'active-' . $key }}" hidden class="stage-panel-pane">
                                 @php
                                     $key = strtolower($key);
 
@@ -1187,21 +1185,30 @@
 
                                 @endphp
                                 @if ($key == 'milling')
-                                    <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
-                                        :devices="$devices" stageId="2" :counts="$deviceUnitsCounts" />
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
+                                            :devices="$devices" stageId="2" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == '3dprinting')
-                                    <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
-                                        units="3" :devices="$devices" stageId="3" :counts="$deviceUnitsCounts" />
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
+                                            units="3" :devices="$devices" stageId="3" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == 'sintering')
-                                    <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
-                                        :devices="$devices" stageId="4" :counts="$deviceUnitsCounts" />
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
+                                            :devices="$devices" stageId="4" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == 'pressing')
-                                    <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
-                                        :devices="$devices" stageId="5" :counts="$deviceUnitsCounts" />
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
+                                            :devices="$devices" stageId="5" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @else
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
+                                    <div class="stage-panel-scroll">
                                     <table class=" activeTable sunriseTable" style="width:100%;">
                                         <thead>
                                             <tr>
@@ -1500,6 +1507,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -1583,13 +1591,6 @@
 
 
 @push('js')
-    <!-- Make sure jQuery is loaded first -->
-    <script src="{{ asset('white') }}/js/core/jquery.min.js"></script>
-
-    <!-- DataTables CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
     <!-- Custom DataTables CSS fixes -->
     <style>
         /* Completely hide DataTables sorting arrows */
@@ -1753,6 +1754,24 @@
             width: 100% !important;
         }
 
+        .sunriseTable tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .sunriseTable tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+
+        .sunriseTable tbody tr:hover {
+            background-color: #eef3ff !important;
+        }
+
+        @media (min-width: 992px) {
+            .stageSidebar {
+                margin-top: 68px;
+            }
+        }
+
         /* Mobile: when columns hide, stretch remaining columns to fill width */
         @media (max-width: 768px) {
             .sunriseTable.dataTable {
@@ -1815,33 +1834,13 @@
 
         }
     </style>
-    <!-- ✅ jQuery (must be first) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <!-- ✅ Bootstrap Bundle -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-
-    <!-- ✅ DataTables CSS (classic) -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-
-    <!-- ✅ DataTables core JS -->
-    <script src="https://cdn.datatables.net/2.3.2/js/jquery.dataTables.min.js"></script>
-
-    <script></script>
-    <!-- ✅ Simple DataTables init on ready -->
-    <script>
-        $(document).ready(function () {
-            if (typeof $.fn.DataTable === 'undefined') {
-                console.warn('DataTables not yet loaded.');
-                return;
-            }
-            $('.sunriseTable').each(function() {
-                if (!$.fn.DataTable.isDataTable(this)) {
-                    $(this).DataTable();
-                }
-            });
-        });
-    </script>
+{{--            $('.sunriseTable').each(function() {--}}
+{{--                if (!$.fn.DataTable.isDataTable(this)) {--}}
+{{--                    $(this).DataTable();--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
 
     <script>

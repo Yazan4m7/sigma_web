@@ -21,8 +21,9 @@
 
 @media (max-width: 508px) {
     .machine-img , .sigma-machine-image-container {
-        max-width: 100% !important;
-        height: auto !important;
+        width: 131% !important;
+        max-width: 139% !important;
+        /* height: auto !important; */
     }
 }
 

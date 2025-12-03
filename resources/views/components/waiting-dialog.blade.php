@@ -94,7 +94,10 @@
             <button type="button"
                 class="sigma-button  {{ $escapedType }}     {{ $type == 'sintering' ? 'sigma-animated-submit-button start-mode' : '' }}"
                 id="sigma-action-button-{{ $escapedType }}"
-                style = "background-color: var({{ $type != 'sintering' ? '--main-orange' : '--main-blue' }})" disabled
+                style="{{ $type != 'sintering'
+                    ? 'background-color: var(--main-orange);'
+                    : 'background: linear-gradient(135deg, #1b7cd8 0%, #1e8ce9 100%); box-shadow: 0 6px 16px rgba(27, 124, 216, 0.35);' }}"
+                disabled
                 onclick="submitWorkflow('{{ $escapedType }}')">
                 {{ $stageSpecs[$type]['btnText'] }}
             </button>

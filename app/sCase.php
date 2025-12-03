@@ -145,23 +145,17 @@ class sCase extends Model
 
     public function unitsAmount($stage = -2)
     {
-        // -2 means no stage is specified
-        // if no stage is specified and job is still before finishing count all jobs
+        // -2 means no stage is specified; otherwise filter jobs by stage
         $jobs = $stage == -2 ? $this->jobs : $this->jobs->where('stage', $stage);
 
         $amountOfUnits = 0;
         foreach ($jobs as $job) {
+            // unit_num can be comma separated; count non-empty entries, fallback to 1 per job
             $unitCount = count(array_filter(explode(',', (string) $job->unit_num), function ($value) {
                 return trim($value) !== '';
             }));
 
-            if ($stage != 3) {
-                if ($job->material && $job->material->count_as_unit) {
-                    $amountOfUnits += $unitCount;
-                }
-            } else {
-                $amountOfUnits += $unitCount;
-            }
+            $amountOfUnits += max(1, $unitCount);
         }
 
         return $amountOfUnits;

@@ -143,6 +143,69 @@
 </div>
 
 @once
+    @push('js')
+        <script>
+            (function () {
+                function resolvePanel(caseId) {
+                    var overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+                    var panel = document.getElementById('YSH-slide-panel-' + caseId);
+                    if (!overlay || !panel) {
+                        console.warn('Slide panel markup missing for case', caseId);
+                        return null;
+                    }
+                    if (!overlay.dataset.boundToBody) {
+                        document.body.appendChild(overlay);
+                        overlay.dataset.boundToBody = '1';
+                    }
+                    return {overlay: overlay, panel: panel};
+                }
+
+                if (typeof window.YSH_openSlidePanel !== 'function') {
+                    window.YSH_openSlidePanel = function (caseId) {
+                        var refs = resolvePanel(caseId);
+                        if (!refs) {
+                            return;
+                        }
+                        var overlay = refs.overlay;
+                        var panel = refs.panel;
+                        overlay.classList.remove('YSH-closing');
+                        overlay.style.display = 'block';
+                        requestAnimationFrame(function () {
+                            overlay.classList.add('YSH-active');
+                            panel.style.right = '0';
+                        });
+                    };
+                }
+
+                if (typeof window.YSH_closeSlidePanel !== 'function') {
+                    window.YSH_closeSlidePanel = function (caseId) {
+                        var refs = resolvePanel(caseId);
+                        if (!refs) {
+                            return;
+                        }
+                        var overlay = refs.overlay;
+                        var panel = refs.panel;
+                        overlay.classList.remove('YSH-active');
+                        overlay.classList.add('YSH-closing');
+                        panel.style.right = '-100%';
+
+                        var cleanup = function () {
+                            overlay.style.display = 'none';
+                            overlay.classList.remove('YSH-closing');
+                            overlay.removeEventListener('transitionend', cleanup);
+                            overlay.removeEventListener('animationend', cleanup);
+                        };
+
+                        overlay.addEventListener('transitionend', cleanup);
+                        overlay.addEventListener('animationend', cleanup);
+                    };
+                }
+            })();
+        </script>
+    @endpush
+@endonce
+
+@once
     <style>
         .ysh-jobs-label {
             display: inline-flex;

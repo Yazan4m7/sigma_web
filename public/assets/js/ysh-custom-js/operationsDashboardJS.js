@@ -81,9 +81,7 @@ function setInnerTab(btnElement) {
     $(btnElement).attr('aria-selected', true).removeAttr('tabindex');
 
     // Initialize DataTables for the newly visible panel
-    setTimeout(() => {
-        initializeDataTables();
-    }, 50);
+    forceInitializeAllTables();
 }
 
 // setOuterTab function is now defined in the main dashboard view file
@@ -351,111 +349,57 @@ function selectAll(ele, classname) {
 
 
 function initializeDataTables() {
-    if (typeof $ === 'undefined' || typeof $.fn.DataTable !== 'function') {
-
-
-        console.warn("jQuery or DataTables not loaded. Cannot initialize.");
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable === 'undefined') {
+        console.warn('jQuery or DataTables not available yet. Skipping initialization.');
         return;
     }
-    setTimeout(() => {
-
 
     $('.sunriseTable').each(function() {
-        if (!$.fn.DataTable.isDataTable(this)) {
-            $(this).DataTable();
+        if ($.fn.DataTable.isDataTable(this)) {
+            return;
         }
+
+        $(this).DataTable({
+            paging: true,
+            searching: false,
+            info: true,
+            ordering: true,
+            lengthChange: false,
+            pageLength: 10,
+            pagingType: 'simple_numbers',
+            responsive: false,
+            autoWidth: false,
+            language: {
+                paginate: {
+                    next: '>',
+                    previous: '<'
+                }
+            }
+        });
     });
-    }, 300);
+
+    adjustVisibleTables();
 }
 
 function setupTabPanelObserver() {}
 
+function adjustVisibleTables() {
+    if (typeof $.fn.DataTable === 'undefined') {
+        return;
+    }
+
+    $('.sunriseTable:visible').each(function() {
+        if ($.fn.DataTable.isDataTable(this)) {
+            $(this).DataTable().columns.adjust().draw(false);
+        }
+    });
+}
+
 function forceInitializeAllTables() {
     setTimeout(() => {
         initializeDataTables();
+        adjustVisibleTables();
     }, 50);
-
-}
-
-
-// Initialize a single table
-function initializeSingleTable(table) {
-    // Check if DataTables is available
-    if (typeof $.fn.DataTable === 'undefined') {
-        console.log('DataTables not available for single table initialization');
-        return;
-    }
-
-    const $table = $(table);
-
-    // Cache DOM elements
-    const $thead = $table.find('thead');
-    const $tbody = $table.find('tbody');
-
-    // Check table structure
-    if ($thead.length === 0 || $tbody.length === 0) {
-        return;
-    }
-
-    try {
-        // Cache header row
-        const $headerRow = $thead.find('tr').first();
-        const $headerCells = $headerRow.find('th');
-
-        const isMobileWidth = window.matchMedia('(max-width: 991px)').matches;
-        // BOOLEAN: Check if first column has checkbox
-        let hasCheckbox = $headerCells.first().find('input[type="checkbox"]').length > 0;
-
-        // INTEGER: Count total columns
-        let columnCount = $headerCells.length;
-
-        // Lightweight column configuration
-        let columnDefs = []; // leave empty to avoid width forcing, especially on mobile
-
-        // Lightweight DataTable initialization
-        var dataTable = $table.DataTable({
-            searching: false,
-            ordering: false,
-            autoWidth: true,
-            responsive: false,
-            lengthChange: false,
-//             stateSave: true,
-            pageLength: 10,
-            pagingType: "simple_numbers",
-            // processing: false,
-            //    deferRender: true,
-            columnDefs: columnDefs,
-            language: {
-                emptyTable: "No data available"
-            },
-            drawCallback: function() {
-                // Ensure pagination is visible after drawing
-                $(this).closest('.dataTables_wrapper').find('.dataTables_paginate, .dataTables_info').css('visibility', 'visible');
-            }
-  //           lengthMenu: [[25, 50, 100], [25, 50, 100]]
-        });
-
-        $table.on('responsive-resize', function (e, datatable, columns) {
-            dataTable.columns.adjust().draw(false);
-        });
-
-        // Ensure all columns remain visible (DataTables can hide columns when responsive or columnDefs set widths)
-        dataTable.columns().every(function () {
-            this.visible(true, false);
-        });
-        dataTable.columns.adjust().draw(false);
-
-        $table.addClass("nowrap hover compact stripe");
-
-        // Adjust column widths after initialization
-        setTimeout(function() {
-            dataTable.columns.adjust().draw(false);
-        }, 100);
-        dataTableInitialized = true;
-
-    } catch (error) {
-        console.error("Error initializing DataTable:", error);
-    }
 }
 
 // Export function globally so it can be called from blade templates
@@ -502,15 +446,15 @@ try {
 $(document).ready(function() {
     // Outer tabs
     $('.stageSidebar button[role="tab"]').on('click', function() {
-       // forceInitializeAllTables();
+        forceInitializeAllTables();
     });
 
     // Inner tabs
     $('.macaw-silk-tabs [role="tab"]').on('click', function() {
-    //    forceInitializeAllTables();
+        forceInitializeAllTables();
     });
 
-    initializeDataTables();
+    forceInitializeAllTables();
 });
 
 // Original document ready code continues below...
@@ -1292,14 +1236,3 @@ function showNoJobsMessage() {
     console.log("No jobs available for this device.");
     // alert("No jobs available for this device."); // Example
 }
-
-// Also try when window is fully loaded (fallback for DataTables)
-$(window).on('load', function() {
-    // Try one more time when window is fully loaded
-    // if (!dataTableInitialized) {
-    //     initializeDataTables();
-    // }
-    // Reset global variables - Ensure these are not causing unintended side effects
-    // window.selectedBuildId = null; // Consider if this is necessary or causing issues
-    // selectedBuildId = null; // Consider if this is necessary or causing issues
-});

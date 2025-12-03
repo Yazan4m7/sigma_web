@@ -152,11 +152,12 @@
   border : white solid 1px;
 }
 .machine-img{
-    /* max-width: 100%; */
+    display: block;
+    width: 100%;
+    max-width: 240px;
+    height: 180px;
     object-fit: contain;
-    /* width: 100%; */
-    /* height: auto; */
-    /* max-height: 200px; */
+    margin: 0 auto;
 }
 /* Slide animation */
 @keyframes slideIn {
@@ -892,12 +893,23 @@ YSH-slide-grid {
 
 .macaw-tabs.macaw-aurora-tabs {
    align-items: stretch;
+   min-height: calc(100vh - 150px);
+   gap: 0;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+   margin: 0;
+   padding: 0;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
    display: flex;
    flex-direction: column;
    align-items: stretch;
+   flex: 1;
+   min-height: 100%;
+   margin: 0;
+   padding: 0;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body {
@@ -905,6 +917,7 @@ YSH-slide-grid {
    min-height: 100%;
    display: flex;
    flex-direction: column;
+   justify-content: flex-start;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
@@ -951,6 +964,10 @@ YSH-slide-grid {
    color: var(--tab-text-color);
    fill: var(--tab-text-color);
    padding: 0.8rem 0.5rem;
+}
+.stageSidebar {
+    margin: 0;
+    padding: 0;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .label {
@@ -1147,6 +1164,9 @@ YSH-slide-grid {
 }
 
 .macaw-tabs.macaw-silk-tabs {
+   display: flex;
+   flex-direction: column;
+   min-height: 100%;
    /*
         --------
         * Color Palette
@@ -1186,6 +1206,10 @@ YSH-slide-grid {
    position: relative;
 
    display: flex;
+   margin: 0;
+   padding: 0;
+   align-items: center;
+   gap: .75rem;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tablist"] > *:not(.innerActiveBtn):not(.innerWaitingBtn) {
@@ -1260,6 +1284,30 @@ img {
   background-color: transparent;
   color: var(--tab-active-text-color);
   border-bottom: 6px solid transparent;
+  flex: 1;
+  min-height: calc(100vh - 220px);
+  display: flex;
+  flex-direction: column;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.stage-panel-pane {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 220px);
+}
+
+.stage-panel-pane .stage-panel-scroll {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .macaw-tabs.macaw-silk-tabs {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a,
@@ -2159,4 +2207,11 @@ blackbox-button-inner.enabled.orange{
 
 .macaw-tabs .macaw-silk-tabs .notransition{
 
+}
+.stage-inner-tabs {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0 0 1rem 0;
+    padding: 0;
 }

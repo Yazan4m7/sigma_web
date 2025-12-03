@@ -176,8 +176,8 @@
     @stack('css')
     <style>
         /* Disable legacy overlays but keep the sidebar overlay available */
-        [class*="overlay"]:not(.sidebar-overlay),
-        [id*="overlay"]:not(#sidebarOverlay) {
+        [class*="overlay"]:not(.sidebar-overlay):not(.YSH-slide-overlay),
+        [id*="overlay"]:not(#sidebarOverlay):not([id^="YSH-slide-overlay-"]) {
             display: none !important;
             pointer-events: none !important;
         }
