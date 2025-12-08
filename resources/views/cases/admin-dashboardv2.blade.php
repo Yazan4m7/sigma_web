@@ -82,6 +82,7 @@
 
         /* Modal header styling with divider */
         .modal-header {
+            display:none !important;
             border-bottom: 1px solid #dee2e6 !important;
             padding-bottom: 12px;
         }
@@ -123,6 +124,15 @@
         .patient-doctor-names {
             color: #2d5f6d;
             font-weight: 600;
+        }
+
+        .patient-doctor-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6c757d;
+            margin-bottom: 2px;
+            display: block;
         }
 
         /* Scrollable section for jobs and notes only */
@@ -1000,13 +1010,13 @@
                                                                 <div class="form-group row" style="margin-bottom: 0px">
                                                                     <div class="form-group col-6 "
                                                                         style="margin-bottom: 0px">
-                                                                        <label for="doctor">Doctor: </label>
+                                                                        <label for="doctor" class="patient-doctor-label">Doctor:</label>
                                                                         <h5 id="doctor" class="patient-doctor-names">
                                                                             {{ $case->client?->name }}</h5>
                                                                     </div>
                                                                     <div class="form-group col-6 "
                                                                         style="margin-bottom: 0px">
-                                                                        <label for="pat">Patient: </label>
+                                                                        <label for="pat" class="patient-doctor-label">Patient name:</label>
                                                                         <h5 id="pat" class="patient-doctor-names">
                                                                             {{ $case->patient_name }}</h5>
                                                                     </div>
@@ -1020,16 +1030,14 @@
                                                                             <label><b>Jobs:</b></label><br>
 
 
-                                                                            @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
+                                                                            @foreach ($case->jobs as $job)
                                                                                 @php
                                                                                     $unit = explode(
                                                                                         ', ',
                                                                                         $job->unit_num,
                                                                                     );
                                                                                     // Check if this job goes through the current stage based on material
-                                                                                    $showJob = $job->goesThroughStage(
-                                                                                        $stage['numericStage'],
-                                                                                    );
+                                                                                    $showJob = $job->goesThroughStage($stage['numericStage']);
                                                                                 @endphp
 
                                                                                 @if ($showJob)
@@ -1310,14 +1318,14 @@
                                                                         style="margin-bottom: 0px">
                                                                         <div class="form-group col-6 "
                                                                             style="margin-bottom: 0px">
-                                                                            <label for="doctor">Doctor: </label>
+                                                                            <label for="doctor" class="patient-doctor-label">Doctor: </label>
                                                                             <h5 id="doctor"
                                                                                 class="patient-doctor-names">
                                                                                 {{ $case->client?->name }}</h5>
                                                                         </div>
                                                                         <div class="form-group col-6 "
                                                                             style="margin-bottom: 0px">
-                                                                            <label for="pat">Patient: </label>
+                                                                            <label for="pat" class="patient-doctor-label">Patient name: </label>
                                                                             <h5 id="pat"
                                                                                 class="patient-doctor-names">
                                                                                 {{ $case->patient_name }}</h5>

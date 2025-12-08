@@ -123,7 +123,7 @@ $permissions = safe_permissions();
                                                             <a class="dropdown-item" data-toggle="modal" data-target="#confirmCompletion{{$case->id}}"> <i class="kt-nav__link-icon flaticon2-contract"></i> <span class="kt-nav__link-text">Complete</span> </a>
 
                                                             @if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102)||$permissions->contains('permission_id', 1))))
-                                                                <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit case</a>
+                                                                <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit</a>
                                                             @endif
                                                         <a class="dropdown-item" href="{{route('view-case', ['id' => $case->id, 'stage' =>$stage])}}">View case</a>
                                                     </div>
@@ -340,7 +340,7 @@ $permissions = safe_permissions();
                                                         <a class="dropdown-item" href="{{route('assign-to-me',['caseId'=> $case->id,'stage'=>$stage] )}}">Assign To Me</a>
                                                         <a class="dropdown-item" href="{{route('view-case', ['id' => $case->id, 'stage' =>$stage])}}">View case</a>
                                                         @if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102)||$permissions->contains('permission_id', 1))))
-                                                            <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit case</a>
+                                                            <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit </a>
                                                         @endif
                                                     </div>
                                                 </td>

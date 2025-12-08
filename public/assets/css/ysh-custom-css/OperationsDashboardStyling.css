@@ -192,7 +192,7 @@
    top: 5vh;
    right: -100%;
    width: 40%;
-   height: 90%;
+   height: fit-content;
    min-width: 300px;
    max-width: 500px;
    background: #ffffff;
@@ -212,7 +212,7 @@
 
 
 .YSH-slide-header {
-   padding: 15px;
+   /* padding: 15px; */
    border-bottom: 1px solid #ddd;
    display: flex;
    justify-content: space-between;
@@ -220,9 +220,9 @@
 }
 
 .YSH-slide-body {
-   padding: 15px;
+   /* padding: 15px; */
    overflow-y: auto;
-    max-height: 400px;
+   max-height: 400px;
 }
 
 .YSH-close-slide {
@@ -898,7 +898,7 @@ YSH-slide-grid {
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
-   margin: 0;
+   /* margin: 0; */
    padding: 0;
 }
 
@@ -1296,18 +1296,71 @@ img {
     flex: 1;
     display: flex;
     flex-direction: column;
-    min-height: calc(100vh - 220px);
+    min-height: 0;
 }
 
 .stage-panel-pane .stage-panel-scroll {
     flex: 1;
     overflow-y: auto;
+    min-height: 0;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .macaw-tabs.macaw-silk-tabs {
     flex: 1;
     display: flex;
     flex-direction: column;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+    min-height: 0;
+    display: flex;
+}
+
+.stage-panel-scroll .dataTables_wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative;
+    padding-bottom: 52px;
+}
+
+.stage-panel-scroll .dataTables_scroll {
+    flex: 1;
+    min-height: 0;
+}
+
+.stage-panel-scroll table.dataTable {
+    width: 100% !important;
+}
+
+.stage-panel-scroll .dataTables_info {
+    position: absolute;
+    left: 0;
+    bottom: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin: 0;
+    z-index: 2;
+}
+
+.stage-panel-scroll .dataTables_paginate {
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 4px 8px;
+    border-radius: 6px;
+    margin: 0;
+    z-index: 2;
+}
+
+.stage-panel-scroll .dataTables_paginate .paginate_button {
+    margin-bottom: 0 !important;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a,

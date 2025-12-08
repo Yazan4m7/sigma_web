@@ -553,7 +553,7 @@
                                                                             <button type="button"
                                                                                 class="btn btn-warning "><i
                                                                                     class="fa-solid fa-pen-to-square"></i>
-                                                                                Edit Case</button>
+                                                                                Edit</button>
                                                                         </a>
                                                                     </div>
                                                                 @endif

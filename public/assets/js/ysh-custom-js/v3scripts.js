@@ -1294,11 +1294,11 @@ function multiCBChanged(type, checkbox, caseId) {
 //  */
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize loading indicator
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'sigma-loading-indicator';
-    loadingIndicator.innerHTML = `
-
-    `;
+    // const loadingIndicator = document.createElement('div');
+    // loadingIndicator.id = 'sigma-loading-indicator';
+    // loadingIndicator.innerHTML = `
+    //
+    // `;
     document.body.appendChild(loadingIndicator);
 
     // Check for flash messages on page load

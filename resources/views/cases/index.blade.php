@@ -16,13 +16,24 @@
 
         /* Modal header styling with divider */
         .modal-header {
-            border-bottom: 1px solid #dee2e6 !important;
+            border-bottom: 0 !important;
+            padding-top: 16px;
+            padding-bottom: 16px;
         }
 
         /* Doctor/Patient names styling */
         .patient-doctor-names {
             color: #2d5f6d;
             font-weight: 600;
+        }
+
+        .patient-doctor-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6c757d;
+            margin-bottom: 2px;
+            display: block;
         }
 
         /* Scrollable section for jobs and notes */
@@ -227,13 +238,13 @@
                                     <div class="col-6 col-sm-6 col-md-2 mb-3">
                                         <div class="kt-subheader__search">
                                             <label>From (Start of):</label>
-                                            <input type="date" class="form-control" name="from" value="{{$from}}">
+                                            <div class="ios-date-picker" data-name="from" data-initial="{{$from}}"></div>
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-6 col-md-2 mb-3">
                                         <div class="kt-subheader__search">
                                             <label>To (End of):</label>
-                                            <input type="date" class="form-control" name="to" value="{{$to}}">
+                                            <div class="ios-date-picker" data-name="to" data-initial="{{$to}}"></div>
                                         </div>
                                     </div>
 
@@ -373,9 +384,9 @@
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Case Actions</h5>
 
-                                                        <button type="button" class="close" data-dismiss="modal"
+
+                                                        <button type="button" class="close" data-dismiss="modal" style="right"
                                                                 aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -384,11 +395,11 @@
                                                         <!-- Sticky Doctor/Patient section -->
                                                         <div class="form-group row" style="margin-bottom: 0px">
                                                             <div class="form-group col-6 " style="margin-bottom: 0px">
-                                                                <label for="doctor">Doctor: </label>
+                                                                <label for="doctor" class="patient-doctor-label">Doctor:</label>
                                                                 <h5 id="doctor" class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
                                                             </div>
                                                             <div class="form-group col-6 " style="margin-bottom: 0px">
-                                                                <label for="pat">Patient: </label>
+                                                                <label for="pat" class="patient-doctor-label">patient:</label>
                                                                 <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
                                                             </div>
                                                         </div>
@@ -446,7 +457,7 @@
                                                                 </div>
                                                                 <div class="col-6" style="padding: 5px;">
                                                                     <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                                       class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View Case</a>
+                                                                       class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View </a>
                                                                 </div>
 
                                                                 <!-- Row 2: Lock Case, Delete Case, Edit Case -->
@@ -454,10 +465,10 @@
                                                                 <div class="col-4" style="padding: 5px;">
                                                                     @if(!$case->locked)
                                                                         <a href="{{route('lock-case',$case->id)}}"
-                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock Case</a>
+                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock </a>
                                                                     @else
                                                                         <a href="{{route('unlock-case',$case->id)}}"
-                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock-open"></i> Unlock Case</a>
+                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock-open"></i> Unlock </a>
                                                                     @endif
                                                                 </div>
                                                                 @endif
@@ -468,13 +479,13 @@
                                                                        style="color:white; width: 100%;"
                                                                        onclick="caseDelConfirmation(event)"
                                                                        href="{{route('delete-case',$case->id)}}"
-                                                                       class="btn btn-danger"><i class="fas fa-trash"></i> Delete Case</a>
+                                                                       class="btn btn-danger"><i class="fas fa-trash"></i> Delete </a>
                                                                 </div>
                                                                 @endif
                                                                 @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
                                                                 <div class="col-4" style="padding: 5px;">
                                                                     <a href="{{route('edit-case-view',$case->id)}}"
-                                                                       class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit Case</a>
+                                                                       class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                                                                 </div>
                                                                 @endif
 
@@ -541,6 +552,309 @@
                     </div>
                 </form>
                 @push('js')
+                    <style>
+                        /* Scoped iOS-style date picker */
+                        .ios-picker-wrap {
+                            position: relative;
+                            width: 100%;
+                        }
+
+                        .ios-picker-input {
+                            width: 100%;
+                            padding: 10px 12px;
+                            border: 1px solid #d0d5dd;
+                            border-radius: 10px;
+                            background: #fff;
+                            color: #111827;
+                            font-size: 14px;
+                            text-align: left;
+                            cursor: pointer;
+                            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                        }
+
+                        .ios-picker-input:focus {
+                            outline: none;
+                            border-color: #2563eb;
+                            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+                        }
+
+                        .ios-picker-panel {
+                            position: absolute;
+                            top: calc(100% + 8px);
+                            left: 0;
+                            z-index: 10;
+                            background: #fff;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 14px;
+                            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+                            width: 280px;
+                            padding: 12px;
+                            display: none;
+                        }
+
+                        .ios-picker-panel.open {
+                            display: block;
+                        }
+
+                        .ios-picker-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 8px;
+                            font-weight: 600;
+                            color: #0f172a;
+                        }
+
+                        .ios-picker-actions {
+                            display: flex;
+                            gap: 8px;
+                        }
+
+                        .ios-picker-btn {
+                            padding: 6px 10px;
+                            border-radius: 8px;
+                            border: 1px solid #d0d5dd;
+                            background: #fff;
+                            color: #111827;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: background 0.2s ease, border-color 0.2s ease;
+                        }
+
+                        .ios-picker-btn.primary {
+                            background: #2563eb;
+                            border-color: #2563eb;
+                            color: #fff;
+                        }
+
+                        .ios-picker-btn:hover {
+                            background: #f9fafb;
+                        }
+
+                        .ios-picker-btn.primary:hover {
+                            background: #1d4ed8;
+                        }
+
+                        .ios-wheels {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr 1fr;
+                            gap: 8px;
+                            position: relative;
+                            height: 180px;
+                        }
+
+                        .ios-wheel {
+                            position: relative;
+                            height: 100%;
+                            overflow-y: scroll;
+                            scroll-snap-type: y mandatory;
+                            -webkit-overflow-scrolling: touch;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 12px;
+                        }
+
+                        .ios-wheel::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .ios-wheel ul {
+                            list-style: none;
+                            padding: 70px 0;
+                            margin: 0;
+                            text-align: center;
+                        }
+
+                        .ios-wheel li {
+                            height: 36px;
+                            line-height: 36px;
+                            scroll-snap-align: center;
+                            color: #6b7280;
+                            font-weight: 500;
+                        }
+
+                        .ios-wheel li.selected {
+                            color: #111827;
+                            font-size: 16px;
+                            font-weight: 700;
+                        }
+
+                        .ios-highlight {
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            right: 0;
+                            height: 36px;
+                            margin-top: -18px;
+                            border-top: 1px solid #dbeafe;
+                            border-bottom: 1px solid #dbeafe;
+                            pointer-events: none;
+                            background: linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(37, 99, 235, 0.02), rgba(37, 99, 235, 0.08));
+                        }
+                    </style>
+                    <script>
+                        (function() {
+                            const ITEM_HEIGHT = 36;
+
+                            function formatDisplay(dateStr) {
+                                if (!dateStr) return 'Select date';
+                                const parts = dateStr.split('-');
+                                if (parts.length !== 3) return 'Select date';
+                                const d = new Date(dateStr + 'T00:00:00');
+                                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                            }
+
+                            function buildWheel(list, values, selected) {
+                                list.innerHTML = '';
+                                values.forEach(v => {
+                                    const li = document.createElement('li');
+                                    li.textContent = v.label;
+                                    li.dataset.value = v.value;
+                                    if (v.value === selected) li.classList.add('selected');
+                                    list.appendChild(li);
+                                });
+                            }
+
+                            function snap(wheel) {
+                                const idx = Math.round(wheel.scrollTop / ITEM_HEIGHT);
+                                const target = idx * ITEM_HEIGHT;
+                                wheel.scrollTo({ top: target, behavior: 'auto' });
+                                wheel.querySelectorAll('li').forEach((li, i) => {
+                                    li.classList.toggle('selected', i === idx);
+                                });
+                            }
+
+                            function initPicker(host) {
+                                const name = host.dataset.name;
+                                const initial = host.dataset.initial || '';
+
+                                const wrapper = document.createElement('div');
+                                wrapper.className = 'ios-picker-wrap';
+
+                                const input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = name;
+                                input.value = initial;
+
+                                const display = document.createElement('button');
+                                display.type = 'button';
+                                display.className = 'ios-picker-input';
+                                display.textContent = formatDisplay(initial);
+
+                                const panel = document.createElement('div');
+                                panel.className = 'ios-picker-panel';
+                                panel.innerHTML = `
+                                    <div class="ios-picker-header">
+                                        <span>Select date</span>
+                                        <div class="ios-picker-actions">
+                                            <button type="button" class="ios-picker-btn js-cancel">Cancel</button>
+                                            <button type="button" class="ios-picker-btn primary js-done">Done</button>
+                                        </div>
+                                    </div>
+                                    <div class="ios-wheels">
+                                        <div class="ios-wheel js-wheel-year"><div class="ios-highlight"></div><ul></ul></div>
+                                        <div class="ios-wheel js-wheel-month"><div class="ios-highlight"></div><ul></ul></div>
+                                        <div class="ios-wheel js-wheel-day"><div class="ios-highlight"></div><ul></ul></div>
+                                    </div>
+                                `;
+
+                                wrapper.appendChild(input);
+                                wrapper.appendChild(display);
+                                wrapper.appendChild(panel);
+                                host.replaceWith(wrapper);
+
+                                const yearWheel = panel.querySelector('.js-wheel-year');
+                                const monthWheel = panel.querySelector('.js-wheel-month');
+                                const dayWheel = panel.querySelector('.js-wheel-day');
+                                const yearList = yearWheel.querySelector('ul');
+                                const monthList = monthWheel.querySelector('ul');
+                                const dayList = dayWheel.querySelector('ul');
+
+                                const today = initial ? new Date(initial + 'T00:00:00') : new Date();
+                                let selYear = today.getFullYear();
+                                let selMonth = today.getMonth() + 1;
+                                let selDay = today.getDate();
+
+                                const years = [];
+                                const currentYear = new Date().getFullYear();
+                                for (let y = currentYear - 100; y <= currentYear + 10; y++) {
+                                    years.push({ label: y, value: y });
+                                }
+                                const months = Array.from({ length: 12 }, (_, i) => ({
+                                    label: new Date(2000, i, 1).toLocaleString('en', { month: 'short' }),
+                                    value: i + 1
+                                }));
+
+                                function rebuildDays() {
+                                    const max = new Date(selYear, selMonth, 0).getDate();
+                                    const days = Array.from({ length: max }, (_, i) => ({ label: i + 1, value: i + 1 }));
+                                    if (selDay > max) selDay = max;
+                                    buildWheel(dayList, days, selDay);
+                                    dayWheel.scrollTop = (selDay - 1) * ITEM_HEIGHT;
+                                }
+
+                                buildWheel(yearList, years, selYear);
+                                buildWheel(monthList, months, selMonth);
+                                rebuildDays();
+
+                                yearWheel.scrollTop = years.findIndex(y => y.value === selYear) * ITEM_HEIGHT;
+                                monthWheel.scrollTop = (selMonth - 1) * ITEM_HEIGHT;
+                                dayWheel.scrollTop = (selDay - 1) * ITEM_HEIGHT;
+
+                                const wheels = [
+                                    { el: yearWheel, list: yearList, onChange: v => { selYear = v; rebuildDays(); } },
+                                    { el: monthWheel, list: monthList, onChange: v => { selMonth = v; rebuildDays(); } },
+                                    { el: dayWheel, list: dayList, onChange: v => { selDay = v; } },
+                                ];
+
+                                wheels.forEach(({ el, list, onChange }) => {
+                                    let t;
+                                    el.addEventListener('scroll', () => {
+                                        clearTimeout(t);
+                                        t = setTimeout(() => {
+                                            snap(el);
+                                            const idx = Math.round(el.scrollTop / ITEM_HEIGHT);
+                                            const li = list.children[idx];
+                                            if (li) {
+                                                onChange(parseInt(li.dataset.value, 10));
+                                            }
+                                        }, 80);
+                                    });
+                                });
+
+                                function saveAndClose() {
+                                    const monthStr = String(selMonth).padStart(2, '0');
+                                    const dayStr = String(selDay).padStart(2, '0');
+                                    const newVal = `${selYear}-${monthStr}-${dayStr}`;
+                                    input.value = newVal;
+                                    display.textContent = formatDisplay(newVal);
+                                    panel.classList.remove('open');
+                                }
+
+                                function cancelAndClose() {
+                                    panel.classList.remove('open');
+                                }
+
+                                display.addEventListener('click', () => {
+                                    panel.classList.add('open');
+                                    panel.focus();
+                                });
+
+                                panel.querySelector('.js-done').addEventListener('click', saveAndClose);
+                                panel.querySelector('.js-cancel').addEventListener('click', cancelAndClose);
+
+                                document.addEventListener('click', (e) => {
+                                    if (!panel.classList.contains('open')) return;
+                                    if (!panel.contains(e.target) && e.target !== display) {
+                                        saveAndClose();
+                                    }
+                                });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', () => {
+                                document.querySelectorAll('.ios-date-picker').forEach(initPicker);
+                            });
+                        })();
+                    </script>
                     {{--<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>--}}
                     <!-- Responsive and datable js -->
                     <script type="text/javascript">
@@ -597,4 +911,3 @@
 
 
                 @endsection
-

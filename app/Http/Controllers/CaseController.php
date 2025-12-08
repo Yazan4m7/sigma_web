@@ -1728,7 +1728,7 @@ class CaseController extends Controller
             'jobs' => function ($query) {
                 $query->with([
                     'jobType:id,name',
-                    'material:id,name',
+                    'material:id,name,count_as_unit',
                 ]);
             },
         ])

@@ -6081,9 +6081,9 @@ input[type="button"].btnWD-block {
 
 .close:not(:disabled):not(.disabled):hover,
 .close:not(:disabled):not(.disabled):focus {
-    color: rgba(0, 0, 0, 0.6);
+    color: rgb(0 0 0);
     /* text-decoration: none; */
-    opacity: .75;
+    /* opacity: .75; */
 }
 
 button.close {
@@ -13287,7 +13287,7 @@ img {
 }
 
 .modal-content .modal-body {
-    line-height: 1.9;
+    line-height: 1.3;
 }
 
 .modal-content .modal-body p {
@@ -15027,8 +15027,8 @@ pre {
 
 hr {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .table > tbody > tr > td {

@@ -150,6 +150,9 @@ class sCase extends Model
 
         $amountOfUnits = 0;
         foreach ($jobs as $job) {
+            if (!$job->material || $job->material->count_as_unit != 1) {
+                continue;
+            }
             // unit_num can be comma separated; count non-empty entries, fallback to 1 per job
             $unitCount = count(array_filter(explode(',', (string) $job->unit_num), function ($value) {
                 return trim($value) !== '';
@@ -432,35 +435,33 @@ class sCase extends Model
 
     public function countUnitsSet($typeId): int
     {
-        return array_reduce(
-            $this->jobs
-                ->where('stage', $typeId)
-                ->filter(function ($job) {
-                    return $job->is_set !== null && $job->is_set != 0
-                        && ($job->is_active === null || $job->is_active == 0);
-                })
-                ->toArray(),
-            function ($carry, $job) {
-                return $carry + count(explode(',', $job['unit_num']));
-            },
-            0
-        );
+        return $this->jobs
+            ->where('stage', $typeId)
+            ->filter(function ($job) {
+                return $job->is_set !== null && $job->is_set != 0
+                    && ($job->is_active === null || $job->is_active == 0);
+            })
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public function countUnitsActive($typeId): int
     {
-        return array_reduce(
-            $this->jobs
-                ->where('stage', $typeId)
-                ->filter(function ($job) {
-                    return $job->is_active !== null && $job->is_active != 0;
-                })
-                ->toArray(),
-            function ($carry, $job) {
-                return $carry + count(explode(',', $job['unit_num']));
-            },
-            0
-        );
+        return $this->jobs
+            ->where('stage', $typeId)
+            ->filter(function ($job) {
+                return $job->is_active !== null && $job->is_active != 0;
+            })
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
 }

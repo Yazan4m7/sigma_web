@@ -3,6 +3,8 @@
 <div id="YSH-slide-overlay-{{$case->id}}" class="YSH-slide-overlay"
      onclick="YSH_closeSlidePanel({{$case->id}})">
     <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel">
+        <button type="button" class="YSH-slide-floating-close" aria-label="Close"
+                onclick="YSH_closeSlidePanel({{$case->id}})">×</button>
         <div class="YSH-slide-header">
             <h5>Case Completion</h5>
             <button type="button" class="YSH-close-slide"
@@ -24,7 +26,7 @@
                 <hr>
                 <div class="form-group row">
                     <div class="col-12">
-                        <label class="ysh-jobs-label"><b>Stage jobs</b></label>
+
                         @php
                             // Convert stage type to stage number
                             $stageNumber = match($stageType) {
@@ -122,7 +124,7 @@
                             href="{{route('edit-case-view',$case->id)}}">
                             <button type="button"
                                     class="btn btn-warning " {{$canEditCase ? '' : 'disabled'}}>
-                                <i class="fas fa-edit"></i> Edit Case
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                         </a></div>
 
@@ -207,6 +209,29 @@
 
 @once
     <style>
+        .YSH-slide-floating-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .YSH-slide-floating-close:hover {
+            background: #f3f4f6;
+        }
+
         .ysh-jobs-label {
             display: inline-flex;
             align-items: center;

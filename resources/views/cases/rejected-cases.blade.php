@@ -257,7 +257,7 @@
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Case Actions</h5>
+                                                                <h5 class="modal-title">.</h5>
 
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -319,7 +319,7 @@
                                                                         @endif
                                                                     @endif
                                                                     @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                                        <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit Case</a>
+                                                                        <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit </a>
                                                                     @endif
                                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
                                                                         <a href="{{route('reject-case-view',$case->id )}}" class="btn btn-outline-danger"><i class="fas fa-times x2"></i> Reject case</a>

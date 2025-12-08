@@ -706,7 +706,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     .YSH-image-wrapper img {
         max-width: 165px;
         height: 135px;
-        width: 148% !important;
+        width: 136% !important;
         max-width: 145% !important;
     }
 }

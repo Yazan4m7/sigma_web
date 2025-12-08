@@ -30,6 +30,38 @@
     table {
         table-layout: fixed;
     }
+    .filters-row > div {
+        margin-bottom: 10px !important;
+    }
+    .filters-row .btn-block,
+    .filters-row .form-control,
+    .filters-row .selectpicker {
+        width: 100% !important;
+    }
+    .apply-row > div {
+        margin-bottom: 10px !important;
+    }
+    .apply-row button {
+        width: 100%;
+    }
+}
+.client-actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.client-actions-row > [class*="col-"] {
+    flex: 1 1 50%;
+    max-width: 50%;
+    padding: 5px;
+}
+@media (max-width: 576px) {
+    .client-actions-row > [class*="col-"] {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }
 </style>
 @php
@@ -41,7 +73,7 @@
         <div class="col-lg-12">
             <div class="card" style="box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 8px;">
                 <div class="card-body">
-                    <div class="row align-items-end">
+                    <div class="row align-items-end filters-row">
                         {{-- Date Filter --}}
                         <div class="col-lg-3 col-md-6 col-sm-6 mb-2 pr-2">
                             @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
@@ -102,7 +134,7 @@
                     </div>
 
                     {{-- Apply Filters and Total Balance Row --}}
-                    <div class="row mt-3 pt-3 align-items-center" style="border-top: 1px solid #e9ecef;">
+                    <div class="row mt-3 pt-3 align-items-center apply-row" style="border-top: 1px solid #e9ecef;">
                         {{-- Apply Filters Button --}}
                         <div class="col-lg-2 col-md-4 col-sm-6 mb-2 pr-3">
                             <button type="submit" class="btn btn-primary btn-block" style="height: 42px; font-weight: 600;">
@@ -139,8 +171,6 @@
                             <tr >
                                 <th  style="font-weight: bold">ID</th>
                                 <th  style="font-weight: bold">Name</th>
-                                <th  style="font-weight: bold">Personal Phone</th>
-                                <th  style="font-weight: bold">Clinic Phone</th>
                                 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
                                 <th>Balance</th>
                                 @endif
@@ -160,14 +190,6 @@
                                                     <span class="badge badge-secondary ml-1">Disabled</span>
                                                 @endif
                                             </span><input
-                                                class="tabledit-input form-control input-sm" type="text" name="col1"
-                                                value="John" style="display: none;" disabled=""></td>
-                                    <td class="tabledit-view-mode"><span
-                                                class="tabledit-span">{{$client->phone}}</span><input
-                                                class="tabledit-input form-control input-sm" type="text" name="col1"
-                                                value="John" style="display: none;" disabled=""></td>
-                                    <td class="tabledit-view-mode"><span
-                                                class="tabledit-span">{{$client->clinic_phone}}</span><input
                                                 class="tabledit-input form-control input-sm" type="text" name="col1"
                                                 value="John" style="display: none;" disabled=""></td>
                                     @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
@@ -308,9 +330,8 @@
 
                                             </div>
                                             <div class="modal-footer fullBtnsWidth" >
-                                                <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
+                                                <div class="row client-actions-row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
 
-                                                        <div class="row">
                                                             <!-------------------------
                                                                    ------ View Voucher ------
                                                                    -------------------------->
@@ -374,8 +395,6 @@
                                                                 </div>
 
                                                             @endif
-                                                        </div>
-
 
                                                     <div class="col-12 padding5px" >
                                                         <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>

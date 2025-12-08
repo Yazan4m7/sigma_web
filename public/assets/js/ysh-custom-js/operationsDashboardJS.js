@@ -355,27 +355,27 @@ function initializeDataTables() {
     }
 
     $('.sunriseTable').each(function() {
+        const $table = $(this);
+
         if ($.fn.DataTable.isDataTable(this)) {
-            return;
+            if ($table.data('dtShowAllApplied')) {
+                $table.DataTable().columns.adjust().draw(false);
+                return;
+            }
+            $table.DataTable().destroy();
         }
 
-        $(this).DataTable({
-            paging: true,
+        $table.DataTable({
+            paging: false,
             searching: false,
-            info: true,
+            info: false,
             ordering: true,
             lengthChange: false,
-            pageLength: 10,
-            pagingType: 'simple_numbers',
             responsive: false,
-            autoWidth: false,
-            language: {
-                paginate: {
-                    next: '>',
-                    previous: '<'
-                }
-            }
+            autoWidth: false
         });
+
+        $table.data('dtShowAllApplied', true);
     });
 
     adjustVisibleTables();

@@ -116,31 +116,39 @@ class job extends Model
 
     public static function countUnitsSet($deviceId, $stageId): int
     {
-        return array_reduce(self::where('device_id', $deviceId)
+        return self::where('device_id', $deviceId)
             ->where('stage', $stageId)
             ->where('is_set', 1)
             ->where(function ($q) {
                 $q->whereNull('is_active')
                     ->orWhere('is_active', 0);
             })
+            ->with('material:id,count_as_unit')
             ->get()
-            ->toArray(), function ($carry, $job) {
-            return $carry + count(explode(',', $job['unit_num']));
-        }, 0);
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public static function countUnitsActive($deviceId, $stageId): int
     {
-        return array_reduce(self::where('device_id', $deviceId)
+        return self::where('device_id', $deviceId)
             ->where('stage', $stageId)
             ->where(function ($q) {
                 $q->whereNotNull('is_active')
                     ->where('is_active', '!=', 0);
             })
+            ->with('material:id,count_as_unit')
             ->get()
-            ->toArray(), function ($carry, $job) {
-            return $carry + count(explode(',', $job['unit_num']));
-        }, 0);
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public function build()

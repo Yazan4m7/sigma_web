@@ -17,7 +17,10 @@
 
             background: rgba(62, 62, 62, 0);
         }
+        #datatable_wrapper{
+            
 
+        }
         /*.modal{*/
         /*    position: absolute;*/
         /*    right:0;*/
@@ -39,79 +42,164 @@
         /*.modal-backdrop {*/
         /*    z-index: 99999998 !important;*/
         /*}*/
-        .modal.show{
-            position: absolute;
-            right:0;
-            left:0;
-        }
         .modal{
             z-index: 99999999;
-
         }
 
-        /* Magnific popup styling for Receive Payment */
-        .payment-popup-content {
-            max-width: 760px;
+        /* Generic dialog popup styling (used by payments, deliveries, etc.) */
+        .dialog-popup-content {
+            display: inline-block;
+            width: auto;
+            min-width: min(calc(100% - 24px), 486px);
+            max-width: min(calc(100% - 24px), 720px);
             margin: 0 auto;
         }
-        .payment-popup-card {
+        .dialog-mfp .mfp-content {
+            text-align: center;
+        }
+        .dialog-popup-card {
             background: #fff;
             border-radius: 12px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             overflow: hidden;
             color: #32325d;
+            position: relative;
+            width: 100%;
         }
-        .payment-popup-header {
-            padding: 16px 20px;
+        .dialog-popup-header {
+            display: none !important;
+            padding: 14px 16px;
             border-bottom: 1px solid #e9ecef;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
+            position: relative;
+            padding-right: 56px;
         }
-        .payment-popup-body {
-            padding: 18px 20px;
+        .dialog-popup-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #ffffffbf;
+            color: #000000;
+            border: none;
+            box-shadow: inset 0 0 0 1px #e3e3e3;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            line-height: 1;
+            opacity: 1;
+            padding: 0;
+            transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            z-index: 2;
         }
-        .payment-popup-body .row + .row {
+        .dialog-popup-close:hover {
+            background: #e5e7eb;
+            color: #111827;
+            transform: translateY(-1px);
+        }
+        .dialog-popup-body {
+            padding: 27px 25px 11px 24px;
+            max-height: 65vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        .dialog-popup-body .row + .row {
             margin-top: 10px;
         }
-        .payment-popup-footer {
+        .dialog-popup-footer {
             padding: 12px 20px 18px;
             display: flex;
             gap: 10px;
-            justify-content: flex-start;
+            justify-content: center;
         }
-        .payment-popup-meta {
+        .dialog-popup-footer .btn {
+            padding-left: calc(0.75rem + 25px);
+            padding-right: calc(0.75rem + 25px);
+        }
+        .dialog-popup-meta {
             display: block;
-            text-align: center;
-            padding: 8px 12px 14px;
+            text-align: left;
+            padding-left: 18px;
             font-size: 11px;
             color: #6c757d;
+            padding-top: 1px;
+            border-top: 1px solid #f1f3f5;
         }
+        /* Better info layout */
+        .payment-info-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .payment-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 5px 0;
+            border-bottom: 1px solid #f1f3f5;
+        }
+        .payment-info-row:last-child {
+            border-bottom: 0;
+        }
+        .payment-info-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #6c757d;
+            font-weight: 700;
+            text-align: left;
+        }
+        .payment-info-value {
+            color: #1f2937;
+            font-weight: 600;
+            text-align: right;
+            word-break: break-word;
+        }
+        .payment-info-value-input {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+        }
+        .payment-info-value-input .form-control {
+            width: auto;
+            max-width: 100%;
+            /*min-width: 220px;*/
+            text-align: right;
+            font-weight: 600;
+            color: #1f2937;
+            background-color: #f8f9fa;
+            border-color: #e5e7eb;
+            border-radius: 12px;
+            box-shadow: none;
+
+        }
+
+        /* iOS scroll containment */
+        .mfp-wrap,
         .mfp-bg {
-            background: rgba(0,0,0,0.45);
+            overscroll-behavior: contain;
+            touch-action: none;
         }
-        .mfp-fade.mfp-bg {
-            opacity: 0;
-            transition: all 0.2s ease-out;
+        body.mfp-open {
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
         }
-        .mfp-fade.mfp-bg.mfp-ready {
-            opacity: 1;
-        }
-        .mfp-fade.mfp-bg.mfp-removing {
-            opacity: 0;
-        }
-        .mfp-fade.mfp-wrap .mfp-content {
-            opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.2s ease-out;
-        }
-        .mfp-fade.mfp-wrap.mfp-ready .mfp-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .mfp-fade.mfp-wrap.mfp-removing .mfp-content {
-            opacity: 0;
-            transform: translateY(10px);
+        @supports (-webkit-touch-callout: none) {
+            .mfp-wrap,
+            .mfp-bg {
+                position: fixed !important;
+                width: 100%;
+                height: 100%;
+            }
         }
 
 
@@ -208,6 +296,38 @@
         .device-card {
             margin-bottom: 15px;
             text-align: center;
+        }
+        /* Prevent horizontal scroll on small screens for summary tables */
+        .sunriseTable {
+            table-layout: fixed;
+            width: 100%;
+        }
+        .sunriseTable th,
+        .sunriseTable td {
+            white-space: normal !important;
+            word-break: break-word;
+        }
+        .summary-table-responsive {
+            overflow-x: hidden;
+        }
+        .summary-table-responsive table {
+            margin-bottom: 0;
+        }
+        .delivery-popup .dialog-popup-body .container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+        .delivery-popup .dialog-popup-body .row + .row {
+            margin-top: 10px;
+        }
+        .delivery-popup hr {
+            margin: 12px 0;
+            border-color: #e5e7eb;
+        }
+        /* Keep datetime picker above modal/backdrop */
+        .bootstrap-datetimepicker-widget,
+        .xdsoft_datetimepicker {
+            z-index: 100000000 !important;
         }
     </style>
     {{-- <div class="row"  style="background-color: transparent"> --}}
@@ -326,15 +446,22 @@
             </div>
         </div>
     </div>
-    <div class="row" style="background-color: transparent">
+    <div class="row" >
         <div class="col-lg-6 col-md-12 noLeftPadding">
             <div class="card ">
                 <div class="card-header">
                     <h4 class="card-title">Payments Collected Today</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive ">
+                    <div class="table-responsive summary-table-responsive">
                         <table id="datatable" class="datatable hover compact stripe sunriseTable" style="width:100%">
+                            <colgroup>
+                                <col style="width:30%">
+                                <col style="width:15%">
+                                <col style="width:15%">
+                                <col style="width:20%">
+                                <col style="width:20%">
+                            </colgroup>
                             <thead>
                                 <tr>
 
@@ -357,7 +484,7 @@
                             </thead>
             <tbody>
                                 @foreach ($paymentsReceivedToday as $payment)
-                                    <tr class="clickable payment-popup-trigger"
+                                    <tr class="clickable dialog-popup-trigger payment-popup-trigger"
                                         data-popup-id="payment-popup-{{ $payment->id }}">
 
                                         <td>
@@ -384,60 +511,61 @@
                                         </td>
                                     </tr>
 
-                                    <div id="payment-popup-{{ $payment->id }}" class="mfp-hide payment-popup-content">
-                                        <div class="payment-popup-card">
-                                            <div class="payment-popup-header">
-                                                <h5 class="modal-title mb-0">Receive Payment</h5>
-                                                <button type="button" class="mfp-close" aria-label="Close">&times;</button>
+                                    <x-dialog-popup
+                                        :id="'payment-popup-'.$payment->id"
+                                        title="Receive Payment"
+                                        :meta="'PAYMENT ID : '.$payment->id"
+                                        closeAttrs='aria-label="Close"'
+                                    >
+                                        <div class="payment-info-grid">
+                                            <div class="payment-info-row">
+                                                <div class="payment-info-label">Doctor</div>
+                                                <div class="payment-info-value">{{ $payment->client->name }}</div>
                                             </div>
-                                            <div class="payment-popup-body">
-                                                <div class="container-fluid">
-                                                    <div class="row">
-                                                        <div class="col-md-6"><strong>Doctor:</strong></div>
-                                                        <div class="col-md-6">{{ $payment->client->name }}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6"><strong>Collected from doctor by:</strong></div>
-                                                        <div class="col-md-6">{{ $payment->collectorFullName() }}</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6"><strong>Payment Amount:</strong></div>
-                                                        <div class="col-md-6">{{ $payment->amount }} JOD</div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6"><strong>Collected On:</strong></div>
-                                                        <div class="col-md-6">{{ $payment->created_at }}</div>
-                                                    </div>
-                                                    @if ($payment->isCollected())
-                                                        <div class="row">
-                                                            <div class="col-md-6"><strong>Received On:</strong></div>
-                                                            <div class="col-md-6">{{ $payment->recieved_on }}</div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6"><strong>Received by:</strong></div>
-                                                            <div class="col-md-6">{{ $payment->receiverFullName() }}</div>
-                                                        </div>
-                                                    @endif
-                                                    <div class="row">
-                                                        <div class="col-md-6"><strong>Payment Method:</strong></div>
-                                                        <div class="col-md-6">{{ $payment->notes }}</div>
-                                                    </div>
-                                                    @if ($payment->additional_notes)
-                                                        <div class="row">
-                                                            <div class="col-md-12">{{ $payment->additional_notes }}</div>
-                                                        </div>
-                                                    @endif
+                                            <div class="payment-info-row">
+                                                <div class="payment-info-label">Collected from doctor by</div>
+                                                <div class="payment-info-value">{{ $payment->collectorFullName() }}</div>
+                                            </div>
+                                            <div class="payment-info-row">
+                                                <div class="payment-info-label">Payment Amount</div>
+                                                <div class="payment-info-value">{{ $payment->amount }} JOD</div>
+                                            </div>
+                                            <div class="payment-info-row">
+                                                <div class="payment-info-label">Collected On</div>
+                                                <div class="payment-info-value">{{ $payment->created_at }}</div>
+                                            </div>
+                                            @if ($payment->isCollected())
+                                                <div class="payment-info-row">
+                                                    <div class="payment-info-label">Received On</div>
+                                                    <div class="payment-info-value">{{ $payment->recieved_on }}</div>
                                                 </div>
+                                                <div class="payment-info-row">
+                                                    <div class="payment-info-label">Received by</div>
+                                                    <div class="payment-info-value">{{ $payment->receiverFullName() }}</div>
+                                                </div>
+                                            @endif
+                                            <div class="payment-info-row">
+                                                <div class="payment-info-label">Payment Method</div>
+                                                <div class="payment-info-value">{{ $payment->notes }}</div>
                                             </div>
-                                            <div class="payment-popup-footer">
-                                                <button type="button" class="btn btn-secondary mfp-close">Close</button>
-                                                @if (!$payment->isCollected())
-                                                    <a href="{{ route('receive-payment', $payment->id) }}" class="btn btn-danger">Receive</a>
-                                                @endif
-                                            </div>
-                                            <span class="payment-popup-meta">PAYMENT ID : {{ $payment->id }}</span>
+                                            @if ($payment->additional_notes)
+                                                <div class="payment-info-row">
+                                                    <div class="payment-info-label">Notes</div>
+                                                    <div class="payment-info-value">{{ $payment->additional_notes }}</div>
+                                                </div>
+                                            @endif
+
                                         </div>
-                                    </div>
+                    @isset($footer)
+                        {{-- noop --}}
+                    @endisset
+                    <x-slot name="footer">
+                        <button type="button" class="btn btn-secondary dialog-popup-dismiss">Close</button>
+                        @if (!$payment->isCollected())
+                            <a href="{{ route('receive-payment', $payment->id) }}" class="btn btn-danger">Receive</a>
+                        @endif
+                    </x-slot>
+                </x-dialog-popup>
                                 @endforeach
 
                             </tbody>
@@ -452,8 +580,14 @@
                     <h4 class="card-title">Deliveries Today</h4>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive summary-table-responsive">
                         <table class="datatable compact hover stripe sunriseTable" id="datatable2">
+                            <colgroup>
+                                <col style="width:28%">
+                                <col style="width:32%">
+                                <col style="width:20%">
+                                <col style="width:20%">
+                            </colgroup>
                             <thead>
                                 <tr>
 
@@ -473,8 +607,8 @@
                             </thead>
                             <tbody>
                                 @foreach ($DeliveriesToday as $case)
-                                    <tr class="clickable" data-toggle="modal"
-                                        data-target="#updateDeliveryDate{{ $case->id }}">
+                                    <tr class="clickable dialog-popup-trigger delivery-popup-trigger"
+                                        data-popup-id="delivery-popup-{{ $case->id }}">
 
                                         <td>
                                             {{ $case->client->name }}
@@ -493,87 +627,23 @@
                                                 if (str_contains($status, 'Waiting')) {
                                                     $active = false;
                                                 }
+                                                $stageLabel = trim(str_replace(['Waiting in', 'Waiting', 'Active in', 'Active'], '', $status));
+                                                $deliveryJob = $case->jobs->where('stage', 8)->first();
+                                                $assigned = $deliveryJob && $deliveryJob->assignedTo ? $deliveryJob->assignedTo->name_initials : null;
                                             @endphp
 
                                             @if ($active)
                                                 <span style="width:auto; margin: auto; text-align: center"
-                                                    class="badge badge-primary">{{ $status }}</span>
+                                                    class="badge badge-primary">
+                                                    {{ $assigned ? $assigned . ' / ' : '' }}{{ $stageLabel ?: $status }}
+                                                </span>
                                             @else
                                                 <span style="width:auto; margin: auto; text-align: center"
                                                     class="badge badge-danger">
-                                                    {{ $case->status() }} </span>
+                                                    {{ $stageLabel ?: $case->status() }} </span>
                                             @endif
                                         </td>
                                     </tr>
-                                    <div class="modal fade" id="updateDeliveryDate{{ $case->id }}" tabindex="-1"
-                                        role="dialog" aria-labelledby="exampleModalLabelform" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Update Delivery Time
-                                                    </h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                        aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form action="{{ route('edit-delivery-date') }}" method="POST">
-                                                        @csrf
-                                                        <input type="hidden" name="id"
-                                                            value="{{ $case->id }}">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-6"><strong>Doctor Name </strong></div>
-                                                                <div class="col-md-6">{{ $case->client->name }}</div>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="noMargin lightGrayTopBorder">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-6"><strong>Patient Name:</strong></div>
-                                                                <div class="col-md-6">{{ $case->patient_name }}</div>
-                                                            </div>
-                                                        </div>
-                                                        @php
-                                                            $time = date(
-                                                                'Y-m-d g:i a',
-                                                                strtotime($case->initial_delivery_date),
-                                                            );
-                                                        @endphp
-                                                        <hr class="noMargin lightGrayTopBorder">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-6"><strong>Current Delivery
-                                                                        Time:</strong></div>
-                                                                <div class="col-md-6">{{ $time }}</div>
-                                                            </div>
-                                                        </div>
-                                                        <hr class="noMargin lightGrayTopBorder">
-                                                        <div class="container">
-                                                            <div class="row">
-                                                                <div class="col-md-6"><strong>Change To:</strong></div>
-                                                                <div class="col-md-6">
-
-                                                                    <input class="form-control SDTP" name="delivery_date"
-                                                                        type="text" value="{{ $time }}"
-                                                                        required readonly />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary "
-                                                        data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-danger">UPDATE</button>
-                                                </div>
-                                                <small style="text-align:center;font-size: 60%;color: gray;">CASE ID :
-                                                    {{ $case->id }}</small>
-                                            </div>
-                                            </form>
-                                        </div>
-                                    </div>
                                 @endforeach
 
                             </tbody>
@@ -583,6 +653,44 @@
             </div>
         </div>
     </div>
+    @foreach ($DeliveriesToday as $case)
+        @php
+            $time = date('Y-m-d g:i a', strtotime($case->initial_delivery_date));
+            $formId = 'delivery-form-' . $case->id;
+        @endphp
+        <x-dialog-popup
+            :id="'delivery-popup-'.$case->id"
+            title="Update Delivery Date"
+            :meta="'CASE ID : '.$case->id"
+            wrapperClass="mfp-hide dialog-popup-content delivery-popup"
+        >
+            <form id="{{ $formId }}" action="{{ route('edit-delivery-date') }}" method="POST">
+                @csrf
+                <input type="hidden" name="id" value="{{ $case->id }}">
+                <div class="payment-info-grid">
+                    <div class="payment-info-row">
+                        <div class="payment-info-label">Doctor</div>
+                        <div class="payment-info-value">{{ $case->client->name }}</div>
+                    </div>
+                    <div class="payment-info-row">
+                        <div class="payment-info-label">Patient Name</div>
+                        <div class="payment-info-value">{{ $case->patient_name }}</div>
+                    </div>
+                    <div class="payment-info-row">
+                        <div class="payment-info-label">Current Delivery Time</div>
+                        <div class="payment-info-value payment-info-value-input">
+                            <input class="form-control SDTP" name="delivery_date" type="text"
+                                value="{{ $time }}" required readonly />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <x-slot name="footer">
+                <button type="button" class="btn btn-secondary dialog-popup-dismiss">Close</button>
+                <button type="submit" class="btn btn-danger" form="{{ $formId }}">UPDATE</button>
+            </x-slot>
+        </x-dialog-popup>
+    @endforeach
 @endsection
 
 @push('js')
@@ -608,23 +716,63 @@
                 initPerformanceChart();
             }
 
-            // Magnific popup for Receive Payment
-            $('.payment-popup-trigger').on('click', function(e) {
-                e.preventDefault();
-                const targetId = $(this).data('popup-id');
-                if (!targetId) return;
-                $.magnificPopup.open({
-                    items: {
-                        src: '#' + targetId,
-                        type: 'inline'
-                    },
-                    mainClass: 'mfp-fade payment-mfp',
-                    removalDelay: 180,
-                    closeBtnInside: true,
-                    fixedContentPos: true,
-                    fixedBgPos: true,
-                    overflowY: 'auto'
+            // Magnific popup helper for all dialog triggers
+            const applyDialogAnimation = (content, animationClass) => {
+                if (!content || !content.length) {
+                    return;
+                }
+                const card = content.find('.dialog-popup-card');
+                if (!card.length) {
+                    return;
+                }
+                card.removeClass('animate__fadeInDown animate__fadeOutDown')
+                    .addClass('animate__animated ' + animationClass);
+            };
+
+            const registerPopupTriggers = (selector) => {
+                $(selector).on('click', function(e) {
+                    e.preventDefault();
+                    const targetId = $(this).data('popup-id');
+                    if (!targetId) {
+                        return;
+                    }
+                    $.magnificPopup.open({
+                        items: {
+                            src: '#' + targetId,
+                            type: 'inline'
+                        },
+                        mainClass: 'dialog-mfp',
+                        closeBtnInside: true,
+                        showCloseBtn: false,
+                        fixedContentPos: true,
+                        fixedBgPos: true,
+                        overflowY: 'auto',
+                        removalDelay: 280,
+                        callbacks: {
+                            open: function() {
+                                applyDialogAnimation(this.content, 'animate__fadeInDown');
+                            },
+                            beforeClose: function() {
+                                applyDialogAnimation(this.content, 'animate__fadeOutDown');
+                            },
+                            afterClose: function() {
+                                if (this.content) {
+                                    this.content.find('.dialog-popup-card')
+                                        .removeClass('animate__animated animate__fadeInDown animate__fadeOutDown');
+                                }
+                            }
+                        }
+                    });
                 });
+            };
+
+            registerPopupTriggers('.dialog-popup-trigger');
+
+            $(document).on('click', '.dialog-popup-dismiss', function(e) {
+                e.preventDefault();
+                if (typeof $.magnificPopup !== 'undefined') {
+                    $.magnificPopup.close();
+                }
             });
 
             $('.datatable').DataTable({
@@ -632,7 +780,11 @@
                 "searching": false,
                 "lengthChange": false,
                 "ordering": false,
-                "paging": false
+                "paging": false,
+                "autoWidth": false,
+                "columnDefs": [
+                    { "targets": -1, "className": "text-center" }
+                ]
             });
         });
 
@@ -968,5 +1120,26 @@
             });
 
         }
+    </script>
+
+
+    <script>
+        const animateCSS = (element, animation, prefix = 'animate__') =>
+            // We create a Promise and return it
+            new Promise((resolve, reject) => {
+                const animationName = `${prefix}${animation}`;
+                const node = document.querySelector(element);
+
+                node.classList.add(`${prefix}animated`, animationName);
+
+                // When the animation ends, we clean the classes and resolve the Promise
+                function handleAnimationEnd(event) {
+                    event.stopPropagation();
+                    node.classList.remove(`${prefix}animated`, animationName);
+                    resolve('Animation ended');
+                }
+
+                node.addEventListener('animationend', handleAnimationEnd, {once: true});
+            });
     </script>
 @endpush

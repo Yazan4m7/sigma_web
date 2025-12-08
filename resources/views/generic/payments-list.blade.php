@@ -22,7 +22,7 @@
                             <label>From:</label>
 
                             <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
-                            <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
+
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 mb-3">

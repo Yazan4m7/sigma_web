@@ -25,8 +25,14 @@ trait helperTrait
     {
         return job::where('is_active', 1)
             ->where("{$buildType}_build_id", $buildId)
-            ->selectRaw('SUM(CHAR_LENGTH(unit_num) - CHAR_LENGTH(REPLACE(unit_num, ",", "")) + 1) as total_units')
-            ->value('total_units') ?? 0;
+            ->with('material:id,count_as_unit')
+            ->get()
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', (string) $job->unit_num));
+            }, 0);
     }
     public function lowestJobStageApplicable($job, $caseId)
     {
