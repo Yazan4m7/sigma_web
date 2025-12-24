@@ -18,10 +18,44 @@
         }
 
         .create-case-page {
-            background: #1f46a900;
+            /*background: #1f46a900;*/
             border-radius: 18px;
             padding: 1rem 2rem 2rem 2rem;
-            margin-top: 1rem;
+            /*margin-top: 1rem;*/
+        }
+
+        .create-case-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .create-case-header h3 {
+            margin: 0;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .create-case-header p {
+            margin: 0.15rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .required-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .case-form {
+            padding: 0;
         }
 
         .form-section-card {
@@ -48,12 +82,32 @@
             color: var(--text-main);
         }
 
+        .section-header .section-meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: right;
+        }
+
         .section-subtitle {
             font-size: 0.85rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 0.2rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border-muted);
+            margin: 2.5rem 0;
+        }
+
+        .section-block {
+            margin-top: 2rem;
         }
 
         .form-section-card label {
@@ -158,6 +212,46 @@
             padding: 0.4rem 0.75rem;
             height: auto;
         }
+
+        .file-input {
+            cursor: pointer;
+        }
+
+        .case-id-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .case-id-prefix {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .case-id-part {
+            width: 54px;
+            min-height: 38px;
+            padding: 0.35rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        .case-id-part.case-id-part--xs {
+            width: 48px;
+        }
+
+        .case-id-sep {
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: center;
+            margin: 3.25rem 0 0.75rem;
+        }
+        .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -50%) !important;}
 
         .toggle-discount {
             display: inline-flex;
@@ -279,6 +373,7 @@
             border-color: #5a6268 !important;
         }
         .card {
+            padding:0;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -286,7 +381,7 @@
             word-wrap: break-word;
             background-color: #ffffff00;
             background-clip: border-box;
-            border: 0.0625rem solid rgba(34, 42, 66, 0.05);
+            /*border: 0.0625rem solid rgba(34, 42, 66, 0.05);*/
             border-radius: 1.2857rem;
         }
         @media screen and (max-width: 991px) {
@@ -303,7 +398,9 @@
         .fas {
             color: black;
         }
-
+        .modal-content {
+            width: 160%;
+        {
 
         .checked {
             filter: invert(26%) sepia(73%) saturate(492%) hue-rotate(133deg) brightness(94%) contrast(86%);
@@ -421,12 +518,13 @@
 
 
 
+
     <div class="card">
         @if (config('site_vars.environment') == 'testing')
-            <form style="padding:0" class="kt-form" method="POST" enctype="multipart/form-data"
+            <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
                 action="{{ route('create-and-send-case-to') }}">
-            @else
-                <form style="padding:10px" class="kt-form" method="POST" enctype="multipart/form-data"
+        @else
+                <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
                     action="{{ route('new-case-post') }}">
         @endif
         @csrf
@@ -436,7 +534,13 @@
 
         <div class=" ">
 
-                <h5>Order Information</h5>
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Case</div>
+                        <h5>Order Information</h5>
+                    </div>
+
+                </div>
 
 
             <div class="row">
@@ -472,16 +576,17 @@
                             ID:</label></div>
                     <div class="col-md-12 col-xs-12">
 
-                        <label>{{ Auth()->user()->id . '_' . now()->format('Y') }}</label>
-                        <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
-                        <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                            type="text" value="{{ now()->format('m') }}" required />
-                        <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                            type="text" value="{{ now()->format('d') }}" required />
-                        <label>_</label>
-                        <input name="caseId4" placeholder="0000"
-                            style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
-                            type="text" required />
+                        <div class="case-id-group">
+                            <span class="case-id-prefix">{{ Auth()->user()->id . '_' . now()->format('Y') }}</span>
+                            <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
+                            <input name="caseId2" placeholder="MM" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ now()->format('m') }}" required inputmode="numeric" />
+                            <input name="caseId3" placeholder="DD" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ now()->format('d') }}" required inputmode="numeric" />
+                            <span class="case-id-sep">_</span>
+                            <input name="caseId4" placeholder="0000" class="form-control case-id-part"
+                                type="text" required inputmode="numeric" />
+                        </div>
                         <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
 
@@ -763,7 +868,13 @@
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
                 <div>
 
-                    <h5>Discount</h5>
+                    <div class="section-header">
+                        <div>
+                            <div class="section-subtitle">Optional</div>
+                            <h5>Discount</h5>
+                        </div>
+
+                    </div>
                     <label class="toggle-discount mb-0">
                         <span class="toggle-switch">
                             <input type="checkbox" class="discountCB" name="discountCB"
@@ -783,28 +894,39 @@
                             placeholder="Explanation of discount" /></textarea>
                     </div>
                 </div>
-                <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
+                <div class="section-divider"></div>
             @endif
 
-            <div style="margin-top: 2rem;">
+            <div class="section-block">
 
 
 
-                <h5>Additional Information</h5>
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Additional Information</h5>
+                    </div>
+
+                </div>
                 <div class="form-group form-group-last">
                     <label for="exampleTextarea">Note</label>
                     <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
                 </div>
             </div>
 
-            <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
+            <div class="section-divider"></div>
 
-            <div style="margin-top: 2rem;">
+            <div class="section-block">
 
-                <h5>Attachments</h5>
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Attachments</h5>
+                    </div>
+
+                </div>
                 <div class="form-group form-group-last">
-                    <input type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple
-                        style="cursor: pointer;">
+                    <input type="file" id="images" class="form-control file-input" name="images[]" placeholder="address" multiple>
                 </div>
             </div>
         </div>
@@ -1155,18 +1277,17 @@
         }
 
         var teethSelected = [];
-        var lstSelectedJobUNName = "";
-        var repeaterName = ""; // should be something like 'repeat[xx]'
-        function materialChanged(materialDD) {
-            // Material changed - no type handling needed in create case
-            console.log('Material changed:', $(materialDD).val());
-        }
+         var lstSelectedJobUNName = "";
+         var repeaterName = ""; // should be something like 'repeat[xx]'
+         function materialChanged(materialDD) {
+             $(materialDD).data('manualSelection', true);
+         }
 
-        function jobTypeChanged(jobTypeDD) {
-            var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
-            var jobTypes = {!! json_encode($types->toArray()) !!};
-            var materials = {!! json_encode($materials->toArray()) !!};
-            var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+         function jobTypeChanged(jobTypeDD) {
+             var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
+             var jobTypes = {!! json_encode($types->toArray()) !!};
+             var materials = {!! json_encode($materials->toArray()) !!};
+             var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
 
             var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
 
@@ -1187,39 +1308,52 @@
 
             var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
 
-            var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
-            var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
-            var jobTypeSelectedId = $(jobTypeDD).val();
-            var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+             var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
+             var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
+             var jobTypeSelectedId = $(jobTypeDD).val();
 
-            // Store currently selected material to preserve selection if possible
-            var currentlySelectedMaterial = materialBox.val();
+             var previousJobTypeId = $(jobTypeDD).data('previousJobTypeId');
+             var jobTypeActuallyChanged = (previousJobTypeId === undefined || String(previousJobTypeId) !== String(jobTypeSelectedId));
+             $(jobTypeDD).data('previousJobTypeId', jobTypeSelectedId);
+             if (jobTypeActuallyChanged) {
+                 materialBox.data('manualSelection', false);
+             }
 
-            // Clear material dropdown
+             var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+             var selectedJobType = jobTypes.find(x => String(x.id) === String(jobTypeSelectedId));
+             var defaultMaterialId = selectedJobType ? selectedJobType.default_material_id : null;
+
+             // Store currently selected material to preserve selection if possible
+             var currentlySelectedMaterial = materialBox.val();
+
+             // Clear material dropdown
             materialBox.empty();
 
             // Add default option for materials
             materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
 
             // Populate materials compatible with selected job type
-            $.each(jobTypeMaterials, function(key, value) {
-                materialBox.append($("<option></option>")
-                    .attr("value", value.material_id)
-                    .text(materials.find(x => x.id === value.material_id).name));
-            });
+             $.each(jobTypeMaterials, function(key, value) {
+                 materialBox.append($("<option></option>")
+                     .attr("value", value.material_id)
+                     .text(materials.find(x => x.id === value.material_id).name));
+             });
 
-            // If the previously selected material is still compatible, reselect it
-            if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
-                materialBox.val(currentlySelectedMaterial);
-            } else if (jobTypeMaterials.length > 0) {
-                // Auto-select first material if available
-                materialBox.val(jobTypeMaterials[0].material_id);
-            }
-            var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
-            var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
-            var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
-                .val().split(',');
-            if ($(jobTypeDD).find(":selected").val() == 6) {
+             var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
+             var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
+
+             if (jobTypeActuallyChanged && defaultIsAllowed) {
+                 materialBox.val(defaultMaterialId);
+             } else if (previousIsAllowed) {
+                 materialBox.val(currentlySelectedMaterial);
+             } else {
+                 materialBox.val('');
+             }
+             var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
+             var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
+             var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
+                 .val().split(',');
+             if ($(jobTypeDD).find(":selected").val() == 6) {
 
                 // get to parent of the main repeater and find abutment units box
 

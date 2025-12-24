@@ -130,13 +130,13 @@
                     
                     <div class="form-group">
                         <label>Created:</label>
-                        <p class="form-control-static">{{ $type->created_at->format('M d, Y H:i') }}</p>
+                        <p class="form-control-static">{{ ui_view_date($type->created_at) }}</p>
                     </div>
                     
                     @if($type->updated_at != $type->created_at)
                         <div class="form-group">
                             <label>Last Updated:</label>
-                            <p class="form-control-static">{{ $type->updated_at->format('M d, Y H:i') }}</p>
+                            <p class="form-control-static">{{ ui_view_date($type->updated_at) }}</p>
                         </div>
                     @endif
                 </div>

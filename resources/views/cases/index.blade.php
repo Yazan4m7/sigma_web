@@ -247,6 +247,19 @@
                                             <div class="ios-date-picker" data-name="to" data-initial="{{$to}}"></div>
                                         </div>
                                     </div>
+                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
+                                        <div class="kt-subheader__search">
+                                            <label>To (End of):</label>
+                                            <x-date-time-picker
+                                                    name="meeting_time"
+                                                    label="Meeting Time"
+                                                    value="Monday, 2024-Dec-25 02:30 PM"
+                                            />
+                                        </div>
+                                    </div>
+
+
+
 
                                     <!-- Doctor selection -->
                                     <div class="col-6 col-sm-6 col-md-3 mb-3">
@@ -383,14 +396,7 @@
                                             <input type="hidden" name="case_id" value="{{$case->id}}">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
 
-
-                                                        <button type="button" class="close" data-dismiss="modal" style="right"
-                                                                aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
                                                     <div class="modal-body">
                                                         <!-- Sticky Doctor/Patient section -->
                                                         <div class="form-group row" style="margin-bottom: 0px">
@@ -440,8 +446,7 @@
                                                                          style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
                                                                          disabled>
 
-                                                                        <span class="noteHeader" style="font-weight:600">{{'['. substr( $note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                                                                        <span class="noteText">{{$note->note}}</span>
+                                                                        <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><span class="noteText">{{$note->note}}</span>
                                                                     </div>
                                                                 @endforeach
                                                             @endif
@@ -460,9 +465,9 @@
                                                                        class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View </a>
                                                                 </div>
 
-                                                                <!-- Row 2: Lock Case, Delete Case, Edit Case -->
+                                                                <!-- Row 2: Lock Case, Delete Case -->
                                                                 @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
-                                                                <div class="col-4" style="padding: 5px;">
+                                                                <div class="col-6" style="padding: 5px;">
                                                                     @if(!$case->locked)
                                                                         <a href="{{route('lock-case',$case->id)}}"
                                                                            class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock </a>
@@ -473,19 +478,13 @@
                                                                 </div>
                                                                 @endif
                                                                 @if(Auth()->user()->is_admin && !$case->locked)
-                                                                <div class="col-4" style="padding: 5px;">
+                                                                <div class="col-6" style="padding: 5px;">
                                                                     <a data-clientName="{{ $case->client->name ?? "-" }}"
                                                                        data-patientName="{{ $case->patient_name }}"
                                                                        style="color:white; width: 100%;"
                                                                        onclick="caseDelConfirmation(event)"
                                                                        href="{{route('delete-case',$case->id)}}"
                                                                        class="btn btn-danger"><i class="fas fa-trash"></i> Delete </a>
-                                                                </div>
-                                                                @endif
-                                                                @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                                <div class="col-4" style="padding: 5px;">
-                                                                    <a href="{{route('edit-case-view',$case->id)}}"
-                                                                       class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                                                                 </div>
                                                                 @endif
 
@@ -512,14 +511,20 @@
                                                                 @endif
 
 
-                                                                <!-- Row 3 (for in-progress only): Redo button -->
+                                                                <!-- Row 3: Redo case and Edit -->
                                                                 @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
-                                                                <div class="col-4" style="padding: 5px;">
+                                                                <div class="col-6" style="padding: 5px;">
                                                                     <a href="{{route('redo-case-view',$case->id)}}"
                                                                        class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Redo case</a>
                                                                 </div>
                                                                 @endif
-                                                                <!-- Cancel Row: Before Redo -->
+                                                                @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
+                                                                <div class="col-6" style="padding: 5px;">
+                                                                    <a href="{{route('edit-case-view',$case->id)}}"
+                                                                       class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                                                </div>
+                                                                @endif
+                                                                <!-- Cancel Row -->
                                                                 <div class="col-12" style="padding: 5px;">
                                                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%;">Cancel</button>
                                                                 </div>

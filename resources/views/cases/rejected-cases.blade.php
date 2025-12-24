@@ -299,7 +299,7 @@
                                                                     @foreach($case->notes as $note)
                                                                         <div class="form-control" style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px" disabled>
 
-                                                                            <span class="noteHeader">{{'['. substr( $note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br> <span class="noteText">{{$note->note}}</span>
+                                                                            <span class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br> <span class="noteText">{{$note->note}}</span>
                                                                         </div>
                                                                     @endforeach
                                                                 @endif
@@ -318,7 +318,7 @@
                                                                             <a data-clientName="{{ $case->client->name }}" data-patientName="{{ $case->patient_name }}" style="color:white;" onclick="caseDelConfirmation(event)" href="{{route('delete-case',$case->id)}}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Case</a>
                                                                         @endif
                                                                     @endif
-                                                                    @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
+                                                                    @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
                                                                         <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit </a>
                                                                     @endif
                                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
@@ -424,4 +424,3 @@
 
 
 @endsection
-

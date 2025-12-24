@@ -120,6 +120,102 @@
             display: block;
         }
 
+        .delivery-date-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .delivery-date-input {
+            height: 40px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .delivery-date-help {
+            position: relative;
+            flex: 0 0 auto;
+        }
+
+        .delivery-date-help-button {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #2b7b7d;
+            background-color: #f0f8f8;
+            color: #2b7b7d;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .delivery-date-help-button:focus,
+        .delivery-date-help-button:hover {
+            outline: none;
+            background-color: #e3f1f2;
+            box-shadow: 0 0 0 2px rgba(43, 123, 125, 0.2);
+        }
+
+        .delivery-date-tooltip {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 320px;
+            max-width: 80vw;
+            background-color: #ffffff;
+            border: 1px solid #d8e6e7;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+            padding: 12px;
+            z-index: 20;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px);
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+        }
+
+        .delivery-date-help:hover .delivery-date-tooltip,
+        .delivery-date-help:focus-within .delivery-date-tooltip,
+        .delivery-date-help-button:hover + .delivery-date-tooltip,
+        .delivery-date-help-button:focus + .delivery-date-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .delivery-date-tooltip-title {
+            font-weight: 700;
+            color: #2b7b7d;
+            font-size: 12px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .delivery-date-tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 12px;
+            color: #4b5563;
+            padding: 3px 0;
+        }
+
+        .delivery-date-tooltip-row span:first-child {
+            font-weight: 600;
+            color: #2b7b7d;
+            min-width: 140px;
+        }
+
+        .delivery-date-tooltip-row span:last-child {
+            text-align: right;
+            flex: 1 1 auto;
+        }
+
         .info-row-secondary .form-control,
         .info-row-secondary .bootstrap-select .dropdown-toggle,
         .info-row-secondary select.form-control {
@@ -314,8 +410,69 @@
                 <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
                     <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
                     <div class="col-md-12 col-xs-12">
-                        <input class="form-control SDTP" name="delivery_date" type="text"
-                            value="{{ $case->initial_delivery_date }}" required disabled />
+                        @php
+                            $createdAt = $case->created_at
+                                ? \Carbon\Carbon::parse($case->created_at)->format('Y-m-d H:i')
+                                : '-';
+                            $initialDelivery = $case->initial_delivery_date
+                                ? \Carbon\Carbon::parse($case->initial_delivery_date)->format('Y-m-d H:i')
+                                : '-';
+                            $actualDelivery = $case->actual_delivery_date
+                                ? \Carbon\Carbon::parse($case->actual_delivery_date)->format('Y-m-d H:i')
+                                : '-';
+                            $modifyLog = $case->failureLogs->where('failure_type', 2)->sortByDesc('created_at')->first();
+                            $repeatLog = $case->failureLogs->where('failure_type', 1)->sortByDesc('created_at')->first();
+                            $redoLog = $case->failureLogs->where('failure_type', 3)->sortByDesc('created_at')->first();
+                            $modifiedAt = $modifyLog
+                                ? \Carbon\Carbon::parse($modifyLog->created_at)->format('Y-m-d H:i')
+                                : '-';
+                            $repeatedAt = $repeatLog
+                                ? \Carbon\Carbon::parse($repeatLog->created_at)->format('Y-m-d H:i')
+                                : '-';
+                            $redoAt = $redoLog
+                                ? \Carbon\Carbon::parse($redoLog->created_at)->format('Y-m-d H:i')
+                                : '-';
+                            $deliveryCompleteLog = $case->logs->where('stage', 8.3)->sortByDesc('created_at')->first();
+                            $deliveryCompleteAt = $deliveryCompleteLog
+                                ? \Carbon\Carbon::parse($deliveryCompleteLog->created_at)->format('Y-m-d H:i')
+                                : '-';
+                            $modifyFinishedAt = $modifyLog ? $deliveryCompleteAt : '-';
+                            $repeatFinishedAt = $repeatLog ? $deliveryCompleteAt : '-';
+                            $firstActualDeliveryRaw = null;
+                            if ($modifyLog && !empty($modifyLog->old_delivery_date)) {
+                                $firstActualDeliveryRaw = $modifyLog->old_delivery_date;
+                            } elseif ($case->first_case_if_repeated) {
+                                $originalCase = \App\sCase::find($case->first_case_if_repeated);
+                                $firstActualDeliveryRaw = $originalCase ? $originalCase->actual_delivery_date : null;
+                            } else {
+                                $firstActualDeliveryRaw = $case->actual_delivery_date;
+                            }
+                            $firstActualDelivery = $firstActualDeliveryRaw
+                                ? \Carbon\Carbon::parse($firstActualDeliveryRaw)->format('Y-m-d H:i')
+                                : '-';
+                        @endphp
+                        <div class="delivery-date-field">
+                            <input class="form-control SDTP delivery-date-input" name="delivery_date" type="text"
+                                value="{{ $case->initial_delivery_date }}" required disabled />
+                            @if(Auth()->user() && Auth()->user()->is_admin)
+                                <div class="delivery-date-help">
+                                    <button type="button" class="delivery-date-help-button"
+                                        aria-label="Delivery date history" aria-describedby="delivery-date-tooltip">?</button>
+                                    <div class="delivery-date-tooltip" id="delivery-date-tooltip" role="tooltip">
+                                        <div class="delivery-date-tooltip-title">Delivery Dates</div>
+                                        <div class="delivery-date-tooltip-row"><span>Created:</span><span>{{ $createdAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Initial delivery:</span><span>{{ $initialDelivery }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Modified at:</span><span>{{ $modifiedAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Modify finished at:</span><span>{{ $modifyFinishedAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Repeated at:</span><span>{{ $repeatedAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Repeat finished at:</span><span>{{ $repeatFinishedAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Redo at:</span><span>{{ $redoAt }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>First actual delivery:</span><span>{{ $firstActualDelivery }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>Current actual delivery:</span><span>{{ $actualDelivery }}</span></div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
@@ -556,8 +713,8 @@
                             @endphp
                             @if ($deliveryEmployee)
                                 <td>{{ $deliveryEmployee }}</td>
-                                <td>{{ $deliveryStartLog ? substr($deliveryStartLog->created_at, 0, 16) : '-' }}</td>
-                                <td>{{ $deliveryCompleteLog ? substr($deliveryCompleteLog->created_at, 0, 16) : '-' }}</td>
+                                <td>{{ $deliveryStartLog ? ui_view_date($deliveryStartLog->created_at) : '-' }}</td>
+                                <td>{{ $deliveryCompleteLog ? ui_view_date($deliveryCompleteLog->created_at) : '-' }}</td>
                             @else
                                 <td>-</td>
                                 <td>-</td>
@@ -576,7 +733,7 @@
                 @php
                     function renderLog($log, $actionText, $actionClass) {
                         if (!$log || !isset($log->user)) return;
-                        $formattedDate = \Carbon\Carbon::parse($log->created_at)->format('g:i A') . ' - ' . strtoupper(\Carbon\Carbon::parse($log->created_at)->format('j-M'));
+                        $formattedDate = \Carbon\Carbon::parse($log->created_at)->format('g:i A') . ' - ' . ui_view_date($log->created_at);
                         echo '<div class="history-log-entry">
                                 <span class="employee-initials">' . $log->user->name_initials . '</span>
                                 <div class="action-info">
@@ -953,7 +1110,7 @@
                         disabled>
 
                         <span
-                            class="noteHeader">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                            class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
                         <span class="noteText">{{ $note->note }}</span>
                     </div>
                 @endforeach

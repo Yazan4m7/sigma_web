@@ -700,6 +700,13 @@
 
 
     <script>
+
+        $(document).on('mfpClose', function () {
+            console.log('Magnific popup closed');
+            const inst = $.magnificPopup.instance;
+            inst.content.find('form')[0]?.reset();
+        });
+
         $(document).ready(function() {
             const hasChartJs = typeof Chart !== 'undefined';
             const hasCanvasJs = typeof CanvasJS !== 'undefined';

@@ -103,7 +103,7 @@
 .sidebar .nav .collapse .nav li a {
     padding: 4px 12px 4px 8px !important;
     font-size: inherit !important;
-    transition: all 0.3s ease !important;
+    /* transition: all 0.3s ease !important; */
     border-radius: 4px !important;
     margin: 0px 10px !important;
 }

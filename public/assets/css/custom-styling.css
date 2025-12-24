@@ -157,6 +157,81 @@ padding:0 !important;
     padding: 6px 0px;
     width: -webkit-fill-available;
 }
+
+/* -------------------------------------------------------------------------
+   Sigma: List-page action dialogs
+   - Opt-in via adding `.sigma-action-dialog` to the `.modal` element
+   - Keeps changes scoped and avoids impacting other Bootstrap modals
+   ------------------------------------------------------------------------- */
+.sigma-action-dialog .modal-content {
+    border-radius: 25px !important;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.sigma-action-dialog .modal-header {
+    border-bottom: 0 !important;
+    padding-top: 16px;
+    padding-bottom: 12px;
+    align-items: center;
+}
+
+.sigma-action-dialog .modal-title {
+    color: #2d5f6d;
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.sigma-action-dialog .modal-header button.close {
+    font-size: 32px;
+    font-weight: 300;
+    color: #000;
+    opacity: 0.8;
+    text-shadow: none;
+}
+
+.sigma-action-dialog .modal-header button.close:hover {
+    opacity: 1;
+    color: #000;
+}
+
+.sigma-action-dialog .modal-body label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #6c757d;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.sigma-action-dialog .modal-body h5 {
+    color: #2d5f6d;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.sigma-action-dialog .modal-footer {
+    border-top: 1px solid #dee2e6;
+    border-bottom-left-radius: 25px !important;
+    border-bottom-right-radius: 25px !important;
+    padding: 0.75rem 1rem;
+}
+
+.sigma-action-dialog .sigma-actions-row {
+    width: 100%;
+    margin: 0;
+}
+
+.sigma-action-dialog .sigma-actions-row > [class*='col-'] {
+    display: flex;
+    padding: 5px;
+}
+
+.sigma-action-dialog .modal-footer .btn {
+    width: 100%;
+    white-space: nowrap;
+}
 .fillWidth{
     width: -webkit-fill-available;
 }
@@ -761,4 +836,67 @@ blueTBBorder{
 #myDiv {
     /*display: none;*/
     /*text-align: center;*/
+}
+
+/* Modal positioning via modalPosX / modalPosY */
+.modal-positioning-enabled {
+    align-items: unset !important;
+}
+
+.modal-positioning-enabled .modal-dialog-centered {
+    align-items: unset !important;
+    min-height: auto !important;
+}
+
+.modal-positioning-enabled .modal-dialog-centered::before {
+    display: none !important;
+    content: none !important;
+}
+
+.modal-positioning-enabled .modal-dialog {
+    position: fixed;
+    margin: 0 !important;
+    left: var(--modal-x, 50%);
+    top: var(--modal-y, 50%);
+    transform: none;
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-center-x {
+    left: 50%;
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-center-y {
+    top: 50%;
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-center-x.modal-pos-center-y {
+    transform: translate(-50%, -50%);
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-center-x:not(.modal-pos-center-y) {
+    transform: translateX(-50%);
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-center-y:not(.modal-pos-center-x) {
+    transform: translateY(-50%);
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-right {
+    left: 100%;
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-bottom {
+    top: 100%;
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-right.modal-pos-bottom {
+    transform: translate(-100%, -100%);
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-right:not(.modal-pos-bottom) {
+    transform: translateX(-100%);
+}
+
+.modal-positioning-enabled .modal-dialog.modal-pos-bottom:not(.modal-pos-right) {
+    transform: translateY(-100%);
 }

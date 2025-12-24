@@ -701,6 +701,87 @@ class OperationsUpgrade extends Controller
     }
 
     /**
+     * Remove builds and return their cases/jobs back to waiting state
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeBuilds(Request $request, ?string $redirectRoute = null)
+    {
+        return $this->executeTransaction(function () use ($request) {
+            $type = $request->input('type');
+            $deviceId = $request->input('deviceId');
+
+            $buildIdsInput = $request->input('buildIds') ?? $request->input('buildId');
+            if (empty($buildIdsInput) && !empty($deviceId)) {
+                $buildIdsInput = $request->input('buildsIdsHiddenInput' . $deviceId);
+            }
+
+            $buildIds = $this->parseIdList($buildIdsInput);
+            if (empty($buildIds)) {
+                return $this->errorResponse('No builds selected');
+            }
+
+            $buildIdField = $this->getBuildIdFieldFromType($type);
+            if (empty($buildIdField)) {
+                return $this->errorResponse('Invalid build type');
+            }
+
+            $builds = Build::whereIn('id', $buildIds)
+                ->whereNull('finished_at')
+                ->get();
+            if ($builds->isEmpty()) {
+                return $this->errorResponse('Builds not found');
+            }
+
+            $buildIds = $builds->pluck('id')->values()->all();
+            $jobs = job::whereIn($buildIdField, $buildIds)->get();
+            $caseIds = $jobs->pluck('case_id')->unique()->values()->all();
+
+            foreach ($jobs as $job) {
+                $job->is_active = null;
+                $job->is_set = null;
+                $job->assignee = null;
+                $job->device_id = null;
+                $job->type_id = null;
+                $job->{$buildIdField} = null;
+                $job->save();
+            }
+
+            foreach ($builds as $build) {
+                $build->delete();
+            }
+
+            if (!empty($caseIds) && isset(self::STAGE_CONFIG[$type])) {
+                $stageNumber = self::STAGE_CONFIG[$type]['number'];
+                $buildNames = $builds->pluck('name')->filter()->implode(', ');
+                $notes = $buildNames !== ''
+                    ? "Build removed: {$buildNames}. Cases returned to waiting."
+                    : 'Build removed. Cases returned to waiting.';
+
+                foreach ($caseIds as $caseId) {
+                    $logData = [
+                        'user_id' => Auth::id(),
+                        'case_id' => $caseId,
+                        'stage' => $stageNumber,
+                        'is_completion' => 0,
+                        'notes' => $notes
+                    ];
+                    if (!empty($deviceId)) {
+                        $logData['device_id'] = $deviceId;
+                    }
+                    caseLog::create($logData);
+                }
+            }
+
+            return $this->successResponse('Build removed and cases returned to waiting', [
+                'buildCount' => $builds->count(),
+                'jobCount' => $jobs->count()
+            ]);
+        }, $this->getRedirectRoute($request));
+    }
+
+    /**
      * Assign cases to a delivery driver
      *
      * @param Request $request
@@ -1086,6 +1167,52 @@ class OperationsUpgrade extends Controller
 
         // Remove empty values
         return array_filter($ids);
+    }
+
+    /**
+     * Parse a comma-separated list of IDs from request input
+     *
+     * @param mixed $input
+     * @return array
+     */
+    private function parseIdList($input): array
+    {
+        if (empty($input)) {
+            return [];
+        }
+
+        if (is_array($input)) {
+            $input = implode(',', $input);
+        }
+
+        $ids = array_filter(array_map('trim', explode(',', (string) $input)));
+        return array_values($ids);
+    }
+
+    /**
+     * Resolve the build ID column name for a given stage type
+     *
+     * @param string|null $type
+     * @return string|null
+     */
+    private function getBuildIdFieldFromType(?string $type): ?string
+    {
+        $type = strtolower((string) $type);
+
+        if ($type === 'milling') {
+            return 'milling_build_id';
+        }
+        if ($type === '3dprinting') {
+            return 'printing_build_id';
+        }
+        if ($type === 'pressing') {
+            return 'pressing_build_id';
+        }
+        if ($type === 'sintering') {
+            return 'sintering_build_id';
+        }
+
+        return null;
     }
 
     /**

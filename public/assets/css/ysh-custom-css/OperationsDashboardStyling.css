@@ -849,6 +849,8 @@ YSH-slide-grid {
 }
 
 .receiveSelectBtn {
+   justify-content: center;
+   width: 7rem;
    padding: 7px 40px 7px 40px;
 }
 
@@ -1293,19 +1295,17 @@ img {
 }
 
 .stage-panel-pane {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    flex: initial;
+    display: block;
+    min-height: auto;
 }
 
 .stage-panel-pane .stage-panel-scroll {
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
+    flex: initial;
+    overflow: visible;
+    min-height: auto;
     max-height: none;
-    display: flex;
-    flex-direction: column;
+    display: block;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .macaw-tabs.macaw-silk-tabs {
@@ -1320,21 +1320,96 @@ img {
 }
 
 .stage-panel-scroll .dataTables_wrapper {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    flex: initial;
+    display: block;
+    min-height: auto;
     position: relative;
     padding-bottom: 52px;
 }
 
 .stage-panel-scroll .dataTables_scroll {
-    flex: 1;
-    min-height: 0;
+    flex: initial;
+    min-height: auto;
 }
 
 .stage-panel-scroll table.dataTable {
     width: 100% !important;
+}
+
+/* -------------------------------------------------------------------------
+   Operations dashboard: window-scrolling sticky stack
+   - Outer stage tabs
+   - Waiting/Active bar
+   - Table header (thead)
+   ------------------------------------------------------------------------- */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs {
+    --sigma-ops-sticky-top: 0px;
+    --sigma-ops-stagebar-height: 0px;
+    --sigma-ops-innerbar-height: 56px;
+}
+
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"],
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body,
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
+    overflow: visible !important;
+}
+
+@media (max-width: 767px) {
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs {
+        --sigma-ops-stagebar-height: 96px;
+    }
+}
+
+/* 1) Stage tabs (Design / Printing / etc.) */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+    position: sticky;
+    top: var(--sigma-ops-sticky-top);
+    z-index: 300;
+    background: var(--tab-bg-color);
+}
+
+/* 2) Waiting / Active status bar */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-inner-tabs {
+    position: sticky;
+    /* top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height)); */
+    z-index: 250;
+    background: #ffffff;
+}
+
+/* 3) Table header (handles both normal + DataTables tables) */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th,
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
+    position: relative;
+    /* top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height)); */
+    z-index: 200;
+    background-color: #2b7b7d;
+    background-clip: padding-box;
+}
+
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th:first-child,
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th:first-child {
+    z-index: 210;
+}
+
+/* If DataTables creates a separate scroll header, keep that header sticky too */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_scrollHead {
+    position: sticky;
+    top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height));
+    z-index: 220;
+    background-color: #2b7b7d;
+}
+
+.site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_scrollHead table.dataTable thead th {
+    background-color: #2b7b7d;
+    background-clip: padding-box;
+}
+
+/* If DataTables scroll wrapper is present, prevent it from becoming the scroll container */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_scrollBody {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    max-height: none !important;
 }
 
 .stage-panel-scroll .dataTables_info {

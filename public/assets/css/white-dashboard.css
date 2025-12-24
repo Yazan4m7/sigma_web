@@ -17993,7 +17993,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .white-content .card:not(.card-white) {
-    /* background: #ffffff; */
+    background: #f1f1f100;
     /* box-shadow: 0 1px 15px 0 rgba(123, 123, 123, 0.05); */
 }
 
@@ -18140,7 +18140,7 @@ Copyright (c) 2015 Daniel Eden
     /* border: 0; */
     /* position: relative; */
     /* width: 100%; */
-    /*margin-bottom: 30px;*/
+    /* margin-bottom: 30px; */
     /* box-shadow: 0 1px 20px 0px rgba(0, 0, 0, 0.1); */
 }
 

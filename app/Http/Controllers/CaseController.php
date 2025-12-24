@@ -271,8 +271,8 @@ class CaseController extends Controller
     {
         $doctors = client::where('active', '!=', 0)->get();
         $materials = material::all();
-        $types = JobType::all();
-        $jobTypeMaterials = materialJobtype::all();
+        $types = JobType::select('id', 'name', 'teeth_or_jaw', 'default_material_id')->get();
+        $jobTypeMaterials = materialJobtype::select('jobtype_id', 'material_id')->get();
         $tags = tag::where('hidden', 0)->get();
         $impressionTypes = impressionType::all();
         $implants = implant::all();
@@ -815,6 +815,8 @@ class CaseController extends Controller
 
         // Cache key for dashboard data (5-minute cache)
         $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user');
+        $devices = collect();
+        $deviceUnitsCounts = [];
 
         // Try to get data from cache first
         if (Cache::has($cacheKey)) {
@@ -1259,8 +1261,11 @@ class CaseController extends Controller
             // Check for modification cases
             if ($case->contains_modification == 1) {
                 // Look for failure log including soft-deleted records in case it was accidentally deleted
-                $log = failureLog::where("case_id", $case->id)->withTrashed()->first();
-
+                $log = failureLog::where("case_id", $case->id)
+                    ->where('failure_type', 2)
+                    ->orderBy('id', 'desc')
+                    ->withTrashed()
+                    ->first();
                 // if the failure log is found
                 if ($log) {
                     // Preserve original delivery date from failure log
@@ -1284,25 +1289,13 @@ class CaseController extends Controller
             }
             // Check for repeat cases (they don't use contains_modification flag)
             elseif ($case->first_case_if_repeated) {
-                // This is a repeat case - find the original case's delivery date
-                $originalCase = sCase::find($case->first_case_if_repeated);
-                if ($originalCase && $originalCase->actual_delivery_date) {
-                    // Preserve original delivery date from the first case
-                    $case->actual_delivery_date = $originalCase->actual_delivery_date;
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Repeat Case Delivered - Original delivery date preserved from case #{$originalCase->id}: " . date('Y-m-d g:i a',strtotime($case->initial_delivery_date)) ;
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                } else {
-                    // Original case has no delivery date, use current time
-                    $case->actual_delivery_date = now();
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Repeat Case Delivered - Original case has no delivery date, using current time";
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                }
+                // Repeat cases should be treated as new deliveries
+                $case->actual_delivery_date = now();
+                $note = new note();
+                $note->case_id = $case->id;
+                $note->note = "Repeat Case Delivered - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
+                $note->written_by = Auth()->user()->id;
+                $note->save();
             } else {
                 // Normal case - use current delivery time
                 $case->actual_delivery_date = now();
@@ -1313,8 +1306,6 @@ class CaseController extends Controller
             $case->save();
             $this->applyInvoice($job);
         }
-        // TODO: Fix this later
-        // FIXME: Bug here
 
         // Get the device ID from the job if available
         $deviceId = null;
@@ -1401,7 +1392,11 @@ class CaseController extends Controller
             // Check for modification cases
             if ($case->contains_modification == 1) {
                 // Look for failure log including soft-deleted records in case it was accidentally deleted
-                $log = failureLog::where("case_id", $case->id)->withTrashed()->first();
+                $log = failureLog::where("case_id", $case->id)
+                    ->where('failure_type', 2)
+                    ->orderBy('id', 'desc')
+                    ->withTrashed()
+                    ->first();
 
                 // if the failure log is found
                 if ($log) {
@@ -1426,25 +1421,13 @@ class CaseController extends Controller
             }
             // Check for repeat cases (they don't use contains_modification flag)
             elseif ($case->first_case_if_repeated) {
-                // This is a repeat case - find the original case's delivery date
-                $originalCase = sCase::find($case->first_case_if_repeated);
-                if ($originalCase && $originalCase->actual_delivery_date) {
-                    // Preserve original delivery date from the first case
-                    $case->actual_delivery_date = $originalCase->actual_delivery_date;
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Repeat Case Delivered (In Box) - Original delivery date preserved from case #{$originalCase->id}: " .date('Y-m-d g:i a',strtotime($case->initial_delivery_date)) ;
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                } else {
-                    // Original case has no delivery date, use current time
-                    $case->actual_delivery_date = now();
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Repeat Case Delivered (In Box) - Original case has no delivery date, using current time";
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                }
+                // Repeat cases should be treated as new deliveries
+                $case->actual_delivery_date = now();
+                $note = new note();
+                $note->case_id = $case->id;
+                $note->note = "Repeat Case Delivered (In Box) - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
+                $note->written_by = Auth()->user()->id;
+                $note->save();
             } else {
                 // Normal case - use current delivery time
                 $case->actual_delivery_date = now();

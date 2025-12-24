@@ -435,4 +435,226 @@ class client extends Model
 
     }
 
+    // FINANCIAL TRACKING METHODS
+
+    /**
+     * Calculate and update all financial metrics for this client
+     * Should be called periodically (e.g., daily via cron job)
+     */
+    public function updateFinancialMetrics()
+    {
+        $this->calculateIncomeOutcomePercentages();
+        $this->calculateApproxIncome();
+        $this->calculateRiskLevel();
+        $this->last_financial_update = now();
+        $this->save();
+    }
+
+    /**
+     * Calculate income/outcome percentages
+     * Income = Payments received
+     * Outcome = Invoices issued (what client owes)
+     */
+    public function calculateIncomeOutcomePercentages()
+    {
+        // Get last 12 months data for better accuracy
+        $startDate = Carbon::now()->subMonths(12);
+        
+        // Total invoiced (outcome - what we expect to receive)
+        $totalInvoiced = invoice::where('doctor_id', $this->id)
+            ->where('status', 1)
+            ->where('created_at', '>=', $startDate)
+            ->sum('amount');
+        
+        // Total paid (income - what we actually received)
+        $totalPaid = payment::where('doctor_id', $this->id)
+            ->where('created_at', '>=', $startDate)
+            ->sum('amount');
+        
+        $totalTransactions = $totalInvoiced + $totalPaid;
+        
+        if ($totalTransactions > 0) {
+            // Income percentage = (payments / total) * 100
+            $this->income_percentage = round(($totalPaid / $totalTransactions) * 100, 2);
+            // Outcome percentage = (invoices / total) * 100
+            $this->outcome_percentage = round(($totalInvoiced / $totalTransactions) * 100, 2);
+        } else {
+            $this->income_percentage = 0;
+            $this->outcome_percentage = 0;
+        }
+    }
+
+    /**
+     * Calculate approximate monthly income from this client
+     * Based on last 6 months average
+     */
+    public function calculateApproxIncome()
+    {
+        $startDate = Carbon::now()->subMonths(6);
+        
+        $totalPaid = payment::where('doctor_id', $this->id)
+            ->where('created_at', '>=', $startDate)
+            ->sum('amount');
+        
+        // Average over 6 months
+        $this->approx_income = round($totalPaid / 6, 2);
+    }
+
+    /**
+     * Calculate risk level based on payment behavior
+     * Low: Pays on time (within 30 days)
+     * Medium: Pays within 45 days
+     * High: Pays within 60 days or has overdue balance
+     * Critical: Over 60 days overdue or large outstanding balance
+     */
+    public function calculateRiskLevel()
+    {
+        // Calculate average payment days
+        $this->calculateAveragePaymentDays();
+        
+        // Calculate current overdue days
+        $this->calculateCurrentOverdueDays();
+        
+        // Get current outstanding balance
+        $this->outstanding_balance = $this->balanceAt(Carbon::now());
+        
+        // Determine risk level
+        $avgDays = $this->avg_payment_days;
+        $overdueDays = $this->current_overdue_days;
+        $balance = $this->outstanding_balance;
+        
+        // Critical risk conditions
+        if ($overdueDays > 60 || ($balance > 10000 && $overdueDays > 30)) {
+            $this->risk_level = 'critical';
+        }
+        // High risk conditions
+        elseif ($overdueDays > 45 || $avgDays > 60 || ($balance > 5000 && $overdueDays > 15)) {
+            $this->risk_level = 'high';
+        }
+        // Medium risk conditions
+        elseif ($overdueDays > 30 || $avgDays > 45 || $balance > 3000) {
+            $this->risk_level = 'medium';
+        }
+        // Low risk (default)
+        else {
+            $this->risk_level = 'low';
+        }
+    }
+
+    /**
+     * Calculate average days between invoice and payment
+     */
+    private function calculateAveragePaymentDays()
+    {
+        $startDate = Carbon::now()->subMonths(6);
+        
+        // Get paid invoices with their payment dates
+        $invoices = invoice::where('doctor_id', $this->id)
+            ->where('status', 1)
+            ->where('created_at', '>=', $startDate)
+            ->get();
+        
+        $totalDays = 0;
+        $paidInvoicesCount = 0;
+        
+        foreach ($invoices as $invoice) {
+            // Find payments for this invoice (by date range and amount matching)
+            $payment = payment::where('doctor_id', $this->id)
+                ->where('created_at', '>=', $invoice->created_at)
+                ->where('amount', '>=', $invoice->amount * 0.9) // Allow 10% variance
+                ->first();
+            
+            if ($payment) {
+                $invoiceDate = Carbon::parse($invoice->created_at);
+                $paymentDate = Carbon::parse($payment->created_at);
+                $daysDiff = $invoiceDate->diffInDays($paymentDate);
+                
+                $totalDays += $daysDiff;
+                $paidInvoicesCount++;
+            }
+        }
+        
+        $this->avg_payment_days = $paidInvoicesCount > 0 
+            ? round($totalDays / $paidInvoicesCount) 
+            : 0;
+    }
+
+    /**
+     * Calculate current overdue days for oldest unpaid invoice
+     */
+    private function calculateCurrentOverdueDays()
+    {
+        // Get oldest unpaid invoice
+        $oldestInvoice = invoice::where('doctor_id', $this->id)
+            ->where('status', 1)
+            ->whereRaw('amount > (
+                SELECT COALESCE(SUM(amount), 0) 
+                FROM payments 
+                WHERE doctor_id = invoices.doctor_id 
+                AND created_at >= invoices.created_at
+            )')
+            ->orderBy('created_at', 'asc')
+            ->first();
+        
+        if ($oldestInvoice) {
+            $invoiceDate = Carbon::parse($oldestInvoice->created_at);
+            $this->current_overdue_days = $invoiceDate->diffInDays(Carbon::now());
+        } else {
+            $this->current_overdue_days = 0;
+        }
+    }
+
+    /**
+     * Get risk level with color coding for display
+     */
+    public function getRiskLevelBadge()
+    {
+        $badges = [
+            'low' => '<span class="badge badge-success">Low Risk</span>',
+            'medium' => '<span class="badge badge-warning">Medium Risk</span>',
+            'high' => '<span class="badge badge-danger">High Risk</span>',
+            'critical' => '<span class="badge badge-dark">Critical Risk</span>',
+        ];
+        
+        return $badges[$this->risk_level] ?? $badges['low'];
+    }
+
+    /**
+     * Get formatted income/outcome display
+     */
+    public function getIncomeOutcomeDisplay()
+    {
+        return sprintf(
+            '<span class="text-success">↑ %.1f%%</span> / <span class="text-danger">↓ %.1f%%</span>',
+            $this->income_percentage,
+            $this->outcome_percentage
+        );
+    }
+
+    /**
+     * Get risk explanation text
+     */
+    public function getRiskExplanation()
+    {
+        $explanations = [];
+        
+        if ($this->current_overdue_days > 0) {
+            $explanations[] = "Currently {$this->current_overdue_days} days overdue";
+        }
+        
+        if ($this->avg_payment_days > 30) {
+            $explanations[] = "Average payment time: {$this->avg_payment_days} days";
+        }
+        
+        if ($this->outstanding_balance > 0) {
+            $explanations[] = "Outstanding balance: $" . number_format($this->outstanding_balance, 2);
+        }
+        
+        if (empty($explanations)) {
+            return "Good payment history";
+        }
+        
+        return implode(' | ', $explanations);
+    }
+
 }

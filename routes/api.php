@@ -37,7 +37,7 @@ Route::post('/job-types-report',[ApiController::class,'jobTypesReport']);
 Route::post('/QC-report',[ApiController::class,'QCReport']);
 Route::post('/implants-report',[ApiController::class,'implantsReport']);
 
-Route::post('/register-login-time',[ApiController::class,'logSignin']);
+Route::match(['get', 'post'], '/register-login-time', [ApiController::class, 'logSignin']);
 
 // TYPES
 Route::get('/materials/{id}/types', [App\Http\Controllers\MaterialController::class, 'getTypes']);

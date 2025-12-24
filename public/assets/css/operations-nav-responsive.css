@@ -36,18 +36,19 @@
 
     /* Individual stage buttons - horizontal layout */
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
-        flex: 0 0 auto;
-        /* Don't grow, don't shrink, auto width */
+        flex: 1 1 0;
+        /* Evenly distribute across available width */
         min-width: 65px;
         /* Minimum width for each tab - reduced to fit 8 stages */
-        max-width: 95px;
-        /* Maximum width to prevent too wide */
+        max-width: none;
         padding: 0.5rem 0.3rem !important;
         /* Compact padding for horizontal */
         border-bottom: none !important;
         /* Remove vertical borders */
         border-right: 1px solid var(--tab-border-color) !important;
         /* Add right borders */
+        flex-direction: column;
+        align-items: center;
         justify-content: center !important;
         /* Center content */
         text-align: center !important;
@@ -64,8 +65,7 @@
         /* Remove left border */
         border-bottom: 4px solid var(--tab-active-border-color) !important;
         /* Add bottom border */
-        padding-left: 0.4rem !important;
-        /* Reset padding */
+        padding-left: 0.3rem !important;
     }
 
     /* Content area - full width below navigation */
@@ -129,6 +129,8 @@
         /* Override the display:none from existing CSS */
         font-size: 0.65rem !important;
         /* Small text */
+        padding-left: 0 !important;
+        /* Override inline padding for centered stacked layout */
         white-space: nowrap;
         /* Don't wrap */
         overflow: hidden;
@@ -162,6 +164,13 @@
         padding: 0.15em 0.3em !important;
         margin: 0 !important;
     }
+
+    /* Let inner flex items shrink (prevents accidental horizontal overflow) */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .iconSpan,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        width: 100%;
+        min-width: 0;
+    }
 }
 
 /*
@@ -172,7 +181,6 @@
     /* Even more compact tabs to fit 8 stages */
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
         min-width: 45px !important;
-        max-width: 60px !important;
         padding: 0.4rem 0.2rem !important;
     }
 
@@ -206,7 +214,6 @@
 @media (min-width: 360px) and (max-width: 575px) {
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
         min-width: 50px !important;
-        max-width: 70px !important;
         padding: 0.45rem 0.25rem !important;
     }
 
@@ -226,13 +233,23 @@
 }
 
 /*
+ * WIDE PHONES (370px - 429px)
+ * Reduce minimum tab width so all stages fit before scrolling.
+ */
+@media (min-width: 370px) and (max-width: 429px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 0 !important;
+        padding: 0.45rem 0.2rem !important;
+    }
+}
+
+/*
  * LARGE PHONES / SMALL TABLETS (576px - 767px)
  * More comfortable spacing - can fit 8 stages without scroll
  */
 @media (min-width: 576px) and (max-width: 767px) {
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
         min-width: 70px !important;
-        max-width: 95px !important;
         padding: 0.55rem 0.35rem !important;
     }
 

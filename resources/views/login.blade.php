@@ -74,6 +74,10 @@ License: You must have a valid license purchased only from themeforest(the above
             font-weight: 900 !important;
             font-size: 16px !important;
             transition: color 0.3s ease !important;
+            /* Ensure icon always visible and interactive-safe */
+            pointer-events: none !important;
+            opacity: 1 !important;
+            visibility: visible !important;
         }
         
         /* Email input icon */
@@ -88,7 +92,7 @@ License: You must have a valid license purchased only from themeforest(the above
         
         /* Keep icons visible when input is focused */
         .input-group:focus-within::before {
-            color: #5d78ff !important;
+            color: #38b44a !important;
         }
         
         /* Add padding to input to make room for icon */

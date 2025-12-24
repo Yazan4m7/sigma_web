@@ -70,7 +70,7 @@
                                             {{ $type->jobs->count() }}
                                         </span>
                                     </td>
-                                    <td>{{ $type->created_at->format('M d, Y') }}</td>
+                                    <td>{{ ui_view_date($type->created_at) }}</td>
                                     <td class="text-right">
                                         <div class="dropdown">
                                             <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" 

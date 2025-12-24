@@ -6,9 +6,9 @@
  * Login command - creates a session for authenticated requests
  * Usage: cy.login() or cy.login('username', 'password')
  *
- * Note: Update username/password to match your test environment
+ * Defaults to admin/admin for the seeded test environment.
  */
-Cypress.Commands.add('login', (username = 'yazan', password = '1') => {
+Cypress.Commands.add('login', (username = 'admin', password = 'admin') => {
     cy.session([username, password], () => {
         cy.visit('/login')
 
@@ -36,7 +36,7 @@ Cypress.Commands.add('login', (username = 'yazan', password = '1') => {
  * Simple login without session caching (for debugging)
  * Usage: cy.simpleLogin()
  */
-Cypress.Commands.add('simpleLogin', (username = 'admin', password = 'password') => {
+Cypress.Commands.add('simpleLogin', (username = 'admin', password = 'admin') => {
     cy.visit('/login')
     cy.get('input[name="username"]').should('be.visible').clear().type(username, { log: false })
     cy.get('input[name="password"]').clear().type(password, { log: false })

@@ -64,6 +64,8 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     --device-dialog-tablet-breakpoint: 992px;
     --device-dialog-mobile-breakpoint: 568px;
     --device-dialog-small-mobile-breakpoint: 380px;
+    --modal-x: 50%;
+    --modal-y: 50%;
 }
 
 @import "./sigma-machine-cards.css";

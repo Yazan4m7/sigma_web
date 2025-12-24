@@ -15,6 +15,89 @@ jQuery(document).ready(function($) {
     window.lastCaseClickedCase= null;
     $('.sigma-build-radio').on('click', e => e.stopPropagation());});
 
+(function initModalPositioning() {
+    const root = document.documentElement;
+    const xKeywords = { left: 'flex-start', center: 'center', right: 'flex-end' };
+    const yKeywords = { top: 'flex-start', center: 'center', bottom: 'flex-end' };
+
+    function normalizeModalPosition(value, axis) {
+        const defaultValue = 'center';
+
+        if (value === undefined || value === null || value === '') {
+            return { type: 'keyword', value: defaultValue };
+        }
+
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            return { type: 'pixel', value: value + 'px' };
+        }
+
+        if (typeof value === 'string') {
+            const trimmed = value.trim().toLowerCase();
+            const keywords = axis === 'x' ? xKeywords : yKeywords;
+
+            if (Object.prototype.hasOwnProperty.call(keywords, trimmed)) {
+                return { type: 'keyword', value: trimmed };
+            }
+
+            if (/^-?\d+(\.\d+)?px$/.test(trimmed)) {
+                return { type: 'pixel', value: trimmed };
+            }
+
+            if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+                return { type: 'pixel', value: trimmed + 'px' };
+            }
+        }
+
+        return { type: 'keyword', value: defaultValue };
+    }
+
+    function applyModalPositioning() {
+        const posX = normalizeModalPosition(window.modalPosX, 'center');
+        const posY = normalizeModalPosition(window.modalPosY, 'center');
+
+        root.style.setProperty('--modal-pos-x', String(window.modalPosX ?? 'center'));
+        root.style.setProperty('--modal-pos-y', String(window.modalPosY ?? 'center'));
+        root.style.setProperty('--modal-offset-x', '0px');
+        root.style.setProperty('--modal-offset-y', '0px');
+
+        let justify = 'center';
+        let align = 'center';
+
+        if (posX.type === 'keyword') {
+            justify = xKeywords[posX.value] || 'center';
+        } else {
+            justify = 'flex-start';
+            root.style.setProperty('--modal-offset-x', posX.value);
+        }
+
+        if (posY.type === 'keyword') {
+            align = yKeywords[posY.value] || 'center';
+        } else {
+            align = 'flex-start';
+            root.style.setProperty('--modal-offset-y', posY.value);
+        }
+
+        root.style.setProperty('--modal-justify', justify);
+        root.style.setProperty('--modal-align', align);
+    }
+
+    if (typeof window.modalPosX === 'undefined') {
+        window.modalPosX = 'center';
+    }
+
+    if (typeof window.modalPosY === 'undefined') {
+        window.modalPosY = 'center';
+    }
+
+    window.applyModalPositioning = applyModalPositioning;
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', applyModalPositioning);
+    } else {
+        applyModalPositioning();
+    }
+})();
+
 
     /**
      * Handle click on a device in the devices block
@@ -376,6 +459,36 @@ function submitDeviceDialog(deviceId, type, itemType, actionType) {
     // document.getElementById(`.#process-form-${deviceId}`).submit();
 // Submit the form
     hideLoadingIndicator();
+}
+
+function requestBuildRemoval(deviceId, type, buildId, isActive) {
+    if (!buildId) {
+        if (typeof showToast === 'function') {
+            showToast('No build selected.', 'warning');
+        }
+        return;
+    }
+
+    const message = isActive
+        ? 'This build is active. Removing it will cancel the operation and return cases to waiting. Continue?'
+        : 'Remove this build and return cases to waiting?';
+
+    if (!confirm(message)) {
+        return;
+    }
+
+    const form = document.getElementById(`remove-build-form-${deviceId}`);
+    const input = document.getElementById(`remove-build-ids-${deviceId}`);
+
+    if (!form || !input) {
+        if (typeof showToast === 'function') {
+            showToast('Remove build form not found.', 'error');
+        }
+        return;
+    }
+
+    input.value = buildId;
+    form.submit();
 }
 $(document).on('change', '.single-choice', function () {
     let $clicked = $(this);
@@ -1293,13 +1406,10 @@ function multiCBChanged(type, checkbox, caseId) {
 //  * Document ready handler to initialize the UI
 //  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize loading indicator
-    // const loadingIndicator = document.createElement('div');
-    // loadingIndicator.id = 'sigma-loading-indicator';
-    // loadingIndicator.innerHTML = `
-    //
-    // `;
-    document.body.appendChild(loadingIndicator);
+    // Initialize loading indicator safely (defer creation to showLoadingIndicator)
+    if (typeof window.loadingIndicator !== 'undefined' && window.loadingIndicator instanceof HTMLElement) {
+        document.body.appendChild(window.loadingIndicator);
+    }
 
     // Check for flash messages on page load
     if (typeof flashMessage !== 'undefined' && flashMessage.message) {
@@ -2561,6 +2671,18 @@ function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
             overlay.dataset.movedToBody = '1';
         }
 
+        // Cancel any pending close cleanup from a previous open/close cycle
+        if (overlay._yshCloseTimeout) {
+            clearTimeout(overlay._yshCloseTimeout);
+            overlay._yshCloseTimeout = null;
+        }
+        if (overlay._yshCloseHandlers) {
+            panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+            panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+            overlay._yshCloseHandlers = null;
+        }
+        delete overlay.dataset.yshClosing;
+
         overlay.classList.remove('YSH-closing');
         overlay.style.display = 'block';
 
@@ -2581,16 +2703,68 @@ function YSH_closeSlidePanel(caseId) {
         return;
     }
 
+    // Prevent duplicate close calls (e.g., bubbling clicks)
+    if (overlay.dataset.yshClosing === '1') {
+        return;
+    }
+    overlay.dataset.yshClosing = '1';
+
+    // Remove any prior listeners/timeouts for this overlay
+    if (overlay._yshCloseTimeout) {
+        clearTimeout(overlay._yshCloseTimeout);
+        overlay._yshCloseTimeout = null;
+    }
+    if (overlay._yshCloseHandlers) {
+        panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+        panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+        overlay._yshCloseHandlers = null;
+    }
+
     overlay.classList.remove('YSH-active');
     overlay.classList.add('YSH-closing');
     panel.style.right = '-100%';
 
-    // Hide after animation completes
     const finishClose = () => {
+        if (overlay.dataset.yshClosing !== '1') {
+            return;
+        }
+
         overlay.style.display = 'none';
         overlay.classList.remove('YSH-closing');
+        delete overlay.dataset.yshClosing;
+
+        if (overlay._yshCloseTimeout) {
+            clearTimeout(overlay._yshCloseTimeout);
+            overlay._yshCloseTimeout = null;
+        }
+        if (overlay._yshCloseHandlers) {
+            panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+            panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+            overlay._yshCloseHandlers = null;
+        }
     };
 
-    overlay.addEventListener('animationend', finishClose, { once: true });
-    overlay.addEventListener('transitionend', finishClose, { once: true });
+    const onTransitionEnd = (event) => {
+        if (event.target !== panel) {
+            return;
+        }
+        if (event.propertyName && event.propertyName !== 'right') {
+            return;
+        }
+        finishClose();
+    };
+
+    const onAnimationEnd = (event) => {
+        if (event.target !== panel) {
+            return;
+        }
+        finishClose();
+    };
+
+    overlay._yshCloseHandlers = { onTransitionEnd, onAnimationEnd };
+    panel.addEventListener('transitionend', onTransitionEnd);
+    panel.addEventListener('animationend', onAnimationEnd);
+
+    // Fallback: ensure cleanup even if no events fire
+    overlay._yshCloseTimeout = window.setTimeout(finishClose, 450);
 }

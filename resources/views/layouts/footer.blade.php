@@ -131,7 +131,8 @@ $(document).ready(function() {
     // });
 });
 </script>
-
+    <!-- ALPINE -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- DataTables Core & Extensions (keep together) -->
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -574,6 +575,118 @@ $(document).ready(function() {
             $.fn.dataTable = jQuery.fn.dataTable;
             $.fn.DataTable = jQuery.fn.DataTable;
         }
+    </script>
+
+    <script>
+        $('.dialog-popup-content').on('mfp-hide', function () {
+            console.log("Dialog mfp-hide fired")
+            document.querySelectorAll('.date-input').forEach(input => {
+                console.log(input.getAttribute('value'));
+                input.value = input.getAttribute('value');
+            });
+        });
+    </script>
+    <script>
+        (function () {
+            function resolveAxis(value, axis) {
+                var center = { position: '50%', mode: 'center' };
+                var isX = axis === 'x';
+
+                if (value === undefined || value === null || value === '') {
+                    return center;
+                }
+
+                if (typeof value === 'number') {
+                    return { position: value + 'px', mode: 'value' };
+                }
+
+                if (typeof value === 'string') {
+                    var trimmed = value.trim();
+                    var lower = trimmed.toLowerCase();
+
+                    if (lower === 'center') {
+                        return center;
+                    }
+
+                    if (isX) {
+                        if (lower === 'left') {
+                            return { position: '0px', mode: 'value' };
+                        }
+                        if (lower === 'right') {
+                            return { position: '100%', mode: 'edge-end' };
+                        }
+                    } else {
+                        if (lower === 'top') {
+                            return { position: '0px', mode: 'value' };
+                        }
+                        if (lower === 'bottom') {
+                            return { position: '100%', mode: 'edge-end' };
+                        }
+                    }
+
+                    if (/^-?\d+(?:\.\d+)?$/.test(lower)) {
+                        return { position: lower + 'px', mode: 'value' };
+                    }
+
+                    return { position: trimmed, mode: 'value' };
+                }
+
+                return center;
+            }
+
+            function applyDialogClasses(dialog, axisModes) {
+                dialog.classList.toggle('modal-pos-center-x', axisModes.x === 'center');
+                dialog.classList.toggle('modal-pos-center-y', axisModes.y === 'center');
+                dialog.classList.toggle('modal-pos-right', axisModes.x === 'edge-end');
+                dialog.classList.toggle('modal-pos-bottom', axisModes.y === 'edge-end');
+            }
+
+            function clearDialogClasses(dialog) {
+                dialog.classList.remove('modal-pos-center-x', 'modal-pos-center-y', 'modal-pos-right', 'modal-pos-bottom');
+            }
+
+            function applyModalPositioning() {
+                var posX = window.modalPosX;
+                var posY = window.modalPosY;
+                var enabled = !(posX === undefined && posY === undefined);
+                var root = document.documentElement;
+                var modals = document.querySelectorAll('.modal');
+                var dialogs = document.querySelectorAll('.modal-dialog');
+
+                modals.forEach(function (modal) {
+                    modal.classList.toggle('modal-positioning-enabled', enabled);
+                });
+
+                if (!enabled) {
+                    root.style.removeProperty('--modal-x');
+                    root.style.removeProperty('--modal-y');
+                    dialogs.forEach(clearDialogClasses);
+                    return;
+                }
+
+                var resolvedX = resolveAxis(posX, 'x');
+                var resolvedY = resolveAxis(posY, 'y');
+
+                root.style.setProperty('--modal-x', resolvedX.position);
+                root.style.setProperty('--modal-y', resolvedY.position);
+
+                dialogs.forEach(function (dialog) {
+                    applyDialogClasses(dialog, { x: resolvedX.mode, y: resolvedY.mode });
+                });
+            }
+
+            window.applyModalPositioning = applyModalPositioning;
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', applyModalPositioning);
+            } else {
+                applyModalPositioning();
+            }
+
+            if (window.jQuery) {
+                jQuery(document).on('show.bs.modal', '.modal', applyModalPositioning);
+            }
+        })();
     </script>
     {{--/////////////////////////////////////////////////////////////////////--}}
     @stack('js'){{--  //////////////////  JAVASCRIPT STACK ///////////////--}}

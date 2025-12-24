@@ -15,6 +15,7 @@ use App\payment;
 use App\sCase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use DB;
 use Carbon\Carbon;
 
@@ -590,8 +591,15 @@ class ReportsController extends Controller
 
         // Apply basic filters
         if ($request->filled('doctor') && !in_array('all', (array)$request->doctor)) {
-            $query->whereHas('client', function($q) use ($request) {
-                $q->whereIn('rep_doctor', (array)$request->doctor);
+            $doctorIds = (array) $request->doctor;
+
+            $query->whereHas('client', function($q) use ($doctorIds) {
+                // Primary: filter by client id (matches UI doctor select)
+                $q->whereIn('id', $doctorIds);
+                // Legacy fallback: if rep_doctor exists in some environments, keep it OR-ed
+                if (Schema::hasColumn('clients', 'rep_doctor')) {
+                    $q->orWhereIn('rep_doctor', $doctorIds);
+                }
             });
         }
 
@@ -603,7 +611,8 @@ class ReportsController extends Controller
 
         if ($request->filled('job_type') && !in_array('all', (array)$request->job_type)) {
             $query->whereHas('jobs', function($q) use ($request) {
-                $q->whereIn('job_type_id', (array)$request->job_type);
+                // Schema uses 'type' as the job type FK on jobs
+                $q->whereIn('type', (array)$request->job_type);
             });
         }
 
@@ -700,7 +709,15 @@ class ReportsController extends Controller
                 $q->whereHas('jobs', function($jobQuery) use ($unitsFrom, $unitsTo) {
                     $jobQuery->selectRaw('case_id')
                              ->groupBy('case_id')
-                             ->havingRaw('SUM(units) BETWEEN ? AND ?', [$unitsFrom, $unitsTo]);
+                             ->havingRaw(
+                                 "SUM(CASE
+                                     WHEN unit_num IS NULL OR unit_num = '' THEN 1
+                                     WHEN unit_num LIKE '%,%' THEN LENGTH(unit_num) - LENGTH(REPLACE(unit_num, ',', '')) + 1
+                                     WHEN unit_num LIKE '% %' THEN LENGTH(unit_num) - LENGTH(REPLACE(unit_num, ' ', '')) + 1
+                                     ELSE 1
+                                 END) BETWEEN ? AND ?",
+                                 [$unitsFrom, $unitsTo]
+                             );
                 });
             });
         }
@@ -730,7 +747,7 @@ class ReportsController extends Controller
                         // Filter by case logs where employee worked on this stage
                         $query->whereHas('caseLogs', function($q) use ($employeeId, $stageNumber) {
                             $q->where('user_id', $employeeId)
-                              ->where('action_stage', $stageNumber);
+                              ->where('stage', $stageNumber);
                         });
                     }
                 }
@@ -765,30 +782,39 @@ class ReportsController extends Controller
                     $query->whereHas('jobs', function($q) use ($deviceId, $deviceType) {
                         switch ($deviceType) {
                             case 'mill': // Type 2 - Milling
-                                $q->whereHas('millingBuild', function($buildQ) use ($deviceId) {
-                                    $buildQ->where(function($q) use ($deviceId) {
-                                        $q->where('device_id', $deviceId)
-                                          ->orWhere('device_used', $deviceId);
-                                    });
+                                $q->where(function($jobQ) use ($deviceId) {
+                                    $jobQ->where('device_id', $deviceId)
+                                         ->orWhereHas('millingBuild', function($buildQ) use ($deviceId) {
+                                             $buildQ->where(function($q) use ($deviceId) {
+                                                 $q->where('device_id', $deviceId)
+                                                   ->orWhere('device_used', $deviceId);
+                                             });
+                                         });
                                 });
                                 break;
                             case 'print': // Type 3 - 3D Printing
-                                $q->whereHas('printingBuild', function($buildQ) use ($deviceId) {
-                                    $buildQ->where(function($q) use ($deviceId) {
-                                        $q->where('device_id', $deviceId)
-                                          ->orWhere('device_used', $deviceId);
-                                    });
+                                $q->where(function($jobQ) use ($deviceId) {
+                                    $jobQ->where('device_id', $deviceId)
+                                         ->orWhereHas('printingBuild', function($buildQ) use ($deviceId) {
+                                             $buildQ->where(function($q) use ($deviceId) {
+                                                 $q->where('device_id', $deviceId)
+                                                   ->orWhere('device_used', $deviceId);
+                                             });
+                                         });
                                 });
                                 break;
                             case 'sinter': // Type 4 - Sintering (uses device_id directly, no build)
                                 $q->where('device_id', $deviceId);
                                 break;
                             case 'press': // Type 5 - Pressing
-                                $q->whereHas('pressingBuild', function($buildQ) use ($deviceId) {
-                                    $buildQ->where(function($q) use ($deviceId) {
-                                        $q->where('device_id', $deviceId)
-                                          ->orWhere('device_used', $deviceId);
-                                    });
+                                $q->where(function($jobQ) use ($deviceId) {
+                                    $jobQ->where('device_id', $deviceId)
+                                         ->orWhereHas('pressingBuild', function($buildQ) use ($deviceId) {
+                                             $buildQ->where(function($q) use ($deviceId) {
+                                                 $q->where('device_id', $deviceId)
+                                                   ->orWhere('device_used', $deviceId);
+                                             });
+                                         });
                                 });
                                 break;
                             default:

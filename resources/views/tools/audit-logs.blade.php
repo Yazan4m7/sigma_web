@@ -164,7 +164,7 @@
                         @forelse ($logs as $log)
                             <tr>
                                 <td>
-                                    <div class="font-weight-bold">{{ $log->created_at->format('Y-m-d H:i:s') }}</div>
+                                    <div class="font-weight-bold">{{ ui_view_date($log->created_at) }}</div>
                                     <div class="text-muted small">{{ $log->created_at->diffForHumans() }}</div>
                                 </td>
                                 <td>

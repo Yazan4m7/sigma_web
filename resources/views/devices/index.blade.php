@@ -36,13 +36,13 @@
 
                             </tr>
 
-                            <div class="modal fade" tabindex="-1" role="dialog" id="actionsDialog{{$device->id}}">
+                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$device->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$device->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
-                                    <div class="modal-content">
+                                        <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title"><h3>Machine Details</h3></h5>
+                                            <h5 class="modal-title">Machine Details</h5>
 
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
@@ -70,36 +70,36 @@
                                             <hr>
 
                                         </div>
-                                        <div class="modal-footer fullBtnsWidth" >
-                                            <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-
-                                                <div class="row">
-                                                    <!-------------------------
-                                                     -------- Edit Device --------
-                                                     -------------------------->
-                                                    <div class="col-12 padding5px" >
-                                                        <a  href="{{route('edit-device-view', $device->id)}}">
-                                                            <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Edit Device</button>
-                                                        </a></div>
-                                                    <div class="col-12 padding5px" >
-                                                        <a  href="{{route('toggle-device-visibility', $device->id)}}">
-                                                            <button type="button" class="btn btn-outline-danger"> {{$device->hidden == '0' ? "Hide" : "Show"}}</button>
-                                                        </a></div>
-                                                    <div class="col-12 padding5px" >
-                                                        <a href="{{route('soft-delete-device', $device->id)}}" onclick="return confirm('Are you sure you want to delete this device?');">
-                                                            <button type="button" class="btn btn-danger">Delete</button>
-                                                        </a></div>
-
-                                                    <div class="col-12 padding5px" >
-                                                        <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>
-                                                    </div>
+                                        <div class="modal-footer">
+                                            <div class="row sigma-actions-row">
+                                                <div class="col-12">
+                                                    <a href="{{route('edit-device-view', $device->id)}}"
+                                                       class="btn btn-warning">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Edit Device
+                                                    </a>
                                                 </div>
 
+                                                <div class="col-12">
+                                                    <a href="{{route('toggle-device-visibility', $device->id)}}"
+                                                       class="btn btn-outline-danger">
+                                                        {{$device->hidden == '0' ? "Hide" : "Show"}}
+                                                    </a>
+                                                </div>
 
+                                                <div class="col-12">
+                                                    <a href="{{route('soft-delete-device', $device->id)}}"
+                                                       class="btn btn-danger"
+                                                       onclick="return confirm('Are you sure you want to delete this device?');">
+                                                        Delete
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                        Cancel
+                                                    </button>
+                                                </div>
                                             </div>
-
-
                                         </div>
 
 

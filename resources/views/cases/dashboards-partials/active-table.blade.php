@@ -415,7 +415,7 @@
                                     style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
                                     disabled>
 
-                                    <span class="noteHeader" style="font-weight:600">{{'['. substr( $note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                    <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
                                     <span class="noteText">{{$note->note}}</span>
                                 </div>
                                 @endforeach

@@ -33,7 +33,7 @@
                                 <td class="tabledit-view-mode"><span class="tabledit-span">{{count($jobType->materials)}}</span>
                                 </td>
                             </tr>
-                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$jobType->id}}">
+                            <div class="modal sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$jobType->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$jobType->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -47,39 +47,32 @@
                                         </div>
                                         <div class="modal-body">
 
-                                            <div class="form-group row" style="margin-bottom: 0px">
-                                                <div class="form-group col-6 " style="margin-bottom: 0px">
+                                            <div class="form-group row mb-0">
+                                                <div class="form-group col-6 mb-0">
                                                     <label for="doctor">Name: </label>
-                                                    <h5 id="doctor"><b>{{$jobType->name}}</b></h5>
+                                                    <h5 id="doctor">{{$jobType->name}}</h5>
                                                 </div>
-                                                <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                <div class="form-group col-6 mb-0">
                                                     <label for="pat">Type: </label>
-                                                    <h5 id="pat"><b>{{$jobType->teeth_or_jaw == 0 ? "TEETH" : "JAW"}}</b></h5>
+                                                    <h5 id="pat">{{$jobType->teeth_or_jaw == 0 ? "TEETH" : "JAW"}}</h5>
                                             </div>
                                             </div>
                                             <hr>
 
                                         </div>
-                                        <div class="modal-footer fullBtnsWidth" >
-                                            <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-
-                                                <div class="row">
-                                                    <!-------------------------
-                                                     -------- Edit CASE --------
-                                                     -------------------------->
-                                                    <div class="col-12 padding5px" >
-                                                        <a  href="{{route('edit-job-type-view', $jobType->id)}}">
-                                                            <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Edit Job Type</button>
-                                                        </a></div>
+                                        <div class="modal-footer">
+                                            <div class="row sigma-actions-row">
+                                                <div class="col-12">
+                                                    <a href="{{route('edit-job-type-view', $jobType->id)}}"
+                                                        class="btn btn-warning">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Edit Job Type
+                                                    </a>
                                                 </div>
 
-                                                <div class="col-12 padding5px" >
-                                                    <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
 

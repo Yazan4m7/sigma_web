@@ -52,4 +52,11 @@ return [
             'delivery' => true,
         ],
     ],
+    
+    // Timestamp Display Format Configuration
+    'timestamp_format' => [
+        'note_display' => 'd-M g:i A',  // Format: 16-Dec 6:30 PM or 3-Dec 11:13 AM
+        'date_only' => 'd-M',            // Format: 16-Dec
+        'time_only' => 'g:i A',          // Format: 6:30 PM
+    ],
 ];

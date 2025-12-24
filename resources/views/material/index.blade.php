@@ -38,7 +38,7 @@
                                                 value="Doe" style="display: none;" disabled=""></td>
 
                                     </tr>
-                                    <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{ $material->id }}">
+                                    <div class="modal sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{ $material->id }}">
 
                                         <input type="hidden" name="case_id" value="{{ $material->id }}">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -53,44 +53,32 @@
                                                 </div>
                                                 <div class="modal-body">
 
-                                                    <div class="form-group row" style="margin-bottom: 0px">
-                                                        <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                    <div class="form-group row mb-0">
+                                                        <div class="form-group col-6 mb-0">
                                                             <label for="doctor">Name: </label>
-                                                            <h5 id="doctor"><b>{{ $material->name }}</b></h5>
+                                                            <h5 id="doctor">{{ $material->name }}</h5>
                                                         </div>
-                                                        <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                        <div class="form-group col-6 mb-0">
                                                             <label for="pat">Price: </label>
-                                                            <h5 id="pat"><b>{{ $material->price }}</b></h5>
+                                                            <h5 id="pat">{{ $material->price }}</h5>
                                                         </div>
                                                     </div>
                                                     <hr>
 
                                                 </div>
-                                                <div class="modal-footer fullBtnsWidth">
-                                                    <div class="row"
-                                                        style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-
-                                                        <div class="row">
-                                                            <!-------------------------
-                                                         -------- Edit CASE --------
-                                                         -------------------------->
-                                                            <div class="col-12 padding5px">
-                                                                <a href="{{ route('edit-material-view', $material->id) }}">
-                                                                    <button type="button" class="btn btn-warning "><i
-                                                                            class="fa-solid fa-pen-to-square"></i> Edit
-                                                                        Material</button>
-                                                                </a>
-                                                            </div>
+                                                <div class="modal-footer">
+                                                    <div class="row sigma-actions-row">
+                                                        <div class="col-12">
+                                                            <a href="{{ route('edit-material-view', $material->id) }}"
+                                                                class="btn btn-warning">
+                                                                <i class="fa-solid fa-pen-to-square"></i> Edit Material
+                                                            </a>
                                                         </div>
-
-                                                        <div class="col-12 padding5px">
-                                                            <button type="button" class="btn btn-secondary "
-                                                                data-dismiss="modal" style="width:100%">Cancel</button>
+                                                        <div class="col-12">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Cancel</button>
                                                         </div>
                                                     </div>
-
-
                                                 </div>
 
 

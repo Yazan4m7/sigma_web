@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-oBWY6ZtpeLSFhoNvgQgQki71R+xVQ1BM8DT6vKrrO5evYv7FpC18JNpDutLCRa14Q6gttxyPjdvGdT9O9thKFQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     @import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700&display=swap');
@@ -303,15 +303,17 @@
 
     /* User Dropdown Styling */
     .user-dropdown-menu {
-        min-width: 260px;
-        border-radius: 8px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-        border: 1px solid rgba(43, 123, 125, 0.1);
+        min-width: 280px;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        border: 1px solid rgba(0, 0, 0, 0.08);
         padding: 0;
         margin-top: 8px;
         right: 0 !important;
         left: auto !important;
         transform: none !important;
+        background: white;
+        overflow: hidden;
     }
 
     .user-info-header {
@@ -327,19 +329,19 @@
     .user-info-content {
         display: flex;
         align-items: center;
-        padding: 16px;
-        background: linear-gradient(135deg, #2b7b7d 0%, #1f5f61 100%);
-        border-radius: 8px 8px 0 0;
+        padding: 20px;
+        background: white;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     .user-avatar-large {
-        width: 50px;
-        height: 50px;
+        width: 48px;
+        height: 48px;
         border-radius: 50%;
         overflow: hidden;
-        border: 3px solid rgba(255, 255, 255, 0.3);
+        border: 2px solid #e5e7eb;
         flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     .user-avatar-large img {
@@ -352,8 +354,8 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: #f1f2f4;
-        color: #9ca3af;
+        background: #f9fafb;
+        color: #6b7280;
     }
 
     .photo.placeholder-avatar i {
@@ -367,63 +369,68 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f1f2f4;
-        color: #9ca3af;
-        font-size: 22px;
+        background: #f9fafb;
+        color: #6b7280;
+        font-size: 24px;
+        margin: 0;
+        padding: 0;
+    }
+
+    .avatar-placeholder i {
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .user-details {
         display: flex;
         flex-direction: column;
-        margin-left: 14px;
-        color: teal;
+        margin-left: 16px;
+        flex: 1;
     }
 
     .user-name {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 600;
         line-height: 1.3;
-        color: #ffffff;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    }
-
-    .user-role {
-        font-size: 12px;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 0.85);
-        margin-top: 2px;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
+        color: #111827;
+        margin-bottom: 4px;
     }
 
     .user-dropdown-menu .dropdown-divider {
         margin: 0;
-        border-color: rgba(43, 123, 125, 0.1);
+        border-color: rgba(0, 0, 0, 0.06);
     }
 
     .user-dropdown-menu .logout-link {
-        color: #2b7b7d;
+        color: #374151;
         font-weight: 500;
-        padding: 12px 16px;
+        padding: 14px 20px;
         display: flex;
         align-items: center;
         transition: all 0.2s ease;
+        background: white;
     }
 
     .user-dropdown-menu .logout-link i {
-        margin-right: 10px;
+        margin-right: 12px;
         font-size: 16px;
-        opacity: 0.8;
+        color: #6b7280;
     }
 
     .user-dropdown-menu .logout-link:hover {
-        background-color: rgba(43, 123, 125, 0.08);
-        color: #1f5f61;
-        padding-left: 20px;
+        background-color: #f9fafb;
+        color: #111827;
+        padding-left: 24px;
     }
 
     .user-dropdown-menu .logout-link:hover i {
-        opacity: 1;
+        color: #374151;
     }
 
     /* Fix 3 dots button and dropdown positioning */
@@ -467,6 +474,88 @@
             top: 60px;
             background: transparent;
         }
+    }
+
+    /* Fix 3 dots positioning on phone */
+    @media (max-width: 767px) {
+        .dotsDiv {
+            position: absolute !important;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            margin-bottom: 0;
+        }
+    }
+
+    /* Close button styling */
+    .close-btn {
+        position: absolute;
+        top: 12px;
+        right: 16px;
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 20px;
+        cursor: pointer;
+        z-index: 10;
+        transition: color 0.2s ease;
+        line-height: 1;
+    }
+
+    .close-btn:hover {
+        color: #374151;
+    }
+
+    /* Permissions toggle styling */
+    .permissions-toggle {
+        background: none;
+        border: none;
+        color: #6b7280;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 6px 0;
+        margin-top: 8px;
+        transition: color 0.2s ease;
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .permissions-toggle:hover {
+        color: #374151;
+    }
+
+    .permissions-toggle i {
+        margin-left: 6px;
+        font-size: 12px;
+        transition: transform 0.2s ease;
+    }
+
+    .permissions-toggle.expanded i {
+        transform: rotate(180deg);
+    }
+
+    .permissions-list {
+        margin-top: 12px;
+        padding: 12px;
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        display: none;
+        max-height: 150px;
+        overflow-y: auto;
+    }
+
+    .permissions-list div {
+        color: #374151;
+        font-size: 12px;
+        padding: 4px 0;
+        text-transform: capitalize;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .permissions-list div:last-child {
+        border-bottom: none;
     }
 
 </style>
@@ -545,31 +634,33 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                                 <p class="d-lg-none"></p>
                             </a>
                             <ul class="dropdown-menu dropdown-navbar user-dropdown-menu">
+                                <button class="close-btn" onclick="closeDropdown()">&times;</button>
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
                                         <div class="user-avatar-large">
-                                            @if($hasProfilePhoto)
-                                                <img src="{{ $profileImage }}" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
-                                            @else
-                                                <div class="avatar-placeholder" aria-hidden="true">
-                                                    <i class="fa fa-user"></i>
-                                                </div>
-                                            @endif
+                                            <div class="avatar-placeholder" aria-hidden="true">
+                                                <i class="fa fa-user-circle"></i>
+                                            </div>
                                         </div>
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
-                                            <span class="user-role">{{ ucfirst(Auth::user()->type ?? 'Employee') }}</span>
+                                            @if(Auth::user()->type === 'admin' || collect($permissions)->contains('name', 'admin'))
+                                                <div class="admin-badge" style="color: #059669; font-weight: 600; font-size: 12px; margin-top: 4px;">You are Admin</div>
+                                            @else
+                                                <button class="permissions-toggle" onclick="togglePermissions()" id="permissions-toggle">
+                                                    See Permissions
+                                                    <i class="fa fa-chevron-down"></i>
+                                                </button>
+                                                <div class="permissions-list" id="permissions-list">
+                                                    @foreach($permissions as $permission)
+                                                        <div>{{ $permission->name }}</div>
+                                                    @endforeach
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </li>
                                 <li class="dropdown-divider"></li>
-                                {{--<li class="nav-link">--}}
-                                    {{--<a href="{{ route('profile.edit') }}" class="nav-item dropdown-item">{{ __('Profile') }}</a>--}}
-                                {{--</li>--}}
-                                {{--<li class="nav-link">--}}
-                                    {{--<a href="#" class="nav-item dropdown-item">{{ __('Settings') }}</a>--}}
-                                {{--</li>--}}
-                                {{--<li class="dropdown-divider"></li>--}}
                                 <li class="nav-link">
                                     <a href="{{ route('logout') }}" class="nav-item dropdown-item logout-link" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
                                         <i class="tim-icons icon-button-power"></i>
@@ -592,6 +683,23 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
         {
             //your function call here
             document.searchFrom.submit();
+        }
+    }
+
+    function closeDropdown() {
+        // Close the dropdown by removing the 'show' class from the collapse element
+        var dropdown = document.getElementById('navigation');
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        }
+    }
+
+    function togglePermissions() {
+        var permissionsList = document.getElementById('permissions-list');
+        if (permissionsList.style.display === 'none' || permissionsList.style.display === '') {
+            permissionsList.style.display = 'block';
+        } else {
+            permissionsList.style.display = 'none';
         }
     }
 </script>

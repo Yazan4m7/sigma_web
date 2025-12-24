@@ -114,10 +114,19 @@ ease-out;
     font-size: 1.0rem;
     transition: color 0.3s
 ease;
+            /* Ensure icon remains visible and doesn't intercept pointer focus */
+            pointer-events: none;
+            z-index: 2;
+            opacity: 1;
+            visibility: visible;
         }
 
         .form-group-modern:focus-within .input-icon {
-            color: #667eea;
+            color: #38b44a;
+        }
+        /* Also highlight when JS toggles the 'focused' class */
+        .form-group-modern.focused .input-icon {
+            color: #38b44a;
         }
 
         .login-button {

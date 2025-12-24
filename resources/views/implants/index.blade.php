@@ -33,7 +33,7 @@
 
                              </tr>
 
-                            <div class="modal fade" tabindex="-1" role="dialog" id="actionsDialog{{$implant->id}}">
+                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$implant->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$implant->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -58,26 +58,21 @@
                                             <hr>
 
                                         </div>
-                                        <div class="modal-footer fullBtnsWidth" >
-                                            <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-
-                                                <div class="row">
-                                                    <!-------------------------
-                                                     -------- Edit CASE --------
-                                                     -------------------------->
-                                                    <div class="col-12 padding5px" >
-                                                        <a  href="{{route('edit-implant-view', $implant->id)}}">
-                                                            <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Edit Implant</button>
-                                                        </a></div>
+                                        <div class="modal-footer">
+                                            <div class="row sigma-actions-row">
+                                                <div class="col-12">
+                                                    <a href="{{route('edit-implant-view', $implant->id)}}"
+                                                       class="btn btn-warning">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Edit Implant
+                                                    </a>
                                                 </div>
 
-                                                <div class="col-12 padding5px" >
-                                                    <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                        Cancel
+                                                    </button>
                                                 </div>
                                             </div>
-
-
                                         </div>
 
 

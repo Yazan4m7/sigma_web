@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Config;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\AbutmentsObserver;
+use Illuminate\Validation\ValidationException;
 use function PHPSTORM_META\elementType;
 
 class sCase extends Model
@@ -17,6 +18,20 @@ class sCase extends Model
     protected $guarded = ['id'];
 
     protected $table = 'cases';
+
+
+    protected static function booted(): void
+    {
+        static::saving(function ($case) {
+            if ($case->delivered_to_client == 1 && is_null($case->actual_delivery_date)) {
+                throw ValidationException::withMessages([
+                    'actual_delivery_date' => 'Case cannot be marked as delivered without a delivery date.',
+                ]);
+            }
+        });
+    }
+
+
     /**
      * Scope a query to only exclude specific Columns.
      *
@@ -35,6 +50,7 @@ class sCase extends Model
         }
         return $query;
     }
+
 
     /**
      * Shows All the columns of the Corresponding Table of Model

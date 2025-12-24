@@ -12,7 +12,7 @@ use App\MobileNotificationToken;
 use App\payment;
 use App\sCase;
 use App\mobileJobModel;
-use App\signinLog;
+use App\signInLog;
 use App\User;
 use DateTime;
 use Illuminate\Http\Client\Response;
@@ -25,8 +25,15 @@ class ApiController {
 
     // AUTHENTICATIONS
     public function login(Request $request){
-        $phoneNumber = $this->decryptedPhoneNum($request->phoneNum);
+        $phoneInput = $request->phoneNum ?? $request->phone ?? $request->phone_number ?? $request->phone_num;
+        if (!$phoneInput) {
+            return response()->json(['msg' => "phoneNum is required"], 422);
+        }
+
+        $phoneNumber = $this->normalizePhoneNum($phoneInput);
         $password = $request->password;
+        $device = $request->device ?? $request->deviceId ?? $request->device_id ?? "0";
+        $ipAddress = $request->ip();
 
 
         //code:
@@ -36,7 +43,8 @@ class ApiController {
             if(!$clinicAccount)
                 return response()->json(['msg' => "Phone number not found"], 403);
             if(password_verify($password, $clinicAccount->clinic_password)){
-                MobileNotificationToken::where('device_id', $request->deviceId)->delete();
+                MobileNotificationToken::where('device_id', (string) $device)->delete();
+                $this->safeLogMobileSignin($clinicAccount->id, true, $ipAddress, (string) $device);
 
                 return $clinicAccount;
             }
@@ -46,13 +54,17 @@ class ApiController {
         }
         else{
             if(password_verify($password,$docAccount->doc_password)){
-                MobileNotificationToken::where('device_id', $request->deviceId)->delete();
+                MobileNotificationToken::where('device_id', (string) $device)->delete();
+                $this->safeLogMobileSignin($docAccount->id, false, $ipAddress, (string) $device);
                 return $docAccount;
             }
             else
                 return response()->json(['msg' => "Invalid doctor account password"], 403);
         }
     }
+
+
+
     public function authenticatedClient(String $encryptedPhoneNum){
         $key = "SIGMA_Encryption_5ng853ld9f531g4";
         $iv = "gm5kmd9ek3mz9dmg";
@@ -60,6 +72,7 @@ class ApiController {
         $phoneNum=  openssl_decrypt($encryptedPhoneNum,$method,$key,0,$iv);
         $phoneNum = substr(trim($phoneNum), -7); // to remove +962
         $client = client::where('phone', 'like', '%' . $phoneNum . '%')->first();
+
         return $client;
     }
     public function decryptedPhoneNum(String $encryptedPhoneNum)
@@ -70,6 +83,50 @@ class ApiController {
         $phoneNum = openssl_decrypt($encryptedPhoneNum, $method, $key, 0, $iv);
         $phoneNum = substr(trim($phoneNum), -7);
         return $phoneNum;// to remove +962
+    }
+
+    private function normalizePhoneNum($phoneInput): string
+    {
+        $key = "SIGMA_Encryption_5ng853ld9f531g4";
+        $iv = "gm5kmd9ek3mz9dmg";
+        $method = "aes-256-cbc";
+
+        $raw = trim((string) $phoneInput);
+        $decrypted = openssl_decrypt($raw, $method, $key, 0, $iv);
+        $phoneNum = ($decrypted === false || trim((string) $decrypted) === '') ? $raw : (string) $decrypted;
+        $phoneNum = preg_replace('/\\D+/', '', $phoneNum);
+        return substr(trim((string) $phoneNum), -7);
+    }
+
+    private function safeLogMobileSignin(int $clientId, bool $isClinic, string $ipAddress, string $device): void
+    {
+
+
+        try {
+            $alreadyLoggedRecently = signInLog::where('client_id', $clientId)
+                ->where('is_clinic', $isClinic ? 1 : 0)
+                ->where('date', '>=', now()->subSeconds(30)->toDateTimeString())
+                ->exists();
+
+            if ($alreadyLoggedRecently) {
+                \Log::info('safeLogMobileSignin multiple,returning');
+                return;
+            }
+
+            $log = new signInLog();
+            $log->client_id = $clientId;
+            $log->ip_address = $ipAddress;
+            $log->device = $device;
+            $log->date = now();
+            $log->is_clinic = $isClinic ? 1 : 0;
+            $log->save();
+
+
+        } catch (\Throwable $e) {
+            \Log::info('safeLogMobileSignin Exception ' . $e->getMessage());
+
+            // Never block mobile login if logging fails.
+        }
     }
     public function clientInfo(Request $request){
         $key = "SIGMA_Encryption_5ng853ld9f531g4";
@@ -457,33 +514,54 @@ class ApiController {
         $key = "SIGMA_Encryption_5ng853ld9f531g4";
         $iv = "gm5kmd9ek3mz9dmg";
         $method = "aes-256-cbc";
-        $encryptedPhoneNum = $request->phoneNum;
-        $phoneNum = openssl_decrypt($encryptedPhoneNum, $method, $key, 0, $iv);
-        $phoneNum = substr(trim($phoneNum), -7); // to remove +962
+        $phoneInput = $request->phoneNum ?? $request->phone ?? $request->phone_number ?? $request->phone_num;
+        if (!$phoneInput) {
+            return response()->json(['success' => false, 'created' => 0, 'msg' => "phoneNum is required"], 200);
+        }
+
+        $decrypted = openssl_decrypt($phoneInput, $method, $key, 0, $iv);
+        $phoneNum = ($decrypted === false || trim((string)$decrypted) === '') ? $phoneInput : $decrypted;
+        $phoneNum = preg_replace('/\\D+/', '', (string)$phoneNum);
+        $phoneNum = substr(trim((string)$phoneNum), -7); // to remove +962
+
+        $device = $request->device ?? $request->deviceId ?? $request->device_id ?? "0";
+        $ipAddress = $request->ip();
 
 
         $docClient = client::where('phone', 'like', '%' . $phoneNum . '%')->first();
         $clinicAccount = client::Where('clinic_phone', 'like', '%' . $phoneNum . '%')->first();
         if (!$docClient && !$clinicAccount)
             return response()->json(['msg' => "No Client Found"], 400);
-        if (isset($docClient)) {
-            $log = new signinLog();
-            $log->client_id = $docClient->id;
-            $log->ip_address = $_SERVER['REMOTE_ADDR'];
-            $log->device = $request->device;
-            $log->date = now();
-            $log->is_clinic = 0;
-            $log->save();
+
+        $created = 0;
+        try {
+            DB::transaction(function () use ($docClient, $clinicAccount, $ipAddress, $device, $created) {
+                if (isset($docClient)) {
+                    $log = new signInLog();
+                    $log->client_id = $docClient->id;
+                    $log->ip_address = $ipAddress;
+                    $log->device = (string)$device;
+                    $log->date = now();
+                    $log->is_clinic = 0;
+                    $log->save();
+                    $created++;
+                }
+                if (isset($clinicAccount)) {
+                    $log = new signInLog();
+                    $log->client_id = $clinicAccount->id;
+                    $log->ip_address = $ipAddress;
+                    $log->device = (string)$device;
+                    $log->date = now();
+                    $log->is_clinic = 1;
+                    $log->save();
+                    $created++;
+                }
+            });
+        } catch (\Throwable $e) {
+            return response()->json(['success' => false, 'created' => 0], 200);
         }
-        if (isset($clinicAccount)) {
-            $log = new signinLog();
-            $log->client_id = $clinicAccount->id;
-            $log->ip_address = $_SERVER['REMOTE_ADDR'];
-            $log->device = $request->device;
-            $log->date = now();
-            $log->is_clinic = 1;
-            $log->save();
-        }
+
+        return response()->json(['success' => true, 'created' => $created], 200);
     }
 
     /**
@@ -524,12 +602,12 @@ class ApiController {
                 ->toArray();
 
             // Debug logging
-            \Log::info("Material validation debug", [
-                'stage' => $stage,
-                'dbStage' => $dbStage,
-                'caseIds' => $caseIds,
-                'materials' => $materials
-            ]);
+//            \Log::info("Material validation debug", [
+//                'stage' => $stage,
+//                'dbStage' => $dbStage,
+//                'caseIds' => $caseIds,
+//                'materials' => $materials
+//            ]);
 
             // Check if all materials are the same (validation for same-material requirement)
             $uniqueMaterials = array_unique($materials);
@@ -575,11 +653,11 @@ class ApiController {
                 ->get();
 
             // Debug logging
-            \Log::info("Material types debug", [
-                'materialId' => $materialId,
-                'foundTypes' => $materialTypes->count(),
-                'types' => $materialTypes->toArray()
-            ]);
+//            \Log::info("Material types debug", [
+//                'materialId' => $materialId,
+//                'foundTypes' => $materialTypes->count(),
+//                'types' => $materialTypes->toArray()
+//            ]);
 
             $materialTypes = $materialTypes->map(function($type) {
                     return [

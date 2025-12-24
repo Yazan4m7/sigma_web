@@ -892,18 +892,18 @@
         }
 
         var teethSelected = [];
-        var lstSelectedJobUNName = "";
-        var repeaterName = "";
+         var lstSelectedJobUNName = "";
+         var repeaterName = "";
 
-        function materialChanged(materialDD) {
-            console.log('Material changed:', $(materialDD).val());
-        }
+         function materialChanged(materialDD) {
+             $(materialDD).data('manualSelection', true);
+         }
 
-        function jobTypeChanged(jobTypeDD) {
-            var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
-            var jobTypes = {!! json_encode($types->toArray()) !!};
-            var materials = {!! json_encode($materials->toArray()) !!};
-            var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+         function jobTypeChanged(jobTypeDD) {
+             var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
+             var jobTypes = {!! json_encode($types->toArray()) !!};
+             var materials = {!! json_encode($materials->toArray()) !!};
+             var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
 
             var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
             var colorsDDName = thisRowRepeaterName + "[color]";
@@ -923,31 +923,46 @@
             }
 
             var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-            var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
-            var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
-            var jobTypeSelectedId = $(jobTypeDD).val();
-            var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+             var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
+             var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
+             var jobTypeSelectedId = $(jobTypeDD).val();
 
-            var currentlySelectedMaterial = materialBox.val();
-            materialBox.empty();
-            materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
+             var previousJobTypeId = $(jobTypeDD).data('previousJobTypeId');
+             var jobTypeActuallyChanged = (previousJobTypeId === undefined || String(previousJobTypeId) !== String(jobTypeSelectedId));
+             $(jobTypeDD).data('previousJobTypeId', jobTypeSelectedId);
+             if (jobTypeActuallyChanged) {
+                 materialBox.data('manualSelection', false);
+             }
+
+             var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+             var selectedJobType = jobTypes.find(x => String(x.id) === String(jobTypeSelectedId));
+             var defaultMaterialId = selectedJobType ? selectedJobType.default_material_id : null;
+
+             var currentlySelectedMaterial = materialBox.val();
+             materialBox.empty();
+             materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
 
             $.each(jobTypeMaterials, function(key, value) {
-                materialBox.append($("<option></option>")
-                    .attr("value", value.material_id)
-                    .text(materials.find(x => x.id === value.material_id).name));
-            });
+                 materialBox.append($("<option></option>")
+                     .attr("value", value.material_id)
+                     .text(materials.find(x => x.id === value.material_id).name));
+             });
 
-            if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
-                materialBox.val(currentlySelectedMaterial);
-            } else if (jobTypeMaterials.length > 0) {
-                materialBox.val(jobTypeMaterials[0].material_id);
-            }
+             var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
+             var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
 
-            var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
-            var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
-            var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
-                .val().split(',');
+             if (jobTypeActuallyChanged && defaultIsAllowed) {
+                 materialBox.val(defaultMaterialId);
+             } else if (previousIsAllowed) {
+                 materialBox.val(currentlySelectedMaterial);
+             } else {
+                 materialBox.val('');
+             }
+
+             var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
+             var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
+             var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
+                 .val().split(',');
 
             if ($(jobTypeDD).find(":selected").val() == 6) {
                 $(abutmentBox).attr('required', '');

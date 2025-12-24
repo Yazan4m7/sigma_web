@@ -163,7 +163,7 @@
                                 @forelse ($logs as $log)
                                     <tr>
                                         <td>
-                                            <div class="font-weight-bold">{{ $log->created_at->format('Y-m-d') }}</div>
+                                            <div class="font-weight-bold">{{ ui_view_date($log->created_at) }}</div>
                                             <small class="text-muted">{{ $log->created_at->format('H:i:s') }}</small>
                                         </td>
                                         <td>

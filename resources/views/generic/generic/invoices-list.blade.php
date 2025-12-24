@@ -88,17 +88,17 @@
                   </div>
 
         </div>
-
-
+        </div>
+        </div>
 </form>
 
-        </div>
+
 <hr>
             <div class="card-body table-responsive">
                 <h5 class="header-title">Total Amount:</h5>
                 <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($invoices->sum('amount'))}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
                 <p class="text-muted"></p>
-                <div class="table-odd">
+                <div class="table-odd" style="padding: 0 20px">
                     <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12" style="padding:5px">
 
                                 <table id="datatable" class="dataTable no-footer  order-column  display nowrap compact cell-border sunriseTable" role="grid" aria-describedby="datatable_info">

@@ -72,13 +72,13 @@
                                     <td class="tabledit-view-mode"><span class="tabledit-span">{{$user->phone}}</span><input class="tabledit-input form-control input-sm" type="text" name="col1" value="Doe" style="display: none;" disabled=""></td>
 
                                </tr>
-                                <div class="modal fade" tabindex="-1" role="dialog" id="actionsDialog{{$user->id}}">
+                                <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$user->id}}">
 
                                     <input type="hidden" name="case_id" value="{{$user->id}}">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Job Type Actions</h5>
+                                                <h5 class="modal-title">User Actions</h5>
 
                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -86,54 +86,48 @@
                                             </div>
                                             <div class="modal-body">
 
-                                                <div class="form-group row" style="margin-bottom: 0px">
-                                                    <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                <div class="form-group row mb-0">
+                                                    <div class="form-group col-6 mb-0">
                                                         <label for="doctor">Name: </label>
-                                                        <h5 id="doctor"><b>{{$user->fullName()}}</b></h5>
+                                                        <h5 id="doctor">{{$user->fullName()}}</h5>
                                                     </div>
-                                                    <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                    <div class="form-group col-6 mb-0">
                                                         <label for="doctor">Name Initials: </label>
-                                                        <h5 id="doctor"><b>{{$user->name_initials}}</b></h5>
+                                                        <h5 id="doctor">{{$user->name_initials}}</h5>
                                                     </div>
                                                 </div>
 
-                                                <div class="form-group row" style="margin-bottom: 0px">
-                                                    <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                <div class="form-group row mb-0">
+                                                    <div class="form-group col-6 mb-0">
                                                         <label for="doctor">Is Admin: </label>
-                                                        <h5 id="doctor"><b>{{$user->is_admin ? 'YES' : 'NO'}}</b></h5>
+                                                        <h5 id="doctor">{{$user->is_admin ? 'YES' : 'NO'}}</h5>
                                                     </div>
-                                                    <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                    <div class="form-group col-6 mb-0">
                                                         <label for="doctor">Status: </label>
-                                                        <h5 id="doctor"><b>{{$user->status ? 'Active' : 'Disabled'}}</b></h5>
+                                                        <h5 id="doctor">{{$user->status ? 'Active' : 'Disabled'}}</h5>
                                                     </div>
                                                 </div>
                                                 <hr>
 
                                             </div>
-                                            <div class="modal-footer fullBtnsWidth" >
-                                                <div class="row"  style=" margin-right: 0px; margin-left: 0px;width:100%">
-
-
-                                                    <div class="row">
-                                                        <!-------------------------
-                                                         -------- Edit CASE --------
-                                                         -------------------------->
-                                                        <div class="col-12 padding5px" >
-                                                            <a  href="{{route('edit-user-view',$user->id)}}">
-                                                                <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Edit User</button>
-                                                            </a></div>
-                                                        <div class="col-12 padding5px" >
-                                                            <a href="{{route('soft-delete-user', $user->id)}}" onclick="return confirm('Are you sure you want to delete this user?');">
-                                                                <button type="button" class="btn btn-danger">Delete</button>
-                                                            </a></div>
+                                            <div class="modal-footer">
+                                                <div class="row sigma-actions-row">
+                                                    <div class="col-12 col-sm-6">
+                                                        <a href="{{route('edit-user-view',$user->id)}}" class="btn btn-warning">
+                                                            <i class="fa-solid fa-pen-to-square"></i> Edit User
+                                                        </a>
                                                     </div>
-
-                                                    <div class="col-12 padding5px" >
-                                                        <button type="button" class="btn btn-secondary " data-dismiss="modal" style="width:100%">Cancel</button>
+                                                    <div class="col-12 col-sm-6">
+                                                        <a href="{{route('soft-delete-user', $user->id)}}"
+                                                            onclick="return confirm('Are you sure you want to delete this user?');"
+                                                            class="btn btn-danger">
+                                                            Delete
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                                     </div>
                                                 </div>
-
-
                                             </div>
 
 
@@ -152,7 +146,6 @@
         </div>
     </div>
 @endsection
-
 
 
 

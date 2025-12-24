@@ -12,6 +12,7 @@
 
     // Get stage configuration
     $stageConfig = OperationsUpgrade::STAGE_CONFIG;
+    $stageNumber = $stageConfig[$type]['number'] ?? null;
 
     // Get all builds for this device that have not been finished
     $builds = Build::where('device_used', $deviceId)
@@ -19,23 +20,57 @@
         ->whereNull('finished_at')
         ->get();
 
-    // Create an array to store job data for each build
     $buildData = [];
+    $buildIds = $builds->pluck('id')->values()->all();
+    $buildIdField = null;
+
+    if ($type == 'milling') {
+        $buildIdField = 'milling_build_id';
+    } else if ($type == '3dprinting') {
+        $buildIdField = 'printing_build_id';
+    } else if ($type == 'sintering') {
+        $buildIdField = 'sintering_build_id';
+    } else if ($type == 'pressing') {
+        $buildIdField = 'pressing_build_id';
+    }
+
+    $buildJobs = collect();
+    $casesById = collect();
+
+    if (!empty($buildIds) && $buildIdField) {
+        $buildJobs = job::whereIn($buildIdField, $buildIds)
+            ->with(['jobType', 'subType'])
+            ->get();
+
+        $caseIds = $buildJobs->pluck('case_id')->unique()->values()->all();
+
+        if (!empty($caseIds)) {
+            $casesById = sCase::whereIn('id', $caseIds)
+                ->with([
+                    'client:id,name',
+                    'jobs' => function ($q) use ($stageNumber) {
+                        $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'sintering_build_id', 'pressing_build_id', 'milling_build_id', 'type_id');
+                        if ($stageNumber !== null) {
+                            $q->where('stage', $stageNumber);
+                        }
+                    },
+                    'jobs.material:id,name,count_as_unit',
+                    'jobs.jobType:id,name',
+                    'jobs.subType:id,name,material_id',
+                    'jobs.implantR:id,name',
+                    'jobs.abutmentR:id,name',
+                    'notes.writtenBy:id,name_initials'
+                ])
+                ->get()
+                ->keyBy('id');
+        }
+    }
+
+    $jobsByBuild = $buildIdField ? $buildJobs->groupBy($buildIdField) : collect();
 
     // For each build, get its jobs and cases
     foreach ($builds as $build) {
-        // Get all jobs with this build ID based on workflow type
-        $buildJobs = [];
-
-        if ($type == 'milling') {
-            $buildJobs = job::where('milling_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == '3dprinting') {
-            $buildJobs = job::where('printing_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == 'sintering') {
-            $buildJobs = job::where('sintering_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == 'pressing') {
-            $buildJobs = job::where('pressing_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        }
+        $buildJobs = $jobsByBuild->get($build->id, collect());
 
         // Count the jobs
         $jobCount = count($buildJobs);
@@ -49,19 +84,12 @@
         ];
 
         // Group jobs by case
-        $jobsByCaseId = [];
-        foreach ($buildJobs as $job) {
-            $caseId = $job->case_id;
-            if (!isset($jobsByCaseId[$caseId])) {
-                $jobsByCaseId[$caseId] = [];
-            }
-            $jobsByCaseId[$caseId][] = $job;
-        }
+        $jobsByCaseId = $buildJobs->groupBy('case_id');
          Log::info("Active cases dialog : jobsByCaseId count : ".count($jobsByCaseId));
 
         // For each case, get case details and job info
         foreach ($jobsByCaseId as $caseId => $jobs) {
-            $case = sCase::find($caseId);
+            $case = $casesById->get($caseId);
               Log::info("Active cases dialog : case : ". json_encode($case));
             if (!$case) continue;
 
@@ -570,15 +598,23 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
                                 @if($type == 'sintering')
                                     {{-- For sintering, show formatted date instead of build name --}}
-                                    <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? $data['build']->created_at->format('M d, Y') : 'Recent Build' }}</div>
+                                    <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? ui_dialog_date($data['build']->created_at) : 'Recent Build' }}</div>
                                 @else
                                     {{-- For other stages, show build info --}}
                                     <div class="sigma-build-title">{{ $data['build']->name }}</div>
                                 @endif
 
                                 <div class="sigma-build-units">{{ $totalUnits }}</div>
-                                <div class="sigma-build-toggle">
-                                    <i class="fas fa-chevron-down"></i>
+                                <div class="sigma-build-actions">
+                                    <button type="button"
+                                            class="sigma-build-remove"
+                                            aria-label="Remove build"
+                                            onclick="event.stopPropagation(); requestBuildRemoval('{{ $deviceId }}', '{{ $type }}', '{{ $data['build']->id }}', {{ $caseActive ? 'true' : 'false' }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <div class="sigma-build-toggle">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -655,6 +691,13 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     <input type="hidden" name="type" id="action-type-{{ $deviceId }}" value="{{ $type }}">
     <input type="hidden" class="buildsIdsHiddenInput{{$deviceId}}" name="buildsIdsHiddenInput{{$deviceId}}"
            id="action-buildsIds-{{ $deviceId }}" value="">
+</form>
+
+<form id="remove-build-form-{{ $deviceId }}" method="POST" action="{{ route('remove-builds') }}" class="d-none">
+    @csrf
+    <input type="hidden" name="deviceId" value="{{ $deviceId }}">
+    <input type="hidden" name="type" value="{{ $type }}">
+    <input type="hidden" name="buildIds" id="remove-build-ids-{{ $deviceId }}" value="">
 </form>
 
 
@@ -779,8 +822,42 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         margin-top: 4px;
     }
 
-    .sigma-build-toggle {
+    .sigma-build-actions {
         margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .sigma-build-remove {
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .sigma-build-remove:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-1px);
+    }
+
+    .sigma-build-remove:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+    }
+
+    .sigma-build-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .sigma-build-toggle i {

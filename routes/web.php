@@ -115,6 +115,7 @@ Route::post('/assign-deliveries', [App\Http\Controllers\OperationsUpgrade::class
 Route::post('/set-cases-on-printer', [App\Http\Controllers\OperationsUpgrade::class, 'setJobsOnDevice'])->name('set-cases-on-printer');
 Route::post('/activate-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'activate3DBuilds'])->name('activate-3d-builds');
 Route::post('/finish-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'finish3DBuilds'])->name('finish-3d-builds');
+Route::post('/remove-builds', [App\Http\Controllers\OperationsUpgrade::class, 'removeBuilds'])->name('remove-builds');
 Route::post('/case/note', [App\Http\Controllers\CaseController::class, 'addNote'])->name('new-note');
 Route::get('/send-notification', [App\Http\Controllers\CaseController::class, 'sendNotification'])->name('new-notification');
 Route::get('/jwt', [App\Http\Controllers\CaseController::class, 'generateJWT'])->name('generate-jwt');
@@ -146,7 +147,10 @@ Route::get('/testme', function () {
 Auth::routes();
 
 Route::get('/new-case', [App\Http\Controllers\CaseController::class, 'create'])->name('new-case-view');
-Route::get('/login-attempt', '\App\Http\Controllers\Auth\LoginController@authenticate')->name('login-attempt');
+Route::get('/login-attempt', function () {
+    return redirect('/home');
+})->name('login-attempt');
+
 Route::get('/t-p', [App\Http\Controllers\CaseController::class, 'teethPopup'])->name('teeth-selecion-popup');
 Route::get('/welcome-screen', [App\Http\Controllers\ReportsController::class, 'blankPage'])->name('blank-page');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
@@ -530,6 +534,7 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
     // 3D Printing Build routes
     Route::post('/activate-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'activate3DBuilds'])->name('activate-3d-builds');
     Route::post('/finish-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'finish3DBuilds'])->name('finish-3d-builds');
+    Route::post('/remove-builds', [App\Http\Controllers\OperationsUpgrade::class, 'removeBuilds'])->name('remove-builds');
 
     // Notes routes
     Route::post('/case/note', [App\Http\Controllers\CaseController::class, 'addNote'])->name('new-note');
@@ -564,8 +569,6 @@ Route::get('/cases', [App\Http\Controllers\CaseController::class, 'index'])->nam
 Route::get('/delivery-schedule', [App\Http\Controllers\CaseController::class, 'deliverySchedule'])->name('delivery-schedule');
 Route::post('/delivery-schedule/update-date', [App\Http\Controllers\CaseController::class, 'updateDeliveryDate'])->name('edit-delivery-date');
 
-// View Doctors
-Route::get('/doctors/index', [App\Http\Controllers\ClientsController::class, 'index'])->name('clients-index');
 Route::get('/clients/statement/{id?}', [App\Http\Controllers\ClientsController::class, 'statementOfAccount'])->name('client-statement-admin');
 Route::post('/doctors/edit', [App\Http\Controllers\ClientsController::class, 'update'])->name('client-update');
 Route::get('/doctors/edit/{id}', [App\Http\Controllers\ClientsController::class, 'view'])->name('client-view-edit');
@@ -591,5 +594,3 @@ Route::get('/cases/lock/{id}', [App\Http\Controllers\CaseController::class, 'loc
 Route::get('/cases/unlock/{id}', [App\Http\Controllers\CaseController::class, 'unlockCase'])->name('unlock-case');
 
 //});
-
-

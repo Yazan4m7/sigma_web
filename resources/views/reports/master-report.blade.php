@@ -1655,14 +1655,15 @@
                         },
                         // FIX: Use initComplete to apply preferences and fix positions
                         "initComplete": function(settings, json) {
+                            const tableApi = this.api();
                             // Apply column visibility preferences
                             $('.column-toggle').each(function() {
                                 const columnIndex = $(this).data('column');
                                 const isVisible = $(this).is(':checked');
-                                window.masterReportTable.column(columnIndex).visible(isVisible);
+                                tableApi.column(columnIndex).visible(isVisible);
                             });
-                            if (window.masterReportTable.fixedColumns) {
-                                window.masterReportTable.fixedColumns().relayout();
+                            if (tableApi.fixedColumns) {
+                                tableApi.fixedColumns().relayout();
                             }
                             // Fix sticky column positions after table is drawn and visibility is set
                             fixStickyColumnPositions();
