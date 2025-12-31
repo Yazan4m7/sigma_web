@@ -17,68 +17,58 @@ jQuery(document).ready(function($) {
 
 (function initModalPositioning() {
     const root = document.documentElement;
-    const xKeywords = { left: 'flex-start', center: 'center', right: 'flex-end' };
-    const yKeywords = { top: 'flex-start', center: 'center', bottom: 'flex-end' };
+    const modalSelector = '.modal, .sigma-workflow-modal, .blackbox-modal, .silicon-valley-delivery-modal';
+    const dialogSelector = '.modal-dialog, .sigma-workflow-dialog, .blackbox-dialog, .silicon-valley-delivery-dialog';
 
-    function normalizeModalPosition(value, axis) {
+    function normalizeAxis(value, axis) {
         const defaultValue = 'center';
 
         if (value === undefined || value === null || value === '') {
-            return { type: 'keyword', value: defaultValue };
+            value = defaultValue;
         }
 
         if (typeof value === 'number' && Number.isFinite(value)) {
-            return { type: 'pixel', value: value + 'px' };
+            return { value: value + 'px', center: false };
         }
 
         if (typeof value === 'string') {
             const trimmed = value.trim().toLowerCase();
-            const keywords = axis === 'x' ? xKeywords : yKeywords;
 
-            if (Object.prototype.hasOwnProperty.call(keywords, trimmed)) {
-                return { type: 'keyword', value: trimmed };
+            if (trimmed === 'center') {
+                return { value: '50%', center: true };
             }
 
             if (/^-?\d+(\.\d+)?px$/.test(trimmed)) {
-                return { type: 'pixel', value: trimmed };
+                return { value: trimmed, center: false };
             }
 
             if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
-                return { type: 'pixel', value: trimmed + 'px' };
+                return { value: trimmed + 'px', center: false };
             }
         }
 
-        return { type: 'keyword', value: defaultValue };
+        return { value: '50%', center: true };
     }
 
     function applyModalPositioning() {
-        const posX = normalizeModalPosition(window.modalPosX, 'center');
-        const posY = normalizeModalPosition(window.modalPosY, 'center');
-
-        root.style.setProperty('--modal-pos-x', String(window.modalPosX ?? 'center'));
-        root.style.setProperty('--modal-pos-y', String(window.modalPosY ?? 'center'));
-        root.style.setProperty('--modal-offset-x', '0px');
-        root.style.setProperty('--modal-offset-y', '0px');
-
-        let justify = 'center';
-        let align = 'center';
-
-        if (posX.type === 'keyword') {
-            justify = xKeywords[posX.value] || 'center';
-        } else {
-            justify = 'flex-start';
-            root.style.setProperty('--modal-offset-x', posX.value);
+        if (!window.enableModalPositioning) {
+            return;
         }
 
-        if (posY.type === 'keyword') {
-            align = yKeywords[posY.value] || 'center';
-        } else {
-            align = 'flex-start';
-            root.style.setProperty('--modal-offset-y', posY.value);
-        }
+        const posX = normalizeAxis(window.modalPosX, 'x');
+        const posY = normalizeAxis(window.modalPosY, 'y');
 
-        root.style.setProperty('--modal-justify', justify);
-        root.style.setProperty('--modal-align', align);
+        root.style.setProperty('--modal-x', posX.value);
+        root.style.setProperty('--modal-y', posY.value);
+
+        document.querySelectorAll(modalSelector).forEach(modal => {
+            modal.classList.add('modal-positioning-enabled');
+        });
+
+        document.querySelectorAll(dialogSelector).forEach(dialog => {
+            dialog.classList.toggle('modal-pos-center-x', posX.center);
+            dialog.classList.toggle('modal-pos-center-y', posY.center);
+        });
     }
 
     if (typeof window.modalPosX === 'undefined') {
@@ -96,6 +86,9 @@ jQuery(document).ready(function($) {
     } else {
         applyModalPositioning();
     }
+
+    document.addEventListener('shown.bs.modal', applyModalPositioning);
+    window.addEventListener('resize', applyModalPositioning);
 })();
 
 

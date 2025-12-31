@@ -1375,11 +1375,12 @@
             var jobTypeSelectedId = $(jobTypeDD).val();
             var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
             materialBox.empty();
-            $.each(jobTypeMaterials, function(key, value) {
-                materialBox.append($("<option></option>")
-                    .attr("value", value.material_id)
-                    .text( materials.find(x => x.id === value.material_id).name));
-            });
+                $.each(jobTypeMaterials, function(key, value) {
+                    var material = materials.find(x => String(x.id) === String(value.material_id));
+                    materialBox.append($("<option></option>")
+                        .attr("value", value.material_id)
+                        .text(material ? material.name : ('Material #' + value.material_id)));
+                });
             console.log("New job type changed " +$(jobTypeDD).find(":selected").val() );
             materialChanged();
 

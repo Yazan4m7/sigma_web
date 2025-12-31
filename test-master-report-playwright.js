@@ -215,17 +215,20 @@ async function runTests() {
     const context = await browser.newContext();
     const page = await context.newPage();
 
+    
+    
+
     // Login first
-    console.log('🔐 Logging in to SIGMA...');
+    console.log('Logging in to SIGMA...');
     try {
         await page.goto('http://localhost:8000/login');
         await page.fill('input[name="email"]', 'admin@admin.com');
         await page.fill('input[name="password"]', 'admin');
         await page.click('button[type="submit"]');
         await page.waitForNavigation({ timeout: 10000 });
-        console.log('✅ Login successful\n');
+        console.log('Login successful');
     } catch (error) {
-        console.error('❌ Login failed:', error.message);
+        console.error('Login failed:', error.message);
         await browser.close();
         return;
     }

@@ -5906,7 +5906,7 @@ button.close {
 
 @media screen and (prefers-reduced-motion: reduce) {
   .modal.fade .modal-dialog {
-    transition: none;
+
   }
 }
 

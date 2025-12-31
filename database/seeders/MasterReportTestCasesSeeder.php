@@ -38,6 +38,7 @@ class MasterReportTestCasesSeeder extends Seeder
         $implants = \App\implant::all();
         $failureCauses = \App\failureCause::all();
 
+
         echo "Found:\n";
         echo "- {$clients->count()} clients\n";
         echo "- {$materials->count()} materials\n";

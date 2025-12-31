@@ -196,16 +196,43 @@
         .deleteBtn2 {
             border-radius: 12px;
             border: 1px solid transparent;
-            background: #fef2f2;
-            color: #b91c1c;
             font-weight: 600;
             transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
         }
 
-        .deleteBtn:hover,
+        .deleteBtn {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+        }
+
+        .deleteBtn:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: #fff;
+        }
+
+        .deleteBtn2 {
+            background: #f97316;
+            border-color: #f97316;
+            color: #fff;
+        }
+
         .deleteBtn2:hover {
-            background: #fee2e2;
-            color: #7f1d1d;
+            background: #ea580c;
+            border-color: #ea580c;
+            color: #fff;
+        }
+
+        .deleteBtn i,
+        .deleteBtn:hover i,
+        .deleteBtn2 i,
+        .deleteBtn2:hover i {
+            color: currentColor;
         }
 
         input[type="file"].form-control {
@@ -400,7 +427,7 @@
         }
         .modal-content {
             width: 160%;
-        {
+        }
 
         .checked {
             filter: invert(26%) sepia(73%) saturate(492%) hue-rotate(133deg) brightness(94%) contrast(86%);
@@ -1332,12 +1359,13 @@
             // Add default option for materials
             materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
 
-            // Populate materials compatible with selected job type
-             $.each(jobTypeMaterials, function(key, value) {
-                 materialBox.append($("<option></option>")
-                     .attr("value", value.material_id)
-                     .text(materials.find(x => x.id === value.material_id).name));
-             });
+             // Populate materials compatible with selected job type
+              $.each(jobTypeMaterials, function(key, value) {
+                  var material = materials.find(x => String(x.id) === String(value.material_id));
+                  materialBox.append($("<option></option>")
+                      .attr("value", value.material_id)
+                      .text(material ? material.name : ('Material #' + value.material_id)));
+              });
 
              var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
              var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
@@ -1500,7 +1528,7 @@
         });
 
 
-        $(".teeth").click(function() {
+        $(document).on('click', '.teeth', function() {
 
             // Check if any jaws is selected, if any remove them from array
             if (jQuery.inArray("upper", teethSelected) !== -1) {
@@ -1539,7 +1567,7 @@
 
             $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
         });
-        $(".jaw").click(function() {
+        $(document).on('click', '.jaw', function() {
 
             if ($(this).hasClass("checked")) {
                 $(this).removeClass("checked");

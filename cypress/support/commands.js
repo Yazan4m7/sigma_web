@@ -3,31 +3,16 @@
 // ***********************************************
 
 /**
- * Login command - creates a session for authenticated requests
- * Usage: cy.login() or cy.login('username', 'password')
- *
- * Defaults to admin/admin for the seeded test environment.
+ * Login command - auth is disabled; just visit home and proceed.
  */
-Cypress.Commands.add('login', (username = 'admin', password = 'admin') => {
-    cy.session([username, password], () => {
-        cy.visit('/login')
-
-        // Wait for login form to be visible
-        cy.get('input[name="username"]', { timeout: 10000 }).should('be.visible')
-
-        // Enter credentials
-        cy.get('input[name="username"]').clear().type(username, { log: false })
-        cy.get('input[name="password"]').clear().type(password, { log: false })
-
-        // Submit the form
-        cy.get('button[type="submit"]').click()
-
-        // Wait for successful login (redirect away from login page)
+Cypress.Commands.add('login', () => {
+    cy.session(['public-session'], () => {
+        cy.visit('/home')
         cy.url({ timeout: 15000 }).should('not.include', '/login')
     }, {
         validate() {
-            // Check if session is still valid by verifying cookie exists
-            cy.getCookie('laravel_session').should('exist')
+            // No auth cookie required; ensure we can load home.
+            cy.request('/home').its('status').should('eq', 200)
         }
     })
 })

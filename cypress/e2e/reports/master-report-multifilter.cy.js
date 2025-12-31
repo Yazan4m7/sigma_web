@@ -4,7 +4,7 @@ Cypress.on('uncaught:exception', () => false);
 
 describe('Master Report - Multi-filter smoke', () => {
   beforeEach(() => {
-    cy.login('admin', 'admin');
+    cy.visit('/reports/master?from=2025-09-01&to=2025-10-31&generate_report=1');
   });
 
   const baseRange = 'from=2025-10-01&to=2025-10-31&generate_report=1';

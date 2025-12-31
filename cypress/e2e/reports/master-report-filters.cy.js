@@ -13,7 +13,7 @@ const assertCaseIds = (expected) => {
 
 describe('Master Report - Filter coverage', () => {
   beforeEach(() => {
-    cy.login('admin', 'admin');
+    cy.visit('/reports/master?from=2025-09-01&to=2025-10-31&generate_report=1');
   });
 
   it('filters by doctor', () => {

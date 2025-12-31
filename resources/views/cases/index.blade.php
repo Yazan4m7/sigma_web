@@ -2,6 +2,182 @@
 @section('content')
 
     <style>
+        @font-face {
+            font-family: 'NewYorkSmall';
+            src: url('/assets/fonts/newyork/NewYorkSmall-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NewYorkSmall';
+            src: url('/assets/fonts/newyork/NewYorkSmall-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'NewYorkSmall';
+            src: url('/assets/fonts/newyork/NewYorkSmall-Semibold.otf') format('opentype');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: url('/assets/fonts/SF-Pro/SF-Pro-Text-Thin.otf') format('opentype');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: url('/assets/fonts/SF-Pro/SF-Pro-Text-Regular.otf') format('opentype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Text';
+            src: url('/assets/fonts/SF-Pro/SF-Pro-Text-Medium.otf') format('opentype');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        .cases-datetime-picker {
+            font-family: 'NewYorkSmall', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .cases-datetime-picker * {
+            font-family: inherit;
+        }
+
+        .cases-datetime-picker .ios-picker-header,
+        .cases-datetime-picker .ios-picker-btn,
+        .cases-datetime-picker .ios-wheel li {
+            font-family: 'NewYorkSmall', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .cases-datetime-picker .ios-picker-btn {
+            font-weight: 600;
+        }
+
+        .cases-datetime-picker .ios-wheel li.selected {
+            font-weight: 700;
+        }
+
+        .sigma-case-status-badge {
+            width: 17vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .sigma-case-status-badge.badge-primary {
+            color: #ffffff;
+        }
+
+        .sigma-case-status-badge .tooltipX {
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        .sigma-case-status-badge .sigma-badge-label {
+            display: inline-block;
+            max-width: 100%;
+            min-width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 42px; /* 30% smaller than 60px */
+            height: 23.8px; /* 30% smaller than 34px */
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18.2px; /* 30% smaller than 26px */
+            width: 18.2px; /* 30% smaller than 26px */
+            left: 2.8px; /* 30% smaller than 4px */
+            bottom: 2.8px; /* 30% smaller than 4px */
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: #317d7f; /* New background color */
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #317d7f; /* Updated shadow color */
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(18.2px); /* 30% smaller than 26px */
+            -ms-transform: translateX(18.2px);
+            transform: translateX(18.2px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 23.8px; /* 30% smaller than 34px */
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        .tooltip-toggle-container {
+            position: absolute;
+            top: 8px;
+            right: 50px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            flex-direction: row-reverse; /* Label on left */
+        }
+
+        .tooltip-toggle-container label {
+            margin-right: 10px; /* Adjusted margin */
+            color: #495057;
+            font-weight: 600;
+            white-space: nowrap; /* Prevent label from wrapping */
+        }
         /* Modal dialog border radius - all corners uniform */
         .modal-content {
             border-radius: 25px !important;
@@ -12,6 +188,9 @@
             color: #2d5f6d;
             font-weight: 600;
             font-size: 18px;
+        }
+        .badge .badge-success{
+            width:7vw !important;
         }
 
         /* Modal header styling with divider */
@@ -69,10 +248,52 @@
         }
 
         /* Tooltip styling */
-        .tooltiptext {
+        .case-jobs-tooltip {
             display: none;
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.98); /* Slightly transparent white */
+            border: 1px solid #e0e0e0;
+            padding: 12px; /* Increased padding a bit for a less cramped feel */
+            z-index: 1000;
+            width: 340px; /* Adjusted width */
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1); /* Softer, more pronounced shadow */
+            border-radius: 10px; /* Smoother radius */
+            font-size: 14px; /* A more readable base font size */
+            color: #2c3e50;
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(5px);
         }
 
+        .case-jobs-tooltip table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .case-jobs-tooltip th, .case-jobs-tooltip td {
+            border: none; /* No cell borders */
+            padding: 10px 12px; /* More generous padding */
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1; /* Light row separator */
+        }
+
+        .case-jobs-tooltip th {
+            background-color: transparent; /* No header background color */
+            font-weight: 600;
+            font-size: 13px;
+            color: #34495e; /* Darker, more professional header text */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .case-jobs-tooltip tr:last-child td {
+            border-bottom: none; /* No border for the last row */
+        }
+
+        .case-jobs-tooltip tr:hover {
+            background-color: #f8f9fa; /* Very subtle hover effect */
+        }
+        
         /* Button improvements */
         .btn-outline-danger, .btn-outline-secondary {
             transition: all 0.3s ease;
@@ -102,6 +323,25 @@
         }
 
         .kt-subheader__search .form-control:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
+        #cases_from.dtp-input,
+        #cases_to.dtp-input {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+            background-color: #fff;
+            color: #495057;
+        }
+
+        #cases_from.dtp-input:focus,
+        #cases_to.dtp-input:focus {
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
         }
@@ -220,14 +460,27 @@
 
     @endphp
     @if(!isset($isSearchResults))
-        @if(!isset($trashedCases))
-            @if(isset($clients))
-                <form class="kt-form" method="GET" action="{{route('cases-index')}}">
-                    @else
-                        <form class="kt-form" method="GET" action="{{route('dentist-cases',['id' =>$id])}}">
-                            <input type="hidden" class="form-control" name="id" value="{{$id}}">
-                            @endif
-                            <div class="container full-width">
+        @php
+            if (isset($trashedCases)) {
+                $casesFiltersAction = route('deleted-cases');
+            } elseif (isset($clients)) {
+                $casesFiltersAction = route('cases-index');
+            } else {
+                $casesFiltersAction = route('dentist-cases', ['id' => $id]);
+            }
+        @endphp
+        <form class="kt-form sigma-sticky-toolbar" method="GET" action="{{ $casesFiltersAction }}">
+            @if(!isset($trashedCases) && !isset($clients))
+                <input type="hidden" class="form-control" name="id" value="{{$id}}">
+            @endif
+                              <div class="container full-width">
+                                  <div class="tooltip-toggle-container">
+                                      <label for="tooltip-toggle">Enable Tooltip</label>
+                                      <label class="switch">
+                                          <input type="checkbox" id="tooltip-toggle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
                                 <!-- Trash can icon in top-right corner -->
                                 <a href="{{route('deleted-cases')}}" class="trash-icon-corner" title="View Deleted Cases">
                                     <i class="fa-regular fa-trash-can"></i>
@@ -237,23 +490,29 @@
                                     <!-- Date filtering section -->
                                     <div class="col-6 col-sm-6 col-md-2 mb-3">
                                         <div class="kt-subheader__search">
-                                            <label>From (Start of):</label>
-                                            <div class="ios-date-picker" data-name="from" data-initial="{{$from}}"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label>To (End of):</label>
-                                            <div class="ios-date-picker" data-name="to" data-initial="{{$to}}"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label>To (End of):</label>
+                                            <label for="cases_from">From (Start of):</label>
                                             <x-date-time-picker
-                                                    name="meeting_time"
-                                                    label="Meeting Time"
-                                                    value="Monday, 2024-Dec-25 02:30 PM"
+                                                    id="cases_from"
+                                                    name="from"
+                                                    label=""
+                                                    mode="datetime"
+                                                    display-format="DD MMM, YYYY hh:mm a"
+                                                    submit-format="YYYY-MM-DD"
+                                                    value="{{ $from }}"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
+                                        <div class="kt-subheader__search">
+                                            <label for="cases_to">To (End of):</label>
+                                            <x-date-time-picker
+                                                    id="cases_to"
+                                                    name="to"
+                                                    label=""
+                                                    mode="datetime"
+                                                    display-format="DD MMM, YYYY hh:mm a"
+                                                    submit-format="YYYY-MM-DD"
+                                                    value="{{ $to }}"
                                             />
                                         </div>
                                     </div>
@@ -267,17 +526,17 @@
                                             <div class="dropdown" style="text-align: left;">
                                                 <label>Doctor:</label>
                                                 <br>
-                                                <select style="width:100%" class="selectpicker clearOnAll greyBG"
-                                                        multiple
-                                                        name="doctor[]" id="doctor"
-                                                        data-live-search="true">
-                                                    <option
-                                                        value="all" {{(isset($selectedClients) && in_array("All" ,$selectedClients)) ? 'selected' : ''}}>
-                                                        All
-                                                    </option>
-                                                    @foreach($clients as $d)
-                                                        <option
-                                                            value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
+                                                     <select style="width:100%" class="selectpicker clearOnAll greyBG"
+                                                             multiple
+                                                             name="doctor[]" id="doctor"
+                                                             data-live-search="true">
+                                                         <option
+                                                        value="all" {{(isset($selectedClients) && in_array("all" ,$selectedClients)) ? 'selected' : ''}}>
+                                                             All
+                                                         </option>
+                                                         @foreach($clients as $d)
+                                                             <option
+                                                                 value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -300,17 +559,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Added better spacing between filters and table -->
-                            <div class="filter-section"></div>
-                        </form>
-                    @endif
-                    @endif
-                    <div class="container full-width">
-                        <div class="row" style="">
-                            <div class="col-12">
-                                <br>
+                              <!-- Added better spacing between filters and table -->
+                              <div class="filter-section"></div>
+                          </form>
+    @endif
+                      <div class="container full-width">
+                          <div class="row" style="">
+                              <div class="col-12">
+                                  <br>
                                 <table id="casesTable"
-                                       class="table-striped compact sunriseTable"
+                                       class="table-striped compact sunriseTable sigma-sticky-table-header"
                                        role="grid"
                                        style="width:100%">
                                     <thead>
@@ -331,6 +589,7 @@
                                     @foreach($cases  as $case)
                                         @php
                                             // Check if case is in-progress and initial_delivery_date has passed
+                                            $caseStatus = (string) $case->status();
                                             $isOverdue = false;
                                             if (!$case->actual_delivery_date && $case->initial_delivery_date) {
                                                 $now = \Carbon\Carbon::now();
@@ -340,8 +599,8 @@
                                             $rowStyle = $isOverdue ? 'color: #dc3545; font-weight: 600;' : '';
                                         @endphp
 
-                                        <tr role="row" class="odd clickable" data-toggle="modal"
-                                            data-target="#actionsDialog{{$case->id ?? "x"}}" style="{{$rowStyle}}">
+                                        <tr role="row" class="odd clickable case-row" data-toggle="modal"
+                                            data-target="#actionsDialog{{$case->id ?? "x"}}" style="{{$rowStyle}}" data-case-id="{{$case->id}}">
                                             <td>{{$case->client->name ?? "x"}}</td>
                                             <td>{{$case->patient_name ?? "x"}}</td>
                                             <td class="initDeliDateTD">{{$case->initDeliveryDate() ?? "x" }}
@@ -349,31 +608,53 @@
                                             <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                                 &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
                                             <td>
-                                                @if(str_contains($case->status(), "Completed") )
-                                                    <span class="badge badge-success">
-                                                                           {{$case->status()}} </span>
-                                                @elseif(str_contains($case->status(), "In-Progress") || str_contains($case->status(), "Active"))
-                                                    <span style="width:auto; margin: auto; text-align: center"
-                                                          class="badge badge-primary">
-                                                                           <span class="tooltipX"> {{str_replace("Active in","",$case->status())}}
-                                                                               <span
-                                                                                   class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
-                                                                </span></span>
-                                                @elseif(str_contains($case->status(), "Waiting"))
-                                                    <span style="width:auto; margin: auto; text-align: center"
-                                                          class="badge badge-danger">
+                                                @if(str_contains($caseStatus, "Completed") )
+                                                    <span class="badge badge-success sigma-case-status-badge">
+                                                        <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                                    </span>
+                                                @elseif(str_contains($caseStatus, "In-Progress") || str_contains($caseStatus, "Active"))
+                                                    @php
+                                                        $rawStatus = trim($caseStatus);
+                                                        $segment = $rawStatus;
+
+                                                        if (\Illuminate\Support\Str::contains($rawStatus, 'Active in')) {
+                                                            $segment = trim(\Illuminate\Support\Str::afterLast($rawStatus, 'Active in'));
+                                                        } elseif (\Illuminate\Support\Str::contains($rawStatus, 'In-Progress in')) {
+                                                            $segment = trim(\Illuminate\Support\Str::afterLast($rawStatus, 'In-Progress in'));
+                                                        }
+
+                                                        $stage = trim($segment);
+                                                        $assignee = '';
+                                                        if (\Illuminate\Support\Str::contains($segment, 'w/')) {
+                                                            $stage = trim(\Illuminate\Support\Str::beforeLast($segment, 'w/'));
+                                                            $assignee = trim(\Illuminate\Support\Str::afterLast($segment, 'w/'));
+                                                        }
+
+                                                        $formattedStatus = $assignee !== '' ? ($stage . '/ ' . $assignee) : $stage;
+                                                    @endphp
+                                                    <span class="badge badge-primary sigma-case-status-badge">
+                                                                            <span class="tooltipX">
+                                                                                <span class="sigma-badge-label">{{ $formattedStatus }}</span>
+                                                                                <span
+                                                                                    class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
+                                                                </span>
+                                                    </span>
+                                                @elseif(str_contains($caseStatus, "Waiting"))
+                                                    <span class="badge badge-danger sigma-case-status-badge">
                                                                 @php
-                                                                    $status =  preg_replace('/' . "in" . '/', "", str_replace("Waiting","",$case->status()), 1);
+                                                                    $status =  preg_replace('/' . "in" . '/', "", str_replace("Waiting","",$caseStatus), 1);
                                                                 @endphp
 
-                                                        {{$status}} </span>
+                                                        <span class="sigma-badge-label">{{ trim($status) }}</span>
+                                                    </span>
                                                 @else
-                                                    <span style="width:auto; margin: auto; text-align: center"
-                                                          class="badge badge-warning">
-                                                                           <span class="tooltipX"> {{$case->status()}}
+                                                    <span class="badge badge-warning sigma-case-status-badge">
+                                                                           <span class="tooltipX">
+                                                                               <span class="sigma-badge-label">{{ $caseStatus }}</span>
                                                                                <span
                                                                                    class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
-                                                                </span></span>
+                                                                </span>
+                                                    </span>
 
                                                 @endif
 
@@ -431,6 +712,11 @@
                                                                         @endphp
 
                                                                         @if($showJob)
+                                                                        <div class="job-info-for-tooltip" style="display: none;">
+                                                                            <span class="job-type">{{ $job->jobType->name ?? "No Job Type" }}</span>
+                                                                            <span class="job-material">{{ $job->material->name ?? "no material" }}</span>
+                                                                            <span class="job-units">{{ $job->unit_num }}</span>
+                                                                        </div>
                                                                         <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
                                                                             {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
                                                                                         {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
@@ -555,32 +841,54 @@
                     </div>
 
                     </div>
-                </form>
                 @push('js')
+                    <style>
+                        .case-jobs-tooltip {
+                            display: none;
+                            position: absolute;
+                            background-color: #ffffff; /* White background for clean look */
+                            border: 1px solid #e3e3e3; /* Light border */
+                            padding: 8px; /* Reduced padding */
+                            z-index: 1000;
+                            width: 320px; /* More compact width */
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Softer, larger shadow */
+                            border-radius: 8px; /* Increased corner radius */
+                            font-size: 13px; /* Smaller font for compactness */
+                            color: #333;
+                        }
+
+                        .case-jobs-tooltip table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 0; /* Remove extra space */
+                            margin-bottom: 0; /* Remove extra space */
+                        }
+
+                        .case-jobs-tooltip th, .case-jobs-tooltip td {
+                            border: 1px solid #eee; /* Light borders for cells */
+                            padding: 6px 8px; /* Compact padding */
+                            text-align: left;
+                        }
+
+                        .case-jobs-tooltip th {
+                            background-color: #f0f0f0; /* Slightly darker light header background */
+                            font-weight: 700; /* Bolder header */
+                            color: #333; /* Darker text for header */
+                            text-transform: uppercase;
+                        }
+
+                        .case-jobs-tooltip tr:nth-child(even) {
+                            background-color: #fdfdfd; /* Light stripe */
+                        }
+                        .case-jobs-tooltip tr:hover {
+                            background-color: #f0f8ff; /* Subtle hover effect */
+                        }
+                    </style>
                     <style>
                         /* Scoped iOS-style date picker */
                         .ios-picker-wrap {
                             position: relative;
                             width: 100%;
-                        }
-
-                        .ios-picker-input {
-                            width: 100%;
-                            padding: 10px 12px;
-                            border: 1px solid #d0d5dd;
-                            border-radius: 10px;
-                            background: #fff;
-                            color: #111827;
-                            font-size: 14px;
-                            text-align: left;
-                            cursor: pointer;
-                            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-                        }
-
-                        .ios-picker-input:focus {
-                            outline: none;
-                            border-color: #2563eb;
-                            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
                         }
 
                         .ios-picker-panel {
@@ -742,7 +1050,7 @@
 
                                 const display = document.createElement('button');
                                 display.type = 'button';
-                                display.className = 'ios-picker-input';
+                                display.className = 'form-control';
                                 display.textContent = formatDisplay(initial);
 
                                 const panel = document.createElement('div');
@@ -855,9 +1163,7 @@
                                 });
                             }
 
-                            document.addEventListener('DOMContentLoaded', () => {
-                                document.querySelectorAll('.ios-date-picker').forEach(initPicker);
-                            });
+                            document.querySelectorAll('.ios-date-picker').forEach(initPicker);
                         })();
                     </script>
                     {{--<script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>--}}
@@ -866,7 +1172,6 @@
                         $(document).ready(function () {
 
                             var table = $("#casesTable").DataTable({
-                                "fixedHeader": true,
                                 "colReorder": true,
                                 "responsive": true,
                                 "bLengthChange": false,  // Disable "Show XX entries" dropdown
@@ -911,6 +1216,76 @@
 
                         }
                     </script>
+<script>
+    $(document).ready(function() {
+        var tooltip = $('<div class="case-jobs-tooltip"></div>').appendTo('body');
+        var hoverTimeout;
+        // Default to true if not set, and handle the string 'false'
+        var tooltipEnabled = localStorage.getItem('tooltipEnabled') !== 'false';
+
+        // Set initial state of the toggle
+        $('#tooltip-toggle').prop('checked', tooltipEnabled);
+
+        // Handle toggle change
+        $('#tooltip-toggle').on('change', function() {
+            tooltipEnabled = $(this).is(':checked');
+            localStorage.setItem('tooltipEnabled', tooltipEnabled);
+        });
+
+
+        $('body').on('mouseenter', '.case-row', function(e) {
+            if (!tooltipEnabled) return;
+            var caseId = $(this).data('case-id');
+            var modal = $('#actionsDialog' + caseId);
+
+            clearTimeout(hoverTimeout);
+
+            hoverTimeout = setTimeout(function() {
+                var jobs = [];
+                modal.find('.job-info-for-tooltip').each(function() {
+                    jobs.push({
+                        type: $(this).find('.job-type').text(),
+                        material: $(this).find('.job-material').text(),
+                        units: $(this).find('.job-units').text()
+                    });
+                });
+
+                if (jobs.length > 0) {
+                    var table = '<table><thead><tr><th>Job Type</th><th>Material</th><th>Units</th></tr></thead><tbody>';
+                    jobs.forEach(function(job) {
+                        table += '<tr>';
+                        table += '<td>' + job.type + '</td>';
+                        table += '<td>' + job.material + '</td>';
+                        table += '<td>' + job.units + '</td>';
+                        table += '</tr>';
+                    });
+                    table += '</tbody></table>';
+                    tooltip.html(table);
+                } else {
+                    tooltip.html('No jobs found for this case.');
+                }
+
+                tooltip.css({
+                    top: e.pageY + 15,
+                    left: e.pageX + 15
+                }).show();
+            }, 250); // Reduced delay
+        });
+
+        $('body').on('mouseleave', '.case-row', function() {
+            clearTimeout(hoverTimeout);
+            tooltip.hide();
+        });
+
+        $('body').on('mousemove', '.case-row', function(e) {
+            if (!tooltipEnabled) return;
+            tooltip.css({
+                top: e.pageY + 15,
+                left: e.pageX + 15
+            });
+        });
+    });
+</script>
 
                 @endpush
 

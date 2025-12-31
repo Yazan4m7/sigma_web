@@ -2,17 +2,12 @@
 // Import commands
 import './commands'
 
-// Laravel-specific commands
-Cypress.Commands.add('login', (email = 'yazan', password = '1') => {
-    cy.visit('/login')
-    cy.get('input[name="username"]').type(email)
-    cy.get('input[name="password"]').type(password)
-    cy.get('button[type="submit"]').click()
-    cy.url().should('not.include', '/login')
+// Login no-op (auth disabled in routes); just ensure we're not on /login
+Cypress.Commands.add('login', () => {
+    cy.visit('/home')
+    cy.url({ timeout: 20000 }).should('not.include', '/login')
 })
 
 Cypress.Commands.add('logout', () => {
     cy.get('#logout-button').click() // Adjust selector to match your app
 })
-
-

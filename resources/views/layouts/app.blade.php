@@ -49,10 +49,7 @@
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
     <!-- Reset/Base CSS -->
 
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
+
     <style>
         :root {
             --font-family-sans-serif: "Nunito", sans-serif;
@@ -168,7 +165,8 @@
     <link href="{{ asset('css/processing-overlay.css') }}" rel="stylesheet"/>
     
     <link rel="icon" type="image/png" href="{{asset('assets/sigma_favico.png')}}"/>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <!-- Dynamic styling -->
     @include('layouts.dynamicStyling')
 
@@ -181,11 +179,28 @@
             display: none !important;
             pointer-events: none !important;
         }
-    </style>
 
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 {{--<div class="overlay" id="overlay"></div>--}}
 <body {{--onload="myFunction()"--}} class="white-content{{$class ?? ''}}">
+<div id="loading-overlay">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
 <!-- Floating buttons container removed -->
 {{-- Processing overlay removed --}}
 
@@ -278,7 +293,16 @@
 
 @endauth
 
+<script>
+    window.addEventListener('load', function() {
+        const loadingOverlay = document.getElementById('loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.style.display = 'none';
+        }
+    });
+</script>
 <script src="{{ asset('js/sidebar-collapse.js') }}"></script>
+<script src="{{ asset('js/sigma-sticky-layout.js') }}"></script>
 </body>
 @include('layouts.footer')
 <script src="{{ asset('js/responsive-images.js') }}"></script>

@@ -25,7 +25,6 @@ body {
     margin: 0 !important;
     left: var(--modal-x);
     top: var(--modal-y);
-    transform: none !important;
 }
 
 .modal-positioning-enabled .modal-dialog.modal-dialog-centered {

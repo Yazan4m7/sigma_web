@@ -1,11 +1,16 @@
 @extends('layouts.app', ['pageSlug' => 'Master Report'])
 
-@section('content')
+@push('css')
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap4.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/fixedcolumns/4.0.2/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+@endpush
+
+@section('content')
     <style>
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -384,6 +389,279 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
         }
 
+
+/* Master Report modern layout overrides */
+:root {
+    --ink: #0c1a1f;
+    --muted: #6b7b86;
+    --surface: #f7f9fb;
+    --panel: #ffffff;
+    --accent: #1c7c54;
+    --accent-strong: #134f35;
+    --stroke: #e3e8ee;
+    --pill: #eef3f6;
+    --shadow-lg: 0 10px 30px rgba(12, 26, 31, 0.08);
+}
+
+.master-report-container {
+    background: var(--surface);
+    padding: 28px;
+}
+
+.modern-card {
+    border-radius: 18px;
+    border: 1px solid var(--stroke);
+    box-shadow: var(--shadow-lg);
+}
+
+.form-section {
+    padding: 0;
+}
+
+.basic-filters {
+    background: transparent;
+    border: none;
+}
+
+.section-title {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.modern-input,
+.modern-select {
+    border: 1px solid var(--stroke);
+    border-radius: 10px;
+    min-height: 42px;
+    padding: 10px 12px;
+    background-color: #fff;
+}
+
+.modern-input:focus,
+.modern-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.15);
+}
+
+.modern-btn {
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn-primary:hover {
+    background: var(--accent-strong);
+    border-color: var(--accent-strong);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 26px rgba(19, 79, 53, 0.3);
+}
+
+button[type="submit"].modern-btn:hover {
+    background: var(--accent-strong) !important;
+    box-shadow: 0 12px 26px rgba(19, 79, 53, 0.3) !important;
+}
+
+.report-hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 18px;
+    background: linear-gradient(135deg, #f0f7f3 0%, #e8f1ff 100%);
+    border-bottom: 1px solid var(--stroke);
+}
+
+.hero-copy .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+.hero-title {
+    margin: 4px 0 2px;
+    color: var(--ink);
+    font-size: 1.6rem;
+}
+
+.hero-subtitle {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filters-card {
+    overflow: hidden;
+}
+
+.filters-surface {
+    padding: 18px;
+    background: var(--panel);
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 12px;
+}
+
+.filters-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.filters-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--pill);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-strong);
+}
+
+.filters-header h2 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 1.1rem;
+}
+
+.filters-hint {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.filters-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.filter-group {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.filter-group.span-2 {
+    grid-column: span 2;
+}
+
+@media (max-width: 900px) {
+    .filter-group.span-2 {
+        grid-column: span 1;
+    }
+}
+
+.range-pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.range-error {
+    display: none;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.trigger-field {
+    width: 100%;
+    text-align: left;
+    background: #fff;
+    border: 1px solid var(--stroke);
+    color: var(--ink);
+    height: 42px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.trigger-field:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.08);
+}
+
+.trigger-summary {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.filters-footer {
+    display: none;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.generate-btn i {
+    margin-right: 6px;
+}
+
+@media (max-width: 900px) {
+    .hero-actions {
+        display: none;
+    }
+
+    .filters-footer {
+        display: flex;
+    }
+}
+
+.modern-toggle-btn {
+    background: var(--pill);
+    border: 1px solid var(--stroke);
+    height: 46px;
+}
+
+.modern-toggle-btn:hover {
+    border-color: var(--accent);
+}
+
+.toggle-option {
+    color: var(--muted);
+}
+
+.toggle-option.active {
+    color: #fff;
+}
+
+.toggle-slider {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+}
+
+
         /* DataTable Export Buttons */
         .dt-buttons .btn {
             background: white !important;
@@ -561,296 +839,326 @@
         }
     </style>
 
-    <div class="master-report-container">
-        <div class="modern-card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="fas fa-chart-line"></i>
-                    Master Report
-                </h3>
+    
+<div class="master-report-container">
+    <div class="modern-card filters-card">
+        <form class="modern-form" method="GET" action="{{route('master-report')}}" id="master-report-form">
+            <input type="hidden" name="generate_report" value="1">
+            <div id="hidden-employee-filters"></div>
+            <div id="hidden-device-filters"></div>
+            <script>
+                window.initialMaterialTypes = @json(request('material_type', []));
+            </script>
+
+            <div class="report-hero">
+                <div class="hero-copy">
+                    <p class="eyebrow">Reporting</p>
+                    <h1 class="hero-title">Master Report</h1>
+                    <p class="hero-subtitle">Refine cases by doctor, material, device, and completion state.</p>
+                </div>
+                <div class="hero-actions">
+                    <button type="submit" class="modern-btn btn-primary generate-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Generate Report
+                    </button>
+                </div>
             </div>
 
-            <form class="modern-form" method="GET" action="{{route('master-report')}}" id="master-report-form">
-                <input type="hidden" name="generate_report" value="1">
-
-                <div id="hidden-employee-filters"></div>
-
-                <div id="hidden-device-filters"></div>
-
-                <script>
-                    window.initialMaterialTypes = @json(request('material_type', []));
-                </script>
-
-                <div class="form-section basic-filters">
-                    <h2 class="section-title">
-                        <i class="fas fa-filter"></i>
-                        Basic Filters
-                    </h2>
-
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    Date Range
-                                </label>
-                                <input type="text" class="modern-input flatpickr-input" id="daterange" readonly style="width: 100%;">
-                                <input type="hidden" name="from" id="from-date" value="{{request('from', $from)}}">
-                                <input type="hidden" name="to" id="to-date" value="{{request('to', $to)}}">
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-user-md"></i>
-                                    Doctor
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="doctor[]" id="doctor">
-                                    <option value="all" {{in_array('all', (array)request('doctor', ['all'])) ? 'selected' : ''}}>All Doctors</option>
-                                    @foreach($clients as $client)
-                                        <option value="{{$client->id}}" {{in_array($client->id, (array)request('doctor', [])) ? 'selected' : ''}}>
-                                            {{$client->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-tooth"></i>
-                                    Material
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="material[]" id="material">
-                                    <option value="all" {{in_array('all', (array)request('material', ['all'])) ? 'selected' : ''}}>All Materials</option>
-                                    @foreach($materials as $material)
-                                        <option value="{{$material->id}}" {{in_array($material->id, (array)request('material', [])) ? 'selected' : ''}}>
-                                            {{$material->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-cog"></i>
-                                    Job Type
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="job_type[]" id="job_type">
-                                    <option value="all" {{in_array('all', (array)request('job_type', ['all'])) ? 'selected' : ''}}>All Job Types</option>
-                                    @foreach($jobTypes as $jobType)
-                                        <option value="{{$jobType->id}}" {{in_array($jobType->id, (array)request('job_type', [])) ? 'selected' : ''}}>
-                                            {{$jobType->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
+            <div class="form-section basic-filters filters-surface">
+                <div class="filters-header">
+                    <div class="filters-title">
+                        <span class="filters-icon"><i class="fas fa-filter"></i></span>
+                        <div>
+                            <p class="eyebrow" style="margin: 0;">Filters</p>
+                            <h2 class="section-title" style="margin: 0;">Basic Filters</h2>
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-layer-group"></i>
-                                    Material Type
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="material_type[]" id="material_type">
-                                    <option value="all">All Material Types</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-exclamation-triangle"></i>
-                                    Failure Type
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="failure_type[]" id="failure_type">
-                                    <option value="all" {{in_array('all', (array)request('failure_type', ['all'])) ? 'selected' : ''}}>All Failure Types</option>
-                                    @foreach($failureCauses as $failureCause)
-                                        <option value="{{$failureCause->id}}" {{in_array($failureCause->id, (array)request('failure_type', [])) ? 'selected' : ''}}>
-                                            {{$failureCause->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-plug"></i>
-                                    Abutments
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="abutments[]" id="abutments">
-                                    <option value="all" {{in_array('all', (array)request('abutments', ['all'])) ? 'selected' : ''}}>All Abutments</option>
-                                    @foreach($abutments as $abutment)
-                                        <option value="{{$abutment->id}}" {{in_array($abutment->id, (array)request('abutments', [])) ? 'selected' : ''}}>
-                                            {{$abutment->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-tooth"></i>
-                                    Implants
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="implants[]" id="implants">
-                                    <option value="all" {{in_array('all', (array)request('implants', ['all'])) ? 'selected' : ''}}>All Implants</option>
-                                    @foreach($implants as $implant)
-                                        <option value="{{$implant->id}}" {{in_array($implant->id, (array)request('implants', [])) ? 'selected' : ''}}>
-                                            {{$implant->name}}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-tasks"></i>
-                                    Workflow Stage
-                                </label>
-                                <select class="modern-select select2-multiple" multiple name="status[]" id="status">
-                                    <option value="all" {{in_array('all', (array)request('status', ['all'])) ? 'selected' : ''}}>All Stages</option>
-                                    <option value="1" {{in_array('1', (array)request('status', [])) ? 'selected' : ''}}>Design</option>
-                                    <option value="2" {{in_array('2', (array)request('status', [])) ? 'selected' : ''}}>Milling</option>
-                                    <option value="3" {{in_array('3', (array)request('status', [])) ? 'selected' : ''}}>3D Printing</option>
-                                    <option value="4" {{in_array('4', (array)request('status', [])) ? 'selected' : ''}}>Sintering</option>
-                                    <option value="5" {{in_array('5', (array)request('status', [])) ? 'selected' : ''}}>Pressing</option>
-                                    <option value="6" {{in_array('6', (array)request('status', [])) ? 'selected' : ''}}>Finishing</option>
-                                    <option value="7" {{in_array('7', (array)request('status', [])) ? 'selected' : ''}}>QC</option>
-                                    <option value="8" {{in_array('8', (array)request('status', [])) ? 'selected' : ''}}>Delivery</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    Invoice Amount
-                                </label>
-                                <div class="row" style="padding-left: 0">
-                                    <div class="col-6" style="padding-left: 0;">
-                                        <input type="number" class="modern-input" name="amount_from" id="amount_from"
-                                               placeholder="From JOD" value="{{request('amount_from')}}" min="0" step="0.01">
-                                    </div>
-
-                                    <div class="col-6" style="padding-left: 0;">
-                                        <input type="number" class="modern-input" name="amount_to" id="amount_to"
-                                               placeholder="To JOD" value="{{request('amount_to')}}" min="0" step="0.01">
-                                    </div>
-                                </div>
-                                <small class="text-danger" id="amount-range-error" style="display: none;">
-                                    <i class="fas fa-exclamation-circle"></i> "From" amount cannot be greater than "To" amount
-                                </small>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-cubes"></i>
-                                    Number of Units
-                                </label>
-                                <div class="row" style="padding-left: 0;">
-                                    <div class="col-6" style="padding-left: 0;">
-                                        <input type="number" class="modern-input" name="units_from" id="units_from"
-                                               placeholder="From" value="{{request('units_from')}}" min="0" step="1">
-                                    </div>
-                                    <div class="col-6" style="padding-left: 0;">
-                                        <input type="number" class="modern-input" name="units_to" id="units_to"
-                                               placeholder="To" value="{{request('units_to')}}" min="0" step="1">
-                                    </div>
-                                </div>
-                                <small class="text-danger" id="units-range-error" style="display: none;">
-                                    <i class="fas fa-exclamation-circle"></i> "From" units cannot be greater than "To" units
-                                </small>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-users"></i>
-                                    Employees Filter
-                                </label>
-                                <button type="button" class="modern-input" style="width: 100%; text-align: left; background: white; border: 1px solid #d1d5db; color: #374151; height: 36px; padding: 8px 12px; border-radius: 6px;" data-toggle="modal" data-target="#employeesFilterModal">
-                                    Configure Employee Filters
-                                </button>
-                                <div id="employees-filter-summary" class="filter-summary filter-pill muted" style="font-size: 12px; margin-top: 4px;">No employee filters applied</div>
-                            </div>
-                        </div>
-
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-microchip"></i>
-                                    Devices Filter
-                                </label>
-                                <button type="button" class="modern-input" style="width: 100%; text-align: left; background: white; border: 1px solid #d1d5db; color: #374151; height: 36px; padding: 8px 12px; border-radius: 6px;" data-toggle="modal" data-target="#devicesFilterModal">
-                                    Configure Device Filters
-                                </button>
-                                <div id="devices-filter-summary" class="filter-summary filter-pill muted" style="font-size: 12px; margin-top: 4px;">All devices included</div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-check-circle"></i>
-                                    Case Completion
-                                </label>
-                                <div class="modern-toggle-container">
-                                    <input type="hidden" name="show_completed" id="show_completed_hidden" value="{{request('show_completed', 'all')}}">
-                                    <button type="button" class="modern-toggle-btn" id="completion_toggle" data-value="{{request('show_completed', 'all')}}">
-                                        <span class="toggle-option" data-value="all">All Cases</span>
-                                        <span class="toggle-option" data-value="completed">Completed</span>
-                                        <span class="toggle-option" data-value="in_progress">In Progress</span>
-                                        <span class="toggle-slider"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-3 col-md-6 col-12">
-                            <div class="form-group" style="display: flex; align-items: flex-end; height: 100%;">
-                                <button type="submit" class="modern-btn btn-primary" style="width: 100%; height: 40px; font-size: 14px; font-weight: 600; background: linear-gradient(135deg, #408385 0%, #2d5f61 100%); border: none; box-shadow: 0 4px 12px rgba(64, 131, 133, 0.3); transition: all 0.3s ease; border-radius: 6px;">
-                                    <i class="fas fa-chart-line" style="margin-right: 6px;"></i>
-                                    Generate Report
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
-
+                    <p class="filters-hint">Choose any combination to narrow down cases.</p>
                 </div>
-        </div>
 
+                <div class="filters-grid">
+                    <div class="filter-group span-2">
+                        <label class="form-label"><i class="fas fa-calendar-alt"></i> Date Range</label>
+                        <input type="text" class="modern-input flatpickr-input" id="daterange" readonly>
+                        <input type="hidden" name="from" id="from-date" value="{{request('from', $from)}}">
+                        <input type="hidden" name="to" id="to-date" value="{{request('to', $to)}}">
+                    </div>
 
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-user-md"></i> Doctor</label>
+                        <select class="modern-select select2-multiple" multiple name="doctor[]" id="doctor">
+                            <option value="all" {{in_array('all', (array)request('doctor', ['all'])) ? 'selected' : ''}}>All Doctors</option>
+                            @foreach($clients as $client)
+                                <option value="{{$client->id}}" {{in_array($client->id, (array)request('doctor', [])) ? 'selected' : ''}}>
+                                    {{$client->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-tooth"></i> Material</label>
+                        <select class="modern-select select2-multiple" multiple name="material[]" id="material">
+                            <option value="all" {{in_array('all', (array)request('material', ['all'])) ? 'selected' : ''}}>All Materials</option>
+                            @foreach($materials as $material)
+                                <option value="{{$material->id}}" {{in_array($material->id, (array)request('material', [])) ? 'selected' : ''}}>
+                                    {{$material->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-cog"></i> Job Type</label>
+                        <select class="modern-select select2-multiple" multiple name="job_type[]" id="job_type">
+                            <option value="all" {{in_array('all', (array)request('job_type', ['all'])) ? 'selected' : ''}}>All Job Types</option>
+                            @foreach($jobTypes as $jobType)
+                                <option value="{{$jobType->id}}" {{in_array($jobType->id, (array)request('job_type', [])) ? 'selected' : ''}}>
+                                    {{$jobType->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-layer-group"></i> Material Type</label>
+                        <select class="modern-select select2-multiple" multiple name="material_type[]" id="material_type">
+                            <option value="all">All Material Types</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-exclamation-triangle"></i> Failure Type</label>
+                        <select class="modern-select select2-multiple" multiple name="failure_type[]" id="failure_type">
+                            <option value="all" {{in_array('all', (array)request('failure_type', ['all'])) ? 'selected' : ''}}>All Failure Types</option>
+                            @foreach($failureCauses as $failureCause)
+                                <option value="{{$failureCause->id}}" {{in_array($failureCause->id, (array)request('failure_type', [])) ? 'selected' : ''}}>
+                                    {{$failureCause->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-plug"></i> Abutments</label>
+                        <select class="modern-select select2-multiple" multiple name="abutments[]" id="abutments">
+                            <option value="all" {{in_array('all', (array)request('abutments', ['all'])) ? 'selected' : ''}}>All Abutments</option>
+                            @foreach($abutments as $abutment)
+                                <option value="{{$abutment->id}}" {{in_array($abutment->id, (array)request('abutments', [])) ? 'selected' : ''}}>
+                                    {{$abutment->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-tooth"></i> Implants</label>
+                        <select class="modern-select select2-multiple" multiple name="implants[]" id="implants">
+                            <option value="all" {{in_array('all', (array)request('implants', ['all'])) ? 'selected' : ''}}>All Implants</option>
+                            @foreach($implants as $implant)
+                                <option value="{{$implant->id}}" {{in_array($implant->id, (array)request('implants', [])) ? 'selected' : ''}}>
+                                    {{$implant->name}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-tasks"></i> Workflow Stage</label>
+                        <select class="modern-select select2-multiple" multiple name="status[]" id="status">
+                            <option value="all" {{in_array('all', (array)request('status', ['all'])) ? 'selected' : ''}}>All Stages</option>
+                            <option value="1" {{in_array('1', (array)request('status', [])) ? 'selected' : ''}}>Design</option>
+                            <option value="2" {{in_array('2', (array)request('status', [])) ? 'selected' : ''}}>Milling</option>
+                            <option value="3" {{in_array('3', (array)request('status', [])) ? 'selected' : ''}}>3D Printing</option>
+                            <option value="4" {{in_array('4', (array)request('status', [])) ? 'selected' : ''}}>Sintering</option>
+                            <option value="5" {{in_array('5', (array)request('status', [])) ? 'selected' : ''}}>Pressing</option>
+                            <option value="6" {{in_array('6', (array)request('status', [])) ? 'selected' : ''}}>Finishing</option>
+                            <option value="7" {{in_array('7', (array)request('status', [])) ? 'selected' : ''}}>QC</option>
+                            <option value="8" {{in_array('8', (array)request('status', [])) ? 'selected' : ''}}>Delivery</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Invoice Amount</label>
+                        <div class="range-pair">
+                            <input type="number" class="modern-input" name="amount_from" id="amount_from"
+                                   placeholder="From JOD" value="{{request('amount_from')}}" min="0" step="0.01">
+                            <input type="number" class="modern-input" name="amount_to" id="amount_to"
+                                   placeholder="To JOD" value="{{request('amount_to')}}" min="0" step="0.01">
+                        </div>
+                        <small class="text-danger range-error" id="amount-range-error">
+                            <i class="fas fa-exclamation-circle"></i> "From" amount cannot be greater than "To" amount
+                        </small>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-cubes"></i> Number of Units</label>
+                        <div class="range-pair">
+                            <input type="number" class="modern-input" name="units_from" id="units_from"
+                                   placeholder="From" value="{{request('units_from')}}" min="0" step="1">
+                            <input type="number" class="modern-input" name="units_to" id="units_to"
+                                   placeholder="To" value="{{request('units_to')}}" min="0" step="1">
+                        </div>
+                        <small class="text-danger range-error" id="units-range-error">
+                            <i class="fas fa-exclamation-circle"></i> "From" units cannot be greater than "To" units
+                        </small>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-users"></i> Employees Filter</label>
+                        <button type="button" class="trigger-field" data-toggle="modal" data-target="#employeesFilterModal">
+                            Configure Employee Filters
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <div id="employees-filter-summary" class="filter-summary filter-pill muted trigger-summary">No employee filters applied</div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-microchip"></i> Devices Filter</label>
+                        <button type="button" class="trigger-field" data-toggle="modal" data-target="#devicesFilterModal">
+                            Configure Device Filters
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <div id="devices-filter-summary" class="filter-summary filter-pill muted trigger-summary">All devices included</div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label class="form-label"><i class="fas fa-check-circle"></i> Case Completion</label>
+                        <div class="modern-toggle-container">
+                            <input type="hidden" name="show_completed" id="show_completed_hidden" value="{{request('show_completed', 'all')}}">
+                            <button type="button" class="modern-toggle-btn" id="completion_toggle" data-value="{{request('show_completed', 'all')}}">
+                                <span class="toggle-option" data-value="all">All Cases</span>
+                                <span class="toggle-option" data-value="completed">Completed</span>
+                                <span class="toggle-option" data-value="in_progress">In Progress</span>
+                                <span class="toggle-slider"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filters-footer">
+                    <button type="submit" class="modern-btn btn-primary generate-btn">
+                        <i class="fas fa-chart-line"></i>
+                        Generate Report
+                    </button>
+                </div>
+            </div>
         </form>
-    </div> @if($cases->count() > 0)
+    </div>
+
+
+    @php
+        $summaryItems = [];
+        $clientMap = $clients->pluck('name', 'id');
+        $materialMap = $materials->pluck('name', 'id');
+        $jobTypeMap = $jobTypes->pluck('name', 'id');
+        $failureCauseMap = $failureCauses->pluck('name', 'id');
+        $abutmentMap = $abutments->pluck('name', 'id');
+        $implantMap = $implants->pluck('name', 'id');
+        $stageLabels = [
+            '1' => 'Design',
+            '2' => 'Milling',
+            '3' => '3D Printing',
+            '4' => 'Sintering',
+            '5' => 'Pressing',
+            '6' => 'Finishing',
+            '7' => 'QC',
+            '8' => 'Delivery',
+        ];
+
+        $addSummary = function($label, $values, $map = null) use (&$summaryItems) {
+            $arr = array_filter((array) $values, fn($v) => $v !== null && $v !== '');
+            if (empty($arr) || in_array('all', $arr, true)) {
+                return;
+            }
+            if ($map) {
+                $names = collect($arr)->map(fn($id) => $map[$id] ?? $id)->implode(', ');
+            } else {
+                $names = implode(', ', $arr);
+            }
+            if ($names !== '') {
+                $summaryItems[] = "{$label}: {$names}";
+            }
+        };
+
+        // Date range
+        $summaryItems[] = "Date: " . request('from', $from) . " → " . request('to', $to);
+
+        // Core filters
+        $addSummary('Doctor', request('doctor', []), $clientMap);
+        $addSummary('Material', request('material', []), $materialMap);
+        $addSummary('Job Type', request('job_type', []), $jobTypeMap);
+        $addSummary('Failure Type', request('failure_type', []), $failureCauseMap);
+        $addSummary('Abutment', request('abutments', []), $abutmentMap);
+        $addSummary('Implant', request('implants', []), $implantMap);
+
+        // Material type names (loaded on demand)
+        $materialTypes = (array) request('material_type', []);
+        if (!empty($materialTypes) && !in_array('all', $materialTypes, true)) {
+            $typeNames = \App\Type::whereIn('id', $materialTypes)->pluck('name')->implode(', ');
+            if ($typeNames) {
+                $summaryItems[] = "Material Type: {$typeNames}";
+            }
+        }
+
+        // Workflow stage
+        $statusFilters = array_filter((array) request('status', []));
+        if (!empty($statusFilters) && !in_array('all', $statusFilters, true)) {
+            $labels = collect($statusFilters)->map(fn($id) => $stageLabels[$id] ?? $id)->implode(', ');
+            if ($labels) {
+                $summaryItems[] = "Workflow Stage: {$labels}";
+            }
+        }
+
+        // Completion toggle
+        $completion = request('show_completed', 'all');
+        if ($completion === 'completed') $summaryItems[] = 'Case Completion: Completed';
+        elseif ($completion === 'in_progress') $summaryItems[] = 'Case Completion: In Progress';
+
+        // Amount and units ranges
+        $amountFrom = request('amount_from');
+        $amountTo = request('amount_to');
+        if ($amountFrom !== null && $amountFrom !== '') {
+            $summaryItems[] = 'Amount From: ' . $amountFrom;
+        }
+        if ($amountTo !== null && $amountTo !== '') {
+            $summaryItems[] = 'Amount To: ' . $amountTo;
+        }
+        $unitsFrom = request('units_from');
+        $unitsTo = request('units_to');
+        if ($unitsFrom !== null && $unitsFrom !== '') {
+            $summaryItems[] = 'Units From: ' . $unitsFrom;
+        }
+        if ($unitsTo !== null && $unitsTo !== '') {
+            $summaryItems[] = 'Units To: ' . $unitsTo;
+        }
+
+        // Employee/device filters counts
+        $employeeFilters = (array) request('employee_filters', []);
+        if (!empty($employeeFilters)) {
+            $summaryItems[] = count($employeeFilters) . ' employee filter(s)';
+        }
+        $deviceFilters = (array) request('device_filters', []);
+        if (!empty($deviceFilters)) {
+            $summaryItems[] = count($deviceFilters) . ' device filter(s)';
+        }
+
+        $summaryItems = array_filter($summaryItems);
+    @endphp
+
+    @if(!empty($summaryItems))
+        <div class="modern-card" style="margin-top: 8px; padding: 10px 14px;">
+            <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
+                @foreach($summaryItems as $item)
+                    <span class="badge badge-light" style="border: 1px solid #e5e7eb; color: #374151; font-weight: 500; padding: 6px 10px; background: #f9fafb;">
+                        {{ $item }}
+                    </span>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    @if($cases->count() > 0)
         <div class="modern-card" style="margin-top: 16px;">
             <div class="card-header" style="border-bottom: 1px solid #e2e8f0; padding: 12px 24px; background: white;">
                         <div class="d-flex justify-content-between align-items-center"> <h4 style="font-weight: 600; color: #1a202c; margin: 0;">Report Results</h4>
@@ -1201,7 +1509,7 @@
 
         @endsection
 
-        @push('js')
+@push('js')
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js"></script>
@@ -1222,34 +1530,30 @@
                 function initializeCompletionToggle() {
                     const $toggle = $('#completion_toggle');
                     const $hidden = $('#show_completed_hidden');
+                    const values = ['all', 'completed', 'in_progress'];
                     const currentValue = $toggle.attr('data-value') || 'all';
-                    $hidden.val(currentValue);
+                    setToggleValue(currentValue);
 
-                    // Set initial active state
-                    updateToggleState(currentValue);
-
-                    // Handle clicks on toggle options
-                    $('.toggle-option').on('click', function() {
+                    $('.toggle-option').off('click.completion').on('click.completion', function(e) {
+                        e.preventDefault();
                         const value = $(this).attr('data-value');
+                        setToggleValue(value);
+                    });
+
+                    $toggle.off('click.completion').on('click.completion', function(e) {
+                        if ($(e.target).hasClass('toggle-option')) return;
+                        const current = $toggle.attr('data-value') || 'all';
+                        const next = values[(values.indexOf(current) + 1) % values.length];
+                        setToggleValue(next);
+                    });
+
+                    function setToggleValue(value) {
                         $toggle.attr('data-value', value);
                         $hidden.val(value);
                         updateToggleState(value);
-                    });
-
-                    // Fallback: clicking the toggle cycles values
-                    $toggle.on('click', function(e) {
-                        // Ignore clicks that originated from an option span (handled above)
-                        if ($(e.target).hasClass('toggle-option')) return;
-                        const values = ['all', 'completed', 'in_progress'];
-                        const current = $toggle.attr('data-value') || 'all';
-                        const next = values[(values.indexOf(current) + 1) % values.length];
-                        $toggle.attr('data-value', next);
-                        $hidden.val(next);
-                        updateToggleState(next);
-                    });
+                    }
 
                     function updateToggleState(value) {
-                        // Update active class on options
                         $('.toggle-option').removeClass('active');
                         $(`.toggle-option[data-value="${value}"]`).addClass('active');
                     }
@@ -1300,13 +1604,15 @@
 
                     try {
                         $('.select2-multiple').each(function() {
+                            const $parent = $(this).closest('.filter-group');
+                            const dropdownParent = $parent.length ? $parent : $(this).closest('form');
                             $(this).select2({
                                 placeholder: 'Select options...',
                                 allowClear: true,
                                 width: '100%',
                                 closeOnSelect: false,
                                 multiple: true,
-                                dropdownParent: $(this).closest('.form-group'), // Attach to form-group
+                                dropdownParent: dropdownParent, // attach to nearest filter group for correct layering
                             });
                         });
 
@@ -1389,7 +1695,7 @@
                             width: '100%',
                             closeOnSelect: false,
                             multiple: true,
-                            dropdownParent: $materialType.closest('.form-group')
+                            dropdownParent: ($materialType.closest('.filter-group').length ? $materialType.closest('.filter-group') : $materialType.closest('form'))
                         });
                     }
 
@@ -1519,6 +1825,10 @@
                     if (window.masterReportTable) {
                         const column = window.masterReportTable.column(columnIndex);
                         column.visible(isVisible);
+                        window.masterReportTable.columns.adjust();
+                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
+                            window.masterReportTable.fixedColumns().update();
+                        }
                     } else {
                         const table = $('#master-report-table');
                         if (isVisible) {
@@ -1662,8 +1972,8 @@
                                 const isVisible = $(this).is(':checked');
                                 tableApi.column(columnIndex).visible(isVisible);
                             });
-                            if (tableApi.fixedColumns) {
-                                tableApi.fixedColumns().relayout();
+                            if (tableApi.fixedColumns && typeof tableApi.fixedColumns().update === 'function') {
+                                tableApi.fixedColumns().update();
                             }
                             // Fix sticky column positions after table is drawn and visibility is set
                             fixStickyColumnPositions();
@@ -1691,8 +2001,8 @@
 
                         // Fix sticky column positions
                         fixStickyColumnPositions();
-                        if (window.masterReportTable.fixedColumns) {
-                            window.masterReportTable.fixedColumns().relayout();
+                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
+                            window.masterReportTable.fixedColumns().update();
                         }
                         // Load preferences *after* table is built
                         loadColumnPreferences();
@@ -1702,8 +2012,8 @@
                             const isVisible = $(this).is(':checked');
                             window.masterReportTable.column(columnIndex).visible(isVisible);
                         });
-                        if (window.masterReportTable.fixedColumns) {
-                            window.masterReportTable.fixedColumns().relayout();
+                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
+                            window.masterReportTable.fixedColumns().update();
                         }
                     }, 100);
                     @endif
@@ -2011,3 +2321,7 @@
 
             </script>
         @endpush
+
+
+
+

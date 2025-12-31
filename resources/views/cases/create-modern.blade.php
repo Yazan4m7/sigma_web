@@ -942,11 +942,12 @@
              materialBox.empty();
              materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
 
-            $.each(jobTypeMaterials, function(key, value) {
-                 materialBox.append($("<option></option>")
-                     .attr("value", value.material_id)
-                     .text(materials.find(x => x.id === value.material_id).name));
-             });
+             $.each(jobTypeMaterials, function(key, value) {
+                  var material = materials.find(x => String(x.id) === String(value.material_id));
+                  materialBox.append($("<option></option>")
+                      .attr("value", value.material_id)
+                      .text(material ? material.name : ('Material #' + value.material_id)));
+              });
 
              var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
              var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));

@@ -11,6 +11,10 @@
             font-size: 1rem;
             font-weight: 500;
         }
+        img {
+            max-height: 100%;
+            max-width: unset !important;
+        }
 
         .kt-form__label>label {
             font-size: 0.9rem;
@@ -442,9 +446,9 @@
 
         /* Delete Button Styling */
         .row-item .btn-danger {
-            background: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
+            background: #ef4444;
+            border: 1px solid #ef4444;
+            color: #ffffff;
             width: 38px;
             height: 38px;
             border-radius: 6px;
@@ -457,8 +461,8 @@
         }
 
         .row-item .btn-danger:hover {
-            background: #fecaca;
-            border-color: #f87171;
+            background: #dc2626;
+            border-color: #dc2626;
             transform: translateY(-1px);
         }
 
@@ -470,6 +474,10 @@
         .row-item .delete-col {
             flex: 0 0 50px;
             padding: 0 8px;
+            position: sticky;
+            right: 0;
+            background: #f8fafc;
+            z-index: 2;
         }
 
         /* Case Header Styling */
@@ -522,6 +530,11 @@
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
+        }
+
+        #unitsDialog .modal-dialog,
+        #unitsDialog2 .modal-dialog {
+            max-width: 460px;
         }
 
         .slctUnitsBtn {
@@ -1364,8 +1377,8 @@
         <!-- Existing TEETH PICK DIALOG -->
         <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
+                <div class="modal-content teethJawsDialog">
 
                     <div class="modal-body" style="height: 36em;">
 
@@ -1528,8 +1541,8 @@
         <!-- NEW TEETH PICK DIALOG -->
         <div data-repeater-item class="modal fade" id="unitsDialog2" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog2">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
+                <div class="modal-content teethJawsDialog">
 
                     <div class="modal-body" style="height: 36em;">
 

@@ -67,54 +67,23 @@
         width: 100%;
     }
 }
-.client-actions-dialog .patient-doctor-names {
-    color: #2d5f6d;
-    font-weight: 600;
-    margin-bottom: 0;
-}
-
-.client-actions-dialog .patient-doctor-label {
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    color: #6c757d;
-    margin-bottom: 2px;
-    display: block;
-}
-
-.client-actions-dialog .client-account-header {
-    margin: 0;
-}
-
-.client-actions-dialog .client-account-cell {
-    margin-bottom: 0;
-}
-
-.client-actions-dialog .client-account-divider {
-    margin: 0.75rem 0;
-}
-
-.client-actions-dialog .modal-footer {
-    padding: 0.75rem 1rem !important;
-}
-
-.client-actions-dialog .modal-footer .btn {
-    margin: 0;
-}
-
-.client-actions-dialog .client-actions-row {
-    margin: 0;
-    width: 100%;
-}
-
-.client-actions-dialog .client-action-cell {
-    padding: 5px;
+.client-actions-row {
     display: flex;
-}
-
-.client-actions-dialog .client-action-cell .btn {
+    flex-wrap: wrap;
     width: 100%;
-    white-space: nowrap;
+    margin-left: 0;
+    margin-right: 0;
+}
+.client-actions-row > [class*="col-"] {
+    flex: 1 1 50%;
+    max-width: 50%;
+    padding: 5px;
+}
+@media (max-width: 576px) {
+    .client-actions-row > [class*="col-"] {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
 }
 
 .filters-row > [class*="col-"],
@@ -651,97 +620,91 @@
                                     </div>
                                 @endif
 
-                                <div class="modal client-actions-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$client->id}}">
+                                <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$client->id}}">
 
                                     <input type="hidden" name="case_id" value="{{$client->id}}">
                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                         <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Doctor Account</h5>
+
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
                                             <div class="modal-body">
-                                                <div class="row client-account-header">
-                                                    <div class="col-12 {{ Auth()->user()->is_admin ? 'col-md-6' : '' }} client-account-cell">
-                                                        <label for="client-doctor-{{$client->id}}" class="patient-doctor-label">Doctor:</label>
-                                                        <h5 id="client-doctor-{{$client->id}}" class="patient-doctor-names">{{$client->name}}</h5>
+                                                <div class="form-group row mb-0">
+                                                    <div class="col-12 col-md-6">
+                                                        <label for="doctor">Doctor:</label>
+                                                        <h5 id="doctor" class="mb-0"><b>{{$client->name}}</b></h5>
                                                     </div>
                                                     @if(Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-6 client-account-cell">
-                                                            <label for="client-balance-{{$client->id}}" class="patient-doctor-label">Balance:</label>
-                                                            <h5 id="client-balance-{{$client->id}}" class="patient-doctor-names">
-                                                                {{ isset($from) ? $client->balanceAt($from) : $client->balance }}
+                                                        <div class="col-12 col-md-6">
+                                                            <label for="pat">Balance:</label>
+                                                            <h5 id="pat" class="mb-0">
+                                                                <b>{{ isset($from) ? $client->balanceAt($from) : $client->balance }}</b>
                                                             </h5>
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <hr class="client-account-divider">
+                                                <hr>
                                             </div>
-                                            <div class="modal-footer">
+                                            <div class="modal-footer fullBtnsWidth">
                                                 <div class="row client-actions-row">
                                                     @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-6 client-action-cell">
+                                                        <div class="col-6 padding5px" >
                                                             <a href="{{route('client-statement-admin', $client->id)}}">
-                                                                <button type="button" class="btn btn-info">
+                                                                <button type="button" class="btn btn-primary ">
                                                                     Account Statement</button></a>
                                                         </div>
 
-                                                        <div class="col-12 col-md-6 client-action-cell">
+                                                        <div class="col-6 padding5px" >
                                                             <a href="{{route('client-view-edit',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-warning">
+                                                                <button type="button" class="btn btn-danger ">
                                                                     Edit Record</button></a>
                                                         </div>
                                                     @endif
-                                                </div>
-
-                                                <div class="row client-actions-row">
                                                     @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-4 client-action-cell">
-                                                            <a data-toggle="modal" data-target="#myModal{{$client->id}}">
-                                                                <button type="button" class="btn btn-dark" data-dismiss="modal">
-                                                                    Add Payment</button></a>
+                                                        <div class="col-6 padding5px" >
+                                                            <a data-toggle="modal" data-target="#myModal{{$client->id}} "
+                                                               >
+                                                                <button type="button" class="btn btn-warning " data-dismiss="modal" >
+                                                                    Add a payment </button></a>
                                                         </div>
                                                     @endif
                                                     @if( Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-4 client-action-cell">
-                                                            <a href="{{route('dentist-cases',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-info">
-                                                                    View Cases </button></a>
+                                                        <div class="col-6 padding5px" >
+                                                        <a href="{{route('dentist-cases',['id' =>$client->id])}}">
+                                                            <button type="button" class="btn btn-info ">
+                                                            View Cases </button></a>
                                                         </div>
-                                                        <div class="col-12 col-md-4 client-action-cell">
-                                                            <a href="{{route('dentist-invoices',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-info">
-                                                                    View Invoices </button></a>
+                                                        <div class="col-6 padding5px" >
+                                                            <a  href="{{route('dentist-invoices',['id' =>$client->id])}}">
+                                                            <button type="button" class="btn btn-info ">
+                                                                View Invoices </button></a>
                                                         </div>
-                                                    @endif
-                                                </div>
-
-                                                <div class="row client-actions-row">
-                                                    @if( Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-6 client-action-cell">
+                                                        <div class="col-6 padding5px" >
                                                             <a href="{{route('dentist-payments',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-info">
+                                                                <button type="button" class="btn btn-info ">
                                                                     View Payments </button></a>
                                                         </div>
-                                                        <div class="col-12 col-md-6 client-action-cell">
-                                                            <a data-toggle="modal" data-target="#accountDiscount{{$client->id}}">
-                                                                <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                                                    Create Discount </button></a>
+                                                        <div class="col-6 padding5px" >
+                                                            <a data-toggle="modal" data-target="#accountDiscount{{$client->id}} ">
+                                                            <button type="button" class="btn btn-danger " data-dismiss="modal" >
+                                                                    Create a discount </button></a>
                                                         </div>
-                                                    @endif
-                                                </div>
-
-                                                <div class="row client-actions-row">
-                                                    @if( Auth()->user()->is_admin)
-                                                        <div class="col-12 client-action-cell">
+                                                        <div class="col-6 padding5px" >
                                                             <a href="{{route('toggle-client-active', $client->id)}}" onclick="return confirm('Are you sure you want to {{ $client->active ? 'disable' : 'enable' }} this doctor?');">
-                                                                <button type="button" class="btn btn-outline-warning">
+                                                                <button type="button" class="btn {{ $client->active ? 'btn-warning' : 'btn-success' }}">
                                                                     {{ $client->active ? 'Disable' : 'Enable' }}
                                                                 </button>
                                                             </a>
                                                         </div>
-                                                    @endif
-                                                </div>
 
-                                                <div class="row client-actions-row">
-                                                    <div class="col-12 client-action-cell">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    @endif
+
+                                                    <div class="col-12 padding5px" >
+                                                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancel</button>
                                                     </div>
                                                 </div>
                                             </div>

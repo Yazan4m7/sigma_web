@@ -566,7 +566,7 @@ $user = Auth::user();
 $hasProfilePhoto = $user && $user->has_photo;
 $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_picture.png') : null;
 @endphp
-<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent">
+<nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
     <div class="container-fluid noPadOnMobile">
         <div class="row headerRow" style="display:flex;align-items: baseline;">
 

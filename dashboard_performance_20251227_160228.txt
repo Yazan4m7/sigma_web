@@ -1,0 +1,17 @@
+SIGMA Dashboard Performance Test
+Date: Sat Dec 27 16:02:28 JST 2025
+URL: http://127.0.0.1:8000/operations-dashboard
+Iterations: 5
+
+RESULTS:
+--------
+Minimum:  ms
+Maximum:  ms
+Average:  ms
+
+Individual measurements:
+  Iteration 1:  ms
+  Iteration 2:  ms
+  Iteration 3:  ms
+  Iteration 4:  ms
+  Iteration 5:  ms

@@ -47,6 +47,7 @@ Route::get('/material-types', [App\Http\Controllers\ReportsController::class, 'g
 Route::post('/cases/materials', [App\Http\Controllers\CaseController::class, 'validateCaseMaterials']);
 Route::post('/cases/material-types', [App\Http\Controllers\MaterialController::class, 'getMaterialTypesForCase']);
 
+
 //AUTH
 Route::post('/login',[ApiController::class,'login']);
 

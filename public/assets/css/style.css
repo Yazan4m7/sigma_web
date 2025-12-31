@@ -624,10 +624,10 @@ p {
 
 
 .waitingBadge{
-    background-color: indianred !important;
+    background-color: #dc3545 !important;
 }
 .activeBadge{
-    background-color: steelblue !important;
+    background-color: #2e61f2 !important;
 }
 .badge {
     /* padding: 7px 7px 5px 7px;*/

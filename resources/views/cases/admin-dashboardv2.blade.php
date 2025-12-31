@@ -1,4 +1,4 @@
-@extends('layouts.app', ['pageSlug' => config('site_vars.labWorkFlowLabel')])
+@extends('layouts.app', ['pageSlug' => config('site_vars.labWorkFlowLabel'), 'class' => ' ops-dashboard'])
 
 @php
     // Load global configuration
@@ -15,6 +15,7 @@
 
 
 @push('css')
+    <!--suppress ALL -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -35,306 +36,319 @@
     <link href="{{ asset('assets') }}/css/waiting-dialog-merged.css" rel="stylesheet" />
 
     <style>
+        .col-12 {
+            padding: 0;
+        }
         @media (max-width: 480px) {
             .sigma-workflow-dialog {
+            {
                 max-width: none !important;
                 width: auto !important;
                 min-width: -webkit-fill-available;
                 margin: 0 15px;
                 /* Minimum width for proper machine display */
             }
-        }
-
-        @media (max-width: 700px) {
-            .sigma-workflow-dialog {
-                max-width: none !important;
-                width: auto !important;
-
-                /* Minimum width for proper machine display */
             }
-        }
 
-        @media (min-width: 700px) {
-            .sigma-workflow-dialog {
-                max-width: none !important;
-                width: 45%
+            .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+
+            @media (max-width: 700px) {
+                .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
                     /* Minimum width for proper machine display */
+                }
+                }
+
+                @media (min-width: 700px) {
+                    .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+                }
+
+                /* Use Animate.css for Case Completion modal */
+                .modal.fade .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+
+                .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+
+                /* Modal footer rounded bottom corners */
+                .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+
+                /* Modal header styling with divider */
+                .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+
+                /* Modal title styling */
+                .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+
+                /* Skip to delivery icon styling */
+                .skip-to-delivery-icon {
+                    font-size: 20px;
+                    color: #2d5f6d;
+                    transition: color 0.3s ease;
+                }
+
+                .skip-to-delivery-icon:hover {
+                    color: #1a3d47;
+                }
+
+                /* Close button styling - more visible */
+                .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+
+                .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+
+                /* Doctor/Patient names styling */
+                .patient-doctor-names {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                }
+
+                .patient-doctor-label {
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.3px;
+                    color: #6c757d;
+                    margin-bottom: 2px;
+                    display: block;
+                }
+
+                /* Scrollable section for jobs and notes only */
+                .scrollable-content {
+                    max-height: 40vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                }
+
+                /* Notes container styling */
+                .form-control.note-container {
+                    background-color: #e8f0f2;
+                    border: 1px solid #b8d4db;
+                    color: #212529;
+                }
+
+                .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+
+                .modal-footer .row {
+                    margin: 0;
+                }
+
+                .modal-footer .col-6,
+                .modal-footer .col-4,
+                .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+
+                .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+
+                /* Button color improvements with proper contrast */
+                .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+
+                .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+
+                .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+
+                .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+
+                .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+
+                .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+
+                .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+
+                .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+
+                .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+
+                .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+
+                .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+
+                .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+
+                .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+
+                .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+
+                .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+
+                .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+
+                .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+
+                /* Icon spacing */
+                .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+
+                .YSH-button {
+                    text-decoration: none;
+                    line-height: 1;
+                    border-radius: 1.5rem;
+                    overflow: hidden;
+                    position: relative;
+                    box-shadow: 10px 10px 20px rgba(0, 0, 0, .05);
+                    background-color: #fff;
+                    color: #121212;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                .YSH-button-decor {
+                    position: absolute;
+                    inset: 0;
+                    background-color: var(--clr);
+                    transform: translateX(-100%);
+                    transition: transform .3s;
+                    z-index: 0;
+                }
+
+                .YSH-button-content {
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .YSH-button__icon {
+                    width: 48px;
+                    height: 40px;
+                    background-color: var(--clr);
+                    display: grid;
+                    place-items: center;
+                }
+
+                .YSH-button__text {
+                    display: inline-block;
+                    transition: color .2s;
+                    padding: 2px 1.5rem 2px;
+                    padding-left: .75rem;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    max-width: 150px;
+                }
+
+                .YSH-button:hover .YSH-button__text {
+                    color: #fff;
+                }
+
+                .YSH-button:hover .YSH-button-decor {
+                    transform: translate(0);
+                }
             }
         }
+        
 
-        /* Use Animate.css for Case Completion modal */
-        .modal.fade .modal-dialog {
-            transform: none !important;
-            /* Will be animated by Animate.css classes */
-        }
-
-        .modal-content {
-            border-radius: 25px !important;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: none;
-        }
-
-        /* Modal footer rounded bottom corners */
-        .modal-footer {
-            border-bottom-left-radius: 25px !important;
-            border-bottom-right-radius: 25px !important;
-        }
-
-        /* Modal header styling with divider */
-        .modal-header {
-            display:none !important;
-            border-bottom: 1px solid #dee2e6 !important;
-            padding-bottom: 12px;
-        }
-
-        /* Modal title styling */
-        .modal-title {
-            color: #2d5f6d;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 0;
-        }
-
-        /* Skip to delivery icon styling */
-        .skip-to-delivery-icon {
-            font-size: 20px;
-            color: #2d5f6d;
-            transition: color 0.3s ease;
-        }
-
-        .skip-to-delivery-icon:hover {
-            color: #1a3d47;
-        }
-
-        /* Close button styling - more visible */
-        .modal-header button.close {
-            font-size: 32px;
-            font-weight: 300;
-            color: #000;
-            opacity: 0.8;
-            text-shadow: none;
-        }
-
-        .modal-header button.close:hover {
-            opacity: 1;
-            color: #000;
-        }
-
-        /* Doctor/Patient names styling */
-        .patient-doctor-names {
-            color: #2d5f6d;
-            font-weight: 600;
-        }
-
-        .patient-doctor-label {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            color: #6c757d;
-            margin-bottom: 2px;
-            display: block;
-        }
-
-        /* Scrollable section for jobs and notes only */
-        .scrollable-content {
-            max-height: 40vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        /* Notes container styling */
-        .form-control.note-container {
-            background-color: #e8f0f2;
-            border: 1px solid #b8d4db;
-            color: #212529;
-        }
-
-        .modal-footer {
-            display: block;
-            padding: 1rem;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .modal-footer .row {
-            margin: 0;
-        }
-
-        .modal-footer .col-6,
-        .modal-footer .col-4,
-        .modal-footer .col-12 {
-            padding: 5px;
-        }
-
-        .modal-footer .btn {
-            width: 100%;
-            margin: 3px;
-            font-weight: 400;
-            padding: 10px 12px;
-            border: none;
-            transition: all 0.3s ease;
-            font-size: 14px;
-        }
-
-        /* Button color improvements with proper contrast */
-        .modal-footer .btn-info {
-            background-color: #17a2b8;
-            color: #ffffff !important;
-            box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
-        }
-
-        .modal-footer .btn-info:hover {
-            background-color: #138496;
-            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
-        }
-
-        .modal-footer .btn-success {
-            background-color: #28a745;
-            color: #ffffff !important;
-            box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
-        }
-
-        .modal-footer .btn-success:hover {
-            background-color: #218838;
-            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
-        }
-
-        .modal-footer .btn-success:disabled {
-            background-color: #6c757d;
-            color: #ffffff !important;
-            opacity: 0.6;
-        }
-
-        .modal-footer .btn-warning {
-            background-color: #ffc107;
-            color: #ffffff !important;
-            box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
-        }
-
-        .modal-footer .btn-warning:hover {
-            background-color: #e0a800;
-            color: #ffffff !important;
-            box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
-        }
-
-        .modal-footer .btn-dark {
-            background-color: #343a40;
-            color: #ffffff !important;
-            box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
-        }
-
-        .modal-footer .btn-dark:hover {
-            background-color: #23272b;
-            box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
-        }
-
-        .modal-footer .btn-outline-info {
-            border: 2px solid #17a2b8;
-            background-color: transparent;
-            color: #17a2b8 !important;
-        }
-
-        .modal-footer .btn-outline-info:hover {
-            background-color: #17a2b8;
-            color: #ffffff !important;
-            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
-        }
-
-        .modal-footer .btn-outline-danger {
-            border: 2px solid #dc3545;
-            background-color: transparent;
-            color: #dc3545 !important;
-        }
-
-        .modal-footer .btn-outline-danger:hover {
-            background-color: #dc3545;
-            color: #ffffff !important;
-            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-        }
-
-        .modal-footer .btn-outline-secondary {
-            border: 2px solid #6c757d;
-            background-color: transparent;
-            color: #6c757d !important;
-        }
-
-        .modal-footer .btn-outline-secondary:hover {
-            background-color: #6c757d;
-            color: #ffffff !important;
-            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
-        }
-
-        .modal-footer .btn-secondary {
-            background-color: #6c757d;
-            color: #ffffff !important;
-            box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
-        }
-
-        .modal-footer .btn-secondary:hover {
-            background-color: #5a6268;
-            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
-        }
-
-        /* Icon spacing */
-        .modal-footer .btn i {
-            margin-right: 6px;
-        }
-
-        .YSH-button {
-            text-decoration: none;
-            line-height: 1;
-            border-radius: 1.5rem;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 10px 10px 20px rgba(0, 0, 0, .05);
-            background-color: #fff;
-            color: #121212;
-            border: none;
-            cursor: pointer;
-        }
-
-        .YSH-button-decor {
-            position: absolute;
-            inset: 0;
-            background-color: var(--clr);
-            transform: translateX(-100%);
-            transition: transform .3s;
-            z-index: 0;
-        }
-
-        .YSH-button-content {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .YSH-button__icon {
-            width: 48px;
-            height: 40px;
-            background-color: var(--clr);
-            display: grid;
-            place-items: center;
-        }
-
-        .YSH-button__text {
-            display: inline-block;
-            transition: color .2s;
-            padding: 2px 1.5rem 2px;
-            padding-left: .75rem;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            max-width: 150px;
-        }
-
-        .YSH-button:hover .YSH-button__text {
-            color: #fff;
-        }
-
-        .YSH-button:hover .YSH-button-decor {
-            transform: translate(0);
-        }
     </style>
 
     <style>
@@ -533,6 +547,9 @@
 
 
 @section('content')
+    <script>
+        window.enableModalPositioning = true;
+    </script>
     {{-- Define setOuterTab early to prevent race condition errors when clicking tabs before page fully loads --}}
     <script>
         // Early placeholder function - will be overridden by full implementation in footer
@@ -754,9 +771,17 @@
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->
-            <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
-                <!-- Simple shimmer loading overlay -->
-                <div class="dashboard-shimmer-overlay loading" id="dashboardShimmer"></div>
+<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
 
                 <div role="tablist" class="stageSidebar" aria-orientation="vertical">
                     @foreach ($stages as $key => $stage)
@@ -769,14 +794,13 @@
                             $displayKey = $key == 'Qc' ? 'QC' : $displayKey;
                         @endphp
                         <button role="tab" aria-selected="false" aria-controls="{{ $keyId . 'label' }}"
-                            id="{{ $keyId }}" style="" onclick="setOuterTab(this)">
+                            id="{{ $keyId }}"  onclick="setOuterTab(this)">
                             <span class="iconSpan" style="display: flex;align-items: center;">{!! $stage['icon'] !!}
                                 <span style=" padding-left:6px" class="stageName"> {{ $displayKey }}</span></span>
                             <div>
-                                <span class="badge bg-info m-1 activeBadge"
-                                    style="padding: 0.25em 0.4em;">{{ count($stage['activeCases']) }}</span>
+                                <span class="badge bg-info m-1 activeBadge">{{ count($stage['activeCases']) }}</span>
                                 <span class="badge bg-info m-1 waitingBadge"
-                                    style="padding: 0.25em 0.4em;">{{ count($stage['waitingCases']) }} </span>
+                                    >{{ count($stage['waitingCases']) }} </span>
                             </div>
                         </button>
                     @endforeach
@@ -987,7 +1011,7 @@
                                                     method="GET">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{ $case->id }}">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-dialog modal-dialog-centered animate__animated  animate__fadeInDown" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Case Completion</h5>
@@ -1305,7 +1329,7 @@
                                                         @csrf
                                                         <input type="hidden" name="case_id"
                                                             value="{{ $case->id }}">
-                                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Case Completion</h5>
@@ -1583,7 +1607,7 @@
         <!-- Generic loading dialog -->
         <div id="loadingDialog" class="modal" tabindex="-1" role="dialog"
             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown" role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
@@ -2210,33 +2234,60 @@
             });
         }
 
-        /**
-         /**
-         * Reset custom form data specific to certain dialogs
-         * This can be extended for specific dialog types
-         */
-        function resetCustomFormData($modal) {
-            // Reset build name for 3D printing
-            if ($modal.find('#hidden3dprintingBuildName').length) {
-                $modal.find('#hidden3dprintingBuildName').val('');
+
+
+    <style>
+        /* Custom CSS to fix sticky element spacing and badge appearance */
+        @media (min-width: 992px) { /* Apply only on desktop */
+            /* Ensure badges are perfect circles */
+            .activeBadge,
+            .waitingBadge {
+                width: 24px !important;
+                height: 24px !important;
+                border-radius: 50% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                padding: 0 !important; /* Remove conflicting padding */
+                flex-shrink: 0 !important; /* Prevent shrinking */
+                line-height: 1 !important; /* Ensure vertical centering */
+                font-size: 10px !important; /* Adjust font size if needed for 3 digits */
+                font-weight: 700 !important; /* Make numbers stand out */
+                color: #fff !important; /* Ensure text is white for contrast */
+            }
+            .activeBadge {
+                background-color: #007bff !important; /* Deeper blue */
+            }
+            .waitingBadge {
+                background-color: #dc3545 !important; /* Deeper red */
             }
 
-            // Reset device selection
-            if (typeof selectedMachineId !== 'undefined') {
-                selectedMachineId = null;
+            /* Sidebar and Inner Tabs should stick below the main navbar */
+            .stageSidebar.kt-portlet--sticky-on,
+            .macaw-silk-tabs > [role="tablist"].kt-portlet--sticky-on {
+                top: 60px !important; /* Assuming main navbar height of 60px */
+                z-index: 1020 !important; /* Ensure they are above content */
             }
 
-            // Reset any selected cases arrays
-            if (typeof selectedCases !== 'undefined') {
-                selectedCases = [];
+            /* Table header should stick below the inner tabs */
+            .sunriseTable > thead.kt-portlet--sticky-on {
+                top: 100px !important; /* 60px (navbar) + 40px (inner tabs height) */
+                z-index: 1000 !important; /* Below sidebar and inner tabs */
             }
 
-            // Reset any waiting popup checkboxes
-            jQuery('[id^="WaitingPopupCheckBoxes"]').val('');
-
-            // Reset any device-specific selections
-            jQuery('.device-item').removeClass('selected');
-            jQuery('.device-item img').removeClass('selected');
+            /* Ensure consistent badge positioning within the stageSidebar buttons */
+            .stageSidebar button[role="tab"] {
+                display: flex; /* Enable flexbox for horizontal alignment */
+                justify-content: space-between; /* Space out items */
+                align-items: center; /* Vertically align items */
+            }
+            .stageSidebar button[role="tab"] > div { /* Target the div containing badges */
+                display: flex;
+                flex-direction: column; /* Stack badges vertically */
+                align-items: center; /* Center badges within their column */
+                gap: 2px; /* Small gap between badges */
+                min-width: 30px; /* Ensure enough space for 3-digit badge */
+            }
         }
-    </script>
+    </style>
 @endpush

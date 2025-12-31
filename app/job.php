@@ -92,13 +92,13 @@ class job extends Model
         {
             if($this->stage == 8){
             if($this->delivery_accepted)
-                return "Active in ".$stageName . " w/ ". $assignee->name_initials;
+                return $stageName . " w/ ". $assignee->name_initials;
                 else
             return "Assigned to ". $assignee->name_initials;
 
             }
             else
-            return "Active in ".$stageName . " w/ ". $assignee->name_initials;
+            return $stageName . " w/ ". $assignee->name_initials;
 
         }
         else
