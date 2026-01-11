@@ -574,7 +574,7 @@
                                 @if ($key == "delivery")
                                 <div class="col-12 padding5px">
                                     <a class="dropdown-item" href="{{route('view-voucher',$case->id)}}">
-                                        <button type="button" class="btn btn-outline-info" style="width:100%">Print voucher</button>
+                                        <button type="button" class="btn btn-outline-info" style="width:100%; color:white">Print voucher</button>
                                     </a>
                                 </div>
                                 @endif
@@ -594,7 +594,7 @@
                                 <!-- Row 5: Reset To Waiting (100%) -->
                                 <div class="col-12 padding5px">
                                     <a href="{{route('reset-to-waiting', ['id'=>$case->id,'stage'=>$stage["numericStage"]] )}}">
-                                        <button type="button" class="btn btn-outline-danger" style="width:100%">Reset To Waiting</button>
+                                        <button type="button" class="btn btn-outline-danger" style="width:100%;margin-bottom: 3px">Reset To Waiting</button>
                                     </a>
                                 </div>
 

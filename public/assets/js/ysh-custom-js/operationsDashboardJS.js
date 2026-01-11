@@ -369,7 +369,7 @@ function initializeDataTables() {
             paging: false,
             searching: false,
             info: false,
-            ordering: true,
+            ordering: false,
             lengthChange: false,
             responsive: false,
             autoWidth: false

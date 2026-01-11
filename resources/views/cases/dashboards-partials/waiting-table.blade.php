@@ -328,7 +328,7 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                 @if ($key == "qc")
                                     <div class="col-12 padding5px">
                                         <a href="{{route('assign-and-finish',['caseId'=> $case->id,'stage'=>$stage["numericStage"]])}}">
-                                            <button type="button" class="btn btn-info"><i class="fa-solid fa-arrow-trend-up"></i> Assign & Complete</button>
+                                            <button type="button" class="btn btn-info" style="color: white"><i class="fa-solid fa-arrow-trend-up"></i> Assign & Complete</button>
                                         </a>
                                     </div>
                                 @endif

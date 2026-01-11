@@ -489,18 +489,18 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     /* Dialog Dismissal Enhancements */
-    
+
 .sigma-workflow-modal.sigma-modal--active-cases-preview {
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
     }
 
-    
+
 .sigma-workflow-modal.active.sigma-modal--active-cases-preview {
         animation: fadeIn 0.3s ease-out !important;
     }
 
-    
+
 .sigma-workflow-modal.closing.sigma-modal--active-cases-preview {
         animation: fadeOut 0.3s ease-in;
     }
@@ -1201,8 +1201,4 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
 </style>
 
-</div>
-</div>
-</div>
-</div>
-</div>
+

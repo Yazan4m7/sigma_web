@@ -148,9 +148,10 @@
     }
 
     .YSH-badge {
-        width: 1.75rem !important;
-        height: 1.75rem !important;
-        font-size: 0.75rem !important;
+        min-width: 1.75rem !important;
+        min-height: 1.75rem !important;
+        padding: 0.2rem !important;
+        font-size: 0.7rem !important;
     }
 }
 
@@ -203,9 +204,10 @@
     }
 
     .YSH-badge {
-        width: 1.5rem !important;
-        height: 1.5rem !important;
-        font-size: 0.65rem !important;
+        min-width: 1.5rem !important;
+        min-height: 1.5rem !important;
+        padding: 0.15rem !important;
+        font-size: 0.6rem !important;
     }
 }
 

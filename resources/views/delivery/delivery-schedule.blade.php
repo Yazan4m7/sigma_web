@@ -106,13 +106,31 @@
 
         @media screen and (max-width: 767px){
             .delivery-filters {
-            gap: 16px;
-            display: flex;
-            justify-content: center !important;
-            flex-direction: row;
-            align-items: flex-end;
-            flex-wrap: wrap;
-        }
+                gap: 10px;
+                display: flex;
+                justify-content: center !important;
+                flex-direction: row;
+                align-items: flex-end;
+                flex-wrap: wrap;
+            }
+
+            /* Keep From and To date fields on same row */
+            .delivery-filters > div:nth-child(1),
+            .delivery-filters > div:nth-child(2) {
+                flex: 0 0 calc(50% - 8px);
+                max-width: calc(50% - 8px);
+            }
+
+            /* Filter button */
+            .delivery-filters > div:nth-child(3) {
+                flex: 1;
+            }
+
+            /* Print button aligned right */
+            .delivery-filters .print-btn-container {
+                flex: 0 0 auto;
+                margin-left: auto;
+            }
             /* Large phones */
             
 .sigma-modal--delivery-schedule-edit .modal-dialog {
@@ -312,7 +330,34 @@
                 padding: 2px;
             }}
         .filter-btn{width: 10rem;}
-        .print-btn{width: 7rem;}
+        .print-btn{
+            width: 42px;
+            height: 42px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+        }
+        .print-btn i {
+            font-size: 18px;
+        }
+        .print-btn-container {
+            margin-left: auto;
+        }
+
+        /* Center # of units column */
+        #datatable thead th:nth-child(4),
+        #datatable tbody td:nth-child(4) {
+            text-align: center !important;
+        }
+
+        /* Left align Status column */
+        #datatable thead th:nth-child(5),
+        #datatable tbody td:nth-child(5) {
+            text-align: left !important;
+        }
+
         .delivery-filters{
             gap: 16px;
             display: flex;
@@ -380,9 +425,11 @@
                                 <div class=" noLeftPadding">
                                     <button type="submit" class="btn btn-primary fillWidth filter-btn">Filter</button>
                                 </div>
-                                <div class=" ">
+                                <div class="print-btn-container">
                                     <button type="button" onclick="printResult()"
-                                            class="btn btn-secondary fillWidth print-btn">Print</button>
+                                            class="btn btn-secondary print-btn" title="Print">
+                                        <i class="fa fa-print"></i>
+                                    </button>
                                 </div>
 
                         </div>

@@ -117,6 +117,10 @@ function closeModal(options) {
         document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
             backdrop.remove();
         });
+
+        if (typeof window.updateDialogScrollLock === 'function') {
+            window.updateDialogScrollLock();
+        }
     }, 300);
 }
 </script>

@@ -84,10 +84,11 @@ main,
 nav,
 section {
     display: block;
+ 
 }
 
 body {
-    margin: 14px;
+    margin: 0;
     /* font-family: "Poppins", sans-serif; */
     font-size: 0.rem;
     font-weight: 400;
@@ -316,8 +317,9 @@ html [type="button"],
 input[type="radio"],
 input[type="checkbox"] {
     box-sizing: border-box;
-    padding: 0;
+    padding: 7px;
     /* transform: scale(1.5); */
+    margin-left: 6px;
 }
 
 input[type="date"],
@@ -6178,12 +6180,11 @@ button.close {
 
 .modal-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 24px 24px 0 24px;
     border-bottom: 1px solid #e9ecef;
     border-top-left-radius: 0.2857rem;
     border-top-right-radius: 0.2857rem;
-    align-content: space-between;
     flex-direction: row;
 }
 
@@ -14979,7 +14980,7 @@ h6,
 
 p {
     /*color: rgba(255, 255, 255, 0.8);*/
-    /*margin-bottom: 5px;*/
+    /* margin-bottom: 5px; */
 }
 
     p.description {
@@ -17856,6 +17857,7 @@ Copyright (c) 2015 Daniel Eden
         }
 
     .white-content .main-panel {
+        /* margin-left: 0px !important; */
         background: #ffffff;
     }
 

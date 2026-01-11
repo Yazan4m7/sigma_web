@@ -7,6 +7,7 @@
     'mode' => 'datetime', // 'date' | 'datetime'
     'displayFormat' => null,
     'submitFormat' => null,
+    'placeholder' => null,
 ])
 
 @php
@@ -903,7 +904,7 @@
             type="text"
             id="{{ $uniqueId }}"
             autocomplete="off"
-            placeholder="{{ $label }}"
+            placeholder="{{ $placeholder ?? $label }}"
             readonly
             @click="openModal()"
             @keydown.enter.prevent="openModal()"

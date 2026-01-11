@@ -1906,6 +1906,7 @@ function closeAllModals() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
+    updateDialogScrollLock();
 }
 
 /**
@@ -2187,6 +2188,7 @@ function proceedWithModalOpen(modalId, isWaiting, caseId) {
         // Show the modal immediately with Animate.css
         modal.classList.add('active');
         modal.style.display = 'flex';
+        updateDialogScrollLock();
 
         // Add Animate.css fade-in animation (fadeInDown from top) - instant, no delay
         if (dialogContent) {
@@ -2362,6 +2364,11 @@ function loadMaterialTypesForStage(stage, caseIds) {
     });
 }
 
+function updateDialogScrollLock() {
+    const hasOpenDialog = document.querySelector('.sigma-workflow-modal.active, .YSH-slide-overlay.YSH-active, .modal.show, .modal.fade.show') !== null;
+    document.body.classList.toggle('ysh-dialog-open', hasOpenDialog);
+}
+
 /**
  * Open a modal dialog
  */
@@ -2430,6 +2437,7 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
 
         // Show the modal
         modal.classList.add('active');
+        updateDialogScrollLock();
 
         // Add fade-in animation
         if (dialogContent) {
@@ -2466,6 +2474,7 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
             if (altModal) {
                 console.log('Found modal with alternative ID:', altId);
                 altModal.classList.add('active');
+                updateDialogScrollLock();
                 return;
             }
         }
@@ -2484,6 +2493,9 @@ document.addEventListener('DOMContentLoaded', function () {
             img.classList.add('grayscale');
         }
     });
+
+    document.addEventListener('shown.bs.modal', updateDialogScrollLock);
+    document.addEventListener('hidden.bs.modal', updateDialogScrollLock);
 });
 
 
@@ -2671,6 +2683,7 @@ function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
 
         requestAnimationFrame(() => {
             overlay.classList.add('YSH-active');
+            updateDialogScrollLock();
         });
     } catch (e) {
         console.error('Error opening slide panel:', e);
@@ -2722,6 +2735,7 @@ function YSH_closeSlidePanel(caseId) {
             panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
             overlay._yshCloseHandlers = null;
         }
+        updateDialogScrollLock();
     };
 
     const onTransitionEnd = (event) => {

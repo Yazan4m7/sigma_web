@@ -74,7 +74,7 @@
         /* Full width */
         order: 2;
         /* Ensure it's below navigation */
-        padding: 0.75rem 0.5rem !important;
+        /* padding: 0.75rem 0.5rem !important; */
         /* Reduced padding for mobile */
         overflow: visible !important;
         /* Prevent unwanted scrolling on mobile */
@@ -152,17 +152,29 @@
 
     /* Badge positioning for horizontal tabs */
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
-        display: flex;
-        gap: 2px;
-        flex-wrap: nowrap;
-        margin-top: 2px;
-        justify-content: center;
+        display: flex !important;
+        gap: 2px !important;
+        flex-wrap: nowrap !important;
+        margin-top: 2px !important;
+        justify-content: center !important;
+        align-items: center !important; /* Ensure vertical alignment */
     }
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .badge {
         font-size: 0.65rem !important;
         padding: 0.15em 0.3em !important;
         margin: 0 !important;
+    }
+
+    /* Fix circle badge alignment on mobile */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        align-self: center !important;
+        margin: 0 1px !important;
+        vertical-align: middle !important;
+        position: relative !important;
+        top: 0 !important;
+        bottom: 0 !important;
     }
 
     /* Let inner flex items shrink (prevents accidental horizontal overflow) */
@@ -205,6 +217,16 @@
         font-size: 0.55rem !important;
         padding: 0.1em 0.2em !important;
     }
+
+    /* Ensure alignment for circle badges */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        line-height: 1 !important;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
 }
 
 /*
@@ -230,6 +252,16 @@
         width: 1rem !important;
         height: 1rem !important;
     }
+
+    /* Ensure badge alignment */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        line-height: 1 !important;
+    }
 }
 
 /*
@@ -240,6 +272,11 @@
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
         min-width: 0 !important;
         padding: 0.45rem 0.2rem !important;
+    }
+
+    /* Ensure badge alignment */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
     }
 }
 
@@ -265,6 +302,16 @@
     .millingIcon {
         width: 1.2rem !important;
         height: 1.2rem !important;
+    }
+
+    /* Ensure badge alignment */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        line-height: 1 !important;
     }
 }
 
@@ -320,5 +367,108 @@
         transform: translate3d(0, 0, 0);
         backface-visibility: hidden;
         will-change: scroll-position;
+    }
+}
+
+/**
+ * SMALLER CIRCLES: Progressive scaling from 500px down to 380px
+ */
+@media (max-width: 500px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        min-width: 20px !important;
+        min-height: 20px !important;
+        font-size: 10px !important;
+        padding: 3px !important;
+        line-height: 1 !important;
+    }
+
+    /* Ensure badge container alignment */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
+}
+
+@media (max-width: 439px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        min-width: 18px !important;
+        min-height: 18px !important;
+        font-size: 9px !important;
+        padding: 2.5px !important;
+        line-height: 1 !important;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
+}
+
+@media (max-width: 400px) {
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        min-width: 16px !important;
+        min-height: 16px !important;
+        font-size: 8px !important;
+        padding: 2px !important;
+        line-height: 1 !important;
+    }
+
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        align-items: center !important;
+    }
+}
+
+/**
+ * HORIZONTAL SCROLLABLE LIST: At 380px and below - ensure horizontal scroll
+ */
+@media (max-width: 380px) {
+    /* Keep horizontal scrollable list */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        flex-direction: row !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: thin !important;
+    }
+
+    /* Compact tabs for small screens */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        min-width: 50px !important;
+        max-width: 60px !important;
+        padding: 0.4rem 0.15rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Smaller icons */
+    .iconSpan > i {
+        font-size: 14px !important;
+    }
+
+    .iconSpan > svg,
+    .millingIcon {
+        width: 0.85rem !important;
+        height: 0.85rem !important;
+    }
+
+    /* Smaller stage names */
+    .stageName {
+        font-size: 0.5rem !important;
+    }
+
+    /* Smaller badges */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .activeBadge,
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] .waitingBadge {
+        min-width: 16px !important;
+        min-height: 16px !important;
+        font-size: 8px !important;
+        padding: 2px !important;
+    }
+
+    /* Tighter gap between badges */
+    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] > div {
+        gap: 1px !important;
+        align-items: center !important;
+        display: flex !important;
     }
 }

@@ -2539,7 +2539,7 @@ YSH-slide-grid {
    font-family: 'Nunito Sans', sans-serif;
    font-weight: normal;
    width: 80%;
-   padding: 1.25rem 0;
+   padding: 1.05rem 0;
    background-color: white;
    color: var(--tab-active-text-color);
 }
@@ -2790,7 +2790,7 @@ img {
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] {
-  height: 96%;
+  height: 100%;
   position: relative;
   font-family: 'Nunito Sans', sans-serif;
   font-weight: normal;
@@ -3048,6 +3048,74 @@ img {
     background: var(--sigma-ops-scrollbar-thumb-hover);
 }
 
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.sunriseTable,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.dataTable,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .dataTables_scrollHead table,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .dataTables_scrollBody table {
+    table-layout: fixed;
+    width: 100% !important;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.sunriseTable tbody td,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.dataTable tbody td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    line-height: 1.35;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.sunriseTable td > p,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.dataTable td > p {
+    margin: 3px;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--select {
+    width: 44px;
+    text-align: left;
+    margin-left:20px !important;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--doctor {
+    width: 7rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--delivery {
+    width: 5.5rem;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--assigned {
+    width: 7.5rem;
+    white-space: nowrap;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--count {
+    width: 2.25rem;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--tags {
+    width: 5.5rem;
+    text-align: center;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--patient {
+    width: 7rem;
+
+    white-space: normal !important;
+    text-align: left;
+    unicode-bidi: plaintext;
+    overflow-wrap: anywhere;
+}
+
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--tags > div {
+    justify-content: center;
+}
+
 @media (max-width: 767px){
     .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
         box-shadow: var(--sigma-ops-sticky-shadow);
@@ -3058,6 +3126,79 @@ img {
     .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
         padding: 12px 8px;
         font-size: 0.75rem;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs {
+        flex-direction: column;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 6px;
+        padding: 6px 8px;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
+        width: 100%;
+    }
+
+    .ops-dashboard .stageSidebar {
+        margin-top: 0;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
+        display: flex;
+        flex: 0 0 auto;
+        min-width: 78px;
+        padding: 8px 6px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .ops-dashboard .stageSidebar button[role="tab"] .iconSpan {
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .ops-dashboard .stageSidebar button[role="tab"] .stageName {
+        padding-left: 0;
+    }
+
+    .ops-dashboard .stageSidebar button[role="tab"] > div {
+        width: 100%;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .ops-dashboard .stage-inner-tabs {
+        margin: 0 0 0.75rem 0;
+        padding: 6px;
+        background: #ffffff;
+        border-bottom: 1px solid var(--sigma-ops-divider);
+        gap: 0.5rem;
+    }
+
+    .ops-dashboard .stage-inner-tabs .innerBtn {
+        flex: 1 1 0;
+        min-width: 0;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--count,
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--tags {
+        display: none;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs table.sunriseTable tbody td,
+    .ops-dashboard .macaw-tabs.macaw-aurora-tabs table.dataTable tbody td {
+        padding: 8px 8px;
     }
 }
 
@@ -3651,11 +3792,11 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
        padding-right: 6px;
    }
 
-   .activeTable tr > *:nth-child(4), .activeTable tr > *:nth-child(5), .activeTable tr > *:nth-child(6) {
+   .ops-dashboard .activeTable .ops-col--count,
+   .ops-dashboard .activeTable .ops-col--tags,
+   .ops-dashboard .waitingTable .ops-col--count,
+   .ops-dashboard .waitingTable .ops-col--tags {
        display: none;
-   }
-   .waitingTable tr > *:nth-child(4), .waitingTable tr > *:nth-child(5), .waitingTable tr > *:nth-child(6) {
-      display: none;
    }
 
 

@@ -387,6 +387,12 @@
         <form class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
         @csrf
         <div>
+            <div class="row btnsRow print-label-actions">
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
+                    <button type="button" class="btn btn-primary ml-2" onclick="PrintLabel()">Print Label</button>
+                </div>
+            </div>
             <!-- CASE INFO -->
 
             <div class="row patient-info-section">
@@ -1200,12 +1206,12 @@
         </div>
         </form>
 
-        @if(Auth()->user()->is_admin)
-            <a href="{{route('admin.case.timeline', $case->id)}}" class="btn btn-primary viewcase-timeline-btn"
-               aria-label="View timeline" title="View timeline">
-                <i class="fa-solid fa-clock-rotate-left"></i>
-            </a>
-        @endif
+{{--        @if(Auth()->user()->is_admin)--}}
+{{--            <a href="{{route('admin.case.timeline', $case->id)}}" class="btn btn-primary viewcase-timeline-btn"--}}
+{{--               aria-label="View timeline" title="View timeline">--}}
+{{--                <i class="fa-solid fa-clock-rotate-left"></i>--}}
+{{--            </a>--}}
+{{--        @endif--}}
     </div>
 
 

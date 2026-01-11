@@ -411,22 +411,38 @@
             color: white;
         }
 
-        /* Filter section improvements */
-        .kt-subheader__search label {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #495057;
+        /* Compact filter section */
+        .cases-filter-row {
+            padding: 8px 0 !important;
+            align-items: center;
         }
 
-        .kt-subheader__search .form-control {
+        .cases-filter-row .form-control,
+        .cases-filter-row .dtp-input {
+            height: 36px !important;
+            font-size: 13px !important;
+            padding: 4px 10px !important;
             border-radius: 4px;
             border: 1px solid #ced4da;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, .075);
         }
 
-        .kt-subheader__search .form-control:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        .cases-filter-row .bootstrap-select > .dropdown-toggle {
+            height: 36px !important;
+            padding: 4px 10px !important;
+            font-size: 13px !important;
+        }
+
+        .cases-filter-btn {
+            width: 100%;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 !important;
+        }
+
+        .cases-filter-row .mb-2 {
+            margin-bottom: 6px !important;
         }
 
         #cases_from.dtp-input, #cases_to.dtp-input {
@@ -498,12 +514,39 @@
         /* Responsive adjustments */
         @media screen and (max-width: 768px){
             table {
-                table-layout: auto;
+                table-layout: fixed;
+                width: 100% !important;
             }
 
             #casesTable {
-                min-width: 600px; /* Ensure table has minimum width for scrolling */
+                min-width: unset !important;
+                width: 100% !important;
+                font-size: 13px !important;
             }
+
+            /* Match header and body font size on mobile */
+            #casesTable thead th,
+            #casesTable tbody td {
+                font-size: 13px !important;
+                padding: 8px 6px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Column width distribution for mobile */
+            #casesTable thead th:nth-child(1),
+            #casesTable tbody td:nth-child(1) { width: 22%; } /* Doctor */
+            #casesTable thead th:nth-child(2),
+            #casesTable tbody td:nth-child(2) { width: 22%; } /* Patient */
+            #casesTable thead th:nth-child(3),
+            #casesTable tbody td:nth-child(3) { width: 18%; } /* Initial Deli Date */
+            #casesTable thead th:nth-child(4),
+            #casesTable tbody td:nth-child(4) { width: 18%; } /* Date Delivered */
+            #casesTable thead th:nth-child(5),
+            #casesTable tbody td:nth-child(5) { width: 12%; } /* Status */
+            #casesTable thead th:nth-child(6),
+            #casesTable tbody td:nth-child(6) { width: 8%; } /* Tags */
 
             .tooltip-toggle-container{
                 display: none;
@@ -518,10 +561,10 @@
                 padding: 3px;
             }
 
-            /* Show all columns but allow horizontal scroll */
+            /* Prevent horizontal scroll */
             .dataTables_wrapper {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
+                overflow-x: hidden;
+                width: 100% !important;
             }
 
             .pagination {
@@ -554,7 +597,8 @@
             }
 
             #casesTable .cases-cell-truncate {
-                max-width: 11rem;
+                max-width: 100%;
+                display: block;
             }
 
             /* Responsive button group on mobile */
@@ -567,6 +611,13 @@
                 flex: 1;
                 margin-left: 2px;
                 margin-right: 2px;
+            }
+
+            /* Smaller status badges on mobile */
+            .sigma-case-status-badge {
+                width: auto !important;
+                padding: 2px 6px !important;
+                font-size: 11px !important;
             }
         }
         #casesTable tbody td:nth-child(5) {
@@ -610,74 +661,57 @@
                                     <i class="fa-regular fa-trash-can"></i>
                                 </a>
 
-                                <div class="row " style="padding-bottom:0;">
+                                <div class="row cases-filter-row">
                                     <!-- Date filtering section -->
-                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label for="cases_from">From (Start of):</label>
-                                              <x-date-time-picker
-                                                    id="cases_from"
-                                                    name="from"
-                                                    label=""
-                                                    mode="date"
-                                                    display-format="DD MMM, YYYY"
-                                                    submit-format="YYYY-MM-DD"
-                                                    value="{{ $from }}"
-                                            />
-                                        </div>
+                                    <div class="col-4 col-sm-3 col-md-2 mb-2">
+                                        <x-date-time-picker
+                                            id="cases_from"
+                                            name="from"
+                                            label=""
+                                            mode="date"
+                                            display-format="DD MMM, YYYY"
+                                            submit-format="YYYY-MM-DD"
+                                            value="{{ $from }}"
+                                            placeholder="From"
+                                        />
                                     </div>
-                                    <div class="col-6 col-sm-6 col-md-2 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label for="cases_to">To (End of):</label>
-                                            <x-date-time-picker
-                                                    id="cases_to"
-                                                    name="to"
-                                                    label=""
-                                                    mode="date"
-                                                    display-format="DD MMM, YYYY"
-                                                    submit-format="YYYY-MM-DD"
-                                                    value="{{ $to }}"
-                                            />
-                                        </div>
+                                    <div class="col-4 col-sm-3 col-md-2 mb-2">
+                                        <x-date-time-picker
+                                            id="cases_to"
+                                            name="to"
+                                            label=""
+                                            mode="date"
+                                            display-format="DD MMM, YYYY"
+                                            submit-format="YYYY-MM-DD"
+                                            value="{{ $to }}"
+                                            placeholder="To"
+                                        />
                                     </div>
-
-
-
 
                                     <!-- Doctor selection -->
-                                    <div class="col-6 col-sm-6 col-md-3 mb-3">
+                                    <div class="col-4 col-sm-3 col-md-2 mb-2">
                                         @if(isset($clients))
-                                            <div class="dropdown" style="text-align: left;">
-                                                <label>Doctor:</label>
-                                                <br>
-                                                     <select style="width:100%" class="selectpicker clearOnAll greyBG"
-                                                             multiple
-                                                             name="doctor[]" id="doctor"
-                                                             data-live-search="true">
-                                                         <option
-                                                        value="all" {{(isset($selectedClients) && in_array("all" ,$selectedClients)) ? 'selected' : ''}}>
-                                                             All
-                                                         </option>
-                                                         @foreach($clients as $d)
-                                                             <option
-                                                                 value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                            <select style="width:100%" class="selectpicker clearOnAll greyBG"
+                                                    multiple
+                                                    name="doctor[]" id="doctor"
+                                                    data-live-search="true"
+                                                    title="Doctor">
+                                                <option value="all" {{(isset($selectedClients) && in_array("all" ,$selectedClients)) ? 'selected' : ''}}>All</option>
+                                                @foreach($clients as $d)
+                                                    <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
+                                                @endforeach
+                                            </select>
                                         @endif
                                     </div>
 
                                     <!-- Search field -->
-                                    <div class="col-6 col-sm-6 col-md-4 mb-3">
-                                        <div class="kt-subheader__search">
-                                            <label>Search:</label>
-                                            <input type="text" class="form-control" id="tableSearch" placeholder="Search cases...">
-                                        </div>
+                                    <div class="col-9 col-sm-2 col-md-5 mb-2">
+                                        <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
                                     </div>
 
                                     <!-- Apply Filters button -->
-                                    <div class="col-6 col-sm-6 col-md-1 mb-3 d-flex align-items-end">
-                                        <button type="submit" class="btn btn-primary" style="width: 100%; height: 38px; display: flex; align-items: center; justify-content: center;">
+                                    <div class="col-3 col-sm-1 col-md-1 mb-2 d-flex align-items-end">
+                                        <button type="submit" class="btn btn-primary cases-filter-btn">
                                             <i class="fas fa-search"></i>
                                         </button>
                                     </div>
@@ -1320,22 +1354,17 @@
 
                             var table = $("#casesTable").DataTable({
                                 "colReorder": true,
-                                "responsive": {
-                                    "details": false  // Disable expand button completely
-                                },
+                                "responsive": false,  // Disable responsive column hiding
                                 "bLengthChange": false,  // Disable "Show XX entries" dropdown
                                 "iDisplayLength": 20,
                                 "order": [],  // Disable initial sorting to preserve server-side order
                                 "dom": 'rtip',  // Hide default search box ('f' removed) but keep table, info, pagination
                                 "bProcessing": true,
                                 "searching": true,  // Enable searching for real-time filter
-                                "scrollX": true,  // Enable horizontal scroll to prevent clipping
+                                "scrollX": false,  // Disable horizontal scroll - let CSS handle it
                                 "autoWidth": false,
                                 "columnDefs": [
                                     { "orderable": false, "targets": [0, 1, 5] },  // Disable sorting on Doctor, Patient, and Tags columns
-                                    { "responsivePriority": 1, "targets": 0 },  // Doctor - always visible
-                                    { "responsivePriority": 2, "targets": 1 },  // Patient - always visible
-                                    { "responsivePriority": 3, "targets": 4 },  // Status - always visible
                                     { "width": "18%", "targets": 0 },  // Doctor column width
                                     { "width": "18%", "targets": 1 },  // Patient column width
                                     { "width": "15%", "targets": 2 },  // Initial Delivery Date
@@ -1370,6 +1399,26 @@
                                  update();
                                  window.addEventListener('scroll', update, { passive: true });
                                  window.addEventListener('resize', update);
+                             })();
+
+                             // Calculate and set sticky toolbar height for table header positioning
+                             (function initStickyToolbarHeight() {
+                                 const updateToolbarHeight = () => {
+                                     const toolbar = document.querySelector('.sigma-sticky-toolbar');
+                                     if (toolbar) {
+                                         const height = toolbar.offsetHeight;
+                                         document.documentElement.style.setProperty('--sigma-sticky-toolbar-height', `${height}px`);
+                                     }
+                                 };
+
+                                 // Update on load
+                                 updateToolbarHeight();
+
+                                 // Update on window resize (in case toolbar height changes)
+                                 window.addEventListener('resize', updateToolbarHeight);
+
+                                 // Update after a short delay to ensure all content is loaded
+                                 setTimeout(updateToolbarHeight, 100);
                              })();
 
                          });

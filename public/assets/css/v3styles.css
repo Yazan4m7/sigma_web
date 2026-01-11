@@ -3764,8 +3764,10 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 }
 
 .YSH-badge {
-    width: 2rem;
-    height: 2rem;
+    min-width: 2rem;
+    min-height: 2rem;
+    aspect-ratio: 1;
+    padding: 0.25rem;
     border-radius: 9999px;
     color: white;
     font-weight: 700;
@@ -3774,7 +3776,8 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     justify-content: center;
     align-items: center;
     user-select: none;
-    /* max-width: unset; */
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 
 .YSH-badge-blue {
@@ -3893,9 +3896,10 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 
     .YSH-badge {
-        width: 1.7rem;
-        height: 1.7rem;
-        font-size: 0.9rem;
+        min-width: 1.7rem;
+        min-height: 1.7rem;
+        padding: 0.2rem;
+        font-size: 0.75rem;
     }
 
     .YSH-device-name {
@@ -9433,7 +9437,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     flex: 1;
 }
 .sigma-modal--active-cases-preview .sigma-workflow-body {
-    padding: 20px;
+    /* padding: 20px; */
     overflow-y: auto;
     flex: 1;
 }
@@ -16459,3 +16463,23 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 /* ============================================================================
    END RESPONSIVE SIGMA WORKFLOW DIALOG STYLING
    ============================================================================ */
+
+
+
+.fade-in-down-local{
+    --animate-duration: 2.1s;
+    animation-name: fadeInDownLocal;
+    animation-timing-function: ease-out;
+}
+
+@keyframes fadeInDownLocal{
+    from{
+        opacity: 0;
+        transform: translateY(-12%);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+

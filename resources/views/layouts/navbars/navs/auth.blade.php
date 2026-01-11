@@ -412,13 +412,23 @@
         align-items: center;
         justify-content: flex-end;
         gap: 12px;
+        flex-wrap: nowrap;
         width: 100%;
     }
 
     .header-actions .header-search {
-        flex: 1 1 320px;
-        max-width: 420px;
+        flex: 0 1 200px;
+        max-width: 240px;
         min-width: 0;
+    }
+
+    .header-actions .header-search #wrapp {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .header-actions .header-search #wrapp input[type="text"] {
+        width: 100%;
     }
 
     /* Fix 3 dots button and dropdown positioning */
@@ -472,9 +482,7 @@
         }
 
         .dotsDiv {
-            position: absolute;
-            top: 10px;
-            right: 12px;
+            position: static;
             width: auto;
             max-width: none;
             flex: 0 0 auto;
@@ -654,7 +662,7 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                         </div>
                     </form>
 {{--                    <x-weather-widget></x-weather-widget>--}}
-                    <div class="dotsDiv">
+                    <div class="dotsDiv noPadOnMobile mb-1">
                         <span class="navbar-brand pageTitle pageTitleMobile">{{$pageSlug ?? "SIGMA"}}</span>
                         <button style= "flex-grow: 3" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
                             <span class="navbar-toggler-bar navbar-kebab"></span>

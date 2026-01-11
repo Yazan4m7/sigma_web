@@ -2,7 +2,7 @@
 
 <div id="YSH-slide-overlay-{{$case->id}}" class="YSH-slide-overlay"
      onclick="if (event.target === this) YSH_closeSlidePanel({{$case->id}})">
-    <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel">
+    <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel ysh-slide-panel--builds">
         <div class="YSH-slide-header">
             <h5>Case Completion</h5>
             <button type="button" class="YSH-close-slide"
@@ -57,14 +57,14 @@
                                     $jobTypeLabel = $job->jobType?->name ?? '-';
                                     $materialLabel = $job->material?->name ?? '-';
                                     $colorLabel = ($job->color && $job->color !== '0') ? $job->color : '-';
+                                    $styleLabel = ($job->style && $job->style !== 'None') ? $job->style : '';
                                 @endphp
-                                <div class="sigma-case-item">
-                                    <div class="info-case-row">
-                                        <div>{{$jobTypeLabel}}</div>
-                                        <div>{{$materialLabel}}</div>
-                                        <div>{{$unitLabel}}</div>
-                                        <div>{{$colorLabel}}</div>
-                                    </div>
+                                <div class="ysh-job-row" role="row">
+                                    <span class="ysh-job-cell ysh-job-cell--teeth">{{$unitLabel}}</span>
+                                    <span class="ysh-job-cell">{{$jobTypeLabel}}</span>
+                                    <span class="ysh-job-cell">{{$materialLabel}}</span>
+                                    <span class="ysh-job-cell">{{$colorLabel}}</span>
+                                    <span class="ysh-job-cell">{{$styleLabel}}</span>
                                 </div>
                             @empty
                                 <div class="ysh-job-empty">No jobs for this stage yet.</div>
@@ -90,29 +90,28 @@
             <div class="modal-footer fullBtnsWidth">
                 <div class="row btnsRow"
                      style=" margin-right: 0px; margin-left: 0px;width:100%">
-                    <div class="col-md-6 col-sm-12 padding5px order-1">
-                        <a href="{{route('view-case', ['id' => $case->id, 'stage' => 3  ])}}">
-                            <button type="button" class="btn btn-info "><i
+                    <div class="col-12 padding5px ysh-slide-actions">
+                        <a href="{{route('view-case', ['id' => $case->id, 'stage' => 3  ])}}" class="ysh-slide-action-link">
+                            <button type="button" class="btn btn-info ysh-slide-action-btn"><i
                                     class="fas fa-eye"></i> View
+                            </button>
+                        </a>
+
+                        @php
+                            $permissions = safe_permissions();
+                            $canEditCase = false;
+                            if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))))
+                            $canEditCase = true;
+                        @endphp
+                        <a href="{{route('edit-case-view',$case->id)}}" class="ysh-slide-action-link">
+                            <button type="button"
+                                    class="btn btn-warning ysh-slide-action-btn" {{$canEditCase ? '' : 'disabled'}}>
+                                <i class="fas fa-edit"></i> Edit
                             </button>
                         </a>
                     </div>
 
-                    @php
-                        $permissions = safe_permissions();
-                        $canEditCase = false;
-                        if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))))
-                        $canEditCase = true;
-                    @endphp
-                    <div class="col-md-6 col-sm-12 padding5px order-2"><a
-                            href="{{route('edit-case-view',$case->id)}}">
-                            <button type="button"
-                                    class="btn btn-warning " {{$canEditCase ? '' : 'disabled'}}>
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </a></div>
-
-                    <div class="col-12 padding5px order-3">
+                    <div class="col-12 padding5px ysh-slide-actions-stack">
                         <button type="button" class="btn btn-secondary "
                                 onclick="YSH_closeSlidePanel({{$case->id}})" style="width:100%">
                             Cancel
@@ -157,6 +156,9 @@
                         overlay.style.display = 'block';
                         requestAnimationFrame(function () {
                             overlay.classList.add('YSH-active');
+                            if (typeof window.updateDialogScrollLock === 'function') {
+                                window.updateDialogScrollLock();
+                            }
                         });
                     };
                 }
@@ -184,6 +186,9 @@
                             panel.removeEventListener('animationend', onAnimationEnd);
                             if (cleanupTimer) {
                                 window.clearTimeout(cleanupTimer);
+                            }
+                            if (typeof window.updateDialogScrollLock === 'function') {
+                                window.updateDialogScrollLock();
                             }
                         };
 
@@ -251,21 +256,20 @@
         .ysh-job-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 6px;
             margin-top: 6px;
         }
 
-        .ysh-job-card {
+        .ysh-slide-panel--builds .ysh-job-row {
             display: grid;
-            grid-template-columns: minmax(48px, 72px) minmax(120px, 1.3fr) minmax(120px, 1.2fr) minmax(60px, 90px);
+            grid-template-columns: minmax(70px, 1fr) minmax(120px, 1.4fr) minmax(120px, 1.4fr) minmax(60px, 0.8fr) minmax(70px, 1fr);
+            column-gap: 12px;
             align-items: center;
-            padding: 6px 0;
+            padding: 4px 0;
             color: #1f2937;
         }
 
-        .ysh-job-cell {
-            position: relative;
-            padding-right: 12px;
+        .ysh-slide-panel--builds .ysh-job-cell {
             min-width: 0;
             white-space: nowrap;
             overflow: hidden;
@@ -273,27 +277,67 @@
             font-size: 13px;
         }
 
-        .ysh-job-cell::after {
-            content: "-";
-            position: absolute;
-            right: 4px;
-            top: 0;
-            color: #94a3b8;
-        }
-
-        .ysh-job-cell:last-child::after {
-            content: "";
-        }
-
-        .ysh-job-cell--unit {
+        .ysh-slide-panel--builds .ysh-job-cell--teeth {
             font-weight: 600;
             color: #0f172a;
             font-variant-numeric: tabular-nums;
         }
 
-        .ysh-job-cell--color {
-            font-weight: 600;
-            color: #334155;
+        .ysh-slide-panel--builds .YSH-slide-body {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .ysh-slide-panel--builds .YSH-slide-body .row {
+            margin-left: 0;
+            margin-right: 0;
+            column-gap: 12px;
+        }
+
+        .ysh-slide-panel--builds .YSH-slide-body .row > [class*="col-"] {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .ysh-slide-panel--builds .YSH-slide-header,
+        .ysh-slide-panel--builds .modal-footer {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .ysh-slide-panel--builds {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .ysh-slide-panel--builds .ysh-slide-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .ysh-slide-panel--builds .ysh-slide-action-link {
+            display: flex;
+            flex: 1 1 0;
+            min-width: 140px;
+        }
+
+        .ysh-slide-panel--builds .ysh-slide-action-btn {
+            width: 100%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 600px) {
+            .ysh-slide-panel--builds .ysh-job-row {
+                grid-template-columns: minmax(60px, 1fr) minmax(90px, 1.2fr) minmax(90px, 1.2fr) minmax(50px, 0.8fr) minmax(60px, 1fr);
+                column-gap: 8px;
+            }
+
+            .ysh-slide-panel--builds .ysh-job-cell {
+                font-size: 12px;
+            }
         }
 
         .ysh-job-empty {

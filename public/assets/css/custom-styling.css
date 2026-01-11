@@ -8121,8 +8121,8 @@ table:not(.sunriseTable):not(.sigma-col-total) thead th {
 }
 .sigma-modal--cases-dashboard-case-completion .modal-body {
     position: relative;
-    flex: 1 1 auto;
-    padding: 21px 21px 1px 24px;
+    /* flex: 1 1 auto; */
+    padding: 0px 21px 1px 24px;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-body {
     position: relative;
@@ -9235,7 +9235,7 @@ table.sigma-sticky-table-header {
 
 table.sigma-sticky-table-header thead th {
     position: sticky;
-    top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height));
+    /* top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height)); */
     z-index: 98;
     background-color: inherit;
 }
@@ -12306,4 +12306,8 @@ table.sunriseTable.sigma-sticky-table-header thead th:last-child {
     .sigma-status-width {
         min-width: 7rem;
     }
+}
+
+body.ysh-dialog-open {
+    overflow: hidden;
 }

@@ -11,9 +11,8 @@
 }
 
 .main-panel {
-    margin-left: 80px !important;
+    /* margin-left: 0px !important; */
     transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
-    width: calc(100% - 80px) !important;
 }
 
 /* Logo styling - Fixed positioning */
@@ -298,9 +297,10 @@
 
     /* Main panel takes full width on mobile */
     .main-panel {
-        margin-left: 0 !important;
-        width: 100% !important;
-        transition: transform 0.3s ease-in-out !important;
+   margin-left: 80px !important;
+    margin-left: 78px !important;
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
+    width: calc(100% - 80px) !important;
     }
 
     /* Don't push content on mobile, keep it in place */

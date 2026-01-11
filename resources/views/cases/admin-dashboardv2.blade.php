@@ -39,6 +39,9 @@
         .col-12 {
             padding: 0;
         }
+        .input-group, .form-group {
+            padding-left: 5px !important;
+        }
         @media (max-width: 480px){
             
 .sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
@@ -1365,6 +1368,92 @@
         
 
     </style>
+    <style>
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-jobs-list,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--teeth,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--teeth {
+            width: 85px;
+            flex: 0 0 85px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type {
+            width: 100px;
+            flex: 0 0 100px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--mat,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--mat {
+            width: 100px;
+            flex: 0 0 100px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--shade,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--shade {
+            width: 25px;
+            flex: 0 0 25px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--unit,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--unit {
+            width: 70px;
+            flex: 0 0 70px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row .sigma-case-job-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row .sigma-case-job-cell {
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type,
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--mat,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--mat {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-extra,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-extra {
+            display: block;
+            white-space: normal;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-extra span,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-extra span {
+            display: block;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .modal-footer,
+        .sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
+            padding-bottom: 18px;
+        }
+
+        .sigma-modal--case-completion-delivery .modal-footer .col-12,
+        .sigma-modal--case-completion-qc .modal-footer .col-12 {
+            margin-bottom: 10px;
+        }
+
+        .sigma-modal--case-completion-delivery .modal-footer .col-12:last-child,
+        .sigma-modal--case-completion-qc .modal-footer .col-12:last-child {
+            margin-bottom: 0;
+        }
+
+    </style>
 
     <style>
         .dt-layout-row {
@@ -1889,7 +1978,7 @@
                                                     {{-- Checkbox column header --}}
 
                                                     @if (count($stage['waitingCases']) != 0)
-                                                        <th class="no-sort text-center" style="width: 50px;">
+                                                        <th class="no-sort text-center ops-col ops-col--select" style="width: 50px;">
                                                             <input type="checkbox"
                                                                 class="selectAllCases {{ $key }}" value="0"
                                                                 name="selectAllCases"
@@ -1898,17 +1987,17 @@
                                                     @endif
                                                 @endif
                                             @endif
-                                            <th>Doctor</th>
-                                            <th>Patient</th>
-                                            <th class="deliveryDateHeader"><span
+                                            <th class="ops-col ops-col--doctor">Doctor</th>
+                                            <th class="ops-col ops-col--patient">Patient</th>
+                                            <th class="deliveryDateHeader ops-col ops-col--delivery"><span
                                                     class="innerSpan4Mobile">D.Date</span><span
                                                     class="innerSpan4DeskTop">Delivery Date</span></th>
                                             @if ($key == 'delivery')
-                                                <th> Assigned To</th>
+                                                <th class="ops-col ops-col--assigned"> Assigned To</th>
                                             @endif
-                                            <th>#</th>
+                                            <th class="ops-col ops-col--count">#</th>
 
-                                            <th>Tags</th>
+                                            <th class="ops-col ops-col--tags">Tags</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1936,7 +2025,7 @@
                                                 {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
                                                 @if ($key != 'delivery' || $isDeliveryAndAssignable)
                                                     @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                                        <td class="no-sort">
+                                                        <td class="no-sort ops-col ops-col--select">
                                                             <input type="checkbox" data-type="{{ $key }}"
                                                                 data-group-id="{{ $key }}"
                                                                 class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
@@ -1947,11 +2036,11 @@
                                                         </td>
                                                     @endif
                                                 @endif
-                                                <td class="clickable" data-toggle="modal"
+                                                <td class="clickable ops-col ops-col--doctor" data-toggle="modal"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
                                                 </td>
-                                                <td class="clickable" data-toggle="modal"
+                                                <td class="clickable ops-col ops-col--patient" data-toggle="modal" dir="auto"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <p class="">{{ $case->patient_name }}
                                                         @if ($key == 'finishing')
@@ -1972,7 +2061,7 @@
                                                         @endif
                                                     </p>
                                                 </td>
-                                                <td class="clickable" data-toggle="modal"
+                                                <td class="clickable ops-col ops-col--delivery" data-toggle="modal"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <p class="">
                                                         {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
@@ -1980,7 +2069,7 @@
                                                 </td>
                                                 <!-- Assigned to for delivery stage -->
                                                 @if ($key == 'delivery')
-                                                    <td class="clickable" data-toggle="modal"
+                                                    <td class="clickable ops-col ops-col--assigned" data-toggle="modal"
                                                         data-target="#waitingDialog{{ $key . $case->id }}">
                                                         <p class="">
                                                             {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
@@ -1989,12 +2078,12 @@
                                                         </p>
                                                     </td>
                                                 @endif
-                                                <td class="clickable" data-toggle="modal"
+                                                <td class="clickable ops-col ops-col--count" data-toggle="modal"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
                                                 </td>
 
-                                                <td class="clickable" data-toggle="modal"
+                                                <td class="clickable ops-col ops-col--tags" data-toggle="modal"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <div
                                                         style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
@@ -2008,14 +2097,14 @@
                                             </tr>
                                             {{--                                        {{dd("key  is  " . $key)}} --}}
                                             {{-- BEGIN WAITING DIALOG --}}
-                                            <div class="modal fade sigma-modal--cases-dashboard-case-completion" tabindex="-1" role="dialog"
+                                            <div class="modal fade sigma-modal--cases-dashboard-case-completion{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
                                                 id="waitingDialog{{ $key . $case->id }}">
                                                 <form
                                                     action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
                                                     method="GET">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{ $case->id }}">
-                                                    <div class="modal-dialog modal-dialog-centered animate__animated  animate__fadeInDown" role="document">
+                                                    <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Case Completion</h5>
@@ -2058,33 +2147,49 @@
                                                                 <div class="scrollable-content">
                                                                     <div class="form-group row">
                                                                         <div class=" col-12 ">
-                                                                            <label><b>Jobs:</b></label><br>
+                                                                            <label><b>Jobs:</b></label>
+                                                                            <div class="sigma-case-jobs-list">
+                                                                                @foreach ($case->jobs as $job)
+                                                                                    @php
+                                                                                        $unit = explode(
+                                                                                            ', ',
+                                                                                            $job->unit_num,
+                                                                                        );
+                                                                                        // Check if this job goes through the current stage based on material
+                                                                                        $showJob = $job->goesThroughStage($stage['numericStage']);
+                                                                                    @endphp
 
-
-                                                                            @foreach ($case->jobs as $job)
-                                                                                @php
-                                                                                    $unit = explode(
-                                                                                        ', ',
-                                                                                        $job->unit_num,
-                                                                                    );
-                                                                                    // Check if this job goes through the current stage based on material
-                                                                                    $showJob = $job->goesThroughStage($stage['numericStage']);
-                                                                                @endphp
-
-                                                                                @if ($showJob)
-                                                                                    <span>{{ $job->unit_num }}
-                                                                                        -
-                                                                                        {{ $job->jobType->name ?? 'No Job Type' }}
-                                                                                        -
-                                                                                        {{ $job->material->name ?? 'no material' }}
-                                                                                        {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                                        {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                                        {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
-                                                                                        <br>
-                                                                                        {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                                    </span>
-                                                                                @endif
-                                                                            @endforeach
+                                                                                    @if ($showJob)
+                                                                                        @php
+                                                                                            $jobTypeName = $job->jobType->name ?? 'No Job Type';
+                                                                                            $materialName = $job->material->name ?? 'no material';
+                                                                                            $colorLabel = $job->color == '0' ? '' : $job->color;
+                                                                                            $styleLabel = $job->style == 'None' ? '' : $job->style;
+                                                                                            $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                            $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                        @endphp
+                                                                                        <div class="sigma-case-job-row">
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                                {{ $styleLabel }}
+                                                                                                @if ($implantLabel || $abutmentLabel)
+                                                                                                    <span class="sigma-case-job-extra">
+                                                                                                        @if ($implantLabel)
+                                                                                                            <span>{{ $implantLabel }}</span>
+                                                                                                        @endif
+                                                                                                        @if ($abutmentLabel)
+                                                                                                            <span>{{ $abutmentLabel }}</span>
+                                                                                                        @endif
+                                                                                                    </span>
+                                                                                                @endif
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     @if (count($case->notes) > 0)
@@ -2151,7 +2256,7 @@
                                                                     @if ($key == 'qc')
                                                                         <div class="col-12">
                                                                             <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-                                                                                class="btn btn-info" style="width:100%"><i
+                                                                                class="btn btn-info" style="width:100%;color:white"><i
                                                                                     class="fa-solid fa-arrow-trend-up"></i>
                                                                                 Assign & Complete</a>
                                                                         </div>
@@ -2182,7 +2287,7 @@
                                                                     @if ($key == 'delivery')
                                                                         <div class="col-12">
                                                                             <a href="{{ route('view-voucher', $case->id) }}"
-                                                                                class="btn btn-info" style="width:100%"><i
+                                                                                class="btn btn-info" style="width:100%; color:white"><i
                                                                                     class="fas fa-print"></i> Print
                                                                                 Voucher</a>
                                                                         </div>
@@ -2251,12 +2356,12 @@
                                     <table class=" activeTable sunriseTable" style="width:100%;">
                                         <thead>
                                             <tr>
-                                                <th>Doctor</th>
-                                                <th>Patient</th>
-                                                <th class="deliveryToHeader">Delivery Date</th>
-                                                <th class="assignedToHeader">Assigned To</th>
-                                                <th class="">#</th>
-                                                <th class="">Tags</th>
+                                                <th class="ops-col ops-col--doctor">Doctor</th>
+                                                <th class="ops-col ops-col--patient">Patient</th>
+                                                <th class="deliveryToHeader ops-col ops-col--delivery">Delivery Date</th>
+                                                <th class="assignedToHeader ops-col ops-col--assigned">Assigned To</th>
+                                                <th class="ops-col ops-col--count">#</th>
+                                                <th class="ops-col ops-col--tags">Tags</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -2274,11 +2379,11 @@
                                                             }
                                                         @endphp
                                                     @endif
-                                                    <td>
+                                                    <td class="ops-col ops-col--doctor">
                                                         <p class="">
                                                             {{ $case->client ? $case->client->name : 'No Client' }}</p>
                                                     </td>
-                                                    <td>
+                                                    <td class="ops-col ops-col--patient" dir="auto">
                                                         <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
                                                                 @if ($notReadyA)
                                                                     <span
@@ -2299,21 +2404,21 @@
 
                                                         </p>
                                                     </td>
-                                                    <td class="">
+                                                    <td class="ops-col ops-col--delivery">
                                                         <p class="">
                                                             {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
                                                         </p>
                                                     </td>
-                                                    <td>
+                                                    <td class="ops-col ops-col--assigned">
                                                         <p class="">
                                                             {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
                                                         </p>
                                                     </td>
-                                                    <td class="">
+                                                    <td class="ops-col ops-col--count">
                                                         <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
                                                         </p>
                                                     </td>
-                                                    <td class="">
+                                                    <td class="ops-col ops-col--tags">
                                                         <div
                                                             style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
                                                             @foreach ($case->tags as $tag)
@@ -2325,7 +2430,7 @@
                                                     </td>
                                                 </tr>
                                                 <!-- Active case actions Dialog -->
-                                                <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt" tabindex="-1" role="dialog"
+                                                <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
                                                     id="confirmCompletion{{ $key . $case->id }}">
                                                     <form
                                                         action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
@@ -2333,7 +2438,7 @@
                                                         @csrf
                                                         <input type="hidden" name="case_id"
                                                             value="{{ $case->id }}">
-                                                        <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown" role="document">
+                                                        <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Case Completion</h5>
@@ -2368,35 +2473,51 @@
                                                                     <div class="scrollable-content">
                                                                         <div class="form-group row">
                                                                             <div class=" col-12 ">
-                                                                                <label><b>Jobs:</b></label><br>
+                                                                                <label><b>Jobs:</b></label>
+                                                                                <div class="sigma-case-jobs-list">
+                                                                                    @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
+                                                                                        @php
+                                                                                            $unit = explode(
+                                                                                                ', ',
+                                                                                                $job->unit_num,
+                                                                                            );
+                                                                                            // Check if this job goes through the current stage based on material
+                                                                                            $showJob = $job->goesThroughStage(
+                                                                                                $stage['numericStage'],
+                                                                                            );
+                                                                                        @endphp
 
-
-                                                                                @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
-                                                                                    @php
-                                                                                        $unit = explode(
-                                                                                            ', ',
-                                                                                            $job->unit_num,
-                                                                                        );
-                                                                                        // Check if this job goes through the current stage based on material
-                                                                                        $showJob = $job->goesThroughStage(
-                                                                                            $stage['numericStage'],
-                                                                                        );
-                                                                                    @endphp
-
-                                                                                    @if ($showJob)
-                                                                                        <span>{{ $job->unit_num }}
-                                                                                            -
-                                                                                            {{ $job->jobType->name ?? 'No Job Type' }}
-                                                                                            -
-                                                                                            {{ $job->material->name ?? 'no material' }}
-                                                                                            {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                                            {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                                            {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
-                                                                                            <br>
-                                                                                            {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                                        </span>
-                                                                                    @endif
-                                                                                @endforeach
+                                                                                        @if ($showJob)
+                                                                                            @php
+                                                                                                $jobTypeName = $job->jobType->name ?? 'No Job Type';
+                                                                                                $materialName = $job->material->name ?? 'no material';
+                                                                                                $colorLabel = $job->color == '0' ? '' : $job->color;
+                                                                                                $styleLabel = $job->style == 'None' ? '' : $job->style;
+                                                                                                $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                                $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                            @endphp
+                                                                                            <div class="sigma-case-job-row">
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                                    {{ $styleLabel }}
+                                                                                                    @if ($implantLabel || $abutmentLabel)
+                                                                                                        <span class="sigma-case-job-extra">
+                                                                                                            @if ($implantLabel)
+                                                                                                                <span>{{ $implantLabel }}</span>
+                                                                                                            @endif
+                                                                                                            @if ($abutmentLabel)
+                                                                                                                <span>{{ $abutmentLabel }}</span>
+                                                                                                            @endif
+                                                                                                        </span>
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                         @if (count($case->notes) > 0)
@@ -2611,7 +2732,7 @@
         <!-- Generic loading dialog -->
         <div id="loadingDialog" class="modal sigma-modal--cases-dashboard-loading" tabindex="-1" role="dialog"
             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
-            <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown" role="document">
+            <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown animate__faster" role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
@@ -3228,19 +3349,22 @@
 
         /* Ensure badges are perfect circles on all screen sizes */
         .activeBadge, .waitingBadge {
-            width: 20px !important;
-            height: 20px !important;
+            min-width: 26px !important;
+            min-height: 26px !important;
+            aspect-ratio: 1 !important;
             border-radius: 50% !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            padding: 0 !important; /* Remove conflicting padding */
-            flex-shrink: 0 !important; /* Prevent shrinking */
-            line-height: 1 !important; /* Ensure vertical centering */
-            font-size: 11px !important; /* Smaller font for smaller circle */
-            font-weight: 500 !important; /* Make numbers stand out */
-            color: #fff !important; /* Ensure text is white for contrast */
-            vertical-align: middle !important; /* Align on same line */
+            padding: 5px !important;
+            flex-shrink: 0 !important;
+            line-height: 1 !important;
+            font-size: 13px !important;
+            font-weight: 600 !important;
+            color: #fff !important;
+            vertical-align: middle !important;
+            box-sizing: border-box !important;
+            transition: none !important;
         }
         .activeBadge {
             background-color: #007bff !important; /* Deeper blue */
