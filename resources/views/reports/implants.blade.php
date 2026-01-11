@@ -67,12 +67,28 @@
                 <div class="row g-3 align-items-end mb-3">
 
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control" type="date" name="to" value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}">
+                        <label for="implants_to_primary"><i class="fas fa-calendar-alt"></i> To Date:</label>
+                        <x-date-time-picker
+                            id="implants_to_primary"
+                            name="to"
+                            label=""
+                            mode="date"
+                            display-format="DD MMM, YYYY"
+                            submit-format="YYYY-MM-DD"
+                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control" type="date" name="to" value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}">
+                        <label for="implants_to_secondary"><i class="fas fa-calendar-alt"></i> To Date:</label>
+                        <x-date-time-picker
+                            id="implants_to_secondary"
+                            name="to"
+                            label=""
+                            mode="date"
+                            display-format="DD MMM, YYYY"
+                            submit-format="YYYY-MM-DD"
+                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         <label><i class="fas fa-tooth"></i> Implants:</label>

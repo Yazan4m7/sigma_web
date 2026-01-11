@@ -87,7 +87,7 @@
 
 
                                </tr>
-                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$lab->id}}">
+                            <div class="modal fade sigma-action-dialog sigma-modal--labs-actions" tabindex="-1" role="dialog" id="actionsDialog{{$lab->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$lab->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

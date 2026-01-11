@@ -879,9 +879,34 @@ button[type="submit"].modern-btn:hover {
                 <div class="filters-grid">
                     <div class="filter-group span-2">
                         <label class="form-label"><i class="fas fa-calendar-alt"></i> Date Range</label>
-                        <input type="text" class="modern-input flatpickr-input" id="daterange" readonly>
-                        <input type="hidden" name="from" id="from-date" value="{{request('from', $from)}}">
-                        <input type="hidden" name="to" id="to-date" value="{{request('to', $to)}}">
+                        <div class="range-pair">
+                            <div>
+                                <label class="form-label" for="master_from">From</label>
+                                <x-date-time-picker
+                                    id="master_from"
+                                    name="from"
+                                    label=""
+                                    mode="date"
+                                    display-format="DD MMM, YYYY"
+                                    submit-format="YYYY-MM-DD"
+                                    value="{{request('from', $from)}}"
+                                    class="modern-input"
+                                />
+                            </div>
+                            <div>
+                                <label class="form-label" for="master_to">To</label>
+                                <x-date-time-picker
+                                    id="master_to"
+                                    name="to"
+                                    label=""
+                                    mode="date"
+                                    display-format="DD MMM, YYYY"
+                                    submit-format="YYYY-MM-DD"
+                                    value="{{request('to', $to)}}"
+                                    class="modern-input"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="filter-group">
@@ -1455,7 +1480,7 @@ button[type="submit"].modern-btn:hover {
         @endif
         </div>
 
-        <div class="modal fade" id="employeesFilterModal" tabindex="-1" aria-labelledby="employeesFilterModalLabel" aria-hidden="true">
+        <div class="modal fade sigma-modal--report-employees-filter" id="employeesFilterModal" tabindex="-1" aria-labelledby="employeesFilterModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1481,7 +1506,7 @@ button[type="submit"].modern-btn:hover {
             </div>
         </div>
 
-        <div class="modal fade" id="devicesFilterModal" tabindex="-1" aria-labelledby="devicesFilterModalLabel" aria-hidden="true">
+        <div class="modal fade sigma-modal--report-devices-filter" id="devicesFilterModal" tabindex="-1" aria-labelledby="devicesFilterModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -1870,6 +1895,11 @@ button[type="submit"].modern-btn:hover {
                 // Initialize Flatpickr
                 function initializeFlatpickr() {
                     if (typeof flatpickr === 'undefined') {
+                        return;
+                    }
+
+                    const dateRangeInput = document.getElementById('daterange');
+                    if (!dateRangeInput) {
                         return;
                     }
 

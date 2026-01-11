@@ -204,8 +204,7 @@
         color: #1e293b !important;
     }
 
-    .bootstrap-select .dropdown-toggle:focus,
-    .bootstrap-select .dropdown-toggle:hover {
+    .bootstrap-select .dropdown-toggle:focus, .bootstrap-select .dropdown-toggle:hover {
         border-color: #0F766E !important;
         box-shadow:
             0 0 0 4px rgba(15, 118, 110, 0.12),
@@ -287,22 +286,19 @@
     }
 
     /* Premium Radio and Checkbox Groups */
-    .radio-group,
-    .checkbox-group {
+    .radio-group, .checkbox-group {
         display: flex;
         flex-wrap: wrap;
         gap: 16px;
         margin-top: 8px;
     }
 
-    .radio-group.vertical,
-    .checkbox-group.vertical {
+    .radio-group.vertical, .checkbox-group.vertical {
         flex-direction: column;
         gap: 12px;
     }
 
-    .radio-option,
-    .checkbox-option {
+    .radio-option, .checkbox-option {
         display: flex;
         align-items: center;
         gap: 10px;
@@ -314,14 +310,12 @@
         min-width: fit-content;
     }
 
-    .radio-option:hover,
-    .checkbox-option:hover {
+    .radio-option:hover, .checkbox-option:hover {
         background: rgba(15, 118, 110, 0.05);
         transform: translateY(-1px);
     }
 
-    .custom-radio,
-    .custom-checkbox {
+    .custom-radio, .custom-checkbox {
         position: relative;
         width: 20px;
         height: 20px;
@@ -336,15 +330,13 @@
         border-radius: 6px;
     }
 
-    .custom-radio input,
-    .custom-checkbox input {
+    .custom-radio input, .custom-checkbox input {
         position: absolute;
         opacity: 0;
         cursor: pointer;
     }
 
-    .custom-radio:hover,
-    .custom-checkbox:hover {
+    .custom-radio:hover, .custom-checkbox:hover {
         border-color: #0F766E;
         box-shadow:
             0 1px 3px rgba(0, 0, 0, 0.1),
@@ -352,16 +344,14 @@
         transform: scale(1.05);
     }
 
-    .custom-radio input:checked+.radio-indicator,
-    .custom-checkbox input:checked+.checkbox-indicator {
+    .custom-radio input:checked+.radio-indicator, .custom-checkbox input:checked+.checkbox-indicator {
         border-color: #0F766E;
         background: #0F766E;
         box-shadow: 0 2px 8px rgba(15, 118, 110, 0.3);
         transform: scale(1.1);
     }
 
-    .radio-indicator,
-    .checkbox-indicator {
+    .radio-indicator, .checkbox-indicator {
         position: absolute;
         top: -2px;
         left: -2px;
@@ -378,8 +368,7 @@
         border-radius: 6px;
     }
 
-    .radio-indicator:after,
-    .checkbox-indicator:after {
+    .radio-indicator:after, .checkbox-indicator:after {
         content: '';
         position: absolute;
         display: none;
@@ -590,9 +579,7 @@
     }
 
     /* Premium Buttons */
-    .btn-primary,
-    button.btn-primary,
-    .button-group .btn-primary {
+    .btn-primary, button.btn-primary, .button-group .btn-primary {
         display: inline-flex !important;
         align-items: center;
         gap: 8px;
@@ -612,9 +599,7 @@
             0 1px 2px -1px rgba(15, 118, 110, 0.06);
     }
 
-    .btn-primary:hover,
-    button.btn-primary:hover,
-    .button-group .btn-primary:hover {
+    .btn-primary:hover, button.btn-primary:hover, .button-group .btn-primary:hover {
         background: #0d5b52 !important;
         background-color: #0d5b52 !important;
         border-color: #0d5b52 !important;
@@ -625,9 +610,7 @@
             0 2px 4px -1px rgba(15, 118, 110, 0.1);
     }
 
-    .btn-primary:focus,
-    button.btn-primary:focus,
-    .button-group .btn-primary:focus {
+    .btn-primary:focus, button.btn-primary:focus, .button-group .btn-primary:focus {
         background: #0F766E !important;
         background-color: #0F766E !important;
         border-color: #0F766E !important;
@@ -683,11 +666,39 @@
     }
 
     /* Premium Modal Styles */
-    .types-modal .modal-dialog {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-dialog {
+        max-width: 700px;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-dialog {
+        max-width: 700px;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-dialog {
         max-width: 700px;
     }
 
-    .types-modal .modal-content {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-content {
+        border: 1px solid rgba(15, 118, 110, 0.08);
+        border-radius: 16px;
+        box-shadow:
+            0 4px 6px -1px rgba(15, 118, 110, 0.1),
+            0 2px 4px -1px rgba(15, 118, 110, 0.06),
+            0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-content {
+        border: 1px solid rgba(15, 118, 110, 0.08);
+        border-radius: 16px;
+        box-shadow:
+            0 4px 6px -1px rgba(15, 118, 110, 0.1),
+            0 2px 4px -1px rgba(15, 118, 110, 0.06),
+            0 25px 50px -12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-content {
         border: 1px solid rgba(15, 118, 110, 0.08);
         border-radius: 16px;
         box-shadow:
@@ -698,7 +709,28 @@
         overflow: hidden;
     }
 
-    .types-modal .modal-content::before {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0F766E 0%, #14B8A6 50%, #22D3EE 100%);
+        border-radius: 16px 16px 0 0;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0F766E 0%, #14B8A6 50%, #22D3EE 100%);
+        border-radius: 16px 16px 0 0;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-content::before {
         content: '';
         position: absolute;
         top: 0;
@@ -709,17 +741,56 @@
         border-radius: 16px 16px 0 0;
     }
 
-    .types-modal .modal-header {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-header {
+        display: none;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-header {
+        display: none;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-header {
         display: none;
     }
 
-    .types-modal .modal-body {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-body {
+        padding: 0;
+        background: white;
+        margin-top: 4px;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-body {
+        padding: 0;
+        background: white;
+        margin-top: 4px;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-body {
         padding: 0;
         background: white;
         margin-top: 4px;
     }
 
-    .types-modal .modal-footer {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-footer {
+        padding: 20px 24px;
+        background: #f8fafc;
+        border-top: 2px solid #f0fdfa;
+        border-radius: 0 0 16px 16px;
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        position: relative;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-footer {
+        padding: 20px 24px;
+        background: #f8fafc;
+        border-top: 2px solid #f0fdfa;
+        border-radius: 0 0 16px 16px;
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        position: relative;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-footer {
         padding: 20px 24px;
         background: #f8fafc;
         border-top: 2px solid #f0fdfa;
@@ -730,7 +801,30 @@
         position: relative;
     }
 
-    .types-modal .modal-footer::before {
+    
+.sigma-modal--material-create-add-type .types-modal .modal-footer::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, #0F766E, #14B8A6);
+        border-radius: 1px;
+    }
+.sigma-modal--material-create-add-implant .types-modal .modal-footer::before {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 2px;
+        background: linear-gradient(90deg, #0F766E, #14B8A6);
+        border-radius: 1px;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .modal-footer::before {
         content: '';
         position: absolute;
         top: -1px;
@@ -742,7 +836,44 @@
         border-radius: 1px;
     }
 
-    .types-modal .btn-close {
+    
+.sigma-modal--material-create-add-type .types-modal .btn-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(248, 250, 252, 0.9);
+        border: 2px solid #e2e8f0;
+        color: #475569;
+        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+.sigma-modal--material-create-add-implant .types-modal .btn-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        background: rgba(248, 250, 252, 0.9);
+        border: 2px solid #e2e8f0;
+        color: #475569;
+        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+.sigma-modal--material-create-edit-implant .types-modal .btn-close {
         position: absolute;
         top: 16px;
         right: 16px;
@@ -761,7 +892,22 @@
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
 
-    .types-modal .btn-close:hover {
+    
+.sigma-modal--material-create-add-type .types-modal .btn-close:hover {
+        background: #f1f5f9;
+        border-color: #0F766E;
+        color: #0F766E;
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(15, 118, 110, 0.1);
+    }
+.sigma-modal--material-create-add-implant .types-modal .btn-close:hover {
+        background: #f1f5f9;
+        border-color: #0F766E;
+        color: #0F766E;
+        transform: scale(1.05);
+        box-shadow: 0 2px 4px rgba(15, 118, 110, 0.1);
+    }
+.sigma-modal--material-create-edit-implant .types-modal .btn-close:hover {
         background: #f1f5f9;
         border-color: #0F766E;
         color: #0F766E;
@@ -770,12 +916,52 @@
     }
 
     /* Modal Button Styles */
-    .types-modal .btn-secondary {
+    
+.sigma-modal--material-create-add-type .types-modal .btn-secondary {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+.sigma-modal--material-create-add-implant .types-modal .btn-secondary {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+.sigma-modal--material-create-edit-implant .types-modal .btn-secondary {
         padding: 12px 20px;
         font-size: 14px;
     }
 
-    .types-modal .btn-success {
+    
+.sigma-modal--material-create-add-type .types-modal .btn-success {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: #0F766E;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 4px rgba(15, 118, 110, 0.2);
+    }
+.sigma-modal--material-create-add-implant .types-modal .btn-success {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 20px;
+        background: #0F766E;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 4px rgba(15, 118, 110, 0.2);
+    }
+.sigma-modal--material-create-edit-implant .types-modal .btn-success {
         display: inline-flex;
         align-items: center;
         gap: 8px;
@@ -791,7 +977,18 @@
         box-shadow: 0 2px 4px rgba(15, 118, 110, 0.2);
     }
 
-    .types-modal .btn-success:hover {
+    
+.sigma-modal--material-create-add-type .types-modal .btn-success:hover {
+        background: #0d5b52;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(15, 118, 110, 0.3);
+    }
+.sigma-modal--material-create-add-implant .types-modal .btn-success:hover {
+        background: #0d5b52;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(15, 118, 110, 0.3);
+    }
+.sigma-modal--material-create-edit-implant .types-modal .btn-success:hover {
         background: #0d5b52;
         transform: translateY(-1px);
         box-shadow: 0 4px 8px rgba(15, 118, 110, 0.3);
@@ -892,7 +1089,28 @@
     }
 
     /* Modal Dialog Button Styling */
-    .modal .btn-secondary {
+    
+.modal.sigma-modal--material-create-add-type .btn-secondary {
+        background: #6b7280 !important;
+        background-color: #6b7280 !important;
+        border-color: #6b7280 !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+    }
+.modal.sigma-modal--material-create-add-implant .btn-secondary {
+        background: #6b7280 !important;
+        background-color: #6b7280 !important;
+        border-color: #6b7280 !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+    }
+.modal.sigma-modal--material-create-edit-implant .btn-secondary {
         background: #6b7280 !important;
         background-color: #6b7280 !important;
         border-color: #6b7280 !important;
@@ -903,7 +1121,20 @@
         font-weight: 500 !important;
     }
 
-    .modal .btn-secondary:hover {
+    
+.modal.sigma-modal--material-create-add-type .btn-secondary:hover {
+        background: #4b5563 !important;
+        background-color: #4b5563 !important;
+        border-color: #4b5563 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-add-implant .btn-secondary:hover {
+        background: #4b5563 !important;
+        background-color: #4b5563 !important;
+        border-color: #4b5563 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-edit-implant .btn-secondary:hover {
         background: #4b5563 !important;
         background-color: #4b5563 !important;
         border-color: #4b5563 !important;
@@ -911,7 +1142,34 @@
     }
 
     /* Modal Save/Action Button Styling */
-    .modal .btn:not(.btn-secondary):not(.btn-close) {
+    
+.modal.sigma-modal--material-create-add-type .btn:not(.btn-secondary):not(.btn-close) {
+        background: #0F766E !important;
+        background-color: #0F766E !important;
+        border-color: #0F766E !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+.modal.sigma-modal--material-create-add-implant .btn:not(.btn-secondary):not(.btn-close) {
+        background: #0F766E !important;
+        background-color: #0F766E !important;
+        border-color: #0F766E !important;
+        color: white !important;
+        padding: 10px 20px !important;
+        font-size: 13px !important;
+        border-radius: 6px !important;
+        font-weight: 600 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+    }
+.modal.sigma-modal--material-create-edit-implant .btn:not(.btn-secondary):not(.btn-close) {
         background: #0F766E !important;
         background-color: #0F766E !important;
         border-color: #0F766E !important;
@@ -925,7 +1183,20 @@
         gap: 6px !important;
     }
 
-    .modal .btn:not(.btn-secondary):not(.btn-close):hover {
+    
+.modal.sigma-modal--material-create-add-type .btn:not(.btn-secondary):not(.btn-close):hover {
+        background: #115e59 !important;
+        background-color: #115e59 !important;
+        border-color: #115e59 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-add-implant .btn:not(.btn-secondary):not(.btn-close):hover {
+        background: #115e59 !important;
+        background-color: #115e59 !important;
+        border-color: #115e59 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-edit-implant .btn:not(.btn-secondary):not(.btn-close):hover {
         background: #115e59 !important;
         background-color: #115e59 !important;
         border-color: #115e59 !important;
@@ -933,7 +1204,32 @@
     }
 
     /* Modal Close Button (X) Styling */
-    .modal .btn-close {
+    
+.modal.sigma-modal--material-create-add-type .btn-close {
+        background: rgba(248, 250, 252, 0.9) !important;
+        border: 2px solid #e2e8f0 !important;
+        color: #475569 !important;
+        font-size: 16px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+.modal.sigma-modal--material-create-add-implant .btn-close {
+        background: rgba(248, 250, 252, 0.9) !important;
+        border: 2px solid #e2e8f0 !important;
+        color: #475569 !important;
+        font-size: 16px !important;
+        width: 32px !important;
+        height: 32px !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+.modal.sigma-modal--material-create-edit-implant .btn-close {
         background: rgba(248, 250, 252, 0.9) !important;
         border: 2px solid #e2e8f0 !important;
         color: #475569 !important;
@@ -946,7 +1242,20 @@
         justify-content: center !important;
     }
 
-    .modal .btn-close:hover {
+    
+.modal.sigma-modal--material-create-add-type .btn-close:hover {
+        background: rgba(239, 68, 68, 0.1) !important;
+        border-color: #fecaca !important;
+        color: #dc2626 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-add-implant .btn-close:hover {
+        background: rgba(239, 68, 68, 0.1) !important;
+        border-color: #fecaca !important;
+        color: #dc2626 !important;
+        transform: translateY(-1px);
+    }
+.modal.sigma-modal--material-create-edit-implant .btn-close:hover {
         background: rgba(239, 68, 68, 0.1) !important;
         border-color: #fecaca !important;
         color: #dc2626 !important;
@@ -976,19 +1285,18 @@
     }
 
     /* Premium Responsive Design */
-    @media (max-width: 1024px) {
+    @media (max-width: 1024px){
         .workflow-columns {
             grid-template-columns: 1fr;
             gap: 40px;
         }
 
-        .radio-group,
-        .checkbox-group {
+        .radio-group, .checkbox-group {
             flex-direction: column;
         }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 768px){
         .modern-form-container {
             margin: 12px;
             padding: 28px 20px;
@@ -1010,8 +1318,7 @@
             gap: 12px;
         }
 
-        .btn-primary,
-        .btn-secondary {
+        .btn-primary, .btn-secondary {
             padding: 14px 24px;
             font-size: 14px;
         }
@@ -1026,14 +1333,13 @@
         }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 480px){
         .modern-form-container {
             margin: 8px;
             padding: 20px 16px;
         }
 
-        .form-input,
-        .bootstrap-select .dropdown-toggle {
+        .form-input, .bootstrap-select .dropdown-toggle {
             height: 44px;
             padding: 0 16px;
             font-size: 14px;
@@ -1725,7 +2031,7 @@
             function showAddTypeModal() {
                 window.showAddTypeModal = showAddTypeModal;
                 const modalHtml = `
-            <div class="modal fade" id="addTypeModal" tabindex="-1" role="dialog">
+            <div class="modal fade sigma-modal--material-create-add-type" id="addTypeModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content" style="border: 1px solid rgba(15, 118, 110, 0.08); border-radius: 16px; overflow: hidden; position: relative;">
                         <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #0F766E 0%, #14B8A6 50%, #22D3EE 100%);"></div>
@@ -2070,7 +2376,7 @@
                 }
 
                 const modalHtml = `
-            <div class="modal fade" id="addImplantModal" tabindex="-1" role="dialog">
+            <div class="modal fade sigma-modal--material-create-add-implant" id="addImplantModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-primary text-white">
@@ -2166,7 +2472,7 @@
                 const implantData = materialImplantsData[index];
 
                 const modalHtml = `
-            <div class="modal fade" id="editImplantModal" tabindex="-1" role="dialog">
+            <div class="modal fade sigma-modal--material-create-edit-implant" id="editImplantModal" tabindex="-1" role="dialog">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header bg-warning text-dark">

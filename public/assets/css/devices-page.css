@@ -1,11 +1,545 @@
 /* Devices Page Specific Enhancements */
 
 /* Ensure modals work properly on devices page */
-.devices-page-container .sigma-workflow-modal {
+
+.devices-page-container .sigma-workflow-modal.sigma-modal--abutments-delivery-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--abutments-delivery-receive {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--abutments-index-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--accountant-delivery-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--accountant-delivery-actions-alt {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--admin-intel-shortcut {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--admin-intel-settings {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--admin-intel2-shortcut {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--admin-intel2-settings {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--admin-mobile-access {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--cases-dashboard-case-completion {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--cases-dashboard-case-completion-alt {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--cases-dashboard-loading {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-create-modern-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-create-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-create-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--dashboard-active-milling {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--dashboard-active-case-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--dashboard-waiting-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-edit-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-edit-teeth-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--case-edit-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--cases-index-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--cases-rejected-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--clients-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--clients-add {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--clients-delete {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--active-cases-preview {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--adminhth-intel-shortcut {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--adminhth-intel-settings {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--adminhth-intel2-shortcut {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--adminhth-intel2-settings {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--adminhth-mobile-access {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--waiting-3d-printing {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--waiting-delivery {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--waiting-generic {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--delivery-schedule-edit {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--delivery-schedule-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--delivery-receive-payment {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--devices-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-causes-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-modify-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-modify-teeth-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-modify-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-redo-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-redo-teeth-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-redo-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-reject-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-reject-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-repeat-teeth {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-repeat-teeth-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--failures-repeat-files {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-primary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-tertiary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-primary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-secondary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-tertiary {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-payments-alt {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--generic-payments {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--implants-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--job-types-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--labs-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-create-add-type {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-create-add-implant {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-create-edit-implant {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-edit-types {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-edit-add-type {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--material-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--media-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--rtl-search {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--report-employees-filter {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--report-devices-filter {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--tags-actions {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--invoice-check {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--invoice-check-new {
+    z-index: 1060 !important;
+}
+.devices-page-container .sigma-workflow-modal.sigma-modal--users-actions {
     z-index: 1060 !important;
 }
 
-.devices-page-container .sigma-workflow-modal.active {
+
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--abutments-delivery-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--abutments-delivery-receive {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--abutments-index-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--accountant-delivery-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--accountant-delivery-actions-alt {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--admin-intel-shortcut {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--admin-intel-settings {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--admin-intel2-shortcut {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--admin-intel2-settings {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--admin-mobile-access {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--cases-dashboard-case-completion {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--cases-dashboard-case-completion-alt {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--cases-dashboard-loading {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-create-modern-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-create-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-create-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--dashboard-active-milling {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--dashboard-active-case-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--dashboard-waiting-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-edit-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-edit-teeth-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--case-edit-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--cases-index-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--cases-rejected-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--clients-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--clients-add {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--clients-delete {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--active-cases-preview {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--adminhth-intel-shortcut {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--adminhth-intel-settings {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--adminhth-intel2-shortcut {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--adminhth-intel2-settings {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--adminhth-mobile-access {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--waiting-3d-printing {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--waiting-delivery {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--waiting-generic {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--delivery-schedule-edit {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--delivery-schedule-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--delivery-receive-payment {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--devices-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-causes-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-modify-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-modify-teeth-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-modify-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-redo-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-redo-teeth-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-redo-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-reject-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-reject-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-repeat-teeth {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-repeat-teeth-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--failures-repeat-files {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-primary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-tertiary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-primary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-secondary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-tertiary {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-payments-alt {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--generic-payments {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--implants-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--job-types-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--labs-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-create-add-type {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-create-add-implant {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-create-edit-implant {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-edit-types {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-edit-add-type {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--material-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--media-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--rtl-search {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--report-employees-filter {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--report-devices-filter {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--tags-actions {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--invoice-check {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--invoice-check-new {
+    display: flex !important;
+    opacity: 1;
+}
+.devices-page-container .sigma-workflow-modal.active.sigma-modal--users-actions {
     display: flex !important;
     opacity: 1;
 }
@@ -186,8 +720,7 @@
 }
 
 /* Smooth transitions for device state changes */
-.device-card .device-image,
-.device-card .device-badges {
+.device-card .device-image, .device-card .device-badges {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -314,7 +847,7 @@
 }
 
 /* High contrast mode support */
-@media (prefers-contrast: high) {
+@media (prefers-contrast: high){
     .device-card {
         border: 2px solid #000;
     }
@@ -329,11 +862,8 @@
 }
 
 /* Reduced motion for accessibility */
-@media (prefers-reduced-motion: reduce) {
-    .device-card,
-    .device-badge,
-    .devices-page-header,
-    .devices-grid {
+@media (prefers-reduced-motion: reduce){
+    .device-card, .device-badge, .devices-page-header, .devices-grid {
         animation: none !important;
         transition: none !important;
     }
@@ -344,7 +874,7 @@
 }
 
 /* Print styles */
-@media print {
+@media print{
     .devices-page-container {
         background: white !important;
         color: black !important;

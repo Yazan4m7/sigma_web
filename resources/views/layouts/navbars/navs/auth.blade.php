@@ -37,17 +37,6 @@
 
     }
 
-    /*@media (max-width: 992px) {*/
-        /*#wrapp  #search{*/
-            /*top:3px;*/
-        /*}*/
-    /*}*/
-    /*@media screen and (max-width: 770px) {*/
-        /*.searchBox2{*/
-            /*display:none;*/
-        /*}*/
-    /*}*/
-
     .navbar-wrapper{
         display:none;
     }
@@ -117,7 +106,7 @@
     #wrapp {
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: flex-start;
         position: relative;
         height: 100%;
         padding: 0;
@@ -131,16 +120,16 @@
     #wrapp input[type="text"] {
         height: 38px;
         font-size: 14px;
-        display: inline-block;
+        display: block;
         font-family: "Lato", sans-serif;
         border: 1px solid rgba(43, 123, 125, 0.2);
         border-radius: 6px;
         outline: none;
         color: #2b7b7d;
         padding: 8px 12px;
-        padding-right: 40px;
         width: 200px;
         background: rgba(255, 255, 255, 0.95);
+        position: relative;
         z-index: 1;
         transition: all .3s cubic-bezier(0.4, 0.0, 0.2, 1);
         cursor: text;
@@ -172,25 +161,7 @@
     }
 
     #wrapp #search_submit {
-        height: 24px;
-        width: 24px;
-        display: block;
-        background: url({{ asset('assets') }}/5613.png) center center no-repeat;
-        text-indent: -10000px;
-        border: none;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 2;
-        pointer-events: none;
-        opacity: 0.6;
-        transition: opacity .4s ease;
-        background-size: contain;
-    }
-
-    #wrapp #search_submit:hover {
-        opacity: 0.8;
+        display: none;
     }
 
     /* Responsive search box */
@@ -206,18 +177,14 @@
     }
 
     @media (max-width: 768px) {
-        #wrapp {
-            justify-content: center;
-        }
-
         #wrapp input[type="text"] {
-            width: 100%;
-            max-width: 220px;
+            width: 140px;
+            max-width: 180px;
         }
 
         #wrapp input[type="text"]:focus {
-            width: 100%;
-            max-width: 240px;
+            width: 160px;
+            max-width: 200px;
         }
     }
 
@@ -264,40 +231,36 @@
         transform: translate(0.25rem, -65%) scale(0.8);
         color: var(--color-accent);
     }
-    @media screen and (max-width: 999px){
-        /*#wrapp #search_submit {*/
-            /*right:-7px !important;*/
 
-        /*}*/
-        /*#wrapp #search {*/
-            /*top: 0px;*/
-
-        /*}*/
-
+    .pageTitleMobile {
+        display: none;
+        max-width: 220px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 800;
+        margin: 0;
+        padding: 0;
     }
-    @media screen and (max-width: 776px){
-        #wrapp #search_submit {
-            right: -13px !important;
-            top: -12px;
+
+    @media (max-width: 991px) {
+        .pageTitleContainer {
+            display: none;
         }
-        #wrapp #search {
-            top: -8px;
-            right: 4px;
+
+        .pageTitleMobile {
+            display: inline-flex;
+            align-items: center;
         }
-    }@media screen and (max-width: 450px) {
-        .pageTitleContainer{
-            display:none;
+
+        .dotsDiv {
+            gap: 8px;
         }
     }
-    @media screen and (max-width: 991px) and (min-width:776px){
-        #wrapp #search_submit {
-            right: -67px !important;
-            top: -5px;
 
-        }
-        #wrapp #search {
-            top: -2px;
-            right: -45px;
+    @media screen and (max-width: 768px) {
+        .pageTitleMobile {
+            display: none !important;
         }
     }
 
@@ -433,11 +396,39 @@
         color: #374151;
     }
 
+    .headerRow {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .header-actions-inner {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 12px;
+        width: 100%;
+    }
+
+    .header-actions .header-search {
+        flex: 1 1 320px;
+        max-width: 420px;
+        min-width: 0;
+    }
+
     /* Fix 3 dots button and dropdown positioning */
     .dotsDiv {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        position: relative;
+        z-index: 1040;
+        padding-left: 0;
     }
 
     .dotsDiv .navbar-toggler {
@@ -452,7 +443,7 @@
     }
 
     .dotsDiv .navbar-collapse {
-    margin-bottom: 4px;
+        margin: 0;
     }
 
     .dropdown.nav-item {
@@ -471,19 +462,72 @@
         .dotsDiv .navbar-collapse {
             position: fixed;
             right: 15px;
-            top: 60px;
+            top: 70px;
             background: transparent;
+        }
+
+        .headerRow {
+            align-items: center;
+            position: relative;
+        }
+
+        .dotsDiv {
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            width: auto;
+            max-width: none;
+            flex: 0 0 auto;
+            padding: 0;
+            margin: 0;
+            height: auto;
+        }
+
+        .dotsDiv .navbar-toggler {
+            padding: 6px;
+        }
+
+        .dotsDiv .navbar-collapse.show .dropdown.nav-item > a.dropdown-toggle {
+            display: none;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu {
+            display: block;
+            position: static;
+            float: none;
+            min-width: 160px;
+            box-shadow: none;
+            border: 0;
+            margin-top: 0;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-header,
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .dropdown-divider,
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .close-btn {
+            display: none !important;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .logout-link {
+            justify-content: center;
+            padding: 12px 16px;
         }
     }
 
     /* Fix 3 dots positioning on phone */
     @media (max-width: 767px) {
         .dotsDiv {
-            position: absolute !important;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            height: auto;
+            margin: 0;
+        }
+
+        .dotsDiv .navbar-toggler {
+            margin: 0;
+        }
+
+        .dotsDiv .navbar-collapse {
+            top: 65px;
         }
     }
 
@@ -568,10 +612,10 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
     <div class="container-fluid noPadOnMobile">
-        <div class="row headerRow" style="display:flex;align-items: baseline;">
+        <div class="row headerRow">
 
             <!-- Logo and title -->
-            <div class="col-lg-7 col-md-7 noPadOnMobile" style="padding-left: 0">
+            <div class="col-lg-7 col-md-7 col-sm-5 col-3 noPadOnMobile" style="padding-left: 0">
                 <div class="container-fluid noPadOnMobile" style="padding-left: 0;">
                     <div class="row left-toggler-container" id="left-toggler" style="background-color:transparent;padding: 0;flex-wrap: nowrap;align-items: center;">
 
@@ -598,25 +642,26 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3 noPadOnMobile">
-                <form action="{{route('global-search')}}"
-                      method="GET">
-                <div id="wrapp" class="searchBox2" >
-                    <div  class="SBF2">
-                        <input id="search" name="searchText" type="text" placeholder="Patient Name?">
-                        <span id="search_submit"  ></span>
-                    </div>
-                </div>
-            </form>
-            </div>
-{{--            <x-weather-widget></x-weather-widget>--}}
-            <div class="col-1 col-sm-1  mb-1 noPadOnMobile dotsDiv" style="position: relative; z-index: 1040;padding-left: 0;">
-                    <button style= "flex-grow: 3" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                    <span class="navbar-toggler-bar navbar-kebab"></span>
-                </button>
-                <div class="collapse navbar-collapse" style = "flex-grow: 3" id="navigation">
+            <div class="col-lg-5 col-md-5 col-sm-7 col-9 noPadOnMobile header-actions">
+                <div class="header-actions-inner">
+                    <form action="{{route('global-search')}}"
+                          method="GET" class="header-search">
+                        <div id="wrapp" class="searchBox2" >
+                            <div  class="SBF2">
+                                <input id="search" name="searchText" type="text" placeholder="Patient Name?">
+                                <span id="search_submit"  ></span>
+                            </div>
+                        </div>
+                    </form>
+{{--                    <x-weather-widget></x-weather-widget>--}}
+                    <div class="dotsDiv">
+                        <span class="navbar-brand pageTitle pageTitleMobile">{{$pageSlug ?? "SIGMA"}}</span>
+                        <button style= "flex-grow: 3" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
+                            <span class="navbar-toggler-bar navbar-kebab"></span>
+                            <span class="navbar-toggler-bar navbar-kebab"></span>
+                            <span class="navbar-toggler-bar navbar-kebab"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" style = "flex-grow: 3" id="navigation">
                     <ul class="navbar-nav ml-auto">
 
                         <li class="dropdown nav-item">
@@ -637,25 +682,11 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                                 <button class="close-btn" onclick="closeDropdown()">&times;</button>
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
-                                        <div class="user-avatar-large">
-                                            <div class="avatar-placeholder" aria-hidden="true">
-                                                <i class="fa fa-user-circle"></i>
-                                            </div>
-                                        </div>
+
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
                                             @if(Auth::user()->type === 'admin' || collect($permissions)->contains('name', 'admin'))
                                                 <div class="admin-badge" style="color: #059669; font-weight: 600; font-size: 12px; margin-top: 4px;">You are Admin</div>
-                                            @else
-                                                <button class="permissions-toggle" onclick="togglePermissions()" id="permissions-toggle">
-                                                    See Permissions
-                                                    <i class="fa fa-chevron-down"></i>
-                                                </button>
-                                                <div class="permissions-list" id="permissions-list">
-                                                    @foreach($permissions as $permission)
-                                                        <div>{{ $permission->name }}</div>
-                                                    @endforeach
-                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -671,7 +702,10 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                         </li>
 
                     </ul>
-                </div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

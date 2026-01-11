@@ -33,7 +33,7 @@
                                 <td class="tabledit-view-mode"><span class="tabledit-span">{{count($jobType->materials)}}</span>
                                 </td>
                             </tr>
-                            <div class="modal sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$jobType->id}}">
+                            <div class="modal sigma-action-dialog sigma-modal--job-types-actions" tabindex="-1" role="dialog" id="actionsDialog{{$jobType->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$jobType->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

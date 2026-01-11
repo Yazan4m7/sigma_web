@@ -23,4 +23,12 @@ class failureLog extends Model
     public function causeObject(){
         return $this->belongsTo('App\failureCause', 'cause_id', 'id');
     }
+
+    public function cause(){
+        return $this->belongsTo('App\failureCause', 'cause_id', 'id');
+    }
+
+    public function user(){
+        return $this->belongsTo('App\User', 'user_id', 'id');
+    }
 }

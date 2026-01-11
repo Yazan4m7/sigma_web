@@ -146,7 +146,7 @@ foreach($buildData as $data)
 Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 @endphp
 <style>
-    .row.info-case-row{
+    .row.info-case-row {
 
     }
 
@@ -312,8 +312,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
 
-    .sigma-case-patient,
-    .sigma-case-units {
+    .sigma-case-patient, .sigma-case-units {
         font-size: 16px;
         text-align: left;
         overflow: hidden;
@@ -366,7 +365,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     /* Responsive adjustments */
-    @media (max-width: 768px) {
+    @media (max-width: 768px){
         .sigma-case-info-row {
             grid-template-columns: 1fr 1fr auto;
             gap: 8px;
@@ -490,16 +489,19 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     /* Dialog Dismissal Enhancements */
-    .sigma-workflow-modal {
+    
+.sigma-workflow-modal.sigma-modal--active-cases-preview {
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
     }
 
-    .sigma-workflow-modal.active {
+    
+.sigma-workflow-modal.active.sigma-modal--active-cases-preview {
         animation: fadeIn 0.3s ease-out !important;
     }
 
-    .sigma-workflow-modal.closing {
+    
+.sigma-workflow-modal.closing.sigma-modal--active-cases-preview {
         animation: fadeOut 0.3s ease-in;
     }
 
@@ -532,7 +534,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 </style>
 {{--{{collect($buildData)--}}
 {{--    ->flatMap(fn($data) => $data['cases'])}}--}}
-<div class="sigma-workflow-modal animate__animated" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
+<div class="sigma-workflow-modal animate__animated sigma-modal--active-cases-preview" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
      onclick="handleDialogBackdropClick(event, '{{ $deviceId }}')">
     <div class="sigma-workflow-dialog" onclick="event.stopPropagation()" style="will-change: transform, opacity;">
         <div class="sigma-workflow-header">
@@ -630,11 +632,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                         @foreach($data['cases'] as $caseData)
 
                                             <div class="sigma-case-item">
-                                                <div class=" row info-case-row">
-                                                    <div class=" col-3 ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
-                                                    <div class=" col-3 ">{{ $caseData['case']->patient_name }}</div>
-                                                    <div class=" col-3 ">{{ $caseData['unitCount'] }}</div>
-                                                    <div class="col-3 ">
+                                                <div class="  info-case-row">
+                                                    <div class="  ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
+                                                    <div class=" ">{{ $caseData['case']->patient_name }}</div>
+                                                    <div class="  ">{{ $caseData['unitCount'] }}</div>
+                                                    <div class=" ">
                                                         <button class="sigma-case-view-btn"
                                                                 onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
                                                             <i class="fas fa-eye"></i>
@@ -869,12 +871,19 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         max-height: 0;
         overflow: hidden;
         padding: 0 16px;
-        background-color: #f8f9fa;
+        background-color: #f8fafc;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        margin: 0;
+        box-shadow: none;
         /* GPU acceleration for smooth 60fps animations */
         transform: translate3d(0, 0, 0);
         transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
                     padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                    opacity 0.25s ease;
+                    opacity 0.25s ease,
+                    margin 0.25s ease,
+                    box-shadow 0.25s ease,
+                    border-color 0.25s ease;
         opacity: 0;
         will-change: max-height, opacity;
         backface-visibility: hidden;
@@ -882,8 +891,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
     .sigma-build-row.expanded .sigma-build-details {
         max-height: 2000px; /* Large enough for content */
-        padding: 0 16px 16px;
+        padding: 12px 16px 16px;
         opacity: 1;
+        border-color: #ffffff;
+        margin: 8px 0 12px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
     .sigma-build-row.expanded .sigma-build-toggle i {
@@ -905,18 +917,78 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     .sigma-build-cases {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 12px;
+        margin-top: 6px;
     }
 
     .sigma-case-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: white;
-        padding: 12px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        background-color: #ffffff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .sigma-case-item:hover {
+        transform: translateY(-1px);
+        border-color: #cbd5f5;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .sigma-case-item .info-case-row {
+        width: 100%;
+        margin: 0;
+        color: #1f2937;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        min-height: 34px;
+        font-size: 0.95rem;
+        min-width: 0;
+        max-width: none;
+        flex: none;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(1) {
+        font-weight: 600;
+        color: #0f172a;
+        flex: 1.4 1 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(2) {
+        color: #475569;
+        flex: 1.2 1 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(3) {
+        justify-content: center;
+        font-weight: 700;
+        color: #1d4ed8;
+        white-space: nowrap;
+        flex: 0.6 0 0;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(4) {
+        justify-content: flex-end;
+        flex: 0 0 auto;
     }
 
     .sigma-case-info {
@@ -960,18 +1032,87 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .sigma-case-view-btn {
-        background: none;
-        border: none;
-        color: #6c757d;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
         cursor: pointer;
-        padding: 8px;
-        border-radius: 50%;
-        transition: background-color 0.2s, color 0.2s;
+        padding: 0;
+        border-radius: 10px;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
     .sigma-case-view-btn:hover {
-        background-color: #007bff;
-        color: white;
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .sigma-case-item {
+            position: relative;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 55%, #eef2ff 100%);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        .sigma-case-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 4px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #2563eb 0%, #38bdf8 100%);
+            opacity: 0.7;
+        }
+
+        .sigma-case-item .info-case-row {
+            gap: 6px;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .sigma-case-item .info-case-row > div {
+            padding: 4px 6px;
+            font-size: 0.85rem;
+            width: auto !important;
+            max-width: none !important;
+            flex: 0 0 auto !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(1) {
+            flex: 1.4 1 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(2) {
+            flex: 1.2 1 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(3) {
+            flex: 0.6 0 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(4) {
+            flex: 0 0 auto !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(3) {
+            font-size: 0.9rem;
+        }
+
+        .sigma-case-view-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
     }
 
     /* Regular jobs list styling */

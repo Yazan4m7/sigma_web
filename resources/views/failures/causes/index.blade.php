@@ -30,7 +30,7 @@
                                 <td class="tabledit-view-mode"><span class="tabledit-span">{{substr($cause->created_at,0,16 )}}</span></td>
                             </tr>
 
-                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$cause->id}}">
+                            <div class="modal fade sigma-action-dialog sigma-modal--failures-causes-actions" tabindex="-1" role="dialog" id="actionsDialog{{$cause->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$cause->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

@@ -32,7 +32,7 @@
                                                 <td>{{substr($mediaItem->text,0,16) }}</td>
                                                 <td>{{substr($mediaItem->created_at,0,16) }}</td>
                                             </tr>
-                                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$mediaItem->id}}">
+                                            <div class="modal sigma-modal--media-actions" tabindex="-1" role="dialog" id="actionsDialog{{$mediaItem->id}}">
 
                                                 <input type="hidden" name="media_id" value="{{$mediaItem->id}}">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">

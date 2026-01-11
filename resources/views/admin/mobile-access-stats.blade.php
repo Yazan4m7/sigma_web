@@ -5,13 +5,14 @@
 .dropdown-toggle::after {
     display: inline-block !important;
 }
-    .dropdown-menu{
+    .dropdown-menu {
         color:inherit;
     }
-.modal-footer{
+
+.sigma-modal--admin-mobile-access .modal-footer {
     padding: 0 !important;
 }
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px){
             table {
                 table-layout: fixed;
             }
@@ -123,7 +124,7 @@
 
 
 
-                                <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$client->id}}">
+                                <div class="modal sigma-modal--admin-mobile-access" tabindex="-1" role="dialog" id="actionsDialog{{$client->id}}">
 
                                     <input type="hidden" name="case_id" value="{{$client->id}}">
                                     <div class="modal-dialog modal-dialog-centered" role="document">

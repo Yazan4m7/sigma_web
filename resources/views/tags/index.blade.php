@@ -34,7 +34,7 @@
                                 </tr>
 
 
-                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$tag->id}}">
+                            <div class="modal fade sigma-action-dialog sigma-modal--tags-actions" tabindex="-1" role="dialog" id="actionsDialog{{$tag->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$tag->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

@@ -58,9 +58,7 @@
             font-family: inherit;
         }
 
-        .cases-datetime-picker .ios-picker-header,
-        .cases-datetime-picker .ios-picker-btn,
-        .cases-datetime-picker .ios-wheel li {
+        .cases-datetime-picker .ios-picker-header, .cases-datetime-picker .ios-picker-btn, .cases-datetime-picker .ios-wheel li {
             font-family: 'NewYorkSmall', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
 
@@ -73,7 +71,7 @@
         }
 
         .sigma-case-status-badge {
-            width: 17vh;
+            width: 6em;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -97,6 +95,58 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+        }
+
+        #casesTable {
+            table-layout: auto;
+            width: 100% !important;
+        }
+
+        /* Ensure table wrapper allows horizontal scroll without clipping */
+        .dataTables_wrapper {
+            overflow-x: auto;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .dataTables_scrollBody {
+            overflow-x: auto !important;
+        }
+
+        /* Ensure parent container doesn't clip */
+        #casesTable_wrapper {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+
+        /* Hide DataTables responsive control column (green button) */
+        #casesTable td.dtr-control,
+        #casesTable th.dtr-control,
+        #casesTable td.dtr-control:before,
+        #casesTable_wrapper .dtr-control {
+            display: none !important;
+        }
+
+        /* Ensure no control column is added by DataTables responsive */
+        table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+        table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+            display: none !important;
+        }
+
+        #casesTable .cases-cell-truncate {
+            display: inline-block;
+            max-width: 16rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+        }
+
+        .tagsHeader, .tagsTD {
+            text-align: right;
+            direction: rtl;
+            padding-right: 1px;
         }
 
         /* The switch - the box around the slider */
@@ -178,23 +228,73 @@
             font-weight: 600;
             white-space: nowrap; /* Prevent label from wrapping */
         }
+        /* Fix modal positioning - ensure modal is not affected by parent transforms */
+        .sigma-modal--cases-index-actions {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+            display: none;
+            overflow-x: hidden;
+            overflow-y: auto;
+            z-index: 1050;
+        }
+
+        .sigma-modal--cases-index-actions.show {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        }
+
+        .sigma-modal--cases-index-actions .modal-dialog {
+            position: relative !important;
+            width: auto !important;
+            max-width: 500px !important;
+            margin: 1.75rem !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+            pointer-events: auto !important;
+        }
+
+        .sigma-modal--cases-index-actions .modal-content {
+            position: relative !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            will-change: auto !important;
+        }
+
+        /* Reset transforms on wrapper when modal is open */
+        body.modal-open .wrapper,
+        body.modal-open .main-panel {
+            transform: none !important;
+            -webkit-transform: none !important;
+        }
+
         /* Modal dialog border radius - all corners uniform */
-        .modal-content {
+
+.sigma-modal--cases-index-actions .modal-content {
             border-radius: 25px !important;
         }
 
         /* Modal title styling */
-        .modal-title {
+        
+.sigma-modal--cases-index-actions .modal-title {
             color: #2d5f6d;
             font-weight: 600;
             font-size: 18px;
         }
-        .badge .badge-success{
+        .badge .badge-success {
             width:7vw !important;
         }
 
         /* Modal header styling with divider */
-        .modal-header {
+        
+.sigma-modal--cases-index-actions .modal-header {
             border-bottom: 0 !important;
             padding-top: 16px;
             padding-bottom: 16px;
@@ -230,13 +330,15 @@
         }
 
         /* Modal footer rounded bottom corners */
-        .modal-footer {
+        
+.sigma-modal--cases-index-actions .modal-footer {
 
             border-bottom-left-radius: 25px !important;
             border-bottom-right-radius: 25px !important;
         }
 
-        .modal-footer .btn {
+        
+.sigma-modal--cases-index-actions .modal-footer .btn {
             flex: 1;
             min-width: 120px;
             margin: 0;
@@ -327,10 +429,9 @@
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
         }
 
-        #cases_from.dtp-input,
-        #cases_to.dtp-input {
+        #cases_from.dtp-input, #cases_to.dtp-input {
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 400;
             line-height: 1.5;
             padding: 0.375rem 0.75rem;
@@ -338,10 +439,10 @@
             border: 1px solid #ced4da;
             background-color: #fff;
             color: #495057;
+            cursor: pointer;
         }
 
-        #cases_from.dtp-input:focus,
-        #cases_to.dtp-input:focus {
+        #cases_from.dtp-input:focus, #cases_to.dtp-input:focus {
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
         }
@@ -395,9 +496,17 @@
         }
 
         /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 768px){
             table {
-                table-layout: fixed;
+                table-layout: auto;
+            }
+
+            #casesTable {
+                min-width: 600px; /* Ensure table has minimum width for scrolling */
+            }
+
+            .tooltip-toggle-container{
+                display: none;
             }
 
             .content {
@@ -409,8 +518,10 @@
                 padding: 3px;
             }
 
-            .initDeliDateHeader, .initDeliDateTD, .tagsHeader, .tagsTD {
-                display: none;
+            /* Show all columns but allow horizontal scroll */
+            .dataTables_wrapper {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             .pagination {
@@ -442,6 +553,10 @@
                 text-align: center;
             }
 
+            #casesTable .cases-cell-truncate {
+                max-width: 11rem;
+            }
+
             /* Responsive button group on mobile */
             .btn-group {
                 display: flex;
@@ -453,6 +568,15 @@
                 margin-left: 2px;
                 margin-right: 2px;
             }
+        }
+        #casesTable tbody td:nth-child(5) {
+            text-align: left;
+            #casesTable tbody td:nth-child(5) .sigma-case-status-badge {
+                margin: 0;
+                justify-content: flex-start;
+                text-align: left;
+            }
+            text-align: left;
         }
     </style>
     @php
@@ -491,12 +615,12 @@
                                     <div class="col-6 col-sm-6 col-md-2 mb-3">
                                         <div class="kt-subheader__search">
                                             <label for="cases_from">From (Start of):</label>
-                                            <x-date-time-picker
+                                              <x-date-time-picker
                                                     id="cases_from"
                                                     name="from"
                                                     label=""
-                                                    mode="datetime"
-                                                    display-format="DD MMM, YYYY hh:mm a"
+                                                    mode="date"
+                                                    display-format="DD MMM, YYYY"
                                                     submit-format="YYYY-MM-DD"
                                                     value="{{ $from }}"
                                             />
@@ -509,8 +633,8 @@
                                                     id="cases_to"
                                                     name="to"
                                                     label=""
-                                                    mode="datetime"
-                                                    display-format="DD MMM, YYYY hh:mm a"
+                                                    mode="date"
+                                                    display-format="DD MMM, YYYY"
                                                     submit-format="YYYY-MM-DD"
                                                     value="{{ $to }}"
                                             />
@@ -573,13 +697,13 @@
                                        style="width:100%">
                                     <thead>
                                     <tr role="row">
-                                        <th>Doctor
+                                        <th class="sigma-sticky-container">Doctor
                                         </th>
-                                        <th>Patient</th>
-                                        <th class="initDeliDateHeader">Initial Deli. Date</th>
-                                        <th>Date Delivered</th>
-                                        <th>Status</th>
-                                        <th class="tagsHeader">Tags</th>
+                                        <th class="sigma-sticky-container">Patient</th>
+                                        <th class="initDeliDateHeader sigma-sticky-container">Initial Deli. Date</th>
+                                        <th class="sigma-sticky-container">Date Delivered</th>
+                                        <th class="sigma-sticky-container">Status</th>
+                                        <th class="tagsHeader sigma-sticky-container">Tags</th>
 
                                     </tr>
                                     </thead>
@@ -601,46 +725,66 @@
 
                                         <tr role="row" class="odd clickable case-row" data-toggle="modal"
                                             data-target="#actionsDialog{{$case->id ?? "x"}}" style="{{$rowStyle}}" data-case-id="{{$case->id}}">
-                                            <td>{{$case->client->name ?? "x"}}</td>
-                                            <td>{{$case->patient_name ?? "x"}}</td>
+                                            <td><span class="cases-cell-truncate">{{$case->client->name ?? "x"}}</span></td>
+                                            <td><span class="cases-cell-truncate">{{$case->patient_name ?? "x"}}</span></td>
                                             <td class="initDeliDateTD">{{$case->initDeliveryDate() ?? "x" }}
                                                 &nbsp;&nbsp; {{$case->initDeliveryTime() ?? "x"}}</td>
                                             <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                                 &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
                                             <td>
                                                 @if(str_contains($caseStatus, "Completed") )
-                                                    <span class="badge badge-success sigma-case-status-badge">
+                                                    <span class="badge badge-success sigma-case-status-badge sigma-status-width">
                                                         <span class="sigma-badge-label">{{ $caseStatus }}</span>
                                                     </span>
                                                 @elseif(str_contains($caseStatus, "In-Progress") || str_contains($caseStatus, "Active"))
                                                     @php
                                                         $rawStatus = trim($caseStatus);
-                                                        $segment = $rawStatus;
 
-                                                        if (\Illuminate\Support\Str::contains($rawStatus, 'Active in')) {
-                                                            $segment = trim(\Illuminate\Support\Str::afterLast($rawStatus, 'Active in'));
-                                                        } elseif (\Illuminate\Support\Str::contains($rawStatus, 'In-Progress in')) {
-                                                            $segment = trim(\Illuminate\Support\Str::afterLast($rawStatus, 'In-Progress in'));
+                                                        // خذ فقط ما بعد "Active in" أو "In-Progress in"
+                                                        $stageText = $rawStatus;
+                                                        if (Str::contains($rawStatus, 'Active in')) {
+                                                            $stageText = trim(Str::after($rawStatus, 'Active in'));
+                                                        } elseif (Str::contains($rawStatus, 'In-Progress in')) {
+                                                            $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
                                                         }
 
-                                                        $stage = trim($segment);
-                                                        $assignee = '';
-                                                        if (\Illuminate\Support\Str::contains($segment, 'w/')) {
-                                                            $stage = trim(\Illuminate\Support\Str::beforeLast($segment, 'w/'));
-                                                            $assignee = trim(\Illuminate\Support\Str::afterLast($segment, 'w/'));
+                                                        // استخراج المرحلة والموظف
+                                                        $assigneeInitials = '';
+                                                        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+                                                            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+                                                        });
+
+                                                        if (!$jobAtStage) {
+                                                            $jobAtStage = $case->jobs->first(function ($job) {
+                                                                return $job->assignee !== null && (string) $job->stage !== '-1';
+                                                            });
                                                         }
 
-                                                        $formattedStatus = $assignee !== '' ? ($stage . '/ ' . $assignee) : $stage;
+                                                        if ($jobAtStage && $jobAtStage->assignedTo) {
+                                                            $assigneeInitials = trim((string) (
+                                                                $jobAtStage->assignedTo->name_initials
+                                                                ?? $jobAtStage->assignedTo->first_name
+                                                                ?? ''
+                                                            ));
+                                                        }
+
+                                                        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+                                                            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+                                                        }
+
+                                                        $formattedStatus = $assigneeInitials !== ''
+                                                            ? (trim($stageText) . '/ ' . $assigneeInitials)
+                                                            : trim($stageText);
                                                     @endphp
-                                                    <span class="badge badge-primary sigma-case-status-badge">
+
+                                                    <span class="badge badge-primary sigma-case-status-badge sigma-status-width">
                                                                             <span class="tooltipX">
                                                                                 <span class="sigma-badge-label">{{ $formattedStatus }}</span>
-                                                                                <span
-                                                                                    class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
+
                                                                 </span>
                                                     </span>
                                                 @elseif(str_contains($caseStatus, "Waiting"))
-                                                    <span class="badge badge-danger sigma-case-status-badge">
+                                                    <span class="badge badge-danger sigma-case-status-badge sigma-status-width">
                                                                 @php
                                                                     $status =  preg_replace('/' . "in" . '/', "", str_replace("Waiting","",$caseStatus), 1);
                                                                 @endphp
@@ -648,7 +792,7 @@
                                                         <span class="sigma-badge-label">{{ trim($status) }}</span>
                                                     </span>
                                                 @else
-                                                    <span class="badge badge-warning sigma-case-status-badge">
+                                                    <span class="badge badge-warning sigma-case-status-badge sigma-status-width">
                                                                            <span class="tooltipX">
                                                                                <span class="sigma-badge-label">{{ $caseStatus }}</span>
                                                                                <span
@@ -672,166 +816,169 @@
 
 
                                         </tr>
-                                        <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
-
-                                            <input type="hidden" name="case_id" value="{{$case->id}}">
-                                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                                <div class="modal-content">
-
-                                                    <div class="modal-body">
-                                                        <!-- Sticky Doctor/Patient section -->
-                                                        <div class="form-group row" style="margin-bottom: 0px">
-                                                            <div class="form-group col-6 " style="margin-bottom: 0px">
-                                                                <label for="doctor" class="patient-doctor-label">Doctor:</label>
-                                                                <h5 id="doctor" class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
-                                                            </div>
-                                                            <div class="form-group col-6 " style="margin-bottom: 0px">
-                                                                <label for="pat" class="patient-doctor-label">patient:</label>
-                                                                <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
-                                                            </div>
-                                                        </div>
-                                                        <hr>
-
-                                                        <!-- Scrollable Jobs and Notes section -->
-                                                        <div class="scrollable-content">
-                                                            <div class="form-group row">
-                                                                <div class=" col-12 ">
-                                                                    <label><b>Jobs:</b></label><br>
-
-
-                                                                    @php
-                                                                        // Determine case's current stage (first job's stage)
-                                                                        $currentStage = $case->jobs->first()->stage ?? null;
-                                                                    @endphp
-
-                                                                    @foreach( $case->jobs as $job)
-                                                                        @php
-                                                                            $unit = explode(', ',$job->unit_num);
-                                                                            // Only show jobs that go through the current stage
-                                                                            $showJob = $job->goesThroughStage($currentStage);
-                                                                        @endphp
-
-                                                                        @if($showJob)
-                                                                        <div class="job-info-for-tooltip" style="display: none;">
-                                                                            <span class="job-type">{{ $job->jobType->name ?? "No Job Type" }}</span>
-                                                                            <span class="job-material">{{ $job->material->name ?? "no material" }}</span>
-                                                                            <span class="job-units">{{ $job->unit_num }}</span>
-                                                                        </div>
-                                                                        <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
-                                                                            {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
-                                                                                        {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
-                                                                        @endif
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                            @if(count($case->notes)>0)
-                                                                <hr>
-                                                                <label><b>Notes:</b></label><br>
-                                                                @foreach($case->notes as $note)
-                                                                    <div class="form-control note-container"
-                                                                         style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
-                                                                         disabled>
-
-                                                                        <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><span class="noteText">{{$note->note}}</span>
-                                                                    </div>
-                                                                @endforeach
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        @if(!isset($trashedCases))
-                                                            <div class="row" style="width: 100%; margin: 0;">
-                                                                <!-- Row 1: Print Voucher and View Case -->
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    <a href="{{route('view-voucher',$case->id)}}"
-                                                                       class="btn btn-info" style="width: 100%;"><i class="fas fa-print"></i> Print Voucher</a>
-                                                                </div>
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                                       class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View </a>
-                                                                </div>
-
-                                                                <!-- Row 2: Lock Case, Delete Case -->
-                                                                @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    @if(!$case->locked)
-                                                                        <a href="{{route('lock-case',$case->id)}}"
-                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock </a>
-                                                                    @else
-                                                                        <a href="{{route('unlock-case',$case->id)}}"
-                                                                           class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock-open"></i> Unlock </a>
-                                                                    @endif
-                                                                </div>
-                                                                @endif
-                                                                @if(Auth()->user()->is_admin && !$case->locked)
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    <a data-clientName="{{ $case->client->name ?? "-" }}"
-                                                                       data-patientName="{{ $case->patient_name }}"
-                                                                       style="color:white; width: 100%;"
-                                                                       onclick="caseDelConfirmation(event)"
-                                                                       href="{{route('delete-case',$case->id)}}"
-                                                                       class="btn btn-danger"><i class="fas fa-trash"></i> Delete </a>
-                                                                </div>
-                                                                @endif
-
-                                                                <!-- Row 3: For completed cases only - Reject, Repeat, Modify -->
-                                                                @if (isset($case->actual_delivery_date))
-                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
-                                                                    <div class="col-4" style="padding: 5px;">
-                                                                        <a href="{{route('reject-case-view',$case->id )}}"
-                                                                           class="btn btn-outline-danger" style="width: 100%;"><i class="fas fa-times x2"></i> Reject case</a>
-                                                                    </div>
-                                                                    @endif
-                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
-                                                                    <div class="col-4" style="padding: 5px;">
-                                                                        <a href="{{route('repeat-case-view',$case->id)}}"
-                                                                           class="btn btn-outline-warning" style="width: 100%;"><i class="fas fa-undo"></i> Repeat case</a>
-                                                                    </div>
-                                                                    @endif
-                                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
-                                                                    <div class="col-4" style="padding: 5px;">
-                                                                        <a href="{{route('modify-case-view',$case->id)}}"
-                                                                           class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Modify case</a>
-                                                                    </div>
-                                                                    @endif
-                                                                @endif
-
-
-                                                                <!-- Row 3: Redo case and Edit -->
-                                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    <a href="{{route('redo-case-view',$case->id)}}"
-                                                                       class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Redo case</a>
-                                                                </div>
-                                                                @endif
-                                                                @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                                <div class="col-6" style="padding: 5px;">
-                                                                    <a href="{{route('edit-case-view',$case->id)}}"
-                                                                       class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                                                                </div>
-                                                                @endif
-                                                                <!-- Cancel Row -->
-                                                                <div class="col-12" style="padding: 5px;">
-                                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%;">Cancel</button>
-                                                                </div>
-
-                                                            </div>
-                                                        @else
-                                                            <a href="{{route('restore-case',$case->id)}}"
-                                                               class="btn btn-danger">Restore case</a>
-                                                        @endif
-                                                    </div>
-
-
-                                                </div>
-                                            </div>
-
-                                        </div>
 
                                     @endforeach
                                     </tbody>
 
                                 </table>
+
+                                @foreach($cases  as $case)
+                                    <div class="modal   sigma-modal--cases-index-actions" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
+
+                                        <input type="hidden" name="case_id" value="{{$case->id}}">
+                                        <div class="modal-dialog modal-dialog-centered   " role="document">
+                                            <div class="modal-content  ">
+
+                                                <div class="modal-body ">
+                                                    <!-- Sticky Doctor/Patient section -->
+                                                    <div class="form-group row" style="margin-bottom: 0px">
+                                                        <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                            <label for="doctor" class="patient-doctor-label">Doctor:</label>
+                                                            <h5 id="doctor" class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
+                                                        </div>
+                                                        <div class="form-group col-6 " style="margin-bottom: 0px">
+                                                            <label for="pat" class="patient-doctor-label">patient:</label>
+                                                            <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+
+                                                    <!-- Scrollable Jobs and Notes section -->
+                                                    <div class="scrollable-content">
+                                                        <div class="form-group row">
+                                                            <div class=" col-12 ">
+                                                                <label><b>Jobs:</b></label><br>
+
+
+                                                                @php
+                                                                    // Determine case's current stage (first job's stage)
+                                                                    $currentStage = $case->jobs->first()->stage ?? null;
+                                                                @endphp
+
+                                                                @foreach( $case->jobs as $job)
+                                                                    @php
+                                                                        $unit = explode(', ',$job->unit_num);
+                                                                        // Only show jobs that go through the current stage
+                                                                        $showJob = $job->goesThroughStage($currentStage);
+                                                                    @endphp
+
+                                                                    @if($showJob)
+                                                                    <div class="job-info-for-tooltip" style="display: none;">
+                                                                        <span class="job-type">{{ $job->jobType->name ?? "No Job Type" }}</span>
+                                                                        <span class="job-material">{{ $job->material->name ?? "no material" }}</span>
+                                                                        <span class="job-units">{{ $job->unit_num }}</span>
+                                                                    </div>
+                                                                    <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
+                                                                        {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
+                                                                                    {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
+                                                                    @endif
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                        @if(count($case->notes)>0)
+                                                            <hr>
+                                                            <label><b>Notes:</b></label><br>
+                                                            @foreach($case->notes as $note)
+                                                                <div class="form-control note-container"
+                                                                     style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                     disabled>
+
+                                                                    <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><span class="noteText">{{$note->note}}</span>
+                                                                </div>
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    @if(!isset($trashedCases))
+                                                        <div class="row" style="width: 100%; margin: 0;">
+                                                            <!-- Row 1: Print Voucher and View Case -->
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                <a href="{{route('view-voucher',$case->id)}}"
+                                                                   class="btn btn-info" style="width: 100%;"><i class="fas fa-print"></i> Print Voucher</a>
+                                                            </div>
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
+                                                                   class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View </a>
+                                                            </div>
+
+                                                            <!-- Row 2: Lock Case, Delete Case -->
+                                                            @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                @if(!$case->locked)
+                                                                    <a href="{{route('lock-case',$case->id)}}"
+                                                                       class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock </a>
+                                                                @else
+                                                                    <a href="{{route('unlock-case',$case->id)}}"
+                                                                       class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock-open"></i> Unlock </a>
+                                                                @endif
+                                                            </div>
+                                                            @endif
+                                                            @if(Auth()->user()->is_admin && !$case->locked)
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                <a data-clientName="{{ $case->client->name ?? "-" }}"
+                                                                   data-patientName="{{ $case->patient_name }}"
+                                                                   style="color:white; width: 100%;"
+                                                                   onclick="caseDelConfirmation(event)"
+                                                                   href="{{route('delete-case',$case->id)}}"
+                                                                   class="btn btn-danger"><i class="fas fa-trash"></i> Delete </a>
+                                                            </div>
+                                                            @endif
+
+                                                            <!-- Row 3: For completed cases only - Reject, Repeat, Modify -->
+                                                            @if (isset($case->actual_delivery_date))
+                                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
+                                                                <div class="col-4" style="padding: 5px;">
+                                                                    <a href="{{route('reject-case-view',$case->id )}}"
+                                                                       class="btn btn-outline-danger" style="width: 100%;"><i class="fas fa-times x2"></i> Reject case</a>
+                                                                </div>
+                                                                @endif
+                                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
+                                                                <div class="col-4" style="padding: 5px;">
+                                                                    <a href="{{route('repeat-case-view',$case->id)}}"
+                                                                       class="btn btn-outline-warning" style="width: 100%;"><i class="fas fa-undo"></i> Repeat case</a>
+                                                                </div>
+                                                                @endif
+                                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
+                                                                <div class="col-4" style="padding: 5px;">
+                                                                    <a href="{{route('modify-case-view',$case->id)}}"
+                                                                       class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Modify case</a>
+                                                                </div>
+                                                                @endif
+                                                            @endif
+
+
+                                                            <!-- Row 3: Redo case and Edit -->
+                                                            @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                <a href="{{route('redo-case-view',$case->id)}}"
+                                                                   class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Redo case</a>
+                                                            </div>
+                                                            @endif
+                                                            @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
+                                                            <div class="col-6" style="padding: 5px;">
+                                                                <a href="{{route('edit-case-view',$case->id)}}"
+                                                                   class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                                            </div>
+                                                            @endif
+                                                            <!-- Cancel Row -->
+                                                            <div class="col-12" style="padding: 5px;">
+                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal" style="width: 100%;">Cancel</button>
+                                                            </div>
+
+                                                        </div>
+                                                    @else
+                                                        <a href="{{route('restore-case',$case->id)}}"
+                                                           class="btn btn-danger">Restore case</a>
+                                                    @endif
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                @endforeach
 
                             </div>
                             <div style="text-align:right">
@@ -1173,24 +1320,59 @@
 
                             var table = $("#casesTable").DataTable({
                                 "colReorder": true,
-                                "responsive": true,
+                                "responsive": {
+                                    "details": false  // Disable expand button completely
+                                },
                                 "bLengthChange": false,  // Disable "Show XX entries" dropdown
                                 "iDisplayLength": 20,
                                 "order": [],  // Disable initial sorting to preserve server-side order
                                 "dom": 'rtip',  // Hide default search box ('f' removed) but keep table, info, pagination
                                 "bProcessing": true,
                                 "searching": true,  // Enable searching for real-time filter
+                                "scrollX": true,  // Enable horizontal scroll to prevent clipping
+                                "autoWidth": false,
                                 "columnDefs": [
-                                    { "orderable": false, "targets": [0, 1, 5] }  // Disable sorting on Doctor, Patient, and Tags columns
+                                    { "orderable": false, "targets": [0, 1, 5] },  // Disable sorting on Doctor, Patient, and Tags columns
+                                    { "responsivePriority": 1, "targets": 0 },  // Doctor - always visible
+                                    { "responsivePriority": 2, "targets": 1 },  // Patient - always visible
+                                    { "responsivePriority": 3, "targets": 4 },  // Status - always visible
+                                    { "width": "18%", "targets": 0 },  // Doctor column width
+                                    { "width": "18%", "targets": 1 },  // Patient column width
+                                    { "width": "15%", "targets": 2 },  // Initial Delivery Date
+                                    { "width": "15%", "targets": 3 },  // Date Delivered
+                                    { "width": "18%", "targets": 4 },  // Status
+                                    { "width": "16%", "targets": 5 }   // Tags
                                 ]
                             });
 
-                            // Connect custom search field to DataTable for real-time search
-                            $('#tableSearch').on('keyup', function() {
-                                table.search(this.value).draw();
-                            });
+                             // Connect custom search field to DataTable for real-time search
+                             $('#tableSearch').on('keyup', function() {
+                                 table.search(this.value).draw();
+                             });
 
-                        });
+                             // Sticky header shadow (shows only when the header is "stuck")
+                             (function initCasesStickyHeaderShadow() {
+                                 const tableEl = document.getElementById('casesTable');
+                                 if (!tableEl) return;
+
+                                 const headerCells = Array.from(tableEl.querySelectorAll('thead th.sigma-sticky-container'));
+                                 if (!headerCells.length) return;
+
+                                 const referenceCell = headerCells[0];
+
+                                 const update = () => {
+                                     const stickyTop = parseFloat(getComputedStyle(referenceCell).top) || 0;
+                                     const rectTop = referenceCell.getBoundingClientRect().top;
+                                     const isStuck = Math.abs(rectTop - stickyTop) <= 1 && window.scrollY > 0;
+                                     headerCells.forEach((th) => th.classList.toggle('is-scrolled', isStuck));
+                                 };
+
+                                 update();
+                                 window.addEventListener('scroll', update, { passive: true });
+                                 window.addEventListener('resize', update);
+                             })();
+
+                         });
 
                         function caseDelConfirmation(ev) {
                             ev.preventDefault();

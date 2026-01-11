@@ -72,7 +72,7 @@
                                     <td class="tabledit-view-mode"><span class="tabledit-span">{{$user->phone}}</span><input class="tabledit-input form-control input-sm" type="text" name="col1" value="Doe" style="display: none;" disabled=""></td>
 
                                </tr>
-                                <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$user->id}}">
+                                <div class="modal fade sigma-action-dialog sigma-modal--users-actions" tabindex="-1" role="dialog" id="actionsDialog{{$user->id}}">
 
                                     <input type="hidden" name="case_id" value="{{$user->id}}">
                                     <div class="modal-dialog modal-dialog-centered" role="document">

@@ -10,6 +10,9 @@
         /* ============================================
                MODERN FORM STYLING
                ============================================ */
+        .teethJawsDocument {
+            width : -webkit-fill-available;
+        }
 
         .modern-card {
             background: white;
@@ -207,8 +210,7 @@
             border-radius: 4px;
         }
 
-        .deleteBtn,
-        .deleteBtn2 {
+        .deleteBtn, .deleteBtn2 {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
             border: none !important;
             border-radius: 8px !important;
@@ -217,16 +219,14 @@
             transition: all 0.2s ease;
         }
 
-        .deleteBtn:hover,
-        .deleteBtn2:hover {
+        .deleteBtn:hover, .deleteBtn2:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
         /* Teeth picker dialog */
-        #unitsDialog .modal-footer button[type="button"]:last-child,
-        #unitsDialog .modal-footer .btn-primary,
-        #unitsDialog .modal-footer button.saveBtn {
+        
+.sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer button[type="button"]:last-child, .sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer .btn-primary, .sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer button.saveBtn {
             background-color: #28a745 !important;
             border-color: #28a745 !important;
             color: white !important;
@@ -238,17 +238,16 @@
             transition: all 0.2s ease !important;
         }
 
-        #unitsDialog .modal-footer button[type="button"]:last-child:hover,
-        #unitsDialog .modal-footer .btn-primary:hover,
-        #unitsDialog .modal-footer button.saveBtn:hover {
+        
+.sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer button[type="button"]:last-child:hover, .sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer .btn-primary:hover, .sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer button.saveBtn:hover {
             background-color: #218838 !important;
             border-color: #218838 !important;
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4) !important;
             transform: translateY(-1px);
         }
 
-        #unitsDialog .modal-footer button[data-dismiss="modal"],
-        #unitsDialog .modal-footer .btn-secondary {
+        
+.sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer button[data-dismiss="modal"], .sigma-modal--case-create-modern-teeth #unitsDialog .modal-footer .btn-secondary {
             background-color: #6c757d !important;
             border-color: #6c757d !important;
             color: white !important;
@@ -257,8 +256,9 @@
             border-radius: 8px !important;
         }
 
-        @media screen and (max-width: 991px) {
-            .modal-content .modal-footer button {
+        @media screen and (max-width: 991px){
+            
+.sigma-modal--case-create-modern-teeth .modal-content .modal-footer button {
                 margin: 15px;
                 padding: 10px 40px;
                 width: auto;
@@ -654,7 +654,7 @@
         </form>
 
         <!-- TEETH PICK DIALOG -->
-        <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-create-modern-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog teethJawsDocument" role="document" style="margin-top: 5px;">
                 <div class="modal-content teethJawsDialog">

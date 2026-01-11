@@ -209,7 +209,8 @@
                                  'media-index',
                                  'audit-logs.index',
                                  'tools.invoice-check',
-                                 'tools.create-case'))
+                                 'tools.create-case',
+                                 'admin.case.timeline'))
                                 ? 'true' : 'false';
                 @endphp
 
@@ -259,9 +260,23 @@
                                         <p>Create Case</p>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="javascript:void(0)" onclick="openCaseTimeline()">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Case Timeline</p>
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
+                    <script>
+                        function openCaseTimeline() {
+                            const caseId = prompt('Enter Case ID to view timeline:');
+                            if (caseId && caseId.trim() !== '') {
+                                window.location.href = '/admin/case/' + caseId.trim() + '/timeline';
+                            }
+                        }
+                    </script>
                     </ul>
                     </div>
                 </li>

@@ -21,6 +21,7 @@
         "laravel/telescope": "^5.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
+        "sentry/sentry-laravel": "^4.20",
         "spiral/roadrunner": "^2024.3"
     },
     "require-dev": {

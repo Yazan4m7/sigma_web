@@ -311,6 +311,31 @@
             margin-bottom: 19px;
         }
 
+        .viewcase-page {
+            position: relative;
+        }
+
+        .print-label-actions {
+            margin-bottom: 15px;
+        }
+
+        .viewcase-timeline-btn {
+            position: absolute;
+            top: 33px;
+            right: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            z-index: 2;
+        }
+
+        .viewcase-page .noteform {
+            /*padding-right: 80px;*/
+        }
+
         @media screen and (max-width:760px) {
             .btnsRow {
                 flex-direction: column;
@@ -332,6 +357,10 @@
                 padding-left: 0
             }
 
+            .print-label-actions {
+                display: none;
+            }
+
             .printMiniLabelBtn {
                 margin-bottom: 5px;
             }
@@ -340,33 +369,22 @@
             .info-row-secondary {
                 padding: 15px;
             }
+
+            .viewcase-timeline-btn {
+                top: 16px;
+                right: 17px;
+            }
+
+            .viewcase-page .noteform {
+                /*padding-right: 60px;*/
+            }
         }
     </style>
     <link href="{{ asset('assets') }}/css/timeline.css" rel="stylesheet" />
 
 
-    <div class="col-lg-12 col-sm-12 ">
-        <div class="row btnsRow" style="padding-left: 10px;padding-top: 10px; background-color: transparent">
-            <div class=" col-3 ">
-
-                <button class="btn btn-secondary printMiniLabelBtn"
-                    style=" background-color: #2b7b7d;   padding-left: 20px;
-    padding-right: 20px;"
-                    onclick="PrintMinimizedLabel()">Print Mini Label <i class="fa-solid fa-tag"></i></button>
-
-            </div>
-            <div class="col-2 ">
-
-                <button class="btn btn-secondary"
-                    style="background-color: #2b7b7d;    padding-left: 20px;
-    padding-right: 20px;"
-                    onclick="PrintLabel()">Print Label <i class="fa-solid fa-tag"></i></button>
-
-            </div>
-        </div>
-    </div>
-
-    <form style="" class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
+    <div class="viewcase-page">
+        <form class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
         @csrf
         <div>
             <!-- CASE INFO -->
@@ -501,6 +519,13 @@
                                 </option>
                             @endforeach
                         </select></div>
+                </div>
+            </div>
+
+            <div class="row btnsRow print-label-actions">
+                <div class="col-12 d-flex justify-content-end">
+                    <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
+                    <button type="button" class="btn btn-primary ml-2" onclick="PrintLabel()">Print Label</button>
                 </div>
             </div>
 
@@ -1173,7 +1198,15 @@
                 </div>
             </div>
         </div>
-    </form>
+        </form>
+
+        @if(Auth()->user()->is_admin)
+            <a href="{{route('admin.case.timeline', $case->id)}}" class="btn btn-primary viewcase-timeline-btn"
+               aria-label="View timeline" title="View timeline">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </a>
+        @endif
+    </div>
 
 
 

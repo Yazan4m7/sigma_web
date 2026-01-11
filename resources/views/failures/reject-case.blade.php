@@ -8,24 +8,24 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
 
-        .slctUnitsBtn{
+        .slctUnitsBtn {
             margin:0;
             width:100%;
             height:100%; /* change this from auto */
             display:block;
         }
-        #addJobBtn{
+        #addJobBtn {
             background-color: #24c143 !important;
             border-color: #f3f4f5 !important;
             padding: 0.45rem 0.9rem;
             border-radius: 0.3rem;
         }
         body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) { overflow-y: visible !important; }
-        .stage, .implant,.abutment{
+        .stage, .implant, .abutment {
             margin-top:10px;
             margin-bottom:5px;
         }
-        .implant,.abutment {
+        .implant, .abutment {
             padding-left:0px !important;
 
         }
@@ -38,11 +38,16 @@
         .hideTeeth {
             filter: invert(5%) sepia(100%) saturate(50%) hue-rotate(228deg) brightness(96%) contrast(40%);
         }
-        .hidden{
+        .hidden {
             display:none;
         }
-        @media (min-width: 576px) {
-            .modal-dialog {
+        @media (min-width: 576px){
+            
+.sigma-modal--failures-reject-teeth .modal-dialog {
+                max-width: 400px;
+                margin: 0.75rem auto;
+            }
+.sigma-modal--failures-reject-files .modal-dialog {
                 max-width: 400px;
                 margin: 0.75rem auto;
             }
@@ -370,7 +375,7 @@
 
 
     <!-- Existing TEETH PICK DIALOG -->
-    <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
+    <div data-repeater-item class="modal fade sigma-modal--failures-reject-teeth" id="unitsDialog" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
 
@@ -528,7 +533,7 @@
 
 
     <!-- FILES DIALOG -->
-    <div  class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog" style="display: none;" aria-hidden="true" name="dialog">
+    <div  class="modal fade sigma-modal--failures-reject-files" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog" style="display: none;" aria-hidden="true" name="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

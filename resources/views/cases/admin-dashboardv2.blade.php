@@ -39,8 +39,63 @@
         .col-12 {
             padding: 0;
         }
-        @media (max-width: 480px) {
-            .sigma-workflow-dialog {
+        @media (max-width: 480px){
+            
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
             {
                 max-width: none !important;
                 width: auto !important;
@@ -50,12 +105,80 @@
             }
             }
 
-            .modal-footer .col-12 {
+            
+.sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--cases-dashboard-loading .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--active-cases-preview .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-3d-printing .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-delivery .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-generic .modal-footer .col-12 {
                 padding-left: 0 !important;
             }
 
-            @media (max-width: 700px) {
-                .sigma-workflow-dialog {
+            @media (max-width: 700px){
+                
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
                 {
                     max-width: none !important;
                     width: 90% !important;
@@ -64,8 +187,39 @@
                 }
                 }
 
-                @media (min-width: 700px) {
-                    .sigma-workflow-dialog {
+                @media (min-width: 700px){
+                    
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
                         max-width: none !important;
 
                         /* Minimum width for proper machine display */
@@ -73,32 +227,181 @@
                 }
 
                 /* Use Animate.css for Case Completion modal */
-                .modal.fade .modal-dialog {
+                
+.modal.fade.sigma-modal--cases-dashboard-case-completion .modal-dialog {
+                  /*  width: 90%; */
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--cases-dashboard-case-completion-alt .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--cases-dashboard-loading .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--active-cases-preview .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-3d-printing .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-delivery .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-generic .modal-dialog {
                     width: 90%;
                     /* Will be animated by Animate.css classes */
                 }
 
-                .modal-content {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--cases-dashboard-loading .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--active-cases-preview .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-3d-printing .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-delivery .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-generic .modal-content {
                     border-radius: 25px !important;
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
                     border: none;
                 }
 
                 /* Modal footer rounded bottom corners */
-                .modal-footer {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-generic .modal-footer {
                     border-bottom-left-radius: 25px !important;
                     border-bottom-right-radius: 25px !important;
                 }
 
                 /* Modal header styling with divider */
-                .modal-header {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--active-cases-preview .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-3d-printing .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-delivery .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-generic .modal-header {
                     display: none !important;
                     border-bottom: 1px solid #dee2e6 !important;
                     padding-bottom: 12px;
                 }
 
                 /* Modal title styling */
-                .modal-title {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--cases-dashboard-loading .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--active-cases-preview .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-3d-printing .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-delivery .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-generic .modal-title {
                     color: #2d5f6d;
                     font-weight: 600;
                     font-size: 18px;
@@ -117,7 +420,50 @@
                 }
 
                 /* Close button styling - more visible */
-                .modal-header button.close {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--active-cases-preview .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-3d-printing .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-delivery .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-generic .modal-header button.close {
                     font-size: 32px;
                     font-weight: 300;
                     color: #000;
@@ -125,7 +471,32 @@
                     text-shadow: none;
                 }
 
-                .modal-header button.close:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--active-cases-preview .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-3d-printing .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-delivery .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-generic .modal-header button.close:hover {
                     opacity: 1;
                     color: #000;
                 }
@@ -159,23 +530,145 @@
                     color: #212529;
                 }
 
-                .modal-footer {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--active-cases-preview .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-delivery .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-generic .modal-footer {
                     display: block;
                     padding: 1rem;
                     border-top: 1px solid #dee2e6;
                 }
 
-                .modal-footer .row {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--active-cases-preview .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-delivery .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-generic .modal-footer .row {
                     margin: 0;
                 }
 
-                .modal-footer .col-6,
-                .modal-footer .col-4,
-                .modal-footer .col-12 {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .col-6, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-4, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-6, .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-4, .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .col-6, .sigma-modal--cases-dashboard-loading .modal-footer .col-4, .sigma-modal--cases-dashboard-loading .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .col-6, .sigma-modal--active-cases-preview .modal-footer .col-4, .sigma-modal--active-cases-preview .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .col-6, .sigma-modal--waiting-3d-printing .modal-footer .col-4, .sigma-modal--waiting-3d-printing .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .col-6, .sigma-modal--waiting-delivery .modal-footer .col-4, .sigma-modal--waiting-delivery .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .col-6, .sigma-modal--waiting-generic .modal-footer .col-4, .sigma-modal--waiting-generic .modal-footer .col-12 {
                     padding-left: 0 !important;
                 }
 
-                .modal-footer .btn {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn {
                     width: 100%;
                     margin: 3px;
                     font-weight: 400;
@@ -186,106 +679,628 @@
                 }
 
                 /* Button color improvements with proper contrast */
-                .modal-footer .btn-info {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-info {
                     background-color: #17a2b8;
                     color: #ffffff !important;
                     box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
                 }
 
-                .modal-footer .btn-info:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-info:hover {
                     background-color: #138496;
                     box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
                 }
 
-                .modal-footer .btn-success {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success {
                     background-color: #28a745;
                     color: #ffffff !important;
                     box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
                 }
 
-                .modal-footer .btn-success:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success:hover {
                     background-color: #218838;
                     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
                 }
 
-                .modal-footer .btn-success:disabled {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success:disabled {
                     background-color: #6c757d;
                     color: #ffffff !important;
                     opacity: 0.6;
                 }
 
-                .modal-footer .btn-warning {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-warning {
                     background-color: #ffc107;
                     color: #ffffff !important;
                     box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
                 }
 
-                .modal-footer .btn-warning:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-warning:hover {
                     background-color: #e0a800;
                     color: #ffffff !important;
                     box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
                 }
 
-                .modal-footer .btn-dark {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-dark {
                     background-color: #343a40;
                     color: #ffffff !important;
                     box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
                 }
 
-                .modal-footer .btn-dark:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-dark:hover {
                     background-color: #23272b;
                     box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
                 }
 
-                .modal-footer .btn-outline-info {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-info {
                     border: 2px solid #17a2b8;
                     background-color: transparent;
                     color: #17a2b8 !important;
                 }
 
-                .modal-footer .btn-outline-info:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-info:hover {
                     background-color: #17a2b8;
                     color: #ffffff !important;
                     box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
                 }
 
-                .modal-footer .btn-outline-danger {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-danger {
                     border: 2px solid #dc3545;
                     background-color: transparent;
                     color: #dc3545 !important;
                 }
 
-                .modal-footer .btn-outline-danger:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-danger:hover {
                     background-color: #dc3545;
                     color: #ffffff !important;
                     box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
                 }
 
-                .modal-footer .btn-outline-secondary {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-secondary {
                     border: 2px solid #6c757d;
                     background-color: transparent;
                     color: #6c757d !important;
                 }
 
-                .modal-footer .btn-outline-secondary:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-secondary:hover {
                     background-color: #6c757d;
                     color: #ffffff !important;
                     box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
                 }
 
-                .modal-footer .btn-secondary {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-secondary {
                     background-color: #6c757d;
                     color: #ffffff !important;
                     box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
                 }
 
-                .modal-footer .btn-secondary:hover {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-secondary:hover {
                     background-color: #5a6268;
                     box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
                 }
 
                 /* Icon spacing */
-                .modal-footer .btn i {
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn i {
                     margin-right: 6px;
                 }
 
@@ -366,8 +1381,7 @@
 
 
 
-        input[type="checkbox"],
-        input[type="radio"] {
+        input[type="checkbox"], input[type="radio"] {
             transform: scale(1.3);
         }
 
@@ -415,7 +1429,7 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {
+        @media (max-width: 768px){
             .device-item {
                 max-width: {{ $deviceConfig['responsive_sizes']['tablet'] ?? '120px' }};
             }
@@ -425,7 +1439,7 @@
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 576px){
             .device-item {
                 max-width: {{ $deviceConfig['responsive_sizes']['mobile'] ?? '100px' }};
             }
@@ -435,7 +1449,7 @@
             }
         }
 
-        @media (max-width: 376px) {
+        @media (max-width: 376px){
             max-width: 0 !important;
         }
 
@@ -464,7 +1478,7 @@
             animation-duration: 0.4s;
             animation-fill-mode: both;
         }
-        .sunriseTable{
+        .sunriseTable {
             overflow: auto;
         }
     </style>
@@ -486,23 +1500,13 @@
             user-select: none;
         }
 
-        .loading td,
-        .loading th,
-        .loading div,
-        .loading button,
-        .loading span,
-        .loading li {
+        .loading td, .loading th, .loading div, .loading button, .loading span, .loading li {
             position: relative;
             background: #e0e0e0;
             overflow: hidden;
         }
 
-        .loading td::after,
-        .loading th::after,
-        .loading div::after,
-        .loading button::after,
-        .loading span::after,
-        .loading li::after {
+        .loading td::after, .loading th::after, .loading div::after, .loading button::after, .loading span::after, .loading li::after {
             content: '';
             position: absolute;
             top: 0;
@@ -713,7 +1717,7 @@
                 'waitingCases' => $wPressing,
                 'numericStage' => 5,
                 'icon' => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'>
-            <defs><style>.fa-secondary{opacity:.4}</style>
+            <defs><style>.fa-secondary {opacity:.4}</style>
             </defs><path class='fa-primary' d='M350 206.6c3.781 8.803 1.984 19.03-4.594 26l-136 144.1c-9.062 9.601-25.84 9.601-34.91 0l-136-144.1C31.97 225.7 30.17 215.4 33.95 206.6C37.75 197.8 46.42 192.1 56 192.1L128 192.1V64.03c0-17.69 14.33-32.02 32-32.02h64c17.67 0 32 14.34 32 32.02v128.1l72 .0314C337.6 192.1 346.3 197.8 350 206.6z'/>
             <path class='fa-secondary' d='M352 416H31.1C14.33 416 0 430.3 0 447.1S14.33 480 31.1 480H352C369.7 480 384 465.7 384 448S369.7 416 352 416z'/></svg>",
             ],
@@ -1004,7 +2008,7 @@
                                             </tr>
                                             {{--                                        {{dd("key  is  " . $key)}} --}}
                                             {{-- BEGIN WAITING DIALOG --}}
-                                            <div class="modal fade" tabindex="-1" role="dialog"
+                                            <div class="modal fade sigma-modal--cases-dashboard-case-completion" tabindex="-1" role="dialog"
                                                 id="waitingDialog{{ $key . $case->id }}">
                                                 <form
                                                     action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
@@ -1321,7 +2325,7 @@
                                                     </td>
                                                 </tr>
                                                 <!-- Active case actions Dialog -->
-                                                <div class="modal fade" tabindex="-1" role="dialog"
+                                                <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt" tabindex="-1" role="dialog"
                                                     id="confirmCompletion{{ $key . $case->id }}">
                                                     <form
                                                         action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
@@ -1605,7 +2609,7 @@
         <input type="hidden" id="caseIdFromWaitingDialog" name="caseIdFromWaitingDialog" value="">
 
         <!-- Generic loading dialog -->
-        <div id="loadingDialog" class="modal" tabindex="-1" role="dialog"
+        <div id="loadingDialog" class="modal sigma-modal--cases-dashboard-loading" tabindex="-1" role="dialog"
             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
             <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown" role="document">
                 <div class="modal-content">
@@ -1629,27 +2633,14 @@
     <!-- Custom DataTables CSS fixes -->
     <style>
         /* Completely hide DataTables sorting arrows */
-        .sunriseTable.dataTable thead th.sorting:before,
-        .sunriseTable.dataTable thead th.sorting:after,
-        .sunriseTable.dataTable thead th.sorting_asc:before,
-        .sunriseTable.dataTable thead th.sorting_asc:after,
-        .sunriseTable.dataTable thead th.sorting_desc:before,
-        .sunriseTable.dataTable thead th.sorting_desc:after,
-        .sunriseTable.dataTable thead .sorting:before,
-        .sunriseTable.dataTable thead .sorting:after,
-        .sunriseTable.dataTable thead .sorting_asc:before,
-        .sunriseTable.dataTable thead .sorting_asc:after,
-        .sunriseTable.dataTable thead .sorting_desc:before,
-        .sunriseTable.dataTable thead .sorting_desc:after {
+        .sunriseTable.dataTable thead th.sorting:before, .sunriseTable.dataTable thead th.sorting:after, .sunriseTable.dataTable thead th.sorting_asc:before, .sunriseTable.dataTable thead th.sorting_asc:after, .sunriseTable.dataTable thead th.sorting_desc:before, .sunriseTable.dataTable thead th.sorting_desc:after, .sunriseTable.dataTable thead .sorting:before, .sunriseTable.dataTable thead .sorting:after, .sunriseTable.dataTable thead .sorting_asc:before, .sunriseTable.dataTable thead .sorting_asc:after, .sunriseTable.dataTable thead .sorting_desc:before, .sunriseTable.dataTable thead .sorting_desc:after {
             display: none !important;
             content: none !important;
             background-image: none !important;
         }
 
         /* Force first column to not be sortable and fix alignment */
-        .sunriseTable.dataTable thead th:first-child,
-        .sunriseTable.dataTable thead th:first-child.sorting,
-        .sunriseTable thead th:first-child {
+        .sunriseTable.dataTable thead th:first-child, .sunriseTable.dataTable thead th:first-child.sorting, .sunriseTable thead th:first-child {
             min-width: 25px !important;
 
             text-align: left !important;
@@ -1682,8 +2673,7 @@
             border-color: #adb5bd !important;
         }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             background: #007bff !important;
             color: white !important;
             border-color: #007bff !important;
@@ -1742,8 +2732,7 @@
         }
 
         /* Tags column width - make narrower */
-        .sunriseTable th:nth-child(8),
-        .sunriseTable td:nth-child(8) {
+        .sunriseTable th:nth-child(8), .sunriseTable td:nth-child(8) {
             width: 80px !important;
             max-width: 80px !important;
             min-width: 80px !important;
@@ -1801,20 +2790,19 @@
             background-color: #eef3ff !important;
         }
 
-        @media (min-width: 992px) {
+        @media (min-width: 992px){
             .stageSidebar {
                 margin-top: 68px;
             }
         }
 
         /* Mobile: when columns hide, stretch remaining columns to fill width */
-        @media (max-width: 768px) {
+        @media (max-width: 768px){
             .sunriseTable.dataTable {
                 table-layout: fixed !important;
             }
 
-            .sunriseTable.dataTable th,
-            .sunriseTable.dataTable td {
+            .sunriseTable.dataTable th, .sunriseTable.dataTable td {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -2033,17 +3021,17 @@
     <script>
         const container = document.getElementById('dashboardShimmer');
 
-        function startLoading() {
-            container.classList.add('loading');
-        }
-
-        function stopLoading() {
-            container.classList.remove('loading');
-        }
-
-        // Simulate loading
-        startLoading();
-        setTimeout(stopLoading, 2000); // remove shimmer after 2s
+        // function startLoading() {
+        //     container.classList.add('loading');
+        // }
+        //
+        // function stopLoading() {
+        //     container.classList.remove('loading');
+        // }
+        //
+        // // Simulate loading
+        // startLoading();
+        // setTimeout(stopLoading, 2000); // remove shimmer after 2s
 
         // Apply device image configuration when document is ready
         document.addEventListener('DOMContentLoaded', function() {
@@ -2235,36 +3223,44 @@
         }
 
 
-
+    </script>
     <style>
-        /* Custom CSS to fix sticky element spacing and badge appearance */
-        @media (min-width: 992px) { /* Apply only on desktop */
-            /* Ensure badges are perfect circles */
-            .activeBadge,
-            .waitingBadge {
-                width: 24px !important;
-                height: 24px !important;
-                border-radius: 50% !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                padding: 0 !important; /* Remove conflicting padding */
-                flex-shrink: 0 !important; /* Prevent shrinking */
-                line-height: 1 !important; /* Ensure vertical centering */
-                font-size: 10px !important; /* Adjust font size if needed for 3 digits */
-                font-weight: 700 !important; /* Make numbers stand out */
-                color: #fff !important; /* Ensure text is white for contrast */
-            }
-            .activeBadge {
-                background-color: #007bff !important; /* Deeper blue */
-            }
-            .waitingBadge {
-                background-color: #dc3545 !important; /* Deeper red */
-            }
 
+        /* Ensure badges are perfect circles on all screen sizes */
+        .activeBadge, .waitingBadge {
+            width: 20px !important;
+            height: 20px !important;
+            border-radius: 50% !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 0 !important; /* Remove conflicting padding */
+            flex-shrink: 0 !important; /* Prevent shrinking */
+            line-height: 1 !important; /* Ensure vertical centering */
+            font-size: 11px !important; /* Smaller font for smaller circle */
+            font-weight: 500 !important; /* Make numbers stand out */
+            color: #fff !important; /* Ensure text is white for contrast */
+            vertical-align: middle !important; /* Align on same line */
+        }
+        .activeBadge {
+            background-color: #007bff !important; /* Deeper blue */
+        }
+        .waitingBadge {
+            background-color: #dc3545 !important; /* Deeper red */
+        }
+
+        /* Ensure badge container aligns items horizontally */
+        .stageSidebar button[role="tab"] > div {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 4px !important;
+            vertical-align: middle !important;
+        }
+
+        @media (min-width: 992px){ /* Apply only on desktop */
             /* Sidebar and Inner Tabs should stick below the main navbar */
-            .stageSidebar.kt-portlet--sticky-on,
-            .macaw-silk-tabs > [role="tablist"].kt-portlet--sticky-on {
+            .stageSidebar.kt-portlet--sticky-on, .macaw-silk-tabs > [role="tablist"].kt-portlet--sticky-on {
                 top: 60px !important; /* Assuming main navbar height of 60px */
                 z-index: 1020 !important; /* Ensure they are above content */
             }
@@ -2281,13 +3277,7 @@
                 justify-content: space-between; /* Space out items */
                 align-items: center; /* Vertically align items */
             }
-            .stageSidebar button[role="tab"] > div { /* Target the div containing badges */
-                display: flex;
-                flex-direction: column; /* Stack badges vertically */
-                align-items: center; /* Center badges within their column */
-                gap: 2px; /* Small gap between badges */
-                min-width: 30px; /* Ensure enough space for 3-digit badge */
-            }
+
         }
     </style>
 @endpush

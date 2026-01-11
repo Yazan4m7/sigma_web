@@ -12,12 +12,28 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <input class="form-control" type="date" name="from" value="{{request('from', now()->startOfMonth()->format('Y-m-d'))}}">
+                        <label for="qc_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
+                        <x-date-time-picker
+                            id="qc_from"
+                            name="from"
+                            label=""
+                            mode="date"
+                            display-format="DD MMM, YYYY"
+                            submit-format="YYYY-MM-DD"
+                            value="{{request('from', now()->startOfMonth()->format('Y-m-d'))}}"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control" type="date" name="to" value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}">
+                        <label for="qc_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
+                        <x-date-time-picker
+                            id="qc_to"
+                            name="to"
+                            label=""
+                            mode="date"
+                            display-format="DD MMM, YYYY"
+                            submit-format="YYYY-MM-DD"
+                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         <label><i class="fas fa-exclamation-triangle"></i> Failure Cause:</label>

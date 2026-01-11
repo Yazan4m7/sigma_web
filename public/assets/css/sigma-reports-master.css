@@ -733,7 +733,7 @@ html, body {
 /* Fix dropdown menu positioning when near viewport edges */
 @media (max-width: 768px) {
     .bootstrap-select .dropdown-menu {
-        max-width: calc(100vw - 30px) !important;
+        /*max-width: calc(100vw - 30px) !important;*/
         left: 0 !important;
         right: auto !important;
     }
@@ -1130,7 +1130,7 @@ div[id*="table"], div[id*="datatable"],
 /* Fix dropdown menu positioning when near viewport edges */
 @media (max-width: 768px) {
     .bootstrap-select .dropdown-menu {
-        max-width: calc(100vw - 30px) !important;
+        /*max-width: calc(100vw - 30px) !important;*/
         left: 0 !important;
         right: auto !important;
     }

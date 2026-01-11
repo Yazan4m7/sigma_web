@@ -90,7 +90,7 @@
 
                                             </tr>
 
-                                            <div class="modal fade" id="actions{{$case->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelform" aria-hidden="true">
+                                            <div class="modal fade sigma-modal--accountant-delivery-actions" id="actions{{$case->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelform" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -179,7 +179,7 @@
                                                             </td>
                                                             <td><p class="" style="color:{{$color}} !important">{{str_replace("T"," ",$case->initial_delivery_date)}}</p></td>
                                                         </tr>
-                                                        <div class="modal fade" id="actions{{$case->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelform" aria-hidden="true" >
+                                                        <div class="modal fade sigma-modal--accountant-delivery-actions-alt" id="actions{{$case->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelform" aria-hidden="true" >
                                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header">

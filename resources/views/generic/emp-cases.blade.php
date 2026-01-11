@@ -129,7 +129,7 @@ $permissions = safe_permissions();
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <div class="modal" tabindex="-1" role="dialog" id="myModal{{$case->id}}">
+                                            <div class="modal sigma-modal--generic-emp-cases-primary" tabindex="-1" role="dialog" id="myModal{{$case->id}}">
                                                 <form action="{{route('assign-to-delivery-person')}}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">
@@ -167,7 +167,7 @@ $permissions = safe_permissions();
                                                 </form>
                                             </div>
                                             @if($stage =='2')
-                                                <div class="modal" tabindex="-1" role="dialog" id="MEX{{$case->id}}">
+                                                <div class="modal sigma-modal--generic-emp-cases-secondary" tabindex="-1" role="dialog" id="MEX{{$case->id}}">
                                                     <form action="{{route('externally-milled')}}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="case_id" value="{{$case->id}}">
@@ -201,7 +201,7 @@ $permissions = safe_permissions();
                                                     </form>
                                                 </div>
                                             @endif
-                                            <div class="modal" tabindex="-1" role="dialog" id="confirmCompletion{{$case->id}}">
+                                            <div class="modal sigma-modal--generic-emp-cases-tertiary" tabindex="-1" role="dialog" id="confirmCompletion{{$case->id}}">
                                                 <form action="{{route('finish-case',['caseId'=> $case->id,'stage'=>$stage] )}}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">

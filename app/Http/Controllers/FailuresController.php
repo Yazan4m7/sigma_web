@@ -256,7 +256,13 @@ class FailuresController extends Controller
     }
     public function modifyCase(Request $request){
         $case = sCase::where('id', $request->id)->first();
-        if ($case->locked == 1) back()->with('error',"Case is locked");
+        if ($case->locked == 1) return back()->with('error',"Case is locked");
+
+        // Ensure case has been delivered before allowing modification
+        if (!$case->actual_delivery_date) {
+            return back()->with('error', "Cannot modify case - case must be delivered first (no delivery date found)");
+        }
+
         $case->patient_name = str_replace(' / تعديل','',$case->patient_name) . ' / تعديل';
         DB::beginTransaction();
         if ($request->repeat)
@@ -282,43 +288,7 @@ class FailuresController extends Controller
                 }
             }
 
-//        if ($request->repeat2)
-//            foreach($request->repeat2 as $job){
-//                if (isset($job["units"])) {
-//                    $newJob = new job();
-//                    $newJob->unit_num = $job["units"];
-//                    $newJob->type = $job["jobType"];
-//                    $newJob->color = $job["color"]?? 'None';
-//                    $newJob->style = $job["style"] ?? 'None';
-//                    $newJob->abutment = $job["abutment"] ?? 'None';
-//                    $newJob->implant = $job["implant"] ?? 'None';
-//                    $newJob->material_id = $job["material_id"];
-//                    $newJob->case_id = $case->id;
-//                    $newJob->stage = 1;
-//
-//                    $newJob->unit_price = material::FindOrFail($job["material_id"])->price - ($this->clientDiscount4rejection($newJob, $case) / count(explode(',', $newJob->unit_num)));
-//                    $newJob->save();
-//
-//
-//
-//
-//                    if($newJob->material->teeth_or_jaw == 1)
-//                    {
-//                        $newJob->implant =null;
-//                        $newJob->abutment =null;
-//                        $newJob->save();
-//                    }
-//                }}
 
-
-        /*
-  *     SAVING TAGS
-  */
-//        if ($request->tags)
-//            foreach($request->tags as $tag){
-//                $newTag = new caseTag(['case_id' => $case->id, 'tag_id' => $tag , 'added_by' => Auth()->user()->id]);
-//                $newTag->save();
-//            }
         if($files=$request->file('images')){
 
             foreach($files as $file){

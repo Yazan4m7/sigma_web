@@ -118,6 +118,11 @@ class sCase extends Model
     {
         return $this->hasMany('App\failureLog', 'case_id', 'id');
     }
+
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
     public function getInitialDeliveryDateAttribute( $value ) {
         return substr($this->attributes['initial_delivery_date'],0,10) .'T' .  substr($this->attributes['initial_delivery_date'],11,5);
     }

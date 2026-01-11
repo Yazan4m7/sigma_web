@@ -38,7 +38,7 @@
                                                 value="Doe" style="display: none;" disabled=""></td>
 
                                     </tr>
-                                    <div class="modal sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{ $material->id }}">
+                                    <div class="modal sigma-action-dialog sigma-modal--material-actions" tabindex="-1" role="dialog" id="actionsDialog{{ $material->id }}">
 
                                         <input type="hidden" name="case_id" value="{{ $material->id }}">
                                         <div class="modal-dialog modal-dialog-centered" role="document">

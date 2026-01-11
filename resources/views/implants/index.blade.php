@@ -33,7 +33,7 @@
 
                              </tr>
 
-                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$implant->id}}">
+                            <div class="modal fade sigma-action-dialog sigma-modal--implants-actions" tabindex="-1" role="dialog" id="actionsDialog{{$implant->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$implant->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

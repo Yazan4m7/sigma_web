@@ -1,5 +1,112 @@
 
 	# CLAUDE.md
+ SIGMA (Dental Lab Management System) — Project Memory
+
+## What this repo is
+SIGMA is a Laravel-based dental lab workflow management system.
+Core flow: Dentists/Clients create cases → cases move through lab stages (Design, Milling, 3D Printing, Sintering, Pressing, QC, Delivery) → billing & statements.
+
+## Non-goals (avoid breaking scope)
+- Do not redesign UI/UX without explicit request.
+- Do not change database schema without a migration + clear rationale.
+- Do not mix “quick fixes” with large refactors in the same patch.
+
+## Tech + Structure assumptions
+- Backend: Laravel (modular domains: Cases, Jobs, Clients/Dentists, Billing/Statements, Inventory, Logistics/Delivery).
+- Frontend: Blade views + CSS (likely Bootstrap/Tailwind/custom) + JS as needed (Alpine/vanilla).
+- Data: MySQL.
+
+## Codebase map (update paths if different)
+- Routes:
+  - routes/web.php (app UI)
+  - routes/api.php (AJAX/portal endpoints)
+- App:
+  - app/Http/Controllers/...
+  - app/Models/...
+  - app/Services/... (business logic if present)
+- Views:
+  - resources/views/...
+  - resources/views/components/...
+- Assets:
+  - resources/css/...
+  - resources/js/...
+  - public/...
+
+## Workflow rules (how you should work here)
+1) For non-trivial tasks: propose a short plan (3–7 bullets) before editing.
+2) Make minimal diffs. Don’t “clean up” unrelated files.
+3) If you change behavior: update or add a test (Pest/PHPUnit) when feasible.
+4) Always explain what changed + why, and list files touched.
+5) always ask if theres a siginficant edit or something youre not sure of
+
+
+
+## UI/CSS conventions
+- Prefer CSS variables/tokens for brand colors.
+- Prefer responsive rules using container-based scaling (avoid fixed px layouts on modals).
+- For dialogs/modals: ensure mobile viewport fits without horizontal scroll.
+
+## When to use subagents
+
+- Use **css-specialist** for UI/CSS/responsive/layout tasks,
+Search only those files : 
+  /css/bootstrap.min.css
+  /css/style.css
+  assets/css/jquery.imagesloader.css
+  assets/css/pages/login/login-3.css
+  assets/css/skins/aside/dark.css
+  assets/css/skins/brand/dark.css
+  assets/css/skins/header/base/light.css
+  assets/css/skins/header/menu/light.css
+  assets/css/style.bundle.css
+  assets/plugins/global/plugins.bundle.css
+  {{ asset('assets') }}/css/active-cases.css
+  {{ asset('assets') }}/css/blank_page_style.css
+  {{ asset('assets') }}/css/custom-styling.css
+  {{ asset('assets') }}/css/devices-dialog-fix.css
+  {{ asset('assets') }}/css/devices-page.css
+  {{ asset('assets') }}/css/operations-dashboard-table-fix.css
+  {{ asset('assets') }}/css/operations-nav-responsive.css
+  {{ asset('assets') }}/css/responsive.css
+  {{ asset('assets') }}/css/sidebar-fix.css
+  {{ asset('assets') }}/css/sidebar-fullwidth-fix.css
+  {{ asset('assets') }}/css/sidebar-layout-improvements.css
+  {{ asset('assets') }}/css/sweetalert2.min.css
+  {{ asset('assets') }}/css/theme.css
+  {{ asset('assets') }}/css/timeline.css
+  {{ asset('assets') }}/css/v3styles.css
+  {{ asset('assets') }}/css/waiting-dialog-merged.css
+  {{ asset('assets') }}/css/waiting-dialog.css
+  {{ asset('assets') }}/css/white-dashboard.css?v=1.0.0
+  {{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css
+  {{ asset('assets') }}/css/ysh-custom-css/dialog.css
+  {{ asset('assets/css/bootstrap-select-fix.css') }}
+  {{ asset('assets/css/jquery.imagesloader.css') }}
+  {{ asset('assets/css/lightgallery.css') }}
+  {{ asset('assets/css/permissions-checkbox.css') }}
+  {{ asset('assets/css/sigma-reports-master.css') }}
+  {{ asset('assets/css/sigma-reports-theme.css') }}
+  {{ asset('css/ysh-custom-css/machine-images.css') }}
+  {{asset('assets/css/menu.css')}}
+  {{asset('assets/css/slidebars.min.css')}}
+  {{asset('assets/css/style.css')}}
+
+
+
+
+
+## ##############################################################
+
+Below diff file
+
+## ##############################################################
+
+## Working Style
+- **Be fast and surgical** - no exploratory scans or broad file searches
+- **Make direct edits** - trust the specific file/line I reference
+- **Skip verification phases** - don't check "related files" unless I ask
+- **One-shot changes** - edit immediately, don't ask for confirmation
+
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -16,53 +123,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 5. **Materials & Job Types** - Dental materials, job definitions, and material-job relationships
 6. **Financial Management** - Invoicing, payments, client accounts, and reporting
 
-## Development Commands
-
-### Initial Setup
-```bash
-# Install dependencies
-composer install
-npm install
-
-# Environment setup
-cp .env.example .env  # Configure database settings
-php artisan key:generate
-php artisan migrate
-php artisan db:seed  # If applicable
-```
-
-### Development Server
-```bash
-# Start Laravel development server
-php artisan serve  # http://localhost:8000
-
-# Asset compilation and watching
-npm run watch      # Development with file watching
-npm run hot       # Hot reload with BrowserSync
-npm run dev       # Single development build
-npm run prod      # Production build
-```
-
-### Cache Management
-```bash
-# Clear all caches (recommended)
-./clear-cache.sh
-
-# Individual cache clearing
-php artisan cache:clear
-php artisan view:clear
-php artisan config:clear
-php artisan route:clear
-php artisan optimize:clear
-```
-
-### Testing
-```bash
-# Run tests
-./vendor/bin/phpunit
-./vendor/bin/phpunit tests/Feature
-./vendor/bin/phpunit tests/Unit
-```
 
 ## Architecture & Code Organization
 
@@ -123,22 +183,15 @@ Blade components in `app/View/Components/`:
 
 ### Key Environment Variables
 ```env
-APP_NAME=Laravel_Staging
+APP_NAME=sigma
 APP_ENV=local
 APP_DEBUG=true
 DB_CONNECTION=mysql
 DB_DATABASE=sigma
 ```
 
-### Optional Integrations
-- OpenAI API integration (OPENAI_API_KEY, OPENROUTER_API_KEY)
-- Firebase notifications (service account JSON files present)
-
 ## Asset Pipeline
-- **Laravel Mix** configuration in `webpack.mix.js`
-- **BrowserSync** setup for live reload during development
 - Custom CSS in `public/assets/css/` including `v3styles.css` and custom styling
-- Vue.js components supported for frontend interactivity
 
 ## File Upload Handling
 - Case images stored in `public/caseImages/{case_id}/`
@@ -147,3 +200,5 @@ DB_DATABASE=sigma
 - the relationship between cases and devices and how you fetch the devices used in cases
 - the table structre and style i asked for
 - the database schema
+
+Be direct and efficient. Don't scan entire files or do broad searches before making changes. Trust that I know what I'm asking for. Make targeted edits to specific files/lines without unnecessary verification steps.

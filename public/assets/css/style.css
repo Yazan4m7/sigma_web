@@ -44,7 +44,7 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito+Sans:400,600,700');
 @import url('https://fonts.googleapis.com/css?family=Archivo+Black');
 @import url('https://fonts.googleapis.com/css?family=Orbitron:900');
-.actionsBtn{
+.actionsBtn {
     float:right;
 }
 .dropdown-toggle::after {
@@ -53,7 +53,7 @@
 .actionsBtn::after {
     display: table !important;
 }
-.dropdown-item{
+.dropdown-item {
 cursor: pointer;
 }
 .xdsoft_time_variant {
@@ -65,7 +65,7 @@ cursor: pointer;
     width: 0;
     height: 0;
 }
-.SDTP{
+.SDTP {
     background-color: #fff !important;
 }
 
@@ -91,7 +91,7 @@ body {
     font-weight: 700;
 
 }
-a{
+a {
     color: #888888;
     text-decoration: none;
 }
@@ -99,7 +99,7 @@ a:hover {
     color: #555555;
     text-decoration: none;
 }
-.rowContainerCustom{
+.rowContainerCustom {
     padding:20px;
     margin:5px;
 }
@@ -113,13 +113,12 @@ p {
 
 /*--bg-color--*/
 
-.card
-{
+.card {
     margin-bottom: 20px;
     padding:15px;
 }
 
-.card{
+.card {
 
 
 }
@@ -274,8 +273,7 @@ p {
     border-color: #eff3f6;
 }
 
-.dropdown-item.active,
-.dropdown-item:active {
+.dropdown-item.active, .dropdown-item:active {
     color: #0a1832;
     text-decoration: none;
     background-color: #eff3f6;
@@ -296,23 +294,19 @@ p {
     color: #a0a9b3;
 }
 
-.success,
-.widget-box .fa-line-chart {
+.success, .widget-box .fa-line-chart {
     color: #4cb04e;
 }
 
-.danger,
-.widget-box .fa-shopping-cart {
+.danger, .widget-box .fa-shopping-cart {
     color: #ff5450;
 }
 
-.warning,
-.widget-box .fa-users {
+.warning, .widget-box .fa-users {
     color: #fdc107;
 }
 
-.info,
-.widget-box .fa-envelope {
+.info, .widget-box .fa-envelope {
     color: #00bcd2;
 }
 
@@ -329,9 +323,7 @@ p {
     margin-bottom: 30px;
 }
 
-.table td,
-.table thead th,
-.table-responsive-sm table th {
+.table td, .table thead th, .table-responsive-sm table th {
     border-bottom: 1px solid #e9ecef;
     border-top: none;
 }
@@ -412,7 +404,7 @@ p {
 .border-b {
     border-bottom: 1px solid #ddd !important;
 }
-.border-l{
+.border-l {
     border-left: 1px solid #ddd;
 }
 
@@ -497,14 +489,11 @@ p {
     /*border-bottom: 1px solid #2e61f2;*/
 }
 
-.nav-tabs .nav-link:focus,
-.nav-tabs .nav-link:hover {
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
     border-color: transparent;
 }
 
-.nav-tabs .nav-item.show .nav-link,
-.right-bar .nav-tabs .active,
-.nav-tabs .nav-link.active {
+.nav-tabs .nav-item.show .nav-link, .right-bar .nav-tabs .active, .nav-tabs .nav-link.active {
     color: #495057;
     background-color: #fff;
     border-color: #fff #fff #2e61f2;
@@ -524,10 +513,7 @@ p {
 
 /*--tab-2--*/
 
-.tab-2 .nav-tabs .nav-item.show .nav-link,
-.tab-2 .nav-tabs .nav-link.active,
-.tab-4 .nav-tabs .nav-link.active,
-.tab-7 .flex-column .nav-link.active {
+.tab-2 .nav-tabs .nav-item.show .nav-link, .tab-2 .nav-tabs .nav-link.active, .tab-4 .nav-tabs .nav-link.active, .tab-7 .flex-column .nav-link.active {
     color: #888;
     background-color: #fff;
     border-bottom-color: #fff;
@@ -582,7 +568,388 @@ p {
    5. Modals
 -----------------*/
 
-.card .modal-box .modal {
+
+.card .modal-box .modal.sigma-modal--abutments-delivery-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--abutments-delivery-receive {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--abutments-index-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--accountant-delivery-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--accountant-delivery-actions-alt {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--admin-intel-shortcut {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--admin-intel-settings {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--admin-intel2-shortcut {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--admin-intel2-settings {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--admin-mobile-access {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--cases-dashboard-case-completion {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--cases-dashboard-case-completion-alt {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--cases-dashboard-loading {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-create-modern-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-create-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-create-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--dashboard-active-milling {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--dashboard-active-case-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--dashboard-waiting-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-edit-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-edit-teeth-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--case-edit-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--cases-index-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--cases-rejected-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--clients-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--clients-add {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--clients-delete {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--active-cases-preview {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--adminhth-intel-shortcut {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--adminhth-intel-settings {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--adminhth-intel2-shortcut {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--adminhth-intel2-settings {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--adminhth-mobile-access {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--waiting-3d-printing {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--waiting-delivery {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--waiting-generic {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--delivery-schedule-edit {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--delivery-schedule-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--delivery-receive-payment {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--devices-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-causes-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-modify-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-modify-teeth-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-modify-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-redo-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-redo-teeth-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-redo-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-reject-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-reject-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-repeat-teeth {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-repeat-teeth-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--failures-repeat-files {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-primary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-tertiary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-alt-primary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-alt-secondary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-emp-cases-alt-tertiary {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-payments-alt {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--generic-payments {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--implants-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--job-types-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--labs-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-create-add-type {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-create-add-implant {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-create-edit-implant {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-edit-types {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-edit-add-type {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--material-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--media-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--rtl-search {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--report-employees-filter {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--report-devices-filter {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--tags-actions {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--invoice-check {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--invoice-check-new {
+    position: relative;
+    display: block;
+    z-index: 1;
+}
+.card .modal-box .modal.sigma-modal--users-actions {
     position: relative;
     display: block;
     z-index: 1;
@@ -623,10 +990,10 @@ p {
 }
 
 
-.waitingBadge{
+.waitingBadge {
     background-color: #dc3545 !important;
 }
-.activeBadge{
+.activeBadge {
     background-color: #2e61f2 !important;
 }
 .badge {
@@ -675,35 +1042,29 @@ p {
     bottom: 0;
 }
 
-.progress-vertical.progress-sm,
-.progress-vertical-bottom.progress-sm {
+.progress-vertical.progress-sm, .progress-vertical-bottom.progress-sm {
     width: 5px !important;
 }
 
-.progress-vertical.progress-sm .progress-bar,
-.progress-vertical-bottom.progress-sm .progress-bar {
+.progress-vertical.progress-sm .progress-bar, .progress-vertical-bottom.progress-sm .progress-bar {
     font-size: 8px;
     line-height: 5px;
 }
 
-.progress-vertical.progress-md,
-.progress-vertical-bottom.progress-md {
+.progress-vertical.progress-md, .progress-vertical-bottom.progress-md {
     width: 15px !important;
 }
 
-.progress-vertical.progress-md .progress-bar,
-.progress-vertical-bottom.progress-md .progress-bar {
+.progress-vertical.progress-md .progress-bar, .progress-vertical-bottom.progress-md .progress-bar {
     font-size: 10.8px;
     line-height: 14.4px;
 }
 
-.progress-vertical.progress-lg,
-.progress-vertical-bottom.progress-lg {
+.progress-vertical.progress-lg, .progress-vertical-bottom.progress-lg {
     width: 20px !important;
 }
 
-.progress-vertical.progress-lg .progress-bar,
-.progress-vertical-bottom.progress-lg .progress-bar {
+.progress-vertical.progress-lg .progress-bar, .progress-vertical-bottom.progress-lg .progress-bar {
     font-size: 12px;
     line-height: 20px;
 }
@@ -727,18 +1088,14 @@ p {
     position: relative;
 }
 
-.circle-text,
-.circle-info,
-.circle-text-half,
-.circle-info-half {
+.circle-text, .circle-info, .circle-text-half, .circle-info-half {
     width: 100%;
     position: absolute;
     text-align: center;
     display: inline-block;
 }
 
-.circle-info,
-.circle-info-half {
+.circle-info, .circle-info-half {
     color: #999;
 }
 
@@ -765,20 +1122,17 @@ p {
 
 /*--FB-TWIT-Carousel--*/
 
-.vertical .carousel-item-next.carousel-item-left,
-.vertical .carousel-item-prev.carousel-item-right {
+.vertical .carousel-item-next.carousel-item-left, .vertical .carousel-item-prev.carousel-item-right {
     -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
 }
 
-.vertical .carousel-item-next,
-.vertical .active.carousel-item-right {
+.vertical .carousel-item-next, .vertical .active.carousel-item-right {
     -webkit-transform: translate3d(0, 100%, 0);
     transform: translate3d(0, 100%, 0);
 }
 
-.vertical .carousel-item-prev,
-.vertical .active.carousel-item-left {
+.vertical .carousel-item-prev, .vertical .active.carousel-item-left {
     -webkit-transform: translate3d(0, -100%, 0);
     transform: translate3d(0, -100%, 0);
 }
@@ -806,8 +1160,7 @@ p {
     box-sizing: border-box;
 }
 
-.grid-data-table td:first-of-type,
-.grid-data-table th:first-of-type {
+.grid-data-table td:first-of-type, .grid-data-table th:first-of-type {
     padding-left: 24px;
 }
 
@@ -821,13 +1174,11 @@ p {
     font-size: 14px;
 }
 
-.grid-data-table td,
-.grid-data-table th {
+.grid-data-table td, .grid-data-table th {
     padding: 8px 18px 8px 18px;
 }
 
-.grid-data-table.grid-data-table-no-number td,
-.grid-data-table.grid-data-table-no-number th {
+.grid-data-table.grid-data-table-no-number td, .grid-data-table.grid-data-table-no-number th {
     text-align: left;
 }
 
@@ -878,16 +1229,11 @@ p {
     background: #FFF;
 }
 
-.fc-toolbar .fc-state-active,
-.fc-toolbar .ui-state-active,
-.fc-toolbar button:focus,
-.fc-toolbar button:hover,
-.fc-toolbar .ui-state-hover {
+.fc-toolbar .fc-state-active, .fc-toolbar .ui-state-active, .fc-toolbar button:focus, .fc-toolbar button:hover, .fc-toolbar .ui-state-hover {
     z-index: 0;
 }
 
-.fc-widget-header,
-.fc-widget-content {
+.fc-widget-header, .fc-widget-content {
     border: 1px solid #D5D5D5;
 }
 
@@ -906,8 +1252,7 @@ p {
     text-transform: capitalize;
 }
 
-.fc-text-arrow,
-.fc-text-arrow {
+.fc-text-arrow, .fc-text-arrow {
     font-family: arial;
     font-size: 16px;
 }
@@ -916,8 +1261,7 @@ p {
     background: #F5F5F5;
 }
 
-.fc-state-highlight,
-.fc-cell-overlay {
+.fc-state-highlight, .fc-cell-overlay {
     background: #F0F0F0;
 }
 
@@ -1068,14 +1412,7 @@ a:not([href]):not([tabindex]):hover {
     margin: 0 5px;
 }
 
-.portlet .portlet-heading.bg-purple a,
-.portlet .portlet-heading.bg-info a,
-.portlet .portlet-heading.bg-success a,
-.portlet .portlet-heading.bg-primary a,
-.portlet .portlet-heading.bg-danger a,
-.portlet .portlet-heading.bg-warning a,
-.portlet .portlet-heading.bg-inverse a,
-.portlet .portlet-heading.bg-pink a {
+.portlet .portlet-heading.bg-purple a, .portlet .portlet-heading.bg-info a, .portlet .portlet-heading.bg-success a, .portlet .portlet-heading.bg-primary a, .portlet .portlet-heading.bg-danger a, .portlet .portlet-heading.bg-warning a, .portlet .portlet-heading.bg-inverse a, .portlet .portlet-heading.bg-pink a {
     color: #fff;
 }
 
@@ -1083,9 +1420,7 @@ a:not([href]):not([tabindex]):hover {
     color: #999;
 }
 
-.portlet .bg-secondary .portlet-widgets a i,
-.portlet .bg-gred1 .portlet-widgets a i,
-.portlet .bg-gred2 .portlet-widgets a i {
+.portlet .bg-secondary .portlet-widgets a i, .portlet .bg-gred1 .portlet-widgets a i, .portlet .bg-gred2 .portlet-widgets a i {
     color: #fff;
 }
 
@@ -1380,8 +1715,7 @@ lesshat-selector {
     line-height: 1;
 }
 
-#boxscroll,
-#boxscrol2 {
+#boxscroll, #boxscrol2 {
     height: 370px;
     width: auto;
     overflow: auto;
@@ -1433,27 +1767,19 @@ lesshat-selector {
     text-align: center;
 }
 
-.widget-box .ti-eye,
-.grad-progress-1,
-.bg-gradient .bg-grad-1 {
+.widget-box .ti-eye, .grad-progress-1, .bg-gradient .bg-grad-1 {
     background: -webkit-linear-gradient(315deg, rgba(158, 15, 184, 0.7) -10%, rgba(5, 232, 255, 0.8) 180%);
 }
 
-.widget-box .ti-user,
-.grad-progress-2,
-.bg-gradient .bg-grad-2 {
+.widget-box .ti-user, .grad-progress-2, .bg-gradient .bg-grad-2 {
     background: -webkit-linear-gradient(315deg, #66cccc -10%, #ffff66 180%);
 }
 
-.widget-box .ti-money,
-.grad-progress-3,
-.bg-gradient .bg-grad-3 {
+.widget-box .ti-money, .grad-progress-3, .bg-gradient .bg-grad-3 {
     background: -webkit-linear-gradient(315deg, #ff6699 -10%, #ff9933 180%);
 }
 
-.widget-box .ti-wallet,
-.grad-progress-4,
-.bg-gradient .bg-grad-4 {
+.widget-box .ti-wallet, .grad-progress-4, .bg-gradient .bg-grad-4 {
     background: -webkit-linear-gradient(315deg, #ffcc33 -10%, #ff6699 180%);
 }
 
@@ -1562,9 +1888,7 @@ lesshat-selector {
     border-color: #fdc107;
 }
 
-.form .checkbox label,
-.form .form-check-inline label,
-.form .radio label {
+.form .checkbox label, .form .form-check-inline label, .form .radio label {
     font-weight: 300;
 }
 
@@ -1572,8 +1896,7 @@ lesshat-selector {
     box-shadow: 0 0 0 0.2rem rgba(7, 156, 158, 0.35);
 }
 
-.btn-primary:not([disabled]):not(.disabled).active,
-.show>.btn-primary.dropdown-toggle {
+.btn-primary:not([disabled]):not(.disabled).active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
     box-shadow: 0 0 0 0.2rem rgba(7, 156, 158, 0.35);
 }
@@ -1633,9 +1956,7 @@ lesshat-selector {
     background-image: url(../../assets/images/icon/danger.svg);
 }
 
-.form-control-danger,
-.form-control-success,
-.form-control-warning {
+.form-control-danger, .form-control-success, .form-control-warning {
     padding-right: 36px;
     background-repeat: no-repeat;
     background-position: center right 9px;
@@ -1648,8 +1969,7 @@ lesshat-selector {
     min-height: 38px;
 }
 
-.contact-form .form-control,
-.form-material .form-control {
+.contact-form .form-control, .form-material .form-control {
     border: 0px;
     height: 45px;
     padding: 5px 10px;
@@ -1709,16 +2029,14 @@ lesshat-selector {
     width: 100%;
 }
 
-.timeline .timeline-body li a,
-.bootstrap-select .dropdown-menu li a {
+.timeline .timeline-body li a, .bootstrap-select .dropdown-menu li a {
     display: block;
     padding: 7px 20px;
     line-height: 1.45;
     color: #929292;
 }
 
-.bootstrap-select .dropdown-menu li a:focus,
-.bootstrap-select .dropdown-menu li a:hover {
+.bootstrap-select .dropdown-menu li a:focus, .bootstrap-select .dropdown-menu li a:hover {
     color: #888;
     background: #f2f4f8;
 }
@@ -1772,41 +2090,25 @@ lesshat-selector {
 .form-wizard-wrapper label {
   text-align: right; }
 
-.wizard > .steps a,
-.wizard > .steps a:active,
-.wizard > .steps a:hover {
+.wizard > .steps a, .wizard > .steps a:active, .wizard > .steps a:hover {
   margin: 3px;
   padding: 15px; }
 
-.wizard > .steps .current a,
-.wizard > .steps .current a:active,
-.wizard > .steps .current a:hover {
+.wizard > .steps .current a, .wizard > .steps .current a:active, .wizard > .steps .current a:hover {
   background-color: #2e61f2;
   color: #ffffff; }
 
-.wizard > .steps .disabled a,
-.wizard > .steps .disabled a:active,
-.wizard > .steps .disabled a:hover,
-.wizard > .steps .done a,
-.wizard > .steps .done a:active,
-.wizard > .steps .done a:hover {
+.wizard > .steps .disabled a, .wizard > .steps .disabled a:active, .wizard > .steps .disabled a:hover, .wizard > .steps .done a, .wizard > .steps .done a:active, .wizard > .steps .done a:hover {
     background-color: #e9f2fb;
     color: #2e61f2;
     font-weight: 700;
     font-size: 15px;
 }
 
-.wizard > .steps .current a .number,
-.wizard > .steps .current a:active .number,
-.wizard > .steps .current a:hover .number {
+.wizard > .steps .current a .number, .wizard > .steps .current a:active .number, .wizard > .steps .current a:hover .number {
   border: 2px solid #FFF; }
 
-.wizard > .steps .disabled a .number,
-.wizard > .steps .disabled a:active .number,
-.wizard > .steps .disabled a:hover .number,
-.wizard > .steps .done a .number,
-.wizard > .steps .done a:active .number,
-.wizard > .steps .done a:hover .number {
+.wizard > .steps .disabled a .number, .wizard > .steps .disabled a:active .number, .wizard > .steps .disabled a:hover .number, .wizard > .steps .done a .number, .wizard > .steps .done a:active .number, .wizard > .steps .done a:hover .number {
   border-color: #2e61f2; }
 
 .wizard > .content {
@@ -1833,28 +2135,24 @@ lesshat-selector {
   margin-right: 10px;
   background-color: rgba(103, 168, 228, 0.25); }
 
-.wizard > .actions .disabled a,
-.wizard > .actions .disabled a:active,
-.wizard > .actions .disabled a:hover {
+.wizard > .actions .disabled a, .wizard > .actions .disabled a:active, .wizard > .actions .disabled a:hover {
   opacity: .65;
   background-color: #2e61f2;
   color: #ffffff;
   cursor: not-allowed; }
 
-.wizard > .actions a,
-.wizard > .actions a:active,
-.wizard > .actions a:hover {
+.wizard > .actions a, .wizard > .actions a:active, .wizard > .actions a:hover {
   background-color: #2e61f2;
   border-radius: 4px;
   padding: 8px 15px; }
 
-@media (max-width: 768px) {
+@media (max-width: 768px){
   .wizard > .steps > ul > li {
     width: 50%; }
 
   .form-wizard-wrapper label {
     text-align: left; } }
-@media (max-width: 520px) {
+@media (max-width: 520px){
   .wizard > .steps > ul > li {
     width: 100%; } }
 
@@ -1884,21 +2182,16 @@ lesshat-selector {
     -webkit-border-radius: 0 0 4px !important;
 }
 
-#spinner1 .btn-light,
-#spinner3 .btn-light {
+#spinner1 .btn-light, #spinner3 .btn-light {
     border: 1px solid #e9ecef;
     background-color: #fff;
 }
 
-#spinner2 .btn,
-#spinner4 .btn {
+#spinner2 .btn, #spinner4 .btn {
     border-color: #81c5ec;
 }
 
-#spinner1 .btn-light:focus,
-#spinner2 .btn-brown:focus,
-#spinner3 .btn-light:focus,
-#spinner4 .btn-pink:focus {
+#spinner1 .btn-light:focus, #spinner2 .btn-brown:focus, #spinner3 .btn-light:focus, #spinner4 .btn-pink:focus {
     outline: none;
     box-shadow: none;
 }
@@ -1933,8 +2226,7 @@ lesshat-selector {
     box-shadow: none;
 }
 
-.ms-container .ms-selectable li.ms-hover,
-.ms-container .ms-selection li.ms-hover {
+.ms-container .ms-selectable li.ms-hover, .ms-container .ms-selection li.ms-hover {
     background-color: #00bcd2;
 }
 
@@ -2105,10 +2397,7 @@ input[type="checkbox"]:checked:after {
     17.Tables
 ---------------------------*/
 
-.basic-table,
-.edit-table,
-.data-table,
-.responsive-table {
+.basic-table, .edit-table, .data-table, .responsive-table {
     color: #888;
 }
 
@@ -2119,18 +2408,11 @@ input[type="checkbox"]:checked:after {
 
 /* data-table*/
 
-.pagination > li > a,
-.pagination > li > span {
+.pagination > li > a, .pagination > li > span {
     color: #313a46;
 }
 
-.pagination > .active > a,
-.pagination > .active > span,
-.pagination > .active > a:hover,
-.pagination > .active > span:hover,
-.pagination > .active > a:focus,
-.pagination > .active > span:focus,
-.page-item.active .page-link {
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus, .page-item.active .page-link {
     background: #6699ff;
     border-color: #6699ff;
 }
@@ -2173,9 +2455,7 @@ input[type="checkbox"]:checked:after {
     text-align: center;
 }
 
-.mail-inbox .list-group-item.active,
-.mail-inbox .list-group-item:hover,
-.mail-inbox .list-group-item:focus {
+.mail-inbox .list-group-item.active, .mail-inbox .list-group-item:hover, .mail-inbox .list-group-item:focus {
     color: #2e61f2;
     background-color: #2e61f240;
     border-color: #2e61f240;
@@ -2404,8 +2684,7 @@ input[type="checkbox"]:checked:after {
     margin-bottom: 20px;
 }
 
-.timeline > li:before,
-.timeline > li:after {
+.timeline > li:before, .timeline > li:after {
     content: " ";
     display: table;
 }
@@ -2414,8 +2693,7 @@ input[type="checkbox"]:checked:after {
     clear: both;
 }
 
-.timeline > li:before,
-.timeline > li:after {
+.timeline > li:before, .timeline > li:after {
     content: " ";
     display: table;
 }
@@ -2506,8 +2784,7 @@ input[type="checkbox"]:checked:after {
     color: inherit;
 }
 
-.timeline-body > p,
-.timeline-body > ul {
+.timeline-body > p, .timeline-body > ul {
     margin-bottom: 0;
 }
 
@@ -2529,14 +2806,12 @@ input[type="checkbox"]:checked:after {
     border-color: #dee5e7;
 }
 
-.time-item:before,
-.time-item-item:after {
+.time-item:before, .time-item-item:after {
     display: table;
     content: " ";
 }
 
-.timeline-2 .time-item:after,
-.time-item:after {
+.timeline-2 .time-item:after, .time-item:after {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -2745,11 +3020,11 @@ ul.p-social-link li a {
     24.Responsive
 -------------------------*/
 
-@media (min-width: 1024px) {
+@media (min-width: 1024px){
 
 }
 
-@media (max-width: 414px) {
+@media (max-width: 414px){
     .btn-mb-5 .btn {
         margin-bottom: 5px;
     }
@@ -2776,12 +3051,12 @@ ul.p-social-link li a {
     }
 }
 
-@media (max-width: 768px) {
-    .kt-portlet__head-title .fa{
+@media (max-width: 768px){
+    .kt-portlet__head-title .fa {
         padding-right: 20px;
     ;
     }
-    .rowContainerCustom{
+    .rowContainerCustom {
         padding:0;
         margin:0;
     }
@@ -2801,7 +3076,7 @@ ul.p-social-link li a {
     }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px){
     .box {
         overflow-x: auto;
         width: 100%;

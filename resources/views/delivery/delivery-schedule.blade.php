@@ -16,8 +16,7 @@
             background-color: #f0f3f6 !important;
         }
 
-        .mb-3,
-        .my-3 {
+        .mb-3, .my-3 {
             margin-bottom: 0rem !important;
         }
 
@@ -71,20 +70,92 @@
             border-bottom: none;
         }
 
-        .text-overdue,
-        .text-overdue .delivery-time-value,
-        .text-overdue .delivery-date-time {
+        .text-overdue, .text-overdue .delivery-time-value, .text-overdue .delivery-date-time {
             color: red !important;
+        }
+        .delivery-counter-card > .value {
+            color: #3b8b45;
+            font-size: 1.4rem;
+            letter-spacing: -3px;
+            font-weight: 700;
+            display: block !important;
+
+        }
+
+        /* Shrink # of units column */
+        #datatable thead th:nth-child(4),
+        #datatable tbody td:nth-child(4) {
+            width: 10% !important;
+            max-width: 80px;
+        }
+
+        /* Responsive modal dialog sizing */
+        @media screen and (max-width: 991px){
+            /* Tablets */
+            
+.sigma-modal--delivery-schedule-edit .modal-dialog {
+                max-width: 90% !important;
+                margin: 1rem auto !important;
+            }
+.sigma-modal--delivery-schedule-actions .modal-dialog {
+                max-width: 90% !important;
+                margin: 1rem auto !important;
+            }
+        }
+
+
+        @media screen and (max-width: 767px){
+            .delivery-filters {
+            gap: 16px;
+            display: flex;
+            justify-content: center !important;
+            flex-direction: row;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+            /* Large phones */
+            
+.sigma-modal--delivery-schedule-edit .modal-dialog {
+                max-width: calc(100% - 24px) !important;
+                margin: 12px !important;
+            }
+.sigma-modal--delivery-schedule-actions .modal-dialog {
+                max-width: calc(100% - 24px) !important;
+                margin: 12px !important;
+            }
+        }
+
+        @media screen and (max-width: 480px){
+            /* Small phones */
+            
+.sigma-modal--delivery-schedule-edit .modal-dialog {
+                max-width: calc(100% - 16px) !important;
+                margin: 8px !important;
+            }
+.sigma-modal--delivery-schedule-actions .modal-dialog {
+                max-width: calc(100% - 16px) !important;
+                margin: 8px !important;
+            }
+
+            
+.sigma-modal--delivery-schedule-edit .modal-content {
+                border-radius: 8px !important;
+            }
+.sigma-modal--delivery-schedule-actions .modal-content {
+                border-radius: 8px !important;
+            }
         }
 
         /* Custom CSS for tighter spacing on mobile */
         @media screen and (max-width: 767px) {
-            
+
             .delivery-filters .col-3,
             .delivery-actions .col-3 {
-                flex: 0 0 50% !important;
-                max-width: 50% !important;
-                padding: 4px 6px !important;
+
+            }
+            table{
+                margin: 0px 1px;
+                width: 90%;
             }
 
             .delivery-filters label {
@@ -137,11 +208,13 @@
                 line-height: 1.2 !important;
             }
 
-            .delivery-counter-card .value {
-                font-size: 18px !important;
-                font-weight: 700 !important;
-                line-height: 1.1 !important;
+            .delivery-counter-card > .value {
+                color: #3b8b45;
+                font-size: 1.4rem;
+                letter-spacing: -3px;
+                font-weight: 700;
                 display: block !important;
+
             }
 
             .table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
@@ -175,16 +248,28 @@
             }
 
             #datatable thead th:nth-child(1),
+            #datatable tbody td:nth-child(1) {
+                width: 22% !important;
+            }
+
             #datatable thead th:nth-child(2),
+            #datatable tbody td:nth-child(2) {
+                width: 22% !important;
+            }
+
             #datatable thead th:nth-child(3),
-            #datatable thead th:nth-child(4),
-            #datatable thead th:nth-child(5),
-            #datatable tbody td:nth-child(1),
-            #datatable tbody td:nth-child(2),
-            #datatable tbody td:nth-child(3),
-            #datatable tbody td:nth-child(4),
-            #datatable tbody td:nth-child(5) {
+            #datatable tbody td:nth-child(3) {
                 width: 20% !important;
+            }
+
+            #datatable thead th:nth-child(4),
+            #datatable tbody td:nth-child(4) {
+                width: 12% !important;
+            }
+
+            #datatable thead th:nth-child(5),
+            #datatable tbody td:nth-child(5) {
+                width: 24% !important;
             }
 
             /* Keep Status column visible and allow wrapping */
@@ -225,7 +310,16 @@
 
             .row {
                 padding: 2px;
-            }
+            }}
+        .filter-btn{width: 10rem;}
+        .print-btn{width: 7rem;}
+        .delivery-filters{
+            gap: 16px;
+            display: flex;
+            justify-content: flex-start;
+            flex-direction: row;
+            align-items: flex-end;
+        }
     </style>
     @php
         $permissions = safe_permissions();
@@ -243,40 +337,59 @@
                 @csrf
                 <div class="kt-portlet__body">
                     <div class="form-group">
-                        <div class="row delivery-filters">
-                            <div class="col-3 noLeftPadding">
-                                <label>From date</label><br>
-                                <input class="form-control SDTP" name="from" type="text"
-                                    value="{{ $data['from'] ?? '' }}" required readonly />
+                        <div class=" delivery-filters">
 
-                                @if ($errors->has('from'))
-                                    <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
-                                @endif
-                            </div>
-                            <div class="col-3  ">
-                                <div class="form-group">
-                                    <label>To date</label>
-                                    <input class="form-control SDTP" name="to" type="text"
-                                        value="{{ $data['to'] ?? '' }}" required readonly />
+                            <div class="  noLeftPadding">
+                                <div class="">
+                                    <label for="delivery_from">FROM</label>
+                                    <x-date-time-picker
+                                        id="delivery_from"
+                                        name="from"
+                                        label=""
+                                        mode="date"
+                                        display-format="DD MMM, YYYY"
+                                        submit-format="YYYY-MM-DD"
+                                        value="{{ $data['from'] ?? '' }}"
+                                        required
+                                    />
 
 
-                                    @if ($errors->has('to'))
-                                        <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
+                                    @if ($errors->has('from'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
                                     @endif
                                 </div>
                             </div>
+                            <div class=" ">
+                                <label for="delivery_to">TO</label><br>
+                                <x-date-time-picker
+                                        id="delivery_to"
+                                        name="to"
+                                        label=""
+                                        mode="date"
+                                        display-format="DD MMM, YYYY"
+                                        submit-format="YYYY-MM-DD"
+                                        value="{{ $data['to'] ?? '' }}"
+                                        required
+                                />
+
+                                @if ($errors->has('to'))
+                                    <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
+                                @endif
+                            </div>
+
+                                <div class=" noLeftPadding">
+                                    <button type="submit" class="btn btn-primary fillWidth filter-btn">Filter</button>
+                                </div>
+                                <div class=" ">
+                                    <button type="button" onclick="printResult()"
+                                            class="btn btn-secondary fillWidth print-btn">Print</button>
+                                </div>
+
                         </div>
+
                     </div>
 
-                    <div class="row delivery-actions">
-                        <div class="col-3 noLeftPadding">
-                            <button type="submit" class="btn btn-primary fillWidth">Filter</button>
-                        </div>
-                        <div class="col-3 ">
-                            <button type="button" onclick="printResult()"
-                                class="btn btn-secondary fillWidth">Print</button>
-                        </div>
-                    </div>
+
                 </div>
             </form>
         </div>
@@ -359,6 +472,59 @@
                                         $status = $case->status();
                                         $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
                                         $color = $isOverdue ? 'red' : '#595d6e';
+                                        $rawStatus = trim((string) $status);
+
+                                        $stageText = $rawStatus;
+                                        if (Str::contains($rawStatus, 'Active in')) {
+                                            $stageText = trim(Str::after($rawStatus, 'Active in'));
+                                        } elseif (Str::contains($rawStatus, 'In-Progress in')) {
+                                            $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
+                                        } elseif (Str::contains($rawStatus, 'Active')) {
+                                            $stageText = trim(Str::after($rawStatus, 'Active'));
+                                        } elseif (Str::contains($rawStatus, 'In-Progress')) {
+                                            $stageText = trim(Str::after($rawStatus, 'In-Progress'));
+                                        }
+
+                                        $assigneeInitials = '';
+                                        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+                                            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+                                        });
+
+                                        if (!$jobAtStage) {
+                                            $jobAtStage = $case->jobs->first(function ($job) {
+                                                return $job->assignee !== null && (string) $job->stage !== '-1';
+                                            });
+                                        }
+
+                                        if ($jobAtStage && $jobAtStage->assignedTo) {
+                                            $assigneeInitials = trim((string) (
+                                                $jobAtStage->assignedTo->name_initials
+                                                ?? $jobAtStage->assignedTo->first_name
+                                                ?? ''
+                                            ));
+                                        }
+
+                                        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+                                            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+                                        }
+
+                                        $formattedActiveStatus = $assigneeInitials !== ''
+                                            ? (trim($stageText) . '/ ' . $assigneeInitials)
+                                            : trim($stageText);
+                                        if ($formattedActiveStatus === '') {
+                                            $formattedActiveStatus = $rawStatus;
+                                        }
+
+                                        $waitingStage = $rawStatus;
+                                        if (Str::contains($rawStatus, 'Waiting in')) {
+                                            $waitingStage = trim(Str::after($rawStatus, 'Waiting in'));
+                                        } elseif (Str::contains($rawStatus, 'Waiting')) {
+                                            $waitingStage = trim(Str::after($rawStatus, 'Waiting'));
+                                        }
+                                        $waitingStage = trim($waitingStage);
+                                        if ($waitingStage === '') {
+                                            $waitingStage = $rawStatus;
+                                        }
 
                                     @endphp
                                     <tr data-row="{{ $case->id }}" class="odd clickable" data-toggle="modal"
@@ -387,24 +553,24 @@
                                         </td>
                                         <td>
                                             @if (str_contains($status, 'Completed'))
-                                                <span class="badge badge-success middle status-badge">Completed</span>
+                                                <span class="badge badge-success middle status-badge sigma-status-width">Completed</span>
                                             @elseif(str_contains($status, 'Active'))
                                                 <span
-                                                    class="badge badge-primary middle status-badge">{{ $status }}</span>
+                                                    class="badge badge-primary middle status-badge sigma-status-width">{{ $formattedActiveStatus }}</span>
                                             @elseif(str_contains($status, 'In-Progress'))
-                                                <span class="badge badge-primary middle status-badge">Active</span>
+                                                <span class="badge badge-primary middle status-badge sigma-status-width">{{ $formattedActiveStatus }}</span>
                                             @elseif(str_contains($status, 'Waiting'))
                                                 <span
-                                                    class="badge badge-danger middle status-badge">{{ $status }}</span>
+                                                    class="badge badge-danger middle status-badge sigma-status-width">{{ $waitingStage }}</span>
                                             @else
                                                 <span
-                                                    class="badge badge-warning middle status-badge">{{ $status }}</span>
+                                                    class="badge badge-warning middle status-badge sigma-status-width">{{ $status }}</span>
                                             @endif
                                         </td>
 
                                     </tr>
                                     @if (($permissions && $permissions->contains('permission_id', 110)) || Auth()->user()->is_admin)
-                                        <div class="modal" tabindex="-1" role="dialog" id="myModal{{ $case->id }}">
+                                        <div class="modal sigma-modal--delivery-schedule-edit" tabindex="-1" role="dialog" id="myModal{{ $case->id }}">
                                             <form action="{{ route('edit-delivery-date') }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="id" value="{{ $case->id }}">
@@ -448,7 +614,7 @@
                                             </form>
                                         </div>
                                     @endif
-                                    <div class="modal" tabindex="-1" role="dialog"
+                                    <div class="modal sigma-modal--delivery-schedule-actions" tabindex="-1" role="dialog"
                                         id="actionsDialog{{ $case->id }}">
 
                                         <input type="hidden" name="case_id" value="{{ $case->id }}">
@@ -608,10 +774,16 @@
                 "pageLength": 25,
                 "searching": false,
                 "lengthChange": false,
-                "columnDefs": [{
-                    "width": "20%",
-                    "targets": 4
-                }]
+                "columnDefs": [
+                    {
+                        "width": "10%",
+                        "targets": 3
+                    },
+                    {
+                        "width": "20%",
+                        "targets": 4
+                    }
+                ]
             });
         });
 
@@ -623,11 +795,11 @@
             //noinspection JSAnnotator
             mywindow.document.write(`
                 <style>
-                .kt-datatable__table,h2{font-size:17px;font-weight: bold;  padding: 10px;width:100%;text-align:center;}
-                .kt-datatable__body{font-size:17px;font-weight: normal;}
-                body{padding:50px;}
-                th,td{padding:8px;}
-                table{border-collapse: collapse;}
+                .kt-datatable__table, h2 {font-size:17px;font-weight: bold;  padding: 10px;width:100%;text-align:center;}
+                .kt-datatable__body {font-size:17px;font-weight: normal;}
+                body {padding:50px;}
+                th, td {padding:8px;}
+                table {border-collapse: collapse;}
                 tr:nth-child(even) {background-color: #f2f2f2;}
                 th {
                       background-color: #353535;
@@ -638,7 +810,7 @@
                 <h1> Delivery Schedule </h1>
 
                 @if (isset($data) && $data['from'] && $data['to'])
-                <p>From <b>{{ $data['from'] ?? $data['to'] + ' To' }}</b> To  <b>{{ $data['to'] ?? $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
+                <p>From <b>{{ $data['from'] }}</b> To <b>{{ $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
                 @endif
 
                 <table border="1" class="kt-datatable__table" ">
@@ -656,6 +828,59 @@
                         $status = $case->status();
                         $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
                         $color = $isOverdue ? 'red' : '#595d6e';
+                        $rawStatus = trim((string) $status);
+
+                        $stageText = $rawStatus;
+                        if (Str::contains($rawStatus, 'Active in')) {
+                            $stageText = trim(Str::after($rawStatus, 'Active in'));
+                        } elseif (Str::contains($rawStatus, 'In-Progress in')) {
+                            $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
+                        } elseif (Str::contains($rawStatus, 'Active')) {
+                            $stageText = trim(Str::after($rawStatus, 'Active'));
+                        } elseif (Str::contains($rawStatus, 'In-Progress')) {
+                            $stageText = trim(Str::after($rawStatus, 'In-Progress'));
+                        }
+
+                        $assigneeInitials = '';
+                        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+                            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+                        });
+
+                        if (!$jobAtStage) {
+                            $jobAtStage = $case->jobs->first(function ($job) {
+                                return $job->assignee !== null && (string) $job->stage !== '-1';
+                            });
+                        }
+
+                        if ($jobAtStage && $jobAtStage->assignedTo) {
+                            $assigneeInitials = trim((string) (
+                                $jobAtStage->assignedTo->name_initials
+                                ?? $jobAtStage->assignedTo->first_name
+                                ?? ''
+                            ));
+                        }
+
+                        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+                            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+                        }
+
+                        $formattedActiveStatus = $assigneeInitials !== ''
+                            ? (trim($stageText) . '/ ' . $assigneeInitials)
+                            : trim($stageText);
+                        if ($formattedActiveStatus === '') {
+                            $formattedActiveStatus = $rawStatus;
+                        }
+
+                        $waitingStage = $rawStatus;
+                        if (Str::contains($rawStatus, 'Waiting in')) {
+                            $waitingStage = trim(Str::after($rawStatus, 'Waiting in'));
+                        } elseif (Str::contains($rawStatus, 'Waiting')) {
+                            $waitingStage = trim(Str::after($rawStatus, 'Waiting'));
+                        }
+                        $waitingStage = trim($waitingStage);
+                        if ($waitingStage === '') {
+                            $waitingStage = $rawStatus;
+                        }
 
                     @endphp
                 <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
@@ -676,9 +901,9 @@
                                                     @if (str_contains($status, 'Completed'))
                 <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
 @elseif (str_contains($status, 'In-Progress') || str_contains($status, 'Active'))
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $status }}</span>
+                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
                                                                                                         @elseif (str_contains($status, 'Waiting'))
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $status }}</span>
+                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
                                                                                                             @else
                 <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>
 @endif</td> </tr>

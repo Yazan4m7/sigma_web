@@ -15,6 +15,119 @@
             max-height: 100%;
             max-width: unset !important;
         }
+        
+.sigma-modal--case-edit-teeth .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+.sigma-modal--case-edit-teeth-secondary .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+.sigma-modal--case-edit-files .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+
+
+
+        
+.sigma-modal--case-edit-teeth .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+.sigma-modal--case-edit-teeth-secondary .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+.sigma-modal--case-edit-files .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+        
+.sigma-modal--case-edit-teeth .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+.sigma-modal--case-edit-teeth-secondary .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+.sigma-modal--case-edit-files .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+        .teethJawsDocument {
+            width : -webkit-fill-available;
+        }
+
+
 
         .kt-form__label>label {
             font-size: 0.9rem;
@@ -128,8 +241,7 @@
             display: block;
         }
 
-        .row-item .form-control,
-        .row-item .slctUnitsBtn {
+        .row-item .form-control, .row-item .slctUnitsBtn {
             width: 100%;
             height: 36px;
             font-size: 0.875rem;
@@ -289,16 +401,14 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .row-item,
-            .jobRow .col-12.padding5px {
+        @media (max-width: 768px){
+            .row-item, .jobRow .col-12.padding5px {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 0px;
             }
 
-            .row-item > div,
-            .jobRow .col-12.padding5px > div {
+            .row-item > div, .jobRow .col-12.padding5px > div {
                 min-width: 100%;
             }
         }
@@ -517,23 +627,49 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        @media screen and (max-width: 991px) {
-            .modal-content .modal-footer button {
+        @media screen and (max-width: 991px){
+            
+.sigma-modal--case-edit-teeth .modal-content .modal-footer button {
+                margin: 0;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-edit-teeth-secondary .modal-content .modal-footer button {
+                margin: 0;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-edit-files .modal-content .modal-footer button {
                 margin: 0;
                 width: auto;
                 white-space: break-spaces;
             }
         }
 
-        @media (min-width: 576px) {
-            .modal-dialog {
+        @media (min-width: 576px){
+            
+.sigma-modal--case-edit-teeth .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+.sigma-modal--case-edit-teeth-secondary .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+.sigma-modal--case-edit-files .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
         }
 
-        #unitsDialog .modal-dialog,
-        #unitsDialog2 .modal-dialog {
+        
+.sigma-modal--case-edit-teeth #unitsDialog .modal-dialog, .sigma-modal--case-edit-teeth #unitsDialog2 .modal-dialog {
+            max-width: 460px;
+        }
+.sigma-modal--case-edit-teeth-secondary #unitsDialog .modal-dialog, .sigma-modal--case-edit-teeth-secondary #unitsDialog2 .modal-dialog {
+            max-width: 460px;
+        }
+.sigma-modal--case-edit-files #unitsDialog .modal-dialog, .sigma-modal--case-edit-files #unitsDialog2 .modal-dialog {
             max-width: 460px;
         }
 
@@ -555,15 +691,12 @@
             overflow-y: visible !important;
         }
 
-        .stage,
-        .implant,
-        .abutment {
+        .stage, .implant, .abutment {
             margin-top: 10px;
             margin-bottom: 5px;
         }
 
-        .implant,
-        .abutment {
+        .implant, .abutment {
             padding-left: 0px !important;
         }
 
@@ -659,10 +792,18 @@
         <div class="case-header">
             <div class="row">
                 <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
+                    <div class="col-md-12 col-xs-12"><label for="edit_delivery_date">Delivery Date:</label></div>
                     <div class="col-md-12 col-xs-12">
-                        <input class="form-control SDTP" name="delivery_date" type="text"
-                            value="{{ $case->initial_delivery_date }}" required readonly />
+                        <x-date-time-picker
+                            id="edit_delivery_date"
+                            name="delivery_date"
+                            label=""
+                            mode="datetime"
+                            display-format="DD MMM, YYYY hh:mm a"
+                            submit-format="YYYY-MM-DD HH:mm"
+                            value="{{ $case->initial_delivery_date }}"
+                            required
+                        />
                     </div>
                 </div>
                 <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
@@ -1375,7 +1516,7 @@
         </div>
 
         <!-- Existing TEETH PICK DIALOG -->
-        <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-edit-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
                 <div class="modal-content teethJawsDialog">
@@ -1539,7 +1680,7 @@
         </div>
 
         <!-- NEW TEETH PICK DIALOG -->
-        <div data-repeater-item class="modal fade" id="unitsDialog2" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-edit-teeth-secondary" id="unitsDialog2" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog2">
             <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
                 <div class="modal-content teethJawsDialog">
@@ -1703,7 +1844,7 @@
 
 
         <!-- FILES DIALOG -->
-        <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
+        <div class="modal fade sigma-modal--case-edit-files" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
             style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">

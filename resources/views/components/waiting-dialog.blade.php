@@ -25,7 +25,7 @@
 @php
     $deviceCount = $devices->where('type', $stageId)->count();
 @endphp
-<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc machines-count-{{ $deviceCount }}"
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc machines-count-{{ $deviceCount }} sigma-modal--waiting-generic"
     id="{{ $type }}-waiting" tabindex="-1" role="dialog"
     onclick="handleWaitingDialogBackdropClick(event, '{{ $type }}')">
     <div class="sigma-workflow-dialog" onclick="event.stopPropagation()">

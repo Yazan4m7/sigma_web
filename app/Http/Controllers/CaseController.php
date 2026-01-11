@@ -211,6 +211,7 @@ class CaseController extends Controller
         $inProgressCases->load([
             'notes:id,case_id,note,created_at,written_by',
             'tags:id,case_id,tag_id',
+            'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
             'jobs.material:id,name',
             'jobs.subType:id,name,material_id'
@@ -219,6 +220,7 @@ class CaseController extends Controller
         $completedCases->load([
             'notes:id,case_id,note,created_at,written_by',
             'tags:id,case_id,tag_id',
+            'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
             'jobs.material:id,name',
             'jobs.subType:id,name,material_id'
@@ -1134,7 +1136,7 @@ class CaseController extends Controller
             $logStage = $this->stageActions['PRINTING_SET'];
         }
         if ($stage == 4) {
-            $logStage = $this->stageActions['SINTERING_SET'];
+            $logStage = $this->stageActions['SINTERING_START'];
         }
         if ($stage == 5) {
             $logStage = $this->stageActions['PRESSING_START'];
@@ -1160,7 +1162,9 @@ class CaseController extends Controller
                         'Case %s assigned to %s for stage %s',
                         $case->case_id ?? $case->id,
 
+                        Auth()->user()->id,
                         $stage
+
                     )
                 );
             }
@@ -1270,24 +1274,36 @@ class CaseController extends Controller
 
             // Check for modification cases
             if ($case->contains_modification == 1) {
-                // Look for failure log including soft-deleted records in case it was accidentally deleted
+                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
+                // This handles cases where a case is modified multiple times - we always want the original date
                 $log = failureLog::where("case_id", $case->id)
                     ->where('failure_type', 2)
-                    ->orderBy('id', 'desc')
+                    ->whereNotNull('old_delivery_date')
+                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
                     ->withTrashed()
                     ->first();
-                // if the failure log is found
-                if ($log) {
+
+                // If no log with valid date found, try to get any modification log
+                if (!$log) {
+                    $log = failureLog::where("case_id", $case->id)
+                        ->where('failure_type', 2)
+                        ->orderBy('id', 'desc')
+                        ->withTrashed()
+                        ->first();
+                }
+
+                // if the failure log is found with a valid old_delivery_date
+                if ($log && $log->old_delivery_date) {
                     // Preserve original delivery date from failure log
                     $case->actual_delivery_date = $log->old_delivery_date;
                     $note = new note();
                     $note->case_id = $case->id;
                     $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
-                    $note->note = "Modification Delivered - Original delivery date preserved: " . ($log->old_delivery_date ? date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) : 'N/A') . $logStatus;
+                    $note->note = "Modification Delivered - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
                     $note->written_by = Auth()->user()->id;
                     $note->save();
 
-                    // if contains modification and the failure was not found
+                    // if contains modification and the failure was not found or has no date
                 } else {
                     $case->actual_delivery_date = now();
                     $note = new note();
@@ -1403,25 +1419,36 @@ class CaseController extends Controller
             $this->createTag($case, 15);
             // Check for modification cases
             if ($case->contains_modification == 1) {
-                // Look for failure log including soft-deleted records in case it was accidentally deleted
+                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
+                // This handles cases where a case is modified multiple times - we always want the original date
                 $log = failureLog::where("case_id", $case->id)
                     ->where('failure_type', 2)
-                    ->orderBy('id', 'desc')
+                    ->whereNotNull('old_delivery_date')
+                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
                     ->withTrashed()
                     ->first();
 
-                // if the failure log is found
-                if ($log) {
+                // If no log with valid date found, try to get any modification log
+                if (!$log) {
+                    $log = failureLog::where("case_id", $case->id)
+                        ->where('failure_type', 2)
+                        ->orderBy('id', 'desc')
+                        ->withTrashed()
+                        ->first();
+                }
+
+                // if the failure log is found with a valid old_delivery_date
+                if ($log && $log->old_delivery_date) {
                     // Preserve original delivery date from failure log
                     $case->actual_delivery_date = $log->old_delivery_date;
                     $note = new note();
                     $note->case_id = $case->id;
                     $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
-                    $note->note = "Modification Delivered (In Box) - Original delivery date preserved: " . ($log->old_delivery_date ? date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) : 'N/A') . $logStatus;
+                    $note->note = "Modification Delivered (In Box) - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
                     $note->written_by = Auth()->user()->id;
                     $note->save();
 
-                    // if contains modification and the failure was not found
+                    // if contains modification and the failure was not found or has no date
                 } else {
                     $case->actual_delivery_date = now();
                     $note = new note();
@@ -1722,21 +1749,34 @@ class CaseController extends Controller
                 $query->with([
                     'jobType:id,name',
                     'material:id,name,count_as_unit',
+                    'assignedTo:id,name_initials,first_name',
                 ]);
             },
         ])
             ->where('delivered_to_client', '=', 0)
             ->orderBy('cases.initial_delivery_date', 'ASC');
 
-        if ($request->from && $request->to) {
-            $data['from'] = $request->from;
-            $data['to'] = $request->to;
+        if ($request->filled('from') && $request->filled('to')) {
+            $fromInput = $request->from;
+            $toInput = $request->to;
         } else {
-            $data['from'] = today()->subDays(356)->toDateString() . ' 00:00';
-            $data['to'] = today()->addDays(1)->toDateString() . ' 23:59';
+            $fromInput = today()->subYear()->toDateString();
+            $toInput = today()->addDay()->toDateString();
         }
 
-        $cases = $query->whereBetween('initial_delivery_date', [$data['from'], $data['to']])->get();
+        $fromDate = \Carbon\Carbon::parse($fromInput);
+        $toDate = \Carbon\Carbon::parse($toInput);
+        if ($fromDate->gt($toDate)) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
+
+        $data['from'] = $fromDate->toDateString();
+        $data['to'] = $toDate->toDateString();
+
+        $fromRange = $fromDate->copy()->startOfDay()->format('Y-m-d H:i:s');
+        $toRange = $toDate->copy()->endOfDay()->format('Y-m-d H:i:s');
+
+        $cases = $query->whereBetween('initial_delivery_date', [$fromRange, $toRange])->get();
 
         return view('delivery.delivery-schedule', compact('cases', 'data'));
     }
@@ -1854,7 +1894,7 @@ class CaseController extends Controller
         $casesQuery = sCase::onlyTrashed()->with([
             'client:id,name',
             'jobs' => function ($query) {
-                $query->withTrashed()->with(['jobType', 'material', 'implantR', 'abutmentR', 'subType']);
+                $query->withTrashed()->with(['jobType', 'material', 'implantR', 'abutmentR', 'subType', 'assignedTo:id,name_initials,first_name']);
             },
             'notes' => function ($query) {
                 $query->withTrashed()->with('writtenBy:id,name_initials');
@@ -1937,6 +1977,7 @@ class CaseController extends Controller
         });
 
         $cases = $cases->orderByRaw('-`actual_delivery_date` ASC')->orderBy("initial_delivery_date", 'asc')->get();
+        $cases->load(['jobs.assignedTo:id,name_initials,first_name']);
 
 
         $isSearchResults = true;
@@ -2070,7 +2111,7 @@ class CaseController extends Controller
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 1, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['MILLING_SET'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRINTING_SET'], 'is_completion' => 0],
-            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_SET'], 'is_completion' => 0],
+            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRESSING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 6, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 7, 'is_completion' => 0],
@@ -2105,7 +2146,7 @@ class CaseController extends Controller
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 1, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['MILLING_SET'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRINTING_SET'], 'is_completion' => 0],
-            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_SET'], 'is_completion' => 0],
+            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRESSING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 6, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 7, 'is_completion' => 0],
@@ -2452,6 +2493,161 @@ class CaseController extends Controller
                 'message' => 'Error getting material types: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    public function caseTimeline($id)
+    {
+        $case = sCase::with(['client', 'jobs.material', 'jobs.jobType'])->findOrFail($id);
+
+        $timeline = collect();
+
+        // Stage name mappings
+        $stageNames = [
+            1 => 'Design',
+            2 => 'Milling',
+            3 => '3D Printing',
+            4 => 'Sintering',
+            5 => 'Pressing',
+            6 => 'Finishing',
+            7 => 'QC',
+            8 => 'Delivery',
+            -1 => 'Completed'
+        ];
+
+        $subStageNames = [
+            '2.1' => 'Set on Milling device',
+            '2.2' => 'Started Milling',
+            '2.3' => 'Completed Milling',
+            '3.1' => 'Set on 3D Printer',
+            '3.2' => 'Started 3D Printing',
+            '3.3' => 'Completed 3D Printing',
+            '4.1' => 'Set in Sintering Furnace',
+            '4.2' => 'Started Sintering',
+            '5.1' => 'Set in Pressing Furnace',
+            '5.2' => 'Started Pressing',
+            '5.3' => 'Completed Pressing',
+            '8.1' => 'Assigned to Driver',
+            '8.2' => 'Driver Accepted',
+            '8.3' => 'Delivered'
+        ];
+
+        $failureTypes = [
+            0 => 'Rejection',
+            1 => 'Repeat',
+            2 => 'Modification',
+            3 => 'Redo'
+        ];
+
+        // 1. Case created
+        $timeline->push([
+            'timestamp' => $case->created_at,
+            'type' => 'created',
+            'user' => $case->createdBy ?? null,
+            'description' => 'Case created',
+            'details' => "Patient: {$case->patient_name}"
+        ]);
+
+        // 2. Case logs (assignments, completions)
+        foreach ($case->caseLogs as $log) {
+            $stageName = $subStageNames[$log->stage] ?? $stageNames[$log->stage] ?? "Stage {$log->stage}";
+
+            if ($log->is_completion) {
+                $description = "Completed: {$stageName}";
+            } else {
+                $description = "Assigned to: {$stageName}";
+            }
+
+            $timeline->push([
+                'timestamp' => $log->created_at,
+                'type' => $log->is_completion ? 'completion' : 'assignment',
+                'user' => $log->user,
+                'description' => $description,
+                'details' => null
+            ]);
+        }
+
+        // 3. Notes
+        foreach ($case->notes as $note) {
+            $timeline->push([
+                'timestamp' => $note->created_at,
+                'type' => 'note',
+                'user' => $note->writtenBy,
+                'description' => 'Added note',
+                'details' => $note->content
+            ]);
+        }
+
+        // 4. Failures
+        foreach ($case->failureLogs as $failure) {
+            $timeline->push([
+                'timestamp' => $failure->created_at,
+                'type' => 'failure',
+                'user' => $failure->user ?? null,
+                'description' => $failureTypes[$failure->failure_type] ?? 'Issue',
+                'details' => $failure->cause->name ?? null
+            ]);
+        }
+
+        // 5. Discount
+        if ($discount = $case->discount) {
+            $timeline->push([
+                'timestamp' => $discount->created_at,
+                'type' => 'financial',
+                'user' => $discount->createdBy ?? null,
+                'description' => 'Discount applied',
+                'details' => number_format($discount->amount, 2) . ' JOD'
+            ]);
+        }
+
+        // 6. Invoice events
+        if ($invoice = $case->invoice) {
+            $timeline->push([
+                'timestamp' => $invoice->created_at,
+                'type' => 'financial',
+                'user' => null,
+                'description' => 'Invoice issued',
+                'details' => number_format($invoice->amount, 2) . ' JOD'
+            ]);
+
+            if ($invoice->date_applied) {
+                $timeline->push([
+                    'timestamp' => $invoice->date_applied,
+                    'type' => 'financial',
+                    'user' => null,
+                    'description' => 'Invoice applied to client balance',
+                    'details' => null
+                ]);
+            }
+        }
+
+        // 7. Jobs created
+        foreach ($case->jobs as $job) {
+            $timeline->push([
+                'timestamp' => $job->created_at,
+                'type' => 'job',
+                'user' => null,
+                'description' => 'Job added',
+                'details' => "{$job->jobType->name} - {$job->material->name} - Units: {$job->unit_num}"
+            ]);
+        }
+
+        // 8. Abutment delivery records
+        foreach ($case->abutmentsDeliveries as $abutmentRecord) {
+            $abutmentName = $abutmentRecord->abutment->name ?? 'N/A';
+            $implantName = $abutmentRecord->implant->name ?? 'N/A';
+            $timeline->push([
+                'timestamp' => $abutmentRecord->created_at,
+                'type' => 'job',
+                'user' => null,
+                'description' => 'Abutment delivery record',
+                'details' => "Abutment: {$abutmentName}, Implant: {$implantName}, Units: {$abutmentRecord->units}"
+            ]);
+        }
+
+        // Sort by timestamp DESC
+        $timeline = $timeline->sortByDesc('timestamp')->values();
+
+        return view('admin.case-timeline', compact('case', 'timeline'));
     }
 
 }

@@ -3,7 +3,8 @@
     'title' => '',
     'meta' => null,
     'partial' => false,
-    'wrapperClass' => 'mfp-hide dialog-popup-content',
+    'wrapperClass' => '',
+    'contentClass' => 'dialog-popup-content',
     'cardClass' => 'dialog-popup-card',
     'closeAttrs' => 'aria-label="Close"',
 ])
@@ -34,7 +35,7 @@
         @endif
     </div>
 @else
-    <div id="{{ $id }}" class="{{ $wrapperClass }}">
+    <div id="{{ $id }}" class="{{ $contentClass }} mfp-hide" data-dialog-class="{{ $wrapperClass }}">
         <div class="{{ $cardClass }}">
             <div class="dialog-popup-header">
                 <h5 class="modal-title mb-0">{{ $title }}</h5>

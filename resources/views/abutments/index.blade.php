@@ -32,7 +32,7 @@
                                </tr>
 
 
-                            <div class="modal fade sigma-action-dialog" tabindex="-1" role="dialog" id="actionsDialog{{$abutment->id}}">
+                            <div class="modal fade sigma-action-dialog sigma-modal--abutments-index-actions" tabindex="-1" role="dialog" id="actionsDialog{{$abutment->id}}">
 
                                 <input type="hidden" name="case_id" value="{{$abutment->id}}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">

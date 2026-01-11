@@ -2,11 +2,13 @@
 @section('content')
 
     <style>
-        .modal-footer {
+        
+.sigma-modal--cases-rejected-actions .modal-footer {
             flex-wrap: wrap;
             justify-content: flex-start;
         }
-        .modal-footer .btn {
+        
+.sigma-modal--cases-rejected-actions .modal-footer .btn {
             margin: 5px;
         }
         .tooltiptext {
@@ -25,14 +27,30 @@
                             <div class="row " style="padding-bottom:0">
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                                     <div class="kt-subheader__search" style="">
-                                        <label>From (Start of):</label>
-                                        <input type="date" class="form-control" name="from" value="{{$from}}">
+                                        <label for="rejected_from">From (Start of):</label>
+                                        <x-date-time-picker
+                                            id="rejected_from"
+                                            name="from"
+                                            label=""
+                                            mode="date"
+                                            display-format="DD MMM, YYYY"
+                                            submit-format="YYYY-MM-DD"
+                                            value="{{$from}}"
+                                        />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                                     <div class="kt-subheader__search" style="">
-                                        <label>To (End of):</label>
-                                        <input type="date" class="form-control" name="to" value="{{$to}}">
+                                        <label for="rejected_to">To (End of):</label>
+                                        <x-date-time-picker
+                                            id="rejected_to"
+                                            name="to"
+                                            label=""
+                                            mode="date"
+                                            display-format="DD MMM, YYYY"
+                                            submit-format="YYYY-MM-DD"
+                                            value="{{$to}}"
+                                        />
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
@@ -214,21 +232,21 @@
                                                         &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
                                                     <td>
                                                         @if(str_contains($case->status(), "Completed") )
-                                                            <span class="badge badge-success">
+                                                            <span class="badge badge-success sigma-status-width">
                                                                            {{$case->status()}} </span>
                                                         @elseif(str_contains($case->status(), "In-Progress") || str_contains($case->status(), "Active"))
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-primary">
+                                                                  class="badge badge-primary sigma-status-width">
                                                                            <span class="tooltipX"> {{$case->status()}}
                                                                                <span class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
                                                                 </span></span>
                                                         @elseif(str_contains($case->status(), "Waiting"))
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-danger">
+                                                                  class="badge badge-danger sigma-status-width">
                                                                      {{$case->status()}} </span>
                                                         @else
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-warning">
+                                                                  class="badge badge-warning sigma-status-width">
                                                                            <span class="tooltipX"> {{$case->status()}}
                                                                                <span class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
                                                                 </span></span>
@@ -251,7 +269,7 @@
 
 
                                                 </tr>
-                                                <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
+                                                <div class="modal sigma-modal--cases-rejected-actions" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
 
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">

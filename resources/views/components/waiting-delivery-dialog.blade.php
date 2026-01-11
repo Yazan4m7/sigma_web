@@ -1,6 +1,6 @@
 @props(['title', 'btnText', 'type', 'drivers', 'stageId'])
 
-<div class="sigma-workflow-modal waiting-dialog" id="DeliveryDialog" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog sigma-modal--waiting-delivery" id="DeliveryDialog" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">

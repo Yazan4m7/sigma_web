@@ -3,8 +3,6 @@
 <div id="YSH-slide-overlay-{{$case->id}}" class="YSH-slide-overlay"
      onclick="if (event.target === this) YSH_closeSlidePanel({{$case->id}})">
     <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel">
-        <button type="button" class="YSH-slide-floating-close" aria-label="Close"
-                onclick="YSH_closeSlidePanel({{$case->id}})">×</button>
         <div class="YSH-slide-header">
             <h5>Case Completion</h5>
             <button type="button" class="YSH-close-slide"
@@ -60,11 +58,13 @@
                                     $materialLabel = $job->material?->name ?? '-';
                                     $colorLabel = ($job->color && $job->color !== '0') ? $job->color : '-';
                                 @endphp
-                                <div class="ysh-job-card" role="row">
-                                    <span class="ysh-job-cell ysh-job-cell--unit">{{$unitLabel}}</span>
-                                    <span class="ysh-job-cell">{{$jobTypeLabel}}</span>
-                                    <span class="ysh-job-cell">{{$materialLabel}}</span>
-                                    <span class="ysh-job-cell ysh-job-cell--color">{{$colorLabel}}</span>
+                                <div class="sigma-case-item">
+                                    <div class="info-case-row">
+                                        <div>{{$jobTypeLabel}}</div>
+                                        <div>{{$materialLabel}}</div>
+                                        <div>{{$unitLabel}}</div>
+                                        <div>{{$colorLabel}}</div>
+                                    </div>
                                 </div>
                             @empty
                                 <div class="ysh-job-empty">No jobs for this stage yet.</div>
@@ -90,7 +90,7 @@
             <div class="modal-footer fullBtnsWidth">
                 <div class="row btnsRow"
                      style=" margin-right: 0px; margin-left: 0px;width:100%">
-                    <div class="col-md-6 col-sm-12 padding5px">
+                    <div class="col-md-6 col-sm-12 padding5px order-1">
                         <a href="{{route('view-case', ['id' => $case->id, 'stage' => 3  ])}}">
                             <button type="button" class="btn btn-info "><i
                                     class="fas fa-eye"></i> View
@@ -104,7 +104,7 @@
                         if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))))
                         $canEditCase = true;
                     @endphp
-                    <div class="col-md-6 col-sm-12 padding5px"><a
+                    <div class="col-md-6 col-sm-12 padding5px order-2"><a
                             href="{{route('edit-case-view',$case->id)}}">
                             <button type="button"
                                     class="btn btn-warning " {{$canEditCase ? '' : 'disabled'}}>
@@ -112,9 +112,9 @@
                             </button>
                         </a></div>
 
-                    <div class="col-12 padding5px">
+                    <div class="col-12 padding5px order-3">
                         <button type="button" class="btn btn-secondary "
-                                data-dismiss="modal" style="width:100%">
+                                onclick="YSH_closeSlidePanel({{$case->id}})" style="width:100%">
                             Cancel
                         </button>
                     </div>
@@ -153,12 +153,10 @@
                             return;
                         }
                         var overlay = refs.overlay;
-                        var panel = refs.panel;
                         overlay.classList.remove('YSH-closing');
                         overlay.style.display = 'block';
                         requestAnimationFrame(function () {
                             overlay.classList.add('YSH-active');
-                            panel.style.right = '0';
                         });
                     };
                 }
@@ -173,17 +171,42 @@
                         var panel = refs.panel;
                         overlay.classList.remove('YSH-active');
                         overlay.classList.add('YSH-closing');
-                        panel.style.right = '-100%';
 
+                        var done = false;
                         var cleanup = function () {
+                            if (done) {
+                                return;
+                            }
+                            done = true;
                             overlay.style.display = 'none';
                             overlay.classList.remove('YSH-closing');
-                            overlay.removeEventListener('transitionend', cleanup);
-                            overlay.removeEventListener('animationend', cleanup);
+                            panel.removeEventListener('transitionend', onTransitionEnd);
+                            panel.removeEventListener('animationend', onAnimationEnd);
+                            if (cleanupTimer) {
+                                window.clearTimeout(cleanupTimer);
+                            }
                         };
 
-                        overlay.addEventListener('transitionend', cleanup);
-                        overlay.addEventListener('animationend', cleanup);
+                        var onTransitionEnd = function (event) {
+                            if (event.target !== panel) {
+                                return;
+                            }
+                            if (event.propertyName && event.propertyName !== 'transform' && event.propertyName !== 'opacity') {
+                                return;
+                            }
+                            cleanup();
+                        };
+
+                        var onAnimationEnd = function (event) {
+                            if (event.target !== panel) {
+                                return;
+                            }
+                            cleanup();
+                        };
+
+                        panel.addEventListener('transitionend', onTransitionEnd);
+                        panel.addEventListener('animationend', onAnimationEnd);
+                        var cleanupTimer = window.setTimeout(cleanup, 450);
                     };
                 }
             })();
@@ -193,29 +216,6 @@
 
 @once
     <style>
-        .YSH-slide-floating-close {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: #fff;
-            border: 1px solid #e5e7eb;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            line-height: 1;
-            cursor: pointer;
-            z-index: 10;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-        }
-
-        .YSH-slide-floating-close:hover {
-            background: #f3f4f6;
-        }
-
         .ysh-jobs-label {
             display: inline-flex;
             align-items: center;
@@ -251,7 +251,8 @@
         .ysh-job-list {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 12px;
+            margin-top: 6px;
         }
 
         .ysh-job-card {

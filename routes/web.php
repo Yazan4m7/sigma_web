@@ -280,6 +280,8 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
     });
     Route::middleware('admin')->group(function () {
 
+        // Case Timeline route
+        Route::get('/admin/case/{id}/timeline', [App\Http\Controllers\CaseController::class, 'caseTimeline'])->name('admin.case.timeline');
 
         Route::get('/createDummyCase/{id?}/{amount?}', [App\Http\Controllers\CaseController::class, 'createDummyCase'])->name('createDummyCase');
 

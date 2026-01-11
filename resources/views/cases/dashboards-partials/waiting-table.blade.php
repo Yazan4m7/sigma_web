@@ -1,23 +1,32 @@
 
 <style>
     /* Compact, breakpoint-driven waiting dialog */
-    .waiting-dialog .modal-content { border-radius: 20px; }
-    .waiting-dialog .modal-header { border-bottom: 1px solid #dee2e6; }
-    .waiting-dialog .modal-footer { border-top: 1px solid #dee2e6; }
-    .waiting-dialog .btn { width: 100%; }
-    .waiting-dialog .patient-doctor-names { color: #2d5f6d; font-weight: 600; }
-    .waiting-dialog .scrollable-content { max-height: 40vh; overflow-y: auto; }
-    .waiting-dialog .note-container { background: #e8f0f2; border: 1px solid #b8d4db; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-content { border-radius: 20px; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-header { border-bottom: 1px solid #dee2e6; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-footer { border-top: 1px solid #dee2e6; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .btn { width: 100%; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .patient-doctor-names { color: #2d5f6d; font-weight: 600; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .scrollable-content { max-height: 40vh; overflow-y: auto; }
+    
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .note-container { background: #e8f0f2; border: 1px solid #b8d4db; }
     .waiting-actions { width: 100%; margin: 0; }
     .waiting-actions > [class*='col-'] { display: flex; }
     .waiting-actions .btn { flex: 1; }
 
-    .case-action-dialog .modal-dialog {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog {
         margin: 1.25rem auto 1.75rem;
         padding-bottom: env(safe-area-inset-bottom, 16px);
     }
 
-    .case-action-dialog .modal-content {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-content {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -25,17 +34,20 @@
         border-radius: 20px;
     }
 
-    .case-action-dialog .modal-footer {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-footer {
         padding: 0.75rem 1rem;
     }
 
-    .case-action-dialog .modal-body {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-body {
         flex: 1 1 auto;
         overflow: hidden;
         padding: 1rem 1.25rem;
     }
 
-    .case-action-dialog .scrollable-content {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .scrollable-content {
         flex: 1 1 auto;
         max-height: clamp(220px, 45vh, 420px);
         overflow-y: auto;
@@ -44,7 +56,8 @@
         padding-right: 4px;
     }
 
-    .case-action-dialog .modal-top-actions {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-top-actions {
         display: flex;
         align-items: center;
         justify-content: flex-end;
@@ -52,7 +65,8 @@
         gap: 0.5rem;
     }
 
-    .case-action-dialog .modal-top-actions .modal-close {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-top-actions .modal-close {
         border: none;
         background: transparent;
         font-size: 1.75rem;
@@ -62,46 +76,56 @@
         padding: 0;
     }
 
-    .case-action-dialog .modal-top-actions .modal-close:hover {
+    
+.case-action-dialog.sigma-modal--dashboard-waiting-actions .modal-top-actions .modal-close:hover {
         opacity: 1;
     }
 
     /* 1) <=400px */
-    @media (max-width: 400px) {
-        .waiting-dialog .modal-dialog { width: 95vw; margin: 0.5rem auto; }
-        .waiting-dialog .modal-body { padding: 0.85rem; }
-        .waiting-dialog .modal-title { font-size: 16px; }
+    @media (max-width: 400px){
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog { width: 95vw; margin: 0.5rem auto; }
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-body { padding: 0.85rem; }
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-title { font-size: 16px; }
         .waiting-actions .col-3, .waiting-actions .col-6, .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
         .waiting-actions .btn { margin-bottom: 8px; }
     }
 
     /* 2) 401-576px */
-    @media (min-width: 401px) and (max-width: 576px) {
-        .waiting-dialog .modal-dialog { width: 92vw; margin: 0.75rem auto; }
+    @media (min-width: 401px) and (max-width: 576px){
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog { width: 92vw; margin: 0.75rem auto; }
         .waiting-actions .col-3 { flex: 0 0 50%; max-width: 50%; }
         .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
         .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
     }
 
     /* 3) 577-768px */
-    @media (min-width: 577px) and (max-width: 768px) {
-        .waiting-dialog .modal-dialog { width: 88vw; }
-        .waiting-dialog .modal-body { padding: 1rem 1.25rem; }
+    @media (min-width: 577px) and (max-width: 768px){
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog { width: 88vw; }
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-body { padding: 1rem 1.25rem; }
         .waiting-actions .col-3 { flex: 0 0 33.333%; max-width: 33.333%; }
         .waiting-actions .col-6 { flex: 0 0 33.333%; max-width: 33.333%; }
     }
 
     /* 4) 769-992px */
-    @media (min-width: 769px) and (max-width: 992px) {
-        .waiting-dialog .modal-dialog { width: 75vw; }
+    @media (min-width: 769px) and (max-width: 992px){
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog { width: 75vw; }
         .waiting-actions .col-3 { flex: 0 0 25%; max-width: 25%; }
         .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
     }
 
     /* 5) >=1200px */
-    @media (min-width: 1200px) {
-        .waiting-dialog .modal-dialog { max-width: 640px; }
-        .waiting-dialog .modal-body { padding: 1.25rem 1.5rem; }
+    @media (min-width: 1200px){
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-dialog { max-width: 640px; }
+        
+.waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-body { padding: 1.25rem 1.5rem; }
     }
 </style>
 @php
@@ -203,7 +227,7 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
 
 
         {{--BEGIN WAITING DIALOG --}}
-        <div class="modal fade waiting-dialog case-action-dialog" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
+        <div class="modal fade waiting-dialog case-action-dialog sigma-modal--dashboard-waiting-actions" tabindex="-1" role="dialog" id="waitingDialog{{$key.$case->id}}">
             <form action="{{$key=="Delivery" ? route('delivery-accept', $case->id) : route('assign-to-me',['caseId'=> $case->id,'stage'=>$stage["numericStage"]] )}}"
                 method="GET">
                 @csrf

@@ -9,24 +9,45 @@
     }
 
     /* Modal dialog border radius - all corners uniform */
-    .modal-content {
+    
+.sigma-modal--dashboard-active-milling .modal-content {
+        border-radius: 25px !important;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-content {
         border-radius: 25px !important;
     }
 
     /* Modal footer rounded bottom corners */
-    .modal-footer {
+    
+.sigma-modal--dashboard-active-milling .modal-footer {
+        border-bottom-left-radius: 25px !important;
+        border-bottom-right-radius: 25px !important;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-footer {
         border-bottom-left-radius: 25px !important;
         border-bottom-right-radius: 25px !important;
     }
 
     /* Modal header styling with divider */
-    .modal-header {
+    
+.sigma-modal--dashboard-active-milling .modal-header {
+        border-bottom: 1px solid #dee2e6 !important;
+        padding-bottom: 12px;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-header {
         border-bottom: 1px solid #dee2e6 !important;
         padding-bottom: 12px;
     }
 
     /* Modal title styling */
-    .modal-title {
+    
+.sigma-modal--dashboard-active-milling .modal-title {
+        color: #2d5f6d;
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-title {
         color: #2d5f6d;
         font-weight: 600;
         font-size: 18px;
@@ -44,14 +65,27 @@
     }
 
     /* Close button styling - more visible */
-    .modal-header button.close {
+    
+.sigma-modal--dashboard-active-milling .modal-header button.close {
         font-size: 32px;
         font-weight: 300;
         color: #000;
         opacity: 0.8;
         text-shadow: none;
     }
-    .modal-header button.close:hover {
+.sigma-modal--dashboard-active-case-actions .modal-header button.close {
+        font-size: 32px;
+        font-weight: 300;
+        color: #000;
+        opacity: 0.8;
+        text-shadow: none;
+    }
+    
+.sigma-modal--dashboard-active-milling .modal-header button.close:hover {
+        opacity: 1;
+        color: #000;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-header button.close:hover {
         opacity: 1;
         color: #000;
     }
@@ -167,12 +201,25 @@
         margin-right: 6px;
     }
 
-    .case-action-dialog .modal-dialog {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-dialog {
+        margin: 1.25rem auto 1.75rem;
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-dialog {
         margin: 1.25rem auto 1.75rem;
         padding-bottom: env(safe-area-inset-bottom, 16px);
     }
 
-    .case-action-dialog .modal-content {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-height: calc(100vh - 40px);
+        border-radius: 20px;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-content {
         position: relative;
         display: flex;
         flex-direction: column;
@@ -180,17 +227,36 @@
         border-radius: 20px;
     }
 
-    .case-action-dialog .modal-footer {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-footer {
+        padding: 0.75rem 1rem;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-footer {
         padding: 0.75rem 1rem;
     }
 
-    .case-action-dialog .modal-body {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-body {
+        flex: 1 1 auto;
+        overflow: hidden;
+        padding: 1rem 1.25rem;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-body {
         flex: 1 1 auto;
         overflow: hidden;
         padding: 1rem 1.25rem;
     }
 
-    .case-action-dialog .scrollable-content {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .scrollable-content {
+        flex: 1 1 auto;
+        max-height: clamp(220px, 45vh, 420px);
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-right: -4px;
+        padding-right: 4px;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .scrollable-content {
         flex: 1 1 auto;
         max-height: clamp(220px, 45vh, 420px);
         overflow-y: auto;
@@ -199,14 +265,32 @@
         padding-right: 4px;
     }
 
-    .case-action-dialog .modal-top-actions {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-top-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin-bottom: 0.35rem;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-top-actions {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         margin-bottom: 0.35rem;
     }
 
-    .case-action-dialog .modal-top-actions .modal-close {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-top-actions .modal-close {
+        border: none;
+        background: transparent;
+        font-size: 1.75rem;
+        line-height: 1;
+        color: #000;
+        opacity: 0.65;
+        margin-left: auto;
+        padding: 0;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-top-actions .modal-close {
         border: none;
         background: transparent;
         font-size: 1.75rem;
@@ -217,16 +301,28 @@
         padding: 0;
     }
 
-    .case-action-dialog .modal-top-actions .modal-close:hover {
+    
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-top-actions .modal-close:hover {
+        opacity: 1;
+    }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-top-actions .modal-close:hover {
         opacity: 1;
     }
 
-    @media (max-width: 576px) {
-        .case-action-dialog .modal-dialog {
+    @media (max-width: 576px){
+        
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-dialog {
+            margin: 0.85rem auto 1.5rem;
+        }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-dialog {
             margin: 0.85rem auto 1.5rem;
         }
 
-        .case-action-dialog .modal-body {
+        
+.case-action-dialog.sigma-modal--dashboard-active-milling .modal-body {
+            padding: 0.75rem 1rem;
+        }
+.case-action-dialog.sigma-modal--dashboard-active-case-actions .modal-body {
             padding: 0.75rem 1rem;
         }
     }
@@ -299,7 +395,7 @@
 
         <!-- External Milling Dialog -->
         @if ($key == "milling")
-        <div class="modal fade" tabindex="-1" role="dialog"
+        <div class="modal fade sigma-modal--dashboard-active-milling" tabindex="-1" role="dialog"
             id="MEX{{$case->id}}">
             <form action="{{route('externally-milled')}}"
                 method="POST">
@@ -351,7 +447,7 @@
         </div>
         @endif
         <!-- Active case actions Dialog -->
-        <div class="modal fade case-action-dialog" tabindex="-1" role="dialog"
+        <div class="modal fade case-action-dialog sigma-modal--dashboard-active-case-actions" tabindex="-1" role="dialog"
             id="confirmCompletion{{$key.$case->id}}">
             <form action="{{$key == "delivery" ? route('delivery-accept', $case->id) : route('finish-case',['caseId'=> $case->id,'stage'=>$stage["numericStage"]] )}}"
                 method="GET">

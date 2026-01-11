@@ -2,7 +2,692 @@
 
     body {font-family: 'Roboto', sans-serif;/* background-color: #471c1c; */ /* Light background for contrast */}
 
-    .modal-overlay {
+    
+.sigma-modal--abutments-delivery-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--abutments-delivery-receive .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--abutments-index-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--accountant-delivery-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--accountant-delivery-actions-alt .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--admin-intel-shortcut .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--admin-intel-settings .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--admin-intel2-shortcut .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--admin-intel2-settings .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--admin-mobile-access .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--cases-dashboard-case-completion .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--cases-dashboard-loading .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-create-modern-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-create-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-create-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--dashboard-active-milling .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--dashboard-active-case-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--dashboard-waiting-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-edit-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-edit-teeth-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--case-edit-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--cases-index-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--cases-rejected-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--clients-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--clients-add .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--clients-delete .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--active-cases-preview .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--adminhth-intel-shortcut .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--adminhth-intel-settings .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--adminhth-intel2-shortcut .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--adminhth-intel2-settings .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--adminhth-mobile-access .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--waiting-3d-printing .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--waiting-delivery .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--waiting-generic .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--delivery-schedule-edit .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--delivery-schedule-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--delivery-receive-payment .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--devices-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-causes-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-modify-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-modify-teeth-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-modify-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-redo-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-redo-teeth-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-redo-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-reject-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-reject-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-repeat-teeth .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-repeat-teeth-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--failures-repeat-files .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-primary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-tertiary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-alt-primary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-alt-secondary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-emp-cases-alt-tertiary .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-payments-alt .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--generic-payments .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--implants-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--job-types-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--labs-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-create-add-type .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-create-add-implant .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-create-edit-implant .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-edit-types .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-edit-add-type .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--material-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--media-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--rtl-search .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--report-employees-filter .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--report-devices-filter .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--tags-actions .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--invoice-check .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--invoice-check-new .modal-overlay {
+        z-index: 9990;
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(31, 41, 55, 0.5);
+    }
+.sigma-modal--users-actions .modal-overlay {
         z-index: 9990;
         position: fixed;
         inset: 0;
@@ -12,7 +697,768 @@
         background-color: rgba(31, 41, 55, 0.5);
     }
 
-    .modal-container {
+    
+.sigma-modal--abutments-delivery-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--abutments-delivery-receive .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--abutments-index-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--accountant-delivery-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--accountant-delivery-actions-alt .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--admin-intel-shortcut .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--admin-intel-settings .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--admin-intel2-shortcut .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--admin-intel2-settings .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--admin-mobile-access .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--cases-dashboard-case-completion .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--cases-dashboard-loading .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-create-modern-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-create-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-create-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--dashboard-active-milling .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--dashboard-waiting-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-edit-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-edit-teeth-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--case-edit-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--cases-index-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--cases-rejected-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--clients-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--clients-add .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--clients-delete .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--active-cases-preview .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--adminhth-intel-shortcut .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--adminhth-intel-settings .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--adminhth-intel2-shortcut .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--adminhth-intel2-settings .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--adminhth-mobile-access .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--waiting-3d-printing .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--waiting-delivery .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--waiting-generic .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--delivery-schedule-edit .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--delivery-schedule-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--delivery-receive-payment .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--devices-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-causes-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-modify-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-modify-teeth-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-modify-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-redo-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-redo-teeth-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-redo-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-reject-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-reject-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-repeat-teeth .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-repeat-teeth-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--failures-repeat-files .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-primary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-tertiary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-alt-primary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-alt-secondary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-emp-cases-alt-tertiary .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-payments-alt .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--generic-payments .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--implants-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--job-types-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--labs-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-create-add-type .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-create-add-implant .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-create-edit-implant .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-edit-types .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-edit-add-type .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--material-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--media-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--rtl-search .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--report-employees-filter .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--report-devices-filter .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--tags-actions .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--invoice-check .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--invoice-check-new .modal-container {
+        background-color: #ffffff;
+        border-radius: 0.5rem;
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 35rem;
+        padding: 2rem;
+        position: relative;
+        height: fit-content;
+    }
+.sigma-modal--users-actions .modal-container {
         background-color: #ffffff;
         border-radius: 0.5rem;
         box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
@@ -46,7 +1492,692 @@
         background-color: #dc2626;
     }
 
-    .modal-title {
+    
+.sigma-modal--abutments-delivery-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--abutments-delivery-receive .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--abutments-index-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--accountant-delivery-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--accountant-delivery-actions-alt .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--admin-intel-shortcut .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--admin-intel-settings .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--admin-intel2-shortcut .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--admin-intel2-settings .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--admin-mobile-access .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--cases-dashboard-case-completion .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--cases-dashboard-loading .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-create-modern-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-create-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-create-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--dashboard-active-milling .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--dashboard-active-case-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--dashboard-waiting-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-edit-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-edit-teeth-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--case-edit-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--cases-index-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--cases-rejected-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--clients-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--clients-add .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--clients-delete .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--active-cases-preview .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--adminhth-intel-shortcut .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--adminhth-intel-settings .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--adminhth-intel2-shortcut .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--adminhth-intel2-settings .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--adminhth-mobile-access .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--waiting-3d-printing .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--waiting-delivery .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--waiting-generic .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--delivery-schedule-edit .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--delivery-schedule-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--delivery-receive-payment .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--devices-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-causes-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-modify-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-modify-teeth-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-modify-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-redo-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-redo-teeth-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-redo-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-reject-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-reject-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-repeat-teeth .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-repeat-teeth-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--failures-repeat-files .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-primary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-tertiary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-alt-primary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-alt-secondary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-emp-cases-alt-tertiary .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-payments-alt .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--generic-payments .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--implants-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--job-types-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--labs-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-create-add-type .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-create-add-implant .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-create-edit-implant .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-edit-types .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-edit-add-type .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--material-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--media-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--rtl-search .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--report-employees-filter .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--report-devices-filter .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--tags-actions .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--invoice-check .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--invoice-check-new .modal-title {
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font: caption;
+        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+.sigma-modal--users-actions .modal-title {
         letter-spacing: 0.05em;
         text-transform: uppercase;
         font: caption;
@@ -117,7 +2248,236 @@
         color: #ffffff;
     }
 
-    .blackbox-modal .modal-title {
+    
+.sigma-modal--abutments-delivery-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--abutments-delivery-receive .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--abutments-index-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--accountant-delivery-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--accountant-delivery-actions-alt .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--admin-intel-shortcut .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--admin-intel-settings .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--admin-intel2-shortcut .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--admin-intel2-settings .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--admin-mobile-access .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--cases-dashboard-case-completion .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--cases-dashboard-case-completion-alt .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--cases-dashboard-loading .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-create-modern-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-create-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-create-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--dashboard-active-milling .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--dashboard-active-case-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--dashboard-waiting-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-edit-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-edit-teeth-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--case-edit-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--cases-index-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--cases-rejected-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--clients-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--clients-add .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--clients-delete .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--active-cases-preview .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--adminhth-intel-shortcut .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--adminhth-intel-settings .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--adminhth-intel2-shortcut .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--adminhth-intel2-settings .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--adminhth-mobile-access .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--waiting-3d-printing .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--waiting-delivery .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--waiting-generic .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--delivery-schedule-edit .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--delivery-schedule-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--delivery-receive-payment .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--devices-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-causes-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-modify-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-modify-teeth-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-modify-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-redo-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-redo-teeth-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-redo-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-reject-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-reject-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-repeat-teeth .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-repeat-teeth-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--failures-repeat-files .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-primary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-tertiary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-alt-primary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-alt-secondary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-emp-cases-alt-tertiary .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-payments-alt .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--generic-payments .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--implants-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--job-types-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--labs-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-create-add-type .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-create-add-implant .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-create-edit-implant .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-edit-types .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-edit-add-type .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--material-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--media-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--rtl-search .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--report-employees-filter .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--report-devices-filter .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--tags-actions .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--invoice-check .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--invoice-check-new .blackbox-modal .modal-title {
+        text-transform: capitalize;
+    }
+.sigma-modal--users-actions .blackbox-modal .modal-title {
         text-transform: capitalize;
     }
 
@@ -216,13 +2576,242 @@
         background: linear-gradient(to right, #2563eb, #7c3aed);
     }
 
-    @media (max-width: 400px) {
-        .modal-container {
+    @media (max-width: 400px){
+        
+.sigma-modal--abutments-delivery-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--abutments-delivery-receive .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--abutments-index-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--accountant-delivery-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--accountant-delivery-actions-alt .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--admin-intel-shortcut .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--admin-intel-settings .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--admin-intel2-shortcut .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--admin-intel2-settings .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--admin-mobile-access .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--cases-dashboard-case-completion .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--cases-dashboard-loading .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-create-modern-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-create-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-create-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--dashboard-active-milling .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--dashboard-active-case-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--dashboard-waiting-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-edit-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-edit-teeth-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--case-edit-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--cases-index-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--cases-rejected-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--clients-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--clients-add .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--clients-delete .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--active-cases-preview .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--adminhth-intel-shortcut .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--adminhth-intel-settings .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--adminhth-intel2-shortcut .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--adminhth-intel2-settings .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--adminhth-mobile-access .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--waiting-3d-printing .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--waiting-delivery .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--waiting-generic .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--delivery-schedule-edit .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--delivery-schedule-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--delivery-receive-payment .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--devices-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-causes-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-modify-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-modify-teeth-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-modify-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-redo-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-redo-teeth-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-redo-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-reject-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-reject-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-repeat-teeth .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-repeat-teeth-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--failures-repeat-files .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-primary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-tertiary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-alt-primary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-alt-secondary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-emp-cases-alt-tertiary .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-payments-alt .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--generic-payments .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--implants-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--job-types-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--labs-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-create-add-type .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-create-add-implant .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-create-edit-implant .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-edit-types .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-edit-add-type .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--material-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--media-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--rtl-search .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--report-employees-filter .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--report-devices-filter .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--tags-actions .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--invoice-check .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--invoice-check-new .modal-container {
+            padding: 2rem 0.5rem;
+        }
+.sigma-modal--users-actions .modal-container {
             padding: 2rem 0.5rem;
         }
     }
 
-    @media (max-width: 575.98px) {
+    @media (max-width: 575.98px){
 
     }
 
@@ -231,7 +2820,7 @@
    ============================================================================ */
 
 /* Small screens (below 768px) - Make 2x2 grid */
-@media (max-width: 767px) {
+@media (max-width: 767px){
     .sigma-case-item .info-case-row {
         display: flex !important;
         flex-wrap: wrap !important;
@@ -246,14 +2835,12 @@
     }
 
     /* Top row: Doctor and Patient */
-    .sigma-case-item .info-case-row > div:nth-child(1),
-    .sigma-case-item .info-case-row > div:nth-child(2) {
+    .sigma-case-item .info-case-row > div:nth-child(1), .sigma-case-item .info-case-row > div:nth-child(2) {
         border-bottom: 1px solid #eee;
     }
 
     /* Add some spacing between rows */
-    .sigma-case-item .info-case-row > div:nth-child(3),
-    .sigma-case-item .info-case-row > div:nth-child(4) {
+    .sigma-case-item .info-case-row > div:nth-child(3), .sigma-case-item .info-case-row > div:nth-child(4) {
         padding-top: 8px !important;
     }
 
@@ -266,7 +2853,7 @@
 }
 
 /* Very small screens (below 480px) - More compact */
-@media (max-width: 479px) {
+@media (max-width: 479px){
     .sigma-case-item .info-case-row > div {
         padding: 6px 8px !important;
         font-size: 0.9rem !important;

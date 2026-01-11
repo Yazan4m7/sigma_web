@@ -103,7 +103,7 @@
 
 
 
-                                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
+                                            <div class="modal sigma-modal--generic-payments" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
                                                 <input type="hidden" name="case_id" value="{{$payment->id}}">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">

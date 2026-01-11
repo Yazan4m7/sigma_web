@@ -73,10 +73,11 @@
                     const h24 = now.getHours();
                     this.state.ampm = h24 >= 12 ? "PM" : "AM";
                     this.state.hour = h24 % 12 || 12;
-                    this.state.minute = Math.round(now.getMinutes() / 5) * 5;
-                    if (this.state.minute === 60) this.state.minute = 55;
+                    this.state.minute = Math.round(now.getMinutes() / 15) * 15;
+                    if (this.state.minute === 60) this.state.minute = 45;
                 },
 
+                // Normalize any incoming date string into a Date we can seed the wheels with.
                 parseInitialValue(value) {
                     if (!value) return null;
 
@@ -122,8 +123,8 @@
                     this.state.hour = h24 % 12 || 12;
 
                     const minute = date.getMinutes();
-                    this.state.minute = Math.round(minute / 5) * 5;
-                    if (this.state.minute === 60) this.state.minute = 55;
+                    this.state.minute = Math.round(minute / 15) * 15;
+                    if (this.state.minute === 60) this.state.minute = 45;
                 },
 
                 getSelectedDate() {
@@ -186,6 +187,7 @@
                     });
                 },
 
+                // Build all wheels, then snap them to the current state after DOM paint.
                 setupWheels() {
                     const container = this.$el.querySelector('.picker-container-' + uniqueId);
                     if (!container) return;
@@ -249,7 +251,7 @@
                     }
                     if (type === 'minute') {
                         const minutes = [];
-                        for (let m = 0; m < 60; m += 5) minutes.push({ label: m, value: m });
+                        for (let m = 0; m < 60; m += 15) minutes.push({ label: m, value: m });
                         return minutes;
                     }
                     if (type === 'ampm') {
@@ -283,6 +285,7 @@
                     wheel._dtpLastStyledIndex = null;
                 },
 
+                // Rebuild the day wheel when month/year changes without jumping the user's segment.
                 updateDayWheel(wheel) {
                     const target = wheel || this.wheels.day;
                     if (!target) return;
@@ -432,6 +435,7 @@
                     wheel.scrollTo({ top: targetIndex * this.ITEM_HEIGHT, behavior: 'smooth' });
                 },
 
+                // Commit the selected wheel item and keep the scroll centered for infinite wheels.
                 handleScrollEnd(type, wheel) {
                     if (this.isInitializing) return;
                     const meta = this.wheelMeta[type];
@@ -542,6 +546,7 @@
                     document.body.style.overflow = '';
                 },
 
+                // Finalize selections and write the submit value before closing.
                 confirm() {
                     const wasInitializing = this.isInitializing;
                     this.isInitializing = false;
@@ -596,7 +601,7 @@
 
         .dtp-input {
             cursor: pointer;
-            font-size: 1.2em;
+            font-size: 0.9em;
         }
 
         .dtp-input:focus {

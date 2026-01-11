@@ -50,26 +50,26 @@ jQuery(document).ready(function($) {
         return { value: '50%', center: true };
     }
 
-    function applyModalPositioning() {
-        if (!window.enableModalPositioning) {
-            return;
-        }
-
-        const posX = normalizeAxis(window.modalPosX, 'x');
-        const posY = normalizeAxis(window.modalPosY, 'y');
-
-        root.style.setProperty('--modal-x', posX.value);
-        root.style.setProperty('--modal-y', posY.value);
-
-        document.querySelectorAll(modalSelector).forEach(modal => {
-            modal.classList.add('modal-positioning-enabled');
-        });
-
-        document.querySelectorAll(dialogSelector).forEach(dialog => {
-            dialog.classList.toggle('modal-pos-center-x', posX.center);
-            dialog.classList.toggle('modal-pos-center-y', posY.center);
-        });
-    }
+    // function applyModalPositioning() {
+    //     if (!window.enableModalPositioning) {
+    //         return;
+    //     }
+    //
+    //     const posX = normalizeAxis(window.modalPosX, 'x');
+    //     const posY = normalizeAxis(window.modalPosY, 'y');
+    //
+    //     root.style.setProperty('--modal-x', posX.value);
+    //     root.style.setProperty('--modal-y', posY.value);
+    //
+    //     document.querySelectorAll(modalSelector).forEach(modal => {
+    //         modal.classList.add('modal-positioning-enabled');
+    //     });
+    //
+    //     document.querySelectorAll(dialogSelector).forEach(dialog => {
+    //         dialog.classList.toggle('modal-pos-center-x', posX.center);
+    //         dialog.classList.toggle('modal-pos-center-y', posY.center);
+    //     });
+    // }
 
     if (typeof window.modalPosX === 'undefined') {
         window.modalPosX = 'center';
@@ -79,16 +79,6 @@ jQuery(document).ready(function($) {
         window.modalPosY = 'center';
     }
 
-    window.applyModalPositioning = applyModalPositioning;
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', applyModalPositioning);
-    } else {
-        applyModalPositioning();
-    }
-
-    document.addEventListener('shown.bs.modal', applyModalPositioning);
-    window.addEventListener('resize', applyModalPositioning);
 })();
 
 
@@ -2681,7 +2671,6 @@ function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
 
         requestAnimationFrame(() => {
             overlay.classList.add('YSH-active');
-            panel.style.right = '0';
         });
     } catch (e) {
         console.error('Error opening slide panel:', e);
@@ -2715,8 +2704,6 @@ function YSH_closeSlidePanel(caseId) {
 
     overlay.classList.remove('YSH-active');
     overlay.classList.add('YSH-closing');
-    panel.style.right = '-100%';
-
     const finishClose = () => {
         if (overlay.dataset.yshClosing !== '1') {
             return;
@@ -2741,7 +2728,7 @@ function YSH_closeSlidePanel(caseId) {
         if (event.target !== panel) {
             return;
         }
-        if (event.propertyName && event.propertyName !== 'right') {
+        if (event.propertyName && event.propertyName !== 'transform' && event.propertyName !== 'opacity') {
             return;
         }
         finishClose();
@@ -2761,3 +2748,21 @@ function YSH_closeSlidePanel(caseId) {
     // Fallback: ensure cleanup even if no events fire
     overlay._yshCloseTimeout = window.setTimeout(finishClose, 450);
 }
+
+// Sigma: Scroll feedback for sticky table headers (no layout calculations)
+(function initSigmaStickyHeaderScrollFeedback() {
+    const headerCells = document.querySelectorAll('table.sigma-sticky-table-header thead th');
+    if (!headerCells || headerCells.length === 0) {
+        return;
+    }
+
+    const update = () => {
+        const isScrolled = window.scrollY > 0;
+        for (let i = 0; i < headerCells.length; i++) {
+            headerCells[i].classList.toggle('is-scrolled', isScrolled);
+        }
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+})();

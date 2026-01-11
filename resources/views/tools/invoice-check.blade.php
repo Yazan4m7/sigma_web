@@ -48,8 +48,7 @@
             margin-bottom: .5rem;
         }
 
-        .form-control,
-        .bootstrap-select .btn {
+        .form-control, .bootstrap-select .btn {
             border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             padding: .5rem .75rem;
@@ -58,8 +57,7 @@
             transition: all 0.15s ease-in-out;
         }
 
-        .form-control:focus,
-        .bootstrap-select .btn:focus {
+        .form-control:focus, .bootstrap-select .btn:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 2px rgba(94, 114, 228, .25);
@@ -124,15 +122,18 @@
         }
 
         /* Modal beautification */
-        .modal-content {
+        
+.sigma-modal--invoice-check .modal-content {
             border-radius: 20px;
         }
 
-        .modal-header {
+        
+.sigma-modal--invoice-check .modal-header {
             border-bottom: 1px solid var(--border-color);
         }
 
-        .modal-title {
+        
+.sigma-modal--invoice-check .modal-title {
             color: #1f3f47;
             font-weight: 700;
         }
@@ -248,7 +249,7 @@
         @if ($cases->count())
             @foreach ($cases as $case)
                 <!-- Row actions modal -->
-                <div class="modal fade" id="caseDialog{{ $case->id }}" tabindex="-1" role="dialog"
+                <div class="modal fade sigma-modal--invoice-check" id="caseDialog{{ $case->id }}" tabindex="-1" role="dialog"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">

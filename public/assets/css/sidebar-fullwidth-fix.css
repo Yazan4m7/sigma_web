@@ -68,3 +68,25 @@
 .devices-count-2 .sigma-device-img-container {
     height: 180px !important;
 }
+
+/* Adjust main-panel to account for sidebar width on desktop */
+@media (min-width: 991px) {
+    .main-panel {
+        margin-left: 80px !important;
+        width: calc(100% - 79px) !important;
+    }
+
+    /* When sidebar is minimized (80px in mini mode) */
+    .sidebar-mini .main-panel {
+        margin-left: 80px !important;
+        width: calc(100% - 80px) !important;
+    }
+}
+
+/* On mobile, main-panel takes full width */
+@media (max-width: 991px) {
+    .main-panel {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}

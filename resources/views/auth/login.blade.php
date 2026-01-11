@@ -66,14 +66,14 @@ ease-out;
 
         .login-title {
             color: #2d3748;
-    font-size: 1.7em;
+    font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
         }
 
         .login-subtitle {
             color: #718096;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 400;
     margin-bottom: 0;
         }
@@ -88,7 +88,7 @@ ease-out;
     padding: 0.5rem 0rem 0.5rem 3rem;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     transition: all 0.3s ease;
     background: #ffffff;
     color: #2d3748;
@@ -111,7 +111,7 @@ ease-out;
     top: 50%;
     transform: translateY(-50%);
     color: #a0aec0;
-    font-size: 1.0rem;
+    font-size: 0.9rem;
     transition: color 0.3s
 ease;
             /* Ensure icon remains visible and doesn't intercept pointer focus */
@@ -137,14 +137,14 @@ ease;
     border: none;
     border-radius: 12px;
     color: white;
-    font-size: 1.12rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s
 ease;
     margin-top: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
         }
 
         .login-button:hover {
@@ -247,7 +247,7 @@ ease;
             }
 
             .login-title {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
 
             .login-logo {

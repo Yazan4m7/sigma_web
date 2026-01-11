@@ -116,10 +116,7 @@
             font-size: 0.9rem;
         }
 
-        .form-control,
-        textarea.form-control,
-        .selectpicker,
-        .bootstrap-select .btn {
+        .form-control, textarea.form-control, .selectpicker, .bootstrap-select .btn {
             border-radius: 10px;
             border: 1px solid var(--border-muted);
             box-shadow: none !important;
@@ -129,32 +126,24 @@
             color: var(--text-main);
         }
 
-        .form-control:focus,
-        textarea.form-control:focus,
-        .bootstrap-select .btn:focus,
-        .bootstrap-select .btn:active,
-        .bootstrap-select.open>.dropdown-toggle {
+        .form-control:focus, textarea.form-control:focus, .bootstrap-select .btn:focus, .bootstrap-select .btn:active, .bootstrap-select.open>.dropdown-toggle {
             border-color: var(--accent);
             box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
             outline: none !important;
         }
 
-        .slctUnitsBtn,
-        .btn-primary,
-        .btn-success {
+        .slctUnitsBtn, .btn-primary, .btn-success {
             background: var(--accent) !important;
             border-color: var(--accent) !important;
             color: #fff !important;
-            border-radius: 999px;
+
             font-weight: 600;
             letter-spacing: 0.02em;
             padding: 0.6rem 1.5rem;
             transition: all 0.2s ease;
         }
 
-        .slctUnitsBtn:hover,
-        .btn-primary:hover,
-        .btn-success:hover {
+        .slctUnitsBtn:hover, .btn-primary:hover, .btn-success:hover {
             background: #1553b7 !important;
             border-color: #1553b7 !important;
         }
@@ -192,8 +181,7 @@
             margin-top: 0.25rem;
         }
 
-        .deleteBtn,
-        .deleteBtn2 {
+        .deleteBtn, .deleteBtn2 {
             border-radius: 12px;
             border: 1px solid transparent;
             font-weight: 600;
@@ -228,10 +216,7 @@
             color: #fff;
         }
 
-        .deleteBtn i,
-        .deleteBtn:hover i,
-        .deleteBtn2 i,
-        .deleteBtn2:hover i {
+        .deleteBtn i, .deleteBtn:hover i, .deleteBtn2 i, .deleteBtn2:hover i {
             color: currentColor;
         }
 
@@ -277,7 +262,10 @@
             justify-content: center;
             margin: 3.25rem 0 0.75rem;
         }
-        .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+        
+.sigma-modal--case-create-teeth .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -50%) !important;}
+.sigma-modal--case-create-files .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
             transform: translate(-100%, -50%) !important;}
 
         .toggle-discount {
@@ -360,9 +348,19 @@
            ============================================ */
 
         /* Teeth picker dialog save button - larger and primary styled */
-        #unitsDialog .modal-footer button[type="button"]:last-child,
-        #unitsDialog .modal-footer .btn-primary,
-        #unitsDialog .modal-footer button.saveBtn {
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[type="button"]:last-child, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-primary, .sigma-modal--case-create-teeth #unitsDialog .modal-footer button.saveBtn {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            padding: 14px 40px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3) !important;
+            transition: all 0.2s ease !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[type="button"]:last-child, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-primary, .sigma-modal--case-create-files #unitsDialog .modal-footer button.saveBtn {
             background-color: #28a745 !important;
             border-color: #28a745 !important;
             color: white !important;
@@ -374,9 +372,14 @@
             transition: all 0.2s ease !important;
         }
 
-        #unitsDialog .modal-footer button[type="button"]:last-child:hover,
-        #unitsDialog .modal-footer .btn-primary:hover,
-        #unitsDialog .modal-footer button.saveBtn:hover {
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[type="button"]:last-child:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-primary:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer button.saveBtn:hover {
+            background-color: #218838 !important;
+            border-color: #218838 !important;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4) !important;
+            transform: translateY(-1px);
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[type="button"]:last-child:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-primary:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer button.saveBtn:hover {
             background-color: #218838 !important;
             border-color: #218838 !important;
             box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4) !important;
@@ -384,8 +387,16 @@
         }
 
         /* Close button - keep it secondary/muted */
-        #unitsDialog .modal-footer button[data-dismiss="modal"],
-        #unitsDialog .modal-footer .btn-secondary {
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[data-dismiss="modal"], .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-secondary {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: white !important;
+            font-size: 14px !important;
+            padding: 10px 24px !important;
+            border-radius: 6px !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[data-dismiss="modal"], .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-secondary {
             background-color: #6c757d !important;
             border-color: #6c757d !important;
             color: white !important;
@@ -394,8 +405,12 @@
             border-radius: 6px !important;
         }
 
-        #unitsDialog .modal-footer button[data-dismiss="modal"]:hover,
-        #unitsDialog .modal-footer .btn-secondary:hover {
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[data-dismiss="modal"]:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-secondary:hover {
+            background-color: #5a6268 !important;
+            border-color: #5a6268 !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[data-dismiss="modal"]:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-secondary:hover {
             background-color: #5a6268 !important;
             border-color: #5a6268 !important;
         }
@@ -411,8 +426,15 @@
             /*border: 0.0625rem solid rgba(34, 42, 66, 0.05);*/
             border-radius: 1.2857rem;
         }
-        @media screen and (max-width: 991px) {
-            .modal-content .modal-footer button {
+        @media screen and (max-width: 991px){
+            
+.sigma-modal--case-create-teeth .modal-content .modal-footer button {
+                margin: 15px;
+                padding: 10px 50px;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-create-files .modal-content .modal-footer button {
                 margin: 15px;
                 padding: 10px 50px;
                 width: auto;
@@ -421,12 +443,15 @@
         }
 
 
-        .fa,
-        .fas {
+        .fa, .fas {
             color: black;
         }
-        .modal-content {
-            width: 160%;
+        
+.sigma-modal--case-create-teeth .modal-content {
+            width: 100%;
+        }
+.sigma-modal--case-create-files .modal-content {
+            width: 100%;
         }
 
         .checked {
@@ -457,7 +482,12 @@
         .btn:not(.unstyled) {}
 
 
-        .modal.show .modal-dialog {
+        
+.modal.show.sigma-modal--case-create-teeth .modal-dialog {
+            -webkit-transform: translate(0, 0%);
+            transform: translate(0, 0%);
+        }
+.modal.show.sigma-modal--case-create-files .modal-dialog {
             -webkit-transform: translate(0, 0%);
             transform: translate(0, 0%);
         }
@@ -504,31 +534,48 @@
             max-height: unset;
         }
 
-        @media (min-width: 576px) {
-            div.col-lg-7.col-md-7.noPadOnMobile
-            {flex-wrap: wrap;}
+        @media (min-width: 576px){
+            div.col-lg-7.col-md-7.noPadOnMobile {flex-wrap: wrap;}
             /*.logo-col .noPadOnMobile{*/
             /*    display:none;*/
             /*}*/
-            .modal-dialog {
+            
+.sigma-modal--case-create-teeth .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+.sigma-modal--case-create-files .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
 
         }
-        @media screen and (min-width: 1000px) {
+        @media screen and (min-width: 1000px){
        #left-toggler {
             flex-wrap: wrap !important;
         }
         }
 
+        /* Teeth picker dialog sizing */
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-dialog.teethJawsDocument {
+            max-width: 420px;
+            width: 100%;
+            margin: 1rem auto;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-dialog.teethJawsDocument {
+            max-width: 420px;
+            width: 100%;
+            margin: 1rem auto;
+        }
 
-
-        .teethJawsDialog{}
-        .teethJawsDocument{}
-
-
-
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-content.teethJawsDialog {
+            width: 100%;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-content.teethJawsDialog {
+            width: 100%;
+        }
 
 
 
@@ -1000,7 +1047,7 @@
 
         <!-- TEETH PICK DIALOG -->
 
-        <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-create-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog  teethJawsDocument" role="document" style="margin-top: 5px;">
                 <div class="modal-content teethJawsDialog">
@@ -1161,7 +1208,7 @@
             </form></div>
 
     <!-- FILES DIALOG -->
-    <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
+    <div class="modal fade sigma-modal--case-create-files" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
         style="display: none;" aria-hidden="true" name="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

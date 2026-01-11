@@ -5,7 +5,7 @@
     'stageId'
 ])
 
-<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc" id="3dprinting-waiting" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc sigma-modal--waiting-3d-printing" id="3dprinting-waiting" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">

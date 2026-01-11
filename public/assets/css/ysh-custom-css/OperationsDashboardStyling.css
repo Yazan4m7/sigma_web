@@ -1,7 +1,996 @@
 
 
 
-.modal {
+
+.modal.sigma-modal--abutments-delivery-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--abutments-delivery-receive {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--abutments-index-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--accountant-delivery-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--accountant-delivery-actions-alt {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--admin-intel-shortcut {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--admin-intel-settings {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--admin-intel2-shortcut {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--admin-intel2-settings {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--admin-mobile-access {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--cases-dashboard-case-completion {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--cases-dashboard-case-completion-alt {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--cases-dashboard-loading {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-create-modern-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-create-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-create-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--dashboard-active-milling {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--dashboard-active-case-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--dashboard-waiting-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-edit-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-edit-teeth-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--case-edit-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--cases-index-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--cases-rejected-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--clients-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--clients-add {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--clients-delete {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--active-cases-preview {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--adminhth-intel-shortcut {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--adminhth-intel-settings {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--adminhth-intel2-shortcut {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--adminhth-intel2-settings {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--adminhth-mobile-access {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--waiting-3d-printing {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--waiting-delivery {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--waiting-generic {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--delivery-schedule-edit {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--delivery-schedule-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--delivery-receive-payment {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--devices-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-causes-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-modify-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-modify-teeth-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-modify-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-redo-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-redo-teeth-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-redo-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-reject-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-reject-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-repeat-teeth {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-repeat-teeth-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--failures-repeat-files {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-primary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-tertiary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-alt-primary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-alt-secondary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-emp-cases-alt-tertiary {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-payments-alt {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--generic-payments {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--implants-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--job-types-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--labs-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-create-add-type {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-create-add-implant {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-create-edit-implant {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-edit-types {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-edit-add-type {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--material-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--media-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--rtl-search {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--report-employees-filter {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--report-devices-filter {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--tags-actions {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--invoice-check {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--invoice-check-new {
+    display: none;
+    /* should be 'none' by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+.modal.sigma-modal--users-actions {
     display: none;
     /* should be 'none' by default */
     position: fixed;
@@ -28,8 +1017,7 @@
    /* Ensure content doesn't overflow */
 }
 
-.YSH-build-header,
-.YSH-build-header-inactive {
+.YSH-build-header, .YSH-build-header-inactive {
    display: flex;
    align-items: center;
    padding: 10px 15px;
@@ -64,8 +1052,7 @@
    margin-right: 10px;
 }
 
-.YSH-build-jobs-indicator,
-.YSH-build-jobs-indicator-active {
+.YSH-build-jobs-indicator, .YSH-build-jobs-indicator-active {
    background: white;
    color: #424242;
    font-size: 13px;
@@ -129,8 +1116,7 @@
 .YSH-build-row.active .toggle-build-btn i {
    transform: rotate(180deg);
 }
-.sigma-checkbox , .sigma-job-checkbox
-{
+.sigma-checkbox, .sigma-job-checkbox {
     transform:scale(1.1);
     padding-right: 12px !important;
 
@@ -148,10 +1134,10 @@
    overflow: hidden;
 
 }
-.noImageFound{
+.noImageFound {
   border : white solid 1px;
 }
-.machine-img{
+.machine-img {
     display: block;
     width: 100%;
     max-width: 240px;
@@ -189,25 +1175,33 @@
 .YSH-slide-panel {
    padding: 30px 20px;
    position: fixed;
-   top: 5vh;
-   right: -100%;
-   width: 40%;
-   height: fit-content;
-   min-width: 300px;
+   top: 50%;
+   left: 50%;
+   right: auto;
+   width: 90vw;
    max-width: 500px;
+   min-width: 300px;
+   height: auto;
+   max-height: 90vh;
    background: #ffffff;
    border-radius: 12px;
    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-   transition: right 0.3s ease;
+   transform: translate(-50%, -50%) scale(0.98);
+   opacity: 0;
+   transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 /* Animation states */
 .YSH-slide-overlay.YSH-active .YSH-slide-panel {
-   animation: slideIn 0.3s ease forwards;
+   opacity: 1;
+   transform: translate(-50%, -50%) scale(1);
+   animation: none;
 }
 
 .YSH-slide-overlay.YSH-closing .YSH-slide-panel {
-   animation: slideOut 0.3s ease forwards;
+   opacity: 0;
+   transform: translate(-50%, -50%) scale(0.98);
+   animation: none;
 }
 
 
@@ -260,8 +1254,7 @@ YSH-slide-grid {
    cursor: pointer;
 }
 
-.blackbox-button-outer,
-.blackbox-button-inner {
+.blackbox-button-outer, .blackbox-button-inner {
 
    background: var(--outer-gradient-disabled);
    /*opacity: 0.6;*/
@@ -459,12 +1452,6 @@ YSH-slide-grid {
    background-color: rgba(0, 123, 255, 0.1);
 }
 
-/* Builds list styles */
-.sigma-builds-list {
-   display: flex;
-   flex-direction: column;
-   gap: 15px;
-}
 
 .sigma-build-row {
    border-radius: 8px;
@@ -672,28 +1659,330 @@ YSH-slide-grid {
 }
 
 /* Responsive styles */
-@media (max-width: 768px) {
-   .sigma-workflow-dialog {
+@media (max-width: 768px){
+   
+.sigma-modal--abutments-delivery-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--abutments-delivery-receive .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--abutments-index-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--accountant-delivery-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--accountant-delivery-actions-alt .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--admin-intel-shortcut .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--admin-intel-settings .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--admin-intel2-shortcut .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--admin-intel2-settings .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--admin-mobile-access .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-create-modern-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-create-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-create-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--dashboard-active-milling .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--dashboard-active-case-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--dashboard-waiting-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-edit-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-edit-teeth-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--case-edit-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--cases-index-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--cases-rejected-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--clients-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--clients-add .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--clients-delete .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--adminhth-intel-shortcut .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--adminhth-intel-settings .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--adminhth-intel2-shortcut .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--adminhth-intel2-settings .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--adminhth-mobile-access .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--delivery-schedule-edit .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--delivery-schedule-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--delivery-receive-payment .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--devices-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-causes-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-modify-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-modify-teeth-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-modify-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-redo-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-redo-teeth-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-redo-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-reject-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-reject-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-repeat-teeth .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-repeat-teeth-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--failures-repeat-files .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-primary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-tertiary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-alt-primary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-alt-secondary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-emp-cases-alt-tertiary .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-payments-alt .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--generic-payments .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--implants-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--job-types-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--labs-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-create-add-type .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-create-add-implant .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-create-edit-implant .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-edit-types .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-edit-add-type .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--material-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--media-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--rtl-search .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--report-employees-filter .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--report-devices-filter .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--tags-actions .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--invoice-check .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--invoice-check-new .sigma-workflow-dialog {
+       /* width: 60vw; */
+       max-height: 80vh;
+   }
+.sigma-modal--users-actions .sigma-workflow-dialog {
        /* width: 60vw; */
        max-height: 80vh;
    }
     .sigma-build-header {
         padding: 11px 14px;
     }
-   .sigma-machines-grid,
-   .sigma-devices-grid {
+   .sigma-machines-grid, .sigma-devices-grid {
        display: flex;
        gap: 15px;
        align-items: flex-end;
    }
 
-   .sigma-machine-image-container,
-   .sigma-device-image-container {
+   .sigma-machine-image-container, .sigma-device-image-container {
        height: 80px;
    }
 
-   .sigma-job-details,
-   .sigma-case-info {
+   .sigma-job-details, .sigma-case-info {
        flex-direction: column;
        gap: 5px;
    }
@@ -837,7 +2126,7 @@ YSH-slide-grid {
 }
 
 
-.cases-list-container{
+.cases-list-container {
    overflow-y: auto;             /* Scroll vertically */
    max-height: 100%;             /* Fill the available space inside modal */
 }
@@ -980,8 +2269,7 @@ YSH-slide-grid {
    padding: 0;
 }
 
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover,
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus {
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover, .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus {
    outline: 0;
    background-color: var(--tab-focus-bg-color);
    color: var(--tab-focus-text-color);
@@ -995,7 +2283,236 @@ YSH-slide-grid {
    border-left: 5px solid var(--tab-active-border-color);
    padding-left: 0.2rem;
 }
-.modal.fade .modal-dialog {
+
+.modal.fade.sigma-modal--abutments-delivery-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--abutments-delivery-receive .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--abutments-index-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--accountant-delivery-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--accountant-delivery-actions-alt .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--admin-intel-shortcut .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--admin-intel-settings .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--admin-intel2-shortcut .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--admin-intel2-settings .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--admin-mobile-access .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--cases-dashboard-case-completion .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--cases-dashboard-case-completion-alt .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--cases-dashboard-loading .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-create-modern-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-create-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-create-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--dashboard-active-milling .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--dashboard-active-case-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--dashboard-waiting-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-edit-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-edit-teeth-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--case-edit-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--cases-index-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--cases-rejected-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--clients-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--clients-add .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--clients-delete .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--active-cases-preview .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--adminhth-intel-shortcut .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--adminhth-intel-settings .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--adminhth-intel2-shortcut .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--adminhth-intel2-settings .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--adminhth-mobile-access .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--waiting-3d-printing .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--waiting-delivery .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--waiting-generic .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--delivery-schedule-edit .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--delivery-schedule-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--delivery-receive-payment .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--devices-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-causes-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-modify-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-modify-teeth-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-modify-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-redo-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-redo-teeth-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-redo-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-reject-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-reject-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-repeat-teeth .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-repeat-teeth-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--failures-repeat-files .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-primary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-tertiary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-alt-primary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-alt-secondary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-emp-cases-alt-tertiary .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-payments-alt .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--generic-payments .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--implants-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--job-types-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--labs-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-create-add-type .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-create-add-implant .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-create-edit-implant .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-edit-types .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-edit-add-type .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--material-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--media-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--rtl-search .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--report-employees-filter .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--report-devices-filter .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--tags-actions .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--invoice-check .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--invoice-check-new .modal-dialog {
+   transform: 1 !important;
+}
+.modal.fade.sigma-modal--users-actions .modal-dialog {
    transform: 1 !important;
 }
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"] > svg {
@@ -1006,16 +2523,13 @@ YSH-slide-grid {
    color: var(--tab-focus-text-secondary-color);
 }
 
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:hover,
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:focus {
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:hover, .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:focus {
    outline: 0;
    background-color: var(--tab-active-bg-color);
    color: var(--tab-focus-text-secondary-color);
 }
 
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover,
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus,
-.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:active {
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover, .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus, .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:active {
    outline: 0;
 }
 
@@ -1031,7 +2545,7 @@ YSH-slide-grid {
 }
 
 /* Mobile: Prevent unwanted scrolling on tabpanel */
-@media (max-width: 767px) {
+@media (max-width: 767px){
    .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {
        overflow: visible !important;
        overflow-x: visible !important;
@@ -1039,8 +2553,7 @@ YSH-slide-grid {
    }
 }
 
-.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a,
-.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a:visited {
+.macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a, .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] a:visited {
    cursor: pointer;
    color: inherit;
    -webkit-text-decoration-style: unset;
@@ -1088,7 +2601,7 @@ YSH-slide-grid {
    * Media Queries
    --------
    */
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 500px){
    .bb-inline-img {
        width: 40%;
 
@@ -1140,7 +2653,7 @@ YSH-slide-grid {
    /* Don't force scrolling on mobile devices */
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px){
    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
        width: 20%;
    }
@@ -1162,7 +2675,7 @@ YSH-slide-grid {
    .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] {width: 80%;}
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1280px){
    .macaw-tabs.macaw-aurora-tabs {
    }
 }
@@ -1255,8 +2768,7 @@ img {
   padding-right: 0;
 }
 
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:hover,
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:focus {
+.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:hover, .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:focus {
   outline: 0;
   background-color: var(--tab-focus-bg-color);
   color: var(--tab-focus-text-color);
@@ -1267,16 +2779,13 @@ img {
   color: var(--tab-active-text-color);
 }
 
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:hover,
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:focus {
+.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:hover, .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]:focus {
   outline: 0;
   background-color: var(--tab-focus-bg-color);
   color: var(--tab-focus-text-color);
 }
 
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:hover,
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:focus,
-.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:active {
+.macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:hover, .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:focus, .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"]:active {
   outline: 0;
 }
 
@@ -1326,7 +2835,7 @@ img {
     display: block;
     min-height: auto;
     position: relative;
-    padding-bottom: 52px;
+    /* padding-bottom: 52px; */
 }
 
 .stage-panel-scroll .dataTables_scroll {
@@ -1345,7 +2854,7 @@ img {
    - Table header (thead)
    ------------------------------------------------------------------------- */
 .site-wrapper .macaw-tabs.macaw-aurora-tabs {
-    --sigma-ops-sticky-top: 67px;
+    --sigma-ops-sticky-top: var(--sigma-app-header-offset);
     --sigma-ops-stagebar-height: 0px;
     --sigma-ops-innerbar-height: 56px;
     --sigma-ops-sticky-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -1357,22 +2866,20 @@ img {
     --sigma-ops-scrollbar-thumb-hover: #256b6b;
 }
 
-.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"],
-.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"], .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body, .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
     overflow: visible !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px){
     .site-wrapper .macaw-tabs.macaw-aurora-tabs {
-        --sigma-ops-sticky-top: 0px;
+        --sigma-ops-sticky-top: var(--sigma-app-header-offset);
         --sigma-ops-stagebar-height: 96px;
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px){
     .site-wrapper .macaw-tabs.macaw-aurora-tabs {
-        --sigma-ops-sticky-top: 0px;
+        /* --sigma-ops-sticky-top: 0px; */
     }
 }
 
@@ -1380,7 +2887,7 @@ img {
 .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
     position: sticky;
     top: var(--sigma-ops-sticky-top);
-    z-index: 300;
+    z-index: 80;
     background: var(--tab-bg-color);
     box-shadow: var(--sigma-ops-sidebar-shadow);
     border-right: 1px solid var(--sigma-ops-divider);
@@ -1392,19 +2899,30 @@ img {
 .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-inner-tabs {
     position: sticky;
     top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height));
-    z-index: 250;
+    z-index: 70;
     background: #ffffff;
     box-shadow: var(--sigma-ops-sticky-shadow);
     border-bottom: 1px solid var(--sigma-ops-divider);
     transition: all 0.3s ease;
 }
 
+/* Cover gap above inner tabs */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-inner-tabs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: transparent;
+    z-index: -1;
+}
+
 /* 3) Table header (handles both normal + DataTables tables) */
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
     position: sticky;
     top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height) - 10px);
-    z-index: 200;
+    z-index: 60;
     background-color: var(--sigma-ops-table-header-bg);
     color: #f7fbfb;
     font-weight: 600;
@@ -1416,39 +2934,37 @@ img {
     background-clip: padding-box;
 }
 
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_asc,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_desc,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_asc_disabled,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_desc_disabled {
+/* Cover gap above sticky table header */
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th::before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: transparent;
+    z-index: -1;
+}
+
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_asc, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_desc, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_asc_disabled, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th.sorting_desc_disabled {
     padding-right: 2.25rem;
 }
 
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting:before,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting:after,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc:before,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc:after,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc:before,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc:after,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc_disabled:before,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc_disabled:after,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc_disabled:before,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc_disabled:after {
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting:before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting:after, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc:before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc:after, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc:before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc:after, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc_disabled:before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_asc_disabled:after, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc_disabled:before, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead .sorting_desc_disabled:after {
     right: 0.75rem;
     bottom: 50%;
     transform: translateY(50%);
 }
 
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th:first-child,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th:first-child {
-    z-index: 210;
+.site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th:first-child, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th:first-child {
+    z-index: 61;
 }
 
 /* If DataTables creates a separate scroll header, keep that header sticky too */
 .site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_scrollHead {
     position: sticky;
     top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height));
-    z-index: 220;
+    z-index: 65;
     background-color: var(--sigma-ops-table-header-bg);
     box-shadow: var(--sigma-ops-sticky-shadow);
     border-bottom: 1px solid var(--sigma-ops-divider);
@@ -1477,9 +2993,7 @@ img {
     background-color: rgba(45, 122, 122, 0.08) !important;
 }
 
-.site-wrapper .macaw-tabs.macaw-aurora-tabs [role="tab"]:focus-visible,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs .innerBtn:focus-visible,
-.site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_wrapper .paginate_button:focus-visible {
+.site-wrapper .macaw-tabs.macaw-aurora-tabs [role="tab"]:focus-visible, .site-wrapper .macaw-tabs.macaw-aurora-tabs .innerBtn:focus-visible, .site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_wrapper .paginate_button:focus-visible {
     outline: 2px solid #2d7a7a;
     outline-offset: 2px;
 }
@@ -1534,15 +3048,14 @@ img {
     background: var(--sigma-ops-scrollbar-thumb-hover);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 767px){
     .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
         box-shadow: var(--sigma-ops-sticky-shadow);
         border-right: none;
         border-bottom: 1px solid var(--sigma-ops-divider);
     }
 
-    .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th,
-    .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
         padding: 12px 8px;
         font-size: 0.75rem;
     }
@@ -1597,8 +3110,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
     margin-bottom: 0 !important;
 }
 
-.macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a,
-.macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a:visited {
+.macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a, .macaw-tabs.macaw-silk-tabs > [role="tabpanel"] a:visited {
   color: inherit;
   -webkit-text-decoration-style: dotted;
   text-decoration-style: dotted;
@@ -1638,7 +3150,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    --------
    */
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 768px){
    .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"] {
    }
 
@@ -1647,12 +3159,12 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    }
 }
 
-@media only screen and (min-width: 1280px) {
+@media only screen and (min-width: 1280px){
    .macaw-tabs.macaw-silk-tabs {
    }
 }
 
-@media only screen and (max-width: 575px) {
+@media only screen and (max-width: 575px){
    .macaw-tabs.macaw-silk-tabs.vertical {
        display: flex;
        width: 100%;
@@ -1779,8 +3291,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    overflow: auto;
 }
 
-.waitingBadge,
-.activeBadge {
+.waitingBadge, .activeBadge {
    color: #ffffff !important;
    /* font-weight: 600; */
    border-radius: 999px;
@@ -1802,12 +3313,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    padding: 0px;
 }
 
-.white-content .table > thead > tr > th,
-.white-content .table > tbody > tr > th,
-.white-content .table > tfoot > tr > th,
-.white-content .table > thead > tr > td,
-.white-content .table > tbody > tr > td,
-.white-content .table > tfoot > tr > td {
+.white-content .table > thead > tr > th, .white-content .table > tbody > tr > th, .white-content .table > tfoot > tr > th, .white-content .table > thead > tr > td, .white-content .table > tbody > tr > td, .white-content .table > tfoot > tr > td {
 
    border-top-color: transparent;
    border-right-color: rgba(34, 42, 66, 0.2);
@@ -1823,14 +3329,319 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    margin-top: 5px;
 }
 
-.modal {
+
+.modal.sigma-modal--abutments-delivery-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--abutments-delivery-receive {
+
+   height: auto;
+}
+.modal.sigma-modal--abutments-index-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--accountant-delivery-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--accountant-delivery-actions-alt {
+
+   height: auto;
+}
+.modal.sigma-modal--admin-intel-shortcut {
+
+   height: auto;
+}
+.modal.sigma-modal--admin-intel-settings {
+
+   height: auto;
+}
+.modal.sigma-modal--admin-intel2-shortcut {
+
+   height: auto;
+}
+.modal.sigma-modal--admin-intel2-settings {
+
+   height: auto;
+}
+.modal.sigma-modal--admin-mobile-access {
+
+   height: auto;
+}
+.modal.sigma-modal--cases-dashboard-case-completion {
+
+   height: auto;
+}
+.modal.sigma-modal--cases-dashboard-case-completion-alt {
+
+   height: auto;
+}
+.modal.sigma-modal--cases-dashboard-loading {
+
+   height: auto;
+}
+.modal.sigma-modal--case-create-modern-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--case-create-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--case-create-files {
+
+   height: auto;
+}
+.modal.sigma-modal--dashboard-active-milling {
+
+   height: auto;
+}
+.modal.sigma-modal--dashboard-active-case-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--dashboard-waiting-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--case-edit-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--case-edit-teeth-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--case-edit-files {
+
+   height: auto;
+}
+.modal.sigma-modal--cases-index-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--cases-rejected-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--clients-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--clients-add {
+
+   height: auto;
+}
+.modal.sigma-modal--clients-delete {
+
+   height: auto;
+}
+.modal.sigma-modal--active-cases-preview {
+
+   height: auto;
+}
+.modal.sigma-modal--adminhth-intel-shortcut {
+
+   height: auto;
+}
+.modal.sigma-modal--adminhth-intel-settings {
+
+   height: auto;
+}
+.modal.sigma-modal--adminhth-intel2-shortcut {
+
+   height: auto;
+}
+.modal.sigma-modal--adminhth-intel2-settings {
+
+   height: auto;
+}
+.modal.sigma-modal--adminhth-mobile-access {
+
+   height: auto;
+}
+.modal.sigma-modal--waiting-3d-printing {
+
+   height: auto;
+}
+.modal.sigma-modal--waiting-delivery {
+
+   height: auto;
+}
+.modal.sigma-modal--waiting-generic {
+
+   height: auto;
+}
+.modal.sigma-modal--delivery-schedule-edit {
+
+   height: auto;
+}
+.modal.sigma-modal--delivery-schedule-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--delivery-receive-payment {
+
+   height: auto;
+}
+.modal.sigma-modal--devices-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-causes-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-modify-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-modify-teeth-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-modify-files {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-redo-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-redo-teeth-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-redo-files {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-reject-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-reject-files {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-repeat-teeth {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-repeat-teeth-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--failures-repeat-files {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-primary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-tertiary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-alt-primary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-alt-secondary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-emp-cases-alt-tertiary {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-payments-alt {
+
+   height: auto;
+}
+.modal.sigma-modal--generic-payments {
+
+   height: auto;
+}
+.modal.sigma-modal--implants-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--job-types-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--labs-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--material-create-add-type {
+
+   height: auto;
+}
+.modal.sigma-modal--material-create-add-implant {
+
+   height: auto;
+}
+.modal.sigma-modal--material-create-edit-implant {
+
+   height: auto;
+}
+.modal.sigma-modal--material-edit-types {
+
+   height: auto;
+}
+.modal.sigma-modal--material-edit-add-type {
+
+   height: auto;
+}
+.modal.sigma-modal--material-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--media-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--rtl-search {
+
+   height: auto;
+}
+.modal.sigma-modal--report-employees-filter {
+
+   height: auto;
+}
+.modal.sigma-modal--report-devices-filter {
+
+   height: auto;
+}
+.modal.sigma-modal--tags-actions {
+
+   height: auto;
+}
+.modal.sigma-modal--invoice-check {
+
+   height: auto;
+}
+.modal.sigma-modal--invoice-check-new {
+
+   height: auto;
+}
+.modal.sigma-modal--users-actions {
 
    height: auto;
 }
 
 
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 768px){
    .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"] {
        display: block;
    }
@@ -1840,14 +3651,10 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
        padding-right: 6px;
    }
 
-   .activeTable tr > *:nth-child(4),
-   .activeTable tr > *:nth-child(5),
-   .activeTable tr > *:nth-child(6) {
+   .activeTable tr > *:nth-child(4), .activeTable tr > *:nth-child(5), .activeTable tr > *:nth-child(6) {
        display: none;
    }
-   .waitingTable tr > *:nth-child(4),
-   .waitingTable tr > *:nth-child(5),
-   .waitingTable tr > *:nth-child(6) {
+   .waitingTable tr > *:nth-child(4), .waitingTable tr > *:nth-child(5), .waitingTable tr > *:nth-child(6) {
       display: none;
    }
 
@@ -1882,15 +3689,13 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
 }
 
 /* Tags column styling for operations dashboard tables */
-.waitingTable td:last-child,
-.activeTable td:last-child {
+.waitingTable td:last-child, .activeTable td:last-child {
   white-space: nowrap;
   overflow: hidden;
   text-align: center;
 }
 
-.waitingTable td:last-child i,
-.activeTable td:last-child i {
+.waitingTable td:last-child i, .activeTable td:last-child i {
   margin-right: 4px;
 }
 
@@ -1908,8 +3713,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
 waitingtabText.active {
 }
 
-.innerActiveBtn,
-.innerWaitingBtn {
+.innerActiveBtn, .innerWaitingBtn {
    border: 1px solid rgba(0, 0, 0, 0.08);
    border-top-left-radius: 0.25rem;
    border-top-right-radius: 0.25rem;
@@ -1956,8 +3760,7 @@ svg {
    border-color: #ffc107;
 }
 
-.driverNameBtn:hover,
-.driverNameBtn:active {
+.driverNameBtn:hover, .driverNameBtn:active {
    background-color: #dea700 !important;
    border-color: #dea700 !important;
 }
@@ -2060,13 +3863,13 @@ svg {
 .blackbox-button-outer.orange.enabled {
    background: var(--outer-gradient-orange);
 }
-blackbox-button-inner.enabled.orange{
+blackbox-button-inner.enabled.orange {
         background: var(--inner-gradient-orange);
 }
-.blackbox-button-outer.enabled.green  {
+.blackbox-button-outer.enabled.green {
    background: var(--outer-gradient-green);
 }
-.blackbox-button-inner.enabled.green{
+.blackbox-button-inner.enabled.green {
    background: var(--inner-gradient-green);
 }
 .blackbox-image-container.disabled {
@@ -2402,7 +4205,7 @@ blackbox-button-inner.enabled.orange{
 }
 
 /* Responsive adjustments */
-@media (min-width: 500px) {
+@media (min-width: 500px){
    .sigma-devices-grid {
        /* gap: 15px; */
    }
@@ -2422,7 +4225,7 @@ blackbox-button-inner.enabled.orange{
    }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px){
    .sigma-devices-grid {
        gap: 20px;
    }
@@ -2432,7 +4235,7 @@ blackbox-button-inner.enabled.orange{
    }
 }
 
-@media (max-width: 499px) {
+@media (max-width: 499px){
    .sigma-devices-grid {
        padding: 12px;
        gap: 10px;
@@ -2479,28 +4282,634 @@ blackbox-button-inner.enabled.orange{
 }
 
 /* Override for mobile */
-@media (max-width: 499px) {
-   .devices-count-1 .sigma-device-box,
-   .devices-count-2 .sigma-device-box {
+@media (max-width: 499px){
+   .devices-count-1 .sigma-device-box, .devices-count-2 .sigma-device-box {
        width: 100%;
        max-width: 200px;
        min-height: 140px;
    }
 
-   .devices-count-1,
-   .devices-count-2 {
+   .devices-count-1, .devices-count-2 {
        padding: 12px;
        gap: 10px;
    }
 
-   .devices-count-1 .sigma-device-img-container,
-   .devices-count-2 .sigma-device-img-container {
+   .devices-count-1 .sigma-device-img-container, .devices-count-2 .sigma-device-img-container {
        height: 120px;
    }
 }
 
 /* Blackbox dialog alignment */
-.blackbox-dialog-inline {
+
+.sigma-modal--abutments-delivery-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--abutments-delivery-receive .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--abutments-index-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--accountant-delivery-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--accountant-delivery-actions-alt .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--admin-intel-shortcut .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--admin-intel-settings .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--admin-intel2-shortcut .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--admin-intel2-settings .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--admin-mobile-access .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--cases-dashboard-case-completion .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--cases-dashboard-case-completion-alt .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--cases-dashboard-loading .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-create-modern-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-create-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-create-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--dashboard-active-milling .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--dashboard-active-case-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--dashboard-waiting-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-edit-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-edit-teeth-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--case-edit-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--cases-index-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--cases-rejected-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--clients-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--clients-add .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--clients-delete .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--active-cases-preview .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--adminhth-intel-shortcut .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--adminhth-intel-settings .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--adminhth-intel2-shortcut .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--adminhth-intel2-settings .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--adminhth-mobile-access .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--waiting-3d-printing .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--waiting-delivery .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--waiting-generic .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--delivery-schedule-edit .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--delivery-schedule-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--delivery-receive-payment .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--devices-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-causes-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-modify-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-modify-teeth-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-modify-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-redo-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-redo-teeth-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-redo-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-reject-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-reject-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-repeat-teeth .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-repeat-teeth-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--failures-repeat-files .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-primary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-tertiary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-alt-primary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-alt-secondary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-emp-cases-alt-tertiary .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-payments-alt .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--generic-payments .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--implants-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--job-types-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--labs-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-create-add-type .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-create-add-implant .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-create-edit-implant .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-edit-types .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-edit-add-type .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--material-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--media-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--rtl-search .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--report-employees-filter .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--report-devices-filter .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--tags-actions .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--invoice-check .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--invoice-check-new .blackbox-dialog-inline {
+   padding: 0;
+   margin: 0;
+   /* width: 100%; */
+   height: 100%; /* Fill available height */
+   display: flex;
+   flex-direction: column;
+}
+.sigma-modal--users-actions .blackbox-dialog-inline {
    padding: 0;
    margin: 0;
    /* width: 100%; */
@@ -2509,13 +4918,318 @@ blackbox-button-inner.enabled.orange{
    flex-direction: column;
 }
 
-.dialog-title-black-box {
+
+.sigma-modal--abutments-delivery-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--abutments-delivery-receive .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--abutments-index-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--accountant-delivery-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--accountant-delivery-actions-alt .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--admin-intel-shortcut .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--admin-intel-settings .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--admin-intel2-shortcut .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--admin-intel2-settings .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--admin-mobile-access .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--cases-dashboard-case-completion .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--cases-dashboard-case-completion-alt .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--cases-dashboard-loading .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-create-modern-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-create-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-create-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--dashboard-active-milling .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--dashboard-active-case-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--dashboard-waiting-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-edit-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-edit-teeth-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--case-edit-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--cases-index-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--cases-rejected-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--clients-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--clients-add .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--clients-delete .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--active-cases-preview .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--adminhth-intel-shortcut .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--adminhth-intel-settings .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--adminhth-intel2-shortcut .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--adminhth-intel2-settings .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--adminhth-mobile-access .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--waiting-3d-printing .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--waiting-delivery .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--waiting-generic .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--delivery-schedule-edit .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--delivery-schedule-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--delivery-receive-payment .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--devices-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-causes-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-modify-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-modify-teeth-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-modify-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-redo-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-redo-teeth-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-redo-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-reject-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-reject-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-repeat-teeth .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-repeat-teeth-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--failures-repeat-files .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-primary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-tertiary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-alt-primary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-alt-secondary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-emp-cases-alt-tertiary .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-payments-alt .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--generic-payments .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--implants-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--job-types-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--labs-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-create-add-type .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-create-add-implant .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-create-edit-implant .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-edit-types .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-edit-add-type .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--material-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--media-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--rtl-search .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--report-employees-filter .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--report-devices-filter .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--tags-actions .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--invoice-check .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--invoice-check-new .dialog-title-black-box {
+   margin: 15px 010px 12px 15px;
+   /* font-size: 1.25rem; */
+}
+.sigma-modal--users-actions .dialog-title-black-box {
    margin: 15px 010px 12px 15px;
    /* font-size: 1.25rem; */
 }
 
 
-.macaw-tabs .macaw-silk-tabs .notransition{
+.macaw-tabs .macaw-silk-tabs .notransition {
 
 }
 .stage-inner-tabs {
