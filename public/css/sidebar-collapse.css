@@ -298,10 +298,10 @@
     /* Main panel takes full width on mobile */
     .main-panel {
    margin-left: 80px !important;
-    margin-left: 78px !important;
-    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
-    width: calc(100% - 80px) !important;
-    }
+   margin-left: 78px !important;
+   transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
+   /* width: calc(100% - 80px) !important; */
+   }
 
     /* Don't push content on mobile, keep it in place */
     html.nav-open .main-panel,

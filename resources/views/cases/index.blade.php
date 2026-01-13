@@ -476,8 +476,8 @@
 
         /* Trash can icon in corner */
         .trash-icon-corner {
-            position: absolute;
-            top: 8px;
+            position: relative;
+            top: 85px;
             right: 12px;
             z-index: 10;
             width: 32px;
@@ -649,13 +649,6 @@
                 <input type="hidden" class="form-control" name="id" value="{{$id}}">
             @endif
                               <div class="container full-width">
-                                  <div class="tooltip-toggle-container">
-                                      <label for="tooltip-toggle">Enable Tooltip</label>
-                                      <label class="switch">
-                                          <input type="checkbox" id="tooltip-toggle">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </div>
                                 <!-- Trash can icon in top-right corner -->
                                 <a href="{{route('deleted-cases')}}" class="trash-icon-corner" title="View Deleted Cases">
                                     <i class="fa-regular fa-trash-can"></i>

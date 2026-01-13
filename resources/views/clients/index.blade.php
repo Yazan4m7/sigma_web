@@ -88,12 +88,6 @@
     .filters-row .btn-block, .filters-row .form-control, .filters-row .selectpicker {
         width: 100% !important;
     }
-    .apply-row > div {
-        margin-bottom: 10px !important;
-    }
-    .apply-row button {
-        width: 100%;
-    }
 }
 .client-actions-row {
     display: flex;
@@ -114,22 +108,22 @@
     }
 }
 
-.filters-row > [class*="col-"], .apply-row > [class*="col-"] {
+.filters-row > [class*="col-"] {
     min-width: 0;
 }
 
-.filters-row .selectpicker, .filters-row .form-control, .filters-row .btn, .apply-row .btn {
+.filters-row .selectpicker, .filters-row .form-control, .filters-row .btn {
     width: 100%;
 }
 
-.filters-row .bootstrap-select, .apply-row .bootstrap-select {
+.filters-row .bootstrap-select {
     width: 100% !important;
     max-width: 100%;
     min-width: 0;
     box-sizing: border-box;
 }
 
-.filters-row .bootstrap-select > .dropdown-toggle, .apply-row .bootstrap-select > .dropdown-toggle {
+.filters-row .bootstrap-select > .dropdown-toggle {
     width: 100%;
 }
 
@@ -151,34 +145,24 @@
 }
 
 .balance-col {
-    text-align: center;
+    text-align: left;
 }
 
-.apply-button-col {
-    display: flex;
-    justify-content: center;
-}
-
-.apply-button-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.apply-button-wrapper .btn {
-    width: auto;
-}
 
 .filters-card {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
 }
 
 .filter-label {
     font-weight: 600;
-    font-size: 13px;
-    color: #525f7f;
+    font-size: 12px;
+    color: #6c757d;
+    margin-bottom: 6px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .filter-input {
@@ -186,38 +170,36 @@
 }
 
 .filter-apply-btn {
-    height: 42px;
+    height: 38px;
     font-weight: 600;
+    padding: 0 20px;
+    border-radius: 6px;
 }
 
-.apply-row {
-    border-top: 1px solid #e9ecef;
+.filters-row {
+    gap: 12px;
 }
 
 .balance-summary-box {
-    background: #f7fafc;
-    border: 2px solid #2d5f6d;
-    border-radius: 8px;
-    padding: 8px 12px;
-    min-height: 42px;
-}
-
-.balance-summary__label {
-    color: #525f7f;
-    font-size: 12px;
-    font-weight: 500;
-    margin-right: 6px;
+    background: linear-gradient(135deg, #f8fafc 0%, #e9f0f5 100%);
+    border: 1px solid #d7e0e7;
+    border-radius: 6px;
+    padding: 8px 14px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .balance-summary__value {
-    color: #1a202c;
-    font-size: 18px;
+    color: #2d5f6d;
+    font-size: 16px;
     font-weight: 700;
 }
 
 .balance-summary__currency {
-    color: #2d5f6d;
-    font-size: 14px;
+    color: #6c757d;
+    font-size: 13px;
     font-weight: 600;
     margin-left: 4px;
 }
@@ -234,37 +216,10 @@
     color: #dc3545;
 }
 
-@media (max-width: 575.98px){
-    .apply-button-col {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 320px;
-        width: 100%;
-    }
-}
-/* Actions aligned top-right */
-.doctor-card-body {
-    position: relative;
-}
-
-.card-actions-row {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    width: auto;
-    margin: 0;
-    z-index: 2;
-}
-
 .doctor-actions {
     display: inline-flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 0.5rem;
-    margin-left: auto;
 }
 
 .status-tab {
@@ -396,13 +351,6 @@
     color: #ffffff;
 }
 
-@media (max-width: 991.98px){
-    .card-actions-row {
-        position: static;
-        width: 100%;
-        margin-bottom: 0.75rem;
-    }
-}
 
 </style>
 @php
@@ -413,46 +361,45 @@
     <div class="row mb-3">
         <div class="col-lg-12">
             <div class="card filters-card">
-                <div class="card-body doctor-card-body">
-                    <div class="card-actions-row">
+                <div class="card-body doctor-card-body py-3">
+                    {{-- Top row: Status toggle + Action buttons --}}
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div class="status-tab">
+                            <span class="status-label mb-0">Status:</span>
+                            <label class="status-toggle">
+                                <input type="hidden" name="active" value="0">
+                                <input type="checkbox" id="active" name="active" value="1" {{ (old('active', $status) == 1) ? 'checked' : '' }}>
+                                <span class="toggle-text toggle-text--on">Enabled</span>
+                                <span class="toggle-text toggle-text--off">Disabled</span>
+                            </label>
+                        </div>
                         <div class="doctor-actions">
-                            <div class="status-tab">
-                                <span class="status-label">Status:</span>
-                                <label class="status-toggle">
-                                    <input type="hidden" name="active" value="0">
-                                    <input type="checkbox" id="active" name="active" value="1" {{ (old('active', $status) == 1) ? 'checked' : '' }}>
-                                    <span class="toggle-text toggle-text--on">Enabled</span>
-                                    <span class="toggle-text toggle-text--off">Disabled</span>
-                                </label>
-                            </div>
                             @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
                                 <a href="{{ route('new-dentist-view') }}" class="icon-action icon-action--success" aria-label="Add New Doctor">
                                     <i class="fa fa-plus"></i>
-                                    <span class="sr-only">Add New Doctor</span>
                                 </a>
                             @endif
                             @if(Auth()->user()->is_admin)
                                 <a href="{{ route('mobile-stats-configs') }}" class="icon-action" aria-label="Mobile">
                                     <i class="fa fa-phone"></i>
-                                    <span class="sr-only">Mobile</span>
                                 </a>
                             @endif
                         </div>
                     </div>
+
+                    {{-- Filter controls row --}}
                     <div class="row align-items-end filters-row">
                         {{-- Date Filter --}}
-                        <div class="col-lg-3 col-md-6 col-sm-6 col-12 mb-2 pr-2">
-                            @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                <label for="from" class="filter-label">From Date:</label>
-                                <input id="from" class="form-control SDTP filter-input" name="from" type="text"
-                                       value="{{ old('from', $from ?? '') }}" required readonly
-                                />
-                            @endif
+                        @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
+                            <label for="from" class="filter-label">From Date</label>
+                            <x-ios-dtp name="from" id="from" :value="old('from', $from ?? '')" :required="true" />
                         </div>
+                        @endif
 
                         {{-- Doctor Filter --}}
-                        <div class="col-lg-3 col-md-6 col-sm-8 col-8 mb-2 px-2">
-                            <label for="doctor" class="filter-label">Filter by Doctor:</label>
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
+                            <label for="doctor" class="filter-label">Doctor</label>
                             <select class="selectpicker form-control clearOnAll" multiple
                                     name="doctor[]" id="doctor" data-live-search="true"
                                     title="All Doctors" data-hide-disabled="true">
@@ -469,32 +416,22 @@
                             </select>
                         </div>
 
-                        {{-- Apply Filters Button --}}
-                        <div class="col-lg-2 col-md-6 col-sm-4 col-4 mb-2 pl-2 apply-button-col">
-                            <div class="apply-button-wrapper">
-                                <button type="submit" class="btn btn-primary filter-apply-btn">
-                                    <i class="fa fa-search"></i> Apply Filters
-                                </button>
+                        {{-- Balance Display --}}
+                        @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-2">
+                            <label class="filter-label">Total Balance</label>
+                            <div class="balance-summary balance-summary-box">
+                                <span class="balance-summary__value">{{ number_format($totalBalance) }}</span>
+                                <span class="balance-summary__currency">JOD</span>
                             </div>
                         </div>
+                        @endif
 
-                    </div>
-
-                    {{-- Apply Filters and Total Balance Row --}}
-                    <div class="row mt-3 pt-3 align-items-center apply-row">
-                        {{-- Total Balance Display --}}
-                        <div class="col-lg-2 col-md-4 col-sm-6 mb-2 pl-3">
-                            @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                <div class="balance-summary balance-summary-box">
-                                    <span class="balance-summary__label">Balance:</span>
-                                    <span class="balance-summary__value">{{ number_format($totalBalance) }}</span>
-                                    <span class="balance-summary__currency">JOD</span>
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="col-lg-8 col-md-4 col-sm-12 mb-2">
-                            {{-- Empty space on the right --}}
+                        {{-- Apply Filters Button --}}
+                        <div class="col-lg-3 col-md-12 col-sm-6 col-6 mb-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary filter-apply-btn w-100">
+                                <i class="fa fa-search mr-1"></i> Apply
+                            </button>
                         </div>
                     </div>
                 </div>

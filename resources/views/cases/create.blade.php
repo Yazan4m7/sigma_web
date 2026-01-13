@@ -20,7 +20,7 @@
         .create-case-page {
             /*background: #1f46a900;*/
             border-radius: 18px;
-            padding: 1rem 2rem 2rem 2rem;
+            /*padding: 1rem 2rem 2rem 2rem;*/
             /*margin-top: 1rem;*/
         }
 
@@ -101,9 +101,9 @@
 
         .section-divider {
             width: 100%;
-            height: 1px;
+            height:0px;
             background: var(--border-muted);
-            margin: 2.5rem 0;
+            margin: 1.5rem 0;
         }
 
         .section-block {
