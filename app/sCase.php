@@ -229,7 +229,7 @@ class sCase extends Model
           //  return("4 , " . $status);
             if ($this->jobs[0]->assignee != null) {
                 if ($this->jobs[0]->delivery_accepted == null)
-                    return "Assigned To Driver";
+                    return $this->jobs[0]->assignedTo->first_name;
                 else
                     return "Active in Delivery";
             }

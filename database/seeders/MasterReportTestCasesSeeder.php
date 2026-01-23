@@ -10,6 +10,7 @@ use App\Build;
 use App\caseLog;
 use App\failureLog;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class MasterReportTestCasesSeeder extends Seeder
 {
@@ -21,6 +22,7 @@ class MasterReportTestCasesSeeder extends Seeder
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         echo "Starting Master Report Test Cases Creation...\n\n";
 
         // Get required data
@@ -482,6 +484,9 @@ class MasterReportTestCasesSeeder extends Seeder
         echo "13. Recent Case (Today) - Case ID: {$case13->id}\n";
         echo "14. Modification Case (Finishing) - Case ID: {$case14->id}\n";
         echo "15. Redo Case (QC) - Case ID: {$case15->id}\n";
+
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
     }
 
     /**

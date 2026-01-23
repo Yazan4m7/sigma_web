@@ -36,29 +36,30 @@
                 <div class=" col-sm-6 col-md-3 mb-3">
                     <div class="kt-subheader__search" style="">
                         <label for="abutments_from">From (Start of):</label>
-                        <x-date-time-picker
-                            id="abutments_from"
-                            name="from"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{$from}}"
-                        />
-                    </div>
+                        <x-ios-dtp name="from" id="abutments_from" :value=" \Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                        <input class="form-control SDTP"--}}
+{{--                               id="abutments_from"--}}
+{{--                               name="from"--}}
+{{--                               type="text"--}}
+{{--                               value="{{ \Carbon\Carbon::parse($from)->format('d M, YYYY') }}"--}}
+{{--                               required=""--}}
+{{--                               readonly=""--}}
+{{--                        >    --}}
+  </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                     <div class="kt-subheader__search" style="">
                         <label for="abutments_to">To (End of):</label>
-                        <x-date-time-picker
-                            id="abutments_to"
-                            name="to"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{$to}}"
-                        />
+                        <x-ios-dtp name="to" id="abutments_to" :value="\Carbon\Carbon::parse($to)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                        <input class="form-control SDTP"--}}
+{{--                               id="abutments_to"--}}
+{{--                               name="to"--}}
+{{--                               type="text"--}}
+{{--                               value="{{ \Carbon\Carbon::parse($to)->format('d M, YYYY') }}"--}}
+{{--                               required=""--}}
+{{--                               readonly=""--}}
+{{--                        > --}}
+
                     </div>
                 </div>
 

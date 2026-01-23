@@ -6,7 +6,7 @@
 describe('Job Types Report', () => {
   beforeEach(() => {
     // Login before each test
-    cy.login()
+    cy.simpleLogin('yazan', '1')
 
     // Navigate to Job Types Report page
     cy.visit('/reports/job-types')
@@ -257,6 +257,34 @@ describe('Job Types Report', () => {
     it('should be responsive on tablet', () => {
       cy.viewport('ipad-2')
       cy.get('.sigma-report-table').should('be.visible')
+    })
+  })
+
+  describe('Units/Cases Toggle', () => {
+    it('should default to CASES view mode', () => {
+      cy.get('#cases-toggle').should('have.class', 'active')
+      cy.get('#units-toggle').should('not.have.class', 'active')
+      cy.url().should('not.include', 'perToggle=1')
+    })
+
+    it('should switch to UNITS view mode', () => {
+      cy.get('#units-toggle').click()
+      cy.url().should('include', 'perToggle=1')
+      cy.get('#units-toggle').should('have.class', 'active')
+      cy.get('#cases-toggle').should('not.have.class', 'active')
+      cy.get('.sigma-report-table').should('exist') // Ensure table reloads
+    })
+
+    it('should switch back to CASES view mode', () => {
+      // First switch to units to ensure we can switch back
+      cy.get('#units-toggle').click()
+      cy.url().should('include', 'perToggle=1')
+
+      cy.get('#cases-toggle').click()
+      cy.url().should('not.include', 'perToggle=1') // perToggle=0 or absent means cases
+      cy.get('#cases-toggle').should('have.class', 'active')
+      cy.get('#units-toggle').should('not.have.class', 'active')
+      cy.get('.sigma-report-table').should('exist') // Ensure table reloads
     })
   })
 })

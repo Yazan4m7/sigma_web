@@ -5940,8 +5940,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -5959,8 +5960,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -5978,8 +5980,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -5997,8 +6000,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6016,8 +6020,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6035,8 +6040,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6054,8 +6060,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6073,8 +6080,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6092,8 +6100,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6111,8 +6120,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6130,8 +6140,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6149,8 +6160,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6168,8 +6180,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6187,8 +6200,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6206,8 +6220,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6225,8 +6240,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6244,8 +6260,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6263,8 +6280,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6282,8 +6300,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6301,8 +6320,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6320,8 +6340,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6339,8 +6360,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6358,8 +6380,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6377,8 +6400,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6396,8 +6420,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6415,8 +6440,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6434,8 +6460,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6453,8 +6480,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6472,8 +6500,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6491,8 +6520,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6510,8 +6540,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6529,8 +6560,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6548,8 +6580,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6567,8 +6600,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6586,8 +6620,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6605,8 +6640,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6624,8 +6660,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6643,8 +6680,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6662,8 +6700,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6681,8 +6720,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6700,8 +6740,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6719,8 +6760,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6738,8 +6780,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6757,8 +6800,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6776,8 +6820,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6795,8 +6840,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6814,8 +6860,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6833,8 +6880,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6852,8 +6900,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6871,8 +6920,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6890,8 +6940,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6909,8 +6960,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6928,8 +6980,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6947,8 +7000,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6966,8 +7020,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -6985,8 +7040,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7004,8 +7060,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7023,8 +7080,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7042,8 +7100,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7061,8 +7120,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7080,8 +7140,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7099,8 +7160,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7118,8 +7180,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7137,8 +7200,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7156,8 +7220,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7175,8 +7240,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7194,8 +7260,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7213,8 +7280,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7232,8 +7300,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7251,8 +7320,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7270,8 +7340,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7289,8 +7360,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7308,8 +7380,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7327,8 +7400,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7346,8 +7420,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7365,8 +7440,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7384,8 +7460,9 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     display: flex;
     flex-direction: column;
     /* GPU acceleration for smooth 60fps animations */
-    transform: translate3d(0, 20px, 0) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    transform: translateY(20px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.2);
     /* Performance optimizations */
@@ -7395,235 +7472,235 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 
 
 .sigma-workflow-modal.active.sigma-modal--abutments-delivery-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--abutments-delivery-receive .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--abutments-index-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--accountant-delivery-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--accountant-delivery-actions-alt .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--admin-intel-shortcut .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--admin-intel-settings .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--admin-intel2-shortcut .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--admin-intel2-settings .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--admin-mobile-access .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-create-modern-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-create-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-create-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--dashboard-active-milling .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--dashboard-active-case-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--dashboard-waiting-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-edit-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-edit-teeth-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--case-edit-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--cases-index-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--cases-rejected-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--clients-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--clients-add .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--clients-delete .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--active-cases-preview .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--adminhth-intel-shortcut .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--adminhth-intel-settings .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--adminhth-intel2-shortcut .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--adminhth-intel2-settings .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--adminhth-mobile-access .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--waiting-delivery .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--waiting-generic .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--delivery-schedule-edit .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--delivery-schedule-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--delivery-receive-payment .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--devices-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-causes-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-modify-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-modify-teeth-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-modify-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-redo-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-redo-teeth-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-redo-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-reject-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-reject-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-repeat-teeth .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-repeat-teeth-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--failures-repeat-files .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-primary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-tertiary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-primary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-secondary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-emp-cases-alt-tertiary .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-payments-alt .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--generic-payments .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--implants-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--job-types-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--labs-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-create-add-type .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-create-add-implant .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-create-edit-implant .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-edit-types .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-edit-add-type .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--material-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--media-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--rtl-search .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--report-employees-filter .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--report-devices-filter .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--tags-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--invoice-check .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--invoice-check-new .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 .sigma-workflow-modal.active.sigma-modal--users-actions .sigma-workflow-dialog {
-    transform: translate3d(0, 0, 0) scale(1);
+    transform: translateY(0);
 }
 
 
@@ -8095,24 +8172,24 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
 @keyframes dialogFadeIn {
     from {
         opacity: 0;
-        transform: translateY(30px) scale(0.9);
+        transform: translateY(20px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
 
 @keyframes dialogFadeOut {
     from {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 
     to {
         opacity: 0;
-        transform: translateY(30px) scale(0.9);
+        transform: translateY(20px);
     }
 }
 

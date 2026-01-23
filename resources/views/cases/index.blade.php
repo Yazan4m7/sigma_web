@@ -1,7 +1,76 @@
 @extends('layouts.app' ,[ 'pageSlug' => "Cases List"])
+
 @section('content')
 
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+        /* Customizations */
+        .sigma-sticky-toolbar {
+            top: 55px !important; /* Adjust if header height changes */
+        }
+        #casesTable {
+            font-family: 'Roboto', sans-serif;
+        }
+        #casesTable tbody td:nth-child(2) { /* Patient name */
+            font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
+        }
+        #casesTable thead th:first-child,
+        #casesTable tbody td:first-child {
+            padding-left: 10px !important; /* Add more left padding */
+        }
+
+        /* Move sorting icons closer */
+        #casesTable thead .sorting::after,
+        #casesTable thead .sorting_asc::after,
+        #casesTable thead .sorting_desc::after {
+            right: 8px;
+        }
+        #casesTable thead .sorting::before,
+        #casesTable thead .sorting_asc::before,
+        #casesTable thead .sorting_desc::before {
+            right: 16px;
+        }
+
+
+        
+        /* Specific alignments for Tags and Status columns */
+        .tagsHeader, .tagsTD { /* Tags column */
+            text-align: left !important;
+            direction: ltr !important;
+        }
+        #casesTable thead th:nth-child(6) { /* Status column Header */
+            text-align: center !important;
+        }
+        #casesTable tbody td:nth-child(6) { /* Status column Body */
+            text-align: center !important;
+        }
+        #casesTable tbody td:nth-child(6) .sigma-case-status-badge {
+            margin: 0 auto !important;
+        }
+        /* End Customizations */
+
+        #casesTable {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            border-collapse: separate; /* To respect border-radius */
+            border-spacing: 0;
+        }
+
+        #casesTable td {
+            padding: 14px 10px; /* Adjusted padding */
+            border-bottom: 1px solid #f1f5f9;
+            vertical-align: middle;
+        }
+
+        #casesTable tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Remove zebra-striping from dataTables to use our own hover */
+        #casesTable.table-striped tbody tr:nth-of-type(odd) {
+            background-color: transparent;
+        }
+
         @font-face {
             font-family: 'NewYorkSmall';
             src: url('/assets/fonts/newyork/NewYorkSmall-Regular.otf') format('opentype');
@@ -143,12 +212,7 @@
             vertical-align: bottom;
         }
 
-        .tagsHeader, .tagsTD {
-            text-align: right;
-            direction: rtl;
-            padding-right: 1px;
-        }
-
+        
         /* The switch - the box around the slider */
         .switch {
             position: relative;
@@ -242,6 +306,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             z-index: 1050;
+            background: rgba(0, 0, 0, 0.5);
         }
 
         .sigma-modal--cases-index-actions.show {
@@ -339,10 +404,25 @@
 
         
 .sigma-modal--cases-index-actions .modal-footer .btn {
-            flex: 1;
-            min-width: 120px;
-            margin: 0;
+    min-width: 120px;
+    margin: 0;
+    display: flex;
+    grid-template-columns: 50% 50%;
+    align-items: center;
+    column-gap: 8px;
+    justify-content: center;
+
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .btn .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .btn .btn-text {
             white-space: nowrap;
+            text-align: left;
         }
 
         .content {
@@ -426,12 +506,14 @@
             border: 1px solid #ced4da;
         }
 
-        .cases-filter-row .bootstrap-select > .dropdown-toggle {
-            height: 36px !important;
-            padding: 4px 10px !important;
-            font-size: 13px !important;
-        }
-
+            .cases-filter-row .bootstrap-select > .dropdown-toggle {
+                height: 36px !important;
+                padding: 4px 10px !important;
+                font-size: 13px !important;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+            }
         .cases-filter-btn {
             width: 100%;
             height: 36px;
@@ -467,36 +549,19 @@
         .container.full-width {
             background-color: #f8f9fa;
             border-radius: 5px;
-            /*padding: 4px;*/
+            padding: 4px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
             margin-bottom: 20px;
             border: 1px solid #e9ecef;
             position: relative;
         }
 
-        /* Trash can icon in corner */
-        .trash-icon-corner {
-            position: relative;
-            top: 85px;
-            right: 12px;
-            z-index: 10;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #dc3545;
-            font-size: 18px;
-            transition: all 0.3s ease;
-            cursor: pointer;
+        .sunriseTable tbody tr td {
+             padding: 4px 0 !important;
         }
+        /*.case-row{font-weight: 400 !important;}*/
 
-        .trash-icon-corner:hover {
-            color: #c82333;
-            transform: scale(1.1);
-        }
-
-        /* Better spacing */
+            /* Better spacing */
         .filter-section {
             margin-bottom: 1.5rem;
         }
@@ -505,12 +570,17 @@
         .btn-group .btn {
             margin-left: 5px;
         }
+         div.modal-content{
+             padding: 16px 3px;
+        }
 
         /* Table actions styling */
         .table-actions {
             margin-bottom: 15px;
         }
-
+        .dropdown-menu li a {
+            padding: 0 20px 4px 12px !important;
+        }
         /* Responsive adjustments */
         @media screen and (max-width: 768px){
             table {
@@ -545,7 +615,7 @@
             #casesTable tbody td:nth-child(4) { width: 18%; } /* Date Delivered */
             #casesTable thead th:nth-child(5),
             #casesTable tbody td:nth-child(5) { width: 12%; } /* Status */
-            #casesTable thead th:nth-child(6),
+            #casesTable thead th:nth-child(6)
             #casesTable tbody td:nth-child(6) { width: 8%; } /* Tags */
 
             .tooltip-toggle-container{
@@ -615,20 +685,20 @@
 
             /* Smaller status badges on mobile */
             .sigma-case-status-badge {
-                width: auto !important;
+
                 padding: 2px 6px !important;
                 font-size: 11px !important;
             }
         }
-        #casesTable tbody td:nth-child(5) {
-            text-align: left;
-            #casesTable tbody td:nth-child(5) .sigma-case-status-badge {
-                margin: 0;
-                justify-content: flex-start;
-                text-align: left;
-            }
-            text-align: left;
+
+        .sigma-sticky-table-header thead th:first-child {
+            border-top-left-radius: 5px;
         }
+
+        .sigma-sticky-table-header thead th:last-child {
+            border-top-right-radius: 5px;
+        }
+
     </style>
     @php
         $permissions = safe_permissions();
@@ -649,35 +719,22 @@
                 <input type="hidden" class="form-control" name="id" value="{{$id}}">
             @endif
                               <div class="container full-width">
-                                <!-- Trash can icon in top-right corner -->
-                                <a href="{{route('deleted-cases')}}" class="trash-icon-corner" title="View Deleted Cases">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </a>
-
                                 <div class="row cases-filter-row">
                                     <!-- Date filtering section -->
                                     <div class="col-4 col-sm-3 col-md-2 mb-2">
-                                        <x-date-time-picker
-                                            id="cases_from"
+                                        <x-ios-dtp
                                             name="from"
-                                            label=""
+                                            id="cases_from"
+                                            :value="$from"
                                             mode="date"
-                                            display-format="DD MMM, YYYY"
-                                            submit-format="YYYY-MM-DD"
-                                            value="{{ $from }}"
-                                            placeholder="From"
                                         />
                                     </div>
                                     <div class="col-4 col-sm-3 col-md-2 mb-2">
-                                        <x-date-time-picker
-                                            id="cases_to"
+                                        <x-ios-dtp
                                             name="to"
-                                            label=""
+                                            id="cases_to"
+                                            :value="$to"
                                             mode="date"
-                                            display-format="DD MMM, YYYY"
-                                            submit-format="YYYY-MM-DD"
-                                            value="{{ $to }}"
-                                            placeholder="To"
                                         />
                                     </div>
 
@@ -697,16 +754,17 @@
                                         @endif
                                     </div>
 
-                                    <!-- Search field -->
-                                    <div class="col-9 col-sm-2 col-md-5 mb-2">
-                                        <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
-                                    </div>
-
-                                    <!-- Apply Filters button -->
-                                    <div class="col-3 col-sm-1 col-md-1 mb-2 d-flex align-items-end">
-                                        <button type="submit" class="btn btn-primary cases-filter-btn">
-                                            <i class="fas fa-search"></i>
-                                        </button>
+                                    <!-- Search, Apply, and Trash -->
+                                    <div class="col-12 col-md-4 mb-2">
+                                        <div class="d-flex">
+                                            <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
+                                            <button type="submit" class="btn btn-primary cases-filter-btn ml-2" style="width: auto; min-width: 40px;">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                            <a href="{{route('deleted-cases')}}" class="btn btn-danger cases-filter-btn ml-2" title="View Deleted Cases" style="width: auto; min-width: 40px;">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -729,6 +787,7 @@
                                         <th class="sigma-sticky-container">Patient</th>
                                         <th class="initDeliDateHeader sigma-sticky-container">Initial Deli. Date</th>
                                         <th class="sigma-sticky-container">Date Delivered</th>
+                                        <th class="sigma-sticky-container">Units</th>
                                         <th class="sigma-sticky-container">Status</th>
                                         <th class="tagsHeader sigma-sticky-container">Tags</th>
 
@@ -755,9 +814,22 @@
                                             <td><span class="cases-cell-truncate">{{$case->client->name ?? "x"}}</span></td>
                                             <td><span class="cases-cell-truncate">{{$case->patient_name ?? "x"}}</span></td>
                                             <td class="initDeliDateTD">{{$case->initDeliveryDate() ?? "x" }}
-                                                &nbsp;&nbsp; {{$case->initDeliveryTime() ?? "x"}}</td>
+                                                &nbsp;&nbsp; {{$case->initDeliveryTime() ?? "Unavailable"}}</td>
                                             <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                                 &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
+                                            <td>
+                                                @php
+                                                    $totalUnits = 0;
+                                                    foreach($case->jobs as $job) {
+                                                        if (!empty($job->unit_num)) {
+                                                            // Split by comma and count the units
+                                                            $units = explode(',', $job->unit_num);
+                                                            $totalUnits += count($units);
+                                                        }
+                                                    }
+                                                @endphp
+                                                <span class="cases-cell-truncate">{{ $totalUnits }}</span>
+                                            </td>
                                             <td>
                                                 @if(str_contains($caseStatus, "Completed") )
                                                     <span class="badge badge-success sigma-case-status-badge sigma-status-width">
@@ -819,14 +891,19 @@
                                                         <span class="sigma-badge-label">{{ trim($status) }}</span>
                                                     </span>
                                                 @else
+                                                    @php
+                                                        $isDeliveryAssigned = $case->jobs[0]->stage == 8 && $case->jobs[0]->assignee != null && $case->jobs[0]->delivery_accepted == null;
+                                                    @endphp
                                                     <span class="badge badge-warning sigma-case-status-badge sigma-status-width">
-                                                                           <span class="tooltipX">
-                                                                               <span class="sigma-badge-label">{{ $caseStatus }}</span>
-                                                                               <span
-                                                                                   class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
-                                                                </span>
+                                                        @if($isDeliveryAssigned)
+                                                            <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                                        @else
+                                                            <span class="tooltipX">
+                                                                <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                                                <span class="tooltiptext">{!! $case->getStatusToolTipHTML() !!}</span>
+                                                            </span>
+                                                        @endif
                                                     </span>
-
                                                 @endif
 
                                             </td>
@@ -850,7 +927,7 @@
                                 </table>
 
                                 @foreach($cases  as $case)
-                                    <div class="modal   sigma-modal--cases-index-actions" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
+                                    <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}" data-backdrop="false" onclick="if(event.target === this) $(this).modal('hide')">
 
                                         <input type="hidden" name="case_id" value="{{$case->id}}">
                                         <div class="modal-dialog modal-dialog-centered   " role="document">
@@ -922,11 +999,11 @@
                                                             <!-- Row 1: Print Voucher and View Case -->
                                                             <div class="col-6" style="padding: 5px;">
                                                                 <a href="{{route('view-voucher',$case->id)}}"
-                                                                   class="btn btn-info" style="width: 100%;"><i class="fas fa-print"></i> Print Voucher</a>
+                                                                   class="btn btn-info" style="width: 100%;"><span class="btn-icon"><i class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
                                                             </div>
                                                             <div class="col-6" style="padding: 5px;">
                                                                 <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                                   class="btn btn-info" style="width: 100%;"><i class="far fa-file-alt"></i> View </a>
+                                                                   class="btn btn-info" style="width: 100%;"><span class="btn-icon"><i class="far fa-file-alt"></i></span><span class="btn-text">View</span></a>
                                                             </div>
 
                                                             <!-- Row 2: Lock Case, Delete Case -->
@@ -934,10 +1011,10 @@
                                                             <div class="col-6" style="padding: 5px;">
                                                                 @if(!$case->locked)
                                                                     <a href="{{route('lock-case',$case->id)}}"
-                                                                       class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock"></i> Lock </a>
+                                                                       class="btn btn-dark" style="width: 100%;"><span class="btn-icon"><i class="fas fa-lock"></i></span><span class="btn-text">Lock</span></a>
                                                                 @else
                                                                     <a href="{{route('unlock-case',$case->id)}}"
-                                                                       class="btn btn-dark" style="width: 100%;"><i class="fas fa-lock-open"></i> Unlock </a>
+                                                                       class="btn btn-dark" style="width: 100%;"><span class="btn-icon"><i class="fas fa-lock-open"></i></span><span class="btn-text">Unlock</span></a>
                                                                 @endif
                                                             </div>
                                                             @endif
@@ -948,7 +1025,7 @@
                                                                    style="color:white; width: 100%;"
                                                                    onclick="caseDelConfirmation(event)"
                                                                    href="{{route('delete-case',$case->id)}}"
-                                                                   class="btn btn-danger"><i class="fas fa-trash"></i> Delete </a>
+                                                                   class="btn btn-danger"><span class="btn-icon"><i class="fas fa-trash"></i></span><span class="btn-text">Delete</span></a>
                                                             </div>
                                                             @endif
 
@@ -957,19 +1034,19 @@
                                                                 @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
                                                                 <div class="col-4" style="padding: 5px;">
                                                                     <a href="{{route('reject-case-view',$case->id )}}"
-                                                                       class="btn btn-outline-danger" style="width: 100%;"><i class="fas fa-times x2"></i> Reject case</a>
+                                                                       class="btn btn-outline-danger" style="width: 100%;"><span class="btn-icon"><i class="fas fa-times"></i></span><span class="btn-text">Reject case</span></a>
                                                                 </div>
                                                                 @endif
                                                                 @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
                                                                 <div class="col-4" style="padding: 5px;">
                                                                     <a href="{{route('repeat-case-view',$case->id)}}"
-                                                                       class="btn btn-outline-warning" style="width: 100%;"><i class="fas fa-undo"></i> Repeat case</a>
+                                                                       class="btn btn-outline-warning" style="width: 100%;"><span class="btn-icon"><i class="fas fa-undo"></i></span><span class="btn-text">Repeat case</span></a>
                                                                 </div>
                                                                 @endif
                                                                 @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
                                                                 <div class="col-4" style="padding: 5px;">
                                                                     <a href="{{route('modify-case-view',$case->id)}}"
-                                                                       class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Modify case</a>
+                                                                       class="btn btn-outline-warning" style="width: 100%;"><span class="btn-icon"><i class="fa fa-broom"></i></span><span class="btn-text">Modify case</span></a>
                                                                 </div>
                                                                 @endif
                                                             @endif
@@ -979,13 +1056,13 @@
                                                             @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
                                                             <div class="col-6" style="padding: 5px;">
                                                                 <a href="{{route('redo-case-view',$case->id)}}"
-                                                                   class="btn btn-outline-warning" style="width: 100%;"><i class="fa fa-broom"></i> Redo case</a>
+                                                                   class="btn btn-outline-warning" style="width: 100%;"><span class="btn-icon"><i class="fa fa-broom"></i></span><span class="btn-text">Redo case</span></a>
                                                             </div>
                                                             @endif
                                                             @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
                                                             <div class="col-6" style="padding: 5px;">
                                                                 <a href="{{route('edit-case-view',$case->id)}}"
-                                                                   class="btn btn-warning" style="width: 100%;"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                                                   class="btn btn-warning" style="width: 100%;"><span class="btn-icon"><i class="fa-solid fa-pen-to-square"></i></span><span class="btn-text">Edit</span></a>
                                                             </div>
                                                             @endif
                                                             <!-- Cancel Row -->
@@ -1357,13 +1434,14 @@
                                 "scrollX": false,  // Disable horizontal scroll - let CSS handle it
                                 "autoWidth": false,
                                 "columnDefs": [
-                                    { "orderable": false, "targets": [0, 1, 5] },  // Disable sorting on Doctor, Patient, and Tags columns
-                                    { "width": "18%", "targets": 0 },  // Doctor column width
-                                    { "width": "18%", "targets": 1 },  // Patient column width
-                                    { "width": "15%", "targets": 2 },  // Initial Delivery Date
-                                    { "width": "15%", "targets": 3 },  // Date Delivered
-                                    { "width": "18%", "targets": 4 },  // Status
-                                    { "width": "16%", "targets": 5 }   // Tags
+                                    { "orderable": false, "targets": [0, 1, 4, 6] },  // Disable sorting on Doctor, Patient, Units, and Tags columns
+                                    { "width": "17%", "targets": 0 },  // Doctor column width
+                                    { "width": "17%", "targets": 1 },  // Patient column width
+                                    { "width": "18%", "targets": 2 },  // Initial Delivery Date
+                                    { "width": "14.4%", "targets": 3 },  // Date Delivered
+                                    { "width": "7%", "targets": 4 },   // Units (NEW)
+                                    { "width": "14.4%", "targets": 5 },  // Status
+                                    { "width": "12.2%", "targets": 6 }   // Tags
                                 ]
                             });
 
@@ -1372,47 +1450,7 @@
                                  table.search(this.value).draw();
                              });
 
-                             // Sticky header shadow (shows only when the header is "stuck")
-                             (function initCasesStickyHeaderShadow() {
-                                 const tableEl = document.getElementById('casesTable');
-                                 if (!tableEl) return;
 
-                                 const headerCells = Array.from(tableEl.querySelectorAll('thead th.sigma-sticky-container'));
-                                 if (!headerCells.length) return;
-
-                                 const referenceCell = headerCells[0];
-
-                                 const update = () => {
-                                     const stickyTop = parseFloat(getComputedStyle(referenceCell).top) || 0;
-                                     const rectTop = referenceCell.getBoundingClientRect().top;
-                                     const isStuck = Math.abs(rectTop - stickyTop) <= 1 && window.scrollY > 0;
-                                     headerCells.forEach((th) => th.classList.toggle('is-scrolled', isStuck));
-                                 };
-
-                                 update();
-                                 window.addEventListener('scroll', update, { passive: true });
-                                 window.addEventListener('resize', update);
-                             })();
-
-                             // Calculate and set sticky toolbar height for table header positioning
-                             (function initStickyToolbarHeight() {
-                                 const updateToolbarHeight = () => {
-                                     const toolbar = document.querySelector('.sigma-sticky-toolbar');
-                                     if (toolbar) {
-                                         const height = toolbar.offsetHeight;
-                                         document.documentElement.style.setProperty('--sigma-sticky-toolbar-height', `${height}px`);
-                                     }
-                                 };
-
-                                 // Update on load
-                                 updateToolbarHeight();
-
-                                 // Update on window resize (in case toolbar height changes)
-                                 window.addEventListener('resize', updateToolbarHeight);
-
-                                 // Update after a short delay to ensure all content is loaded
-                                 setTimeout(updateToolbarHeight, 100);
-                             })();
 
                          });
 

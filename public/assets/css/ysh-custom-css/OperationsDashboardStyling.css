@@ -1173,50 +1173,68 @@
 
 /* Slide panel inside */
 .YSH-slide-panel {
-   padding: 30px 20px;
+   padding: 0;
    position: fixed;
-   top: 50%;
-   left: 50%;
-   right: auto;
-   width: 90vw;
+   top: 10vh;
+   right: 0;
+   left: auto;
+   width: 30vw;
+   min-width: 350px;
    max-width: 500px;
-   min-width: 300px;
-   height: auto;
-   max-height: 90vh;
+   height: 80vh;
    background: #ffffff;
-   border-radius: 12px;
-   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-   transform: translate(-50%, -50%) scale(0.98);
-   opacity: 0;
-   transition: transform 0.25s ease, opacity 0.25s ease;
+   border-radius: 12px 0 0 12px;
+   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+   transform: translateX(100%);
+   opacity: 1;
+   transition: transform 0.3s ease;
+   overflow: hidden;
+   display: flex;
+   flex-direction: column;
 }
 
 /* Animation states */
 .YSH-slide-overlay.YSH-active .YSH-slide-panel {
    opacity: 1;
-   transform: translate(-50%, -50%) scale(1);
-   animation: none;
+   transform: translateX(0);
 }
 
 .YSH-slide-overlay.YSH-closing .YSH-slide-panel {
-   opacity: 0;
-   transform: translate(-50%, -50%) scale(0.98);
-   animation: none;
+   opacity: 1;
+   transform: translateX(100%);
 }
 
 
 .YSH-slide-header {
-   /* padding: 15px; */
-   border-bottom: 1px solid #ddd;
+   padding: 20px;
+   border-bottom: 1px solid #e5e7eb;
    display: flex;
    justify-content: space-between;
    align-items: center;
+   flex-shrink: 0;
 }
 
 .YSH-slide-body {
-   /* padding: 15px; */
+   padding: 20px;
    overflow-y: auto;
-   max-height: 400px;
+   overflow-x: hidden;
+   flex: 1;
+   min-height: 0;
+}
+
+.YSH-slide-panel .modal-footer {
+   padding: 15px 20px;
+   border-top: 1px solid #e5e7eb;
+   flex-shrink: 0;
+   background: #fff;
+}
+
+.YSH-slide-grid {
+   display: flex;
+   flex-direction: column;
+   flex: 1;
+   min-height: 0;
+   overflow: hidden;
 }
 
 .YSH-close-slide {
@@ -1233,11 +1251,6 @@
    right: 0;
 }
 
-YSH-slide-grid {
-   display: flex;
-   flex-direction: column;
-   height: 100%;
-}
 
 
 /* Checkbox styling */
@@ -2646,7 +2659,7 @@ YSH-slide-grid {
    }
 
    .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"] {
-       padding: 0.625rem 0.7rem !important;
+       padding: 0.325rem 0.7rem !important;
    }
 
    /* Remove overflow scroll on mobile - responsive CSS will handle it */
@@ -2721,7 +2734,6 @@ YSH-slide-grid {
 
 .macaw-tabs.macaw-silk-tabs > [role="tablist"] {
    position: relative;
-
    display: flex;
    margin: 0;
    padding: 0;
@@ -2897,11 +2909,11 @@ img {
 
 /* 2) Waiting / Active status bar */
 .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-inner-tabs {
-    position: sticky;
-    top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height));
+    /* position: sticky; */
+    /* top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height)); */
     z-index: 70;
-    background: #ffffff;
-    box-shadow: var(--sigma-ops-sticky-shadow);
+    /* background: #ffffff; */
+    /* box-shadow: var(--sigma-ops-sticky-shadow); */
     border-bottom: 1px solid var(--sigma-ops-divider);
     transition: all 0.3s ease;
 }
@@ -2920,9 +2932,8 @@ img {
 
 /* 3) Table header (handles both normal + DataTables tables) */
 .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
-    position: sticky;
-    top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height) - 10px);
-    z-index: 60;
+    position: relative;
+    z-index: auto;
     background-color: var(--sigma-ops-table-header-bg);
     color: #f7fbfb;
     font-weight: 600;
@@ -2960,11 +2971,10 @@ img {
     z-index: 61;
 }
 
-/* If DataTables creates a separate scroll header, keep that header sticky too */
+/* DataTables scroll header - non-sticky */
 .site-wrapper .macaw-tabs.macaw-aurora-tabs .dataTables_scrollHead {
-    position: sticky;
-    top: calc(var(--sigma-ops-sticky-top) + var(--sigma-ops-stagebar-height) + var(--sigma-ops-innerbar-height));
-    z-index: 65;
+    position: relative;
+    z-index: auto;
     background-color: var(--sigma-ops-table-header-bg);
     box-shadow: var(--sigma-ops-sticky-shadow);
     border-bottom: 1px solid var(--sigma-ops-divider);
@@ -3124,8 +3134,12 @@ img {
     }
 
     .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
-        padding: 12px 8px;
-        font-size: 0.75rem;
+        padding: 10px 6px;
+        font-size: 0.8rem;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable tbody td, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable tbody td {
+        font-size: 0.8rem;
     }
 
     .ops-dashboard .macaw-tabs.macaw-aurora-tabs {

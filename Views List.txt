@@ -1,0 +1,44 @@
+- Operations Dashboard
+   - Create Case
+   - Cases
+   - Collect Payments
+   - Delivery Schedule
+   - Abutments Delivery
+   - Cases Monitor
+   - Devices Monitor
+   - Doctors
+   - My Collections
+   - Rejected Cases
+   
+   - Reports
+     - Master Report
+     - Number Of Units
+     - Job Types
+     - QC
+     - Repeats
+     - Implants
+     - Materials Report
+	 
+   - Accountancy
+     - Receive Payments
+     - Invoices
+     - Payments
+     - Take A Payment
+	 
+   - Configuration (Admin-only)
+     - Gallery Media
+     - Materials
+     - Job Types
+     - Users
+     - External Labs
+     - Implants
+     - Abutments
+     - Tags
+     - Failure Causes
+     - Devices
+	 
+     - Tools
+          - Audit Log
+          - Invoices Check
+          - Create Case
+          - Case Timeline

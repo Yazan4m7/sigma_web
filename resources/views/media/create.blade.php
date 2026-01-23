@@ -1,6 +1,6 @@
 @extends('layouts.app' ,[ 'pageSlug' => "Media"])
 @section('content')
-<form  enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{route('create-media-post')}}">
+<form  enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{route('media-store')}}">
     @csrf
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">
@@ -53,9 +53,9 @@
                 <button type="submit" class="btn btn-info waves-effect waves-light">
                     Submit
                 </button>
-                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                <a href="{{ route('media-index') }}" class="btn btn-secondary waves-effect m-l-5">
                     Cancel
-                </button>
+                </a>
             </div>
         </div>
 

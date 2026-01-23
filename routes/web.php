@@ -186,8 +186,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
 
     Route::middleware('ViewDevicesMonitor')->group(function (): void {
         Route::get('/devices', [App\Http\Controllers\CaseController::class, 'devicesPage'])->name('devices-page');
-Route::post('/devices/reorder', [App\Http\Controllers\DevicesController::class, 'updateDeviceOrder'])->name('devices-reorder');
-Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::class, 'getDevicesByType'])->name('devices-by-type');
+        Route::post('/devices/reorder', [App\Http\Controllers\DevicesController::class, 'updateDeviceOrder'])->name('devices-reorder');
+        Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::class, 'getDevicesByType'])->name('devices-by-type');
     });
 
     Route::get('search', [App\Http\Controllers\CaseController::class, 'globalSearch'])->name('global-search');
@@ -399,86 +399,88 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
 
     });
 //    Route::middleware('admin')->group(function (): void {
-        Route::get('/documentation/features', [App\Http\Controllers\DocumentationController::class, 'generatePDF'])->name('documentation.features');
+    Route::get('/documentation/features', [App\Http\Controllers\DocumentationController::class, 'generatePDF'])->name('documentation.features');
 
-        Route::get('/send-to-delivery', [App\Http\Controllers\CaseController::class, 'sendCaseToDelivery'])->name('send-case-to-delivery');
+    Route::get('/send-to-delivery', [App\Http\Controllers\CaseController::class, 'sendCaseToDelivery'])->name('send-case-to-delivery');
 
-        Route::get('/mobile-access-stats', [App\Http\Controllers\AdminController::class, 'mobileAccessStats'])->name('mobile-stats-configs');
+    Route::get('/mobile-access-stats', [App\Http\Controllers\AdminController::class, 'mobileAccessStats'])->name('mobile-stats-configs');
 
-        Route::get('/intel-dashboard', [App\Http\Controllers\AdminController::class, 'intelDashboard'])->name('intel-dashboard');
+    Route::get('/intel-dashboard', [App\Http\Controllers\AdminController::class, 'intelDashboard'])->name('intel-dashboard');
 
-        Route::get('/sys/config/update', [App\Http\Controllers\ConfigController::class, 'updateSystemConfig'])->name('update-sys-config');
-        Route::get('/sys/config', [App\Http\Controllers\ConfigController::class, 'viewSystemConfig'])->name('sys-config');
-        Route::get('/cases/trashed-cases', [App\Http\Controllers\CaseController::class, 'deletedCases'])->name('deleted-cases');
-        Route::get('/cases/trashed-cases/restore/{id}', [App\Http\Controllers\CaseController::class, 'restoreDeletedCase'])->name('restore-case');
+    Route::get('/sys/config/update', [App\Http\Controllers\ConfigController::class, 'updateSystemConfig'])->name('update-sys-config');
+    Route::get('/sys/config', [App\Http\Controllers\ConfigController::class, 'viewSystemConfig'])->name('sys-config');
+    Route::get('/cases/trashed-cases', [App\Http\Controllers\CaseController::class, 'deletedCases'])->name('deleted-cases');
+    Route::get('/cases/trashed-cases/restore/{id}', [App\Http\Controllers\CaseController::class, 'restoreDeletedCase'])->name('restore-case');
 
 // DEVICES
-        Route::get('/device/index', [App\Http\Controllers\DevicesController::class, 'index'])->name("devices-index");
-        Route::get('/device/new-view', [App\Http\Controllers\DevicesController::class, 'returnCreate'])->name("new-device-view");
-        Route::post('device/new-post', [App\Http\Controllers\DevicesController::class, 'create'])->name('new-device');
-        Route::get('/device/edit-view/{id}', [App\Http\Controllers\DevicesController::class, 'returnUpdate'])->name('edit-device-view');
-        Route::get('/device/edit-view/{id}', [App\Http\Controllers\DevicesController::class, 'returnUpdate'])->name('edit-device-view');
-        // Route::post('device/edit-post', [App\Http\Controllers\DevicesController::class, 'update'])->name('edit-device');
-        Route::post('/device/edit-post', [App\Http\Controllers\DevicesController::class, 'update'])->name('edit-device');
-        Route::get('/device/toggle-visibility/{id}', [App\Http\Controllers\DevicesController::class, 'toggleVisibility'])->name('toggle-device-visibility');
-        Route::get('/device/delete/{id}', [App\Http\Controllers\DevicesController::class, 'softDelete'])->name('soft-delete-device');
+    Route::get('/device/index', [App\Http\Controllers\DevicesController::class, 'index'])->name("devices-index");
+    Route::get('/device/new-view', [App\Http\Controllers\DevicesController::class, 'returnCreate'])->name("new-device-view");
+    Route::post('device/new-post', [App\Http\Controllers\DevicesController::class, 'create'])->name('new-device');
+    Route::get('/device/edit-view/{id}', [App\Http\Controllers\DevicesController::class, 'returnUpdate'])->name('edit-device-view');
+    Route::get('/device/edit-view/{id}', [App\Http\Controllers\DevicesController::class, 'returnUpdate'])->name('edit-device-view');
+    // Route::post('device/edit-post', [App\Http\Controllers\DevicesController::class, 'update'])->name('edit-device');
+    Route::post('/device/edit-post', [App\Http\Controllers\DevicesController::class, 'update'])->name('edit-device');
+    Route::get('/device/toggle-visibility/{id}', [App\Http\Controllers\DevicesController::class, 'toggleVisibility'])->name('toggle-device-visibility');
+    Route::get('/device/delete/{id}', [App\Http\Controllers\DevicesController::class, 'softDelete'])->name('soft-delete-device');
 
 // Fail causes
-        Route::get('/f-cause/index', [App\Http\Controllers\FailCausesController::class, 'index'])->name("f-causes-index");
-        Route::get('/f-cause/new-view', [App\Http\Controllers\FailCausesController::class, 'returnCreate'])->name("new-f-cause-view");
-        Route::post('f-cause/new-post', [App\Http\Controllers\FailCausesController::class, 'create'])->name('new-f-cause');
-        Route::get('/f-cause/edit-view/{id}', [App\Http\Controllers\FailCausesController::class, 'returnUpdate'])->name('edit-f-cause-view');
-        Route::post('f-cause/edit-post', [App\Http\Controllers\FailCausesController::class, 'update'])->name('edit-f-cause');
+    Route::get('/f-cause/index', [App\Http\Controllers\FailCausesController::class, 'index'])->name("f-causes-index");
+    Route::get('/f-cause/new-view', [App\Http\Controllers\FailCausesController::class, 'returnCreate'])->name("new-f-cause-view");
+    Route::post('f-cause/new-post', [App\Http\Controllers\FailCausesController::class, 'create'])->name('new-f-cause');
+    Route::get('/f-cause/edit-view/{id}', [App\Http\Controllers\FailCausesController::class, 'returnUpdate'])->name('edit-f-cause-view');
+    Route::post('f-cause/edit-post', [App\Http\Controllers\FailCausesController::class, 'update'])->name('edit-f-cause');
 
-        Route::post('/admin/t-env/sendcase', [App\Http\Controllers\TestingController::class, 'createAndSendCaseTo'])->name('create-and-send-case-to');
+    Route::post('/admin/t-env/sendcase', [App\Http\Controllers\TestingController::class, 'createAndSendCaseTo'])->name('create-and-send-case-to');
 // TAGS
-        Route::get('/tags/index', [App\Http\Controllers\TagsController::class, 'index'])->name("tags-index");
-        Route::get('/tags/new-view', [App\Http\Controllers\TagsController::class, 'returnCreate'])->name("new-tag-view");
-        Route::post('tags/new-post', [App\Http\Controllers\TagsController::class, 'create'])->name('new-tag');
-        Route::get('/tags/edit-view/{id}', [App\Http\Controllers\TagsController::class, 'returnUpdate'])->name('edit-tag-view');
-        Route::post('tags/edit-post', [App\Http\Controllers\TagsController::class, 'update'])->name('edit-tag');
+    Route::get('/tags/index', [App\Http\Controllers\TagsController::class, 'index'])->name("tags-index");
+    Route::get('/tags/new-view', [App\Http\Controllers\TagsController::class, 'returnCreate'])->name("new-tag-view");
+    Route::post('tags/new-post', [App\Http\Controllers\TagsController::class, 'create'])->name('new-tag');
+    Route::get('/tags/edit-view/{id}', [App\Http\Controllers\TagsController::class, 'returnUpdate'])->name('edit-tag-view');
+    Route::post('tags/edit-post', [App\Http\Controllers\TagsController::class, 'update'])->name('edit-tag');
 
 // External Labs ROUTES
-        Route::post('/lab/new', [App\Http\Controllers\ExLabController::class, 'create'])->name('new-lab');
-        Route::get('/lab/edit/{id}', [App\Http\Controllers\ExLabController::class, 'returnUpdate'])->name('edit-lab-view');
-        Route::post('/lab/edit', [App\Http\Controllers\ExLabController::class, 'update'])->name('edit-lab');
-        Route::get('/lab/new-view', [App\Http\Controllers\ExLabController::class, 'returnCreate'])->name('new-lab-view');
-        Route::get('/external-labs', [App\Http\Controllers\ExLabController::class, 'index'])->name('labs-index');
+    Route::post('/lab/new', [App\Http\Controllers\ExLabController::class, 'create'])->name('new-lab');
+    Route::get('/lab/edit/{id}', [App\Http\Controllers\ExLabController::class, 'returnUpdate'])->name('edit-lab-view');
+    Route::post('/lab/edit', [App\Http\Controllers\ExLabController::class, 'update'])->name('edit-lab');
+    Route::get('/lab/new-view', [App\Http\Controllers\ExLabController::class, 'returnCreate'])->name('new-lab-view');
+    Route::get('/external-labs', [App\Http\Controllers\ExLabController::class, 'index'])->name('labs-index');
 // MATERIAL ROUTES
-        Route::post('/material/new', [App\Http\Controllers\MaterialController::class, 'create'])->name('material-add-post');
-        Route::get('/material/edit/{id}', [App\Http\Controllers\MaterialController::class, 'returnUpdate'])->name('edit-material-view');
-        Route::post('/material/edit', [App\Http\Controllers\MaterialController::class, 'update'])->name('edit-material');
-        Route::get('/material/new-view', [App\Http\Controllers\MaterialController::class, 'returnCreate'])->name('material-add');
-        Route::get('/materials', [App\Http\Controllers\MaterialController::class, 'index'])->name('material-index');
-        Route::post('/materials/types/create', [App\Http\Controllers\MaterialController::class, 'createType'])->name('material-types-create');
+    Route::post('/material/new', [App\Http\Controllers\MaterialController::class, 'create'])->name('material-add-post');
+    Route::get('/material/edit/{id}', [App\Http\Controllers\MaterialController::class, 'returnUpdate'])->name('edit-material-view');
+    Route::post('/material/edit', [App\Http\Controllers\MaterialController::class, 'update'])->name('edit-material');
+    Route::get('/material/new-view', [App\Http\Controllers\MaterialController::class, 'returnCreate'])->name('material-add');
+    Route::get('/materials', [App\Http\Controllers\MaterialController::class, 'index'])->name('material-index');
+    Route::post('/materials/types/create', [App\Http\Controllers\MaterialController::class, 'createType'])->name('material-types-create');
 // JOB TYPES ROUTES
-        Route::get('/Job-type/index', [App\Http\Controllers\JobTypeController::class, 'index'])->name("job-type-index");
-        Route::get('/Job-type/new-view', [App\Http\Controllers\JobTypeController::class, 'returnCreate'])->name("new-job-type-view");
-        Route::post('Job-type/new-post', [App\Http\Controllers\JobTypeController::class, 'create'])->name('new-job-type');
-        Route::get('/Job-type/edit-view/{id}', [App\Http\Controllers\JobTypeController::class, 'returnUpdate'])->name("edit-job-type-view");
-        Route::post('Job-type/edit-post', [App\Http\Controllers\JobTypeController::class, 'update'])->name('edit-job-type');
+    Route::get('/Job-type/index', [App\Http\Controllers\JobTypeController::class, 'index'])->name("job-type-index");
+    Route::get('/Job-type/new-view', [App\Http\Controllers\JobTypeController::class, 'returnCreate'])->name("new-job-type-view");
+    Route::post('Job-type/new-post', [App\Http\Controllers\JobTypeController::class, 'create'])->name('new-job-type');
+    Route::get('/Job-type/edit-view/{id}', [App\Http\Controllers\JobTypeController::class, 'returnUpdate'])->name("edit-job-type-view");
+    Route::post('Job-type/edit-post', [App\Http\Controllers\JobTypeController::class, 'update'])->name('edit-job-type');
 
-        // USERS ROUTES
-        Route::get('/users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
-        Route::get('/users/new', [App\Http\Controllers\UserController::class, 'returnCreate'])->name('new-user-view');
-        Route::post('/users/new-post', [App\Http\Controllers\UserController::class, 'create'])->name('new-user');
-        Route::get('/users/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('edit-user-view');
-        Route::post('/users/edit', [App\Http\Controllers\UserController::class, 'update'])->name('edit-user');
-        Route::get('/users/delete/{id}', [App\Http\Controllers\UserController::class, 'softDelete'])->name('soft-delete-user');
+    // USERS ROUTES
+    Route::get('/users/index', [App\Http\Controllers\UserController::class, 'index'])->name('users-index');
+    Route::get('/users/new', [App\Http\Controllers\UserController::class, 'returnCreate'])->name('new-user-view');
+    Route::post('/users/new-post', [App\Http\Controllers\UserController::class, 'create'])->name('new-user');
+    Route::get('/users/edit/{id}', [App\Http\Controllers\UserController::class, 'edit'])->name('edit-user-view');
+    Route::post('/users/edit', [App\Http\Controllers\UserController::class, 'update'])->name('edit-user');
+    Route::get('/users/delete/{id}', [App\Http\Controllers\UserController::class, 'softDelete'])->name('soft-delete-user');
 // Clients Routes
-        Route::get('/dentists/new', [App\Http\Controllers\ClientsController::class, 'returnCreate'])->name('new-dentist-view');
-        Route::post('/dentists/new-post', [App\Http\Controllers\ClientsController::class, 'create'])->name('new-dentist');
-        Route::post('/dentists/account-discount', [App\Http\Controllers\ClientsController::class, 'accountDiscount'])->name('account-discount');
-        Route::get('/dentists/toggle-active/{id}', [App\Http\Controllers\ClientsController::class, 'toggleActive'])->name('toggle-client-active');
+    Route::get('/dentists/new', [App\Http\Controllers\ClientsController::class, 'returnCreate'])->name('new-dentist-view');
+    Route::post('/dentists/new-post', [App\Http\Controllers\ClientsController::class, 'create'])->name('new-dentist');
+    Route::post('/dentists/account-discount', [App\Http\Controllers\ClientsController::class, 'accountDiscount'])->name('account-discount');
+    Route::get('/dentists/toggle-active/{id}', [App\Http\Controllers\ClientsController::class, 'toggleActive'])->name('toggle-client-active');
 
 
-        Route::get('/system/switch_env', [App\Http\Controllers\SystemController::class, 'switchEnvironment'])->name('switch-env');
+    Route::get('/system/switch_env', [App\Http\Controllers\SystemController::class, 'switchEnvironment'])->name('switch-env');
 
-        Route::get('/dentist/invoices', [App\Http\Controllers\ClientsController::class, 'doctorInvoices'])->name('dentist-invoices');
-        Route::get('/dentist/cases', [App\Http\Controllers\ClientsController::class, 'doctorCases'])->name('dentist-cases');
-        Route::get('/dentist/payments', [App\Http\Controllers\ClientsController::class, 'doctorPayments'])->name('dentist-payments');
-        Route::get('/payments/delete{id}', [App\Http\Controllers\ClientsController::class, 'deletePayment'])->name('delete-payment');
-        Route::get('/discount/delete/{id}', [App\Http\Controllers\ClientsController::class, 'deleteDiscount'])->name('delete-discount');
+    Route::get('/dentist/invoices', [App\Http\Controllers\ClientsController::class, 'doctorInvoices'])->name('dentist-invoices');
+    Route::get('/dentist/cases', [App\Http\Controllers\ClientsController::class, 'doctorCases'])->name('dentist-cases');
+    Route::get('/dentist/payments', [App\Http\Controllers\ClientsController::class, 'doctorPayments'])->name('dentist-payments');
+    Route::get('/payments/delete{id}', [App\Http\Controllers\ClientsController::class, 'deletePayment'])->name('delete-payment');
+    Route::get('/discount/delete/{id}', [App\Http\Controllers\ClientsController::class, 'deleteDiscount'])->name('delete-discount');
+
+}); // End of admin middleware group (this comment will remain in the new block too, but it's important to track the closing bracket)
 
         // MEDIA ROUTES
         Route::get('/media/index', [App\Http\Controllers\MediaController::class, 'index'])->name('media-index');
@@ -488,65 +490,65 @@ Route::get('/devices/by-type/{type}', [App\Http\Controllers\DevicesController::c
         Route::post('media/edit-post', [App\Http\Controllers\MediaController::class, 'editPost'])->name('edit-media-post');
         Route::get('/media/delete{id}', [App\Http\Controllers\MediaController::class, 'delete'])->name('delete-media');
 
-        // IMPLANTS ROUTES
-        Route::get('/implants/index', [App\Http\Controllers\ImplantsController::class, 'index'])->name("implants-index");
-        Route::get('/implants/new-view', [App\Http\Controllers\ImplantsController::class, 'returnCreate'])->name("new-implant-view");
-        Route::post('implants/new-post', [App\Http\Controllers\ImplantsController::class, 'create'])->name('new-implant');
-        Route::get('/implants/edit-view/{id}', [App\Http\Controllers\ImplantsController::class, 'returnUpdate'])->name("edit-implant-view");
-        Route::post('implants/edit-post', [App\Http\Controllers\ImplantsController::class, 'update'])->name('edit-implant');
+// IMPLANTS ROUTES
+Route::get('/implants/index', [App\Http\Controllers\ImplantsController::class, 'index'])->name("implants-index");
+Route::get('/implants/new-view', [App\Http\Controllers\ImplantsController::class, 'returnCreate'])->name("new-implant-view");
+Route::post('implants/new-post', [App\Http\Controllers\ImplantsController::class, 'create'])->name('new-implant');
+Route::get('/implants/edit-view/{id}', [App\Http\Controllers\ImplantsController::class, 'returnUpdate'])->name("edit-implant-view");
+Route::post('implants/edit-post', [App\Http\Controllers\ImplantsController::class, 'update'])->name('edit-implant');
 
-        // ABUTMENTS ROUTES
-        Route::get('/abutment/index', [App\Http\Controllers\AbutmentsController::class, 'index'])->name("abutments-index");
-        Route::get('/abutment/new-view', [App\Http\Controllers\AbutmentsController::class, 'returnCreate'])->name("new-abutment-view");
-        Route::post('abutment/new-post', [App\Http\Controllers\AbutmentsController::class, 'create'])->name('new-abutment');
-        Route::get('/abutment/edit-view/{id}', [App\Http\Controllers\AbutmentsController::class, 'returnUpdate'])->name("edit-abutment-view");
-        Route::post('abutment/edit-post', [App\Http\Controllers\AbutmentsController::class, 'update'])->name('edit-abutment');
+// ABUTMENTS ROUTES
+Route::get('/abutment/index', [App\Http\Controllers\AbutmentsController::class, 'index'])->name("abutments-index");
+Route::get('/abutment/new-view', [App\Http\Controllers\AbutmentsController::class, 'returnCreate'])->name("new-abutment-view");
+Route::post('abutment/new-post', [App\Http\Controllers\AbutmentsController::class, 'create'])->name('new-abutment');
+Route::get('/abutment/edit-view/{id}', [App\Http\Controllers\AbutmentsController::class, 'returnUpdate'])->name("edit-abutment-view");
+Route::post('abutment/edit-post', [App\Http\Controllers\AbutmentsController::class, 'update'])->name('edit-abutment');
 
-        Route::get('/se', [App\Http\Controllers\ConfigController::class, 'switchEnvironment'])->name('switch_env');
-
-    });
-
-//    Route::middleware('Reports')->group(function (): void {
-        Route::get('/reports/implants', [App\Http\Controllers\ReportsController::class, 'implantsReport'])->name('implants-report');
-        Route::get('/reports/QC', [App\Http\Controllers\ReportsController::class, 'QCReport'])->name('QC-report');
-        Route::get('/reports/job-types', [App\Http\Controllers\ReportsController::class, 'jobTypeReport'])->name('job-types-report');
-        Route::get('/reports/num-of-units', [App\Http\Controllers\ReportsController::class, 'numOfUnitsReport'])->name('num-of-units-report');
-        Route::get('/debug-units-count', [App\Http\Controllers\ReportsController::class, 'debugUnitsCount'])->name('debug-units-count');
-        Route::get('/reports/repeats', [App\Http\Controllers\ReportsController::class, 'repeatsReport'])->name('repeats-report');
-        Route::get('/reports/material', [App\Http\Controllers\ReportsController::class, 'materialReport'])->name('materials-report');
+Route::get('/se', [App\Http\Controllers\ConfigController::class, 'switchEnvironment'])->name('switch_env');
 
 //    });
-    Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
 
-    // CASES ROUTES
-    Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
+//    Route::middleware('Reports')->group(function (): void {
+Route::get('/reports/implants', [App\Http\Controllers\ReportsController::class, 'implantsReport'])->name('implants-report');
+Route::get('/reports/QC', [App\Http\Controllers\ReportsController::class, 'QCReport'])->name('QC-report');
+Route::get('/reports/job-types', [App\Http\Controllers\ReportsController::class, 'jobTypeReport'])->name('job-types-report');
+Route::get('/reports/num-of-units', [App\Http\Controllers\ReportsController::class, 'numOfUnitsReport'])->name('num-of-units-report');
+Route::get('/debug-units-count', [App\Http\Controllers\ReportsController::class, 'debugUnitsCount'])->name('debug-units-count');
+Route::get('/reports/repeats', [App\Http\Controllers\ReportsController::class, 'repeatsReport'])->name('repeats-report');
+Route::get('/reports/material', [App\Http\Controllers\ReportsController::class, 'materialReport'])->name('materials-report');
 
-    // CASE FLOW ROUTES
-    Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])->name('assign-to-me');
-    Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
-    Route::get('/assign-and-finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignAndFinish'])->name('assign-and-finish');
-    Route::get('/finish-case/{caseId}', [App\Http\Controllers\CaseController::class, 'deliveredInBox'])->name('delivered-in-box');
-    Route::post('/operations-upgrade', [App\Http\Controllers\OperationsUpgrade::class, 'handleOperation'])->name('operations-upgrade');
-    Route::post('/set-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'setOnDevice'])->name('set-multiple-cases');
-    Route::post('/activate-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'activateMultipleCases'])->name('activate-multiple-cases');
-    Route::post('/finish-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'finishMultipleCases'])->name('finish-multiple-cases');
-    Route::post('/assign-deliveries', [App\Http\Controllers\OperationsUpgrade::class, 'assignCasesToDelivery'])->name('assign-multiple-deliveries');
-    Route::post('/set-cases-on-printer', [App\Http\Controllers\OperationsUpgrade::class, 'setJobsOnDevice'])->name('set-cases-on-printer');
+//    });
+Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
 
-    // 3D Printing Build routes
-    Route::post('/activate-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'activate3DBuilds'])->name('activate-3d-builds');
-    Route::post('/finish-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'finish3DBuilds'])->name('finish-3d-builds');
-    Route::post('/remove-builds', [App\Http\Controllers\OperationsUpgrade::class, 'removeBuilds'])->name('remove-builds');
+// CASES ROUTES
+Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
 
-    // Notes routes
-    Route::post('/case/note', [App\Http\Controllers\CaseController::class, 'addNote'])->name('new-note');
-    Route::get('/send-notification', [App\Http\Controllers\CaseController::class, 'sendNotification'])->name('new-notification');
-    Route::get('/jwt', [App\Http\Controllers\CaseController::class, 'generateJWT'])->name('generate-jwt');
-    Route::get('/sent-test-notification', [App\Http\Controllers\CaseController::class, 'testNotification'])->name('test-notificaion');
-    Route::get('/tf/{x?}', [App\Http\Controllers\CaseController::class, 'testNotification'])->where('x', '.*')->name('test-notification-by-type');
+// CASE FLOW ROUTES
+Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])->name('assign-to-me');
+Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
+Route::get('/assign-and-finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignAndFinish'])->name('assign-and-finish');
+Route::get('/finish-case/{caseId}', [App\Http\Controllers\CaseController::class, 'deliveredInBox'])->name('delivered-in-box');
+Route::post('/operations-upgrade', [App\Http\Controllers\OperationsUpgrade::class, 'handleOperation'])->name('operations-upgrade');
+Route::post('/set-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'setOnDevice'])->name('set-multiple-cases');
+Route::post('/activate-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'activateMultipleCases'])->name('activate-multiple-cases');
+Route::post('/finish-multiple-cases', [App\Http\Controllers\OperationsUpgrade::class, 'finishMultipleCases'])->name('finish-multiple-cases');
+Route::post('/assign-deliveries', [App\Http\Controllers\OperationsUpgrade::class, 'assignCasesToDelivery'])->name('assign-multiple-deliveries');
+Route::post('/set-cases-on-printer', [App\Http\Controllers\OperationsUpgrade::class, 'setJobsOnDevice'])->name('set-cases-on-printer');
+
+// 3D Printing Build routes
+Route::post('/activate-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'activate3DBuilds'])->name('activate-3d-builds');
+Route::post('/finish-3d-builds', [App\Http\Controllers\OperationsUpgrade::class, 'finish3DBuilds'])->name('finish-3d-builds');
+Route::post('/remove-builds', [App\Http\Controllers\OperationsUpgrade::class, 'removeBuilds'])->name('remove-builds');
+
+// Notes routes
+Route::post('/case/note', [App\Http\Controllers\CaseController::class, 'addNote'])->name('new-note');
+Route::get('/send-notification', [App\Http\Controllers\CaseController::class, 'sendNotification'])->name('new-notification');
+Route::get('/jwt', [App\Http\Controllers\CaseController::class, 'generateJWT'])->name('generate-jwt');
+Route::get('/sent-test-notification', [App\Http\Controllers\CaseController::class, 'testNotification'])->name('test-notificaion');
+Route::get('/tf/{x?}', [App\Http\Controllers\CaseController::class, 'testNotification'])->where('x', '.*')->name('test-notification-by-type');
 
 
-    Route::get('/finish-case-completely/{caseId}', [App\Http\Controllers\CaseController::class, 'finishCaseCompletely'])->name('finish-case-completely');
+Route::get('/finish-case-completely/{caseId}', [App\Http\Controllers\CaseController::class, 'finishCaseCompletely'])->name('finish-case-completely');
 // Public routes
 
 // Take Payments from Clients
@@ -596,3 +598,4 @@ Route::get('/cases/lock/{id}', [App\Http\Controllers\CaseController::class, 'loc
 Route::get('/cases/unlock/{id}', [App\Http\Controllers\CaseController::class, 'unlockCase'])->name('unlock-case');
 
 //});
+

@@ -36,12 +36,24 @@
     <link href="{{ asset('assets') }}/css/waiting-dialog-merged.css" rel="stylesheet" />
 
     <style>
+        .btn-outline-danger:hover{
+            color:white !important;
+        }
         .col-12 {
             padding: 0;
         }
         .input-group, .form-group {
             padding-left: 5px !important;
         }
+
+        /* Scrollable jobs/notes section - applies to all screen sizes */
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content {
+            max-height: 40vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
         @media (max-width: 480px){
             
 .sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
@@ -1414,46 +1426,21 @@
         }
 
         .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row .sigma-case-job-cell,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row .sigma-case-job-cell {
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row .sigma-case-job-cell,
+        /* Apply ellipsis to job-grid-cell within any relevant modal context */
+        .sigma-modal--active-cases-preview .job-grid-cell,
+        .sigma-modal--cases-dashboard-case-completion .job-grid-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .job-grid-cell,
+        .sigma-modal--waiting-3d-printing .job-grid-cell,
+        .sigma-modal--waiting-delivery .job-grid-cell,
+        .sigma-modal--waiting-generic .job-grid-cell
+        {
             text-align: left;
             white-space: nowrap;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type,
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--mat,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--mat {
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-extra,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-extra {
-            display: block;
-            white-space: normal;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-extra span,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-extra span {
-            display: block;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .modal-footer,
-        .sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
-            padding-bottom: 18px;
-        }
-
-        .sigma-modal--case-completion-delivery .modal-footer .col-12,
-        .sigma-modal--case-completion-qc .modal-footer .col-12 {
-            margin-bottom: 10px;
-        }
-
-        .sigma-modal--case-completion-delivery .modal-footer .col-12:last-child,
-        .sigma-modal--case-completion-qc .modal-footer .col-12:last-child {
-            margin-bottom: 0;
-        }
-
-    </style>
 
     <style>
         .dt-layout-row {
@@ -2643,16 +2630,16 @@
                                                                         @endif
 
                                                                         <!-- Row 5: Reset To Waiting (100%) -->
-                                                                        <div class="col-12">
+                                                                        <div class="col-12 padding5px ">
                                                                             <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
                                                                                 class="btn btn-outline-danger"
                                                                                 style="width:100%">Reset To Waiting</a>
                                                                         </div>
 
                                                                         <!-- Row 6: Cancel (100%) -->
-                                                                        <div class="col-12">
+                                                                        <div class="col-12 padding5px ">
                                                                             <button type="button"
-                                                                                class="btn btn-secondary"
+                                                                                class="btn btn-secondary "
                                                                                 data-dismiss="modal"
                                                                                 style="width:100%">Cancel</button>
                                                                         </div>
@@ -2732,7 +2719,7 @@
         <!-- Generic loading dialog -->
         <div id="loadingDialog" class="modal sigma-modal--cases-dashboard-loading" tabindex="-1" role="dialog"
             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
-            <div class="modal-dialog modal-dialog-centered animate__animated animate__fadeInDown animate__faster" role="document">
+            <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>

@@ -791,19 +791,21 @@
         <br />
         <div class="case-header">
             <div class="row">
-                <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label for="edit_delivery_date">Delivery Date:</label></div>
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
+                            Date:</label></div>
+                    @php
+                        $time = new DateTime('tomorrow 13:00');
+                        // $time = $time->format("Y-m-d\TH:i");
+                        $time = $time->format('d M, Y h:i a');
+                    @endphp
+
                     <div class="col-md-12 col-xs-12">
-                        <x-date-time-picker
-                            id="edit_delivery_date"
-                            name="delivery_date"
-                            label=""
-                            mode="datetime"
-                            display-format="DD MMM, YYYY hh:mm a"
-                            submit-format="YYYY-MM-DD HH:mm"
-                            value="{{ $case->initial_delivery_date }}"
-                            required
-                        />
+                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $case->initial_delivery_date  ?? '')" :required="true" />
+
+{{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $case->initial_delivery_date  }}"--}}
+{{--                               required readonly />--}}
+                        <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
                 </div>
                 <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">

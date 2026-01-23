@@ -365,6 +365,20 @@
             flex-direction: row;
             align-items: flex-end;
         }
+        .ios-dtp-modal {
+            position: fixed;
+            top: 100%;
+            left: 50%;
+        }
+
+        .modal-dialog{
+            height: 100%;
+            align-items: center;
+            display: flex;
+        }
+        .ios-dtp-backdrop.visible{
+            opacity: 0 !important;
+        }
     </style>
     @php
         $permissions = safe_permissions();
@@ -387,17 +401,21 @@
                             <div class="  noLeftPadding">
                                 <div class="">
                                     <label for="delivery_from">FROM</label>
-                                    <x-date-time-picker
-                                        id="delivery_from"
-                                        name="from"
-                                        label=""
-                                        mode="date"
-                                        display-format="DD MMM, YYYY"
-                                        submit-format="YYYY-MM-DD"
-                                        value="{{ $data['from'] ?? '' }}"
-                                        required
+{{--                                    <x-ios-dtp name="from" id="delivery_from" :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : ''" :required="true" />--}}
+                                    <x-ios-dtp
+                                            name="from"
+                                            id="delivery_from"
+                                            :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : '' "
+                                            mode="date"
                                     />
-
+{{--                                    <input class="form-control SDTP"--}}
+{{--                                           id="delivery_from"--}}
+{{--                                           name="from"--}}
+{{--                                           type="text"--}}
+{{--                                           value="{{ isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : '' }}"--}}
+{{--                                           required=""--}}
+{{--                                           readonly=""--}}
+{{--                                    >--}}
 
                                     @if ($errors->has('from'))
                                         <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
@@ -406,17 +424,25 @@
                             </div>
                             <div class=" ">
                                 <label for="delivery_to">TO</label><br>
-                                <x-date-time-picker
-                                        id="delivery_to"
+
+
+{{--                                <x-ios-dtp name="to" id="delivery_to" :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' " :required="true" />--}}
+
+                                <x-ios-dtp
                                         name="to"
-                                        label=""
+                                        id="delivery_to"
+                                        :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' "
                                         mode="date"
-                                        display-format="DD MMM, YYYY"
-                                        submit-format="YYYY-MM-DD"
-                                        value="{{ $data['to'] ?? '' }}"
-                                        required
                                 />
 
+{{--                                <input class="form-control SDTP"--}}
+{{--                                       id="delivery_to"--}}
+{{--                                       name="to"--}}
+{{--                                       type="text"--}}
+{{--                                       value="{{ isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' }}"--}}
+{{--                                       required=""--}}
+{{--                                       readonly=""--}}
+{{--                                >--}}
                                 @if ($errors->has('to'))
                                     <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
                                 @endif
@@ -642,9 +668,10 @@
                                                                         $time = $case->initial_delivery_date;
                                                                         $time = str_replace(' ', 'T', $time);
                                                                     @endphp
-                                                                    <input class="form-control SDTP" name="delivery_date"
-                                                                        type="text" value="{{ $time }}"
-                                                                        required readonly />
+{{--                                                                    <input class="form-control SDTP" name="delivery_date"--}}
+{{--                                                                        type="text" value="{{ $time }}"--}}
+{{--                                                                        required readonly />--}}
+                                                                    <x-ios-dtp name="delivery_date" :value="  $time  ?? ''  " :required="true" />
 
                                                                 </div>
 
@@ -838,9 +865,9 @@
         function printResult() {
             var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
-            mywindow.document.write('<html><head><title>' + document.title + '</title>');
+            mywindow.document.write( '<html><head><title>' + document.title + '</title>' );
             //noinspection JSAnnotator
-            mywindow.document.write(`
+            mywindow.document.write( `
                 <style>
                 .kt-datatable__table, h2 {font-size:17px;font-weight: bold;  padding: 10px;width:100%;text-align:center;}
                 .kt-datatable__body {font-size:17px;font-weight: normal;}
@@ -857,114 +884,114 @@
                 <h1> Delivery Schedule </h1>
 
                 @if (isset($data) && $data['from'] && $data['to'])
-                <p>From <b>{{ $data['from'] }}</b> To <b>{{ $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
+                                     <p>From <b>{{ $data['from'] }}</b> To <b>{{ $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
                 @endif
 
-                <table border="1" class="kt-datatable__table" ">
-                                <thead class="kt-datatable__head">
-                                <tr class="kt-datatable__row" style="left: 0px;">
-                                    <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Doctor Name</span></th>
-                                    <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Patient Name</span></th>
-                                    <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Date</span></th>
-                                   <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Status at print time</span></th>
-                                </tr>
-                                </thead>
-                                <tbody  class="kt-datatable__body">
-                                  @foreach ($cases as $case)
-                    @php
-                        $status = $case->status();
-                        $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
-                        $color = $isOverdue ? 'red' : '#595d6e';
-                        $rawStatus = trim((string) $status);
+                                     <table border="1" class="kt-datatable__table">
+                                                     <thead class="kt-datatable__head">
+                                                     <tr class="kt-datatable__row" style="left: 0px;">
+                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Doctor Name</span></th>
+                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Patient Name</span></th>
+                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Date</span></th>
+                                                        <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Status at print time</span></th>
+                                                     </tr>
+                                                     </thead>
+                                                     <tbody  class="kt-datatable__body">
+@foreach ($cases as $case)
+            @php
+                $status = $case->status();
+                $isOverdue = strtotime($case->initial_delivery_date) < strtotime('now');
+                $color = $isOverdue ? 'red' : '#595d6e';
+                $rawStatus = trim((string) $status);
 
-                        $stageText = $rawStatus;
-                        if (Str::contains($rawStatus, 'Active in')) {
-                            $stageText = trim(Str::after($rawStatus, 'Active in'));
-                        } elseif (Str::contains($rawStatus, 'In-Progress in')) {
-                            $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
-                        } elseif (Str::contains($rawStatus, 'Active')) {
-                            $stageText = trim(Str::after($rawStatus, 'Active'));
-                        } elseif (Str::contains($rawStatus, 'In-Progress')) {
-                            $stageText = trim(Str::after($rawStatus, 'In-Progress'));
-                        }
+                $stageText = $rawStatus;
+                if (Str::contains($rawStatus, 'Active in')) {
+                    $stageText = trim(Str::after($rawStatus, 'Active in'));
+                } elseif (Str::contains($rawStatus, 'In-Progress in')) {
+                    $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
+                } elseif (Str::contains($rawStatus, 'Active')) {
+                    $stageText = trim(Str::after($rawStatus, 'Active'));
+                } elseif (Str::contains($rawStatus, 'In-Progress')) {
+                    $stageText = trim(Str::after($rawStatus, 'In-Progress'));
+                }
 
-                        $assigneeInitials = '';
-                        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
-                            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
-                        });
+                $assigneeInitials = '';
+                $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+                    return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+                });
 
-                        if (!$jobAtStage) {
-                            $jobAtStage = $case->jobs->first(function ($job) {
-                                return $job->assignee !== null && (string) $job->stage !== '-1';
-                            });
-                        }
+                if (!$jobAtStage) {
+                    $jobAtStage = $case->jobs->first(function ($job) {
+                        return $job->assignee !== null && (string) $job->stage !== '-1';
+                    });
+                }
 
-                        if ($jobAtStage && $jobAtStage->assignedTo) {
-                            $assigneeInitials = trim((string) (
-                                $jobAtStage->assignedTo->name_initials
-                                ?? $jobAtStage->assignedTo->first_name
-                                ?? ''
-                            ));
-                        }
+                if ($jobAtStage && $jobAtStage->assignedTo) {
+                    $assigneeInitials = trim((string) (
+                        $jobAtStage->assignedTo->name_initials
+                        ?? $jobAtStage->assignedTo->first_name
+                        ?? ''
+                    ));
+                }
 
-                        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
-                            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
-                        }
+                if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+                    $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+                }
 
-                        $formattedActiveStatus = $assigneeInitials !== ''
-                            ? (trim($stageText) . '/ ' . $assigneeInitials)
-                            : trim($stageText);
-                        if ($formattedActiveStatus === '') {
-                            $formattedActiveStatus = $rawStatus;
-                        }
+                $formattedActiveStatus = $assigneeInitials !== ''
+                    ? (trim($stageText) . '/ ' . $assigneeInitials)
+                    : trim($stageText);
+                if ($formattedActiveStatus === '') {
+                    $formattedActiveStatus = $rawStatus;
+                }
 
-                        $waitingStage = $rawStatus;
-                        if (Str::contains($rawStatus, 'Waiting in')) {
-                            $waitingStage = trim(Str::after($rawStatus, 'Waiting in'));
-                        } elseif (Str::contains($rawStatus, 'Waiting')) {
-                            $waitingStage = trim(Str::after($rawStatus, 'Waiting'));
-                        }
-                        $waitingStage = trim($waitingStage);
-                        if ($waitingStage === '') {
-                            $waitingStage = $rawStatus;
-                        }
+                $waitingStage = $rawStatus;
+                if (Str::contains($rawStatus, 'Waiting in')) {
+                    $waitingStage = trim(Str::after($rawStatus, 'Waiting in'));
+                } elseif (Str::contains($rawStatus, 'Waiting')) {
+                    $waitingStage = trim(Str::after($rawStatus, 'Waiting'));
+                }
+                $waitingStage = trim($waitingStage);
+                if ($waitingStage === '') {
+                    $waitingStage = $rawStatus;
+                }
 
-                    @endphp
-                <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
+            @endphp
+                                     <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
 
                                             <td ><span >{{ $case->client->name }}</span></td>
 
                                             <td ><span >{{ $case->patient_name }}</span></td>
                                             @php
-                                                $date = explode('T', $case->initial_delivery_date);
+                $date = explode('T', $case->initial_delivery_date);
 
-                                            @endphp
-                <td >
-                    <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
+            @endphp
+                                     <td >
+                                         <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
                     <span style="display:block;font-size:11px;color:{{ $color }};margin-top:3px;">{{ isset($date[0]) ? $date[0] : '-' }}</span>
                 </td>
 
                                             <td >
                                                     @if (str_contains($status, 'Completed'))
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
+                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
 @elseif (str_contains($status, 'In-Progress') || str_contains($status, 'Active'))
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
+                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
                                                                                                         @elseif (str_contains($status, 'Waiting'))
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
+                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
                                                                                                             @else
-                <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>
+                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>
 @endif</td> </tr>
                                 @endforeach
-                </tbody>
-            </table>
-            </body>
-`);
+                                     </tbody>
+                                 </table>
+                                 </body>
+` );
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10*/
-            setTimeout(function() {
+            setTimeout( function () {
                 mywindow.print();
                 mywindow.close();
-            }, 1000);
+            } , 1000 );
 
             return true;
         }

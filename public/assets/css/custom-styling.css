@@ -8126,8 +8126,9 @@ table:not(.sunriseTable):not(.sigma-col-total) thead th {
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-body {
     position: relative;
+    border-top: 1px solid #80808038;
     flex: 1 1 auto;
-    padding: 21px 21px 1px 24px;
+    padding: 12px 21px 1px 24px;
 }
 .sigma-modal--cases-dashboard-loading .modal-body {
     position: relative;
@@ -9048,7 +9049,7 @@ body {/* font-family: 'Rubik', sans-serif; *//* font-family: 'Nunito Sans', sans
     /* width: 20px; */
 }
 .pageTitle {
-    /* font-family: 'SegoeUI'; */
+    font-family: 'SegoeUI';
     position: initial !important;
     /* letter-spacing: 2px; */
     font-size:20px;
@@ -9197,15 +9198,15 @@ blueTBBorder {
 .white-content .navbar.navbar-transparent.sigma-app-header {
     background: rgba(245, 246, 250, 0.92) !important;
     border-bottom: 1px solid rgba(16, 76, 78, 0.12);
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+
     backdrop-filter: saturate(180%) blur(10px);
     -webkit-backdrop-filter: saturate(180%) blur(10px);
 }
 
 body:not(.white-content) .navbar.navbar-transparent.sigma-app-header {
-    background: rgba(30, 30, 47, 0.92) !important;
+    background: rgb(255 255 255 / 92%) !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
+
     backdrop-filter: saturate(180%) blur(10px);
     -webkit-backdrop-filter: saturate(180%) blur(10px);
 }
@@ -9234,9 +9235,10 @@ table.sigma-sticky-table-header {
 /*margin-bottom:-24px;*/
 
 table.sigma-sticky-table-header thead th {
+    /* color: white; */
     position: sticky;
     /* top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height)); */
-    z-index: 98;
+    /* z-index: 98; */
     background-color: inherit;
 }
 
@@ -9271,6 +9273,22 @@ table.sunriseTable.sigma-sticky-table-header thead th:first-child {
 table.sunriseTable.sigma-sticky-table-header thead th:last-child {
     border-top-right-radius: 10px;
     text-align: center;
+}
+
+/* sunriseTable last column (status) - prevent clipping on mobile */
+@media (max-width: 768px) {
+    .sunriseTable td:last-child,
+    .sunriseTable th:last-child {
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        padding-right: 10px !important;
+    }
+
+    .summary-table-responsive {
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+    }
 }
 
 /* -------------------------------------------------------------------------
@@ -12293,7 +12311,7 @@ table.sunriseTable.sigma-sticky-table-header thead th:last-child {
     transform: none !important;
 }
 .sigma-status-width {
-    min-width: 8.5rem;
+    /* min-width: 8.5rem; */
     max-width: 100%;
     display: inline-flex;
     align-items: center;
@@ -12304,10 +12322,35 @@ table.sunriseTable.sigma-sticky-table-header thead th:last-child {
 
 @media (max-width: 576px) {
     .sigma-status-width {
-        min-width: 7rem;
+        min-width: 4rem;
+    }
+}
+@media (max-width: 420px) {
+    .sigma-status-width {
+        /* min-width: 4rem; */
     }
 }
 
 body.ysh-dialog-open {
     overflow: hidden;
+}
+
+/* Sidebar mini mode - hide caret and sub-menu items */
+.sidebar-mini .sidebar .caret {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.sidebar-mini .sidebar .collapse.show {
+    display: none !important;
+}
+
+/* Show them again on hover */
+.sidebar-mini .sidebar:hover .caret {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.sidebar-mini .sidebar:hover .collapse.show {
+    display: block !important;
 }

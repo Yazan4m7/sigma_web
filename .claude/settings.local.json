@@ -4,5 +4,10 @@
       "Bash(php artisan:*)",
       "Bash(findstr:*)"
     ]
-  }
+  },
+  "enabledMcpjsonServers": [
+    "database",
+    "filesystem",
+    "logs"
+  ]
 }

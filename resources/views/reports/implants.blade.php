@@ -68,27 +68,25 @@
 
                     <div class="col-lg-2 col-md-3 col-6">
                         <label for="implants_to_primary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-date-time-picker
-                            id="implants_to_primary"
-                            name="to"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
-                        />
+                        <input class="form-control SDTP"
+                               id="implants_to_primary"
+                               name="to"
+                               type="text"
+                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
+                               required=""
+                               readonly=""
+                        >
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         <label for="implants_to_secondary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-date-time-picker
-                            id="implants_to_secondary"
-                            name="to"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
-                        />
+                        <input class="form-control SDTP"
+                               id="implants_to_secondary"
+                               name="to"
+                               type="text"
+                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
+                               required=""
+                               readonly=""
+                        >
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         <label><i class="fas fa-tooth"></i> Implants:</label>

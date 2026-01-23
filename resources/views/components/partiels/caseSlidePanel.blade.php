@@ -3,74 +3,75 @@
 <div id="YSH-slide-overlay-{{$case->id}}" class="YSH-slide-overlay"
      onclick="if (event.target === this) YSH_closeSlidePanel({{$case->id}})">
     <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel ysh-slide-panel--builds">
+        <!-- Fixed Header -->
         <div class="YSH-slide-header">
-            <h5>Case Completion</h5>
+            <div>
+                <h5 style="margin-bottom: 0;">Case Completion</h5>
+            </div>
             <button type="button" class="YSH-close-slide"
                     onclick="YSH_closeSlidePanel({{$case->id}})">&times;
             </button>
         </div>
-        <div class="YSH-slide-grid">
-            <div class="YSH-slide-body">
-                <div class="form-group row" style="margin-bottom: 0px">
-                    <div class="form-group col-6" style="margin-bottom: 0px">
-                        <label>Doctor:</label>
-                        <h5><b>{{$case->client?->name}}</b></h5>
-                    </div>
-                    <div class="form-group col-6" style="margin-bottom: 0px">
-                        <label>Patient:</label>
-                        <h5><b>{{$case->patient_name}}</b></h5>
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group row">
-                    <div class="col-12">
 
+        <!-- Fixed Doctor/Patient Info -->
+        <div class="ysh-slide-info-header">
+            <div class="form-group row" style="margin-bottom: 0px">
+                <div class="form-group col-6" style="margin-bottom: 0px">
+                    <label>Doctor:</label>
+                    <h5><b>{{$case->client?->name}}</b></h5>
+                </div>
+                <div class="form-group col-6" style="margin-bottom: 0px">
+                    <label>Patient:</label>
+                    <h5><b>{{$case->patient_name}}</b></h5>
+                </div>
+            </div>
+        </div>
+
+        <div class="YSH-slide-grid">
+            <!-- Scrollable Content -->
+            <div class="YSH-slide-body">
+                @php
+                    // Convert stage type to stage number
+                    $stageNumber = match($stageType) {
+                        'milling' => 2,
+                        '3dprinting' => 3,
+                        'sintering' => 4,
+                        'pressing' => 5,
+                        'delivery' => 8,
+                        default => 3
+                    };
+                    $stageLabel = match($stageType) {
+                        'milling' => 'Milling',
+                        '3dprinting' => '3D Printing',
+                        'sintering' => 'Sintering',
+                        'pressing' => 'Pressing',
+                        'delivery' => 'Delivery',
+                        default => 'Workflow'
+                    };
+                    $jobsAtStage = $case->jobs->where('stage', $stageNumber);
+                @endphp
+
+                <label><b>Jobs ({{$stageLabel}}):</b></label>
+                <div class="sigma-case-jobs-list">
+                    @forelse($jobsAtStage as $job)
                         @php
-                            // Convert stage type to stage number
-                            $stageNumber = match($stageType) {
-                                'milling' => 2,
-                                '3dprinting' => 3,
-                                'sintering' => 4,
-                                'pressing' => 5,
-                                'delivery' => 8,
-                                default => 3
-                            };
-                            $stageLabel = match($stageType) {
-                                'milling' => 'Milling',
-                                '3dprinting' => '3D Printing',
-                                'sintering' => 'Sintering',
-                                'pressing' => 'Pressing',
-                                'delivery' => 'Delivery',
-                                default => 'Workflow'
-                            };
-                            $jobsAtStage = $case->jobs->where('stage', $stageNumber);
+                            $unitNumbers = $job->unit_num ?? '';
+                            $unitLabel = $unitNumbers !== '' ? $unitNumbers : '-';
+                            $jobTypeLabel = $job->jobType?->name ?? '-';
+                            $materialLabel = $job->material?->name ?? '-';
+                            $colorLabel = ($job->color && $job->color !== '0') ? $job->color : '';
+                            $styleLabel = ($job->style && $job->style !== 'None') ? $job->style : '';
                         @endphp
-                        <div class="ysh-jobs-meta">
-                            <span class="ysh-jobs-stage">{{$stageLabel}}</span>
-                            <span class="ysh-jobs-count">{{$jobsAtStage->count()}} job{{$jobsAtStage->count() === 1 ? '' : 's'}}</span>
+                        <div class="sigma-case-job-row">
+                            <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{$unitLabel}}</span>
+                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{$jobTypeLabel}}</span>
+                            <span class="sigma-case-job-cell sigma-case-job-cell--material">{{$materialLabel}}</span>
+                            <span class="sigma-case-job-cell sigma-case-job-cell--color">{{$colorLabel}}</span>
+                            <span class="sigma-case-job-cell sigma-case-job-cell--style">{{$styleLabel}}</span>
                         </div>
-                        <div class="ysh-job-list">
-                            @forelse($jobsAtStage as $job)
-                                @php
-                                    $unitNumbers = $job->unit_num ?? '';
-                                    $unitLabel = $unitNumbers !== '' ? $unitNumbers : '-';
-                                    $jobTypeLabel = $job->jobType?->name ?? '-';
-                                    $materialLabel = $job->material?->name ?? '-';
-                                    $colorLabel = ($job->color && $job->color !== '0') ? $job->color : '-';
-                                    $styleLabel = ($job->style && $job->style !== 'None') ? $job->style : '';
-                                @endphp
-                                <div class="ysh-job-row" role="row">
-                                    <span class="ysh-job-cell ysh-job-cell--teeth">{{$unitLabel}}</span>
-                                    <span class="ysh-job-cell">{{$jobTypeLabel}}</span>
-                                    <span class="ysh-job-cell">{{$materialLabel}}</span>
-                                    <span class="ysh-job-cell">{{$colorLabel}}</span>
-                                    <span class="ysh-job-cell">{{$styleLabel}}</span>
-                                </div>
-                            @empty
-                                <div class="ysh-job-empty">No jobs for this stage yet.</div>
-                            @endforelse
-                        </div>
-                    </div>
+                    @empty
+                        <div class="ysh-job-empty">No jobs for this stage yet.</div>
+                    @endforelse
                 </div>
 
                 @if(count($case->notes) > 0)
@@ -78,9 +79,8 @@
                     <label><b>Notes:</b></label><br>
                     @foreach($case->notes as $note)
                         <div class="form-control"
-                             style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px">
-                            <span
-                                class="noteHeader">{{ '[' . substr($note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] :' }}</span><br>
+                             style="height:fit-content;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px">
+                            <span class="noteHeader">{{ '[' . substr($note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] :' }}</span><br>
                             <span class="noteText">{{$note->note}}</span>
                         </div>
                     @endforeach
@@ -221,93 +221,64 @@
 
 @once
     <style>
-        .ysh-jobs-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: #1f2937;
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 0.03em;
+        /* Fixed info header (doctor/patient) */
+        .ysh-slide-info-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #f9fafb;
+            flex-shrink: 0;
         }
 
-        .ysh-jobs-meta {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin: 6px 0 10px;
-            color: #475569;
-            font-size: 13px;
-        }
-
-        .ysh-jobs-stage {
-            font-weight: 700;
-            color: #111827;
-        }
-
-        .ysh-jobs-count {
-            background: #eef2ff;
-            color: #4338ca;
-            padding: 4px 10px;
-            border-radius: 999px;
-            font-weight: 700;
-        }
-
-        .ysh-job-list {
+        /* Jobs list styling - matching sigma-case-jobs-list */
+        .ysh-slide-panel--builds .sigma-case-jobs-list {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-            margin-top: 6px;
+            gap: 4px;
+            margin-top: 8px;
         }
 
-        .ysh-slide-panel--builds .ysh-job-row {
-            display: grid;
-            grid-template-columns: minmax(70px, 1fr) minmax(120px, 1.4fr) minmax(120px, 1.4fr) minmax(60px, 0.8fr) minmax(70px, 1fr);
-            column-gap: 12px;
+        .ysh-slide-panel--builds .sigma-case-job-row {
+            display: flex;
             align-items: center;
-            padding: 4px 0;
-            color: #1f2937;
+            gap: 2px;
+            padding: 6px 0;
+            border-bottom: 1px solid #f3f4f6;
         }
 
-        .ysh-slide-panel--builds .ysh-job-cell {
-            min-width: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .ysh-slide-panel--builds .sigma-case-job-row:last-child {
+            border-bottom: none;
+        }
+
+        .ysh-slide-panel--builds .sigma-case-job-cell {
             font-size: 13px;
+            color: #374151;
         }
 
-        .ysh-slide-panel--builds .ysh-job-cell--teeth {
+        .ysh-slide-panel--builds .sigma-case-job-cell--teeth {
+            width: 70px;
+            flex: 0 0 70px;
             font-weight: 600;
             color: #0f172a;
-            font-variant-numeric: tabular-nums;
         }
 
-        .ysh-slide-panel--builds .YSH-slide-body {
-            padding-left: 0;
-            padding-right: 0;
+        .ysh-slide-panel--builds .sigma-case-job-cell--type {
+            flex: 1;
+            min-width: 0;
         }
 
-        .ysh-slide-panel--builds .YSH-slide-body .row {
-            margin-left: 0;
-            margin-right: 0;
-            column-gap: 12px;
+        .ysh-slide-panel--builds .sigma-case-job-cell--material {
+            flex: 1;
+            min-width: 0;
         }
 
-        .ysh-slide-panel--builds .YSH-slide-body .row > [class*="col-"] {
-            padding-left: 0;
-            padding-right: 0;
+        .ysh-slide-panel--builds .sigma-case-job-cell--color {
+            width: 60px;
+            flex: 0 0 60px;
         }
 
-        .ysh-slide-panel--builds .YSH-slide-header,
-        .ysh-slide-panel--builds .modal-footer {
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-
-        .ysh-slide-panel--builds {
-            padding-left: 0;
-            padding-right: 0;
+        .ysh-slide-panel--builds .sigma-case-job-cell--style {
+            width: 70px;
+            flex: 0 0 70px;
         }
 
         .ysh-slide-panel--builds .ysh-slide-actions {
@@ -327,17 +298,6 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-        }
-
-        @media (max-width: 600px) {
-            .ysh-slide-panel--builds .ysh-job-row {
-                grid-template-columns: minmax(60px, 1fr) minmax(90px, 1.2fr) minmax(90px, 1.2fr) minmax(50px, 0.8fr) minmax(60px, 1fr);
-                column-gap: 8px;
-            }
-
-            .ysh-slide-panel--builds .ysh-job-cell {
-                font-size: 12px;
-            }
         }
 
         .ysh-job-empty {

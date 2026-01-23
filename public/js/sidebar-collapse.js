@@ -125,13 +125,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (wrapper.classList.contains('sidebar-pinned') && !isMobile()) return;
             const link = e.target.closest('.nav li a');
             if (!link) return;
-            const isCollapseToggle = link.hasAttribute('data-toggle') || link.getAttribute('data-target');
-            const isNestedLink = !!link.closest('.collapse .nav');
 
-            if (!isCollapseToggle && isNestedLink) {
-                collapseExpandedSubmenus();
-            }
-            if (!isCollapseToggle && isMobile()) {
+            const isCollapseToggle = link.hasAttribute('data-toggle') && (link.getAttribute('data-target') || link.getAttribute('href'));
+
+            if (isCollapseToggle) {
+                // Let Bootstrap handle the collapse toggle naturally
+                // Just don't close the sidebar when clicking collapse toggles
+                return;
+            } else if (isMobile()) {
+                // Only close mobile sidebar if a non-toggle link is clicked
                 closeMobileSidebar();
             }
         });

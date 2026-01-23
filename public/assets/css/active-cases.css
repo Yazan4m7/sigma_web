@@ -1593,13 +1593,13 @@
         margin-bottom: 1.5rem;
     }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-title {
-        letter-spacing: 0.05em;
+        /* letter-spacing: 0.05em; */
         text-transform: uppercase;
         font: caption;
-        font-size: clamp(1.4rem, 2.5vw, 1.5rem);
+        font-size: clamp(1.4rem, 2.5vw, 1.4rem);
         font-weight: 700;
         text-align: center;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1rem;
     }
 .sigma-modal--cases-dashboard-loading .modal-title {
         letter-spacing: 0.05em;

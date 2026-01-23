@@ -882,29 +882,25 @@ button[type="submit"].modern-btn:hover {
                         <div class="range-pair">
                             <div>
                                 <label class="form-label" for="master_from">From</label>
-                                <x-date-time-picker
-                                    id="master_from"
-                                    name="from"
-                                    label=""
-                                    mode="date"
-                                    display-format="DD MMM, YYYY"
-                                    submit-format="YYYY-MM-DD"
-                                    value="{{request('from', $from)}}"
-                                    class="modern-input"
-                                />
+                                <input class="form-control SDTP modern-input"
+                                       id="master_from"
+                                       name="from"
+                                       type="text"
+                                       value="{{ \Carbon\Carbon::parse(request('from', $from))->format('d M, YYYY') }}"
+                                       required=""
+                                       readonly=""
+                                >
                             </div>
                             <div>
                                 <label class="form-label" for="master_to">To</label>
-                                <x-date-time-picker
-                                    id="master_to"
-                                    name="to"
-                                    label=""
-                                    mode="date"
-                                    display-format="DD MMM, YYYY"
-                                    submit-format="YYYY-MM-DD"
-                                    value="{{request('to', $to)}}"
-                                    class="modern-input"
-                                />
+                                <input class="form-control SDTP modern-input"
+                                       id="master_to"
+                                       name="to"
+                                       type="text"
+                                       value="{{ \Carbon\Carbon::parse(request('to', $to))->format('d M, YYYY') }}"
+                                       required=""
+                                       readonly=""
+                                >
                             </div>
                         </div>
                     </div>

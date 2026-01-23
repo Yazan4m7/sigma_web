@@ -610,7 +610,7 @@ function openDeviceDialog(deviceId, type) {
     // Clear any existing animations
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.remove('animate__fadeOutUp', 'animate__fadeInDown', 'animate__animated');
+        dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
     }
 
     // Show dialog with smooth Animate.css animation (instant, no delay)
@@ -620,7 +620,7 @@ function openDeviceDialog(deviceId, type) {
     if (dialogContent) {
         // Use faster animation (300ms) with GPU acceleration for smooth performance
         dialogContent.style.willChange = 'transform, opacity';
-        dialogContent.classList.add('animate__animated', 'animate__fadeInDown', 'animate__faster');
+        dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
     }
 
     // Set up case list with improved visuals for delivery
@@ -787,8 +787,8 @@ function closeDeviceDialog(deviceId) {
     // Add Animate.css fade-out animation (fadeOutUp to top) - smooth and fast
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.remove('animate__fadeInDown');
-        dialogContent.classList.add('animate__fadeOutUp');
+        dialogContent.classList.remove('animate__fadeIn');
+        dialogContent.classList.add('animate__fadeOut');
     }
 
     // Hide dialog after animation completes (300ms for faster, smoother)
@@ -796,7 +796,7 @@ function closeDeviceDialog(deviceId) {
         dialog.classList.remove('active', 'show');
         dialog.style.display = 'none';
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeOutUp', 'animate__fadeInDown', 'animate__animated', 'animate__faster');
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
             dialogContent.style.willChange = 'auto'; // Reset GPU optimization
         }
 
@@ -2182,7 +2182,7 @@ function proceedWithModalOpen(modalId, isWaiting, caseId) {
         // Clear any existing animation classes
         const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeOutUp', 'animate__fadeInDown', 'animate__animated');
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
         }
 
         // Show the modal immediately with Animate.css
@@ -2194,7 +2194,7 @@ function proceedWithModalOpen(modalId, isWaiting, caseId) {
         if (dialogContent) {
             // Use faster animation (300ms) with GPU acceleration
             dialogContent.style.willChange = 'transform, opacity';
-            dialogContent.classList.add('animate__animated', 'animate__fadeInDown', 'animate__faster');
+            dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
         }
 
         console.log('Successfully opened modal:', fullModalId);

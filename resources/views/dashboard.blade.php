@@ -7553,25 +7553,62 @@
             z-index: 100000000 !important;
         }
 
-        .sigma-modal--generic-payments .modal-dialog.dialog-popup-content,
-        .sigma-modal--delivery-schedule-edit .modal-dialog.dialog-popup-content {
-            display: flex;
-            align-items: center;
-            min-height: calc(100% - 3.5rem);
-            margin: 1.75rem auto;
+        /* Bootstrap modal styling for payments/deliveries */
+        [id^="payment-modal-"],
+        [id^="delivery-modal-"] {
+            z-index: 99999 !important;
+        }
+
+        [id^="payment-modal-"] .modal-dialog,
+        [id^="delivery-modal-"] .modal-dialog {
+            max-width: 500px;
+            z-index: 100000 !important;
+        }
+
+        [id^="payment-modal-"] .modal-content,
+        [id^="delivery-modal-"] .modal-content {
+            z-index: 100001 !important;
+            position: relative;
+        }
+
+        /* Dark blurred backdrop for modals */
+        [id^="payment-modal-"].modal,
+        [id^="delivery-modal-"].modal {
+            background: rgba(0, 0, 0, 0.6);
+            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(5px);
+        }
+
+        [id^="payment-modal-"] + .modal-backdrop,
+        [id^="delivery-modal-"] + .modal-backdrop,
+        .modal-backdrop.show {
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 1;
+            z-index: 99998 !important;
+        }
+
+        /* iOS Chrome fix: reset transform stacking context on interfering elements */
+        body.modal-open .card,
+        body.modal-open .btn-group,
+        body.modal-open .performanceBtns.active,
+        body.modal-open [class*="col-"] {
+            -webkit-transform: none !important;
+            transform: none !important;
         }
 
         @media (max-width: 576px) {
-            .sigma-modal--generic-payments .modal-dialog.dialog-popup-content,
-            .sigma-modal--delivery-schedule-edit .modal-dialog.dialog-popup-content {
-                min-height: calc(100% - 1rem);
-                margin: 0.5rem auto;
+            [id^="payment-modal-"] .modal-dialog,
+            [id^="delivery-modal-"] .modal-dialog {
+                margin: 10px;
+                max-width: calc(100% - 20px);
             }
-        }
 
-        .sigma-modal--generic-payments .dialog-popup-card,
-        .sigma-modal--delivery-schedule-edit .dialog-popup-card {
-            border: none;
+            [id^="payment-modal-"] .modal-content,
+            [id^="delivery-modal-"] .modal-content {
+                max-height: 85vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
     {{-- <div class="row"  style="background-color: transparent"> --}}
@@ -7728,9 +7765,9 @@
                             </thead>
             <tbody>
                                 @foreach ($paymentsReceivedToday as $payment)
-                                    <tr class="clickable payment-popup-trigger"
-                                        data-mfp-src="#payment-popup-{{ $payment->id }}"
-                                        data-mfp-class="sigma-modal--generic-payments">
+                                    <tr class="clickable"
+                                        data-toggle="modal"
+                                        data-target="#payment-modal-{{ $payment->id }}">
 
                                         <td>
                                             {{ $payment->client->name }}
@@ -7756,62 +7793,66 @@
                                         </td>
                                     </tr>
 
-                                    <x-dialog-popup
-                                        :id="'payment-popup-'.$payment->id"
-                                        title="Receive Payment"
-                                        :meta="'PAYMENT ID : '.$payment->id"
-                                        wrapperClass="sigma-modal--generic-payments"
-                                        closeAttrs='aria-label="Close"'
-                                    >
-                                        <div class="payment-info-grid">
-                                            <div class="payment-info-row">
-                                                <div class="payment-info-label">Doctor</div>
-                                                <div class="payment-info-value">{{ $payment->client->name }}</div>
-                                            </div>
-                                            <div class="payment-info-row">
-                                                <div class="payment-info-label">Collected from doctor by</div>
-                                                <div class="payment-info-value">{{ $payment->collectorFullName() }}</div>
-                                            </div>
-                                            <div class="payment-info-row">
-                                                <div class="payment-info-label">Payment Amount</div>
-                                                <div class="payment-info-value">{{ $payment->amount }} JOD</div>
-                                            </div>
-                                            <div class="payment-info-row">
-                                                <div class="payment-info-label">Collected On</div>
-                                                <div class="payment-info-value">{{ $payment->created_at }}</div>
-                                            </div>
-                                            @if ($payment->isCollected())
-                                                <div class="payment-info-row">
-                                                    <div class="payment-info-label">Received On</div>
-                                                    <div class="payment-info-value">{{ $payment->recieved_on }}</div>
+                                    {{-- Bootstrap Modal for Payment --}}
+                                    <div class="modal fade" id="payment-modal-{{ $payment->id }}" tabindex="-1" role="dialog" aria-labelledby="paymentModalLabel{{ $payment->id }}" aria-hidden="true" style="z-index: 1009999 !important">
+                                        <div class="modal-dialog modal-dialog-centered" role="document" style="z-index: 1009999 !important">
+                                            <div class="modal-content" style="z-index: 1009999 !important">
+                                                <div class="modal-header" style="z-index: 1009999 !important">
+                                                    <h5 class="modal-title" id="paymentModalLabel{{ $payment->id }}">Receive Payment </h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
                                                 </div>
-                                                <div class="payment-info-row">
-                                                    <div class="payment-info-label">Received by</div>
-                                                    <div class="payment-info-value">{{ $payment->receiverFullName() }}</div>
+                                                <div class="modal-body" style="z-index: 1009999 !important">
+                                                    <div class="payment-info-grid">
+                                                        <div class="payment-info-row">
+                                                            <div class="payment-info-label">Doctor</div>
+                                                            <div class="payment-info-value">{{ $payment->client->name }}</div>
+                                                        </div>
+                                                        <div class="payment-info-row">
+                                                            <div class="payment-info-label">Collected from doctor by</div>
+                                                            <div class="payment-info-value">{{ $payment->collectorFullName() }}</div>
+                                                        </div>
+                                                        <div class="payment-info-row">
+                                                            <div class="payment-info-label">Payment Amount</div>
+                                                            <div class="payment-info-value">{{ $payment->amount }} JOD</div>
+                                                        </div>
+                                                        <div class="payment-info-row">
+                                                            <div class="payment-info-label">Collected On</div>
+                                                            <div class="payment-info-value">{{ $payment->created_at }}</div>
+                                                        </div>
+                                                        @if ($payment->isCollected())
+                                                            <div class="payment-info-row">
+                                                                <div class="payment-info-label">Received On</div>
+                                                                <div class="payment-info-value">{{ $payment->recieved_on }}</div>
+                                                            </div>
+                                                            <div class="payment-info-row">
+                                                                <div class="payment-info-label">Received by</div>
+                                                                <div class="payment-info-value">{{ $payment->receiverFullName() }}</div>
+                                                            </div>
+                                                        @endif
+                                                        <div class="payment-info-row">
+                                                            <div class="payment-info-label">Payment Method</div>
+                                                            <div class="payment-info-value">{{ $payment->notes }}</div>
+                                                        </div>
+                                                        @if ($payment->additional_notes)
+                                                            <div class="payment-info-row">
+                                                                <div class="payment-info-label">Notes</div>
+                                                                <div class="payment-info-value">{{ $payment->additional_notes }}</div>
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <small class="text-muted">PAYMENT ID : {{ $payment->id }}</small>
                                                 </div>
-                                            @endif
-                                            <div class="payment-info-row">
-                                                <div class="payment-info-label">Payment Method</div>
-                                                <div class="payment-info-value">{{ $payment->notes }}</div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    @if (!$payment->isCollected())
+                                                        <a href="{{ route('receive-payment', $payment->id) }}" class="btn btn-danger">Receive</a>
+                                                    @endif
+                                                </div>
                                             </div>
-                                            @if ($payment->additional_notes)
-                                                <div class="payment-info-row">
-                                                    <div class="payment-info-label">Notes</div>
-                                                    <div class="payment-info-value">{{ $payment->additional_notes }}</div>
-                                                </div>
-                                            @endif
-
                                         </div>
-                    @isset($footer)
-                        {{-- noop --}}
-                    @endisset
-                    <x-slot name="footer">
-                        <button type="button" class="btn btn-secondary dialog-popup-dismiss mfp-close">Close</button>
-                        @if (!$payment->isCollected())
-                            <a href="{{ route('receive-payment', $payment->id) }}" class="btn btn-danger">Receive</a>
-                        @endif
-                    </x-slot>
-                </x-dialog-popup>
+                                    </div>
                                 @endforeach
 
                             </tbody>
@@ -7853,9 +7894,9 @@
                             </thead>
                             <tbody>
                                 @foreach ($DeliveriesToday as $case)
-                                    <tr class="clickable delivery-popup-trigger"
-                                        data-mfp-src="#delivery-popup-{{ $case->id }}"
-                                        data-mfp-class="sigma-modal--delivery-schedule-edit">
+                                    <tr class="clickable"
+                                        data-toggle="modal"
+                                        data-target="#delivery-modal-{{ $case->id }}">
 
                                         <td>
                                             {{ $case->client->name }}
@@ -7900,52 +7941,60 @@
             </div>
         </div>
     </div>
+    {{-- Bootstrap Modals for Deliveries --}}
     @foreach ($DeliveriesToday as $case)
         @php
             $time = date('Y-m-d g:i a', strtotime($case->initial_delivery_date));
             $formId = 'delivery-form-' . $case->id;
         @endphp
-        <x-dialog-popup
-            :id="'delivery-popup-'.$case->id"
-            title="Update Delivery Date"
-            :meta="'CASE ID : '.$case->id"
-            wrapperClass="sigma-modal--delivery-schedule-edit"
-            contentClass="dialog-popup-content delivery-popup"
-        >
-            <form id="{{ $formId }}" action="{{ route('edit-delivery-date') }}" method="POST">
-                @csrf
-                <input type="hidden" name="id" value="{{ $case->id }}">
-                <div class="payment-info-grid">
-                    <div class="payment-info-row">
-                        <div class="payment-info-label">Doctor</div>
-                        <div class="payment-info-value">{{ $case->client->name }}</div>
+        <div class="modal fade" id="delivery-modal-{{ $case->id }}" tabindex="-1" role="dialog" aria-labelledby="deliveryModalLabel{{ $case->id }}" aria-hidden="true" style="z-index: 1009999">
+            <div class="modal-dialog modal-dialog-centered" role="document"  style="z-index: 1009999">
+                <div class="modal-content"  style="z-index: 1009999">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deliveryModalLabel{{ $case->id }}">Update Delivery Date</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                    <div class="payment-info-row">
-                        <div class="payment-info-label">Patient Name</div>
-                        <div class="payment-info-value">{{ $case->patient_name }}</div>
+                    <div class="modal-body"  style="z-index: 1009999">
+                        <form id="{{ $formId }}" action="{{ route('edit-delivery-date') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $case->id }}">
+                            <div class="payment-info-grid">
+                                <div class="payment-info-row">
+                                    <div class="payment-info-label">Doctor</div>
+                                    <div class="payment-info-value">{{ $case->client->name }}</div>
+                                </div>
+                                <div class="payment-info-row">
+                                    <div class="payment-info-label">Patient Name</div>
+                                    <div class="payment-info-value">{{ $case->patient_name }}</div>
+                                </div>
+                                <div class="payment-info-row">
+                                    <div class="payment-info-label">Current Delivery Time</div>
+                                    <div class="payment-info-value payment-info-value-input">
+                                        <x-ios-dtp name="delivery_date" id="dashboard_delivery_date_{{ $case->id }}" :value="old('delivery_date', \Carbon\Carbon::parse($case->initial_delivery_date)->format('Y-m-d\TH:i:s') ?? '')" :required="true" />
+
+{{--                                        <input class="form-control SDTP"--}}
+{{--                                               id="dashboard_delivery_date_{{ $case->id }}"--}}
+{{--                                               name="delivery_date"--}}
+{{--                                               type="text"--}}
+{{--                                               value="{{ \Carbon\Carbon::parse($case->initial_delivery_date)->format('Y-m-d\TH:i:s') }}"--}}
+{{--                                               required=""--}}
+{{--                                               readonly=""--}}
+{{--                                        >--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <small class="text-muted">CASE ID : {{ $case->id }}</small>
                     </div>
-                    <div class="payment-info-row">
-                        <div class="payment-info-label">Current Delivery Time</div>
-                        <div class="payment-info-value payment-info-value-input">
-                            <x-date-time-picker
-                                id="dashboard_delivery_date_{{ $case->id }}"
-                                name="delivery_date"
-                                label=""
-                                mode="datetime"
-                                display-format="DD MMM, YYYY hh:mm a"
-                                submit-format="YYYY-MM-DD HH:mm"
-                                value="{{ $time }}"
-                                required
-                            />
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger" form="{{ $formId }}">UPDATE</button>
                     </div>
                 </div>
-            </form>
-            <x-slot name="footer">
-                <button type="button" class="btn btn-secondary dialog-popup-dismiss mfp-close">Close</button>
-                <button type="submit" class="btn btn-danger" form="{{ $formId }}">UPDATE</button>
-            </x-slot>
-        </x-dialog-popup>
+            </div>
+        </div>
     @endforeach
 @endsection
 
@@ -7971,79 +8020,6 @@
                 initPerformanceChart();
             }
 
-            var activeDialogClasses = [];
-            var mfpScrollY = 0;
-            var bodyScrollLocked = false;
-
-            function clearDialogClasses() {
-                activeDialogClasses.forEach(function(dialogClass) {
-                    document.body.classList.remove(dialogClass);
-                });
-                activeDialogClasses = [];
-            }
-
-            function applyDialogClasses(dialogClass) {
-                clearDialogClasses();
-                if (!dialogClass) {
-                    return;
-                }
-                activeDialogClasses = dialogClass.split(/\s+/).filter(Boolean);
-                activeDialogClasses.forEach(function(activeClass) {
-                    document.body.classList.add(activeClass);
-                });
-            }
-
-            function lockBodyScroll() {
-                if (bodyScrollLocked) {
-                    return;
-                }
-                mfpScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
-                document.body.style.top = '-' + mfpScrollY + 'px';
-                document.body.classList.add('mfp-open');
-                bodyScrollLocked = true;
-            }
-
-            function unlockBodyScroll() {
-                if (!bodyScrollLocked) {
-                    return;
-                }
-                document.body.classList.remove('mfp-open');
-                document.body.style.top = '';
-                window.scrollTo(0, mfpScrollY);
-                bodyScrollLocked = false;
-            }
-
-            $('.payment-popup-trigger, .delivery-popup-trigger').magnificPopup({
-                type: 'inline',
-                midClick: true,
-                showCloseBtn: false,
-                closeOnContentClick: false,
-                mainClass: 'dialog-mfp',
-                callbacks: {
-                    beforeOpen: function() {
-                        var dialogClass = this.st.el.data('mfpClass');
-                        if (!dialogClass) {
-                            var target = this.st.el.attr('data-mfp-src');
-                            if (target) {
-                                dialogClass = $(target).data('dialogClass');
-                            }
-                        }
-                        applyDialogClasses(dialogClass);
-                        lockBodyScroll();
-                    },
-                    beforeClose: function() {
-                        var form = this.content ? this.content.find('form')[0] : null;
-                        if (form) {
-                            form.reset();
-                        }
-                    },
-                    afterClose: function() {
-                        clearDialogClasses();
-                        unlockBodyScroll();
-                    }
-                }
-            });
-
             $('.datatable').DataTable({
                 "pageLength": 50,
                 "searching": false,
@@ -8055,6 +8031,9 @@
                     { "targets": -1, "className": "text-center" }
                 ]
             });
+
+            // iOS fix: Move modals to body to escape stacking context
+            $('[id^="payment-modal-"], [id^="delivery-modal-"]').appendTo('body');
         });
 
         function initComp7DaysChart() {

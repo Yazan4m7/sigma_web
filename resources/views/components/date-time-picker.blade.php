@@ -42,13 +42,7 @@
                     minute: 0,
                     ampm: 'AM'
                 },
-                isInitializing: false,
-                wheels: {},
-                wheelMeta: {},
-                ITEM_HEIGHT: 30,
-                REPEAT_COUNT: 3,
-                MONTHS: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-                DAYS: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                savedState: {},
 
                 init() {
                     const parsed = this.parseInitialValue(initialValue);
@@ -884,6 +878,7 @@
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", Arial, sans-serif;
 
         }
+
     </style>
 @endonce
 
@@ -920,7 +915,7 @@
     <div
             x-show="open"
             x-cloak
-            @click.self="confirm()"
+            @click.self="cancel()"
             class="dtp-modal-backdrop"
     >
         <div

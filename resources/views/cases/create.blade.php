@@ -20,7 +20,7 @@
         .create-case-page {
             /*background: #1f46a900;*/
             border-radius: 18px;
-            /*padding: 1rem 2rem 2rem 2rem;*/
+            padding: 1rem 2rem 2rem 2rem;
             /*margin-top: 1rem;*/
         }
 
@@ -196,6 +196,8 @@
             background: #ef4444;
             border-color: #ef4444;
             color: #fff;
+            padding: 0.5rem;
+            border-radius:4px;
         }
 
         .deleteBtn:hover {
@@ -694,8 +696,10 @@
                     @endphp
 
                     <div class="col-md-12 col-xs-12">
-                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"
-                            required readonly />
+                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $time ?? '')" :required="true" />
+
+{{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"--}}
+{{--                            required readonly />--}}
                         <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
                 </div>
@@ -1003,6 +1007,102 @@
                     <input type="file" id="images" class="form-control file-input" name="images[]" placeholder="address" multiple>
                 </div>
             </div>
+                <style>
+                    .button.create-case-page {
+                        border-radius: 18px;
+                        padding: 0 1rem;
+                        position: relative;
+                        transition: all 0.3s ease-in-out;
+                        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+                        /* padding-block: 0.5rem; */
+                         padding-inline: 1.25rem;
+                        background-color: #0069d9;
+                        /* border-radius: 9999px; */
+                        display: flex;
+                        align-items: center;
+                        color: #ffff;
+                        gap: 0px;
+                        font-weight: bold;
+                        border: 3px solid #ffffff4d;
+                        outline: none;
+                        overflow: hidden;
+                        font-size: 17px;
+                        cursor: pointer;
+                    }
+
+                    .icon.create-case-page {
+                        box-sizing: initial;
+                        padding: 1rem;
+                        width: 24px;
+                        height: 24px;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .button.create-case-page:hover {
+                        transform: scale(1.05);
+                        border-color: #fff9;
+                    }
+
+                    .button.create-case-page:hover .icon {
+
+                        transform: translate(4px);
+                    }
+
+                    .button.create-case-page:hover::before {
+                        box-sizing: initial;
+                        animation: shine 1.5s ease-out infinite;
+                    }
+
+                    .button.create-case-page::before {
+                        box-sizing: initial;
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100%;
+                        background-image: linear-gradient(
+                                120deg,
+                                rgba(255, 255, 255, 0) 30%,
+                                rgba(255, 255, 255, 0.8),
+                                rgba(255, 255, 255, 0) 70%
+                        );
+                        top: 0;
+                        left: -100px;
+                        opacity: 0.6;
+                    }
+
+                    @keyframes shine {
+                        0% {
+                            left: -100px;
+                        }
+
+                        60% {
+                            left: 100%;
+                        }
+
+                        to {
+                            left: 100%;
+                        }
+                    }
+
+                </style>
+                <div class="kt-portlet__foot" style="margin-top:3rem">
+                    <div class="kt-form__actions">
+
+{{--                        Fance Submit button --}}
+                        <button class="button create-case-page">
+                            SUBMIT
+                            <svg class="icon create-case-page" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                        fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                                        clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </button>
+
+
+                    </div>
+                </div>
         </div>
 
 
@@ -1033,14 +1133,7 @@
                 </div>
             @endif
 
-                    <div class="kt-portlet__foot">
-                        <div class="kt-form__actions">
-                            <button type="submit" class="btn btn-primary submit-button extraPadding" style="margin: 60px auto 10px;">
-                                <i class="fa fa-paper-plane" style="color:white"></i> Submit Case
-                            </button>
 
-                        </div>
-                    </div>
 
 
         </form>

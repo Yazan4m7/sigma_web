@@ -15,27 +15,25 @@
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="numunits_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-date-time-picker
-                            id="numunits_from"
-                            name="from"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{request('from', now()->startOfMonth()->format('Y-m-d'))}}"
-                        />
+                        <input class="form-control SDTP"
+                               id="numunits_from"
+                               name="from"
+                               type="text"
+                               value="{{ \Carbon\Carbon::parse(request('from', now()->startOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
+                               required=""
+                               readonly=""
+                        >
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="numunits_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-date-time-picker
-                            id="numunits_to"
-                            name="to"
-                            label=""
-                            mode="date"
-                            display-format="DD MMM, YYYY"
-                            submit-format="YYYY-MM-DD"
-                            value="{{request('to', now()->endOfMonth()->format('Y-m-d'))}}"
-                        />
+                        <input class="form-control SDTP"
+                               id="numunits_to"
+                               name="to"
+                               type="text"
+                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
+                               required=""
+                               readonly=""
+                        >
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($materials))

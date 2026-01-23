@@ -1008,8 +1008,8 @@ function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
         // Add Animate.css fade-out animation (fadeOutUp to top) - faster
         const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeInDown');
-            dialogContent.classList.add('animate__fadeOutUp');
+            dialogContent.classList.remove('animate__fadeIn');
+            dialogContent.classList.add('animate__fadeOut');
         }
 
         // Hide modal after animation completes (300ms for faster)
@@ -1017,7 +1017,7 @@ function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
             modal.classList.remove('active', 'show');
             modal.style.display = 'none';
             if (dialogContent) {
-                dialogContent.classList.remove('animate__fadeOutUp', 'animate__fadeInDown', 'animate__animated', 'animate__faster');
+                dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
                 dialogContent.style.willChange = 'auto'; // Reset GPU optimization
             }
 

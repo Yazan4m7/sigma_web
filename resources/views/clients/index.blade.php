@@ -90,22 +90,28 @@
     }
 }
 .client-actions-row {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
     width: 100%;
-    margin-left: 0;
-    margin-right: 0;
 }
 .client-actions-row > [class*="col-"] {
-    flex: 1 1 50%;
-    max-width: 50%;
-    padding: 5px;
+    padding: 0;
+    max-width: 100%;
 }
-@media (max-width: 576px){
-    .client-actions-row > [class*="col-"] {
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
+.client-actions-row .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.client-actions-row .btn {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 4px;
+}
+.client-actions-row > .col-12 {
+    grid-column: span 2;
 }
 
 .filters-row > [class*="col-"] {
@@ -164,6 +170,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+
 
 .filter-input {
     height: 38px;
@@ -587,13 +594,12 @@
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Doctor Account</h5>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="form-group row mb-0">
-                                                    <div class="col-12 col-md-6">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body" style="padding: 25px 1rem;">
+                                                                <div class="form-group row mb-0">                                                    <div class="col-12 col-md-6">
                                                         <label for="doctor">Doctor:</label>
                                                         <h5 id="doctor" class="mb-0"><b>{{$client->name}}</b></h5>
                                                     </div>
@@ -611,60 +617,73 @@
                                             <div class="modal-footer fullBtnsWidth">
                                                 <div class="row client-actions-row">
                                                     @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                                        <div class="col-6 padding5px" >
-                                                            <a href="{{route('client-statement-admin', $client->id)}}">
-                                                                <button type="button" class="btn btn-primary ">
-                                                                    Account Statement</button></a>
+                                                        <div class="col-6">
+                                                            <a href="{{route('client-statement-admin', $client->id)}}" class="btn btn-primary">
+                                                                <span class="btn-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                                                                <span class="btn-text">Account Statement</span>
+                                                            </a>
                                                         </div>
 
-                                                        <div class="col-6 padding5px" >
-                                                            <a href="{{route('client-view-edit',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-danger ">
-                                                                    Edit Record</button></a>
+                                                        <div class="col-6">
+                                                            <a href="{{route('client-view-edit',['id' =>$client->id])}}" class="btn btn-danger">
+                                                                <span class="btn-icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                                                                <span class="btn-text">Edit Record</span>
+                                                            </a>
                                                         </div>
                                                     @endif
                                                     @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
-                                                        <div class="col-6 padding5px" >
-                                                            <a data-toggle="modal" data-target="#myModal{{$client->id}} "
-                                                               >
-                                                                <button type="button" class="btn btn-warning " data-dismiss="modal" >
-                                                                    Add a payment </button></a>
+                                                        <div class="col-6">
+                                                            <a data-toggle="modal" data-target="#myModal{{$client->id}}" class="btn btn-warning" data-dismiss="modal">
+                                                                <span class="btn-icon"><i class="fas fa-plus"></i></span>
+                                                                <span class="btn-text">Add a payment</span>
+                                                            </a>
                                                         </div>
                                                     @endif
                                                     @if( Auth()->user()->is_admin)
-                                                        <div class="col-6 padding5px" >
-                                                        <a href="{{route('dentist-cases',['id' =>$client->id])}}">
-                                                            <button type="button" class="btn btn-info ">
-                                                            View Cases </button></a>
+                                                        <div class="col-6">
+                                                            <a href="{{route('dentist-cases',['id' =>$client->id])}}" class="btn btn-info">
+                                                                <span class="btn-icon"><i class="far fa-file-alt"></i></span>
+                                                                <span class="btn-text">View Cases</span>
+                                                            </a>
                                                         </div>
-                                                        <div class="col-6 padding5px" >
-                                                            <a  href="{{route('dentist-invoices',['id' =>$client->id])}}">
-                                                            <button type="button" class="btn btn-info ">
-                                                                View Invoices </button></a>
+                                                        <div class="col-6">
+                                                            <a href="{{route('dentist-invoices',['id' =>$client->id])}}" class="btn btn-info">
+                                                                <span class="btn-icon"><i class="fas fa-file-invoice"></i></span>
+                                                                <span class="btn-text">View Invoices</span>
+                                                            </a>
                                                         </div>
-                                                        <div class="col-6 padding5px" >
-                                                            <a href="{{route('dentist-payments',['id' =>$client->id])}}">
-                                                                <button type="button" class="btn btn-info ">
-                                                                    View Payments </button></a>
+                                                        <div class="col-6">
+                                                            <a href="{{route('dentist-payments',['id' =>$client->id])}}" class="btn btn-info">
+                                                                <span class="btn-icon"><i class="fas fa-credit-card"></i></span>
+                                                                <span class="btn-text">View Payments</span>
+                                                            </a>
                                                         </div>
-                                                        <div class="col-6 padding5px" >
-                                                            <a data-toggle="modal" data-target="#accountDiscount{{$client->id}} ">
-                                                            <button type="button" class="btn btn-danger " data-dismiss="modal" >
-                                                                    Create a discount </button></a>
+                                                        <div class="col-6">
+                                                            <a data-toggle="modal" data-target="#accountDiscount{{$client->id}}" class="btn btn-danger" data-dismiss="modal">
+                                                                <span class="btn-icon"><i class="fas fa-percent"></i></span>
+                                                                <span class="btn-text">Create a discount</span>
+                                                            </a>
                                                         </div>
-                                                        <div class="col-6 padding5px" >
-                                                            <a href="{{route('toggle-client-active', $client->id)}}" onclick="return confirm('Are you sure you want to {{ $client->active ? 'disable' : 'enable' }} this doctor?');">
-                                                                <button type="button" class="btn {{ $client->active ? 'btn-warning' : 'btn-success' }}">
-                                                                    {{ $client->active ? 'Disable' : 'Enable' }}
-                                                                </button>
+                                                        <div class="col-6">
+                                                            <a href="{{route('toggle-client-active', $client->id)}}" onclick="return confirm('Are you sure you want to {{ $client->active ? 'disable' : 'enable' }} this doctor?');" class="btn {{ $client->active ? 'btn-warning' : 'btn-success' }}">
+                                                                <span class="btn-icon"><i class="{{ $client->active ? 'fas fa-times-circle' : 'fas fa-check-circle' }}"></i></span>
+                                                                <span class="btn-text">{{ $client->active ? 'Disable' : 'Enable' }}</span>
                                                             </a>
                                                         </div>
 
                                                     @endif
 
-                                                    <div class="col-12 padding5px" >
-                                                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Cancel</button>
-                                                    </div>
+                                                                                                        <div class="col-12" >
+
+                                                                                                            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">
+
+                                                                                                                <span class="btn-icon"><i class="fas fa-ban"></i></span>
+
+                                                                                                                <span class="btn-text">Cancel</span>
+
+                                                                                                            </button>
+
+                                                                                                        </div>
                                                 </div>
                                             </div>
 

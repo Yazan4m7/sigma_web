@@ -388,7 +388,7 @@
         @csrf
         <div>
             <div class="row btnsRow print-label-actions">
-                <div class="col-12 d-flex justify-content-end">
+                <div class="col-12 d-flex justify-content-start">
                     <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
                     <button type="button" class="btn btn-primary ml-2" onclick="PrintLabel()">Print Label</button>
                 </div>
@@ -525,13 +525,6 @@
                                 </option>
                             @endforeach
                         </select></div>
-                </div>
-            </div>
-
-            <div class="row btnsRow print-label-actions">
-                <div class="col-12 d-flex justify-content-end">
-                    <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
-                    <button type="button" class="btn btn-primary ml-2" onclick="PrintLabel()">Print Label</button>
                 </div>
             </div>
 

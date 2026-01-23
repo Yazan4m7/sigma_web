@@ -6575,12 +6575,12 @@
             "version": "v3.7.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/barryvdh/laravel-debugbar.git",
+                "url": "https://github.com/fruitcake/laravel-debugbar.git",
                 "reference": "3372ed65e6d2039d663ed19aa699956f9d346271"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/3372ed65e6d2039d663ed19aa699956f9d346271",
+                "url": "https://api.github.com/repos/fruitcake/laravel-debugbar/zipball/3372ed65e6d2039d663ed19aa699956f9d346271",
                 "reference": "3372ed65e6d2039d663ed19aa699956f9d346271",
                 "shasum": ""
             },
@@ -6639,8 +6639,8 @@
                 "webprofiler"
             ],
             "support": {
-                "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.7.0"
+                "issues": "https://github.com/fruitcake/laravel-debugbar/issues",
+                "source": "https://github.com/fruitcake/laravel-debugbar/tree/v3.7.0"
             },
             "funding": [
                 {
