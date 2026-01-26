@@ -17,15 +17,25 @@
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>From:</label>
-
-                            <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
+                            <x-ios-dtp
+                                name="from"
+                                id="from"
+                                :value="$from ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>To:</label>
-                            <input class="form-control SDTP" name="to"  type="text"   value="{{$to ?? ''}}" required readonly/>
-
+                            <x-ios-dtp
+                                name="to"
+                                id="to"
+                                :value="$to ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
 

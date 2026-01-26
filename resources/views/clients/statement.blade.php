@@ -39,70 +39,76 @@
             width: auto;
             padding: 0;
         }
-        .col-md-6 , .col-md-4{
-            padding:0px;
-        }
-        thead{
-            background-color: #1b1b1b;
-            border-radius: 20px;
-        }
-
-        @media print{
-            hr { display: block; height: 1px;
-                background-color:black;
-                margin:0; padding: 0; border-color:black;}
-            th {  padding: 0; color:white !important;}
-            thead{
-                background-color: #1b1b1b;
-            }
-            body {
-                -webkit-print-color-adjust: exact !important;
-            }
-
-            }
-</style>
-    <form  class="kt-form" method="GET" action="{{route('client-statement-admin',$client->id)}}">
-        <div class="col-lg-12 col-sm-12 card">
+                .kt-subheader__search input {
+                    height: auto;
+                }
+                .kt-subheader__search label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    font-weight: bold;
+                }
+        
+                /* Custom filter row styles (matching cases and delivery-schedule) */
+                .filter-label {
+                    font-weight: 600;
+                    font-size: 12px;
+                    color: #6c757d;
+                    margin-bottom: 6px;
+                    display: block;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                }
+                .cases-filter-btn {
+                    width: 36px;
+                    height: 36px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0 !important;
+                }
+        
+                /* Responsive adjustments for labels and inputs */
+                @media screen and (max-width: 767px) {
+                    .filter-label {
+                        font-size: 12px !important;
+                        margin-bottom: 4px !important;
+                    }
+                    .x-ios-dtp { /* Target ios-dtp for height */
+                        height: 38px !important;
+                        font-size: 13px !important;
+                        padding: 6px 8px !important;
+                    }
+                    .cases-filter-btn {
+                        height: 38px; /* Slightly taller on mobile for easier tapping */
+                        width: 38px;
+                    }
+                }
+        </style>
+            <form  class="kt-form" method="GET" action="{{route('client-statement-admin',$client->id)}}">
+                <div class="col-lg-12 col-sm-12 card">
             <input type="hidden" name="id" value="{{$client->id}}" >
-            <div class="row" style="padding-left: 10px;padding-top: 10px">
-
-                <div class="col-lg-4 col-md-3 col-3 mb-3">
-                    <div class="kt-subheader__search" style="">
-                        <label>From:</label>
-                        <input type="date" class="form-control" name="from" value="{{$from}}">
-                    </div>
+            <div class="row d-flex align-items-end mb-3">
+                <div class="col-lg-2 col-md-2 col-6">
+                    <label class="filter-label">From:</label>
+                    <x-ios-dtp name="from" id="from" :value="$from" mode="month" />
                 </div>
-                <div class="col-lg-4 col-md-3 col-3 mb-3">
-                    <div class="kt-subheader__search" style="">
-                        <label>To:</label>
-                        <input type="date" class="form-control" name="to" value="{{$to}}">
-                    </div>
+                <div class="col-lg-2 col-md-2 col-6">
+                    <label class="filter-label">To:</label>
+                    <x-ios-dtp name="to" id="to" :value="$to" mode="month" />
                 </div>
-                <div class="col-lg-4 col-md-3 col-3 mb-3" style="padding-right:0">
-
-                    <div class="kt-subheader__search" style="width:100%">
-                        <label>&nbsp; &nbsp; </label>
-
-                        <div class="kt-form__actions">
-                            <button type="submit" class="btn btn-primary" style="margin:0;" >Filter</button>
-                            <button type="button" class="btn btn-secondary" style="margin:0 !important;" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">All-time</button>
-                            <button type="button" class="btn btn-success unstyled" style="margin:0 !important;" onclick="PrintStatement()"><i class="fa-solid fa-print" style="color:#202020;padding-right: 5px;padding-left: 5px;"></i></button>
-
-                            {{--<a href="{{route('client-statement-admin',['id' => $client->id, 'allTime' =>1])}}" >--}}
-                                {{--<button class="btn btn-secondary " style="padding:auto !important;margin:0;" >All time</button>--}}
-                            {{--</a>--}}
-
-                            {{--<a onclick="PrintStatement()"  >--}}
-                                {{--<button class="btn btn-success unstyled" style="padding:auto;margin:0" >--}}
-                                    {{--<i class="fa-solid fa-print" style="color:#202020;padding-right: 5px;padding-left: 5px;"></i></button>--}}
-                           {{--</a>--}}
-                        </div>
-                    </div>
-
+                <div class="col-lg-auto col-md-auto col-auto">
+                    <button type="submit" class="btn btn-primary cases-filter-btn" title="Filter">
+                        <i class="fas fa-search"></i>
+                    </button>
                 </div>
-
-
-
+                <div class="col-lg-auto col-md-auto col-auto ml-auto d-flex align-items-end">
+                    <button type="button" class="btn btn-secondary cases-filter-btn mr-2" title="All-time" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">
+                        <i class="fas fa-clock"></i>
+                    </button>
+                    <button type="button" class="btn btn-success cases-filter-btn" title="Print" onclick="PrintStatement()">
+                        <i class="fa-solid fa-print"></i>
+                    </button>
+                </div>
             </div>
         </div>
 

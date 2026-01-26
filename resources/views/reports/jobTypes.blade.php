@@ -158,25 +158,23 @@
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="jobtypes_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <input class="form-control SDTP"
-                               id="jobtypes_from"
-                               name="from"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('from', now()->startOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >
+                        <x-ios-dtp
+                            name="from"
+                            id="jobtypes_from"
+                            :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="jobtypes_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control SDTP"
-                               id="jobtypes_to"
-                               name="to"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >
+                        <x-ios-dtp
+                            name="to"
+                            id="jobtypes_to"
+                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         <label><i class="fas fa-briefcase"></i> Job Type:</label>

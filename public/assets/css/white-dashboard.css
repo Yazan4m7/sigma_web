@@ -6147,6 +6147,7 @@ button.close {
     }
 
 .modal-content {
+        padding: 28px 14px;
     position: relative;
     display: flex;
     flex-direction: column;

@@ -68,25 +68,23 @@
 
                     <div class="col-lg-2 col-md-3 col-6">
                         <label for="implants_to_primary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control SDTP"
-                               id="implants_to_primary"
-                               name="to"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >
+                        <x-ios-dtp
+                            name="to"
+                            id="implants_to_primary"
+                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         <label for="implants_to_secondary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control SDTP"
-                               id="implants_to_secondary"
-                               name="to"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >
+                        <x-ios-dtp
+                            name="to"
+                            id="implants_to_secondary"
+                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         <label><i class="fas fa-tooth"></i> Implants:</label>

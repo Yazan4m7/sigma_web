@@ -1331,465 +1331,409 @@
 </div>
 
 @push('js')
-    <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
-    <script>
-        function initializeSelectPicker() {
-            console.log('Initializing selectpicker...');
-
-            // Ensure plugin loaded
-            if (typeof $.fn.selectpicker === 'undefined') {
-                console.warn('Bootstrap Select not loaded, adding form-control fallback.');
-                $('.selectpicker').addClass('form-control');
-                return;
-            }
-
-            // Fix for Bootstrap 4/5 compatibility
-            if ($.fn.selectpicker.Constructor) {
-                $.fn.selectpicker.Constructor.BootstrapVersion = '4';
-            }
-
-            // Avoid repeated initialization
-            $('.selectpicker').each(function() {
-                const $select = $(this);
-
-                // If already initialized, skip re-init
-                if ($select.data('selectpicker')) {
-                    console.log('Already initialized:', this.name || this.id);
-                    return;
-                }
-
-                try {
-                    $select.selectpicker();
-                    console.log('✅ Initialized selectpicker for:', this.name || this.id || this);
-                } catch (e) {
-                    console.warn('❌ Failed to initialize selectpicker:', e);
-                    $select.addClass('form-control');
-                }
-            });
-        }
-
-        // ---- Initialize once window fully loads
-        $(window).on('load', function() {
-            setTimeout(function() {
-                initializeSelectPicker();
-            }, 500);
-        });
-
-        // ---- OPTIONAL: if you add selects dynamically (AJAX, modal, etc.)
-        new MutationObserver(function(mutations) {
-            for (const m of mutations) {
-                if ([...m.addedNodes].some(
-                    n => n.nodeType === 1 && (n.matches('.selectpicker') || $(n).find('.selectpicker').length)
-                )) {
-                    console.log('Detected new selectpicker in DOM.');
-                    initializeSelectPicker();
-                    break;
-                }
-            }
-        }).observe(document.body, { childList: true, subtree: true });
-    </script>
-
-    <script>
-
-        $(document).ready(function() {
-            $('.repeater').repeater({
-                // (Required if there is a nested repeater)
-                // Specify the configuration of the nested repeaters.
-                // Nested configuration follows the same format as the base configuration,
-                // supporting options "defaultValues", "show", "hide", etc.
-                // Nested repeaters additionally require a "selector" field.
-                repeaters: [{
-                    // (Required)
-                    // Specify the jQuery selector for this nested repeater
-                    selector: '.abutments-repeater',
+        <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
+        <script>
+    
+            $(document).ready(function() {
+                $('.repeater').repeater({
+                    // (Required if there is a nested repeater)
+                    // Specify the configuration of the nested repeaters.
+                    // Nested configuration follows the same format as the base configuration,
+                    // supporting options "defaultValues", "show", "hide", etc.
+                    // Nested repeaters additionally require a "selector" field.
+                    repeaters: [{
+                        // (Required)
+                        // Specify the jQuery selector for this nested repeater
+                        selector: '.abutments-repeater',
+                        show: function() {
+                            $(this).slideDown();
+                        },
+    
+                        hide: function(deleteElement) {
+                            $(this).slideUp(deleteElement);
+                        }
+                    }],
+    
+    
+                    defaultValues: {},
+    
                     show: function() {
                         $(this).slideDown();
                     },
-
+                    initEmpty: false,
                     hide: function(deleteElement) {
                         $(this).slideUp(deleteElement);
                     }
-                }],
-
-
-                defaultValues: {},
-
-                show: function() {
-                    $(this).slideDown();
-                },
-                initEmpty: false,
-                hide: function(deleteElement) {
-                    $(this).slideUp(deleteElement);
-                }
+                });
+    
+                // removing first job because it causes UI errors with the repeater
+                $(".jobsRepeater").find(".jobRow").first().html("");
+                $("#addJobBtn").click();
+                //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
+                //        $("#addJobBtn2").click();
+    
+    
             });
-
-            // removing first job because it causes UI errors with the repeater
-            $(".jobsRepeater").find(".jobRow").first().html("");
-            $("#addJobBtn").click();
-            //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
-            //        $("#addJobBtn2").click();
-
-
-        });
-    </script>
-    <script>
-        function toggleDiscountPortion(ele) {
-
-            var discountPortion = $(".discountPortion");
-            if (ele.checked) {
-                discountPortion.show(200);
-            } else {
-                discountPortion.hide(200);
+        </script>
+        <script>
+            function toggleDiscountPortion(ele) {
+    
+                var discountPortion = $(".discountPortion");
+                if (ele.checked) {
+                    discountPortion.show(200);
+                } else {
+                    discountPortion.hide(200);
+                }
             }
-        }
-
-        var teethSelected = [];
-         var lstSelectedJobUNName = "";
-         var repeaterName = ""; // should be something like 'repeat[xx]'
-         function materialChanged(materialDD) {
-             $(materialDD).data('manualSelection', true);
-         }
-
-         function jobTypeChanged(jobTypeDD) {
-             var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
-             var jobTypes = {!! json_encode($types->toArray()) !!};
-             var materials = {!! json_encode($materials->toArray()) !!};
-             var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
-
-            var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
-
-            var colorsDDName = thisRowRepeaterName + "[color]";
-            if ($(jobTypeDD).val() == 14) {
-                $("[name='" + colorsDDName + "']").parent().parent().parent().show();
-            }
-
-            if (repeaterNumber > 1) {
-                var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
-                var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
-                var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
-            } else {
-                var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
-                var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
-                var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-            }
-
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-
-             var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
-             var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
-             var jobTypeSelectedId = $(jobTypeDD).val();
-
-             var previousJobTypeId = $(jobTypeDD).data('previousJobTypeId');
-             var jobTypeActuallyChanged = (previousJobTypeId === undefined || String(previousJobTypeId) !== String(jobTypeSelectedId));
-             $(jobTypeDD).data('previousJobTypeId', jobTypeSelectedId);
-             if (jobTypeActuallyChanged) {
-                 materialBox.data('manualSelection', false);
+    
+            var teethSelected = [];
+             var lstSelectedJobUNName = "";
+             var repeaterName = ""; // should be something like 'repeat[xx]'
+             function materialChanged(materialDD) {
+                 $(materialDD).data('manualSelection', true);
              }
-
-             var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
-             var selectedJobType = jobTypes.find(x => String(x.id) === String(jobTypeSelectedId));
-             var defaultMaterialId = selectedJobType ? selectedJobType.default_material_id : null;
-
-             // Store currently selected material to preserve selection if possible
-             var currentlySelectedMaterial = materialBox.val();
-
-             // Clear material dropdown
-            materialBox.empty();
-
-            // Add default option for materials
-            materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
-
-             // Populate materials compatible with selected job type
-              $.each(jobTypeMaterials, function(key, value) {
-                  var material = materials.find(x => String(x.id) === String(value.material_id));
-                  materialBox.append($("<option></option>")
-                      .attr("value", value.material_id)
-                      .text(material ? material.name : ('Material #' + value.material_id)));
-              });
-
-             var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
-             var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
-
-             if (jobTypeActuallyChanged && defaultIsAllowed) {
-                 materialBox.val(defaultMaterialId);
-             } else if (previousIsAllowed) {
-                 materialBox.val(currentlySelectedMaterial);
-             } else {
-                 materialBox.val('');
-             }
-             var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
-             var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
-             var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
-                 .val().split(',');
-             if ($(jobTypeDD).find(":selected").val() == 6) {
-
-                // get to parent of the main repeater and find abutment units box
-
-                $(abutmentBox).attr('required', '');
-                $(implantBox).attr('required', '');
-
-                $(abutmentsArea).css("display", "block");
-                // $(".abutmentsUnitsPicker").find('option').html('');
-                // show the 6th parent of the box which has display none property
-                // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
-
-                // Destroy existing selectpicker if it exists to avoid conflicts
-                if (abutmentUnitsBox.hasClass('selectpicker')) {
-                    abutmentUnitsBox.selectpicker('destroy');
+    
+             function jobTypeChanged(jobTypeDD) {
+                 var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
+                 var jobTypes = {!! json_encode($types->toArray()) !!};
+                 var materials = {!! json_encode($materials->toArray()) !!};
+                 var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+    
+                var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
+    
+                var colorsDDName = thisRowRepeaterName + "[color]";
+                if ($(jobTypeDD).val() == 14) {
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().show();
                 }
-
-                // Clear and repopulate options
-                abutmentUnitsBox.empty();
-                $.each(currentlySelectedUnits, function(index, value) {
-                    abutmentUnitsBox.append($("<option></option>")
-                        .attr("value", value)
-                        .text(value));
-                });
-
-                // Initialize selectpicker fresh
-                abutmentUnitsBox.selectpicker();
-
-                $(jobTypeDD).attr("readonly", "true");
-                $(openDialogBtn).attr("disabled", "true");
-            } else {
-                $(abutmentBox).removeAttr('required');
-                $(implantBox).removeAttr('required');
-                $(abutmentsArea).css("display", "none");
-                abutmentUnitsBox.val(0);
-                //            implantBox.val(0);
-                // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
-            }
-        }
-
-        function addAbutmentJob(ele) {
-            // get units selected originally in the job
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-            // wait for new repeater row to populate then add unit selected to abutment units box
-            setTimeout(function() {
-                var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
-
-                // Destroy existing selectpicker if it exists to avoid conflicts
-                if (lastAbutmentUnitsBox.hasClass('selectpicker')) {
-                    lastAbutmentUnitsBox.selectpicker('destroy');
+    
+                if (repeaterNumber > 1) {
+                    var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
+                    var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
+                    var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
+                } else {
+                    var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
+                    var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
+                    var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
                 }
-
-                // Clear and repopulate options
-                lastAbutmentUnitsBox.empty();
-                $.each(teethSelectedAsArr, function(index, value) {
-                    lastAbutmentUnitsBox.append($("<option></option>")
-                        .attr("value", value)
-                        .text(value));
-                });
-
-                // Initialize selectpicker fresh
-                lastAbutmentUnitsBox.selectpicker();
-            }, 500);
-
-        }
-
-        $("#submitDialog").click(function() {
-
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-            var jobTypeBoxName = repeaterName + "[jobType]";
-            var selectBtnName = repeaterName + "[openDialogBtn]";
-
-            var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
-            var jobTypes = {!! json_encode($types->toArray()) !!};
-            var colorsDDName = repeaterName + "[color]";
-            var styleOptionsName = repeaterName + "[style]";
-            /* Updating dropdowns according to teeth selection
-             * First if is for jaws, second is for teeth
-             * @Yazan -
-             */
-            if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
-                    teethSelectedAsArr) !== -1) {
-                // clear all options
-                jobTypeBox.empty();
-                // filter all job types to only jaws.
-                var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
-                // fill up the options with the array above.
-                $.each(jawOnlyTypes, function(key, value) {
-                    jobTypeBox.append($("<option></option>")
-                        .attr("value", value.id)
-                        .text(value.name));
-                });
-                // Notify Job type changed function to update materials with which box changed
-                jobTypeChanged(jobTypeBox);
-                $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
-
-                // set style to none (prevent back-end errors) and hide it
-                $("[name='" + styleOptionsName + "']").val('None');
-                $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
-
-            }
-
-            // No jaws selected
-            else {
-                jobTypeBox.empty();
-                const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
-                $.each(jawOnlyTypes, function(key, value) {
-                    jobTypeBox.append($("<option></option>")
-                        .attr("value", value.id)
-                        .text(value.name));
-                });
-                $("[name='" + styleOptionsName + "']").parent().parent().parent().show();
-                $("[name='" + colorsDDName + "']").parent().parent().parent().show();
-                if (teethSelectedAsArr.length > 1)
-                    $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
-                else
-                    $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
-                // Notify Job type changed function to update materials with which box changed
-                jobTypeChanged(jobTypeBox);
-
-            }
-
-            // Change button label with selected teeth
-            if (teethSelectedAsArr.length > 0)
-                $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
-            else
-                $("[name='" + selectBtnName + "']").html("Select Units");
-
-
-            $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
-
-            // close dialog
-            $("#unitsDialog").modal('hide');
-
-            // Remove focus from the save button to prevent aria-hidden issues
-            $("#submitDialog").blur();
-
-            // Ensure all modal backdrops are removed and body classes are cleaned up
-            setTimeout(function() {
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
-                $('body').css('padding-right', '');
-            }, 300);
-
-        });
-
-
-        $(document).on('click', '.teeth', function() {
-
-            // Check if any jaws is selected, if any remove them from array
-            if (jQuery.inArray("upper", teethSelected) !== -1) {
-                const jawIndex = teethSelected.indexOf("upper");
-                teethSelected.splice(jawIndex, 1);
-            }
-            if (jQuery.inArray("lower", teethSelected) !== -1) {
-                const jawIndex = teethSelected.indexOf("lower");
-                teethSelected.splice(jawIndex, 1);
-            }
-
-            // remove the light of the jaws buttons
-            var list = $('.jaw');
-            list.removeClass("checked");
-
-
-            //if not pre selected light up the teeth and add it to array
-            if ($(this).hasClass("checked")) {
-                $(this).removeClass("checked");
-                var teethNumber = $(this).attr("alt");
-                const index = teethSelected.indexOf(teethNumber);
-
-                if (index > -1) {
-                    teethSelected.splice(index, 1);
-                }
-
-                // remove the selection if previously selected
-            } else {
-                var teethNumber = $(this).attr("alt");
-                teethSelected.push(teethNumber);
-                $(this).addClass("checked");
-                // console.log("Added a teeth" + teethSelected);
-            }
-
-            //console.log("Updating units input : "  + teethSelected);
-
-            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-        });
-        $(document).on('click', '.jaw', function() {
-
-            if ($(this).hasClass("checked")) {
-                $(this).removeClass("checked");
-                var jaw = $(this).attr("alt");
-                const index = teethSelected.indexOf(jaw);
-
-                if (index > -1) {
-                    teethSelected.splice(index, 1);
-                }
-                var unitNumsBox = $("[id=units]:last").attr("name");
-                $("[name='" + unitNumsBox + "']").val(teethSelected);
-
-            } else {
-
-                var jaw = $(this).attr("alt");
-                // add visuall selection to the jaw the selection
-                $(this).addClass("checked");
-
-                // remove visual selection of all teeth if a jaw is selected
-                var list = $('.teeth');
-                list.removeClass("checked");
-
-                // remove all selected teeth
-                for (var index = 0; index <= teethSelected.length; index++) {
-                    if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
-                        teethSelected.splice(index);
+    
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+    
+                 var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
+                 var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
+                 var jobTypeSelectedId = $(jobTypeDD).val();
+    
+                 var previousJobTypeId = $(jobTypeDD).data('previousJobTypeId');
+                 var jobTypeActuallyChanged = (previousJobTypeId === undefined || String(previousJobTypeId) !== String(jobTypeSelectedId));
+                 $(jobTypeDD).data('previousJobTypeId', jobTypeSelectedId);
+                 if (jobTypeActuallyChanged) {
+                     materialBox.data('manualSelection', false);
+                 }
+    
+                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+                 var selectedJobType = jobTypes.find(x => String(x.id) === String(jobTypeSelectedId));
+                 var defaultMaterialId = selectedJobType ? selectedJobType.default_material_id : null;
+    
+                 // Store currently selected material to preserve selection if possible
+                 var currentlySelectedMaterial = materialBox.val();
+    
+                 // Clear material dropdown
+                materialBox.empty();
+    
+                // Add default option for materials
+                materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
+    
+                 // Populate materials compatible with selected job type
+                  $.each(jobTypeMaterials, function(key, value) {
+                      var material = materials.find(x => String(x.id) === String(value.material_id));
+                      materialBox.append($("<option></option>")
+                          .attr("value", value.material_id)
+                          .text(material ? material.name : ('Material #' + value.material_id)));
+                  });
+    
+                 var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
+                 var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
+    
+                 if (jobTypeActuallyChanged && defaultIsAllowed) {
+                     materialBox.val(defaultMaterialId);
+                 } else if (previousIsAllowed) {
+                     materialBox.val(currentlySelectedMaterial);
+                 } else {
+                     materialBox.val('');
+                 }
+                 var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
+                 var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
+                 var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
+                     .val().split(',');
+                 if ($(jobTypeDD).find(":selected").val() == 6) {
+    
+                    // get to parent of the main repeater and find abutment units box
+    
+                    $(abutmentBox).attr('required', '');
+                    $(implantBox).attr('required', '');
+    
+                    $(abutmentsArea).css("display", "block");
+                    // $(".abutmentsUnitsPicker").find('option').html('');
+                    // show the 6th parent of the box which has display none property
+                    // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
+    
+                    // Destroy existing selectpicker if it exists to avoid conflicts
+                    if (abutmentUnitsBox.hasClass('selectpicker')) {
+                        abutmentUnitsBox.selectpicker('destroy');
                     }
+    
+                    // Clear and repopulate options
+                    abutmentUnitsBox.empty();
+                    $.each(currentlySelectedUnits, function(index, value) {
+                        abutmentUnitsBox.append($("<option></option>")
+                            .attr("value", value)
+                            .text(value));
+                    });
+    
+                    // Initialize selectpicker fresh
+                    abutmentUnitsBox.selectpicker();
+    
+                    $(jobTypeDD).attr("readonly", "true");
+                    $(openDialogBtn).attr("disabled", "true");
+                } else {
+                    $(abutmentBox).removeAttr('required');
+                    $(implantBox).removeAttr('required');
+                    $(abutmentsArea).css("display", "none");
+                    abutmentUnitsBox.val(0);
+                    //            implantBox.val(0);
+                    // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
                 }
-                // add selected jaw to the array and update value
-                teethSelected.push(jaw);
-
-
             }
-
-            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-        });
-
-        function preOpenDialog(element) {
-            // if repeater reached 2 digit or not
-            if (element.name.length == 24) {
-                lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
-                repeaterName = element.name.substr(0, 9);
-            } else {
-                repeaterName = element.name.substr(0, 10);
-                lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
+    
+            function addAbutmentJob(ele) {
+                // get units selected originally in the job
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+                // wait for new repeater row to populate then add unit selected to abutment units box
+                setTimeout(function() {
+                    var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
+    
+                    // Destroy existing selectpicker if it exists to avoid conflicts
+                    if (lastAbutmentUnitsBox.hasClass('selectpicker')) {
+                        lastAbutmentUnitsBox.selectpicker('destroy');
+                    }
+    
+                    // Clear and repopulate options
+                    lastAbutmentUnitsBox.empty();
+                    $.each(teethSelectedAsArr, function(index, value) {
+                        lastAbutmentUnitsBox.append($("<option></option>")
+                            .attr("value", value)
+                            .text(value));
+                    });
+    
+                    // Initialize selectpicker fresh
+                    lastAbutmentUnitsBox.selectpicker();
+                }, 500);
+    
             }
-            var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
-            // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
-            if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
-                teethSelected = currentJobUnits.val().split(',');
-                // console.log("is defined and its now : " + teethSelected);
-            } else {
-                // console.log("NOT defined,cleared");
-                teethSelected = [];
-            }
-            if (teethSelected.length !== 0) {
-                var teethPreSelected = currentJobUnits.val().split(',');
-                // console.log("Lighting up : " + teethPreSelected);
-                // light on and off according to the pre selected
-                $(".teeth").each(function() {
-                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
-                        // console.log("true");
-                        $(this).addClass("checked");
-                    } else
-                        $(this).removeClass("checked");
-                });
-                $(".jaw").each(function() {
-                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
-                        $(this).addClass("checked");
+    
+            $("#submitDialog").click(function() {
+    
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+                var jobTypeBoxName = repeaterName + "[jobType]";
+                var selectBtnName = repeaterName + "[openDialogBtn]";
+    
+                var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
+                var jobTypes = {!! json_encode($types->toArray()) !!};
+                var colorsDDName = repeaterName + "[color]";
+                var styleOptionsName = repeaterName + "[style]";
+                /* Updating dropdowns according to teeth selection
+                 * First if is for jaws, second is for teeth
+                 * @Yazan -
+                 */
+                if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
+                        teethSelectedAsArr) !== -1) {
+                    // clear all options
+                    jobTypeBox.empty();
+                    // filter all job types to only jaws.
+                    var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
+                    // fill up the options with the array above.
+                    $.each(jawOnlyTypes, function(key, value) {
+                        jobTypeBox.append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.name));
+                    });
+                    // Notify Job type changed function to update materials with which box changed
+                    jobTypeChanged(jobTypeBox);
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
+    
+                    // set style to none (prevent back-end errors) and hide it
+                    $("[name='" + styleOptionsName + "']").val('None');
+                    $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
+    
+                }
+    
+                // No jaws selected
+                else {
+                    jobTypeBox.empty();
+                    const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
+                    $.each(jawOnlyTypes, function(key, value) {
+                        jobTypeBox.append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.name));
+                    });
+                    $("[name='" + styleOptionsName + "']").parent().parent().parent().show();
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().show();
+                    if (teethSelectedAsArr.length > 1)
+                        $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
                     else
-                        $(this).removeClass("checked");
-                });
-            } else {
-                $(".teeth").removeClass("checked");
-                $(".jaw").removeClass("checked");
+                        $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
+                    // Notify Job type changed function to update materials with which box changed
+                    jobTypeChanged(jobTypeBox);
+    
+                }
+    
+                // Change button label with selected teeth
+                if (teethSelectedAsArr.length > 0)
+                    $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
+                else
+                    $("[name='" + selectBtnName + "']").html("Select Units");
+    
+    
+                $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
+    
+                // close dialog
+                $("#unitsDialog").modal('hide');
+    
+                // Remove focus from the save button to prevent aria-hidden issues
+                $("#submitDialog").blur();
+    
+                // Ensure all modal backdrops are removed and body classes are cleaned up
+                setTimeout(function() {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
+                    $('body').css('padding-right', '');
+                }, 300);
+    
+            });
+    
+    
+            $(document).on('click', '.teeth', function() {
+    
+                // Check if any jaws is selected, if any remove them from array
+                if (jQuery.inArray("upper", teethSelected) !== -1) {
+                    const jawIndex = teethSelected.indexOf("upper");
+                    teethSelected.splice(jawIndex, 1);
+                }
+                if (jQuery.inArray("lower", teethSelected) !== -1) {
+                    const jawIndex = teethSelected.indexOf("lower");
+                    teethSelected.splice(jawIndex, 1);
+                }
+    
+                // remove the light of the jaws buttons
+                var list = $('.jaw');
+                list.removeClass("checked");
+    
+    
+                //if not pre selected light up the teeth and add it to array
+                if ($(this).hasClass("checked")) {
+                    $(this).removeClass("checked");
+                    var teethNumber = $(this).attr("alt");
+                    const index = teethSelected.indexOf(teethNumber);
+    
+                    if (index > -1) {
+                        teethSelected.splice(index, 1);
+                    }
+    
+                    // remove the selection if previously selected
+                } else {
+                    var teethNumber = $(this).attr("alt");
+                    teethSelected.push(teethNumber);
+                    $(this).addClass("checked");
+                    // console.log("Added a teeth" + teethSelected);
+                }
+    
+                //console.log("Updating units input : "  + teethSelected);
+    
+                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+            });
+            $(document).on('click', '.jaw', function() {
+    
+                if ($(this).hasClass("checked")) {
+                    $(this).removeClass("checked");
+                    var jaw = $(this).attr("alt");
+                    const index = teethSelected.indexOf(jaw);
+    
+                    if (index > -1) {
+                        teethSelected.splice(index, 1);
+                    }
+                    var unitNumsBox = $("[id=units]:last").attr("name");
+                    $("[name='" + unitNumsBox + "']").val(teethSelected);
+    
+                } else {
+    
+                    var jaw = $(this).attr("alt");
+                    // add visuall selection to the jaw the selection
+                    $(this).addClass("checked");
+    
+                    // remove visual selection of all teeth if a jaw is selected
+                    var list = $('.teeth');
+                    list.removeClass("checked");
+    
+                    // remove all selected teeth
+                    for (var index = 0; index <= teethSelected.length; index++) {
+                        if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
+                            teethSelected.splice(index);
+                        }
+                    }
+                    // add selected jaw to the array and update value
+                    teethSelected.push(jaw);
+    
+    
+                }
+    
+                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+            });
+    
+            function preOpenDialog(element) {
+                // if repeater reached 2 digit or not
+                if (element.name.length == 24) {
+                    lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
+                    repeaterName = element.name.substr(0, 9);
+                } else {
+                    repeaterName = element.name.substr(0, 10);
+                    lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
+                }
+                var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
+                // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
+                if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
+                    teethSelected = currentJobUnits.val().split(',');
+                    // console.log("is defined and its now : " + teethSelected);
+                } else {
+                    // console.log("NOT defined,cleared");
+                    teethSelected = [];
+                }
+                if (teethSelected.length !== 0) {
+                    var teethPreSelected = currentJobUnits.val().split(',');
+                    // console.log("Lighting up : " + teethPreSelected);
+                    // light on and off according to the pre selected
+                    $(".teeth").each(function() {
+                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
+                            // console.log("true");
+                            $(this).addClass("checked");
+                        } else
+                            $(this).removeClass("checked");
+                    });
+                    $(".jaw").each(function() {
+                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
+                            $(this).addClass("checked");
+                        else
+                            $(this).removeClass("checked");
+                    });
+                } else {
+                    $(".teeth").removeClass("checked");
+                    $(".jaw").removeClass("checked");
+                }
             }
-        }
-    </script>
-    <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
-    {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
-    {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
-    {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
-
-    <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
-@endpush
+        </script>
+        <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
+        {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
+        {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
+        {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
+    
+        <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
+    @endpush
+    

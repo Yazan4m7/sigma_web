@@ -41,13 +41,25 @@
             <div class="col-lg-2 col-md-3 ">
                 <div class="kt-subheader__search" style="">
                     <label>From:</label>
-                    <input type="date" class="form-control" name="from" value="{{ date('Y-m-d', strtotime($from)) }}">
+                    <x-ios-dtp
+                        name="from"
+                        id="from"
+                        :value="$from"
+                        mode="date"
+                        :required="true"
+                    />
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 ">
                 <div class="kt-subheader__search" style="">
                     <label>To:</label>
-                    <input type="date" class="form-control" name="to" value="{{ date('Y-m-d', strtotime($to)) }}">
+                    <x-ios-dtp
+                        name="to"
+                        id="to"
+                        :value="$to"
+                        mode="date"
+                        :required="true"
+                    />
                 </div>
             </div>
 

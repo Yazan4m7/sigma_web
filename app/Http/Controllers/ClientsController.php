@@ -321,8 +321,8 @@ class ClientsController extends Controller
     }
     public function paymentsIndex(Request $request){
         if ($request->from && $request->to) {
-            $from = $request->from ;
-            $to = $request->to;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
             $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';
@@ -402,8 +402,8 @@ class ClientsController extends Controller
     public function doctorInvoices(Request $request)
     {
         if ($request->from && $request->to) {
-            $from = $request->from   . ' 00:00';
-            $to = $request->to  . ' 23:59' ;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
             $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';

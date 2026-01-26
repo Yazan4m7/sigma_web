@@ -1956,7 +1956,7 @@
                                     @break
                                 @endswitch
                                 <div class="stage-panel-scroll">
-                                <table class="{{ $key }}  waitingTable sunriseTable" style="width:100%">
+                                <table class="{{ $key }}  waitingTable sunriseTable no-auto-colresize" style="width:100%">
                                     <thead>
                                         <tr>
                                             {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
@@ -2340,7 +2340,7 @@
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <div class="stage-panel-scroll">
-                                    <table class=" activeTable sunriseTable" style="width:100%;">
+                                    <table class=" activeTable sunriseTable no-auto-colresize" style="width:100%;">
                                         <thead>
                                             <tr>
                                                 <th class="ops-col ops-col--doctor">Doctor</th>
@@ -2521,6 +2521,7 @@
                                                                                         class="noteText">{{ $note->note }}</span>
                                                                                 </div>
                                                                             @endforeach
+
                                                                         @endif
                                                                     </div>
 
@@ -2734,6 +2735,23 @@
     {{--            dd($e->getMessage(), $e->getTraceAsString()); --}}
     {{--        } --}}
     {{--    @endphp --}}
+
+    <!-- Column Width Config Panel -->
+    <div class="config-panel" id="columnConfigPanel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+                <h4 style="margin: 0; color: #1e293b; font-weight: 700;">Table Column Widths</h4>
+                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                    Adjust widths in pixels. Press <span class="reset-hint">F3</span> to reset all.
+                </p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button id="resetToAutoBtn" class="btn btn-sm btn-warning">Reset to Auto</button>
+                <button onclick="$('#columnConfigPanel').removeClass('active')" class="btn btn-sm btn-outline-secondary">Close</button>
+            </div>
+        </div>
+        <div id="columnWidthInputs"></div>
+    </div>
 @endsection
 
 
@@ -2861,6 +2879,16 @@
 
         .waitingTable>thead {
             height: 4.9vh;
+        }
+
+        /* Dashboard table styling with Cairo font */
+        .waitingTable, .activeTable {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .waitingTable th, .waitingTable td,
+        .activeTable th, .activeTable td {
+            font-family: 'Cairo', sans-serif !important;
         }
 
         /* Fix the span container around checkbox */
@@ -3390,5 +3418,335 @@
             }
 
         }
+
+        /* Column Width Config Panel */
+        .config-panel {
+            position: fixed;
+            bottom: -400px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15), 0 -4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 24px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            backdrop-filter: blur(12px);
+        }
+
+        .config-panel.active {
+            bottom: 20px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .config-panel #columnWidthInputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .config-panel .column-input-row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 12px 16px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            min-width: 150px;
+            transition: all 0.2s ease;
+        }
+
+        .config-panel .column-input-row:hover {
+            background: #f8fafc;
+        }
+
+        .config-panel .column-input-row label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .config-panel .column-input-row input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            text-align: center;
+            color: #1e293b;
+        }
+
+        .config-panel .column-input-row input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .config-panel .reset-hint {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
     </style>
+
+    <!-- Dashboard: Column width config panel -->
+    <script>
+    $(document).ready(function() {
+        var $panel = $('#columnConfigPanel');
+        var $inputsContainer = $('#columnWidthInputs');
+        var storageKey = 'dashboard_master_widths';
+
+        // Get unique column names from all tables
+        function getColumnNames() {
+            var columnNames = new Set();
+
+            $('.waitingTable, .activeTable').each(function() {
+                $(this).find('thead th').each(function() {
+                    var text = $(this).text().trim();
+                    if (text) {
+                        columnNames.add(text);
+                    } else {
+                        // For checkbox columns or empty headers
+                        columnNames.add('[Checkbox]');
+                    }
+                });
+            });
+
+            var columnsArray = Array.from(columnNames);
+
+            // Sort: Checkbox first, then alphabetically
+            columnsArray.sort(function(a, b) {
+                if (a === '[Checkbox]') return -1;
+                if (b === '[Checkbox]') return 1;
+                return a.localeCompare(b);
+            });
+
+            return columnsArray;
+        }
+
+        // Populate panel with inputs
+        function populatePanel() {
+            var columnNames = getColumnNames();
+            if (columnNames.length === 0) return;
+
+            var savedWidths = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            $inputsContainer.empty();
+
+            console.log('Available columns:', columnNames);
+
+            columnNames.forEach(function(colName) {
+                var defaultWidth = savedWidths[colName] || (colName === '[Checkbox]' ? 20 : '');
+                var displayName = colName === '[Checkbox]' ? '☑ Checkbox' : colName;
+                var html = '<div class="column-input-row">' +
+                    '<label>' + displayName + '</label>' +
+                    '<input type="number" class="width-input" data-col-name="' + colName + '" value="' + defaultWidth + '" placeholder="Auto" min="20" step="5">' +
+                    '</div>';
+                $inputsContainer.append(html);
+            });
+
+            // Attach instant apply on input change
+            $('.width-input').on('input change', function() {
+                applyWidths();
+            });
+        }
+
+        // Apply widths to all tables
+        function applyWidths() {
+            var widths = {};
+            $inputsContainer.find('input').each(function() {
+                var colName = $(this).data('col-name');
+                var value = parseInt($(this).val()) || null;
+                if (value) widths[colName] = value;
+            });
+
+            // Save to localStorage
+            localStorage.setItem(storageKey, JSON.stringify(widths));
+
+            // Apply to all waitingTable and activeTable
+            $('.waitingTable, .activeTable').each(function() {
+                var $table = $(this);
+
+                // Force table-layout: fixed for pixel widths
+                $table.css('table-layout', 'fixed');
+
+                // Build column name to index mapping for this table
+                var colMap = {};
+                $table.find('thead th').each(function(i) {
+                    var text = $(this).text().trim() || '[Checkbox]';
+                    colMap[text] = i;
+                });
+
+                // Apply to thead th by matching column name
+                for (var colName in widths) {
+                    if (colMap[colName] !== undefined) {
+                        var idx = colMap[colName];
+                        $table.find('thead th').eq(idx).css({
+                            'width': widths[colName] + 'px',
+                            'min-width': widths[colName] + 'px',
+                            'max-width': widths[colName] + 'px'
+                        });
+                    }
+                }
+
+                // Apply to tbody td
+                $table.find('tbody tr').each(function() {
+                    for (var colName in widths) {
+                        if (colMap[colName] !== undefined) {
+                            var idx = colMap[colName];
+                            $(this).find('td').eq(idx).css({
+                                'width': widths[colName] + 'px',
+                                'min-width': widths[colName] + 'px',
+                                'max-width': widths[colName] + 'px'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        // Reset to auto widths
+        function resetToAuto() {
+            // Clear all custom widths
+            $('.waitingTable, .activeTable').each(function() {
+                $(this).css('table-layout', '');
+                $(this).find('th, td').css({
+                    'width': '',
+                    'min-width': '',
+                    'max-width': ''
+                });
+            });
+
+            // Detect natural widths from first table
+            var $firstTable = $('.waitingTable').first();
+            var detectedWidths = {};
+
+            if ($firstTable.length) {
+                $firstTable.find('thead th').each(function(i) {
+                    var text = $(this).text().trim() || '[Checkbox]';
+                    // Use 20px for checkbox, otherwise detect
+                    var width = (text === '[Checkbox]') ? 20 : Math.ceil($(this).outerWidth());
+                    detectedWidths[text] = width;
+                });
+            }
+
+            // Save detected widths
+            localStorage.setItem(storageKey, JSON.stringify(detectedWidths));
+
+            // Repopulate panel with detected values
+            populatePanel();
+
+            // Apply
+            applyWidths();
+
+            // Show toast notification
+            if (typeof showToast === 'function') {
+                showToast('Column widths auto-detected and applied', 'success');
+            }
+        }
+
+        // Initialize panel on first load
+        populatePanel();
+
+        // Reset to Auto button
+        $('#resetToAutoBtn').on('click', resetToAuto);
+
+        // F2: Toggle panel
+        // F3: Reset widths
+        $(document).on('keydown', function(e) {
+            if (e.key === 'F2') {
+                e.preventDefault();
+                $panel.toggleClass('active');
+            } else if (e.key === 'F3') {
+                e.preventDefault();
+                localStorage.removeItem(storageKey);
+                populatePanel();
+                $('.waitingTable, .activeTable').each(function() {
+                    $(this).css('table-layout', '');
+                    $(this).find('th, td').css({
+                        'width': '',
+                        'min-width': '',
+                        'max-width': ''
+                    });
+                });
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reset Complete',
+                        text: 'Column widths cleared - using browser defaults',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            }
+        });
+
+        // Auto-apply saved widths on page load
+        setTimeout(function() {
+            var savedWidths = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            if (Object.keys(savedWidths).length > 0) {
+                $('.waitingTable, .activeTable').each(function() {
+                    var $table = $(this);
+
+                    // Force table-layout: fixed for pixel widths
+                    $table.css('table-layout', 'fixed');
+
+                    // Build column name to index mapping for this table
+                    var colMap = {};
+                    $table.find('thead th').each(function(i) {
+                        var text = $(this).text().trim() || '[Checkbox]';
+                        colMap[text] = i;
+                    });
+
+                    // Apply to thead th by matching column name
+                    for (var colName in savedWidths) {
+                        if (colMap[colName] !== undefined) {
+                            var idx = colMap[colName];
+                            $table.find('thead th').eq(idx).css({
+                                'width': savedWidths[colName] + 'px',
+                                'min-width': savedWidths[colName] + 'px',
+                                'max-width': savedWidths[colName] + 'px'
+                            });
+                        }
+                    }
+
+                    // Apply to tbody td
+                    $table.find('tbody tr').each(function() {
+                        for (var colName in savedWidths) {
+                            if (colMap[colName] !== undefined) {
+                                var idx = colMap[colName];
+                                $(this).find('td').eq(idx).css({
+                                    'width': savedWidths[colName] + 'px',
+                                    'min-width': savedWidths[colName] + 'px',
+                                    'max-width': savedWidths[colName] + 'px'
+                                });
+                            }
+                        }
+                    });
+                });
+            }
+        }, 1000);
+    });
+    </script>
 @endpush

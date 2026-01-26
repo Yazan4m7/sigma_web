@@ -138,6 +138,64 @@ $(document).ready(function() {
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('assets/js/dataTables.colResize.js') }}"></script>
+
+    <!-- Global sunriseTable colResize support -->
+    <script>
+        // Wrap DataTable initialization to auto-enable colResize for sunriseTable
+        (function() {
+            if (!$.fn.DataTable) return;
+
+            const originalDataTable = $.fn.DataTable;
+
+            $.fn.DataTable = function(options) {
+                const $table = $(this);
+
+                // Auto-enable colResize for sunriseTable instances (unless no-auto-colresize)
+                if ($table.hasClass('sunriseTable') && !$table.hasClass('no-auto-colresize') && options) {
+                    options.colResize = options.colResize !== false; // Enable by default unless explicitly disabled
+                }
+
+                const table = originalDataTable.call(this, options);
+                const tableId = $table.attr('id');
+
+                // Add save/restore functionality for sunriseTable with colResize (skip no-auto-colresize)
+                if ($table.hasClass('sunriseTable') && !$table.hasClass('no-auto-colresize') && tableId && options && options.colResize) {
+                    // Restore saved widths
+                    setTimeout(function() {
+                        const widths = JSON.parse(localStorage.getItem(tableId + '_widths'));
+                        if (widths) {
+                            $table.find('th').each(function(i) {
+                                $(this).width(widths[i]);
+                            });
+                            // Recalc resize handle positions after width restore
+                            var settings = table.settings()[0];
+                            if (settings && settings.colResize && settings.colResize._recalcPositions) {
+                                settings.colResize._recalcPositions();
+                            }
+                        }
+                    }, 100);
+
+                    // Save on resize
+                    $(document).on('mouseup.sunriseTable_' + tableId, '.dt-colresizable-col', function() {
+                        setTimeout(function() {
+                            const newWidths = [];
+                            $table.find('th').each(function() {
+                                newWidths.push($(this).width());
+                            });
+                            localStorage.setItem(tableId + '_widths', JSON.stringify(newWidths));
+                        }, 100);
+                    });
+                }
+
+                return table;
+            };
+
+            // Copy static methods and properties
+            $.extend($.fn.DataTable, originalDataTable);
+        })();
+
+    </script>
 
     <!-- Font Awesome (Kit disabled - 403 error, using CDN versions loaded in pages) -->
     {{-- <script src="https://kit.fontawesome.com/b0187a4476.js" crossorigin="anonymous"></script> --}}

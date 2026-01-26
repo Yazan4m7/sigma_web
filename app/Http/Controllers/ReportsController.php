@@ -44,18 +44,8 @@ class ReportsController extends Controller
         else
         $selectedImplants =  $implants;
 
-        $abutments = abutment::all();
-        $allAbutmentsSelected=true;
-        if ($request->abutmentsInput && !in_array("all", (array)$request->abutmentsInput)){
-            $selectedAbutments =  abutment::whereIn('id', (array)$request->abutmentsInput)->get();
-            $allAbutmentsSelected=false;
-        }
-        else
-          $selectedAbutments =  $abutments;
-
-
-        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
-        $to = $request->to ?? now()->format('Y-m-d');
+        $from = $request->from ? Carbon::parse($request->from)->startOfDay()->format('Y-m-d H:i:s') : now()->subMonth()->startOfDay()->format('Y-m-d H:i:s');
+        $to = $request->to ? Carbon::parse($request->to)->endOfDay()->format('Y-m-d H:i:s') : now()->endOfDay()->format('Y-m-d H:i:s');
 
         $start = Carbon::parse($from)->startOfMonth();
         $end = Carbon::parse($to)->endOfMonth();
@@ -218,8 +208,8 @@ class ReportsController extends Controller
         $selectedJobTypes =  JobType::whereIn('id',[1,2,3,4])->get();
             $allJobTypesSelected=false;}
 
-        $from = $request->from ?? now()->subMonth()->format('Y-m-d');
-        $to = $request->to ?? now()->format('Y-m-d');
+        $from = $request->from ? Carbon::parse($request->from)->startOfDay()->format('Y-m-d H:i:s') : now()->subMonth()->startOfDay()->format('Y-m-d H:i:s');
+        $to = $request->to ? Carbon::parse($request->to)->endOfDay()->format('Y-m-d H:i:s') : now()->endOfDay()->format('Y-m-d H:i:s');
 
         $start = Carbon::parse($from)->startOfMonth();
         $end = Carbon::parse($to)->endOfMonth();

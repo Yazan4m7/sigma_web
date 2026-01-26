@@ -16,24 +16,23 @@
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="materials_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <input class="form-control SDTP"
-                               id="materials_from"
-                               name="from"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('from', now()->startOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >                    </div>
+                        <x-ios-dtp
+                            name="from"
+                            id="materials_from"
+                            :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
+                    </div>
                     <div class="col-lg-2 col-md-4 col-6">
                         <label for="materials_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <input class="form-control SDTP"
-                               id="materials_to"
-                               name="to"
-                               type="text"
-                               value="{{ \Carbon\Carbon::parse(request('to', now()->endOfMonth()->format('Y-m-d')))->format('d M, YYYY') }}"
-                               required=""
-                               readonly=""
-                        >
+                        <x-ios-dtp
+                            name="to"
+                            id="materials_to"
+                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($clients))

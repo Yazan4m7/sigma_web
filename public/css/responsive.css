@@ -6020,6 +6020,12 @@ body {
 .waitingTable, .activeTable, .sunriseTable {
     width: 100%;
     font-size: 0.8125rem;
+    font-family: 'Cairo', sans-serif;
+}
+
+.sunriseTable thead th:first-child,
+.sunriseTable tbody td:first-child {
+    padding-left: 1rem !important;
 }
 
 .waitingTable thead th, .activeTable thead th, .sunriseTable thead th {

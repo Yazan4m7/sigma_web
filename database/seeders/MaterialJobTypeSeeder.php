@@ -15,9 +15,11 @@ class MaterialJobTypeSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    {DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('material_jobtypes')->truncate();
         // Check if relationships already exist
         $existingCount = DB::table('material_jobtypes')->count();
+
         if ($existingCount > 0) {
             echo "Found {$existingCount} existing relationships. Skipping seeding.\n";
             return;

@@ -882,25 +882,23 @@ button[type="submit"].modern-btn:hover {
                         <div class="range-pair">
                             <div>
                                 <label class="form-label" for="master_from">From</label>
-                                <input class="form-control SDTP modern-input"
-                                       id="master_from"
-                                       name="from"
-                                       type="text"
-                                       value="{{ \Carbon\Carbon::parse(request('from', $from))->format('d M, YYYY') }}"
-                                       required=""
-                                       readonly=""
-                                >
+                                <x-ios-dtp
+                                    name="from"
+                                    id="master_from"
+                                    :value="request('from', $from)"
+                                    mode="date"
+                                    :required="true"
+                                />
                             </div>
                             <div>
                                 <label class="form-label" for="master_to">To</label>
-                                <input class="form-control SDTP modern-input"
-                                       id="master_to"
-                                       name="to"
-                                       type="text"
-                                       value="{{ \Carbon\Carbon::parse(request('to', $to))->format('d M, YYYY') }}"
-                                       required=""
-                                       readonly=""
-                                >
+                                <x-ios-dtp
+                                    name="to"
+                                    id="master_to"
+                                    :value="request('to', $to)"
+                                    mode="date"
+                                    :required="true"
+                                />
                             </div>
                         </div>
                     </div>

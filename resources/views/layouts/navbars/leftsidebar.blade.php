@@ -101,14 +101,14 @@
                 @endphp
 
                 <li >
-                    <a data-toggle="collapse" href="#laravel-examples"
+                    <a data-sigma-toggle="submenu" data-target="#laravel-examples"
                        aria-expanded="{{$reportsExpanded}}" >
                         <i class="fab fa-laravel" ></i>
                         <span class="nav-link-text">{{ __('Reports') }}</span>
                         <b class="caret mt-1"></b>
                     </a>
 
-                    <div class="collapse{{$reportsExpanded == 'true' ? 'show' : ''}}" id="laravel-examples">
+                    <div class="sigma-submenu{{$reportsExpanded == 'true' ? ' sigma-submenu-open' : ''}}" id="laravel-examples">
                         <ul class="nav pl-4">
                             <li class="{{Route::currentRouteName() == 'master-report' ? 'active' : ''}}" >
                                 <a href="{{route('master-report')}}">
@@ -165,12 +165,12 @@
                                  'clients-index4payment','payments-with-collectors'));
                 @endphp
                  <li>
-                <a data-toggle="collapse" href="#accountancyList"
+                <a data-sigma-toggle="submenu" data-target="#accountancyList"
                    aria-expanded="{{$accountancyExpanded}}" >
                     <i class="fa-solid fa-dollar-sign"></i> <span class="nav-link-text">Accountancy</span>
                     <b class="caret mt-1"></b>
                 </a>
-                <div class="collapse {{$accountancyExpanded == 'true' ? 'show' : ''}}" id="accountancyList">
+                <div class="sigma-submenu {{$accountancyExpanded == 'true' ? 'sigma-submenu-open' : ''}}" id="accountancyList">
                     <ul class="nav pl-4">
                         @if(($permissions && $permissions->contains('permission_id', 104)) || Auth()->user()->is_admin)
                             <li class="{{Route::currentRouteName() == 'payments-with-collectors' ? 'active' : ''}}" >
@@ -215,14 +215,14 @@
                 @endphp
 
                 <li>
-                    <a data-toggle="collapse" href="#configList"
+                    <a data-sigma-toggle="submenu" data-target="#configList"
                        aria-expanded="{{$configExpanded}}" >
                         <i class="fa-solid fa-gear" ></i>
                         <span class="nav-link-text">Configuration</span>
                         <b class="caret mt-1"></b>
                     </a>
 
-                    <div class="collapse {{$configExpanded == 'true' ? 'show' : ''}}" id="configList">
+                    <div class="sigma-submenu {{$configExpanded == 'true' ? 'sigma-submenu-open' : ''}}" id="configList">
                     <ul class="nav pl-4">
                     <li class="{{Route::currentRouteName() == ' media-index' ? 'active' : ''}}"><a href="{{route('media-index')}}"><i class="fa-solid fa-video"></i> <span>Gallery Media</span></a>
                     <li class="{{Route::currentRouteName() == 'material-index' ? 'active' : ''}}"><a href="{{route('material-index')}}"><i class="fa fa-cubes"></i> <span>Materials</span></a>
@@ -235,12 +235,12 @@
                     <li class="{{Route::currentRouteName() == 'f-causes-index' ? 'active' : ''}}"><a href="{{route('f-causes-index')}}"><i class="fa-solid fa-repeat"></i><span>Failure Causes</span></a>
                     <li class="{{Route::currentRouteName() == 'devices-index' ? 'active' : ''}}"><a href="{{route('devices-index')}}"><i class="fa-solid fa-tachograph-digital"></i><span>Devices</span></a>
                     <li>
-                        <a data-toggle="collapse" href="#toolsList" aria-expanded="false">
+                        <a data-sigma-toggle="submenu" data-target="#toolsList" aria-expanded="false">
                             <i class="fa-solid fa-screwdriver-wrench"></i>
                             <span class="nav-link-text">Tools</span>
                             <b class="caret mt-1"></b>
                         </a>
-                        <div class="collapse" id="toolsList">
+                        <div class="sigma-submenu" id="toolsList">
                             <ul class="nav pl-4">
                                 <li class="{{Route::currentRouteName() == 'audit-logs.index' ? 'active' : ''}}">
                                     <a href="{{route('audit-logs.index')}}">

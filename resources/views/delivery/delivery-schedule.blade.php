@@ -73,6 +73,11 @@
         .text-overdue, .text-overdue .delivery-time-value, .text-overdue .delivery-date-time {
             color: red !important;
         }
+
+        /* Modal doctor/patient names */
+        #doctor, #pat, .modal-body h5 {
+            font-family: 'Cairo', sans-serif;
+        }
         .delivery-counter-card > .value {
             color: #3b8b45;
             font-size: 1.4rem;
@@ -92,7 +97,7 @@
         /* Responsive modal dialog sizing */
         @media screen and (max-width: 991px){
             /* Tablets */
-            
+
 .sigma-modal--delivery-schedule-edit .modal-dialog {
                 max-width: 90% !important;
                 margin: 1rem auto !important;
@@ -104,35 +109,9 @@
         }
 
 
-        @media screen and (max-width: 767px){
-            .delivery-filters {
-                gap: 10px;
-                display: flex;
-                justify-content: center !important;
-                flex-direction: row;
-                align-items: flex-end;
-                flex-wrap: wrap;
-            }
-
-            /* Keep From and To date fields on same row */
-            .delivery-filters > div:nth-child(1),
-            .delivery-filters > div:nth-child(2) {
-                flex: 0 0 calc(50% - 8px);
-                max-width: calc(50% - 8px);
-            }
-
-            /* Filter button */
-            .delivery-filters > div:nth-child(3) {
-                flex: 1;
-            }
-
-            /* Print button aligned right */
-            .delivery-filters .print-btn-container {
-                flex: 0 0 auto;
-                margin-left: auto;
-            }
+        @media screen and (max-width: 700px){
             /* Large phones */
-            
+
 .sigma-modal--delivery-schedule-edit .modal-dialog {
                 max-width: calc(100% - 24px) !important;
                 margin: 12px !important;
@@ -145,7 +124,7 @@
 
         @media screen and (max-width: 480px){
             /* Small phones */
-            
+
 .sigma-modal--delivery-schedule-edit .modal-dialog {
                 max-width: calc(100% - 16px) !important;
                 margin: 8px !important;
@@ -155,7 +134,7 @@
                 margin: 8px !important;
             }
 
-            
+
 .sigma-modal--delivery-schedule-edit .modal-content {
                 border-radius: 8px !important;
             }
@@ -164,76 +143,7 @@
             }
         }
 
-        /* Custom CSS for tighter spacing on mobile */
-        @media screen and (max-width: 767px) {
 
-            .delivery-filters .col-3,
-            .delivery-actions .col-3 {
-
-            }
-            table{
-                margin: 0px 1px;
-                width: 90%;
-            }
-
-            .delivery-filters label {
-                font-size: 12px !important;
-                margin-bottom: 4px !important;
-            }
-
-            .delivery-filters .form-control {
-                height: 38px !important;
-                font-size: 13px !important;
-                padding: 6px 8px !important;
-            }
-
-            .delivery-actions .btn {
-                width: 100% !important;
-                height: 38px !important;
-                font-size: 13px !important;
-                padding: 6px 8px !important;
-            }
-
-            .delivery-counters {
-                padding: 0 8px !important;
-                margin-top: 8px !important;
-                display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 8px !important;
-            }
-
-            .delivery-counters .col-3 {
-                flex: 0 0 calc(33.333% - 8px) !important;
-                max-width: calc(33.333% - 8px) !important;
-                padding: 0 !important;
-            }
-
-            .delivery-counter-card {
-                background: #f7f8fa !important;
-                border: 1px solid #e1e4e8 !important;
-                border-radius: 6px !important;
-                padding: 4px 6px !important;
-                text-align: center !important;
-                min-height: 60px !important;
-            }
-
-            .delivery-counter-card .label {
-                margin-top: 4px !important;
-                font-size: 11px !important;
-                font-weight: 600 !important;
-                display: block !important;
-                color: #555 !important;
-                line-height: 1.2 !important;
-            }
-
-            .delivery-counter-card > .value {
-                color: #3b8b45;
-                font-size: 1.4rem;
-                letter-spacing: -3px;
-                font-weight: 700;
-                display: block !important;
-
-            }
 
             .table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child,
             .table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child {
@@ -254,6 +164,10 @@
             #datatable {
                 table-layout: fixed !important;
                 width: 100% !important;
+            }
+
+            #datatable {
+                font-family: 'Cairo', sans-serif;
             }
 
             #datatable thead th,
@@ -325,26 +239,79 @@
                 margin-bottom: 0px;
                 position: relative;
             }
+            .btn {
+                width: auto;
+                min-width: 40px;
+            }
 
             .row {
                 padding: 2px;
             }}
-        .filter-btn{width: 10rem;}
-        .print-btn{
-            width: 42px;
-            height: 42px;
-            padding: 0;
+        /* Custom CSS for filter row matching cases page */
+        .cases-filter-row {
+            padding: 8px 0 !important;
+            align-items: center;
+            display: flex;
+            gap: 16px; /* Bootstrap default was too small */
+        }
+        .filter-label {
+            font-weight: 600;
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 6px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .cases-filter-btn {
+            width: 100%;
+            height: 36px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
+            padding: 0 !important;
         }
-        .print-btn i {
-            font-size: 18px;
+
+        /* Responsive adjustments for cases-filter-row on smaller screens */
+        @media screen and (max-width: 767px) {
+            /* Adjust column widths within the filter row for date inputs */
+            .cases-filter-row > div:nth-child(1), /* From Date */
+            .cases-filter-row > div:nth-child(2) { /* To Date */
+                flex: 0 0 calc(50% - 8px); /* Two items per row */
+                max-width: calc(50% - 8px);
+            }
+            /* Adjust column width for the Filter button */
+            .cases-filter-row > div:nth-child(3) { /* Filter Button */
+                flex: 0 0 calc(50% - 8px); /* Ensure it's responsive */
+                max-width: calc(50% - 8px);
+            }
+            .cases-filter-row {
+                flex-wrap: wrap; /* Allow filter inputs to wrap */
+                gap: 8px; /* Reduce gap on mobile */
+            }
+
+            /* Adjust label and input/button heights for mobile */
+            .cases-filter-row label {
+                font-size: 12px !important;
+                margin-bottom: 4px !important;
+            }
+            .cases-filter-row .form-control,
+            .cases-filter-row .x-ios-dtp { /* Target ios-dtp for height */
+                height: 38px !important;
+                font-size: 13px !important;
+                padding: 6px 8px !important;
+            }
+
+            /* Print button container adjustments for mobile */
+            .ml-auto { /* The wrapper for the print button */
+                flex: 0 0 calc(50% - 8px); /* Take up half width */
+                max-width: calc(50% - 8px);
+                margin-left: 0 !important; /* Remove auto margin on small screens if it causes issues */
+            }
         }
-        .print-btn-container {
-            margin-left: auto;
-        }
+        /* End Custom CSS for filter row matching cases page */
+
+        /* Remove conflicting original styles */
 
         /* Center # of units column */
         #datatable thead th:nth-child(4),
@@ -358,13 +325,7 @@
             text-align: left !important;
         }
 
-        .delivery-filters{
-            gap: 16px;
-            display: flex;
-            justify-content: flex-start;
-            flex-direction: row;
-            align-items: flex-end;
-        }
+
         .ios-dtp-modal {
             position: fixed;
             top: 100%;
@@ -396,73 +357,52 @@
                 @csrf
                 <div class="kt-portlet__body">
                     <div class="form-group">
-                        <div class=" delivery-filters">
-
-                            <div class="  noLeftPadding">
-                                <div class="">
-                                    <label for="delivery_from">FROM</label>
-{{--                                    <x-ios-dtp name="from" id="delivery_from" :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : ''" :required="true" />--}}
+                        <div class="d-flex align-items-end">
+                            <div class="row cases-filter-row">
+                                <!-- From Date -->
+                                <div class="col-4 col-sm-3 col-md-2 mb-2">
+                                    <label for="delivery_from" class="filter-label">From Date:</label>
                                     <x-ios-dtp
                                             name="from"
                                             id="delivery_from"
-                                            :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : '' "
+                                            :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, Y') : '' "
                                             mode="date"
+                                            :required="true"
                                     />
-{{--                                    <input class="form-control SDTP"--}}
-{{--                                           id="delivery_from"--}}
-{{--                                           name="from"--}}
-{{--                                           type="text"--}}
-{{--                                           value="{{ isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, YYYY') : '' }}"--}}
-{{--                                           required=""--}}
-{{--                                           readonly=""--}}
-{{--                                    >--}}
-
                                     @if ($errors->has('from'))
                                         <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
                                     @endif
                                 </div>
-                            </div>
-                            <div class=" ">
-                                <label for="delivery_to">TO</label><br>
-
-
-{{--                                <x-ios-dtp name="to" id="delivery_to" :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' " :required="true" />--}}
-
-                                <x-ios-dtp
-                                        name="to"
-                                        id="delivery_to"
-                                        :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' "
-                                        mode="date"
-                                />
-
-{{--                                <input class="form-control SDTP"--}}
-{{--                                       id="delivery_to"--}}
-{{--                                       name="to"--}}
-{{--                                       type="text"--}}
-{{--                                       value="{{ isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, YYYY') : '' }}"--}}
-{{--                                       required=""--}}
-{{--                                       readonly=""--}}
-{{--                                >--}}
-                                @if ($errors->has('to'))
-                                    <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
-                                @endif
-                            </div>
-
-                                <div class=" noLeftPadding">
-                                    <button type="submit" class="btn btn-primary fillWidth filter-btn">Filter</button>
+                                <!-- To Date -->
+                                <div class="col-4 col-sm-3 col-md-2 mb-2">
+                                    <label for="delivery_to" class="filter-label">To Date:</label>
+                                    <x-ios-dtp
+                                            name="to"
+                                            id="delivery_to"
+                                            :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, Y') : '' "
+                                            mode="date"
+                                            :required="true"
+                                    />
+                                    @if ($errors->has('to'))
+                                        <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
+                                    @endif
                                 </div>
-                                <div class="print-btn-container">
-                                    <button type="button" onclick="printResult()"
-                                            class="btn btn-secondary print-btn" title="Print">
-                                        <i class="fa fa-print"></i>
+
+                                <!-- Filter Button -->
+                                <div class="col-2 col-sm-1 col-md-1 mb-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary cases-filter-btn">
+                                        <i class="fas fa-search"></i>
                                     </button>
                                 </div>
-
+                            </div>
+                            <!-- Print Button (Far Right) -->
+                            <div class="mb-2 ml-auto">
+                                <button type="button" onclick="printResult()" class="btn btn-secondary cases-filter-btn" title="Print">
+                                    <i class="fa fa-print"></i>
+                                </button>
+                            </div>
                         </div>
-
                     </div>
-
-
                 </div>
             </form>
         </div>
@@ -834,41 +774,14 @@
         </div>
     </div>
 
-    </div>
-@endsection
-
-@push('js')
-    <!-- Responsive and datatable js -->
-    <script src="//cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#datatable').DataTable({
-                "ordering": false,
-                "pageLength": 25,
-                "searching": false,
-                "lengthChange": false,
-                "columnDefs": [
-                    {
-                        "width": "10%",
-                        "targets": 3
-                    },
-                    {
-                        "width": "20%",
-                        "targets": 4
-                    }
-                ]
-            });
-        });
-
-
+    <script>
         function printResult() {
             var mywindow = window.open('', 'PRINT', 'height=400,width=600');
 
             mywindow.document.write( '<html><head><title>' + document.title + '</title>' );
             //noinspection JSAnnotator
-            mywindow.document.write( `
-                <style>
+            mywindow.document.write
+            ( `<style>
                 .kt-datatable__table, h2 {font-size:17px;font-weight: bold;  padding: 10px;width:100%;text-align:center;}
                 .kt-datatable__body {font-size:17px;font-weight: normal;}
                 body {padding:50px;}
@@ -884,19 +797,19 @@
                 <h1> Delivery Schedule </h1>
 
                 @if (isset($data) && $data['from'] && $data['to'])
-                                     <p>From <b>{{ $data['from'] }}</b> To <b>{{ $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
+              <p>From <b>{{ $data['from'] }}</b> To <b>{{ $data['to'] }}</b> <br>  <b>{{ count($cases) }}</b> Cases</p>
                 @endif
 
-                                     <table border="1" class="kt-datatable__table">
-                                                     <thead class="kt-datatable__head">
-                                                     <tr class="kt-datatable__row" style="left: 0px;">
-                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Doctor Name</span></th>
-                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Patient Name</span></th>
-                                                         <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Date</span></th>
-                                                        <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Status at print time</span></th>
-                                                     </tr>
-                                                     </thead>
-                                                     <tbody  class="kt-datatable__body">
+              <table border="1" class="kt-datatable__table">
+                              <thead class="kt-datatable__head">
+                              <tr class="kt-datatable__row" style="left: 0px;">
+                                  <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Doctor Name</span></th>
+                                  <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Patient Name</span></th>
+                                  <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Delivery Date</span></th>
+                                 <th class="kt-datatable__cell"><span class="middle" style="width: 33%; margin: auto; text-align: center">Status at print time</span></th>
+                              </tr>
+                              </thead>
+                              <tbody  class="kt-datatable__body">
 @foreach ($cases as $case)
             @php
                 $status = $case->status();
@@ -957,34 +870,34 @@
                 }
 
             @endphp
-                                     <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
+              <tr data-row="{{ $case->id }}" class="kt-datatable__row" style="color:{{ $color }}">
 
-                                            <td ><span >{{ $case->client->name }}</span></td>
+                                            <td ><span>{{ $case->client->name }}</span></td>
 
-                                            <td ><span >{{ $case->patient_name }}</span></td>
+                                            <td ><span>{{ $case->patient_name }}</span></td>
                                             @php
                 $date = explode('T', $case->initial_delivery_date);
 
             @endphp
-                                     <td >
-                                         <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
+              <td >
+                  <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
                     <span style="display:block;font-size:11px;color:{{ $color }};margin-top:3px;">{{ isset($date[0]) ? $date[0] : '-' }}</span>
                 </td>
 
                                             <td >
                                                     @if (str_contains($status, 'Completed'))
-                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
+              <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
 @elseif (str_contains($status, 'In-Progress') || str_contains($status, 'Active'))
-                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
+              <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
                                                                                                         @elseif (str_contains($status, 'Waiting'))
-                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
+              <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
                                                                                                             @else
-                                     <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>
+              <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>
 @endif</td> </tr>
                                 @endforeach
-                                     </tbody>
-                                 </table>
-                                 </body>
+              </tbody>
+          </table>
+          </body>
 ` );
             mywindow.document.close(); // necessary for IE >= 10
             mywindow.focus(); // necessary for IE >= 10*/
@@ -995,5 +908,34 @@
 
             return true;
         }
+    </script>
+
+@endsection
+
+@push('js')
+    <!-- DataTables JS loaded globally in footer.blade.php -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').DataTable({
+                "colResize": true,
+                "ordering": false,
+                "pageLength": 25,
+                "searching": false,
+                "lengthChange": false,
+                "columnDefs": [
+                    {
+                        "width": "10%",
+                        "targets": 3
+                    },
+                    {
+                        "width": "20%",
+                        "targets": 4
+                    }
+                ]
+            });
+        });
+
+
+
     </script>
 @endpush

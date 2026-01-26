@@ -22,25 +22,50 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const collapseExpandedSubmenus = () => {
         if (!sidebar) return;
-        const openSubmenus = sidebar.querySelectorAll('.collapse.show');
+        const openSubmenus = sidebar.querySelectorAll('.sigma-submenu-open');
         openSubmenus.forEach((submenu) => {
-            // Prefer Bootstrap collapse if available to keep states in sync
-            if (window.jQuery && typeof jQuery(submenu).collapse === 'function') {
-                jQuery(submenu).collapse('hide');
-            } else {
-                submenu.classList.remove('show');
-                submenu.style.height = null;
-            }
+            submenu.classList.remove('sigma-submenu-open');
+            submenu.style.height = '0';
 
-            // Reset toggle aria-expanded state if we can find it
+            // Reset toggle aria-expanded state
             if (submenu.id) {
-                const toggler = sidebar.querySelector(`[data-target="#${submenu.id}"], [href="#${submenu.id}"]`);
+                const toggler = sidebar.querySelector(`[data-target="#${submenu.id}"]`);
                 if (toggler) {
                     toggler.setAttribute('aria-expanded', 'false');
                 }
             }
         });
     };
+
+    // Custom submenu toggle handler
+    function toggleSubmenu(trigger, targetId) {
+        const target = document.querySelector(targetId);
+        if (!target) return;
+
+        const isOpen = target.classList.contains('sigma-submenu-open');
+
+        if (isOpen) {
+            // Close
+            target.style.height = target.scrollHeight + 'px';
+            setTimeout(() => {
+                target.style.height = '0';
+            }, 10);
+            target.classList.remove('sigma-submenu-open');
+            trigger.setAttribute('aria-expanded', 'false');
+        } else {
+            // Open
+            target.classList.add('sigma-submenu-open');
+            target.style.height = target.scrollHeight + 'px';
+            trigger.setAttribute('aria-expanded', 'true');
+
+            // Remove height after transition completes
+            setTimeout(() => {
+                if (target.classList.contains('sigma-submenu-open')) {
+                    target.style.height = 'auto';
+                }
+            }, 300);
+        }
+    }
 
     function closeMobileSidebar() {
         if (!wrapper) return;
@@ -84,11 +109,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Force overlay mode on mobile even if user pinned on desktop
             wrapper?.classList.remove('sidebar-pinned');
             pinBtn?.classList.remove('pinned');
-            if (!wrapper?.classList.contains('sidebar-expanded')) {
-                lockBodyScroll(false);
-                toggleSidebarOverlay(false);
-                document.documentElement.classList.remove('nav-open');
-            }
+            // Always ensure sidebar is closed on mobile page load
+            wrapper?.classList.remove('sidebar-expanded');
+            document.body.classList.remove('sidebar-expanded');
+            document.documentElement.classList.remove('nav-open');
+            collapseExpandedSubmenus();
+            lockBodyScroll(false);
+            toggleSidebarOverlay(false);
         } else {
             closeMobileSidebar();
             applyPinnedState();
@@ -120,19 +147,21 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Close submenus and the mobile drawer when a non-toggle link is clicked
+        // Handle submenu toggle and mobile drawer
         sidebar.addEventListener('click', function (e) {
-            if (wrapper.classList.contains('sidebar-pinned') && !isMobile()) return;
             const link = e.target.closest('.nav li a');
             if (!link) return;
 
-            const isCollapseToggle = link.hasAttribute('data-toggle') && (link.getAttribute('data-target') || link.getAttribute('href'));
+            const isSubmenuToggle = link.hasAttribute('data-sigma-toggle');
 
-            if (isCollapseToggle) {
-                // Let Bootstrap handle the collapse toggle naturally
-                // Just don't close the sidebar when clicking collapse toggles
+            if (isSubmenuToggle) {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                if (targetId) {
+                    toggleSubmenu(link, targetId);
+                }
                 return;
-            } else if (isMobile()) {
+            } else if (isMobile() && !wrapper.classList.contains('sidebar-pinned')) {
                 // Only close mobile sidebar if a non-toggle link is clicked
                 closeMobileSidebar();
             }

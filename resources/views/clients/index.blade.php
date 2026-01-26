@@ -399,53 +399,63 @@
                         {{-- Date Filter --}}
                         @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                            <label for="from" class="filter-label">From Date</label>
-                            <x-ios-dtp name="from" id="from" :value="old('from', $from ?? '')" :required="true" />
+                            <label for="from" class="filter-label">Until</label>
+                            <x-ios-dtp name="from" id="from" :value="old('from', $from ?? '')" :required="true" mode="month" />
                         </div>
                         @endif
 
-                        {{-- Doctor Filter --}}
+                        {{-- Doctor Filter with Apply Button --}}
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
                             <label for="doctor" class="filter-label">Doctor</label>
-                            <select class="selectpicker form-control clearOnAll" multiple
-                                    name="doctor[]" id="doctor" data-live-search="true"
-                                    title="All Doctors" data-hide-disabled="true">
-                                <option value="all"
-                                    {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
-                                    All Doctors
-                                </option>
-                                @foreach($allClients as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
-                                        {{ $d->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        {{-- Balance Display --}}
-                        @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-2">
-                            <label class="filter-label">Total Balance</label>
-                            <div class="balance-summary balance-summary-box">
-                                <span class="balance-summary__value">{{ number_format($totalBalance) }}</span>
-                                <span class="balance-summary__currency">JOD</span>
+                            <div class="d-flex align-items-end">
+                                <div style="flex: 1;">
+                                    <select class="selectpicker form-control clearOnAll" multiple
+                                            name="doctor[]" id="doctor" data-live-search="true"
+                                            title="All Doctors" data-hide-disabled="true">
+                                        <option value="all"
+                                            {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
+                                            All Doctors
+                                        </option>
+                                        @foreach($allClients as $d)
+                                            <option value="{{ $d->id }}"
+                                                {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
+                                                {{ $d->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary ml-2" style="width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa fa-search"></i>
+                                </button>
                             </div>
                         </div>
-                        @endif
-
-                        {{-- Apply Filters Button --}}
-                        <div class="col-lg-3 col-md-12 col-sm-6 col-6 mb-2 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary filter-apply-btn w-100">
-                                <i class="fa fa-search mr-1"></i> Apply
-                            </button>
-                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </form>
+
+{{-- Total Balance Card (Moved Outside Filter Form) --}}
+@if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
+<div class="row my-4"> {{-- Added my-4 for vertical spacing --}}
+    <div class="col-lg-3 col-md-4 col-sm-6"> {{-- Adjusted column sizing for left alignment and more compact size --}}
+        <div class="card" style="background: linear-gradient(182deg, #2b7b7d29 0%, #ffffff 100%) !important;border: none;border-radius: 12px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            <div class="card-body" style="padding: 0.9rem;">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <span style="color: #333; font-size: 0.875rem; font-weight: 500;">Total Balance</span>
+                    <i class="fa fa-wallet" style="color: #666; font-size: 1.5rem;"></i>
+                </div>
+                <div class="d-flex align-items-baseline">
+                    <h3 class="mb-0" style="font-weight: 700; color: #333; font-size: 1.8rem;">{{ number_format($totalBalance) }}</h3>
+                    <span class="ml-2" style="color: #666; font-size: 0.875rem; font-weight: 500;">JOD</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 
 
             <hr>

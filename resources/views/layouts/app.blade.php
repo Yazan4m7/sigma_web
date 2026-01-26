@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdn.datatables.net" crossorigin>
     <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+    <link rel="stylesheet" href="{{ asset('assets/css/dataTables.colResize.css') }}">
     <!-- Consolidated Google Fonts (Step 6 optimization) -->
     <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&family=Open+Sans:wght@300;400;600&family=Rubik:wght@500&family=Raleway&family=Poppins:wght@200;300;400;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
 
@@ -19,6 +20,7 @@
 
 <!-- CSS -->
 <link rel="stylesheet" href="{{ asset('custom-CSS-JS/style1.css') }}">
+
 <link rel="stylesheet" href="{{ asset('custom-CSS-JS/style2.css') }}">
     <!-- Font Awesome 6+ -->
     <link
@@ -48,9 +50,7 @@
     <script src="{{ asset('white') }}/js/core/jquery.min.js"></script>
     <script src="{{ asset('white') }}/js/core/popper.min.js"></script>
 
-    <!-- Yaz 29 sep 2025 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script> -->
+    <!-- Bootstrap & Bootstrap-Select loaded in footer.blade.php -->
     <!-- Reset/Base CSS -->
 
 
@@ -158,11 +158,11 @@
     <link href="{{ asset('assets') }}/css/sidebar-fullwidth-fix.css" rel="stylesheet"/>
     <link href="{{ asset('css/sidebar-collapse.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/sidebar-layout-improvements.css" rel="stylesheet"/>
-    
+
     <link href="{{ asset('css') }}/georgia-font.css" rel="stylesheet"/>
     <link href="{{ asset('css/ysh-custom-css/machine-images.css') }}" rel="stylesheet"/>
     <link href="{{ asset('css/processing-overlay.css') }}" rel="stylesheet"/>
-    
+
     <link rel="icon" type="image/png" href="{{asset('assets/sigma_favico.png')}}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
@@ -172,6 +172,45 @@
     <!-- Page-specific CSS -->
     @stack('css')
     <style>
+        .dt-colresizable-table-wrapper {
+            overflow: hidden;
+        }
+        /* Column resize handles - hidden by default, wide hit area */
+        .dt-colresizable-col {
+            width: 15px !important;
+            margin-left: -7px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            background: transparent;
+        }
+        .dt-colresizable-col::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 3px;
+            border-radius: 3px;
+            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+            transition: all 0.15s ease;
+        }
+        .dt-colresizable-col:hover::before {
+            width: 4px;
+            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
+            box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+        }
+        .dt-colresizable-col:active::before {
+            width: 5px;
+            background: #60a5fa;
+        }
+        /* Show handles when resize mode is active */
+        body.col-resize-active .dt-colresizable-col {
+            opacity: 1;
+            pointer-events: auto;
+        }
         /* Disable legacy overlays but keep the sidebar overlay available */
         [class*="overlay"]:not(.sidebar-overlay):not(.YSH-slide-overlay),
         [id*="overlay"]:not(#sidebarOverlay):not([id^="YSH-slide-overlay-"]) {
@@ -288,9 +327,95 @@
             loadingOverlay.style.display = 'none';
         }
     });
+    // F2: Toggle column resize handles (non-dashboard pages)
+    // F3: Clear all saved column widths
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'F2' && !document.getElementById('columnConfigPanel')) {
+            // Only apply on non-dashboard pages
+            e.preventDefault();
+            document.body.classList.toggle('col-resize-active');
+        } else if (e.key === 'F3' && !document.getElementById('columnConfigPanel')) {
+            // F3 on non-dashboard pages - clear all widths
+            e.preventDefault();
+            var cleared = [];
+            for (var key in localStorage) {
+                if (key.endsWith('_widths')) {
+                    cleared.push(key);
+                    localStorage.removeItem(key);
+                }
+            }
+            if (cleared.length > 0) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reset Complete',
+                        html: 'Cleared: <br>' + cleared.join('<br>') + '<br><br>Refresh to see default widths.',
+                        confirmButtonText: 'OK'
+                    });
+                } else {
+                    alert('Cleared: ' + cleared.join(', ') + '\n\nRefresh to see defaults.');
+                }
+            } else {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'No Saved Widths',
+                        text: 'No saved column widths found.',
+                        timer: 2000
+                    });
+                } else {
+                    alert('No saved column widths found.');
+                }
+            }
+        }
+    });
 </script>
  <script src="{{ asset('js/sidebar-collapse.js') }}"></script>
 <script src="{{ asset('js/sigma-sticky-layout.js') }}"></script>
+<script>
+    // Robust Bootstrap Select (selectpicker) initialization
+    // Ensures initialization happens once and correctly, including for dynamically added elements.
+    function initializeSelectPicker() {
+        // console.log('Attempting to initialize selectpickers...');
+
+        // Check if jQuery and Bootstrap Select plugin are loaded
+        if (typeof jQuery === 'undefined' || typeof jQuery.fn.selectpicker === 'undefined') {
+            // console.warn('jQuery or Bootstrap Select plugin not loaded. Deferring initialization.');
+            // Try again after a short delay if dependencies aren't ready
+            setTimeout(initializeSelectPicker, 100);
+            return;
+        }
+
+        // Fix for Bootstrap 4/5 compatibility (if necessary)
+        if (jQuery.fn.selectpicker.Constructor) {
+            jQuery.fn.selectpicker.Constructor.BootstrapVersion = '4'; // Adjust if using Bootstrap 5
+        }
+
+        jQuery('.selectpicker').each(function() {
+            const $select = jQuery(this);
+
+            // Skip if already initialized - don't destroy existing instances
+            if ($select.data('selectpicker')) {
+                return; // Already initialized, skip
+            }
+
+            try {
+                $select.selectpicker();
+            } catch (e) {
+                console.error('Failed to initialize selectpicker:', this.name || this.id || this, e);
+                $select.addClass('form-control');
+            }
+        });
+    }
+
+    // Initialize selectpickers on document ready for initial page load
+    jQuery(document).ready(function() {
+        initializeSelectPicker();
+    });
+
+    // MutationObserver disabled - was causing double initialization issues
+    // If you need dynamic selectpicker init, call initializeSelectPicker() manually after adding elements
+</script>
 </body>
 @include('layouts.footer')
 <script src="{{ asset('js/responsive-images.js') }}"></script>

@@ -5935,6 +5935,7 @@ button.close {
 }
 
 .modal-content {
+  padding: 28px 14px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -12451,6 +12452,7 @@ img {
 
 .modal-content {
   border: 0;
+  padding: 28px 14px;
 }
 
 .modal-content .modal-header {
