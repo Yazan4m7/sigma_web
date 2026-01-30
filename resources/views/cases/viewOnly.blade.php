@@ -1,5 +1,28 @@
 @extends('layouts.app', ['pageSlug' => $viewCase])
 
+@push('css')
+    <style>
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media screen and (max-width: 767px) {
+            .patient-info-section .col-6,
+            .info-row-secondary .col-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+
+            .jobsTable,
+            .historyTable .sunriseTable {
+                min-width: 600px; /* Force a min-width to ensure scrolling on narrow screens */
+            }
+        }
+    </style>
+@endpush
+
 @section('content')
     <link rel="stylesheet" href="{{ asset('assets/css/lightgallery.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.imagesloader.css') }}" />
@@ -396,9 +419,9 @@
             <!-- CASE INFO -->
 
             <div class="row patient-info-section">
-                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
-                    <div class="col-md-12 col-xs-12">
+                <div class="col-md-3 col-6">
+                    <div class="col-12"><label>Doctor:</label></div>
+                    <div class="col-12">
 
 
                         <select class="selectpicker" name="doctor" data-container="body" data-live-search="true"
@@ -412,14 +435,14 @@
 
                     </div>
                 </div>
-                <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Patient name:</label></div>
-                    <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name"
+                <div class="col-md-3 col-6">
+                    <div class="col-12"><label>Patient name:</label></div>
+                    <div class="col-12"><input class="form-control" type="text" name="patient_name"
                             value="{{ $case->patient_name }}" disabled /></div>
                 </div>
-                <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                    <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
-                    <div class="col-md-12 col-xs-12">
+                <div class="col-md-3 col-6">
+                    <div class="col-12"><label>Case ID:</label></div>
+                    <div class="col-12">
 
                         <div class="case-id-display">{{ $case->case_id }}</div>
 
@@ -431,9 +454,9 @@
 
             <div class="row info-row-secondary">
 
-                <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
-                    <div class="col-md-12 col-xs-12">
+                <div class="col-md-4 col-6">
+                    <div class="col-12"><label>Delivery Date:</label></div>
+                    <div class="col-12">
                         @php
                             $createdAt = $case->created_at
                                 ? \Carbon\Carbon::parse($case->created_at)->format('Y-m-d H:i')
@@ -499,9 +522,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
-                    <div class="col-md-12 col-xs-12">
+                <div class="col-md-4 col-6">
+                    <div class="col-12"><label>Tags:</label></div>
+                    <div class="col-12">
                         <select class="select selectpicker" name="tags[]" multiple data-mdb-placeholder="Tags" multiple
                             disabled>
                             @foreach ($tags as $tag)
@@ -509,22 +532,22 @@
                                     {{ in_array($tag->id, $tagsAsArray) ? 'selected' : '' }}>{{ $tag->text }}</option>
                             @endforeach
                         </select>
-
                     </div>
                 </div>
-                <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
-                    <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
+                <div class="col-md-4 col-6">
+                    <div class="col-12"><label>Impression Type:</label></div>
+                    <div class="col-12">
+                        <select class="form-control" name="impression_type" type="text"
                             data-container="body" data-live-search="true" title="Select impression"
                             data-hide-disabled="true" disabled>
-
                             @foreach ($impressionTypes as $impression)
                                 <option value="{{ $impression->id }}"
                                     {{ $impression->id == $case->impression_type ? ' selected' : ' ' }}>
                                     {{ $impression->name }}
                                 </option>
                             @endforeach
-                        </select></div>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -557,7 +580,8 @@
                                 @endphp
 
 
-                                <table id="tech-companies-1" class="table sunriseTable table-striped jobsTable">
+                                <div class="table-responsive-wrapper">
+                                    <table id="tech-companies-1" class="table sunriseTable table-striped jobsTable">
                                     <thead>
                                         <tr>
                                             <th id="tech-companies-1-col-0">Unit Num</th>
@@ -654,6 +678,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
 
                             </div>
                         </div>
@@ -674,7 +699,7 @@
             </div>
             <hr>
             <!-- HISTORY -->
-            <div class="historyTable" style="padding:0 30px 0 30px ">
+            <div class="historyTable table-responsive-wrapper" style="padding:0 30px 0 30px ">
                 <table class="sunriseTable table sunriseTable table-striped ">
                     <thead>
                         <tr>
@@ -750,6 +775,7 @@
                     </tbody>
                 </table>
             </div>
+</div>
 
 
             <div class="Timeline">

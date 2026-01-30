@@ -187,6 +187,12 @@
             padding: 0;
         }
 
+        .cases-table-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+        }
+
         .dataTables_scrollBody {
             overflow-x: auto !important;
         }
@@ -222,6 +228,7 @@
             overflow: hidden;
             text-overflow: ellipsis;
             vertical-align: bottom;
+            font-weight: 600;
         }
 
 
@@ -609,8 +616,9 @@
             }
 
             #casesTable {
-                min-width: unset !important;
-                width: 100% !important;
+                min-width: 720px !important;
+                width: max-content !important;
+                table-layout: auto !important;
                 font-size: 13px !important;
             }
 
@@ -674,10 +682,16 @@
                 padding: 3px;
             }
 
-            /* Prevent horizontal scroll */
+            /* Allow horizontal scroll on small screens */
             .dataTables_wrapper {
-                overflow-x: hidden;
+                overflow-x: visible;
                 width: 100% !important;
+            }
+
+            .cases-table-scroll {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                width: 100%;
             }
 
             .pagination {
@@ -823,10 +837,11 @@
         <div class="row" style="">
             <div class="col-12">
                 <br>
-                <table id="casesTable"
-                       class="table-striped compact sunriseTable sigma-sticky-table-header"
-                       role="grid"
-                       style="width:100%">
+                <div class="cases-table-scroll">
+                    <table id="casesTable"
+                           class="table-striped compact sunriseTable sigma-sticky-table-header"
+                           role="grid"
+                           style="width:100%">
                     <thead>
                     <tr role="row">
                         <th class="sigma-sticky-container">Doctor
@@ -869,9 +884,13 @@
                                 @php
                                     $totalUnits = 0;
                                     foreach($case->jobs as $job) {
-                                        if (!empty($job->unit_num)) {
-                                            // Split by comma and count the units
-                                            $units = explode(',', $job->unit_num);
+                                        // Count only if the material is flagged as countable
+                                        if ($job->material && $job->material->count_as_unit && !empty($job->unit_num)) {
+                                            // Split on commas or whitespace, trim, and drop empties
+                                            $units = preg_split('/\s*,\s*|\s+/', trim($job->unit_num));
+                                            $units = array_filter($units, function ($value) {
+                                                return $value !== '';
+                                            });
                                             $totalUnits += count($units);
                                         }
                                     }
@@ -941,10 +960,21 @@
                                 @else
                                     @php
                                         $isDeliveryAssigned = $case->jobs[0]->stage == 8 && $case->jobs[0]->assignee != null && $case->jobs[0]->delivery_accepted == null;
+
+                                        // Format delivery assigned badge as "Deli/ [initials]"
+                                        $deliveryBadgeText = $caseStatus;
+                                        if ($isDeliveryAssigned && $case->jobs[0]->assignedTo) {
+                                            $employeeInitials = trim((string) (
+                                                $case->jobs[0]->assignedTo->name_initials
+                                                ?? $case->jobs[0]->assignedTo->first_name
+                                                ?? ''
+                                            ));
+                                            $deliveryBadgeText = 'Delivery/ ' . $employeeInitials;
+                                        }
                                     @endphp
                                     <span class="badge badge-warning sigma-case-status-badge sigma-status-width">
                                                         @if($isDeliveryAssigned)
-                                            <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                            <span class="sigma-badge-label">{{ $deliveryBadgeText }}</span>
                                         @else
                                             <span class="tooltipX">
                                                                 <span class="sigma-badge-label">{{ $caseStatus }}</span>
@@ -972,7 +1002,8 @@
                     @endforeach
                     </tbody>
 
-                </table>
+                    </table>
+                </div>
 
                 @foreach($cases  as $case)
                     <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"

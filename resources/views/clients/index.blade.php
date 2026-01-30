@@ -441,7 +441,9 @@
 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
 <div class="row my-4"> {{-- Added my-4 for vertical spacing --}}
     <div class="col-lg-3 col-md-4 col-sm-6"> {{-- Adjusted column sizing for left alignment and more compact size --}}
-        <div class="card" style="background: linear-gradient(182deg, #2b7b7d29 0%, #ffffff 100%) !important;border: none;border-radius: 12px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border: none; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <div class="card" style="b/* background: #e6ebe0; */background: 201e1f;background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);background: color: white;/* background: linear-gradient(
+327deg, #007bff 0%, #ffffff 100%) !important; */border: none;border-radius: 12px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);border: none;border-radius: 12px;box-shadow: 1px 0px 8px 2px rgba(0, 0, 0, 0.1);/* background: linear-gradient(135deg, #7DD3FC 0%, #14B8A6 100%); */
+ ">
             <div class="card-body" style="padding: 0.9rem;">
                 <div class="d-flex align-items-center justify-content-between mb-1">
                     <span style="color: #333; font-size: 0.875rem; font-weight: 500;">Total Balance</span>

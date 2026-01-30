@@ -8750,7 +8750,7 @@ table {
     margin-bottom: 5vh;
 }
 .btn:hover, .btn:focus, .btn-info:hover {
-    width: auto;
+    /* width: auto; */
     /* min-width: 40px; */
     /* background-color: #cbcbcb !important; */
     /* background-image: linear-gradient(0deg, #cbcbcb 0%, #cbcbcb 100%); */

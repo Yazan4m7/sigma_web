@@ -495,29 +495,49 @@
             padding: 6px;
         }
 
+        /* Hide dropdown toggle on mobile, show menu directly */
         .dotsDiv .navbar-collapse.show .dropdown.nav-item > a.dropdown-toggle {
-            display: none;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu {
-            display: block;
-            position: static;
-            float: none;
-            min-width: 160px;
-            box-shadow: none;
-            border: 0;
-            margin-top: 0;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-header,
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .dropdown-divider,
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .close-btn {
             display: none !important;
         }
 
+        .dotsDiv .navbar-collapse.show .dropdown.nav-item {
+            position: static;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu {
+            display: block !important;
+            position: static;
+            float: none;
+            min-width: 240px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            margin-top: 0;
+            border-radius: 12px;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .close-btn {
+            display: block !important;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-header {
+            display: block !important;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-content {
+            padding: 16px;
+        }
+
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-name {
+            font-size: 15px;
+        }
+
         .dotsDiv .navbar-collapse.show .user-dropdown-menu .logout-link {
-            justify-content: center;
             padding: 12px 16px;
+        }
+
+        /* Hide avatar in mobile menu */
+        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-avatar-large {
+            display: none;
         }
     }
 
@@ -616,7 +636,7 @@
 $permissions = safe_permissions();
 $user = Auth::user();
 $hasProfilePhoto = $user && $user->has_photo;
-$profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_picture.png') : null;
+$profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_picture.webp') : null;
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
     <div class="container-fluid noPadOnMobile">
@@ -690,7 +710,6 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                                 <button class="close-btn" onclick="closeDropdown()">&times;</button>
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
-
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
                                             @if(Auth::user()->type === 'admin' || collect($permissions)->contains('name', 'admin'))
@@ -700,6 +719,13 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                                     </div>
                                 </li>
                                 <li class="dropdown-divider"></li>
+                                <li class="nav-link table-widths-menu-item">
+                                    <a href="#" class="nav-item dropdown-item logout-link" onclick="event.preventDefault(); openTableWidthsPanel();">
+                                        <i class="fas fa-columns"></i>
+                                        Table Widths
+                                    </a>
+                                </li>
+                                <li class="dropdown-divider table-widths-menu-item"></li>
                                 <li class="nav-link">
                                     <a href="{{ route('logout') }}" class="nav-item dropdown-item logout-link" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
                                         <i class="tim-icons icon-button-power"></i>
@@ -744,4 +770,38 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
             permissionsList.style.display = 'none';
         }
     }
+
+    function openTableWidthsPanel() {
+        var panel = document.getElementById('columnConfigPanel');
+        if (panel) {
+            panel.classList.add('active');
+            closeDropdown();
+        }
+    }
+
+    // Hide table widths menu item on non-dashboard pages
+    document.addEventListener('DOMContentLoaded', function() {
+        var panel = document.getElementById('columnConfigPanel');
+        var menuItems = document.querySelectorAll('.table-widths-menu-item');
+        if (!panel) {
+            menuItems.forEach(function(item) {
+                item.style.display = 'none';
+            });
+        }
+
+        // Prevent double dialog on mobile - directly show dropdown on kebab click
+        var navbarToggler = document.querySelector('.dotsDiv .navbar-toggler');
+        var navCollapse = document.getElementById('navigation');
+        var dropdownToggle = document.querySelector('.dropdown.nav-item > a.dropdown-toggle');
+
+        if (window.innerWidth < 992 && navbarToggler) {
+            navbarToggler.addEventListener('click', function(e) {
+                e.stopPropagation();
+                // Prevent Bootstrap's default dropdown toggle behavior
+                if (dropdownToggle) {
+                    dropdownToggle.removeAttribute('data-toggle');
+                }
+            });
+        }
+    });
 </script>

@@ -40,7 +40,7 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrap();
        View::share('dashboardName', 'Operations Dashboard');
        View::share('viewCase', 'Case Profile');
-       View::share('editCase', 'Edit Case');
+       View::share('editCase', 'Edit');
         View::share('clientTitle', 'Doctor');
         View::share('voucher', 'Voucher');
         View::share('user', 'User');

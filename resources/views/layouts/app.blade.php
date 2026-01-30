@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
     <link rel="stylesheet" href="{{ asset('assets/css/dataTables.colResize.css') }}">
     <!-- Consolidated Google Fonts (Step 6 optimization) -->
-    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&family=Open+Sans:wght@300;400;600&family=Rubik:wght@500&family=Raleway&family=Poppins:wght@200;300;400;600;700;800&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@100..900&family=Noto+Naskh+Arabic:wght@400..700&family=Tajawal:wght@200;300;400;500;700;800;900&family=Open+Sans:wght@300;400;600&family=Rubik:wght@500&family=Raleway&family=Poppins:wght@200;300;400;600;700;800&family=Cairo:wght@400;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 
 
     <title>{{ $pageSlug ?? config('site_vars.projectNameShort') }}</title>
@@ -172,9 +172,13 @@
     <!-- Page-specific CSS -->
     @stack('css')
     <style>
-        .dt-colresizable-table-wrapper {
-            overflow: hidden;
+
+
+        /* Disable Bootstrap tooltips globally */
+        .tooltip {
+            display: none !important;
         }
+
         /* Column resize handles - hidden by default, wide hit area */
         .dt-colresizable-col {
             width: 15px !important;
@@ -321,6 +325,12 @@
 @endauth
 
 <script>
+    // Disable Bootstrap tooltips completely
+    if (typeof jQuery !== 'undefined') {
+        jQuery.fn.tooltip = function() { return this; };
+        jQuery.fn.popover = function() { return this; };
+    }
+
     window.addEventListener('load', function() {
         const loadingOverlay = document.getElementById('loading-overlay');
         if (loadingOverlay) {

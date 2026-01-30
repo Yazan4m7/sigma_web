@@ -25,19 +25,26 @@
             border-left: 1px solid #aaaaaa;
         }
 
-        .delivery-time-value {
-            display: block;
+        .delivery-time-part {
             font-weight: 700;
-            font-size: 14px;
-            color: #202733;
+            font-size: 16px;
+            color: inherit;
         }
 
-        .delivery-date-time {
-            display: block;
-            font-size: 11px;
-            margin-top: 3px;
+        .delivery-date-part {
             font-weight: 500;
-            letter-spacing: 0.02em;
+            font-size: 12px;
+            color: inherit;
+        }
+
+        .delivery-date-part::before {
+            content: " / ";
+        }
+
+        .delivery-datetime-single {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         /* Jobs list (table-like layout without table element) */
@@ -84,8 +91,21 @@
             letter-spacing: -3px;
             font-weight: 700;
             display: block !important;
-
         }
+
+        /* Keep delivery counters in single row on mobile */
+        .delivery-counters {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            overflow-x: auto;
+            align-items: flex-end !important;
+        }
+
+        .delivery-counters > div {
+            flex: 1 1 33.333% !important;
+            min-width: 0 !important;
+        }
+
 
         /* Shrink # of units column */
         #datatable thead th:nth-child(4),
@@ -167,16 +187,24 @@
             }
 
             #datatable {
-                font-family: 'Cairo', sans-serif;
+                font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
             }
 
             #datatable thead th,
             #datatable tbody td {
-                padding: 8px 6px !important;
-                font-size: 13px !important;
+                padding: 4px 6px !important;
+           
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
                 white-space: nowrap !important;
+                line-height: 1.3 !important;
+                max-height: 32px !important;
+                height: 32px !important;
+            }
+
+            #datatable tbody td {
+                color: #2c3e50 !important;
+                font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
             }
 
             #datatable thead th:nth-child(1),
@@ -274,39 +302,180 @@
 
         /* Responsive adjustments for cases-filter-row on smaller screens */
         @media screen and (max-width: 767px) {
-            /* Adjust column widths within the filter row for date inputs */
+            /* Page padding reduction by 50% */
+            .content {
+                padding: 7.5px !important;
+            }
+
+            /* Extend counter cards */
+            .delivery-counter-card > .value {
+                font-size: 1.6rem !important;
+                letter-spacing: -2px;
+            }
+            .delivery-counter-card > .label {
+                font-size: 0.85rem !important;
+            }
+
+            /* Mobile redesign for top counters */
+            .delivery-counters {
+                gap: 10px !important;
+                padding: 6px 0 !important;
+                overflow-x: hidden !important;
+                align-items: stretch !important;
+            }
+
+            .delivery-counter-card {
+                background: #ffffff;
+                border: 1px solid #e5e9ef;
+                border-radius: 12px;
+                padding: 10px 12px;
+                text-align: center;
+                box-shadow: 0 2px 6px rgba(16, 24, 40, 0.08);
+                flex: 1 1 0 !important;
+                min-width: 0 !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                min-height: 72px;
+            }
+
+            .delivery-counter-card > .label {
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+                font-weight: 600;
+                color: #6b7280;
+                line-height: 1.1;
+                min-height: 2.4em;
+            }
+
+            .vertical {
+                border-left: none !important;
+                padding-left: 0 !important;
+            }
+
+            /* Keep From/To + button on one row */
+            .cases-filter-row {
+                flex-wrap: nowrap !important;
+                align-items: flex-end !important;
+                gap: 6px !important;
+                margin-bottom: 0 !important;
+            }
+
+            .cases-filter-row > div {
+                margin-bottom: 0 !important;
+            }
+
             .cases-filter-row > div:nth-child(1), /* From Date */
             .cases-filter-row > div:nth-child(2) { /* To Date */
-                flex: 0 0 calc(50% - 8px); /* Two items per row */
-                max-width: calc(50% - 8px);
+                flex: 1 1 0 !important;
+                max-width: none !important;
             }
-            /* Adjust column width for the Filter button */
+
             .cases-filter-row > div:nth-child(3) { /* Filter Button */
-                flex: 0 0 calc(50% - 8px); /* Ensure it's responsive */
-                max-width: calc(50% - 8px);
+                flex: 0 0 44px !important;
+                max-width: 44px !important;
+                display: flex !important;
+                justify-content: flex-end !important;
             }
-            .cases-filter-row {
-                flex-wrap: wrap; /* Allow filter inputs to wrap */
-                gap: 8px; /* Reduce gap on mobile */
+
+            /* Compact button on mobile */
+            .cases-filter-btn {
+                width: 36px !important;
+                min-width: 36px !important;
+                height: 34px !important;
+                padding: 0 !important;
             }
 
             /* Adjust label and input/button heights for mobile */
             .cases-filter-row label {
-                font-size: 12px !important;
-                margin-bottom: 4px !important;
+                font-size: 11px !important;
+                margin-bottom: 2px !important;
             }
             .cases-filter-row .form-control,
             .cases-filter-row .x-ios-dtp { /* Target ios-dtp for height */
-                height: 38px !important;
-                font-size: 13px !important;
-                padding: 6px 8px !important;
+                height: 34px !important;
+                font-size: 12px !important;
+                padding: 4px 6px !important;
             }
 
-            /* Print button container adjustments for mobile */
-            .ml-auto { /* The wrapper for the print button */
-                flex: 0 0 calc(50% - 8px); /* Take up half width */
-                max-width: calc(50% - 8px);
-                margin-left: 0 !important; /* Remove auto margin on small screens if it causes issues */
+            /* Hide print button on mobile */
+            .ml-auto {
+                display: none !important;
+            }
+
+            /* Show date under time on mobile */
+            .delivery-datetime-single {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                white-space: normal;
+            }
+
+            .delivery-date-part {
+                display: block !important;
+                font-size: 12px !important;
+                line-height: 1.2;
+                margin-top: 2px;
+            }
+
+            .delivery-date-part::before {
+                content: "";
+            }
+
+            /* Reduce doctor and patient name font sizes */
+            #datatable tbody td:nth-child(1),
+            #datatable tbody td:nth-child(2) {
+                font-size: 0.85rem !important;
+            }
+
+            /* Reduce # of units column width to half */
+            #datatable thead th:nth-child(4),
+            #datatable tbody td:nth-child(4) {
+                width: 6% !important;
+                max-width: 48px !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+            }
+
+            /* Mobile column width split */
+            #datatable thead th:nth-child(1),
+            #datatable tbody td:nth-child(1) {
+                width: 26% !important; /* Doctor */
+            }
+
+            #datatable thead th:nth-child(2),
+            #datatable tbody td:nth-child(2) {
+                width: 26% !important; /* Patient */
+
+                direction: rtl;
+            }
+
+            #datatable thead th:nth-child(3),
+            #datatable tbody td:nth-child(3) {
+                text-align: center;
+                width: 22% !important; /* Date */
+            }
+
+            #datatable thead th:nth-child(5),
+            #datatable tbody td:nth-child(5) {
+                width: 20% !important; /* Status */
+            }
+
+            /* Tighten table density so all columns fit */
+            #datatable thead th,
+            #datatable tbody td {
+                font-size: 12px !important;
+                padding: 3px 4px !important;
+            }
+
+            .status-badge {
+                min-width: 52px !important;
+                font-size: 11px !important;
+                padding: 2px 6px !important;
+            }
+
+            .delivery-datetime-single {
+                max-width: 100%;
             }
         }
         /* End Custom CSS for filter row matching cases page */
@@ -349,13 +518,13 @@
         $overdue = $overdue ?? 0;
         $numOfUnits = $numOfUnits ?? 0;
     @endphp
-    <div class="row">
+    <div class="row deliveries-page">
 
         <div class="col-lg-12 col-sm-12 ">
 
             <form class="kt-form" method="GET" action="{{ route('delivery-schedule') }}">
                 @csrf
-                <div class="kt-portlet__body">
+                <div class="kt-portlet__body delivery-controls">
                     <div class="form-group">
                         <div class="d-flex align-items-end">
                             <div class="row cases-filter-row">
@@ -431,31 +600,24 @@
 
     <div class=" table-responsive row">
         <div class="col-lg-12 col-sm-12  row delivery-counters" style="flex-direction: row;padding-bottom:0px">
-            <div class="col-lg-3 col-md-3 col-3 mb-3">
+            <div class="col-lg-4 col-md-4 col-4 mb-3">
 
                 <div class="vertical delivery-counter-card">
                     <span class="value" style="color:#3b8b45">{{ count($cases) }}</span>
                     <span class="label">Total deliveries</span>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-3 mb-3">
+            <div class="col-lg-4 col-md-4 col-4 mb-3">
                 <div class="vertical delivery-counter-card">
                     <span class="value" style="color:red">{{ $overdue }}</span>
                     <span class="label">Overdue deliveries</span>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-3 mb-3">
+            <div class="col-lg-4 col-md-4 col-4 mb-3">
                 <div class="vertical delivery-counter-card">
                     <span class="value" style="color:#3b8b45">{{ $numOfUnits }}</span>
                     <span class="label"># of Units</span>
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 col-3 mb-3">
-                {{-- <div class= "vertical"> --}}
-                {{-- <span style="font-weight: bold;font-size:15px;"></span><br> --}}
-                {{-- <span style="font-weight:bold;font-size:19px; color:#3b8b45"></span> --}}
-                {{-- <span style="font-size:13px;">Cases</span> --}}
-                {{-- </div> --}}
             </div>
         </div>
         <p class="text-muted"></p>
@@ -469,10 +631,10 @@
                             aria-describedby="datatable_info">
                             <thead>
                                 <tr class="" style="left: 0px;  !important;">
-                                    <th><span>Doctor Name</span></th>
-                                    <th><span>Patient Name</span></th>
-                                    <th><span>Delivery Date</span></th>
-                                    <th><span># Of units</span></th>
+                                    <th><span>Doctor </span></th>
+                                    <th><span>Patient</span></th>
+                                    <th><span>Date</span></th>
+                                    <th><span>#</span></th>
                                     <th class="statusCol"><span>Status</span></th>
 
 
@@ -552,14 +714,14 @@
                                         </td>
                                         @php
                                             $date = explode('T', $case->initial_delivery_date);
+                                            $timeFormatted = isset($date[1]) ? date('g:i A', strtotime($date[1])) : '-';
+                                            $dateFormatted = isset($date[0]) ? date('D d, M', strtotime($date[0])) : '-';
                                         @endphp
                                         <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
-                                            <span class="delivery-time-value">
-                                                {{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}
+                                            <span class="delivery-datetime-single">
+                                                <span class="delivery-time-part">{{ $timeFormatted }}</span>
+                                                <span class="delivery-date-part">{{ $dateFormatted }}</span>
                                             </span>
-                                            <div class="delivery-date-time">
-                                                {{ isset($date[0]) ? $date[0] : '-' }}
-                                            </div>
                                         </td>
                                         <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
                                             <span>{{ $case->unitsAmount() }}</span>
@@ -877,11 +1039,12 @@
                                             <td ><span>{{ $case->patient_name }}</span></td>
                                             @php
                 $date = explode('T', $case->initial_delivery_date);
-
+                $timeFormatted = isset($date[1]) ? date('g:i A', strtotime($date[1])) : '-';
+                $dateFormatted = isset($date[0]) ? date('D d, M', strtotime($date[0])) : '-';
             @endphp
-              <td >
-                  <span style="display:block;font-weight:700;font-size:14px;color:{{ $color }};">{{ isset($date[1]) ? date('g:i a', strtotime($date[1])) : '-' }}</span>
-                    <span style="display:block;font-size:11px;color:{{ $color }};margin-top:3px;">{{ isset($date[0]) ? $date[0] : '-' }}</span>
+              <td style="color:{{ $color }};">
+                  <span style="font-weight:700;font-size:15px;">{{ $timeFormatted }}</span>
+                  <span style="font-weight:500;font-size:12px;"> / {{ $dateFormatted }}</span>
                 </td>
 
                                             <td >

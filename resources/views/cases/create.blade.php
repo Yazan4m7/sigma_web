@@ -696,7 +696,7 @@
                     @endphp
 
                     <div class="col-md-12 col-xs-12">
-                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $time ?? '')" :required="true" />
+                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $time ?? '')" :required="true" :disablePast="true" />
 
 {{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"--}}
 {{--                            required readonly />--}}

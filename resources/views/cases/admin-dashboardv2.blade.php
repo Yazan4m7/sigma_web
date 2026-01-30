@@ -248,7 +248,7 @@
                     /* Will be animated by Animate.css classes */
                 }
 .modal.fade.sigma-modal--cases-dashboard-case-completion-alt .modal-dialog {
-                    width: 90%;
+                        width: 100%;
                     /* Will be animated by Animate.css classes */
                 }
 .modal.fade.sigma-modal--cases-dashboard-loading .modal-dialog {
@@ -2072,8 +2072,7 @@
 
                                                 <td class="clickable ops-col ops-col--tags" data-toggle="modal"
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <div
-                                                        style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                                    <div>
                                                         @foreach ($case->tags as $tag)
                                                             <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
                                                                 style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
@@ -2234,14 +2233,13 @@
                                                                             style="width:100%; display: flex;">
                                                                             <button type="button"
                                                                                 class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
-                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">Edit
-                                                                                Case</button>
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">Edit</button>
                                                                         </a>
                                                                     </div>
 
                                                                     <!-- Row 2: QC Complete (100%) OR Delivery Assign (100%) -->
                                                                     @if ($key == 'qc')
-                                                                        <div class="col-12">
+                                                                        <div class="col-12 padding5px">
                                                                             <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
                                                                                 class="btn btn-info" style="width:100%;color:white"><i
                                                                                     class="fa-solid fa-arrow-trend-up"></i>
@@ -2252,7 +2250,7 @@
                                                                     @if ($key == 'delivery')
                                                                         @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
                                                                             @if ($case->jobs[0]->assignee == null)
-                                                                                <div class="col-12">
+                                                                                <div class="col-12 padding5px">
                                                                                     <button type="button"
                                                                                         class="btn btn-warning"
                                                                                         onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)"
@@ -2260,7 +2258,7 @@
                                                                                         to..</button>
                                                                                 </div>
                                                                             @else
-                                                                                <div class="col-12">
+                                                                                <div class="col-12 padding5px">
                                                                                     <button type="button"
                                                                                         class="btn btn-warning"
                                                                                         onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)"
@@ -2272,7 +2270,7 @@
 
                                                                     <!-- Row 3: Delivery Print Voucher (100%) -->
                                                                     @if ($key == 'delivery')
-                                                                        <div class="col-12">
+                                                                        <div class="col-12 padding5px">
                                                                             <a href="{{ route('view-voucher', $case->id) }}"
                                                                                 class="btn btn-info" style="width:100%; color:white"><i
                                                                                     class="fas fa-print"></i> Print
@@ -2281,7 +2279,7 @@
                                                                     @endif
 
                                                                     <!-- Row 4: Cancel (100%) -->
-                                                                    <div class="col-12">
+                                                                    <div class="col-12 padding5px">
                                                                         <button type="button" class="btn btn-secondary"
                                                                             data-dismiss="modal"
                                                                             style="width:100%">Cancel</button>
@@ -2406,8 +2404,7 @@
                                                         </p>
                                                     </td>
                                                     <td class="ops-col ops-col--tags">
-                                                        <div
-                                                            style="display:flex; flex-wrap: wrap; gap: 3px; align-items: center;">
+                                                        <div>
                                                             @foreach ($case->tags as $tag)
                                                                 <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
                                                                     style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
@@ -2578,7 +2575,7 @@
                                                                                     style="width:100%; display: flex;">
                                                                                     <button type="button"
                                                                                         class="btn btn-success"
-                                                                                        style="width:100%; display: flex; align-items: center; justify-content: center;">overide
+                                                                                        style="width:100%; display: flex; align-items: center; justify-content: center;">override
                                                                                         omplete</button>
                                                                                 </a>
                                                                             @else
@@ -2595,13 +2592,12 @@
                                                                                 style="width:100%; display: flex;">
                                                                                 <button type="button"
                                                                                     class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
-                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">Edit
-                                                                                    Case</button>
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">Edit</button>
                                                                             </a>
                                                                         </div>
                                                                         <!-- Row 1: Delivery status (100%) - Layout 3 only -->
                                                                         @if ($key == 'delivery')
-                                                                            <div class="col-12">
+                                                                            <div class="col-12 padding5px">
                                                                                 <a href="{{ route('delivered-in-box', $case->id) }}"
                                                                                     class="btn btn-outline-info"
                                                                                     style="width:100%">Delivered In Box</a>
@@ -2619,7 +2615,7 @@
 
                                                                         <!-- Row 4: Externally Milled (100%) - Layout 5 only -->
                                                                         @if ($key == 'milling')
-                                                                            <div class="col-12">
+                                                                            <div class="col-12 padding5px">
                                                                                 <button type="button"
                                                                                     class="btn btn-dark"
                                                                                     data-toggle="modal"
@@ -2889,6 +2885,30 @@
         .waitingTable th, .waitingTable td,
         .activeTable th, .activeTable td {
             font-family: 'Cairo', sans-serif !important;
+        }
+
+        /* Prevent content wrapping in cells */
+        .waitingTable tbody td p,
+        .activeTable tbody td p {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            margin: 0 !important;
+        }
+
+        /* Fix tags column to prevent vertical stacking */
+        .ops-col--tags > div {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            gap: 4px !important;
+            overflow: hidden !important;
+            align-items: center !important;
+            line-height: normal !important;
+        }
+
+        .ops-col--tags i {
+            line-height: 1 !important;
+            display: inline-block !important;
         }
 
         /* Fix the span container around checkbox */
@@ -3456,6 +3476,53 @@
             overflow: hidden;
         }
 
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .config-panel {
+                width: 95%;
+                padding: 12px 16px;
+                max-height: 400px;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .config-panel h4 {
+                font-size: 16px;
+            }
+
+            .config-panel p {
+                font-size: 11px;
+            }
+
+            .config-panel #columnWidthInputs {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                border: none;
+            }
+
+            .config-panel .column-input-row {
+                padding: 8px 10px;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                min-width: unset;
+            }
+
+            .config-panel .column-input-row label {
+                font-size: 10px;
+                margin-bottom: 4px;
+            }
+
+            .config-panel .column-input-row input {
+                padding: 6px 8px;
+                font-size: 13px;
+            }
+
+            .config-panel .btn-sm {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
         .config-panel .column-input-row {
             display: flex;
             flex-direction: column;
@@ -3491,6 +3558,15 @@
             background: white;
             text-align: center;
             color: #1e293b;
+            -webkit-appearance: auto;
+            -moz-appearance: textfield;
+        }
+
+        /* Show spinner controls on webkit */
+        .config-panel .column-input-row input::-webkit-inner-spin-button,
+        .config-panel .column-input-row input::-webkit-outer-spin-button {
+            opacity: 1;
+            height: 30px;
         }
 
         .config-panel .column-input-row input:focus {
@@ -3524,7 +3600,10 @@
 
             $('.waitingTable, .activeTable').each(function() {
                 $(this).find('thead th').each(function() {
-                    var text = $(this).text().trim();
+                    // Prioritize desktop span text if it exists
+                    var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                    var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+
                     if (text) {
                         columnNames.add(text);
                     } else {
@@ -3557,7 +3636,7 @@
             console.log('Available columns:', columnNames);
 
             columnNames.forEach(function(colName) {
-                var defaultWidth = savedWidths[colName] || (colName === '[Checkbox]' ? 20 : '');
+                var defaultWidth = savedWidths[colName] || '';
                 var displayName = colName === '[Checkbox]' ? '☑ Checkbox' : colName;
                 var html = '<div class="column-input-row">' +
                     '<label>' + displayName + '</label>' +
@@ -3594,7 +3673,10 @@
                 // Build column name to index mapping for this table
                 var colMap = {};
                 $table.find('thead th').each(function(i) {
-                    var text = $(this).text().trim() || '[Checkbox]';
+                    // Prioritize desktop span text if it exists
+                    var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                    var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+                    if (!text) text = '[Checkbox]';
                     colMap[text] = i;
                 });
 
@@ -3628,7 +3710,10 @@
 
         // Reset to auto widths
         function resetToAuto() {
-            // Clear all custom widths
+            // Clear localStorage
+            localStorage.removeItem(storageKey);
+
+            // Clear all custom widths from tables
             $('.waitingTable, .activeTable').each(function() {
                 $(this).css('table-layout', '');
                 $(this).find('th, td').css({
@@ -3638,31 +3723,12 @@
                 });
             });
 
-            // Detect natural widths from first table
-            var $firstTable = $('.waitingTable').first();
-            var detectedWidths = {};
-
-            if ($firstTable.length) {
-                $firstTable.find('thead th').each(function(i) {
-                    var text = $(this).text().trim() || '[Checkbox]';
-                    // Use 20px for checkbox, otherwise detect
-                    var width = (text === '[Checkbox]') ? 20 : Math.ceil($(this).outerWidth());
-                    detectedWidths[text] = width;
-                });
-            }
-
-            // Save detected widths
-            localStorage.setItem(storageKey, JSON.stringify(detectedWidths));
-
-            // Repopulate panel with detected values
+            // Repopulate panel with empty values (all Auto)
             populatePanel();
-
-            // Apply
-            applyWidths();
 
             // Show toast notification
             if (typeof showToast === 'function') {
-                showToast('Column widths auto-detected and applied', 'success');
+                showToast('All column widths reset to Auto', 'success');
             }
         }
 
@@ -3715,7 +3781,10 @@
                     // Build column name to index mapping for this table
                     var colMap = {};
                     $table.find('thead th').each(function(i) {
-                        var text = $(this).text().trim() || '[Checkbox]';
+                        // Prioritize desktop span text if it exists
+                        var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                        var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+                        if (!text) text = '[Checkbox]';
                         colMap[text] = i;
                     });
 

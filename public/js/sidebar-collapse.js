@@ -149,13 +149,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Handle submenu toggle and mobile drawer
         sidebar.addEventListener('click', function (e) {
-            const link = e.target.closest('.nav li a');
+            // Fix for iOS: use closest('a') instead of closest('.nav li a')
+            const link = e.target.closest('a');
             if (!link) return;
+
+            // Additional check to ensure we're within .nav li
+            if (!link.closest('.nav li')) return;
 
             const isSubmenuToggle = link.hasAttribute('data-sigma-toggle');
 
             if (isSubmenuToggle) {
                 e.preventDefault();
+                e.stopPropagation(); // Prevent event from bubbling on iOS
                 const targetId = link.getAttribute('data-target');
                 if (targetId) {
                     toggleSubmenu(link, targetId);

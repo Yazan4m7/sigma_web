@@ -4,7 +4,8 @@
     'value' => '',
     'required' => false,
     'class' => '',
-    'mode' => 'datetime'
+    'mode' => 'datetime',
+    'disablePast' => false
 ])
 
 @php
@@ -82,13 +83,18 @@
     }
 
     .ios-dtp-backdrop {
-        position: fixed;
-        inset: 0;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
         background: var(--ios-bg-overlay);
         opacity: 0;
         visibility: hidden;
         transition: opacity 0.3s ease, visibility 0.3s ease;
-        z-index: 1040;
+        z-index: 9999 !important;
     }
 
     .ios-dtp-backdrop.visible {
@@ -97,14 +103,14 @@
     }
 
     .ios-dtp-modal {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%) scale(0.95);
+        position: fixed !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95) !important;
         background: var(--ios-bg-white);
         border-radius: var(--ios-radius);
         box-shadow: var(--ios-shadow);
-        z-index: 1050;
+        z-index: 10000 !important;
         overflow: hidden;
         width: min(520px, calc(100vw - 32px));
         max-height: calc(100vh - 32px);
@@ -118,7 +124,7 @@
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transform: translate(-50%, -50%) scale(1);
+        transform: translate(-50%, -50%) scale(1) !important;
     }
 
     .ios-dtp-header {
@@ -497,8 +503,20 @@
     }
 
     .ios-dtp-day-btn.today.selected {
-        
+
         color: white !important;
+    }
+
+    .ios-dtp-day-btn.disabled {
+        color: var(--ios-text-faded) !important;
+        background: transparent !important;
+        cursor: not-allowed !important;
+        text-decoration: line-through;
+        opacity: 0.4;
+    }
+
+    .ios-dtp-day-btn.disabled:hover {
+        background: transparent !important;
     }
 
     .ios-dtp-wheel-section {
@@ -736,7 +754,7 @@
 </style>
 @endonce
 
-<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}')" x-init="init()">
+<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }})" x-init="init()">
     <!-- Hidden input for form submission -->
     <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }}>
 
@@ -808,10 +826,11 @@
                                         :class="{
                                         'other-month': !day.currentMonth,
                                         'today': day.isToday,
-                                        'selected': day.date === selectedDay && day.month === selectedMonth && day.year === selectedYear
+                                        'selected': day.date === selectedDay && day.month === selectedMonth && day.year === selectedYear,
+                                        'disabled': day.isPast
                                     }"
-                                        @click="day.currentMonth && selectCalendarDay(day)"
-                                        :disabled="!day.currentMonth"
+                                        @click="day.currentMonth && !day.isPast && selectCalendarDay(day)"
+                                        :disabled="!day.currentMonth || day.isPast"
                                         x-text="day.date"
                                 ></button>
                             </template>
@@ -920,7 +939,7 @@
 </div>
 
 <script>
-    function iosDtp_{{ $jsId }}(mode = 'datetime') {
+    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false) {
         const now = new Date();
         const todayYear = now.getFullYear();
         const todayMonth = now.getMonth();
@@ -934,10 +953,13 @@
         const initHour = {{ $initialDate->hour }};
         const initMinute = {{ $initialDate->minute }};
         @else
-        const initYear = todayYear;
-        const initMonth = todayMonth;
-        const initDay = todayDate;
-        const initHour = 7;
+        // Default to tomorrow at 1 PM
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const initYear = tomorrow.getFullYear();
+        const initMonth = tomorrow.getMonth();
+        const initDay = tomorrow.getDate();
+        const initHour = 13;
         const initMinute = 0;
         @endif
 
@@ -988,6 +1010,7 @@
         return {
             open: false,
             mode: mode,
+            disablePast: disablePast,
             view: 'calendar',
             formValue: @json($value ?? ''),
             originalFormValue: @json($value ?? ''),
@@ -1161,6 +1184,9 @@
                 const lastDay = new Date(this.selectedYear, this.selectedMonth + 1, 0);
                 const startDay = firstDay.getDay();
 
+                // Get today's date at midnight for comparison (only if disablePast is true)
+                const todayAtMidnight = this.disablePast ? new Date(this.todayYear, this.todayMonth, this.todayDate) : null;
+
                 const prevMonth = this.selectedMonth === 0 ? 11 : this.selectedMonth - 1;
                 const prevYear = this.selectedMonth === 0 ? this.selectedYear - 1 : this.selectedYear;
                 const prevMonthLastDay = new Date(this.selectedYear, this.selectedMonth, 0).getDate();
@@ -1168,10 +1194,13 @@
                 for (let i = startDay - 1; i >= 0; i--) {
                     const date = prevMonthLastDay - i;
                     const isToday = (prevYear === this.todayYear && prevMonth === this.todayMonth && date === this.todayDate);
+                    const dayDate = new Date(prevYear, prevMonth, date);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
                     days.push({
                         date,
                         currentMonth: false,
                         isToday,
+                        isPast,
                         month: prevMonth,
                         year: prevYear
                     });
@@ -1181,10 +1210,13 @@
                     const isToday = (this.selectedYear === this.todayYear &&
                         this.selectedMonth === this.todayMonth &&
                         i === this.todayDate);
+                    const dayDate = new Date(this.selectedYear, this.selectedMonth, i);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
                     days.push({
                         date: i,
                         currentMonth: true,
                         isToday,
+                        isPast,
                         month: this.selectedMonth,
                         year: this.selectedYear
                     });
@@ -1196,10 +1228,13 @@
 
                 for (let i = 1; i <= remaining; i++) {
                     const isToday = (nextYear === this.todayYear && nextMonth === this.todayMonth && i === this.todayDate);
+                    const dayDate = new Date(nextYear, nextMonth, i);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
                     days.push({
                         date: i,
                         currentMonth: false,
                         isToday,
+                        isPast,
                         month: nextMonth,
                         year: nextYear
                     });
@@ -1459,6 +1494,56 @@
             },
 
             confirmSelection() {
+                // Check if selected date/time is in the past (only if disablePast is true)
+                if (this.disablePast) {
+                    const now = new Date();
+
+                    if (this.mode === 'datetime') {
+                        // Convert selected time to 24h format
+                        let hour24 = this.selectedHourIndex + 1;
+                        if (this.selectedAmpmIndex === 1 && hour24 !== 12) {
+                            hour24 += 12;
+                        } else if (this.selectedAmpmIndex === 0 && hour24 === 12) {
+                            hour24 = 0;
+                        }
+                        const selectedMinute = parseInt(this.minuteOptions[this.selectedMinuteIndex]);
+
+                        const selectedDateTime = new Date(this.selectedYear, this.selectedMonth, this.selectedDay, hour24, selectedMinute);
+
+                        if (selectedDateTime < now) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Invalid Date/Time',
+                                    text: 'Cannot select a past date or time. Please choose a future date and time.',
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                alert('Cannot select a past date or time. Please choose a future date and time.');
+                            }
+                            return;
+                        }
+                    } else {
+                        // Date only mode
+                        const selectedDate = new Date(this.selectedYear, this.selectedMonth, this.selectedDay);
+                        const todayAtMidnight = new Date(this.todayYear, this.todayMonth, this.todayDate);
+
+                        if (selectedDate < todayAtMidnight) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Invalid Date',
+                                    text: 'Cannot select a past date. Please choose today or a future date.',
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                alert('Cannot select a past date. Please choose today or a future date.');
+                            }
+                            return;
+                        }
+                    }
+                }
+
                 this.updateFormValue();
                 this.open = false;
                 document.body.style.overflow = '';

@@ -18,9 +18,9 @@ $current_image = $attributes['current_image'] ?? null;
                        class="form-control"
                        id="<?php echo $id; ?>"
                        name="photo"
-                       accept=".png">
+                       accept="image/png,image/jpeg,image/webp">
                 <small class="form-text text-muted d-block mt-2">
-                    Only PNG files are accepted. Maximum file size: 2MB.
+                    Only PNG,jpeg,webp files are accepted. Maximum file size: 12MB.
                 </small>
             </div>
         </div>
@@ -40,12 +40,10 @@ $current_image = $attributes['current_image'] ?? null;
                     <img src="<?php echo $current_image; ?>" alt="Profile image"
                          class="img-fluid rounded" style="max-height:150px;">
                     <?php else: ?>
-                    <img src="/assets/images/default-avatar.png"
-                         alt="Default profile image"
-                         onerror="this.onerror=null; this.style.display='none'; document.getElementById('profile-fallback-<?php echo $id; ?>').style.display='inline';"
-                         class="img-fluid rounded"
-                         style="max-height:150px; display:inline;">
-                    <span id="profile-fallback-<?php echo $id; ?>" style="display:none;">User's profile</span>
+                    <div class="text-center text-muted">
+                        <i class="fas fa-user-circle fa-5x mb-2" style="opacity: 0.3;"></i>
+                        <p class="mb-0">No image selected</p>
+                    </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -105,48 +103,96 @@ $current_image = $attributes['current_image'] ?? null;
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const fileInput = document.getElementById('<?php echo $id; ?>');
+
+        if (!fileInput) {
+            console.error('File input not found for ID: <?php echo $id; ?>');
+            return;
+        }
+
         const pickerContainer = fileInput.closest('.user-image-picker-container');
+
+        if (!pickerContainer) {
+            console.error('Picker container not found for input: <?php echo $id; ?>');
+            return;
+        }
+
         const previewContainer = pickerContainer.querySelector('.image-preview');
         const loadingIndicator = pickerContainer.querySelector('.loading-indicator');
 
-        fileInput.addEventListener('change', function() {
+        if (!previewContainer) {
+            console.error('Preview container not found');
+            return;
+        }
+
+        console.log('User image picker initialized:', {
+            id: '<?php echo $id; ?>',
+            hasPreview: !!previewContainer,
+            hasLoading: !!loadingIndicator
+        });
+
+        fileInput.addEventListener('change', function(e) {
+            console.log('File input changed', e.target.files);
+
             const file = this.files[0];
-            if (!file) return;
+            if (!file) {
+                console.log('No file selected');
+                return;
+            }
 
-            if (file.type !== 'image/png') {
-                alert('Only PNG files are allowed');
+            console.log('File selected:', {
+                name: file.name,
+                size: file.size,
+                type: file.type
+            });
+
+            if (file.size > 12 * 1024 * 1024) { // 12MB
+                alert('File size must be less than 12MB');
                 this.value = '';
                 return;
             }
 
-            if (file.size > 2 * 1024 * 1024) { // 2MB
-                alert('File size must be less than 2MB');
-                this.value = '';
-                return;
+            // Hide preview, show loading
+            if (previewContainer) {
+                previewContainer.style.display = 'none';
             }
-
-            previewContainer.style.display = 'none';
-            loadingIndicator.style.display = 'block';
+            if (loadingIndicator) {
+                loadingIndicator.style.display = 'block';
+            }
 
             const reader = new FileReader();
+
+            reader.onerror = function(error) {
+                console.error('FileReader error:', error);
+                alert('Failed to read image file');
+                if (loadingIndicator) loadingIndicator.style.display = 'none';
+                if (previewContainer) previewContainer.style.display = 'block';
+            };
+
             reader.onload = function(e) {
+                console.log('FileReader loaded, showing preview');
+
                 setTimeout(function() {
-                    loadingIndicator.style.display = 'none';
-                    previewContainer.style.display = 'block';
+                    if (loadingIndicator) loadingIndicator.style.display = 'none';
+                    if (previewContainer) previewContainer.style.display = 'block';
 
                     let img = previewContainer.querySelector('img');
                     if (!img) {
+                        console.log('Creating new img element');
                         img = document.createElement('img');
                         img.className = 'img-fluid rounded';
                         img.style.maxHeight = '150px';
+                        previewContainer.innerHTML = ''; // Clear any existing content
                         previewContainer.appendChild(img);
                     }
 
                     img.src = e.target.result;
                     img.alt = 'Selected profile image';
+
+                    console.log('Preview image set');
+
                     const fallback = previewContainer.querySelector('span');
                     if (fallback) fallback.style.display = 'none';
-                }, 1000); // shorter delay
+                }, 500); // Reduced delay
             };
 
             reader.readAsDataURL(file);

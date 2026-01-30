@@ -210,19 +210,27 @@ class CaseController extends Controller
         // Load relationships using eager loading with specific columns to reduce memory usage
         $inProgressCases->load([
             'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
             'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
             'jobs.subType:id,name,material_id'
         ]);
 
         $completedCases->load([
             'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
             'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
             'jobs.subType:id,name,material_id'
         ]);
 
@@ -249,7 +257,7 @@ class CaseController extends Controller
     {
         $case = sCase::with([
             'jobs.jobType:id,name',
-            'jobs.material:id,name',
+            'jobs.material:id,name,count_as_unit',
             'jobs.subType:id,name,material_id'
         ])->findOrFail($id);
         $materials = material::all();
@@ -1977,7 +1985,18 @@ class CaseController extends Controller
         });
 
         $cases = $cases->orderByRaw('-`actual_delivery_date` ASC')->orderBy("initial_delivery_date", 'asc')->get();
-        $cases->load(['jobs.assignedTo:id,name_initials,first_name']);
+        $cases->load([
+            'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
+            'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
+            'jobs.assignedTo:id,name_initials,first_name',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
+            'jobs.subType:id,name,material_id'
+        ]);
 
 
         $isSearchResults = true;

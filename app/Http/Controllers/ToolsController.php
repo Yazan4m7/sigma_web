@@ -13,6 +13,10 @@ use App\AuditLog;
 use App\User;
 use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Http\Controllers\CaseController;
 
@@ -281,5 +285,268 @@ class ToolsController extends Controller
         $users = User::orderBy('first_name')->orderBy('last_name')->get(['id', 'first_name', 'last_name', 'name_initials', 'username']);
 
         return view('tools.audit-logs', compact('logs', 'actions', 'users', 'filters'));
+    }
+
+    public function pageLoadTester(Request $request)
+    {
+        $pages = $this->pageLoadTestPages();
+
+        $results = DB::table('page_load_tests as t')
+            ->leftJoin('users as u', 't.tested_by', '=', 'u.id')
+            ->select('t.*', 'u.name_initials', 'u.first_name', 'u.last_name')
+            ->orderByDesc('t.id')
+            ->paginate(50);
+
+        return view('tools.page-load-tester', compact('pages', 'results'));
+    }
+
+    public function runPageLoadTest(Request $request)
+    {
+        @set_time_limit(90);
+        $pages = $this->pageLoadTestPages();
+
+        $request->validate([
+            'page_key' => 'nullable|string|max:100',
+            'custom_url' => 'nullable|string|max:2048',
+            'timeout' => 'nullable|integer|min:5|max:120',
+            'use_session' => 'nullable|boolean',
+            'mode' => 'nullable|in:http,internal',
+        ]);
+
+        $pageKey = $request->input('page_key');
+        $customUrl = trim((string) $request->input('custom_url'));
+
+        $url = null;
+        $label = null;
+
+        if ($pageKey && isset($pages[$pageKey])) {
+            $label = $pages[$pageKey]['label'];
+            $url = $pages[$pageKey]['url'];
+        }
+
+        if ($customUrl !== '') {
+            $url = $this->normalizeTestUrl($customUrl, $request);
+            $label = $label ? $label . ' (Custom)' : 'Custom URL';
+        }
+
+        if (!$url) {
+            return $this->pageLoadTesterRedirect($request, 'Please select a page or enter a URL.', 'error');
+        }
+
+        $allowedHost = parse_url(url('/'), PHP_URL_HOST);
+        $targetHost = parse_url($url, PHP_URL_HOST);
+        if ($targetHost && $allowedHost && strcasecmp($targetHost, $allowedHost) !== 0) {
+            return $this->pageLoadTesterRedirect($request, 'Only URLs on this host are allowed.', 'error');
+        }
+
+        $mode = $request->input('mode', 'internal');
+        $info = [];
+        $error = null;
+        $httpStatus = null;
+        $totalMs = null;
+        $sizeDownload = null;
+        $startTransferMs = null;
+
+        if ($mode === 'http') {
+            if (!function_exists('curl_init')) {
+                return $this->pageLoadTesterRedirect($request, 'cURL is not available on this server.', 'error');
+            }
+
+            $useSession = (bool) $request->input('use_session');
+            $cookieHeader = '';
+            if ($useSession) {
+                $cookieHeader = $this->buildCookieHeader($request);
+                Session::save();
+                if (function_exists('session_write_close')) {
+                    session_write_close();
+                }
+            } else {
+                $token = Str::random(40);
+                Cache::put('page_load_test_token:' . $token, ['user_id' => auth()->id()], now()->addMinutes(2));
+                $url = $this->appendTestTokenToUrl($url, $token);
+            }
+
+            $timeout = (int) $request->input('timeout', 25);
+            $timeout = max(5, min(120, $timeout));
+
+            $ch = curl_init($url);
+            $options = [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_MAXREDIRS => 5,
+                CURLOPT_CONNECTTIMEOUT => 8,
+                CURLOPT_TIMEOUT => $timeout,
+                CURLOPT_USERAGENT => 'SigmaPageLoadTester/1.0',
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false,
+            ];
+            if ($cookieHeader !== '') {
+                $options[CURLOPT_COOKIE] = $cookieHeader;
+            }
+            curl_setopt_array($ch, $options);
+            curl_exec($ch);
+            $error = curl_error($ch);
+            $info = curl_getinfo($ch);
+            curl_close($ch);
+
+            $this->restartSessionIfNeeded();
+
+            $httpStatus = $info['http_code'] ?? null;
+            $totalMs = $this->toMs($info['total_time'] ?? null);
+            $sizeDownload = $info['size_download'] ?? null;
+            $startTransferMs = $this->toMs($info['starttransfer_time'] ?? null);
+        } else {
+            $internal = $this->runInternalRequest($url, auth()->id());
+            $httpStatus = $internal['status'];
+            $totalMs = $internal['total_ms'];
+            $sizeDownload = $internal['size_download'];
+            $startTransferMs = $internal['total_ms'];
+        }
+
+        DB::table('page_load_tests')->insert([
+            'mode' => $mode,
+            'page_key' => $pageKey,
+            'label' => $label ?? $url,
+            'url' => $url,
+            'http_status' => $httpStatus,
+            'total_time_ms' => $totalMs,
+            'namelookup_time_ms' => $this->toMs($info['namelookup_time'] ?? null),
+            'connect_time_ms' => $this->toMs($info['connect_time'] ?? null),
+            'appconnect_time_ms' => $this->toMs($info['appconnect_time'] ?? null),
+            'pretransfer_time_ms' => $this->toMs($info['pretransfer_time'] ?? null),
+            'starttransfer_time_ms' => $startTransferMs,
+            'redirect_time_ms' => $this->toMs($info['redirect_time'] ?? null),
+            'size_download' => $sizeDownload,
+            'size_upload' => $info['size_upload'] ?? null,
+            'speed_download' => $info['speed_download'] ?? null,
+            'speed_upload' => $info['speed_upload'] ?? null,
+            'primary_ip' => $info['primary_ip'] ?? null,
+            'local_ip' => $info['local_ip'] ?? null,
+            'error_message' => $error ?: null,
+            'tested_by' => auth()->id(),
+            'created_at' => now(),
+        ]);
+
+        if ($error) {
+            return $this->pageLoadTesterRedirect($request, 'Test saved, but request failed: ' . $error, 'error');
+        }
+
+        return $this->pageLoadTesterRedirect($request, 'Load test completed and saved.', 'success');
+    }
+
+    public function deletePageLoadTest($id)
+    {
+        DB::table('page_load_tests')->where('id', $id)->delete();
+        return $this->pageLoadTesterRedirect(request(), 'Result deleted.', 'success');
+    }
+
+    public function clearPageLoadTests()
+    {
+        DB::table('page_load_tests')->delete();
+        return $this->pageLoadTesterRedirect(request(), 'All results cleared.', 'success');
+    }
+
+    private function pageLoadTestPages(): array
+    {
+        return [
+            'cases-index' => ['label' => 'Cases List', 'url' => url('/cases')],
+            'operations-dashboard' => ['label' => 'Operations Dashboard', 'url' => url('/operations-dashboard')],
+            'users-index' => ['label' => 'Users', 'url' => url('/users/index')],
+            'materials-index' => ['label' => 'Materials', 'url' => url('/materials')],
+            'job-types-index' => ['label' => 'Job Types', 'url' => url('/Job-type/index')],
+            'devices-index' => ['label' => 'Devices', 'url' => url('/device/index')],
+            'configuration' => ['label' => 'System Configuration', 'url' => url('/admin/configuration')],
+        ];
+    }
+
+    private function normalizeTestUrl(string $input, Request $request): string
+    {
+        if (preg_match('/^https?:\\/\\//i', $input)) {
+            return $input;
+        }
+
+        $base = rtrim(url('/'), '/');
+        if (strpos($input, '/') === 0) {
+            return $base . $input;
+        }
+
+        return $base . '/' . ltrim($input, '/');
+    }
+
+    private function buildCookieHeader(Request $request): string
+    {
+        $pairs = [];
+        foreach ($request->cookies->all() as $name => $value) {
+            if (!is_scalar($value)) {
+                continue;
+            }
+            $pairs[] = $name . '=' . urlencode((string) $value);
+        }
+        return implode('; ', $pairs);
+    }
+
+    private function appendTestTokenToUrl(string $url, string $token): string
+    {
+        $fragment = '';
+        if (strpos($url, '#') !== false) {
+            [$url, $fragment] = explode('#', $url, 2);
+            $fragment = '#' . $fragment;
+        }
+
+        $separator = parse_url($url, PHP_URL_QUERY) ? '&' : '?';
+        return $url . $separator . '__plt=' . urlencode($token) . $fragment;
+    }
+
+    private function runInternalRequest(string $url, ?int $userId): array
+    {
+        $path = parse_url($url, PHP_URL_PATH) ?? '/';
+        $query = parse_url($url, PHP_URL_QUERY);
+        $pathWithQuery = $query ? $path . '?' . $query : $path;
+
+        $internalRequest = Request::create($pathWithQuery, 'GET');
+        if ($userId) {
+            Auth::onceUsingId($userId);
+        }
+
+        $kernel = app(\Illuminate\Contracts\Http\Kernel::class);
+        $start = microtime(true);
+        $response = $kernel->handle($internalRequest);
+        $durationMs = (int) round((microtime(true) - $start) * 1000);
+        $kernel->terminate($internalRequest, $response);
+
+        $content = method_exists($response, 'getContent') ? $response->getContent() : null;
+        $size = is_string($content) ? strlen($content) : null;
+
+        return [
+            'status' => method_exists($response, 'getStatusCode') ? $response->getStatusCode() : null,
+            'total_ms' => $durationMs,
+            'size_download' => $size,
+        ];
+    }
+
+    private function restartSessionIfNeeded(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            try {
+                Session::start();
+            } catch (\Throwable $e) {
+                // ignore session restart failures
+            }
+        }
+    }
+
+    private function pageLoadTesterRedirect(Request $request, string $message, string $type)
+    {
+        $base = $request->getSchemeAndHttpHost();
+        $url = rtrim($base, '/') . '/tools/page-load-tester';
+        return redirect()->away($url)->with($type, $message);
+    }
+
+    private function toMs($seconds): ?int
+    {
+        if ($seconds === null) {
+            return null;
+        }
+        return (int) round($seconds * 1000);
     }
 }

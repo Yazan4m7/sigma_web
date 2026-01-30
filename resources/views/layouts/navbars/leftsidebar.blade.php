@@ -210,6 +210,7 @@
                                  'audit-logs.index',
                                  'tools.invoice-check',
                                  'tools.create-case',
+                                 'tools.page-load-tester',
                                  'admin.case.timeline'))
                                 ? 'true' : 'false';
                 @endphp
@@ -258,6 +259,12 @@
                                     <a href="{{route('tools.create-case')}}">
                                         <i class="fa-solid fa-plus-square"></i>
                                         <p>Create Case</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.page-load-tester' ? 'active' : ''}}">
+                                    <a href="{{route('tools.page-load-tester')}}">
+                                        <i class="fa-solid fa-gauge-high"></i>
+                                        <p>Page Load Tester</p>
                                     </a>
                                 </li>
                                 <li>

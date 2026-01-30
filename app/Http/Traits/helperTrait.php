@@ -534,5 +534,293 @@ $json = json_decode($response, true);
         curl_close($ch);
     }
 
+    private function saveImageUnder2MBAsWebp(string $srcPath, string $destPath, int $maxBytes = 2097152): void
+    {
+        \Log::info('[COMPRESSION] Starting saveImageUnder2MBAsWebp', [
+            'source' => $srcPath,
+            'destination' => $destPath,
+            'max_bytes' => $maxBytes,
+            'max_mb' => round($maxBytes / 1024 / 1024, 2)
+        ]);
+
+        // Validate source file
+        if (!is_file($srcPath)) {
+            \Log::error('[COMPRESSION] Source path is not a file', ['source' => $srcPath]);
+            return;
+        }
+
+        if (!is_readable($srcPath)) {
+            \Log::error('[COMPRESSION] Source file is not readable', [
+                'source' => $srcPath,
+                'file_exists' => file_exists($srcPath),
+                'permissions' => fileperms($srcPath)
+            ]);
+            return;
+        }
+
+        $sourceSize = filesize($srcPath);
+        \Log::info('[COMPRESSION] Source file validated', [
+            'size_bytes' => $sourceSize,
+            'size_mb' => round($sourceSize / 1024 / 1024, 2)
+        ]);
+
+        // Check GD library
+        if (!extension_loaded('gd')) {
+            \Log::error('[COMPRESSION] GD library not loaded');
+            return;
+        }
+
+        // Detect type and load
+        $info = @getimagesize($srcPath);
+        if (!$info) {
+            \Log::error('[COMPRESSION] Failed to get image size', [
+                'source' => $srcPath,
+                'file_size' => filesize($srcPath)
+            ]);
+            return;
+        }
+
+        \Log::info('[COMPRESSION] Image info detected', [
+            'width' => $info[0],
+            'height' => $info[1],
+            'type' => $info[2],
+            'type_name' => image_type_to_mime_type($info[2]),
+            'bits' => $info['bits'] ?? 'unknown',
+            'channels' => $info['channels'] ?? 'unknown'
+        ]);
+
+        $type = $info[2];
+        $img = null;
+
+        try {
+            switch ($type) {
+                case IMAGETYPE_JPEG:
+                    \Log::info('[COMPRESSION] Loading JPEG image');
+                    $img = imagecreatefromjpeg($srcPath);
+                    break;
+                case IMAGETYPE_PNG:
+                    \Log::info('[COMPRESSION] Loading PNG image');
+                    $img = imagecreatefrompng($srcPath);
+                    break;
+                case IMAGETYPE_WEBP:
+                    \Log::info('[COMPRESSION] Loading WEBP image');
+                    $img = imagecreatefromwebp($srcPath);
+                    break;
+                case IMAGETYPE_GIF:
+                    \Log::info('[COMPRESSION] Loading GIF image');
+                    $img = imagecreatefromgif($srcPath);
+                    break;
+                default:
+                    \Log::error('[COMPRESSION] Unsupported image type', ['type' => $type]);
+                    return;
+            }
+        } catch (\Exception $e) {
+            \Log::error('[COMPRESSION] Failed to load image', [
+                'error' => $e->getMessage(),
+                'type' => $type
+            ]);
+            return;
+        }
+
+        if (!$img) {
+            \Log::error('[COMPRESSION] Image resource creation failed');
+            return;
+        }
+
+        $w = imagesx($img);
+        $h = imagesy($img);
+
+        \Log::info('[COMPRESSION] Image loaded successfully', [
+            'width' => $w,
+            'height' => $h,
+            'pixels' => $w * $h
+        ]);
+
+        $pixelCount = max(1, $w * $h);
+        $maxPixels = 12000000; // ~12MP to reduce memory pressure
+        $scale = $pixelCount > $maxPixels ? sqrt($maxPixels / $pixelCount) : 1.0;
+        $quality = 82;     // 0..100
+        $minW = 360;
+        $minH = 360;
+
+        \Log::info('[COMPRESSION] Initial compression settings', [
+            'initial_scale' => $scale,
+            'initial_quality' => $quality,
+            'pixel_count' => $pixelCount,
+            'max_pixels' => $maxPixels,
+            'will_scale_down' => $pixelCount > $maxPixels
+        ]);
+
+        $tmpPath = tempnam(dirname($destPath), 'webp_');
+        if ($tmpPath === false) {
+            \Log::error('[COMPRESSION] Failed to create temp file', [
+                'dest_dir' => dirname($destPath),
+                'dest_dir_writable' => is_writable(dirname($destPath))
+            ]);
+            imagedestroy($img);
+            return;
+        }
+
+        \Log::info('[COMPRESSION] Temp file created', ['tmp_path' => $tmpPath]);
+
+        $writeOk = false;
+        $iteration = 0;
+
+        while (true) {
+            $iteration++;
+            $newW = max((int)round($w * $scale), $minW);
+            $newH = max((int)round($h * $scale), $minH);
+
+            \Log::info("[COMPRESSION] Iteration #{$iteration}", [
+                'scale' => $scale,
+                'quality' => $quality,
+                'new_width' => $newW,
+                'new_height' => $newH,
+                'estimated_pixels' => $newW * $newH
+            ]);
+
+            $canvas = imagecreatetruecolor($newW, $newH);
+
+            if (!$canvas) {
+                \Log::error('[COMPRESSION] Failed to create canvas', [
+                    'width' => $newW,
+                    'height' => $newH
+                ]);
+                break;
+            }
+
+            // Preserve alpha (WebP supports alpha)
+            imagealphablending($canvas, false);
+            imagesavealpha($canvas, true);
+            $transparent = imagecolorallocatealpha($canvas, 0, 0, 0, 127);
+            imagefilledrectangle($canvas, 0, 0, $newW, $newH, $transparent);
+
+            $resampleResult = imagecopyresampled($canvas, $img, 0, 0, 0, 0, $newW, $newH, $w, $h);
+            if (!$resampleResult) {
+                \Log::warning('[COMPRESSION] imagecopyresampled returned false');
+            }
+
+            $writeOk = imagewebp($canvas, $tmpPath, $quality);
+
+            imagedestroy($canvas);
+
+            if (!$writeOk) {
+                \Log::error('[COMPRESSION] imagewebp write failed', [
+                    'iteration' => $iteration,
+                    'quality' => $quality
+                ]);
+                break;
+            }
+
+            clearstatcache(true, $tmpPath);
+            $size = filesize($tmpPath);
+
+            \Log::info("[COMPRESSION] Iteration #{$iteration} result", [
+                'output_size_bytes' => $size,
+                'output_size_mb' => round($size / 1024 / 1024, 2),
+                'max_bytes' => $maxBytes,
+                'under_limit' => $size <= $maxBytes
+            ]);
+
+            if ($size !== false && $size <= $maxBytes) {
+                \Log::info('[COMPRESSION] Size target achieved!', [
+                    'final_size_bytes' => $size,
+                    'final_size_mb' => round($size / 1024 / 1024, 2),
+                    'iterations' => $iteration
+                ]);
+                break;
+            }
+
+            // If already small, degrade quality; otherwise shrink dimensions
+            if ($scale <= 0.6 && $quality > 60) {
+                \Log::info('[COMPRESSION] Reducing quality', [
+                    'from' => $quality,
+                    'to' => $quality - 8
+                ]);
+                $quality -= 8;
+            } else {
+                if ($newW <= $minW && $newH <= $minH) {
+                    \Log::warning('[COMPRESSION] Reached minimum dimensions, stopping', [
+                        'width' => $newW,
+                        'height' => $newH,
+                        'min_width' => $minW,
+                        'min_height' => $minH
+                    ]);
+                    break;
+                }
+                \Log::info('[COMPRESSION] Reducing scale', [
+                    'from' => $scale,
+                    'to' => $scale * 0.85
+                ]);
+                $scale *= 0.85;
+            }
+
+            if ($iteration > 20) {
+                \Log::warning('[COMPRESSION] Exceeded maximum iterations (20), stopping');
+                break;
+            }
+        }
+
+        // Move temp file to final destination
+        if ($writeOk && is_file($tmpPath)) {
+            $tmpSize = filesize($tmpPath);
+            \Log::info('[COMPRESSION] Attempting to move temp file to destination', [
+                'tmp_path' => $tmpPath,
+                'dest_path' => $destPath,
+                'tmp_size' => $tmpSize,
+                'tmp_exists' => file_exists($tmpPath),
+                'dest_dir_writable' => is_writable(dirname($destPath))
+            ]);
+
+            if (!@rename($tmpPath, $destPath)) {
+                \Log::warning('[COMPRESSION] rename() failed, trying copy()', [
+                    'tmp' => $tmpPath,
+                    'dest' => $destPath
+                ]);
+
+                if (@copy($tmpPath, $destPath)) {
+                    \Log::info('[COMPRESSION] copy() succeeded');
+                    @unlink($tmpPath);
+                } else {
+                    \Log::error('[COMPRESSION] copy() also failed', [
+                        'tmp_exists' => file_exists($tmpPath),
+                        'dest_dir' => dirname($destPath),
+                        'dest_dir_exists' => file_exists(dirname($destPath)),
+                        'dest_dir_writable' => is_writable(dirname($destPath))
+                    ]);
+                }
+            } else {
+                \Log::info('[COMPRESSION] rename() succeeded');
+            }
+
+            // Verify final file
+            if (file_exists($destPath)) {
+                $finalSize = filesize($destPath);
+                \Log::info('[COMPRESSION] SUCCESS - Final file created', [
+                    'destination' => $destPath,
+                    'size_bytes' => $finalSize,
+                    'size_mb' => round($finalSize / 1024 / 1024, 2),
+                    'under_limit' => $finalSize <= $maxBytes
+                ]);
+            } else {
+                \Log::error('[COMPRESSION] FAILURE - Final file does not exist', [
+                    'destination' => $destPath,
+                    'tmp_still_exists' => file_exists($tmpPath)
+                ]);
+            }
+        } elseif (is_file($tmpPath)) {
+            \Log::error('[COMPRESSION] Write was not OK but temp file exists', [
+                'write_ok' => $writeOk,
+                'tmp_path' => $tmpPath
+            ]);
+            @unlink($tmpPath);
+        } else {
+            \Log::error('[COMPRESSION] No temp file found after compression');
+        }
+
+        imagedestroy($img);
+        \Log::info('[COMPRESSION] Completed saveImageUnder2MBAsWebp');
+    }
+
 
 }

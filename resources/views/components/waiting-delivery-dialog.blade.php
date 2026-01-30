@@ -19,7 +19,7 @@
                     <div class="sigma-driver-card"
                          onclick="selectDeliveryDriver(this, {{ $driver->id }})">
                         <div class="sigma-driver-image-container">
-                            <img src="{{ $driver->has_photo ? asset('/users/'.$driver->id.'/profile_picture.png') : asset('/users/no_profile_picture.png') }}"
+                            <img src="{{ $driver->has_photo ? asset('/users/'.$driver->id.'/profile_picture.webp') : asset('/users/no_profile_picture.webp') }}"
                                  alt="{{ $driver->first_name }} {{ $driver->last_name }}"
                                  class="sigma-driver-image grayscale">
                         </div>

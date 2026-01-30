@@ -6990,6 +6990,7 @@
         }
         /* Prevent horizontal scroll on small screens for summary tables */
         .sunriseTable {
+            font-family: 'Cairo', sans-serif;
             table-layout: fixed;
             width: 100%;
         }

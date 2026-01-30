@@ -295,6 +295,10 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::post('/tools/invoice-check/apply', [App\Http\Controllers\ToolsController::class, 'applyInvoiceForCase'])->name('tools.invoice-check.apply');
         Route::get('/tools/create-case', [App\Http\Controllers\ToolsController::class, 'createCaseTool'])->name('tools.create-case');
         Route::post('/tools/create-case', [App\Http\Controllers\ToolsController::class, 'storeCaseTool'])->name('tools.store-case');
+        Route::get('/tools/page-load-tester', [App\Http\Controllers\ToolsController::class, 'pageLoadTester'])->name('tools.page-load-tester');
+        Route::post('/tools/page-load-tester', [App\Http\Controllers\ToolsController::class, 'runPageLoadTest'])->name('tools.page-load-tester.run');
+        Route::post('/tools/page-load-tester/clear', [App\Http\Controllers\ToolsController::class, 'clearPageLoadTests'])->name('tools.page-load-tester.clear');
+        Route::post('/tools/page-load-tester/{id}/delete', [App\Http\Controllers\ToolsController::class, 'deletePageLoadTest'])->name('tools.page-load-tester.delete');
 
     });
 //// External Labs ROUTES
@@ -598,4 +602,3 @@ Route::get('/cases/lock/{id}', [App\Http\Controllers\CaseController::class, 'loc
 Route::get('/cases/unlock/{id}', [App\Http\Controllers\CaseController::class, 'unlockCase'])->name('unlock-case');
 
 //});
-
