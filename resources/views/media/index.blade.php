@@ -9,7 +9,7 @@
                     <div class="container"><div class="row">
                             <div class="col-8"><h5 class="header-title">Gallery Media Items</h5></div>
 
-                        <div class="col-3   "><a href="{{route('media-create')}}" style="display:block">
+                        <div class="col-3   "><a href="{{route('create-media')}}" style="display:block">
                             <button type="button" class="btn btn-secondary btn-lg btn-block"><i class="fa fa-plus-circle" style=""></i>  New Media</button>
                         </a></div>
                 </div>
@@ -33,10 +33,10 @@
                                                 <td>{{substr($mediaItem->text,0,16) }}</td>
                                                 <td>{{substr($mediaItem->created_at,0,16) }}</td>
                                                 <td onclick="event.stopPropagation();">
-                                                    <a href="{{route('media-edit',$mediaItem->id)}}" class="btn btn-sm btn-info">Edit</a>
-                                                    <form action="{{route('media-destroy',$mediaItem->id)}}" method="POST" style="display:inline-block;">
+                                                    <a href="{{route('edit-media',$mediaItem->id)}}" class="btn btn-sm btn-info">Edit</a>
+                                                    <form action="{{route('delete-media',$mediaItem->id)}}" method="POST" style="display:inline-block;">
                                                         @csrf
-                                                        @method('DELETE')
+
                                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this media item?');">Delete</button>
                                                     </form>
                                                 </td>
@@ -75,12 +75,12 @@
                                                         <div class="modal-footer fullBtnsWidth" >
                                                             <div class="row" style="margin-right: 0px; margin-left: 0px; width:100%">
                                                                 <div class="col-6 padding5px">
-                                                                    <a href="{{route('media-edit',$mediaItem->id)}}" style="width:100%; display:block;">
+                                                                    <a href="{{route('edit-media',$mediaItem->id)}}" style="width:100%; display:block;">
                                                                         <button type="button" class="btn btn-warning" style="width:100%"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-6 padding5px">
-                                                                    <form action="{{route('media-destroy',$mediaItem->id)}}" method="POST" style="width:100%;">
+                                                                    <form action="{{route('delete-media',$mediaItem->id)}}" method="POST" style="width:100%;">
                                                                         @csrf
                                                                         @method('DELETE')
                                                                         <button type="submit" class="btn btn-danger" style="width:100%" onclick="return confirm('Are you sure you want to delete this media item?');">
@@ -128,7 +128,7 @@
                 "pageLength": 25,
                 "searching": false,
                 "lengthChange": false,
-                "order": [[ 4, "desc" ]],
+                "order": [[ 2, "desc" ]],
             }
         );
     } );

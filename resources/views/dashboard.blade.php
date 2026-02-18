@@ -6901,6 +6901,9 @@
 
         .card {
             padding: 5px;
+            border: 1px solid rgba(34, 42, 66, 0.08);
+            box-shadow: 0 2px 10px rgba(34, 42, 66, 0.06);
+            background-clip: padding-box;
         }
 
         .row {

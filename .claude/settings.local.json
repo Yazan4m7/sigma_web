@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Bash(php artisan:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(composer show:*)",
+      "Bash(chmod:*)"
     ]
   },
   "enabledMcpjsonServers": [

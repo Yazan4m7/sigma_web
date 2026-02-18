@@ -7,9 +7,162 @@
     <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
+        /* Unified styling from create case */
+        :root {
+            --surface-bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --border-muted: #e3e8f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+            --accent: #1b6ef3;
+            --accent-soft: rgba(27, 110, 243, 0.15);
+        }
+
+        .edit-case-page {
+            border-radius: 18px;
+            padding: 1rem 2rem 2rem 2rem;
+        }
+
+        .form-section-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-muted);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-header h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 0px;
+            background: var(--border-muted);
+            margin: 1.5rem 0;
+        }
+
+        .form-section-card label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-control, textarea.form-control, .selectpicker, .bootstrap-select .btn {
+            border-radius: 10px;
+            border: 1px solid var(--border-muted);
+            box-shadow: none !important;
+            min-height: 44px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .form-control:focus, textarea.form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
+            outline: none !important;
+        }
+
+        .toggle-discount {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #d1d5db;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-switch input:checked + .switch-slider {
+            background-color: var(--accent);
+        }
+
+        .toggle-switch input:checked + .switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .discountPortion {
+            border: 1px solid var(--border-muted);
+            border-radius: 16px;
+            padding: 1rem;
+            background: #f9fafc;
+            margin-top: 1rem;
+        }
+
+        .verticalSpacing {
+            margin-top: 1.5rem;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .submit-row .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
         label {
-            font-size: 1rem;
-            font-weight: 500;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
         img {
             max-height: 100%;
@@ -134,25 +287,35 @@
             font-weight: 400;
         }
 
-        /* Repeater Item Layout Fix */
+        /* Repeater Item Layout Fix - Unified with create case */
         .row-item {
             display: flex;
-
             align-items: flex-end;
-
-            padding: 15px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-
-            margin-bottom: 10px;
-            gap: 8px;
+            padding: 1rem;
+            background-color: #f9fafc;
+            border-radius: 16px;
+            border: 1px solid var(--border-muted);
+            margin-bottom: 1rem;
+            gap: 12px;
             flex-wrap: nowrap;
             overflow-x: auto;
             justify-content: space-between;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
         }
 
         .row-item > div {
             flex: 1 1 150px;
+        }
+
+        .row-item label {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .row-item .form-control,
+        .row-item select {
+            min-height: 40px;
         }
 
         /* Bridge/Single Toggle Contrast Fix */
@@ -332,11 +495,11 @@
             background: transparent;
         }
 
-        /* New Jobs Section */
+        /* New Jobs Section - Unified styling */
         .new-jobs-section {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 20px;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
             margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
@@ -619,9 +782,9 @@
         }
 
         .new-jobs-section {
-            background: #ffffff;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+            background: transparent;
+            border: none;
+            border-radius: 0;
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -680,11 +843,60 @@
             display: block;
         }
 
-        #addJobBtn {
-            background-color: #24c143 !important;
-            border-color: #f3f4f5 !important;
-            padding: 0.45rem 0.9rem;
-            border-radius: 0.3rem;
+        .slctUnitsBtn {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+            color: #fff !important;
+            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        .slctUnitsBtn:hover {
+            background: #1553b7 !important;
+            border-color: #1553b7 !important;
+        }
+
+        #addJobBtn, #addJobBtn2 {
+            background-color: #22c55e !important;
+            border-color: #22c55e !important;
+            color: #fff !important;
+            font-weight: 600;
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        #addJobBtn:hover, #addJobBtn2:hover {
+            background-color: #16a34a !important;
+            border-color: #16a34a !important;
+        }
+
+        /* Delete button styling - matching create case */
+        .deleteBtn, .btn-danger.btn-sm[data-repeater-delete] {
+            background: #ef4444 !important;
+            border-color: #ef4444 !important;
+            color: #fff !important;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .deleteBtn:hover, .btn-danger.btn-sm[data-repeater-delete]:hover {
+            background: #dc2626 !important;
+            border-color: #dc2626 !important;
+        }
+
+        .deleteBtn2 {
+            background: #f97316 !important;
+            border-color: #f97316 !important;
+            color: #fff !important;
+        }
+
+        .deleteBtn2:hover {
+            background: #ea580c !important;
+            border-color: #ea580c !important;
         }
 
         body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
@@ -733,18 +945,25 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-
-    <form style="padding:10px" class="kt-form card" method="POST" enctype="multipart/form-data"
+    <div class="edit-case-page">
+    <form class="kt-form" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
 
-
         <input name="id" type="hidden" value="{{ $case->id }}" />
-        <!-- CASE INFO -->
 
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
+        <!-- ORDER INFORMATION CARD -->
+        <div class="form-section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-subtitle">Case</div>
+                    <h5>Order Information</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
                 <div class="col-md-12 col-xs-12">
 
 
@@ -789,7 +1008,7 @@
         </div>
 
         <br />
-        <div class="case-header">
+     
             <div class="row">
                 <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
                     <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
@@ -836,22 +1055,23 @@
                         </select></div>
                 </div>
             </div>
-        </div>
+
+        </div><!-- End Order Information Card -->
 
 
-        <!-- JOB INFO ICON-->
-        <br>
-        <div class="job-information-section">
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa  fa-suitcase" style="width:3%"></i> Job information
-                    </h5>
+        <!-- JOB INFORMATION CARD -->
+        <div class="form-section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-subtitle">Jobs</div>
+                    <h5>Job Information</h5>
                 </div>
             </div>
-            <hr>
 
-            <!-- EXISITING JOBS REPEATER -->
+            <!-- EXISTING JOBS -->
+            <div style="margin-bottom: 0.5rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">Existing Jobs</span>
+            </div>
             <div id="kt_repeater_1" style="">
             <div data-repeater-list="repeat">
                 <div data-repeater-item>
@@ -1130,17 +1350,15 @@
         </div>
         </div>
 
-        <br>
+        <div class="section-divider"></div>
 
-        <div class="new-jobs-section">
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa-solid fa-square-plus"></i> New Jobs:
-                    </h5>
+        <div class="new-jobs-section" style="margin-top: 1.5rem;">
+            <div class="section-header" style="margin-bottom: 1rem;">
+                <div>
+                    <div class="section-subtitle">Add</div>
+                    <h5>New Jobs</h5>
                 </div>
             </div>
-        <hr>
         <!-- NEW JOBS REPEATER -->
         <div id="" style="" class="repeater jobsRepeater">
             <div data-repeater-list="repeat2" class="jobDataRepeaterList">
@@ -1357,167 +1575,132 @@
                 <i class="fa fa-plus-square" style="color:white"></i> Add
             </a>
         </div>
-        <div class="verticalSpacing"></div>
-            <!-- DISCOUNTS SECTION -->
+        </div><!-- End Job Information Card -->
+
+            <!-- DISCOUNTS CARD -->
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
-                        </h5>
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Discount</h5>
                     </div>
                 </div>
-                <hr>
 
                 @php
                     $discountExists = $case->discount != null;
                 @endphp
 
-                <label style="cursor: pointer">
-                    <input type="checkbox" class="discountCB" name="discountCB" value="on"
-                        {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                     <h3>Make a Discount</h3>
+                <label class="toggle-discount">
+                    <span class="toggle-switch">
+                        <input type="checkbox" class="discountCB" name="discountCB" value="on"
+                            {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
+                        <span class="switch-slider"></span>
+                    </span>
+                    <span>Apply Discount</span>
                 </label>
 
-                <br>
-                <div class="form-group form-group row discountPortion"
-                    style="{{ $discountExists ? '' : 'display:none' }}">
-                    <div class="col-md-3 col-xs-6">
-                        <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
-                            value="{{ $discountExists ? $case->discount->discount : '' }}" />
-                        <small>JOD</small>
+                <div class="discountPortion" style="{{ $discountExists ? '' : 'display:none' }}">
+                    <div class="row">
+                        <div class="col-md-3 col-xs-6">
+                            <label>Amount</label>
+                            <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
+                                value="{{ $discountExists ? $case->discount->discount : '' }}" />
+                            <small class="text-muted">JOD</small>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <label>Description</label>
+                            <input class="form-control" type="text" name="discount_reason"
+                                value="{{ $discountExists ? $case->discount->reason : '' }}" placeholder="Reason for discount" />
+                        </div>
                     </div>
-                    <div class="col-md-6 col-xs-6">
-                        <input class="form-control" type="text" name="discount_reason"
-                            value=" {{ $discountExists ? $case->discount->reason : '' }}" placeholder="Description" />
-                    </div>
-                </div>
-                <div class="verticalSpacing"></div>
-            @endif
-
-            <!-- NOTES SECTION -->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
-                        information
-                    </h5>
                 </div>
             </div>
-            <hr>
+            @endif
 
-            <div class="form-group form-group">
-                <label>Notes:</label>
+            <!-- NOTES CARD -->
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Notes</h5>
+                    </div>
+                </div>
 
                 @foreach ($case->notes as $note)
-                    <div class="form-control"
-                        style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black"
-                        disabled>
-
-                        <span
-                            class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                        <span class="noteText">{{ $note->note }}</span>
+                    <div style="background-color: #f8fafc; border: 1px solid var(--border-muted); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+                        <span class="noteHeader" style="font-size: 0.85rem; color: var(--text-muted);">
+                            {{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . ']' }}
+                        </span>
+                        <div class="noteText" style="margin-top: 0.25rem; color: var(--text-main);">{{ $note->note }}</div>
                     </div>
                 @endforeach
 
-                <form></form>
-                <form style="" class="noteform " method="POST" enctype="multipart/form-data"
-                    action="{{ route('new-note') }}">
+                <form class="noteform" method="POST" enctype="multipart/form-data" action="{{ route('new-note') }}" style="margin-top: 1rem;">
                     @csrf
-                    <div class="row" style="padding:0px">
-                        <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
-                        <div class="col-md-6 col-xs-6">
-                            <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
+                    <input type="hidden" name="case_id_for_note" value="{{ $case->id }}">
+                    <div class="row align-items-end">
+                        <div class="col-md-8 col-xs-8">
+                            <label>Add a note</label>
+                            <input class="form-control" type="text" name="newNote" placeholder="Type your note here..." />
                         </div>
-
-                        <div class="col-md-3 col-xs-3" style="margin: 0px">
-                            <button type="submit" class="btn btn-primary">Add note</button>
+                        <div class="col-md-4 col-xs-4">
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">Add Note</button>
                         </div>
-
-
                     </div>
                 </form>
-                <br><br>
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
-                        </h5>
-                    </div>
-                </div>
-                <hr>
-                <!-- Photos SECTION -->
-                <div class="container" style="margin-top:10px;">
+            </div>
 
-                    <div class="demo-gallery">
-                        <ul id="lightgallery" class="list-unstyled row">
-                            @foreach ($case->photos as $photo)
-                                <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2"
-                                    data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
-                                    <a href="">
-                                        <img class="img-responsive" src="{{ asset($photo->path) }}">
-                                    </a>
-                                </li>
-                            @endforeach
-
-                        </ul>
+            <!-- ATTACHMENTS CARD -->
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Attachments</h5>
                     </div>
                 </div>
 
-                <br>
-                {{-- <div class="form-group form-group-last"> --}}
-                {{-- <label for="images">Add Photos:</label> --}}
-                {{-- <input required type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple disabled> --}}
-                {{-- </div> --}}
-                {{--                <br> --}}
-                {{--                <div class="kt-portlet__foot"> --}}
-                {{--                    <div class="kt-form__actions"> --}}
-                {{--                        <button type="submit" class="btn btn-primary" disabled>Submit</button> --}}
-                {{--                        <button type="reset" class="btn btn-danger" disabled>Reset</button> --}}
-                {{--                    </div> --}}
-                {{--                </div> --}}
+                @if($case->photos->count() > 0)
+                <div class="demo-gallery" style="margin-bottom: 1.5rem;">
+                    <ul id="lightgallery" class="list-unstyled row">
+                        @foreach ($case->photos as $photo)
+                            <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2" style="margin-bottom: 1rem;"
+                                data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
+                                <a href="">
+                                    <img class="img-responsive" src="{{ asset($photo->path) }}" style="border-radius: 10px; border: 1px solid var(--border-muted);">
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <div>
+                    <label for="images">Add Files</label>
+                    <input type="file" id="images" class="form-control" name="images[]" multiple style="cursor: pointer;">
+                </div>
             </div>
-
-            <!-- Attachments SECTION -->
-
-            <div class="form-group form-group-last">
-                <label for="images" style="cursor: pointer;padding: 10px 18px 10px 18px;">
-                    <h4><i class="fa-solid fa-circle-plus"></i>
-                    </h4>
-                </label>
-                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
-                    multiple style="cursor: pointer;">
-            </div>
-
-            <br>
             @if (config('site_vars.environment') == 'testing')
-                <div class="col-md-3" style="border: 1px solid red;padding:10px;border-radius: 10px;margin:5px">
-                    <div class="kt-form__actions"><label for="sendTo">Testing helpers:</label><br>
-                        <div class="btn-group show" role="group">
-                            <select class="form-control" id="stageToSendTo" name="stageToSendTo">
-
-                                <option value="1">Design</option>
-                                <option value="6">Finishing</option>
-                                <option value="7">QC</option>
-                                <option value="8">Delivery</option>
-                                <option value="10" style="color:green">Completed</option>
-                            </select>
-
-                        </div>
+                <div class="form-section-card" style="border: 2px solid #ef4444;">
+                    <div class="section-header">
+                        <h5 style="color: #ef4444;">Testing Helpers</h5>
                     </div>
+                    <select class="form-control" id="stageToSendTo" name="stageToSendTo" style="max-width: 200px;">
+                        <option value="1">Design</option>
+                        <option value="6">Finishing</option>
+                        <option value="7">QC</option>
+                        <option value="8">Delivery</option>
+                        <option value="10" style="color:green">Completed</option>
+                    </select>
                 </div>
             @endif
 
-            <div class="kt-portlet__foot">
-                <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary extraPadding">Submit</button>
-                    <button type="reset" class="btn btn-danger extraPadding">Reset</button>
-                </div>
+            <div class="submit-row">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
             </div>
-        </div>
 
-        <!-- Existing TEETH PICK DIALOG -->
+        <!-- Existing TEETH PICK DIALOG (inside form for proper submission) -->
         <div data-repeater-item class="modal fade sigma-modal--case-edit-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
@@ -1871,6 +2054,8 @@
                 </div>
             </div>
         </div>
+    </form>
+    </div><!-- End edit-case-page wrapper -->
     @endsection
     @push('js')
         <script></script>
@@ -1880,6 +2065,12 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
+                });
+
+                // Prevent double-submit on main form
+                $('form.kt-form').on('submit', function() {
+                    var $btn = $(this).find('button[type="submit"]').not('.noteform button');
+                    $btn.prop('disabled', true).text('Saving...');
                 });
 
                 $('#lightgallery').lightGallery();

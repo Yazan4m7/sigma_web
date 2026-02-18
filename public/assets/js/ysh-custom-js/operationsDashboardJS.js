@@ -358,11 +358,11 @@ function initializeDataTables() {
         const $table = $(this);
 
         if ($.fn.DataTable.isDataTable(this)) {
-            if ($table.data('dtShowAllApplied')) {
-                $table.DataTable().columns.adjust().draw(false);
-                return;
+            $table.DataTable().columns.adjust();
+            if (typeof window.sigmaRunManagedTableWidths === 'function') {
+                window.sigmaRunManagedTableWidths();
             }
-            $table.DataTable().destroy();
+            return;
         }
 
         $table.DataTable({
@@ -376,6 +376,9 @@ function initializeDataTables() {
         });
 
         $table.data('dtShowAllApplied', true);
+        if (typeof window.sigmaRunManagedTableWidths === 'function') {
+            window.sigmaRunManagedTableWidths();
+        }
     });
 
     adjustVisibleTables();
@@ -390,9 +393,13 @@ function adjustVisibleTables() {
 
     $('.sunriseTable:visible').each(function() {
         if ($.fn.DataTable.isDataTable(this)) {
-            $(this).DataTable().columns.adjust().draw(false);
+            $(this).DataTable().columns.adjust();
         }
     });
+
+    if (typeof window.sigmaRunManagedTableWidths === 'function') {
+        window.sigmaRunManagedTableWidths();
+    }
 }
 
 function forceInitializeAllTables() {

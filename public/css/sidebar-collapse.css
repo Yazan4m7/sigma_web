@@ -429,7 +429,7 @@
 
     /* Fix navbar z-index */
     .navbar {
-        z-index: 1030 !important;
+        z-index: 1;
     }
 
     /* Prevent body scroll when sidebar is open */

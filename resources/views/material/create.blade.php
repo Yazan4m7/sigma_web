@@ -1454,7 +1454,7 @@
                     <div class="form-group">
                         <label class="form-label">Price (JOD)</label>
                         <input class="form-input" type="number" name="price" required placeholder="0.00"
-                            step="0.01" />
+                            step="1.00"  min="5"/>
                         <div class="help-text">Price per unit in Jordanian Dinar</div>
                     </div>
 
@@ -1658,6 +1658,8 @@
         var typesTable;
         var allTypes = @json($types);
         var selectedTypes = [];
+        var pendingNewTypes = []; // New types to be created after material is saved
+        var tempIdCounter = -1; // Negative IDs for pending types
         var defaultTypeId = null;
 
         // Configuration system for helper text visibility
@@ -2093,11 +2095,17 @@
 
                 // Add hidden inputs for form submission
                 selectedTypes.forEach(type => {
-                    inputsContainer.append(`<input type="hidden" name="materialTypes[]" value="${type.id}">`);
+                    if (type.isPending) {
+                        // New type - send name for backend to create
+                        inputsContainer.append(`<input type="hidden" name="newTypeNames[]" value="${type.name}">`);
+                    } else {
+                        // Existing type - send ID
+                        inputsContainer.append(`<input type="hidden" name="materialTypes[]" value="${type.id}">`);
+                    }
                 });
 
-                // Add hidden input for default type
-                if (defaultTypeId) {
+                // Add hidden input for default type (only if it's an existing type)
+                if (defaultTypeId && defaultTypeId > 0) {
                     inputsContainer.append(`<input type="hidden" name="default_type_id" value="${defaultTypeId}">`);
                 }
 
@@ -2173,37 +2181,17 @@
                         showAlert('success', 'Material type added to selection');
                     }
                 } else {
-                    // Create new type via AJAX
-                    $.ajax({
-                        url: '/materials/types/create',
-                        method: 'POST',
-                        data: {
-                            name: typeName,
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                const newType = response.type;
-                                // Add to allTypes array
-                                allTypes.push(newType);
-                                // Add to selected types
-                                selectedTypes.push(newType);
-                                // Update displays
-                                updateSelectedTypesList();
-                                updateSelectedTypesDisplay();
-                                showAlert('success', 'New material type created and added');
-                            } else {
-                                showAlert('error', 'Error creating material type: ' + (response.message || 'Unknown error'));
-                            }
-                        },
-                        error: function(xhr) {
-                            let message = 'Error creating material type';
-                            if (xhr.responseJSON && xhr.responseJSON.message) {
-                                message += ': ' + xhr.responseJSON.message;
-                            }
-                            showAlert('error', message);
-                        }
-                    });
+                    // Store new type locally (will be created after material is saved)
+                    const newType = {
+                        id: tempIdCounter--,
+                        name: typeName,
+                        isPending: true
+                    };
+                    pendingNewTypes.push(newType);
+                    selectedTypes.push(newType);
+                    updateSelectedTypesList();
+                    updateSelectedTypesDisplay();
+                    showAlert('success', 'New type "' + typeName + '" will be created with the material');
                 }
 
                 // Clear input

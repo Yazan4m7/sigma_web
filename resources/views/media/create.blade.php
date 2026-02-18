@@ -1,6 +1,6 @@
 @extends('layouts.app' ,[ 'pageSlug' => "Media"])
 @section('content')
-<form  enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{route('media-store')}}">
+<form  enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{route('create-media-post')}}">
     @csrf
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">

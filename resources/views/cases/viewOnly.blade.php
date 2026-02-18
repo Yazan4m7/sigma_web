@@ -467,6 +467,7 @@
                             $actualDelivery = $case->actual_delivery_date
                                 ? \Carbon\Carbon::parse($case->actual_delivery_date)->format('Y-m-d H:i')
                                 : '-';
+                            // Get modification logs - latest for display, but first with valid date for original delivery
                             $modifyLog = $case->failureLogs->where('failure_type', 2)->sortByDesc('created_at')->first();
                             $repeatLog = $case->failureLogs->where('failure_type', 1)->sortByDesc('created_at')->first();
                             $redoLog = $case->failureLogs->where('failure_type', 3)->sortByDesc('created_at')->first();
@@ -485,9 +486,19 @@
                                 : '-';
                             $modifyFinishedAt = $modifyLog ? $deliveryCompleteAt : '-';
                             $repeatFinishedAt = $repeatLog ? $deliveryCompleteAt : '-';
+
+                            // Get the FIRST modification log with a valid old_delivery_date (the original delivery)
+                            // This handles race conditions where multiple modifications were created simultaneously
+                            $firstModifyLogWithDate = $case->failureLogs
+                                ->where('failure_type', 2)
+                                ->whereNotNull('old_delivery_date')
+                                ->filter(fn($log) => !empty($log->old_delivery_date))
+                                ->sortBy('id')  // First by ID = earliest
+                                ->first();
+
                             $firstActualDeliveryRaw = null;
-                            if ($modifyLog && !empty($modifyLog->old_delivery_date)) {
-                                $firstActualDeliveryRaw = $modifyLog->old_delivery_date;
+                            if ($firstModifyLogWithDate && !empty($firstModifyLogWithDate->old_delivery_date)) {
+                                $firstActualDeliveryRaw = $firstModifyLogWithDate->old_delivery_date;
                             } elseif ($case->first_case_if_repeated) {
                                 $originalCase = \App\sCase::find($case->first_case_if_repeated);
                                 $firstActualDeliveryRaw = $originalCase ? $originalCase->actual_delivery_date : null;
@@ -508,13 +519,13 @@
                                     <div class="delivery-date-tooltip" id="delivery-date-tooltip" role="tooltip">
                                         <div class="delivery-date-tooltip-title">Delivery Dates</div>
                                         <div class="delivery-date-tooltip-row"><span>Created:</span><span>{{ $createdAt }}</span></div>
-                                        <div class="delivery-date-tooltip-row"><span>Initial delivery:</span><span>{{ $initialDelivery }}</span></div>
+
                                         <div class="delivery-date-tooltip-row"><span>Modified at:</span><span>{{ $modifiedAt }}</span></div>
                                         <div class="delivery-date-tooltip-row"><span>Modify finished at:</span><span>{{ $modifyFinishedAt }}</span></div>
                                         <div class="delivery-date-tooltip-row"><span>Repeated at:</span><span>{{ $repeatedAt }}</span></div>
                                         <div class="delivery-date-tooltip-row"><span>Repeat finished at:</span><span>{{ $repeatFinishedAt }}</span></div>
                                         <div class="delivery-date-tooltip-row"><span>Redo at:</span><span>{{ $redoAt }}</span></div>
-                                        <div class="delivery-date-tooltip-row"><span>First actual delivery:</span><span>{{ $firstActualDelivery }}</span></div>
+                                        <div class="delivery-date-tooltip-row"><span>First actual delivery/ اول تسليم:</span><span>{{ $firstActualDelivery }}</span></div>
                                         <div class="delivery-date-tooltip-row"><span>Current actual delivery:</span><span>{{ $actualDelivery }}</span></div>
                                     </div>
                                 </div>
@@ -1103,10 +1114,40 @@
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
                             @php
+                                // Get logs from the CURRENT delivery cycle only
+                                // For modified cases, cycle boundary is determined by modification date
                                 $deliveryLogs = $case->logs->where('stage', '>=', 8);
-                                $assignLog = $deliveryLogs->where('stage', 8.1)->sortByDesc('created_at')->first();
-                                $takeLog = $deliveryLogs->where('stage', 8.2)->sortByDesc('created_at')->first();
-                                $completeLog = $deliveryLogs->where('stage', 8.3)->sortByDesc('created_at')->first();
+
+                                // Find cycle boundary: most recent modification or repeat
+                                $latestModification = $case->failureLogs()
+                                    ->whereIn('failure_type', [2, 3]) // 2=modification, 3=redo
+                                    ->orderByDesc('created_at')
+                                    ->first();
+
+                                $cycleStartTime = $latestModification ? $latestModification->created_at : null;
+
+                                if ($cycleStartTime) {
+                                    // Show logs from AFTER the modification date
+                                    $assignLog = $deliveryLogs->where('stage', 8.1)
+                                        ->filter(fn($log) => $log->created_at > $cycleStartTime)
+                                        ->sortByDesc('created_at')->first();
+                                    $takeLog = $deliveryLogs->where('stage', 8.2)
+                                        ->filter(fn($log) => $log->created_at > $cycleStartTime)
+                                        ->sortByDesc('created_at')->first();
+                                    $completeLog = $deliveryLogs->where('stage', 8.3)
+                                        ->filter(fn($log) => $log->created_at > $cycleStartTime)
+                                        ->sortByDesc('created_at')->first();
+
+                                    // If no assign in current cycle, show the original assign
+                                    if (!$assignLog) {
+                                        $assignLog = $deliveryLogs->where('stage', 8.1)->sortByDesc('created_at')->first();
+                                    }
+                                } else {
+                                    // No modification - show most recent of each
+                                    $assignLog = $deliveryLogs->where('stage', 8.1)->sortByDesc('created_at')->first();
+                                    $takeLog = $deliveryLogs->where('stage', 8.2)->sortByDesc('created_at')->first();
+                                    $completeLog = $deliveryLogs->where('stage', 8.3)->sortByDesc('created_at')->first();
+                                }
                             @endphp
                             @if ($assignLog)
                                 {!! renderLog($assignLog, 'ASSIGN', 'action-take') !!}

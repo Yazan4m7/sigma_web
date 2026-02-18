@@ -45,7 +45,9 @@ class MaterialController extends Controller
             $material->qc = isset($request->qc) ? 1 : 0;
             $material->delivery = isset($request->delivery) ? 1 : 0;
         $material->count_as_unit = isset($request->count_as_unit) ? 1 : 0;
-        $material->default_type_id = $request->default_type_id;
+        if ($request->filled('default_type_id')) {
+            $material->default_type_id = $request->default_type_id;
+        }
             $material->save();
 
         foreach($request->jobTypes as $jobType){
@@ -55,9 +57,27 @@ class MaterialController extends Controller
           $jt->save();
          }
 
-        // Handle material types if provided
+        // Handle new type names - create them first
+        $newTypeIds = [];
+        if ($request->has('newTypeNames') && is_array($request->newTypeNames)) {
+            foreach ($request->newTypeNames as $typeName) {
+                $type = new \App\Type();
+                $type->name = $typeName;
+                $type->material_id = $material->id;
+                $type->is_enabled = true;
+                $type->save();
+                $newTypeIds[] = $type->id;
+            }
+        }
+
+        // Handle existing material types if provided
+        $allTypeIds = $newTypeIds;
         if ($request->has('materialTypes') && is_array($request->materialTypes)) {
-            $material->types()->sync($request->materialTypes);
+            $allTypeIds = array_merge($allTypeIds, $request->materialTypes);
+        }
+
+        if (!empty($allTypeIds)) {
+            $material->types()->sync($allTypeIds);
         }
 
             return back()->with('success', 'Material has been successfully created');
@@ -176,7 +196,7 @@ class MaterialController extends Controller
             $existingType = \App\Type::where('name', $request->name)
                 ->where('material_id', $request->material_id)
                 ->first();
-            
+
             if ($existingType) {
                 return response()->json([
                     'success' => false,

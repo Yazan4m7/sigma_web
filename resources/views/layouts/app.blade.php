@@ -114,6 +114,37 @@
             overflow: hidden;
         }
 
+        /* Notes typography: metadata normal, note body bold */
+        .noteHeader,
+        .noteHeader b {
+            font-weight: 400 !important;
+        }
+
+        .noteText {
+            font-weight: 700 !important;
+        }
+
+        /* Optional user-controlled font-size locks (disabled by default) */
+        body.pref-lock-dialog-fonts .modal,
+        body.pref-lock-dialog-fonts .modal *,
+        body.pref-lock-dialog-fonts .dialog-popup-card,
+        body.pref-lock-dialog-fonts .dialog-popup-card * {
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+        }
+
+        body.pref-lock-table-fonts table,
+        body.pref-lock-table-fonts table * {
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+        }
+
+        body.pref-lock-other-fonts .content,
+        body.pref-lock-other-fonts .content *:not(table):not(table *):not(.modal):not(.modal *) {
+            -webkit-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+        }
+
     </style>
 
     <!-- Montserrat from cdnfonts (separate CDN) -->
@@ -150,9 +181,9 @@
     <!-- Custom CSS -->
     <link href="{{ asset('css/responsive-images.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/callouts.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
     <noscript><link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/></noscript>
-    <link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet" media="print" onload="this.media='all'"/>
+    <link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet"/>
     <noscript><link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet"/></noscript>
     <link href="{{ asset('assets') }}/css/sidebar-fix.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/sidebar-fullwidth-fix.css" rel="stylesheet"/>
@@ -380,6 +411,7 @@
         }
     });
 </script>
+<script src="{{ asset('js/user-preferences.js') }}"></script>
  <script src="{{ asset('js/sidebar-collapse.js') }}"></script>
 <script src="{{ asset('js/sigma-sticky-layout.js') }}"></script>
 <script>

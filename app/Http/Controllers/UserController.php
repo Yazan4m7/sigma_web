@@ -89,9 +89,8 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
             'phone'    => 'required',
             'permission' => 'required_if:is_admin,null',
             'permission.*' => 'exists:permissions,id',
-
-                'photo' => 'required|image|mimes:jpg,jpeg,png,webp|max:12288', // 12MB input
-        'driver_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:12288', // 12MB input
+            'driver_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
         $transaction = DB::transaction(function ()  use ($request) {
@@ -132,6 +131,10 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                 $userData['img'] = $imagePath;
             }
 
+            if (empty($userData['img'])) {
+                $userData['img'] = 'assets/images/avatars/default.png';
+            }
+
             $users = User::create($userData);
 
             // Handle profile image upload
@@ -149,7 +152,7 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                     'is_valid' => $photo->isValid()
                 ]);
 
-                $path = public_path('/users/' . $users->id);
+                $path = public_path('assets/images/avatars');
                 \Log::info('Creating user directory', [
                     'path' => $path,
                     'exists' => file_exists($path),
@@ -168,7 +171,8 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                     \Log::info('User directory created successfully', ['path' => $path]);
                 }
 
-                $dest = $path . '/profile_picture.webp';
+                $relativeAvatarPath = 'assets/images/avatars/user_' . $users->id . '.webp';
+                $dest = public_path($relativeAvatarPath);
                 \Log::info('Starting image compression for new user', [
                     'source' => $photo->getPathname(),
                     'destination' => $dest
@@ -195,6 +199,9 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                     throw $e;
                 }
 
+                $users->has_photo = 1;
+                $users->img = $relativeAvatarPath;
+                $users->save();
                 \Log::info('===== CREATE USER PHOTO UPLOAD END =====');
             }
 
@@ -322,7 +329,7 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                 }
 
                 // Create directory if it doesn't exist
-                $path = public_path('/users/' . $user->id);
+                $path = public_path('assets/images/avatars');
                 \Log::info('Checking directory: ' . $path, [
                     'exists' => file_exists($path),
                     'is_dir' => is_dir($path),
@@ -345,7 +352,8 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                 }
 
                 // Destination file (overwrite is fine; no need to unlink first)
-                $dest = $path . '/profile_picture.webp';
+                $relativeAvatarPath = 'assets/images/avatars/user_' . $user->id . '.webp';
+                $dest = public_path($relativeAvatarPath);
                 \Log::info('Destination path: ' . $dest, [
                     'dest_dir_writable' => is_writable(dirname($dest)),
                     'dest_exists_before' => file_exists($dest)
@@ -403,11 +411,16 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
 
                 // Update user photo flag
                 $user->has_photo = 1;
+                $user->img = $relativeAvatarPath;
                 \Log::info('Updated user has_photo flag to 1');
                 \Log::info('===== PHOTO UPLOAD END =====');
 
             } else {
                 \Log::info('No photo file in request');
+            }
+
+            if (empty($user->img)) {
+                $user->img = 'assets/images/avatars/default.png';
             }
 
             // Handle driver image for delivery personnel
@@ -473,7 +486,7 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                 'user_id' => $user->id,
                 'save_result' => $saveResult,
                 'has_photo' => $user->has_photo,
-                'photo_file_exists' => file_exists(public_path('/users/' . $user->id . '/profile_picture.webp'))
+                'photo_file_exists' => file_exists(public_path('assets/images/avatars/user_' . $user->id . '.webp'))
             ]);
 
             return $saveResult;

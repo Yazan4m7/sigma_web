@@ -8,20 +8,23 @@
     @endphp
     <style>
         :root {
-            --surface-bg: #f4f6fb;
+            --surface-bg: #eff3f9;
             --card-bg: #ffffff;
-            --border-muted: #e3e8f0;
+            --border-muted: #dbe4f0;
             --text-main: #1f2a37;
             --text-muted: #6b7280;
             --accent: #1b6ef3;
             --accent-soft: rgba(27, 110, 243, 0.15);
+            --card-radius: 16px;
+            --card-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+            --card-shadow-hover: 0 16px 32px rgba(17, 24, 39, 0.1);
         }
 
         .create-case-page {
-            /*background: #1f46a900;*/
-            border-radius: 18px;
-            padding: 1rem 2rem 2rem 2rem;
-            /*margin-top: 1rem;*/
+            border-radius: 20px;
+            padding: 1.25rem 2rem 2.25rem 2rem;
+            background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);
+            border: 1px solid #e4ebf5;
         }
 
         .create-case-header {
@@ -59,27 +62,65 @@
         }
 
         .form-section-card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 1.75rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            border-radius: var(--card-radius);
+            padding: 1.55rem 1.5rem;
             margin-bottom: 1.5rem;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            box-shadow: var(--card-shadow);
             border: 1px solid var(--border-muted);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .form-section-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
+            opacity: 0.7;
+        }
+
+        .form-section-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            border-color: #ccdae9;
+            transform: translateY(-1px);
+        }
+
+        /* Keep iOS date-time popup visible inside Create Case card */
+        .form-section-card--with-dtp {
+            overflow: visible;
+        }
+
+        .form-section-card--with-dtp:hover {
+            transform: translateY(-1px);
+        }
+
+        /* Prevent fixed picker offset while it is open */
+        .form-section-card--with-dtp.picker-open,
+        .form-section-card--with-dtp.picker-open:hover {
+            transform: none !important;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.05rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e8eef6;
         }
 
         .section-header h5 {
             text-transform: uppercase;
             letter-spacing: 0.08em;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin: 0;
             color: var(--text-main);
+            font-weight: 700;
         }
 
         .section-header .section-meta {
@@ -92,18 +133,19 @@
         }
 
         .section-subtitle {
-            font-size: 0.85rem;
+            font-size: 0.78rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.08em;
             margin-bottom: 0.2rem;
+            font-weight: 600;
         }
 
         .section-divider {
             width: 100%;
-            height:0px;
-            background: var(--border-muted);
-            margin: 1.5rem 0;
+            height: 1px;
+            background: linear-gradient(90deg, #e5ecf5 0%, #dde6f2 100%);
+            margin: 1.35rem 0;
         }
 
         .section-block {
@@ -111,7 +153,7 @@
         }
 
         .form-section-card label {
-            font-weight: 600;
+            font-weight: 650;
             color: var(--text-main);
             font-size: 0.9rem;
         }
@@ -167,12 +209,12 @@
         }
 
         .repeater .row-item {
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid var(--border-muted);
-            padding: 1rem;
+            padding: 0.9rem 0.95rem;
             margin-bottom: 1rem;
-
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
         }
 
         .mandatorySmallTag {
@@ -417,16 +459,15 @@
             border-color: #5a6268 !important;
         }
         .card {
-            padding:0;
+            padding: 0;
             position: relative;
             display: flex;
             flex-direction: column;
             min-width: 0;
             word-wrap: break-word;
-            background-color: #ffffff00;
+            background-color: transparent;
             background-clip: border-box;
-            /*border: 0.0625rem solid rgba(34, 42, 66, 0.05);*/
-            border-radius: 1.2857rem;
+            border-radius: 18px;
         }
         @media screen and (max-width: 991px){
             
@@ -605,7 +646,7 @@
         @endif
         @csrf
 
-        <div class="form-section-card ">
+        <div class="form-section-card form-section-card--with-dtp">
 
 
         <div class=" ">
@@ -1371,8 +1412,41 @@
                 $("#addJobBtn").click();
                 //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
                 //        $("#addJobBtn2").click();
-    
-    
+
+                const dtpCard = document.querySelector('.form-section-card--with-dtp');
+                if (dtpCard) {
+                    const syncDtpCardState = function() {
+                        const isOpen = !!dtpCard.querySelector('.ios-dtp-modal.visible');
+                        dtpCard.classList.toggle('picker-open', isOpen);
+                    };
+
+                    const queueSync = function() {
+                        requestAnimationFrame(() => requestAnimationFrame(syncDtpCardState));
+                    };
+
+                    dtpCard.addEventListener('click', function(event) {
+                        if (event.target.closest('.ios-dtp-trigger')) {
+                            dtpCard.classList.add('picker-open');
+                            queueSync();
+                            return;
+                        }
+
+                        if (event.target.closest('.ios-dtp-set-btn') || event.target.closest('.ios-dtp-backdrop')) {
+                            queueSync();
+                        }
+                    }, true);
+
+                    const observer = new MutationObserver(queueSync);
+                    observer.observe(dtpCard, {
+                        subtree: true,
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+
+                    syncDtpCardState();
+                }
+
+
             });
         </script>
         <script>

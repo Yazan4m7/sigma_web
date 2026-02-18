@@ -222,7 +222,7 @@
                     <!-- Profile Image -->
                     <div class="section-title">Profile Image</div>
                     <div class="form-group">
-                        <x-user-image-picker></x-user-image-picker>
+                        <x-user-image-picker current_image="{{ asset('assets/images/avatars/default.png') }}"></x-user-image-picker>
                     </div>
 
                     <div class="form-actions">

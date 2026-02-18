@@ -6147,18 +6147,18 @@ button.close {
     }
 
 .modal-content {
-        padding: 28px 14px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    pointer-events: auto;
-    background-color: #ffffff;
-    background-clip: padding-box;
-    border: 1px solid rgba(34, 42, 66, 0.2);
-    border-radius: 0.2857rem;
-    box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.5);
-    outline: 0;
+        padding: 15px 14px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        pointer-events: auto;
+        background-color: #ffffff;
+        background-clip: padding-box;
+        border: 1px solid rgba(34, 42, 66, 0.2);
+        border-radius: 0.2857rem;
+        box-shadow: 0px 10px 50px 0px rgba(0, 0, 0, 0.5);
+        outline: 0;
 }
 
 .modal-backdrop {
@@ -6210,7 +6210,7 @@ button.close {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    padding: 24px 24px 16px 24px;
+    padding: 10px 10px;
     border-top: 1px solid #e9ecef;
 }
 
@@ -12653,7 +12653,7 @@ fieldset[disabled] .btnWD-danger.active {
 
 .dropdown-menu .dropdown-item,
 .bootstrap-select .dropdown-menu.inner li a {
-    font-size: 0.75rem;
+    font-size: 1rem;
     padding-top: .6rem;
     padding-bottom: .6rem;
     margin-top: 5px;
@@ -12661,6 +12661,9 @@ fieldset[disabled] .btnWD-danger.active {
     -moz-transition: all 150ms linear;
     -o-transition: all 150ms linear;
     -ms-transition: all 150ms linear;
+    font-family: 'Cairo';
+    text-align: right;
+    direction: rtl;
     transition: all 150ms linear;
 }
 
@@ -13254,7 +13257,7 @@ img {
 }
 
 .modal-content {
-    /* border-bottom-width: 25px; */
+    border-bottom-width: 0px;
 }
 
     .modal-content .modal-header {
@@ -14429,7 +14432,7 @@ img {
 
     .navbar .dropdown.show .dropdown-menu,
     .navbar .dropdown .dropdown-menu {
-        background-color: transparent;
+        /* background-color: transparent; */
         border: 0;
         transition: none;
         -webkit-box-shadow: none;
@@ -16216,7 +16219,7 @@ table.tablesorter thead tr .headerSortDown {
     width: 100%;
     min-height: 100vh;
     border-top: 2px solid #e14eca;
-    background: linear-gradient(#ffffff, #ffffff);
+    background: unset;
     -webkit-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -moz-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);
     -o-transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1);

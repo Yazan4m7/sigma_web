@@ -41,11 +41,55 @@
         display:none;
     }
     .headerRow {
-        justify-content: space-between  !important;
+        display: flex;
+        align-items: center;
+        justify-content: space-between !important;
         flex-wrap: nowrap !important;
-        background-color:transparent;
+        width: 100%;
+        margin: 0;
+        background-color: transparent;
         padding: 0;
+    }
 
+    .header-left {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        padding-left: 0;
+    }
+
+    .headerRow > .header-left,
+    .headerRow > .header-actions {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .left-toggler-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        flex-wrap: nowrap;
+    }
+
+    .mobile-brand-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #sidebar-hamburger {
+        height: 38px;
+        padding: 0 8px;
+        display: inline-flex;
+        align-items: flex-start;
+        justify-content: center;
+        margin: 0;
+        line-height: 1;
+        flex-direction: column;
+        flex-wrap: nowrap;
     }
 
     /** SEARCH BOXES  **/
@@ -106,11 +150,13 @@
     #wrapp {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: flex-end;
         position: relative;
         height: 100%;
         padding: 0;
         margin: 0;
+        width: 100%;
+        min-width: 0;
     }
     .fa-user{
         display:none;
@@ -127,13 +173,15 @@
         outline: none;
         color: #2b7b7d;
         padding: 8px 12px;
-        width: 200px;
+        width: 100%;
+        max-width: 100%;
         background: rgba(255, 255, 255, 0.95);
         position: relative;
         z-index: 1;
         transition: all .3s cubic-bezier(0.4, 0.0, 0.2, 1);
         cursor: text;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        box-sizing: border-box;
     }
 
     #wrapp input[type="text"]::placeholder {
@@ -147,7 +195,7 @@
     }
 
     #wrapp input[type="text"]:focus {
-        width: 240px;
+        width: 100%;
         border-color: #2b7b7d;
         background: #ffffff;
         box-shadow: 0 4px 12px rgba(43, 123, 125, 0.15);
@@ -157,7 +205,8 @@
         position: relative;
         display: flex;
         align-items: center;
-
+        width: 100%;
+        min-width: 0;
     }
 
     #wrapp #search_submit {
@@ -167,24 +216,7 @@
     /* Responsive search box */
     @media (max-width: 991px) {
         #wrapp input[type="text"] {
-            width: 160px;
             font-size: 13px;
-        }
-
-        #wrapp input[type="text"]:focus {
-            width: 180px;
-        }
-    }
-
-    @media (max-width: 768px) {
-        #wrapp input[type="text"] {
-            width: 140px;
-            max-width: 180px;
-        }
-
-        #wrapp input[type="text"]:focus {
-            width: 160px;
-            max-width: 200px;
         }
     }
 
@@ -245,12 +277,21 @@
 
     @media (max-width: 991px) {
         .pageTitleContainer {
-            display: none;
+            display: block;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .pageTitleContainer .pageTitle {
+            display: block;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .pageTitleMobile {
-            display: inline-flex;
-            align-items: center;
+            display: none !important;
         }
 
         .dotsDiv {
@@ -259,152 +300,182 @@
     }
 
     @media screen and (max-width: 768px) {
+        .pageTitleContainer {
+            display: none;
+        }
+
         .pageTitleMobile {
             display: none !important;
         }
     }
 
-    /* User Dropdown Styling */
+    /* Modern User Dropdown - Glassmorphism */
     .user-dropdown-menu {
-        min-width: 280px;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-        border: 1px solid rgba(0, 0, 0, 0.08);
+        min-width: 260px;
+        max-width: 300px;
+        border-radius: 20px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 0;
-        margin-top: 8px;
+        margin-top: 12px;
         right: 0 !important;
         left: auto !important;
         transform: none !important;
-        background: white;
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         overflow: hidden;
+        z-index: 1200;
     }
 
     .user-info-header {
         padding: 0 !important;
         margin: 0 !important;
         cursor: default;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
     }
 
     .user-info-header:hover {
-        background: transparent !important;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
     }
 
     .user-info-content {
         display: flex;
         align-items: center;
-        padding: 20px;
-        background: white;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 18px 20px;
+        gap: 14px;
     }
 
-    .user-avatar-large {
+    .user-info-content .user-avatar-dropdown {
         width: 48px;
         height: 48px;
         border-radius: 50%;
         overflow: hidden;
-        border: 2px solid #e5e7eb;
+        border: 2px solid rgba(255, 255, 255, 0.25);
         flex-shrink: 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .user-avatar-large img {
+    .user-info-content .user-avatar-dropdown img {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .photo.placeholder-avatar {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: #f9fafb;
-        color: #6b7280;
-    }
-
-    .photo.placeholder-avatar i {
-        font-size: 16px;
-        line-height: 1;
-    }
-
-    .avatar-placeholder {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #f9fafb;
-        color: #6b7280;
-        font-size: 24px;
-        margin: 0;
-        padding: 0;
-    }
-
-    .avatar-placeholder i {
-        margin: 0;
-        padding: 0;
-        line-height: 1;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
     .user-details {
         display: flex;
         flex-direction: column;
-        margin-left: 16px;
         flex: 1;
+        min-width: 0;
     }
 
     .user-name {
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 600;
         line-height: 1.3;
-        color: #111827;
-        margin-bottom: 4px;
+        color: #fff;
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .admin-badge {
+        color: #94a3b8 !important;
+        font-weight: 500 !important;
+        font-size: 11px !important;
+        margin-top: 3px !important;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .user-dropdown-menu .dropdown-divider {
-        margin: 0;
-        border-color: rgba(0, 0, 0, 0.06);
+        display: none;
     }
 
-    .user-dropdown-menu .logout-link {
-        color: #374151;
+    .user-dropdown-menu .menu-options {
+        padding: 10px 8px;
+        background: rgba(255, 255, 255, 0.5);
+    }
+
+    .user-dropdown-menu .menu-item {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    .user-dropdown-menu .menu-link {
+        color: #1e293b;
         font-weight: 500;
-        padding: 14px 20px;
+        font-size: 14px;
+        padding: 11px 14px;
         display: flex;
         align-items: center;
+        gap: 12px;
         transition: all 0.2s ease;
-        background: white;
+        background: transparent;
+        text-decoration: none;
+        cursor: pointer;
+        border-radius: 10px;
+        margin: 2px 0;
     }
 
-    .user-dropdown-menu .logout-link i {
-        margin-right: 12px;
-        font-size: 16px;
-        color: #6b7280;
+    .user-dropdown-menu .menu-link i {
+        font-size: 15px;
+        color: #64748b;
+        width: 20px;
+        text-align: center;
+        transition: color 0.2s ease;
     }
 
-    .user-dropdown-menu .logout-link:hover {
-        background-color: #f9fafb;
-        color: #111827;
-        padding-left: 24px;
+    .user-dropdown-menu .menu-link:hover {
+        background: rgba(30, 41, 59, 0.08);
+        color: #0f172a;
     }
 
-    .user-dropdown-menu .logout-link:hover i {
-        color: #374151;
+    .user-dropdown-menu .menu-link:hover i {
+        color: #1e293b;
     }
 
-    .headerRow {
-        display: flex;
-        align-items: baseline;
+    .user-dropdown-menu .menu-link.logout-link {
+        color: #64748b;
+        margin-top: 4px;
+    }
+
+    .user-dropdown-menu .menu-link.logout-link i {
+        color: #94a3b8;
+    }
+
+    .user-dropdown-menu .menu-link.logout-link:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+    }
+
+    .user-dropdown-menu .menu-link.logout-link:hover i {
+        color: #dc2626;
+    }
+
+    /* Hide old close button */
+    .user-dropdown-menu .close-btn {
+        display: none;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 991px) {
+        .user-dropdown-menu {
+            position: fixed !important;
+            top: 58px !important;
+            right: 8px !important;
+            left: auto !important;
+            min-width: 240px;
+        }
     }
 
     .header-actions {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        min-width: 0;
     }
 
     .header-actions-inner {
@@ -413,12 +484,22 @@
         justify-content: flex-end;
         gap: 12px;
         flex-wrap: nowrap;
-        width: 100%;
+        width: auto;
+        margin-left: auto;
+        max-width: 100%;
+        min-width: 0;
     }
 
     .header-actions .header-search {
-        flex: 0 1 200px;
-        max-width: 240px;
+        flex: 0 1 clamp(190px, 22vw, 260px);
+        width: clamp(190px, 22vw, 260px);
+        max-width: clamp(190px, 22vw, 260px);
+        min-width: 170px;
+        margin: 0;
+    }
+
+    .header-actions .header-search .searchBox2 {
+        width: 100%;
         min-width: 0;
     }
 
@@ -429,6 +510,79 @@
 
     .header-actions .header-search #wrapp input[type="text"] {
         width: 100%;
+    }
+
+    .header-actions .header-search,
+    .header-actions .dotsDiv {
+        display: flex;
+        align-items: center;
+    }
+
+    .header-actions .dotsDiv {
+        flex: 0 0 auto;
+        margin: 0 !important;
+    }
+
+    /* Keep profile trigger vertically centered and stable across breakpoints */
+    .sigma-app-header .dotsDiv #navigation {
+        display: flex;
+        align-items: center;
+        flex-basis: auto;
+        width: auto;
+        margin: 0;
+    }
+
+    .sigma-app-header .dotsDiv #navigation .navbar-nav {
+        display: flex;
+        align-items: center;
+        margin: 0 !important;
+        padding: 0;
+    }
+
+    .sigma-app-header .dotsDiv #navigation .dropdown.nav-item {
+        display: flex;
+        align-items: center;
+    }
+
+    .sigma-app-header .dotsDiv #navigation .dropdown.nav-item > a.dropdown-toggle.nav-link {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        padding: 0 !important;
+        margin: 0;
+        line-height: 1;
+    }
+
+    .sigma-app-header .dotsDiv #navigation .photo {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        overflow: hidden;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    .sigma-app-header .dotsDiv #navigation .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    @media (min-width: 992px) {
+        .sigma-app-header .dotsDiv .navbar-nav {
+            align-items: center;
+        }
+
+        .sigma-app-header .dotsDiv .dropdown.nav-item > a.dropdown-toggle.nav-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px !important;
+            margin: 0;
+        }
     }
 
     /* Fix 3 dots button and dropdown positioning */
@@ -442,10 +596,16 @@
     }
 
     .dotsDiv .navbar-toggler {
-        padding: 8px;
+        height: 38px;
+        padding: 0 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border: none;
         background: transparent;
         margin: 0;
+        line-height: 1;
+        flex-direction: column;
     }
 
     .dotsDiv .navbar-toggler:focus {
@@ -454,6 +614,27 @@
 
     .dotsDiv .navbar-collapse {
         margin: 0;
+    }
+
+    .dotsDiv #navigation.profile-nav {
+        display: flex;
+        align-items: center;
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 0;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+    }
+
+    .dotsDiv #navigation.profile-nav .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin: 0 !important;
+        padding: 0;
     }
 
     .dropdown.nav-item {
@@ -469,16 +650,82 @@
 
     /* Ensure dropdown aligns to right edge */
     @media (max-width: 991px) {
+        .headerRow > .header-left {
+            flex: 0 0 auto !important;
+            width: auto !important;
+            max-width: none !important;
+            padding-right: 8px;
+        }
+
+        .headerRow > .header-actions {
+            flex: 1 1 auto !important;
+            width: auto !important;
+            max-width: none !important;
+        }
+
+        .logo-col {
+            flex: 0 0 auto !important;
+            max-width: none !important;
+        }
+
+        .left-toggler-container {
+            gap: 8px;
+        }
+
+        .left-toggler-container .pageTitleContainer {
+            display: none;
+        }
+
         .dotsDiv .navbar-collapse {
-            position: fixed;
-            right: 15px;
-            top: 70px;
+            position: static;
+            right: auto;
+            top: auto;
             background: transparent;
+            margin: 0;
+            flex-basis: auto;
+        }
+
+        .dotsDiv #navigation.profile-nav {
+            position: static !important;
+            display: flex !important;
+            align-items: center !important;
+            flex: 0 0 auto !important;
+            flex-basis: auto !important;
+            flex-grow: 0 !important;
+            width: auto !important;
+            max-width: none !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            transform: none !important;
+        }
+
+        .dotsDiv .navbar-collapse.collapse,
+        .dotsDiv .navbar-collapse.collapsing,
+        .dotsDiv .navbar-collapse.collapse.show {
+            display: flex !important;
+            align-items: center;
+            visibility: visible;
+            height: auto !important;
+            width: auto !important;
         }
 
         .headerRow {
             align-items: center;
             position: relative;
+        }
+
+        .header-actions .header-search {
+            flex: 1 1 180px;
+            max-width: 200px;
+            min-width: 110px;
+        }
+
+        .header-actions-inner {
+            gap: 8px;
+            width: 100%;
+            margin-left: 0;
         }
 
         .dotsDiv {
@@ -492,57 +739,49 @@
         }
 
         .dotsDiv .navbar-toggler {
-            padding: 6px;
-        }
-
-        /* Hide dropdown toggle on mobile, show menu directly */
-        .dotsDiv .navbar-collapse.show .dropdown.nav-item > a.dropdown-toggle {
             display: none !important;
+            padding: 0 6px;
         }
 
-        .dotsDiv .navbar-collapse.show .dropdown.nav-item {
+        .dotsDiv .navbar-collapse .dropdown.nav-item > a.dropdown-toggle {
+            display: inline-flex !important;
+            align-items: center;
+        }
+
+        .dotsDiv .navbar-collapse .dropdown.nav-item {
             position: static;
         }
 
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu {
-            display: block !important;
-            position: static;
-            float: none;
-            min-width: 240px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            margin-top: 0;
-            border-radius: 12px;
+        .dotsDiv #navigation.profile-nav .navbar-nav {
+            flex-direction: row !important;
+            align-items: center !important;
         }
 
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .close-btn {
-            display: block !important;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-header {
-            display: block !important;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-info-content {
-            padding: 16px;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-name {
-            font-size: 15px;
-        }
-
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .logout-link {
-            padding: 12px 16px;
-        }
-
-        /* Hide avatar in mobile menu */
-        .dotsDiv .navbar-collapse.show .user-dropdown-menu .user-avatar-large {
-            display: none;
+        .dotsDiv .navbar-nav {
+            margin-left: 0 !important;
+            align-items: center;
         }
     }
 
     /* Fix 3 dots positioning on phone */
     @media (max-width: 767px) {
+        #sidebar-hamburger {
+            height: 34px;
+            padding: 0 6px;
+        }
+
+        .header-actions .header-search {
+            flex: 1 1 140px;
+            max-width: 170px;
+            min-width: 95px;
+        }
+
+        .header-actions .header-search #wrapp input[type="text"] {
+            height: 34px;
+            font-size: 12px;
+            padding: 6px 10px;
+        }
+
         .dotsDiv {
             display: flex;
             align-items: center;
@@ -550,12 +789,8 @@
             margin: 0;
         }
 
-        .dotsDiv .navbar-toggler {
-            margin: 0;
-        }
-
         .dotsDiv .navbar-collapse {
-            top: 65px;
+            top: auto;
         }
     }
 
@@ -630,26 +865,121 @@
         border-bottom: none;
     }
 
+    /* Override navbar-nav styles for profile dropdown */
+    .dotsDiv .navbar-nav {
+        position: static !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        -moz-box-shadow: none !important;
+    }
+
+    /* Profile toggle button */
+    .profile-toggle-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        padding: 4px !important;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        cursor: pointer;
+    }
+
+    /* Remove Bootstrap caret */
+    .profile-toggle-btn::after {
+        display: none !important;
+    }
+
+    .profile-toggle-btn:hover,
+    .profile-toggle-btn:focus {
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+    }
+
+    .profile-toggle-btn .photo {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        flex-shrink: 0;
+        border: 2px solid #e0e0e0;
+        box-shadow: none;
+        transition: border-color 0.2s ease;
+    }
+
+    .profile-toggle-btn:hover .photo {
+        border-color: #2b7b7d;
+    }
+
+    .profile-toggle-btn .photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Dropdown container - high z-index to show above filters */
+    .dotsDiv .dropdown.nav-item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        z-index: 1100;
+    }
+
+    @media (max-width: 991px) {
+        .profile-toggle-btn .photo {
+            width: 32px;
+            height: 32px;
+        }
+
+        .dotsDiv,
+        .dotsDiv .navbar-collapse,
+        .dotsDiv #navigation.profile-nav,
+        .dotsDiv .dropdown.nav-item,
+        .dotsDiv .profile-toggle-btn {
+            position: static !important;
+        }
+
+        .dotsDiv .dropdown.nav-item {
+            position: relative !important;
+            z-index: 1100;
+        }
+    }
+
+    @media (max-width: 767px) {
+        .profile-toggle-btn .photo {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
 </style>
 
 @php
 $permissions = safe_permissions();
 $user = Auth::user();
-$hasProfilePhoto = $user && $user->has_photo;
-$profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_picture.webp') : null;
+$defaultAvatar = asset('assets/images/avatars/default.png');
+$profileImage = $defaultAvatar;
+if ($user) {
+    $avatarPath = $user->avatar_path;
+    if (preg_match('~^https?://~i', $avatarPath)) {
+        $profileImage = $avatarPath;
+    } else {
+        $profileImage = asset(str_replace('\\', '/', ltrim($avatarPath, '/')));
+    }
+}
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
-    <div class="container-fluid noPadOnMobile">
+    <div class="container-fluid">
         <div class="row headerRow">
 
             <!-- Logo and title -->
-            <div class="col-lg-7 col-md-7 col-sm-5 col-3 noPadOnMobile" style="padding-left: 0">
-                <div class="container-fluid noPadOnMobile" style="padding-left: 0;">
-                    <div class="row left-toggler-container" id="left-toggler" style="background-color:transparent;padding: 0;flex-wrap: nowrap;align-items: center;">
+            <div class="col-lg-7 col-md-7 col-sm-5 col-3 header-left">
+                <div class="left-toggler-container" id="left-toggler">
 
                         <!-- Logo and mobile bars -->
-                    <div class=" logo-col noPadOnMobile" style="position: relative; z-index: 1050;">
-                        <div class="" style="display: flex; align-items: center; gap: 10px;">
+                    <div class="logo-col" style="position: relative; z-index: 1050;">
+                        <div class="mobile-brand-group">
                             <div class="navbar-toggle d-inline d-lg-none">
                                 <button type="button" class="navbar-toggler" id="sidebar-hamburger">
                                     <span class="navbar-toggler-bar bar1"></span>
@@ -664,13 +994,12 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                     </div>
 
                         <!--Page Title -->
-                    <div class=" col-sm-9 col-lg-6 noPadOnMobile pageTitleContainer">
+                    <div class=" col-sm-9 col-lg-6 pageTitleContainer">
                         <span class="navbar-brand pageTitle" style="font-weight: 800;">{{$pageSlug ?? "SIGMA"}}</span>
-                    </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-sm-7 col-9 noPadOnMobile header-actions">
+            <div class="col-lg-5 col-md-5 col-sm-7 col-9 header-actions">
                 <div class="header-actions-inner">
                     <form action="{{route('global-search')}}"
                           method="GET" class="header-search">
@@ -682,56 +1011,56 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
                         </div>
                     </form>
 {{--                    <x-weather-widget></x-weather-widget>--}}
-                    <div class="dotsDiv noPadOnMobile mb-1">
+                    <div class="dotsDiv">
                         <span class="navbar-brand pageTitle pageTitleMobile">{{$pageSlug ?? "SIGMA"}}</span>
-                        <button style= "flex-grow: 3" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
+                        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}" >
                             <span class="navbar-toggler-bar navbar-kebab"></span>
                             <span class="navbar-toggler-bar navbar-kebab"></span>
                             <span class="navbar-toggler-bar navbar-kebab"></span>
                         </button>
-                        <div class="collapse navbar-collapse" style = "flex-grow: 3" id="navigation">
+                        <div class="navbar-collapse profile-nav" id="navigation">
                     <ul class="navbar-nav ml-auto">
 
                         <li class="dropdown nav-item">
-                            <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" style=" background-color:transparent;border:none;padding: 8px 12px">
-                                @if($hasProfilePhoto)
-                                    <div class="photo">
-                                        <img src="{{ $profileImage }}" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
-                                    </div>
-                                @else
-                                    <div class="photo placeholder-avatar" aria-hidden="true">
-                                        <i class="fa fa-user"></i>
-                                    </div>
-                                @endif
-
-                                <p class="d-lg-none"></p>
+                            <a href="#" class="dropdown-toggle nav-link profile-toggle-btn" data-toggle="dropdown">
+                                <div class="photo">
+                                    <img src="{{ $profileImage }}" onerror="this.onerror=null;this.src='{{ $defaultAvatar }}';" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
+                                </div>
                             </a>
                             <ul class="dropdown-menu dropdown-navbar user-dropdown-menu">
-                                <button class="close-btn" onclick="closeDropdown()">&times;</button>
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
+                                        <div class="user-avatar-dropdown">
+                                            <img src="{{ $profileImage }}" onerror="this.onerror=null;this.src='{{ $defaultAvatar }}';" alt="">
+                                        </div>
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
                                             @if(Auth::user()->type === 'admin' || collect($permissions)->contains('name', 'admin'))
-                                                <div class="admin-badge" style="color: #059669; font-weight: 600; font-size: 12px; margin-top: 4px;">You are Admin</div>
+                                                <div class="admin-badge">Administrator</div>
                                             @endif
                                         </div>
                                     </div>
                                 </li>
-                                <li class="dropdown-divider"></li>
-                                <li class="nav-link table-widths-menu-item">
-                                    <a href="#" class="nav-item dropdown-item logout-link" onclick="event.preventDefault(); openTableWidthsPanel();">
-                                        <i class="fas fa-columns"></i>
-                                        Table Widths
-                                    </a>
-                                </li>
-                                <li class="dropdown-divider table-widths-menu-item"></li>
-                                <li class="nav-link">
-                                    <a href="{{ route('logout') }}" class="nav-item dropdown-item logout-link" onclick="event.preventDefault();  document.getElementById('logout-form').submit();">
-                                        <i class="tim-icons icon-button-power"></i>
-                                        {{ __('Log out') }}
-                                    </a>
-                                </li>
+                                <div class="menu-options">
+                                    <li class="menu-item table-widths-menu-item">
+                                        <a href="#" class="menu-link" onclick="event.preventDefault(); openTableWidthsPanel();">
+                                            <i class="fas fa-columns"></i>
+                                            Table Widths
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{ route('user-settings') }}" class="menu-link">
+                                            <i class="fas fa-sliders-h"></i>
+                                            User Settings
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="{{ route('logout') }}" class="menu-link logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="fas fa-sign-out-alt"></i>
+                                            {{ __('Log out') }}
+                                        </a>
+                                    </li>
+                                </div>
                             </ul>
                         </li>
 
@@ -755,9 +1084,17 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
     }
 
     function closeDropdown() {
-        // Close the dropdown by removing the 'show' class from the collapse element
+        // Close user dropdown in both desktop and mobile layouts.
+        if (window.jQuery) {
+            var $toggle = $('.dotsDiv .dropdown.nav-item > a.dropdown-toggle');
+            if ($toggle.length) {
+                $toggle.dropdown('hide');
+            }
+        }
+
+        // Legacy fallback for old collapse-based behavior.
         var dropdown = document.getElementById('navigation');
-        if (dropdown.classList.contains('show')) {
+        if (dropdown && dropdown.classList.contains('show')) {
             dropdown.classList.remove('show');
         }
     }
@@ -789,19 +1126,10 @@ $profileImage = $hasProfilePhoto ? asset('users/' . $user->id . '/profile_pictur
             });
         }
 
-        // Prevent double dialog on mobile - directly show dropdown on kebab click
-        var navbarToggler = document.querySelector('.dotsDiv .navbar-toggler');
-        var navCollapse = document.getElementById('navigation');
         var dropdownToggle = document.querySelector('.dropdown.nav-item > a.dropdown-toggle');
 
-        if (window.innerWidth < 992 && navbarToggler) {
-            navbarToggler.addEventListener('click', function(e) {
-                e.stopPropagation();
-                // Prevent Bootstrap's default dropdown toggle behavior
-                if (dropdownToggle) {
-                    dropdownToggle.removeAttribute('data-toggle');
-                }
-            });
+        if (dropdownToggle) {
+            dropdownToggle.setAttribute('data-toggle', 'dropdown');
         }
     });
 </script>

@@ -647,6 +647,9 @@
         _recalcPositions: function() {
             var that = this,
                 $th;
+            if (!that._tableHeaders || !that._columns || !that._container || !that._tableHeaders.length || !that._columns.length) {
+                return;
+            }
             for (var i = 0, l = that._tableHeaders.length; i < l; i++) {
                 $th = that._tableHeaders.eq(i);
                 that._columns.eq(i).css("left", Math.ceil($th.offset().left + $th.outerWidth() - that._container.offset().left));

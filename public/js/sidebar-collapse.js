@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const overlay = document.getElementById('sidebarOverlay');
     const hamburgerBtn = document.getElementById('sidebar-hamburger');
     const MOBILE_BREAKPOINT = 991;
+    const getDisableExpandPreference = () => localStorage.getItem('sigma_pref_disable_sidebar_expand') === 'true';
 
     const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
 
@@ -91,6 +92,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function applyPinnedState() {
         if (!wrapper) return;
+        if (getDisableExpandPreference()) {
+            wrapper.classList.remove('sidebar-pinned', 'sidebar-hover', 'sidebar-expanded');
+            if (pinBtn) {
+                pinBtn.classList.remove('pinned');
+            }
+            collapseExpandedSubmenus();
+            toggleSidebarOverlay(false);
+            lockBodyScroll(false);
+            return;
+        }
         if (!isMobile() && userPinnedPreference) {
             wrapper.classList.add('sidebar-pinned');
             if (pinBtn) {
@@ -134,6 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Hover functionality (only when not pinned)
         sidebar.addEventListener('mouseenter', function () {
             if (isMobile()) return;
+            if (getDisableExpandPreference()) return;
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.add('sidebar-hover');
             }
@@ -141,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         sidebar.addEventListener('mouseleave', function () {
             if (isMobile()) return;
+            if (getDisableExpandPreference()) return;
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.remove('sidebar-hover');
                 collapseExpandedSubmenus();
@@ -159,6 +172,18 @@ document.addEventListener('DOMContentLoaded', function () {
             const isSubmenuToggle = link.hasAttribute('data-sigma-toggle');
 
             if (isSubmenuToggle) {
+                if (getDisableExpandPreference()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const targetId = link.getAttribute('data-target');
+                    if (targetId) {
+                        const firstChildLink = document.querySelector(targetId + ' a[href]:not([href="#"])');
+                        if (firstChildLink) {
+                            window.location.href = firstChildLink.getAttribute('href');
+                        }
+                    }
+                    return;
+                }
                 e.preventDefault();
                 e.stopPropagation(); // Prevent event from bubbling on iOS
                 const targetId = link.getAttribute('data-target');
@@ -176,6 +201,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pin button click handler
     if (pinBtn) {
         pinBtn.addEventListener('click', function (e) {
+            if (getDisableExpandPreference()) {
+                e.preventDefault();
+                e.stopPropagation();
+                return;
+            }
             e.preventDefault();
             e.stopPropagation();
             userPinnedPreference = !userPinnedPreference;
@@ -212,5 +242,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('resize', syncSidebarForViewport);
+    window.addEventListener('storage', function (event) {
+        if (event.key === 'sigma_pref_disable_sidebar_expand') {
+            syncSidebarForViewport();
+        }
+    });
+    document.addEventListener('sigma:sidebar-pref-changed', syncSidebarForViewport);
     syncSidebarForViewport();
 });

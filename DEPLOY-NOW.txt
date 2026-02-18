@@ -1,0 +1,56 @@
+═══════════════════════════════════════════════════════════
+   SIGMA QUICK DEPLOY - NO PASSWORD PROMPT
+═══════════════════════════════════════════════════════════
+
+PASSWORD: sigma$S1lab (hardcoded in script)
+
+═══════════════════════════════════════════════════════════
+   WINDOWS (RECOMMENDED):
+═══════════════════════════════════════════════════════════
+
+deploy.bat
+
+(Double-click - NO PASSWORD PROMPT!)
+
+═══════════════════════════════════════════════════════════
+   GIT BASH / LINUX / MAC:
+═══════════════════════════════════════════════════════════
+
+bash deploy.sh
+
+(NO PASSWORD PROMPT - uses hardcoded password)
+
+═══════════════════════════════════════════════════════════
+   WHAT IT SYNCS:
+═══════════════════════════════════════════════════════════
+
+[1/2] Syncs files to server WITH SIZE INFO:
+  ✓ app/ (controllers, models)
+  ✓ resources/ (views, blade files)
+  ✓ routes/ (web.php, api.php)
+  ✓ config/ (configurations)
+  ✓ public/js/ (JavaScript files ONLY)
+  ✓ public/css/ (CSS files ONLY)
+
+  Shows: File names, sizes, what changed
+
+[2/2] Clears caches:
+  ✓ php artisan config:clear
+  ✓ php artisan cache:clear
+  ✓ php artisan view:clear
+  ✓ php artisan route:clear
+
+═══════════════════════════════════════════════════════════
+   SKIPS:
+═══════════════════════════════════════════════════════════
+
+  ✗ vendor/ (already on server)
+  ✗ node_modules/ (already on server)
+  ✗ public/images/ (not synced)
+  ✗ public/assets/ (not synced)
+  ✗ .git, .env, storage/logs
+
+═══════════════════════════════════════════════════════════
+   NO composer, NO npm, NO migrations - FAST!
+   Password hardcoded - NO PROMPT!
+═══════════════════════════════════════════════════════════

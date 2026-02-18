@@ -194,29 +194,17 @@ class job extends Model
             return true; // If no material info, assume it goes through all stages
         }
 
-        $materialName = strtolower($this->material->name ?? '');
-
         switch ($stage) {
             case 2: // Milling
-                // Acrylic doesn't go through milling
-                if (str_contains($materialName, 'acrylic')) {
-                    return false;
-                }
                 return true;
 
             case 3: // 3D Printing
-                // Add logic for materials that skip 3D printing
                 return true;
 
             case 4: // Sintering
-                // Acrylic doesn't go through sintering
-                if (str_contains($materialName, 'acrylic')) {
-                    return false;
-                }
                 return true;
 
             case 5: // Pressing
-                // Add logic for materials that skip pressing
                 return true;
 
             default:

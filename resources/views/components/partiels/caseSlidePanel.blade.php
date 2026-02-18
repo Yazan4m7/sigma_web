@@ -1,219 +1,164 @@
 @props(['case', 'stageType' => '3dprinting'])
 
-<div id="YSH-slide-overlay-{{$case->id}}" class="YSH-slide-overlay"
+@php
+    $stageNumber = match($stageType) {
+        'milling' => 2,
+        '3dprinting' => 3,
+        'sintering' => 4,
+        'pressing' => 5,
+        'delivery' => 8,
+        default => 3
+    };
+    $stageLabel = match($stageType) {
+        'milling' => 'Milling',
+        '3dprinting' => '3D Printing',
+        'sintering' => 'Sintering',
+        'pressing' => 'Pressing',
+        'delivery' => 'Delivery',
+        default => 'Workflow'
+    };
+    $jobsAtStage = $case->jobs->where('stage', $stageNumber);
+    $permissions = safe_permissions();
+    $canEditCase = (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102)));
+@endphp
+
+<div class="modal fade waiting-dialog case-action-dialog sigma-modal--dashboard-waiting-actions ysh-case-slide-modal"
+     tabindex="-1" role="dialog" id="YSH-slide-overlay-{{$case->id}}"
      onclick="if (event.target === this) YSH_closeSlidePanel({{$case->id}})">
-    <div id="YSH-slide-panel-{{$case->id}}" class="YSH-slide-panel ysh-slide-panel--builds">
-        <!-- Fixed Header -->
-        <div class="YSH-slide-header">
-            <div>
-                <h5 style="margin-bottom: 0;">Case Completion</h5>
-            </div>
-            <button type="button" class="YSH-close-slide"
-                    onclick="YSH_closeSlidePanel({{$case->id}})">&times;
-            </button>
-        </div>
-
-        <!-- Fixed Doctor/Patient Info -->
-        <div class="ysh-slide-info-header">
-            <div class="form-group row" style="margin-bottom: 0px">
-                <div class="form-group col-6" style="margin-bottom: 0px">
-                    <label>Doctor:</label>
-                    <h5><b>{{$case->client?->name}}</b></h5>
+    <div class="modal-dialog modal-dialog-centered" role="document" id="YSH-slide-panel-{{$case->id}}" onclick="event.stopPropagation()">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-top-actions">
+                    <span class="ysh-modal-title">CASE COMPLETION</span>
+                    <button type="button" class="close modal-close" aria-label="Close"
+                            onclick="event.stopPropagation(); YSH_closeSlidePanel({{$case->id}})">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group col-6" style="margin-bottom: 0px">
-                    <label>Patient:</label>
-                    <h5><b>{{$case->patient_name}}</b></h5>
+
+                <!-- Doctor/Patient section - two columns -->
+                <div class="form-group row" style="margin-bottom: 0px">
+                    <div class="form-group col-6" style="margin-bottom: 0px">
+                        <label for="doctor">Doctor:</label>
+                        <h5 id="doctor" class="patient-doctor-names">{{$case->client?->name}}</h5>
+                    </div>
+                    <div class="form-group col-6" style="margin-bottom: 0px">
+                        <label for="pat">Patient name:</label>
+                        <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
+                    </div>
                 </div>
-            </div>
-        </div>
+                <hr>
 
-        <div class="YSH-slide-grid">
-            <!-- Scrollable Content -->
-            <div class="YSH-slide-body">
-                @php
-                    // Convert stage type to stage number
-                    $stageNumber = match($stageType) {
-                        'milling' => 2,
-                        '3dprinting' => 3,
-                        'sintering' => 4,
-                        'pressing' => 5,
-                        'delivery' => 8,
-                        default => 3
-                    };
-                    $stageLabel = match($stageType) {
-                        'milling' => 'Milling',
-                        '3dprinting' => '3D Printing',
-                        'sintering' => 'Sintering',
-                        'pressing' => 'Pressing',
-                        'delivery' => 'Delivery',
-                        default => 'Workflow'
-                    };
-                    $jobsAtStage = $case->jobs->where('stage', $stageNumber);
-                @endphp
-
-                <label><b>Jobs ({{$stageLabel}}):</b></label>
-                <div class="sigma-case-jobs-list">
-                    @forelse($jobsAtStage as $job)
-                        @php
-                            $unitNumbers = $job->unit_num ?? '';
-                            $unitLabel = $unitNumbers !== '' ? $unitNumbers : '-';
-                            $jobTypeLabel = $job->jobType?->name ?? '-';
-                            $materialLabel = $job->material?->name ?? '-';
-                            $colorLabel = ($job->color && $job->color !== '0') ? $job->color : '';
-                            $styleLabel = ($job->style && $job->style !== 'None') ? $job->style : '';
-                        @endphp
-                        <div class="sigma-case-job-row">
-                            <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{$unitLabel}}</span>
-                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{$jobTypeLabel}}</span>
-                            <span class="sigma-case-job-cell sigma-case-job-cell--material">{{$materialLabel}}</span>
-                            <span class="sigma-case-job-cell sigma-case-job-cell--color">{{$colorLabel}}</span>
-                            <span class="sigma-case-job-cell sigma-case-job-cell--style">{{$styleLabel}}</span>
+                <!-- Scrollable Jobs and Notes section -->
+                <div class="scrollable-content">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <label><b>Jobs:</b></label><br>
+                            @forelse($jobsAtStage as $job)
+                                @php
+                                    $showJob = $job->goesThroughStage($stageNumber);
+                                @endphp
+                                @if($showJob)
+                                <span>{{$job->unit_num}}
+                                    - {{$job->jobType->name ?? "No Job Type"}}
+                                    - {{$job->material->name ?? "no material"}} {{$job->color == '0' ? "" : " - " . $job->color}}
+                                    {{$job->style == 'None' ? "" : " - " . $job->style}} {{isset($job->implantR) && $job->jobType->id == 6 ? (" - Implant Type: " . $job->implantR->name) : ""}}
+                                    <br>
+                                    {{isset($job->abutmentR) && $job->jobType->id == 6 ? (" Abutment Type: " . $job->abutmentR->name) : ""}}</span>
+                                @endif
+                            @empty
+                                <span class="text-muted">No jobs for this stage yet.</span>
+                            @endforelse
                         </div>
-                    @empty
-                        <div class="ysh-job-empty">No jobs for this stage yet.</div>
-                    @endforelse
-                </div>
+                    </div>
 
-                @if(count($case->notes) > 0)
+                    @if(count($case->notes) > 0)
                     <hr>
                     <label><b>Notes:</b></label><br>
                     @foreach($case->notes as $note)
-                        <div class="form-control"
-                             style="height:fit-content;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px">
-                            <span class="noteHeader">{{ '[' . substr($note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] :' }}</span><br>
-                            <span class="noteText">{{$note->note}}</span>
-                        </div>
+                    <div class="form-control note-container"
+                         style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                         disabled>
+                        <span class="noteHeader" style="font-weight:600">{{'['. substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] :'}}</span><br>
+                        <span class="noteText">{{$note->note}}</span>
+                    </div>
                     @endforeach
-                @endif
-
+                    @endif
+                </div>
             </div>
-            <div class="modal-footer fullBtnsWidth">
-                <div class="row btnsRow"
-                     style=" margin-right: 0px; margin-left: 0px;width:100%">
-                    <div class="col-12 padding5px ysh-slide-actions">
-                        <a href="{{route('view-case', ['id' => $case->id, 'stage' => 3  ])}}" class="ysh-slide-action-link">
-                            <button type="button" class="btn btn-info ysh-slide-action-btn"><i
-                                    class="fas fa-eye"></i> View
-                            </button>
-                        </a>
 
-                        @php
-                            $permissions = safe_permissions();
-                            $canEditCase = false;
-                            if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))))
-                            $canEditCase = true;
-                        @endphp
-                        <a href="{{route('edit-case-view',$case->id)}}" class="ysh-slide-action-link">
-                            <button type="button"
-                                    class="btn btn-warning ysh-slide-action-btn" {{$canEditCase ? '' : 'disabled'}}>
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
+            <div class="modal-footer fullBtnsWidth">
+                <div class="row btnsRow waiting-actions">
+                    <!-- Row 1: View | Edit -->
+                    <div class="col-6 padding5px">
+                        <a href="{{route('view-case', ['id' => $case->id, 'stage' => $stageNumber])}}" style="width:100%;">
+                            <button type="button" class="btn btn-info">View</button>
+                        </a>
+                    </div>
+                    <div class="col-6 padding5px">
+                        <a href="{{route('edit-case-view', $case->id)}}" style="width:100%;">
+                            <button type="button" class="btn btn-warning" {{$canEditCase ? '' : 'disabled'}}>Edit</button>
                         </a>
                     </div>
 
-                    <div class="col-12 padding5px ysh-slide-actions-stack">
-                        <button type="button" class="btn btn-secondary "
-                                onclick="YSH_closeSlidePanel({{$case->id}})" style="width:100%">
-                            Cancel
-                        </button>
+                    <!-- Row 2: Cancel (100%) -->
+                    <div class="col-12 padding5px">
+                        <button type="button" class="btn btn-secondary"
+                                onclick="event.stopPropagation(); YSH_closeSlidePanel({{$case->id}})" style="width:100%">Cancel</button>
                     </div>
                 </div>
-
-
             </div>
-
         </div>
-
     </div>
 </div>
+
 
 @once
     @push('js')
         <script>
-            (function () {
-                function resolvePanel(caseId) {
+            // Fallback/override for YSH slide panel functions
+            (function() {
+                window.YSH_closeSlidePanel = function(caseId) {
                     var overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-                    var panel = document.getElementById('YSH-slide-panel-' + caseId);
-                    if (!overlay || !panel) {
-                        console.warn('Slide panel markup missing for case', caseId);
-                        return null;
+                    if (!overlay) {
+                        console.warn('Cannot close: overlay not found for case', caseId);
+                        return;
                     }
-                    if (!overlay.dataset.boundToBody) {
+
+                    overlay.classList.remove('YSH-active');
+                    overlay.classList.add('YSH-closing');
+
+                    setTimeout(function() {
+                        overlay.classList.remove('YSH-active', 'YSH-closing');
+                        if (typeof window.updateDialogScrollLock === 'function') {
+                            window.updateDialogScrollLock();
+                        }
+                    }, 300);
+                };
+
+                window.YSH_openSlidePanel = function(caseId, stageType) {
+                    var overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+                    if (!overlay) {
+                        console.warn('Slide panel missing for case', caseId);
+                        return;
+                    }
+
+                    // Move to body if not already
+                    if (!overlay.dataset.movedToBody) {
                         document.body.appendChild(overlay);
-                        overlay.dataset.boundToBody = '1';
+                        overlay.dataset.movedToBody = '1';
                     }
-                    return {overlay: overlay, panel: panel};
-                }
 
-                if (typeof window.YSH_openSlidePanel !== 'function') {
-                    window.YSH_openSlidePanel = function (caseId) {
-                        var refs = resolvePanel(caseId);
-                        if (!refs) {
-                            return;
+                    overlay.classList.remove('YSH-closing');
+                    overlay.style.display = 'block';
+
+                    requestAnimationFrame(function() {
+                        overlay.classList.add('YSH-active');
+                        if (typeof window.updateDialogScrollLock === 'function') {
+                            window.updateDialogScrollLock();
                         }
-                        var overlay = refs.overlay;
-                        overlay.classList.remove('YSH-closing');
-                        overlay.style.display = 'block';
-                        requestAnimationFrame(function () {
-                            overlay.classList.add('YSH-active');
-                            if (typeof window.updateDialogScrollLock === 'function') {
-                                window.updateDialogScrollLock();
-                            }
-                        });
-                    };
-                }
-
-                if (typeof window.YSH_closeSlidePanel !== 'function') {
-                    window.YSH_closeSlidePanel = function (caseId) {
-                        var refs = resolvePanel(caseId);
-                        if (!refs) {
-                            return;
-                        }
-                        var overlay = refs.overlay;
-                        var panel = refs.panel;
-                        overlay.classList.remove('YSH-active');
-                        overlay.classList.add('YSH-closing');
-
-                        var done = false;
-                        var cleanup = function () {
-                            if (done) {
-                                return;
-                            }
-                            done = true;
-                            overlay.style.display = 'none';
-                            overlay.classList.remove('YSH-closing');
-                            panel.removeEventListener('transitionend', onTransitionEnd);
-                            panel.removeEventListener('animationend', onAnimationEnd);
-                            if (cleanupTimer) {
-                                window.clearTimeout(cleanupTimer);
-                            }
-                            if (typeof window.updateDialogScrollLock === 'function') {
-                                window.updateDialogScrollLock();
-                            }
-                        };
-
-                        var onTransitionEnd = function (event) {
-                            if (event.target !== panel) {
-                                return;
-                            }
-                            if (event.propertyName && event.propertyName !== 'transform' && event.propertyName !== 'opacity') {
-                                return;
-                            }
-                            cleanup();
-                        };
-
-                        var onAnimationEnd = function (event) {
-                            if (event.target !== panel) {
-                                return;
-                            }
-                            cleanup();
-                        };
-
-                        panel.addEventListener('transitionend', onTransitionEnd);
-                        panel.addEventListener('animationend', onAnimationEnd);
-                        var cleanupTimer = window.setTimeout(cleanup, 450);
-                    };
-                }
+                    });
+                };
             })();
         </script>
     @endpush
@@ -221,92 +166,161 @@
 
 @once
     <style>
-        /* Fixed info header (doctor/patient) */
-        .ysh-slide-info-header {
-            padding: 15px 20px;
-            border-bottom: 1px solid #e5e7eb;
-            background: #f9fafb;
-            flex-shrink: 0;
+        /* Cairo font for all dialogs */
+        .ysh-case-slide-modal,
+        .sigma-workflow-modal.sigma-modal--active-cases-preview,
+        .sigma-modal--cases-dashboard-case-completion-alt {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+        .ysh-case-slide-modal *,
+        .sigma-workflow-modal.sigma-modal--active-cases-preview *,
+        .sigma-modal--cases-dashboard-case-completion-alt * {
+            font-family: inherit;
         }
 
-        /* Jobs list styling - matching sigma-case-jobs-list */
-        .ysh-slide-panel--builds .sigma-case-jobs-list {
+        /* YSH Case Slide Modal - Custom overlay/panel visibility via YSH-active class */
+        .ysh-case-slide-modal {
+            display: block !important;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            z-index: 1050;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        .ysh-case-slide-modal.YSH-active {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.5);
+            pointer-events: auto;
+        }
+        .ysh-case-slide-modal.YSH-closing {
+            opacity: 0;
+            background: rgba(0, 0, 0, 0);
+            pointer-events: none;
+        }
+
+        /* Modal dialog - slide in from right to left */
+        .ysh-case-slide-modal .modal-dialog {
+            position: fixed !important;
+            right: -600px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            margin: 0 !important;
+            max-width: 520px !important;
+            width: 90vw !important;
+            height: auto !important;
+            max-height: 85vh !important;
+            transition: right 0.3s ease !important;
+            z-index: 1051 !important;
+            pointer-events: auto !important;
+        }
+        .ysh-case-slide-modal.YSH-active .modal-dialog {
+            right: 0 !important;
+        }
+        .ysh-case-slide-modal.YSH-closing .modal-dialog {
+            right: -600px !important;
+        }
+
+        /* Modal content styling - slide panel from right, rounded left corners only */
+        .ysh-case-slide-modal .modal-content {
+            border-radius: 20px 0 0 20px;
+            box-shadow: -8px 0 32px rgba(0, 0, 0, 0.15);
+            max-height: 85vh;
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            margin-top: 8px;
+            overflow: hidden;
         }
 
-        .ysh-slide-panel--builds .sigma-case-job-row {
+        .ysh-case-slide-modal .modal-top-actions {
             display: flex;
             align-items: center;
-            gap: 2px;
-            padding: 6px 0;
-            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 0.35rem;
+            gap: 0.5rem;
         }
-
-        .ysh-slide-panel--builds .sigma-case-job-row:last-child {
-            border-bottom: none;
+        .ysh-case-slide-modal .ysh-modal-title {
+            flex: 1;
+            font-size: 18px;
+            font-weight: 700;
+            color: #2d5f6d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell {
-            font-size: 13px;
-            color: #374151;
+        .ysh-case-slide-modal .modal-top-actions .modal-close {
+            border: none;
+            background: transparent;
+            font-size: 1.75rem;
+            line-height: 1;
+            color: #000;
+            opacity: 0.65;
+            padding: 0;
+            margin-left: auto;
         }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell--teeth {
-            width: 70px;
-            flex: 0 0 70px;
+        .ysh-case-slide-modal .modal-top-actions .modal-close:hover {
+            opacity: 1;
+        }
+        .ysh-case-slide-modal .patient-doctor-names {
+            color: #2d5f6d;
             font-weight: 600;
-            color: #0f172a;
         }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell--type {
+        .ysh-case-slide-modal .note-container {
+            background: #e8f0f2;
+            border: 1px solid #b8d4db;
+        }
+        .ysh-case-slide-modal .scrollable-content {
             flex: 1;
-            min-width: 0;
+            overflow-y: auto;
+            min-height: 0;
         }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell--material {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell--color {
-            width: 60px;
-            flex: 0 0 60px;
-        }
-
-        .ysh-slide-panel--builds .sigma-case-job-cell--style {
-            width: 70px;
-            flex: 0 0 70px;
-        }
-
-        .ysh-slide-panel--builds .ysh-slide-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .ysh-slide-panel--builds .ysh-slide-action-link {
-            display: flex;
-            flex: 1 1 0;
-            min-width: 140px;
-        }
-
-        .ysh-slide-panel--builds .ysh-slide-action-btn {
+        .ysh-case-slide-modal .waiting-actions {
             width: 100%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            margin: 0;
+        }
+        .ysh-case-slide-modal .waiting-actions > [class*='col-'] {
+            display: flex;
+        }
+        .ysh-case-slide-modal .waiting-actions .btn {
+            flex: 1;
+            width: 100%;
+        }
+        .ysh-case-slide-modal .modal-footer {
+            border-top: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+        }
+        .ysh-case-slide-modal .modal-body {
+            padding: 1rem 1.25rem;
+            flex: 1;
+            overflow-y: auto;
         }
 
-        .ysh-job-empty {
-            padding: 10px 12px;
-            border: 1px dashed #e5e7eb;
-            background: #f8fafc;
-            border-radius: 8px;
-            color: #6b7280;
-            font-size: 13px;
+        /* Responsive adjustments - maintain slide behavior */
+        @media (max-width: 400px) {
+            .ysh-case-slide-modal .modal-body { padding: 0.85rem; }
+            .ysh-case-slide-modal .ysh-modal-title { font-size: 16px; }
+            .ysh-case-slide-modal .waiting-actions .col-3,
+            .ysh-case-slide-modal .waiting-actions .col-6,
+            .ysh-case-slide-modal .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
+            .ysh-case-slide-modal .waiting-actions .btn { margin-bottom: 8px; }
+        }
+        @media (min-width: 401px) and (max-width: 576px) {
+            .ysh-case-slide-modal .waiting-actions .col-3 { flex: 0 0 50%; max-width: 50%; }
+            .ysh-case-slide-modal .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
+            .ysh-case-slide-modal .waiting-actions .col-12 { flex: 0 0 100%; max-width: 100%; }
+        }
+        @media (min-width: 577px) and (max-width: 768px) {
+            .ysh-case-slide-modal .modal-body { padding: 1rem 1.25rem; }
+            .ysh-case-slide-modal .waiting-actions .col-3 { flex: 0 0 33.333%; max-width: 33.333%; }
+            .ysh-case-slide-modal .waiting-actions .col-6 { flex: 0 0 33.333%; max-width: 33.333%; }
+        }
+        @media (min-width: 769px) and (max-width: 992px) {
+            .ysh-case-slide-modal .waiting-actions .col-3 { flex: 0 0 25%; max-width: 25%; }
+            .ysh-case-slide-modal .waiting-actions .col-6 { flex: 0 0 50%; max-width: 50%; }
+        }
+        @media (min-width: 1200px) {
+            .ysh-case-slide-modal .modal-body { padding: 1.25rem 1.5rem; }
         }
     </style>
 @endonce

@@ -146,14 +146,14 @@
 
         .sigma-case-status-badge {
             width: 7.5em;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             margin: 0 auto;
-            line-height: 1.2 !important;
-            padding-top: 0.3rem !important;
-            padding-bottom: 0.3rem !important;
+            line-height: 1 !important;
+            padding: 0.3rem 0.45rem !important;
+            vertical-align: middle;
         }
 
         .sigma-case-status-badge.badge-primary {
@@ -161,14 +161,19 @@
         }
 
         .sigma-case-status-badge .tooltipX {
+            display: block;
+            width: 100%;
             max-width: 100%;
             min-width: 0;
+            line-height: 1;
         }
 
         .sigma-case-status-badge .sigma-badge-label {
-            display: inline-block;
+            display: block;
+            width: 100%;
             max-width: 100%;
             min-width: 0;
+            line-height: 1.2;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -326,7 +331,7 @@
             overflow-x: hidden;
             overflow-y: auto;
             z-index: 1050;
-            background: rgba(0, 0, 0, 0.5);
+            background: transparent;
         }
 
         .sigma-modal--cases-index-actions.show {
@@ -343,7 +348,7 @@
             transform: none !important;
             -webkit-transform: none !important;
             will-change: auto !important;
-            pointer-events: auto !important;
+            pointer-events: none !important;
         }
 
         .sigma-modal--cases-index-actions .modal-content {
@@ -351,6 +356,7 @@
             transform: none !important;
             -webkit-transform: none !important;
             will-change: auto !important;
+            pointer-events: auto !important;
         }
 
         /* Reset transforms on wrapper when modal is open */
@@ -448,7 +454,7 @@
         }
 
         .content {
-            background: #ffffff00;
+
         }
 
         /* Tooltip styling */
@@ -515,7 +521,7 @@
 
         /* Compact filter section */
         .cases-filter-row {
-            padding: 8px 0 !important;
+            padding: 11px 8px !important;
             align-items: center;
         }
 
@@ -609,24 +615,19 @@
         }
 
         /* Responsive adjustments */
-        @media screen and (max-width: 768px) {
-            table {
-                table-layout: fixed;
-                width: 100% !important;
-            }
-
+        @media screen and (max-width: 991px) {
             #casesTable {
-                min-width: 720px !important;
-                width: max-content !important;
-                table-layout: auto !important;
-                font-size: 13px !important;
+                min-width: 640px !important;
+                width: 100% !important;
+                table-layout: fixed !important;
+                font-size: 12px !important;
             }
 
             /* Match header and body font size on mobile */
             #casesTable thead th,
             #casesTable tbody td {
-                font-size: 13px !important;
-                padding: 8px 6px !important;
+                font-size: 12px !important;
+                padding: 6px 4px !important;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -635,42 +636,52 @@
             /* Column width distribution for mobile */
             #casesTable thead th:nth-child(1),
             #casesTable tbody td:nth-child(1) {
-                width: 22%;
+                width: 19%;
             }
 
             /* Doctor */
             #casesTable thead th:nth-child(2),
             #casesTable tbody td:nth-child(2) {
-                width: 22%;
+                width: 19%;
             }
 
             /* Patient */
             #casesTable thead th:nth-child(3),
             #casesTable tbody td:nth-child(3) {
-                width: 18%;
+                width: 17%;
             }
 
             /* Initial Deli Date */
             #casesTable thead th:nth-child(4),
             #casesTable tbody td:nth-child(4) {
-                width: 18%;
+                width: 17%;
             }
 
             /* Date Delivered */
             #casesTable thead th:nth-child(5),
             #casesTable tbody td:nth-child(5) {
-                width: 12%;
-            }
-
-            /* Status */
-            #casesTable thead th:nth-child(6)
-            #casesTable tbody td:nth-child(6) {
                 width: 8%;
             }
 
+            /* Status */
+            #casesTable thead th:nth-child(6),
+            #casesTable tbody td:nth-child(6) {
+                width: 14%;
+            }
+
             /* Tags */
+            #casesTable thead th:nth-child(7),
+            #casesTable tbody td:nth-child(7) {
+                width: 6%;
+            }
+
             .tooltip-toggle-container {
                 display: none;
+            }
+
+            .tooltipX .tooltiptext,
+            .case-jobs-tooltip {
+                display: none !important;
             }
 
             .content {
@@ -684,7 +695,7 @@
 
             /* Allow horizontal scroll on small screens */
             .dataTables_wrapper {
-                overflow-x: visible;
+                overflow-x: auto;
                 width: 100% !important;
             }
 
@@ -719,6 +730,19 @@
                 display: none;
             }
 
+            /* Keep doctor picker menu inside viewport on mobile */
+            .cases-filter-row .bootstrap-select #doctor ~ .dropdown-menu {
+                left: auto !important;
+                right: 0 !important;
+                min-width: 100% !important;
+                max-width: min(92vw, 320px) !important;
+                transform: none !important;
+            }
+
+            .cases-filter-row .bootstrap-select #doctor ~ .dropdown-menu .inner {
+                max-width: 100% !important;
+            }
+
             .dataTables_wrapper .dataTables_filter {
                 text-align: center;
             }
@@ -744,7 +768,7 @@
             .sigma-case-status-badge {
                 padding: 2px 6px !important;
                 font-size: 11px !important;
-                line-height: 1.6 !important;
+                line-height: 1.2 !important;
             }
         }
 
@@ -1007,8 +1031,7 @@
 
                 @foreach($cases  as $case)
                     <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
-                         id="actionsDialog{{$case->id}}" data-backdrop="false"
-                         onclick="if(event.target === this) $(this).modal('hide')">
+                         id="actionsDialog{{$case->id}}" data-backdrop="true" data-keyboard="true">
 
                         <input type="hidden" name="case_id" value="{{$case->id}}">
                         <div class="modal-dialog modal-dialog-centered   " role="document">
@@ -1545,10 +1568,11 @@
         <!-- Responsive and datable js -->
         <script type="text/javascript">
             $( document ).ready( function () {
+                var isMobileLayout = window.matchMedia( '(max-width: 991px)' ).matches;
 
                 var table = $( "#casesTable" ).DataTable( {
-                                                              "colResize": true,
-                                                              "colReorder": true ,
+                                                              "colResize": !isMobileLayout,
+                                                              "colReorder": !isMobileLayout ,
                                                               "responsive": false ,  // Disable responsive column hiding
                                                               "bLengthChange": false ,  // Disable "Show XX entries" dropdown
                                                               "iDisplayLength": 20 ,
@@ -1560,6 +1584,12 @@
                                                               "autoWidth": false ,
                                                               "initComplete": function () {
                                                                   var settings = this;
+                                                                  if (isMobileLayout) {
+                                                                      localStorage.removeItem( 'casesTable_widths' );
+                                                                      $( '#casesTable th' ).css( 'width' , '' );
+                                                                      return;
+                                                                  }
+
                                                                   // Restore saved widths
                                                                   var widths = JSON.parse( localStorage.getItem( 'casesTable_widths' ) );
                                                                   if (widths) {
@@ -1587,7 +1617,9 @@
                                                                       }, 100 );
                                                                   } );
                                                               },
-                                                              "columnDefs": [
+                                                              "columnDefs": isMobileLayout ? [
+                                                                  {"orderable": false , "targets": [0 , 1 , 4 , 6]}
+                                                              ] : [
                                                                   {"orderable": false , "targets": [0 , 1 , 4 , 6]} ,  // Disable sorting on Doctor, Patient, Units, and Tags columns
                                                                   {"width": "17%" , "targets": 0} ,  // Doctor column width
                                                                   {"width": "17%" , "targets": 1} ,  // Patient column width
@@ -1602,6 +1634,26 @@
                 // Connect custom search field to DataTable for real-time search
                 $( '#tableSearch' ).on( 'keyup' , function () {
                     table.search( this.value ).draw();
+                } );
+
+                // Keep Doctor filter dropdown within viewport on mobile.
+                $( document ).on( 'shown.bs.select' , '#doctor' , function () {
+                    if (!window.matchMedia( '(max-width: 991px)' ).matches) {
+                        return;
+                    }
+
+                    var $wrapper = $( this ).closest( '.bootstrap-select' );
+                    var $menu = $wrapper.find( '> .dropdown-menu' );
+
+                    if ($menu.length) {
+                        $menu.css( {
+                                       left: 'auto' ,
+                                       right: '0' ,
+                                       minWidth: '100%' ,
+                                       maxWidth: 'calc(100vw - 24px)' ,
+                                       transform: 'none'
+                                   } );
+                    }
                 } );
 
                 // Fix aria-hidden conflict on modals
@@ -1660,19 +1712,33 @@
                 var hoverTimeout;
                 // Default to true if not set, and handle the string 'false'
                 var tooltipEnabled = localStorage.getItem( 'tooltipEnabled' ) !== 'false';
+                var shouldDisableTooltips = function () {
+                    return window.matchMedia( '(hover: none), (pointer: coarse), (max-width: 991px)' ).matches;
+                };
+                var mobileTooltipDisabled = shouldDisableTooltips();
+                if (mobileTooltipDisabled) {
+                    tooltipEnabled = false;
+                    tooltip.hide();
+                }
 
                 // Set initial state of the toggle
-                $( '#tooltip-toggle' ).prop( 'checked' , tooltipEnabled );
+                $( '#tooltip-toggle' ).prop( 'checked' , !mobileTooltipDisabled && tooltipEnabled );
 
                 // Handle toggle change
                 $( '#tooltip-toggle' ).on( 'change' , function () {
+                    if (shouldDisableTooltips()) {
+                        tooltipEnabled = false;
+                        $( this ).prop( 'checked' , false );
+                        tooltip.hide();
+                        return;
+                    }
                     tooltipEnabled = $( this ).is( ':checked' );
                     localStorage.setItem( 'tooltipEnabled' , tooltipEnabled );
                 } );
 
 
                 $( 'body' ).on( 'mouseenter' , '.case-row' , function (e) {
-                    if (!tooltipEnabled) return;
+                    if (!tooltipEnabled || shouldDisableTooltips()) return;
                     var caseId = $( this ).data( 'case-id' );
                     var modal = $( '#actionsDialog' + caseId );
 
@@ -1716,11 +1782,17 @@
                 } );
 
                 $( 'body' ).on( 'mousemove' , '.case-row' , function (e) {
-                    if (!tooltipEnabled) return;
+                    if (!tooltipEnabled || shouldDisableTooltips()) return;
                     tooltip.css( {
                                      top: e.pageY + 15 ,
                                      left: e.pageX + 15
                                  } );
+                } );
+
+                $( window ).on( 'resize orientationchange' , function () {
+                    if (shouldDisableTooltips()) {
+                        tooltip.hide();
+                    }
                 } );
             } );
         </script>

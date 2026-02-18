@@ -240,10 +240,7 @@
                     <div class="section-title">Profile Image</div>
                     <div class="form-group">
                         @php
-                            $profileImagePath = null;
-                            if ($user->has_photo) {
-                                $profileImagePath = '/users/' . $user->id . '/profile_picture.webp?v=' . time();
-                            }
+                            $profileImagePath = asset($user->avatar_path) . '?v=' . time();
                         @endphp
                         <x-user-image-picker current_image="{{ $profileImagePath }}"></x-user-image-picker>
                     </div>

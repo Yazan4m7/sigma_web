@@ -1,9 +1,9 @@
 @extends('layouts.app' ,[ 'pageSlug' => "Edit Media"])
 
 @section('content')
-<form enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{ route('media-update', $media->id) }}">
+<form enctype="multipart/form-data" class="card" style="padding:20px" method="POST" action="{{ route('edit-media-post', $media->id) }}">
     @csrf
-    @method('PUT')
+
 
     <div class="kt-portlet__head">
         <div class="kt-portlet__head-label">
@@ -18,6 +18,7 @@
         <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
             <div class="col-md-12 col-xs-12"><label>Media title:</label></div>
             <div class="col-md-12 col-xs-12">
+                <input type="hidden" name="media_id" value="{{$media->id}}">
                 <input class="form-control" type="text" name="title" required placeholder="Media title" value="{{ old('title', $media->text) }}" />
                 <span class="help-block text-muted"><small>English | 3-40 Char.</small></span>
             </div>

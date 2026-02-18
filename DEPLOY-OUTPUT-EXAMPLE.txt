@@ -1,0 +1,82 @@
+═══════════════════════════════════════════════════════════
+   EXAMPLE DEPLOY OUTPUT
+═══════════════════════════════════════════════════════════
+
+When you run deploy.bat or deploy.sh, you'll see:
+
+═══════════════════════════════════════════════════════════
+
+=========================================
+   SIGMA Quick Deploy
+=========================================
+
+[1/2] Syncing files to server...
+
+Syncing app/...
+app/Http/Controllers/CaseController.php | 145.2 KB
+app/Http/Controllers/UserController.php | 23.5 KB
+app/User.php | 8.1 KB
+...
+
+Syncing resources/...
+resources/views/cases/edit-case.blade.php | 12.3 KB
+resources/views/users/create.blade.php | 5.7 KB
+...
+
+Syncing routes/...
+routes/web.php | 15.8 KB
+...
+
+Syncing config/...
+config/app.php | 7.2 KB
+...
+
+Syncing public/js/...
+public/js/app.js | 245.6 KB
+public/js/sidebar-collapse.js | 3.2 KB
+...
+
+Syncing public/css/...
+public/css/app.css | 128.4 KB
+public/css/custom-styling.css | 45.1 KB
+...
+
+[2/2] Clearing caches on server...
+
+=========================================
+   Deploy Complete!
+=========================================
+
+Synced:
+  - app/
+  - resources/
+  - routes/
+  - config/
+  - public/js/
+  - public/css/
+
+═══════════════════════════════════════════════════════════
+   WHAT THE OUTPUT SHOWS:
+═══════════════════════════════════════════════════════════
+
+✓ File names being transferred
+✓ File sizes in KB/MB
+✓ Which files changed
+✓ Progress bar for large files
+✓ Total transfer statistics at end (bash version)
+
+═══════════════════════════════════════════════════════════
+   UNDERSTANDING THE OUTPUT:
+═══════════════════════════════════════════════════════════
+
+If you see:
+  - Lots of files = Many changes to sync
+  - Few files = Only recent changes being uploaded
+  - Same file multiple times = File is being updated
+
+File sizes help you:
+  - Know what's being uploaded
+  - Estimate transfer time
+  - Spot unexpectedly large files
+
+═══════════════════════════════════════════════════════════

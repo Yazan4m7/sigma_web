@@ -41,6 +41,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('impersonate.start');
     Route::get('/admin/audit-logs', [App\Http\Controllers\AuditLogController::class, 'index'])
         ->name('audit-logs.index');
+    Route::view('/user-settings', 'profile.user-settings')
+        ->name('user-settings');
 });
 // Public routes
 Route::get('/new-case', [App\Http\Controllers\CaseController::class, 'create'])->name('new-case-view');
@@ -492,7 +494,7 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::post('media/new-post', [App\Http\Controllers\MediaController::class, 'createPost'])->name('create-media-post');
         Route::get('/media/edit/{id}', [App\Http\Controllers\MediaController::class, 'edit'])->name('edit-media');
         Route::post('media/edit-post', [App\Http\Controllers\MediaController::class, 'editPost'])->name('edit-media-post');
-        Route::get('/media/delete{id}', [App\Http\Controllers\MediaController::class, 'delete'])->name('delete-media');
+        Route::post('/media/delete{id}', [App\Http\Controllers\MediaController::class, 'delete'])->name('delete-media');
 
 // IMPLANTS ROUTES
 Route::get('/implants/index', [App\Http\Controllers\ImplantsController::class, 'index'])->name("implants-index");

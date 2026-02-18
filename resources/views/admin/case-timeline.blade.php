@@ -139,7 +139,8 @@
         display: none;
     }
 
-    .filter-chip.assignment.active { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+    .filter-chip.assignment.active { background: #fef3c7; color: #b45309; border-color: #fcd34d; }
+    .filter-chip.started.active { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
     .filter-chip.completion.active { background: #dcfce7; color: #15803d; border-color: #86efac; }
     .filter-chip.note.active { background: #f3f4f6; color: #374151; border-color: #9ca3af; }
     .filter-chip.failure.active { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
@@ -157,7 +158,8 @@
     /* Timeline Styles */
     .timeline {
         position: relative;
-        padding: 30px;
+        padding: 25px 30px;
+        background: #fafbfc;
     }
 
     .timeline-item {
@@ -171,24 +173,34 @@
         display: none;
     }
 
+    .timeline-item:nth-child(odd) .timeline-card {
+        background: #ffffff;
+    }
+
+    .timeline-item:nth-child(even) .timeline-card {
+        background: #f8fafc;
+    }
+
     /* Left side - Date/Time */
     .timeline-date {
-        width: 100px;
+        width: 130px;
         flex-shrink: 0;
         text-align: right;
         padding-right: 20px;
-        padding-top: 5px;
+        padding-top: 3px;
     }
 
     .timeline-date-day {
-        font-size: 13px;
-        font-weight: 600;
-        color: #374151;
+        font-size: 14px;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 2px;
     }
 
     .timeline-date-time {
-        font-size: 12px;
-        color: #9ca3af;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6b7280;
     }
 
     /* Center - Dot and Line */
@@ -202,8 +214,8 @@
     }
 
     .timeline-dot {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         border-radius: 50%;
         background: #6c757d;
         border: 3px solid white;
@@ -212,7 +224,8 @@
         flex-shrink: 0;
     }
 
-    .timeline-dot.assignment { background: #3b82f6; box-shadow: 0 0 0 3px #dbeafe, 0 2px 8px rgba(59,130,246,0.3); }
+    .timeline-dot.assignment { background: #f59e0b; box-shadow: 0 0 0 3px #fef3c7, 0 2px 8px rgba(245,158,11,0.3); }
+    .timeline-dot.started { background: #3b82f6; box-shadow: 0 0 0 3px #dbeafe, 0 2px 8px rgba(59,130,246,0.3); }
     .timeline-dot.completion { background: #22c55e; box-shadow: 0 0 0 3px #dcfce7, 0 2px 8px rgba(34,197,94,0.3); }
     .timeline-dot.note { background: #6b7280; box-shadow: 0 0 0 3px #f3f4f6, 0 2px 8px rgba(107,114,128,0.3); }
     .timeline-dot.failure { background: #ef4444; box-shadow: 0 0 0 3px #fee2e2, 0 2px 8px rgba(239,68,68,0.3); }
@@ -223,7 +236,7 @@
     .timeline-line {
         width: 2px;
         flex-grow: 1;
-        background: #e5e7eb;
+        background: linear-gradient(to bottom, #d1d5db, #e5e7eb);
         min-height: 20px;
     }
 
@@ -234,14 +247,14 @@
     /* Right side - Content */
     .timeline-content {
         flex: 1;
-        padding: 0 0 25px 20px;
+        padding: 0 0 20px 20px;
     }
 
     .timeline-card {
         background: white;
         border-radius: 10px;
         border: 1px solid #e5e7eb;
-        padding: 14px 18px;
+        padding: 16px 20px;
         transition: all 0.2s ease;
     }
 
@@ -253,20 +266,22 @@
     .timeline-card-header {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
     }
 
     .badge {
-        padding: 3px 8px;
-        border-radius: 4px;
-        font-size: 10px;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+        flex-shrink: 0;
     }
 
-    .badge-assignment { background: #dbeafe; color: #1d4ed8; }
+    .badge-assignment { background: #fef3c7; color: #b45309; }
+    .badge-started { background: #dbeafe; color: #1d4ed8; }
     .badge-completion { background: #dcfce7; color: #15803d; }
     .badge-note { background: #f3f4f6; color: #374151; }
     .badge-failure { background: #fee2e2; color: #dc2626; }
@@ -277,22 +292,24 @@
     .timeline-description {
         font-weight: 600;
         color: #1f2937;
-        font-size: 14px;
+        font-size: 15px;
+        line-height: 1.4;
     }
 
     .timeline-user {
         color: #6b7280;
         font-size: 13px;
         margin-left: auto;
+        font-style: italic;
     }
 
     .timeline-details {
-        margin-top: 10px;
-        padding-top: 10px;
-        border-top: 1px solid #f3f4f6;
-        color: #6b7280;
-        font-size: 13px;
-        line-height: 1.5;
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid #e5e7eb;
+        color: #4b5563;
+        font-size: 14px;
+        line-height: 1.6;
     }
 
     /* Empty state */
@@ -326,16 +343,16 @@
         }
 
         .timeline-date {
-            width: 70px;
+            width: 95px;
             padding-right: 10px;
         }
 
         .timeline-date-day {
-            font-size: 11px;
+            font-size: 12px;
         }
 
         .timeline-date-time {
-            font-size: 10px;
+            font-size: 11px;
         }
 
         .timeline-center {
@@ -362,7 +379,15 @@
         }
 
         .timeline-date {
-            width: 55px;
+            width: 85px;
+        }
+
+        .timeline-date-day {
+            font-size: 11px;
+        }
+
+        .timeline-date-time {
+            font-size: 10px;
         }
 
         .timeline-card-header {
@@ -415,12 +440,17 @@
                 <label class="filter-chip assignment active">
                     <input type="checkbox" class="timeline-filter" value="assignment" checked>
                     <span class="filter-dot"></span>
-                    Assignments
+                    Assigned
+                </label>
+                <label class="filter-chip started active">
+                    <input type="checkbox" class="timeline-filter" value="started" checked>
+                    <span class="filter-dot"></span>
+                    Started
                 </label>
                 <label class="filter-chip completion active">
                     <input type="checkbox" class="timeline-filter" value="completion" checked>
                     <span class="filter-dot"></span>
-                    Completions
+                    Completed
                 </label>
                 <label class="filter-chip note active">
                     <input type="checkbox" class="timeline-filter" value="note" checked>
@@ -455,8 +485,8 @@
                 <div class="timeline-item" data-type="{{ $event['type'] }}">
                     <!-- Left: Date -->
                     <div class="timeline-date">
-                        <div class="timeline-date-day">{{ \Carbon\Carbon::parse($event['timestamp'])->format('M d') }}</div>
-                        <div class="timeline-date-time">{{ \Carbon\Carbon::parse($event['timestamp'])->format('H:i') }}</div>
+                        <div class="timeline-date-day">{{ \Carbon\Carbon::parse($event['timestamp'])->format('M d, Y') }}</div>
+                        <div class="timeline-date-time">{{ \Carbon\Carbon::parse($event['timestamp'])->format('H:i:s') }}</div>
                     </div>
 
                     <!-- Center: Dot and Line -->
@@ -471,7 +501,7 @@
                             <div class="timeline-card-header">
                                 <span class="badge badge-{{ $event['type'] }}">{{ ucfirst($event['type']) }}</span>
                                 <span class="timeline-description">{{ $event['description'] }}</span>
-                                @if($event['user'])
+                                @if($event['user'] && $event['type'] !== 'completion')
                                     <span class="timeline-user">by {{ $event['user']->first_name ?? $event['user']->name ?? 'Unknown' }}</span>
                                 @endif
                             </div>

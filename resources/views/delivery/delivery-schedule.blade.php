@@ -3,9 +3,31 @@
 
 @section('content')
     <style>
+        :root {
+            --surface-bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --border-muted: #e3e8f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+        }
+
+        .delivery-page-wrapper {
+            background: var(--surface-bg);
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .delivery-section-card {
+            background: var(--card-bg);
+            border-radius: 14px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 15px rgba(15, 23, 42, 0.05);
+            border: 1px solid var(--border-muted);
+        }
+
         .row {
             margin: 0 !important;
-            ;
         }
 
         .table-odd tbody>tr:nth-of-type(odd) {
@@ -27,18 +49,36 @@
 
         .delivery-time-part {
             font-weight: 700;
-            font-size: 16px;
+            font-size: 18px;
             color: inherit;
+            white-space: nowrap;
+            letter-spacing: -0.7px;
+        }
+        @media screen and (min-width:1000px){
+            .delivery-time-part {
+                font-size: 21px;
+                letter-spacing: 0;
+            }
+            .delivery-date-part {
+                font-size: 14px !important;
+            }
+        }
+
+
+        .delivery-time-ampm {
+            font-size: 12px;
+            font-weight: 700;
+
         }
 
         .delivery-date-part {
             font-weight: 500;
-            font-size: 12px;
+            font-size: 11px;
             color: inherit;
         }
 
         .delivery-date-part::before {
-            content: " / ";
+            content: "  ";
         }
 
         .delivery-datetime-single {
@@ -104,6 +144,20 @@
         .delivery-counters > div {
             flex: 1 1 33.333% !important;
             min-width: 0 !important;
+            display: flex;
+        }
+
+        .delivery-counter-card {
+            flex: 1 1 auto;
+            height: 100%;
+        }
+
+        .delivery-counter-card > .label {
+            min-height: 2.4em;
+        }
+
+        .status-badge--mobile {
+            display: none !important;
         }
 
 
@@ -177,7 +231,7 @@
 
             .table.dataTable>tbody>tr>td,
             .table.dataTable>tbody>tr>th {
-                white-space: nowrap;
+                /*white-space: nowrap;*/
                 /* Prevent wrapping in cells */
             }
 
@@ -190,17 +244,23 @@
                 font-family: 'Cairo', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif !important;
             }
 
-            #datatable thead th,
-            #datatable tbody td {
-                padding: 4px 6px !important;
+        #datatable thead th,
+        #datatable tbody td {
+            padding: 4px 6px !important;
            
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
-                white-space: nowrap !important;
+                /*white-space: nowrap !important;*/
                 line-height: 1.3 !important;
-                max-height: 32px !important;
-                height: 32px !important;
-            }
+            max-height: 32px !important;
+            height: 25px !important;
+        }
+
+        /* Remove header separator lines */
+        #datatable thead th {
+            border-left: none !important;
+            border-right: none !important;
+        }
 
             #datatable tbody td {
                 color: #2c3e50 !important;
@@ -217,20 +277,20 @@
                 width: 22% !important;
             }
 
-            #datatable thead th:nth-child(3),
-            #datatable tbody td:nth-child(3) {
-                width: 20% !important;
-            }
+        #datatable thead th:nth-child(3),
+        #datatable tbody td:nth-child(3) {
+            width: 25% !important;
+        }
 
             #datatable thead th:nth-child(4),
             #datatable tbody td:nth-child(4) {
                 width: 12% !important;
             }
 
-            #datatable thead th:nth-child(5),
-            #datatable tbody td:nth-child(5) {
-                width: 24% !important;
-            }
+        #datatable thead th:nth-child(5),
+        #datatable tbody td:nth-child(5) {
+            width: 24% !important;
+        }
 
             /* Keep Status column visible and allow wrapping */
             #datatable thead th:nth-child(5),
@@ -245,13 +305,23 @@
                 text-align: center !important;
             }
 
-            .status-badge {
-                width: auto !important;
-                min-width: 80px !important;
-                display: inline-block !important;
-                white-space: normal !important;
-                text-align: center !important;
+        .status-badge {
+            width: auto !important;
+            min-width: 130px !important;
+            display: inline-block !important;
+            white-space: nowrap !important;
+            text-align: center !important;
+        }
+
+        @media screen and (min-width: 768px) {
+            .status-badge--mobile {
+                display: none !important;
             }
+
+            .status-badge--desktop {
+                display: inline-block !important;
+            }
+        }
 
             .table-action-btn {
                 padding: .15rem .3rem;
@@ -304,7 +374,7 @@
         @media screen and (max-width: 767px) {
             /* Page padding reduction by 50% */
             .content {
-                padding: 7.5px !important;
+                padding: 0 !important;
             }
 
             /* Extend counter cards */
@@ -316,36 +386,88 @@
                 font-size: 0.85rem !important;
             }
 
-            /* Mobile redesign for top counters */
+            /* Mobile card adjustments */
+            .delivery-page-wrapper {
+                padding:  8px 6px !important;
+                background: var(--surface-bg) !important;
+            }
+
+            .delivery-section-card {
+                border-radius: 12px !important;
+                padding: 10px 6px !important;
+                margin-bottom: 8px !important;
+            }
+
+            /* Fix table horizontal scroll */
+            .table-responsive, .table-responsive.row, .dataTables_wrapper {
+
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            #datatable {
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                table-layout: fixed !important;
+            }
+
+            .delivery-section-card {
+                overflow: hidden !important;
+            }
+
+            /* Bold header text */
+            #datatable thead th {
+                font-weight: 700 !important;
+            }
+
+            /* Mobile redesign for top counters - Separate cards */
             .delivery-counters {
-                gap: 10px !important;
+                gap: 6px !important;
                 padding: 6px 0 !important;
                 overflow-x: hidden !important;
                 align-items: stretch !important;
             }
 
+            .delivery-counters > div {
+                padding: 0 !important;
+                margin-bottom: 0 !important;
+            }
+
             .delivery-counter-card {
-                background: #ffffff;
-                border: 1px solid #e5e9ef;
-                border-radius: 12px;
-                padding: 10px 12px;
-                text-align: center;
-                box-shadow: 0 2px 6px rgba(16, 24, 40, 0.08);
+                background: #f8fafc !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 8px !important;
+                padding: 10px 6px !important;
+                text-align: center !important;
+                box-shadow: none !important;
                 flex: 1 1 0 !important;
                 min-width: 0 !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                min-height: 72px;
+            }
+
+            .delivery-counter-card > .value {
+                font-size: 1.5rem !important;
+                font-weight: 700 !important;
+                letter-spacing: -0.5px !important;
+                line-height: 1 !important;
+                margin-bottom: 4px !important;
             }
 
             .delivery-counter-card > .label {
+                font-weight: 500;
+                font-size: 0.62rem !important;
+                line-height: 1.2;
                 text-transform: uppercase;
-                letter-spacing: 0.04em;
-                font-weight: 600;
-                color: #6b7280;
-                line-height: 1.1;
-                min-height: 2.4em;
+                letter-spacing: 0.02em;
+                color: #64748b !important;
+            }
+
+            /* Keep value colors */
+            .delivery-counters > div:nth-child(3) .value {
+                color: #3b82f6 !important;
             }
 
             .vertical {
@@ -353,54 +475,75 @@
                 padding-left: 0 !important;
             }
 
-            /* Keep From/To + button on one row */
+            /* Add padding to first column */
+            #datatable thead th:nth-child(1),
+            #datatable tbody td:nth-child(1) {
+                padding-left: 6px !important;
+            }
+
+            /* Filter row - 2 dates + button in one row */
             .cases-filter-row {
                 flex-wrap: nowrap !important;
-                align-items: flex-end !important;
                 gap: 6px !important;
-                margin-bottom: 0 !important;
-            }
-
-            .cases-filter-row > div {
-                margin-bottom: 0 !important;
-            }
-
-            .cases-filter-row > div:nth-child(1), /* From Date */
-            .cases-filter-row > div:nth-child(2) { /* To Date */
-                flex: 1 1 0 !important;
-                max-width: none !important;
-            }
-
-            .cases-filter-row > div:nth-child(3) { /* Filter Button */
-                flex: 0 0 44px !important;
-                max-width: 44px !important;
-                display: flex !important;
-                justify-content: flex-end !important;
-            }
-
-            /* Compact button on mobile */
-            .cases-filter-btn {
-                width: 36px !important;
-                min-width: 36px !important;
-                height: 34px !important;
                 padding: 0 !important;
             }
 
-            /* Adjust label and input/button heights for mobile */
-            .cases-filter-row label {
-                font-size: 11px !important;
-                margin-bottom: 2px !important;
+            .cases-filter-row > div:nth-child(1),
+            .cases-filter-row > div:nth-child(2) {
+                flex: 1 1 auto !important;
+                max-width: none !important;
             }
+
+            .cases-filter-row > div:nth-child(3) {
+                flex: 0 0 auto !important;
+                max-width: none !important;
+                display: flex !important;
+                align-items: flex-end !important;
+            }
+
+            .cases-filter-btn {
+                width: 100% !important;
+                min-width: 60px !important;
+                height: 36px !important;
+            }
+
+            .cases-filter-row > div:nth-child(3) {
+                flex: 0 0 20% !important;
+                max-width: 20% !important;
+            }
+
+            .cases-filter-row label {
+                font-size: 10px !important;
+                margin-bottom: 3px !important;
+                color: #64748b !important;
+            }
+
             .cases-filter-row .form-control,
-            .cases-filter-row .x-ios-dtp { /* Target ios-dtp for height */
-                height: 34px !important;
+            .cases-filter-row .x-ios-dtp {
+                height: 36px !important;
                 font-size: 12px !important;
                 padding: 4px 6px !important;
+                border-radius: 6px !important;
             }
 
             /* Hide print button on mobile */
             .ml-auto {
                 display: none !important;
+            }
+
+            /* Prevent horizontal scroll on mobile */
+            .table-responsive {
+                overflow-x: hidden !important;
+            }
+
+            .table-responsive.row {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            #datatable_wrapper,
+            #datatable {
+                width: 100% !important;
             }
 
             /* Show date under time on mobile */
@@ -413,9 +556,10 @@
 
             .delivery-date-part {
                 display: block !important;
-                font-size: 12px !important;
+                font-size: 11px !important;
                 line-height: 1.2;
                 margin-top: 2px;
+                white-space: nowrap;
             }
 
             .delivery-date-part::before {
@@ -425,13 +569,13 @@
             /* Reduce doctor and patient name font sizes */
             #datatable tbody td:nth-child(1),
             #datatable tbody td:nth-child(2) {
-                font-size: 0.85rem !important;
+                font-size: 0.80rem !important;
             }
 
             /* Reduce # of units column width to half */
             #datatable thead th:nth-child(4),
             #datatable tbody td:nth-child(4) {
-                width: 6% !important;
+                width: 7% !important;
                 max-width: 48px !important;
                 font-size: 14px !important;
                 font-weight: 700 !important;
@@ -440,12 +584,13 @@
             /* Mobile column width split */
             #datatable thead th:nth-child(1),
             #datatable tbody td:nth-child(1) {
-                width: 26% !important; /* Doctor */
+                width: 28% !important; /* Doctor */
+                direction: rtl;
             }
 
             #datatable thead th:nth-child(2),
             #datatable tbody td:nth-child(2) {
-                width: 26% !important; /* Patient */
+                width: 28% !important; /* Patient */
 
                 direction: rtl;
             }
@@ -453,25 +598,37 @@
             #datatable thead th:nth-child(3),
             #datatable tbody td:nth-child(3) {
                 text-align: center;
-                width: 22% !important; /* Date */
+                width:  21%  !important; /* Date */
             }
 
             #datatable thead th:nth-child(5),
             #datatable tbody td:nth-child(5) {
-                width: 20% !important; /* Status */
+                text-align: center;
+                width: 21% !important; /* Status */
             }
 
             /* Tighten table density so all columns fit */
             #datatable thead th,
             #datatable tbody td {
                 font-size: 12px !important;
-                padding: 3px 4px !important;
+                padding: 3px 0 2px 1px !important;
             }
 
             .status-badge {
-                min-width: 52px !important;
+                width: 97% !important;
+                min-width: 97% !important;
+                max-width: 97% !important;
                 font-size: 11px !important;
-                padding: 2px 6px !important;
+                padding: 2.2px 5px !important;
+                white-space: nowrap !important;
+            }
+
+            .status-badge--desktop {
+                display: none !important;
+            }
+
+            .status-badge--mobile {
+                display: inline-block !important;
             }
 
             .delivery-datetime-single {
@@ -491,7 +648,7 @@
         /* Left align Status column */
         #datatable thead th:nth-child(5),
         #datatable tbody td:nth-child(5) {
-            text-align: left !important;
+            text-align: center !important;
         }
 
 
@@ -509,6 +666,45 @@
         .ios-dtp-backdrop.visible{
             opacity: 0 !important;
         }
+
+        /* Sticky filters bar */
+        .delivery-controls {
+            position: sticky;
+            top: 70px;
+            z-index: 5;
+            background: #ffffff;
+        }
+
+        /* DataTables pagination + info polish */
+        #datatable_wrapper .dataTables_info {
+            display: block !important;
+            font-size: 12px;
+            color: #6b7280;
+            text-align: left;
+            padding-top: 8px;
+        }
+
+        #datatable_wrapper .dataTables_paginate {
+            text-align: right;
+            padding-top: 6px;
+        }
+
+        #datatable_wrapper .dataTables_paginate .paginate_button {
+            border: 1px solid #e2e8f0 !important;
+            background: #f8fafc !important;
+            color: #334155 !important;
+            border-radius: 8px !important;
+            padding: 4px 10px !important;
+            margin-left: 6px !important;
+            font-size: 12px !important;
+        }
+
+        #datatable_wrapper .dataTables_paginate .paginate_button.current,
+        #datatable_wrapper .dataTables_paginate .paginate_button:hover {
+            background: #3c9aff !important;
+            color: #ffffff !important;
+            border-color: #0ea5e9 !important;
+        }
     </style>
     @php
         $permissions = safe_permissions();
@@ -518,10 +714,8 @@
         $overdue = $overdue ?? 0;
         $numOfUnits = $numOfUnits ?? 0;
     @endphp
-    <div class="row deliveries-page">
-
-        <div class="col-lg-12 col-sm-12 ">
-
+    <div class="delivery-page-wrapper">
+        <div class="delivery-section-card">
             <form class="kt-form" method="GET" action="{{ route('delivery-schedule') }}">
                 @csrf
                 <div class="kt-portlet__body delivery-controls">
@@ -575,7 +769,6 @@
                 </div>
             </form>
         </div>
-    </div>
     @php
 
         $date = new DateTime();
@@ -596,21 +789,20 @@
         }
     @endphp
 
-    <hr style="margin:0">
-
-    <div class=" table-responsive row">
+        <div class="delivery-section-card">
+            <div class=" table-responsive row">
         <div class="col-lg-12 col-sm-12  row delivery-counters" style="flex-direction: row;padding-bottom:0px">
             <div class="col-lg-4 col-md-4 col-4 mb-3">
 
                 <div class="vertical delivery-counter-card">
                     <span class="value" style="color:#3b8b45">{{ count($cases) }}</span>
-                    <span class="label">Total deliveries</span>
+                    <span class="label">Total</span>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-4 mb-3">
                 <div class="vertical delivery-counter-card">
                     <span class="value" style="color:red">{{ $overdue }}</span>
-                    <span class="label">Overdue deliveries</span>
+                    <span class="label">Overdue</span>
                 </div>
             </div>
             <div class="col-lg-4 col-md-4 col-4 mb-3">
@@ -690,6 +882,14 @@
                                             $formattedActiveStatus = $rawStatus;
                                         }
 
+                                        $stageLabelMobile = trim($stageText);
+                                        if ($stageLabelMobile === '') {
+                                            $stageLabelMobile = $rawStatus;
+                                        }
+                                        if (strcasecmp($stageLabelMobile, '3D Printing') === 0) {
+                                            $stageLabelMobile = '3DPrint..';
+                                        }
+
                                         $waitingStage = $rawStatus;
                                         if (Str::contains($rawStatus, 'Waiting in')) {
                                             $waitingStage = trim(Str::after($rawStatus, 'Waiting in'));
@@ -699,6 +899,17 @@
                                         $waitingStage = trim($waitingStage);
                                         if ($waitingStage === '') {
                                             $waitingStage = $rawStatus;
+                                        }
+
+                                        $waitingStageMobile = $waitingStage;
+                                        if (strcasecmp($waitingStageMobile, '3D Printing') === 0) {
+                                            $waitingStageMobile = '3DPrint..';
+                                        }
+
+                                        $deliveryAssigned = false;
+                                        $firstJob = $case->jobs->first();
+                                        if ($firstJob && (int) $firstJob->stage === 8 && $firstJob->assignee !== null && $firstJob->delivery_accepted === null) {
+                                            $deliveryAssigned = true;
                                         }
 
                                     @endphp
@@ -714,12 +925,18 @@
                                         </td>
                                         @php
                                             $date = explode('T', $case->initial_delivery_date);
-                                            $timeFormatted = isset($date[1]) ? date('g:i A', strtotime($date[1])) : '-';
-                                            $dateFormatted = isset($date[0]) ? date('D d, M', strtotime($date[0])) : '-';
+                                            $timeMain = isset($date[1]) ? date('g:i', strtotime($date[1])) : '-';
+                                            $timeMeridiem = isset($date[1]) ? date('A', strtotime($date[1])) : '';
+                                            $dateFormatted = isset($date[0]) ? date('d M', strtotime($date[0])) : '-';
                                         @endphp
                                         <td class="{{ $isOverdue ? 'text-overdue' : '' }}" style="color:{{ $color }} !important">
                                             <span class="delivery-datetime-single">
-                                                <span class="delivery-time-part">{{ $timeFormatted }}</span>
+                                                <span class="delivery-time-part">
+                                                    <span class="delivery-time-main">{{ $timeMain }}</span>
+                                                    @if ($timeMeridiem !== '')
+                                                        <span class="delivery-time-ampm">{{ $timeMeridiem }}</span>
+                                                    @endif
+                                                </span>
                                                 <span class="delivery-date-part">{{ $dateFormatted }}</span>
                                             </span>
                                         </td>
@@ -728,18 +945,23 @@
                                         </td>
                                         <td>
                                             @if (str_contains($status, 'Completed'))
-                                                <span class="badge badge-success middle status-badge sigma-status-width">Completed</span>
+                                                <span class="badge badge-success middle status-badge sigma-status-width status-badge--desktop">Completed</span>
                                             @elseif(str_contains($status, 'Active'))
-                                                <span
-                                                    class="badge badge-primary middle status-badge sigma-status-width">{{ $formattedActiveStatus }}</span>
+                                                <span class="badge badge-primary middle status-badge sigma-status-width status-badge--desktop">{{ $formattedActiveStatus }}</span>
                                             @elseif(str_contains($status, 'In-Progress'))
-                                                <span class="badge badge-primary middle status-badge sigma-status-width">{{ $formattedActiveStatus }}</span>
+                                                <span class="badge badge-primary middle status-badge sigma-status-width status-badge--desktop">{{ $formattedActiveStatus }}</span>
                                             @elseif(str_contains($status, 'Waiting'))
-                                                <span
-                                                    class="badge badge-danger middle status-badge sigma-status-width">{{ $waitingStage }}</span>
+                                                <span class="badge badge-danger middle status-badge sigma-status-width status-badge--desktop">{{ $waitingStage }}</span>
                                             @else
-                                                <span
-                                                    class="badge badge-warning middle status-badge sigma-status-width">{{ $status }}</span>
+                                                <span class="badge badge-warning middle status-badge sigma-status-width status-badge--desktop">{{ $status }}</span>
+                                            @endif
+
+                                            @if ($deliveryAssigned)
+                                                <span class="badge middle status-badge sigma-status-width status-badge--mobile" style="background:#ffc414;color:#1f2a37;">Delivery</span>
+                                            @elseif (str_contains($status, 'Waiting'))
+                                                <span class="badge badge-danger middle status-badge sigma-status-width status-badge--mobile">{{ $waitingStageMobile }}</span>
+                                            @else
+                                                <span class="badge badge-primary middle status-badge sigma-status-width status-badge--mobile">{{ $stageLabelMobile }}</span>
                                             @endif
                                         </td>
 
@@ -752,7 +974,7 @@
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Delivery Date</h5>
+                                                            <h5 class="modal-title">Deli. Date</h5>
                                                             <button type="button" class="close" data-dismiss="modal"
                                                                 aria-label="Close">
                                                                 <span aria-hidden="true">&times;</span>
@@ -773,7 +995,7 @@
 {{--                                                                    <input class="form-control SDTP" name="delivery_date"--}}
 {{--                                                                        type="text" value="{{ $time }}"--}}
 {{--                                                                        required readonly />--}}
-                                                                    <x-ios-dtp name="delivery_date" :value="  $time  ?? ''  " :required="true" />
+                                                                    <x-ios-dtp name="delivery_date" id="delivery_date_{{ $case->id }}" :value="  $time  ?? ''  " :required="true" />
 
                                                                 </div>
 
@@ -934,6 +1156,8 @@
                 </div>
             </div>
         </div>
+        </div>
+    </div>
     </div>
 
     <script>
@@ -1037,13 +1261,17 @@
                                             <td ><span>{{ $case->client->name }}</span></td>
 
                                             <td ><span>{{ $case->patient_name }}</span></td>
-                                            @php
+            @php
                 $date = explode('T', $case->initial_delivery_date);
-                $timeFormatted = isset($date[1]) ? date('g:i A', strtotime($date[1])) : '-';
+                $timeMain = isset($date[1]) ? date('g:i', strtotime($date[1])) : '-';
+                $timeMeridiem = isset($date[1]) ? date('A', strtotime($date[1])) : '';
                 $dateFormatted = isset($date[0]) ? date('D d, M', strtotime($date[0])) : '-';
             @endphp
               <td style="color:{{ $color }};">
-                  <span style="font-weight:700;font-size:15px;">{{ $timeFormatted }}</span>
+                  <span style="font-weight:700;font-size:15px;">{{ $timeMain }}</span>
+                  @if ($timeMeridiem !== '')
+                      <span style="font-weight:700;font-size:13px;margin-left:2px;">{{ $timeMeridiem }}</span>
+                  @endif
                   <span style="font-weight:500;font-size:12px;"> / {{ $dateFormatted }}</span>
                 </td>
 
@@ -1052,7 +1280,7 @@
               <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-success middle">Completed</span>
 @elseif (str_contains($status, 'In-Progress') || str_contains($status, 'Active'))
               <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-primary middle">{{ $formattedActiveStatus }}</span>
-                                                                                                        @elseif (str_contains($status, 'Waiting'))
+@elseif (str_contains($status, 'Waiting'))
               <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">{{ $waitingStage }}</span>
                                                                                                             @else
               <span style="font-size:12px !important;width: 160px; margin: auto; text-align: center" class="badge badge-danger middle">Unknown</span>

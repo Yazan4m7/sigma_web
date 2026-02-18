@@ -823,7 +823,7 @@ class CaseController extends Controller
         $startTime = microtime(true);
 
         // Cache key for dashboard data (5-minute cache)
-        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user');
+        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user') . '_v2';
         $devices = collect();
         $deviceUnitsCounts = [];
 
@@ -860,121 +860,129 @@ class CaseController extends Controller
                 ->get();
 
             // Apply different queries for admin vs normal users
+            // Helper: Check if job is a primary/main unit (not accessory like 3D Model)
+            $isPrimaryJob = fn($job) => !$job->jobType || $job->jobType->a_secondary_item != 1;
+
             if ($isAdmin) {
-                // Optimized: Filter from single collection instead of multiple DB queries
-                $aDesign = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 1)->whereNotNull('assignee')->isNotEmpty();
+                // Optimized: Filter from single collection - only consider PRIMARY jobs
+                $aDesign = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aMilling = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 2)->where('is_set', 1)->isNotEmpty();
+                $aMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 2)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
                 $aPrinting = $allCases->filter(function ($case) {
+                    // Stage 3 must include all printable jobs, including secondary items (e.g., model prints).
                     return $case->jobs->where('stage', 3)->filter(function ($job) {
                         return $job->is_set == 1 || $job->is_active == 1 || !is_null($job->printing_build_id);
                     })->isNotEmpty();
                 });
 
-                $aSintering = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 4)->where('is_set', 1)->isNotEmpty();
+                $aSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aPressing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 5)->where('is_set', 1)->isNotEmpty();
+                $aPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aFinishing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 6)->whereNotNull('assignee')->isNotEmpty();
+                $aFinishing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aQC = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 7)->whereNotNull('assignee')->isNotEmpty();
+                $aQC = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aDelivery = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 8)->whereNotNull('delivery_accepted')->isNotEmpty();
+                $aDelivery = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->whereNotNull('delivery_accepted')->isNotEmpty();
                 });
             } else {
-                // Optimized: User-specific queries using collection filtering
-                $aDesign = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 1)->where('assignee', $currentUserId)->isNotEmpty();
+                // Optimized: User-specific queries - only consider PRIMARY jobs
+                $aDesign = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aMilling = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 2)->where('is_set', 1)->isNotEmpty();
+                $aMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 2)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
                 $aPrinting = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 3)->where('is_set', 1)->isNotEmpty();
+                    // Stage 3 must include all printable jobs, including secondary items (e.g., model prints).
+                    return $case->jobs->where('stage', 3)->filter(function ($job) {
+                        return $job->is_set == 1 || $job->is_active == 1 || !is_null($job->printing_build_id);
+                    })->isNotEmpty();
                 });
 
-                $aSintering = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 4)->where('is_set', 1)->isNotEmpty();
+                $aSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aPressing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 5)->where('is_set', 1)->isNotEmpty();
+                $aPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
                 // Non-admin users only see their own assigned active cases in Finishing stage
-                $aFinishing = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 6)->where('assignee', $currentUserId)->isNotEmpty();
+                $aFinishing = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
                 // Non-admin users only see their own assigned active cases in QC stage
-                $aQC = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 7)->where('assignee', $currentUserId)->isNotEmpty();
+                $aQC = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aDelivery = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 8)->where('assignee', $currentUserId)->whereNotNull('delivery_accepted')->isNotEmpty();
+                $aDelivery = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->where('assignee', $currentUserId)->whereNotNull('delivery_accepted')->isNotEmpty();
                 });
             }
 
-            // Optimized: Waiting cases using collection filtering
-            $wDesign = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 1)->whereNull('assignee')->isNotEmpty();
+            // Optimized: Waiting cases - only consider PRIMARY jobs (accessories don't determine case stage)
+            $wDesign = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            $wMilling = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 2)->filter(function ($job) {
-                    return is_null($job->is_set) || $job->is_set == 0;
+            $wMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 2)->filter(function ($job) use ($isPrimaryJob) {
+                    return $isPrimaryJob($job) && (is_null($job->is_set) || $job->is_set == 0);
                 })->isNotEmpty();
             });
 
             $wPrinting = $allCases->filter(function ($case) {
                 return $case->jobs->where('stage', 3)->filter(function ($job) {
-                    return (is_null($job->is_set) || $job->is_set == 0) &&
+                    return
+                        (is_null($job->is_set) || $job->is_set == 0) &&
                         (is_null($job->is_active) || $job->is_active == 0) &&
                         is_null($job->printing_build_id);
                 })->isNotEmpty();
             });
 
-            $wSintering = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 4)->whereNull('is_active')->isNotEmpty();
+            $wSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->whereNull('is_active')->isNotEmpty();
             });
 
-            $wPressing = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 5)->whereNull('is_active')->isNotEmpty();
+            $wPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->whereNull('is_active')->isNotEmpty();
             });
 
-            $wFinishing = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 6)->whereNull('assignee')->isNotEmpty();
+            $wFinishing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            $wQC = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 7)->whereNull('assignee')->isNotEmpty();
+            $wQC = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            // Optimized: Delivery cases using collection filtering
+            // Optimized: Delivery cases - only consider PRIMARY jobs
             if ($isAdmin || $permissions->contains('permission_id', 129)) {
-                $wDelivery = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 8)->whereNull('delivery_accepted')->isNotEmpty();
+                $wDelivery = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->whereNull('delivery_accepted')->isNotEmpty();
                 });
             } else {
-                $wDelivery = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 8)->where('assignee', $currentUserId)->whereNull('delivery_accepted')->isNotEmpty();
+                $wDelivery = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->where('assignee', $currentUserId)->whereNull('delivery_accepted')->isNotEmpty();
                 });
             }
 
@@ -1064,7 +1072,7 @@ class CaseController extends Controller
                     ];
                 });
             });
-
+    
         // Log execution time - can be removed in production
         $executionTime = microtime(true) - $startTime;
         \Log::info("Dashboard loaded in {$executionTime} seconds");
@@ -2557,10 +2565,24 @@ class CaseController extends Controller
             3 => 'Redo'
         ];
 
+        // Event priority for sorting when timestamps are equal (lower = earlier in chronological order)
+        // In DESC timeline: higher priority = appears first (top)
+        $eventPriority = [
+            'created' => 1,
+            'job' => 2,
+            'started' => 3,      // Started happens before completion
+            'assignment' => 3,
+            'completion' => 4,   // Completion happens after started
+            'failure' => 5,
+            'note' => 6,
+            'financial' => 7
+        ];
+
         // 1. Case created
         $timeline->push([
             'timestamp' => $case->created_at,
             'type' => 'created',
+            'priority' => $eventPriority['created'],
             'user' => $case->createdBy ?? null,
             'description' => 'Case created',
             'details' => "Patient: {$case->patient_name}"
@@ -2569,16 +2591,34 @@ class CaseController extends Controller
         // 2. Case logs (assignments, completions)
         foreach ($case->caseLogs as $log) {
             $stageName = $subStageNames[$log->stage] ?? $stageNames[$log->stage] ?? "Stage {$log->stage}";
+            $stageNum = (string) $log->stage;
 
             if ($log->is_completion) {
-                $description = "Completed: {$stageName}";
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "{$stageName} / {$userName}";
+                $type = 'completion';
+            } elseif ($stageNum === '8.1' || $stageNum === '8') {
+                // Delivery assignment - keep as "assignment", show who assigned to whom
+                $assignerName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $assigneeName = $log->assignee ? ($log->assignee->first_name ?? $log->assignee->name ?? 'Driver') : 'Driver';
+                $description = "Delivery by {$assignerName} to {$assigneeName}";
+                $type = 'assignment';
+            } elseif ($stageNum === '8.2') {
+                // Driver accepted - this is "started" for delivery
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "Delivery / {$userName}";
+                $type = 'started';
             } else {
-                $description = "Assigned to: {$stageName}";
+                // All other stages - "started" instead of "assignment"
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "{$stageName} / {$userName}";
+                $type = 'started';
             }
 
             $timeline->push([
                 'timestamp' => $log->created_at,
-                'type' => $log->is_completion ? 'completion' : 'assignment',
+                'type' => $type,
+                'priority' => $eventPriority[$type],
                 'user' => $log->user,
                 'description' => $description,
                 'details' => null
@@ -2590,6 +2630,7 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $note->created_at,
                 'type' => 'note',
+                'priority' => $eventPriority['note'],
                 'user' => $note->writtenBy,
                 'description' => 'Added note',
                 'details' => $note->content
@@ -2601,6 +2642,7 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $failure->created_at,
                 'type' => 'failure',
+                'priority' => $eventPriority['failure'],
                 'user' => $failure->user ?? null,
                 'description' => $failureTypes[$failure->failure_type] ?? 'Issue',
                 'details' => $failure->cause->name ?? null
@@ -2612,6 +2654,7 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $discount->created_at,
                 'type' => 'financial',
+                'priority' => $eventPriority['financial'],
                 'user' => $discount->createdBy ?? null,
                 'description' => 'Discount applied',
                 'details' => number_format($discount->amount, 2) . ' JOD'
@@ -2623,6 +2666,7 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $invoice->created_at,
                 'type' => 'financial',
+                'priority' => $eventPriority['financial'],
                 'user' => null,
                 'description' => 'Invoice issued',
                 'details' => number_format($invoice->amount, 2) . ' JOD'
@@ -2632,6 +2676,7 @@ class CaseController extends Controller
                 $timeline->push([
                     'timestamp' => $invoice->date_applied,
                     'type' => 'financial',
+                    'priority' => $eventPriority['financial'],
                     'user' => null,
                     'description' => 'Invoice applied to client balance',
                     'details' => null
@@ -2644,6 +2689,7 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $job->created_at,
                 'type' => 'job',
+                'priority' => $eventPriority['job'],
                 'user' => null,
                 'description' => 'Job added',
                 'details' => "{$job->jobType->name} - {$job->material->name} - Units: {$job->unit_num}"
@@ -2657,14 +2703,29 @@ class CaseController extends Controller
             $timeline->push([
                 'timestamp' => $abutmentRecord->created_at,
                 'type' => 'job',
+                'priority' => $eventPriority['job'],
                 'user' => null,
                 'description' => 'Abutment delivery record',
                 'details' => "Abutment: {$abutmentName}, Implant: {$implantName}, Units: {$abutmentRecord->units}"
             ]);
         }
 
-        // Sort by timestamp DESC
-        $timeline = $timeline->sortByDesc('timestamp')->values();
+        // Sort by timestamp DESC, then by priority DESC (when timestamps equal)
+        // Higher priority = appears first at top (completion before started for same second)
+        $timelineArray = $timeline->toArray();
+        usort($timelineArray, function($a, $b) {
+            $timeA = strtotime($a['timestamp']);
+            $timeB = strtotime($b['timestamp']);
+
+            // Primary: timestamp DESC (newer first)
+            if ($timeA !== $timeB) {
+                return $timeB - $timeA;
+            }
+
+            // Secondary: priority DESC (higher priority = later event = appears first in DESC view)
+            return $b['priority'] - $a['priority'];
+        });
+        $timeline = collect($timelineArray);
 
         return view('admin.case-timeline', compact('case', 'timeline'));
     }
