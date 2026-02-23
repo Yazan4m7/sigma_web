@@ -1,13 +1,14 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Number of units Report'])
 
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
 
     <!-- styles to carry on while printing -->
 
     <!-- styles for the view only -->
 
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{route('num-of-units-report')}}">
             <!-- FILTERS ROW 1: Main Filters -->
@@ -62,7 +63,7 @@
                 <!-- BUTTONS ROW 2: Actions -->
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <button type="submit" class="btn btn-primary-enhanced" style="height: 50px; padding: 12px 24px; font-size: 16px; font-weight: 600;">
+                        <button type="submit" class="btn btn-primary-enhanced">
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
@@ -90,7 +91,7 @@
                         <div id="monthlyBreakdown" style="display: none;">
                             @foreach($selectedMonths as $month)
                                 @if($loop->index > 0)
-                                    <div class="sigma-report-table-container" style="margin-bottom: 1.5rem;">
+                                    <div style="margin-bottom: 1.5rem;">
                                         <div class="month-header-section">
                                             <h6 class="month-title"><i class="fas fa-calendar-alt me-2"></i>{{$month}}
                                             </h6>
@@ -130,7 +131,6 @@
                                                             $currentTotal= $client->numOfUnitsByMaterial($matId,$month);
                                                             $docTotalUnits += $currentTotal;
                                                             $totalsArray[$month][$matId] += $currentTotal;
-                                                            $totals[$client->id][$matId] += $currentTotal;
                                                         @endphp
                                                         <td class="text-center">{{$currentTotal}}</td>
                                                     @endforeach
@@ -158,7 +158,6 @@
                             @endforeach
                         </div>
                         <div id="totalsTableTempHolder">
-                            <div class="sigma-report-table-container">
                                 <table class="printable sigma-report-table">
                                     <thead>
                                     <!--The Materials row -->
@@ -212,7 +211,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                            </div>
 
                         </div>
                     </div>
@@ -220,6 +218,7 @@
             </div>
         </div>
 
+    </div>
         @endsection
 
         @push('js')

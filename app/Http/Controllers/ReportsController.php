@@ -34,6 +34,8 @@ class ReportsController extends Controller
         $perUnitTrigger= $request->perToggle ?  false : true;
         $implants = implant::all();
         $allImplantsSelected=true;
+        $abutments = abutment::all();
+        $allAbutmentsSelected = true;
 
 
 
@@ -43,6 +45,13 @@ class ReportsController extends Controller
         }
         else
         $selectedImplants =  $implants;
+
+        if ($request->abutmentsInput && !in_array("all", (array)$request->abutmentsInput)){
+            $selectedAbutments =  abutment::whereIn('id', (array)$request->abutmentsInput)->get();
+            $allAbutmentsSelected=false;
+        } else {
+            $selectedAbutments = $abutments;
+        }
 
         $from = $request->from ? Carbon::parse($request->from)->startOfDay()->format('Y-m-d H:i:s') : now()->subMonth()->startOfDay()->format('Y-m-d H:i:s');
         $to = $request->to ? Carbon::parse($request->to)->endOfDay()->format('Y-m-d H:i:s') : now()->endOfDay()->format('Y-m-d H:i:s');
@@ -110,6 +119,16 @@ class ReportsController extends Controller
             }
         }
 
+        // Compute totals across all selected months/clients from the lab-level aggregation
+        $totals2 = [];
+        foreach ($selectedAbutments as $abutment) {
+            $sum = 0;
+            foreach ($selectedMonths as $month) {
+                $sum += $labLevelTotal[$month][$abutment->id] ?? 0;
+            }
+            $totals2[$abutment->id] = $sum;
+        }
+
         $selectedMonths=array_reverse($selectedMonths);
 
         return view('reports.implants',compact('totals','totals2','clients','selectedClients',
@@ -132,6 +151,8 @@ class ReportsController extends Controller
 
         $from = $request->from ?? now()->subMonth()->format('Y-m-d');
         $to = $request->to ?? now()->format('Y-m-d');
+        $fromDateTime = Carbon::parse($from)->startOfDay()->format('Y-m-d H:i:s');
+        $toDateTime = Carbon::parse($to)->endOfDay()->format('Y-m-d H:i:s');
 
         $start = Carbon::parse($from)->startOfMonth();
         $end = Carbon::parse($to)->endOfMonth();
@@ -146,7 +167,7 @@ class ReportsController extends Controller
 
         // get failure logs
         $failureLogs = array();
-        $query = failureLog::query();
+        $query = failureLog::query()->with(['case.client']);
 
         // Filter the logs by user inputs
         if(isset($request->failureTypeInput) && !in_array('all', (array)$request->failureTypeInput)) {
@@ -163,12 +184,20 @@ class ReportsController extends Controller
             $selectedFailureCauses = $allFailureCauses;
 
 
-            // Get the FILTERED RESULTS
-            $results = $query->whereBetween('created_at', [$from . ' 00:00:00', $to . ' 23:59:59'])->get();
+            // Get the FILTERED RESULTS (match repeats report date basis)
+            $results = $query->whereHas('case', function ($q) use ($fromDateTime, $toDateTime): void {
+                $q->whereBetween('actual_delivery_date', [$fromDateTime, $toDateTime]);
+            })->get();
              //dd($results);
              // SEPARATE THEM BY MONTH
             foreach($selectedMonths as $month){
-                $failureLogs[$month] = $results->whereBetween('created_at', [$month . '-01 00:00:00', $month . '-31 23:59:59']);
+                $failureLogs[$month] = $results->filter(function ($log) use ($month): bool {
+                    $case = $log->case;
+                    if (!$case || !$case->actual_delivery_date) {
+                        return false;
+                    }
+                    return Carbon::parse($case->actual_delivery_date)->format('Y-m') === $month;
+                });
 
                 // Total cases and units of every month
                 $amountOfCases[$month] = $failureLogs[$month]->groupBy("case_id")->pluck("case_id")->count();
@@ -181,7 +210,14 @@ class ReportsController extends Controller
 
             //Get Total Counts Of All failed Units
                 $amountOfUnitsFailed = 0;
-            $failedJobs = job::whereIn('case_id' , $results->pluck('case_id')->toArray())->where("is_rejection", 1)->orWhere("is_repeat",1)->orWhere("is_modification",1)->orWhere("is_redo",1)->get() ;
+            $failedJobs = job::whereIn('case_id', $results->pluck('case_id')->toArray())
+                ->where(function ($q): void {
+                    $q->where("is_rejection", 1)
+                        ->orWhere("is_repeat", 1)
+                        ->orWhere("is_modification", 1)
+                        ->orWhere("is_redo", 1);
+                })
+                ->get();
             //dd($failedJobs);
             foreach($failedJobs as $job)
                 $amountOfUnitsFailed+= count(explode(',',$job->unit_num));
@@ -606,11 +642,17 @@ class ReportsController extends Controller
             });
         }
 
-        // Material Type filter (depends on material selection)
+        // Material Type filter (matches types.id from the UI select)
         if ($request->filled('material_type') && !in_array('all', (array)$request->material_type)) {
-            $query->whereHas('jobs.material.types', function($q) use ($request) {
-                $q->whereIn('material_types.id', (array)$request->material_type);
-            });
+            $typeIds = array_values(array_filter((array)$request->material_type, function ($value) {
+                return $value !== 'all' && $value !== null && $value !== '';
+            }));
+
+            if (!empty($typeIds)) {
+                $query->whereHas('jobs', function($q) use ($typeIds) {
+                    $q->whereIn('type_id', $typeIds);
+                });
+            }
         }
 
         // Failure Type filter

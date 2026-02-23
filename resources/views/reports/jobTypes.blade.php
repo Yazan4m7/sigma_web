@@ -1,156 +1,11 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Job Types Report'])
 
-@push('css')
-<style>
-/* Report-specific styling - dropdown fixes now in sigma-reports-master.css */
-
-/* Fix placeholder text */
-.filter-option-inner {
-    color: #6c757d !important;
-    font-weight: 500;
-}
-
-.bootstrap-select .dropdown-toggle .filter-option .filter-option-inner {
-    color: #6c757d !important;
-    opacity: 1 !important;
-}
-
-.bootstrap-select .dropdown-toggle:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 0.2rem rgba(99, 141, 255, 0.25) !important;
-}
-
-.bootstrap-select button.dropdown-toggle .filter-option {
-    text-align: left !important;
-}
-
-.bootstrap-select button.dropdown-toggle .filter-option .filter-option-inner {
-    color: #6c757d !important;
-    font-weight: 500 !important;
-    opacity: 1 !important;
-}
-
-.bootstrap-select {
-    width: 100% !important;
-}
-.bootstrap-select .dropdown-toggle {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    padding: 8px 12px;
-    height: auto;
-}
-
-.bootstrap-select .dropdown-toggle:hover {
-    border-color: #adb5bd;
-}
-
-.bootstrap-select .dropdown-menu li a {
-    color: #212529 !important;
-    padding: 8px 16px;
-}
-
-.bootstrap-select .dropdown-menu li.selected a {
-    background-color: #e9ecef;
-    color: #495057 !important;
-}
-
-/* Custom Cases Toggle - Rectangular Style */
-#cases-checkbox {
-    display: none;
-}
-
-.cases-switch {
-    position: relative;
-    width: 80px;
-    height: 40px;
-    background-color: rgb(99, 99, 99);
-    border-radius: 8px;
-    z-index: 1;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgb(126, 126, 126);
-    box-shadow: 0px 0px 3px rgb(2, 2, 2) inset;
-    color: rgb(48, 48, 48);
-    font-weight: 600;
-    font-size: 12px;
-    margin-right: 8px;
-}
-
-#cases-checkbox:checked + .cases-switch {
-    box-shadow: 0px 0px 1px rgb(151, 243, 255) inset,
-      0px 0px 2px rgb(151, 243, 255) inset, 0px 0px 10px rgb(151, 243, 255) inset,
-      0px 0px 40px rgb(151, 243, 255), 0px 0px 100px rgb(151, 243, 255),
-      0px 0px 5px rgb(151, 243, 255);
-    border: 2px solid rgb(255, 255, 255);
-    background-color: rgb(146, 180, 184);
-    color: rgb(255, 255, 255);
-}
-
-#cases-checkbox:checked + .cases-switch {
-    filter: drop-shadow(0px 0px 5px rgb(151, 243, 255));
-}
-
-/* Connected Toggle Buttons - Rounded Rectangle Style */
-.connected-toggle-container {
-    display: inline-flex;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #fff;
-}
-
-.connected-toggle-btn {
-    border: none;
-    background: #fff;
-    padding: 8px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #495057;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-right: 1px solid #dee2e6;
-    min-width: 50px;
-    text-align: center;
-}
-
-.connected-toggle-btn:last-child {
-    border-right: none;
-}
-
-.connected-toggle-btn:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.connected-toggle-btn:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-.connected-toggle-btn:hover {
-    background: #f8f9fa;
-}
-
-.connected-toggle-btn.active {
-    background: #B8CDD9;
-    color: #2c5766;
-    font-weight: 700;
-}
-
-.connected-toggle-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(184, 205, 217, 0.3);
-}
-</style>
-@endpush
-
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     <!-- styles to carry on while printing -->
 
-
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{route('job-types-report')}}">
             <!-- FILTERS ROW 1: Main Filters -->
@@ -224,7 +79,7 @@
                 <!-- BUTTONS ROW 2: Actions -->
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <button type="submit" class="btn btn-primary-enhanced" style="height: 50px; padding: 12px 24px; font-size: 16px; font-weight: 600;">
+                        <button type="submit" class="btn btn-primary-enhanced">
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
@@ -242,11 +97,10 @@
     <div class="sigmaPanel" style="">
         <div class="col-lg-12 col-sm-12">
             <div class=" ">
-                <div class="">
-                    <p class="text-muted"></p>
-                    <div class="" style="overflow-x:auto;">
-                        <!-- Single Combined Table -->
-                        <div class="sigma-report-table-container" style="margin-bottom: 1.5rem;">
+                    <div class="">
+                        <p class="text-muted"></p>
+                        <div class="" style="overflow-x:auto;">
+                            <!-- Single Combined Table -->
                             <table class="printable sigma-report-table">
                                 <thead>
                                     <tr>
@@ -274,6 +128,7 @@
                                             $grandTotals[$jobType->id] = 0;
                                         }
                                         $overallTotal = 0;
+                                        $selectedJobTypeIds = $selectedJobTypes->pluck('id')->toArray();
                                     @endphp
 
                                     <!-- Client Rows -->
@@ -282,6 +137,7 @@
                                             <td class="primary-text">{{$client->name}}</td>
                                             @php
                                                 $clientTotal = 0;
+                                                $clientCaseIds = [];
                                             @endphp
                                             @foreach($selectedJobTypes as $jobType)
                                                 @php
@@ -294,11 +150,24 @@
                                                             $totalForThisJobType += $client->numOfCasesByJobType($jobType->id, $month);
                                                         }
                                                     }
-                                                    $clientTotal += $totalForThisJobType;
+                                                    if ($perUnitTrigger) {
+                                                        $clientTotal += $totalForThisJobType;
+                                                    }
                                                     $grandTotals[$jobType->id] += $totalForThisJobType;
                                                 @endphp
                                                 <td class="text-center">{{$totalForThisJobType}}</td>
                                             @endforeach
+                                            @php
+                                                if (!$perUnitTrigger) {
+                                                    foreach($selectedMonths as $month) {
+                                                        $clientCaseIds = array_merge(
+                                                            $clientCaseIds,
+                                                            $client->caseIdsByJobTypes($selectedJobTypeIds, $month)->toArray()
+                                                        );
+                                                    }
+                                                    $clientTotal = count(array_unique($clientCaseIds));
+                                                }
+                                            @endphp
                                             <td class="text-center"><strong>{{$clientTotal}}</strong></td>
                                             @php $overallTotal += $clientTotal; @endphp
                                         </tr>
@@ -314,7 +183,6 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </div>
 
 
 
@@ -324,6 +192,7 @@
         </div>
     </div>
 
+    </div>
 @endsection
 
 @push('js')

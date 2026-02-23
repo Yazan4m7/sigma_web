@@ -26,6 +26,7 @@
 @once
 <style>
     /* iOS Date Time Picker Scoped Styles */
+    :root,
     .ios-dtp-container {
         /* Prevent font scaling from phone accessibility settings */
         /*-webkit-text-size-adjust: 100%;*/
@@ -50,6 +51,9 @@
         --ios-time-hour-width: 1;
         --ios-time-minute-width: 1;
         --ios-time-ampm-width: 1;
+    }
+
+    .ios-dtp-container {
         position: relative;
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
     }
@@ -91,26 +95,31 @@
         width: 100vw !important;
         height: 100vh !important;
         background: var(--ios-bg-overlay);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
         opacity: 0;
         visibility: hidden;
+        pointer-events: none;
         transition: opacity 0.3s ease, visibility 0.3s ease;
-        z-index: 9999 !important;
+        z-index: 2147483646 !important;
     }
 
     .ios-dtp-backdrop.visible {
         opacity: 1;
         visibility: visible;
+        display: flex !important;
+        pointer-events: auto;
     }
 
     .ios-dtp-modal {
-        position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) scale(0.95) !important;
+        position: relative !important;
+        transform: scale(0.95) !important;
         background: var(--ios-bg-white);
         border-radius: var(--ios-radius);
         box-shadow: var(--ios-shadow);
-        z-index: 10000 !important;
+        z-index: 2147483647 !important;
         overflow: hidden;
         width: min(520px, calc(100vw - 32px));
         max-height: calc(100vh - 32px);
@@ -124,7 +133,8 @@
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transform: translate(-50%, -50%) scale(1) !important;
+        transform: scale(1) !important;
+        display: block !important;
     }
 
     .ios-dtp-header {
@@ -761,11 +771,10 @@
     <!-- Trigger Button styled as form input -->
     <button type="button" class="ios-dtp-trigger" @click="openPicker()" x-text="formatDisplayDate()"></button>
 
-    <!-- Backdrop -->
-    <div class="ios-dtp-backdrop" :class="{ 'visible': open }" @click="closePicker()"></div>
-
-    <!-- Picker Modal -->
-    <div class="ios-dtp-modal" :class="{ 'visible': open }">
+    <template x-teleport="body">
+        <!-- Backdrop + Picker Modal -->
+        <div class="ios-dtp-backdrop" :class="{ 'visible': open }" @click.self="closePicker()">
+        <div class="ios-dtp-modal" :class="{ 'visible': open }" @click.stop>
         <!-- Header -->
         <div class="ios-dtp-header">
             <div class="ios-dtp-header-text">
@@ -935,7 +944,8 @@
         <div class="ios-dtp-footer">
             <button type="button" class="ios-dtp-set-btn" @click="confirmSelection()">SET</button>
         </div>
-    </div>
+        </div>
+    </template>
 </div>
 
 <script>

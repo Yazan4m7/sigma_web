@@ -2412,6 +2412,8 @@ height: 40px;
 background: #2b7b7d;
     color:white;
 }
+.sunriseTable thead th:first-child {border-top-left-radius: 10px;}
+.sunriseTable thead th:last-child {border-top-right-radius: 10px;}
 .sunriseTable thead th {font-family: "Open Sans", sans-serif;font-size: 14px;color: #fwff;line-height: 0;font-weight: unset !important;}
 .sunriseTable thead {-webkit-text-size-adjust: 100%;-webkit-tap-highlight-color: transparent;font-size: 1rem;font-weight: 400;line-height: 1.5;color: #212529;font-family: sans-serif;border-collapse: collapse;margin: 0px;padding: 0px;box-sizing: border-box;position: relative;}
 .sunriseTable tbody tr td {padding: 2px!important;}
@@ -7944,7 +7946,7 @@ tbody {
     overflow: scroll;
 }
 table:not(.sunriseTable) tbody td {
-    border:1px solid #ddd;
+
     border-top: none;
     border-bottom: none;
 }
@@ -9104,6 +9106,21 @@ blueTBBorder {
     width: -webkit-fill-available;
     border: 1px solid rgba(188, 206, 216, 0.4);
     border-radius: 10px;
+}
+.bootstrap-select .dropdown-menu li a,
+.bootstrap-select .dropdown-menu.inner li a,
+.bootstrap-select .dropdown-menu li a span.text {
+    text-align: left !important;
+}
+.bootstrap-select .dropdown-menu li a,
+.bootstrap-select .dropdown-menu.inner li a {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+.select2-results__option {
+    text-align: left !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
 }
 .homePageOptionInSideBar {display:none;}
 

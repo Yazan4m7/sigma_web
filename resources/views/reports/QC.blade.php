@@ -1,11 +1,11 @@
 @extends('layouts.app', ['pageSlug' => 'Quality Control Report'])
 
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     <!-- styles to carry on while printing -->
 
-
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{ route('QC-report') }}">
             <!-- FILTERS ROW 1: Main Filters -->
@@ -84,7 +84,7 @@
                 <!-- BUTTONS ROW 2: Actions -->
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <button type="submit" class="btn btn-primary-enhanced" style="height: 50px; padding: 12px 24px; font-size: 16px; font-weight: 600; width: 70%;">
+                        <button type="submit" class="btn btn-primary-enhanced">
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                        </button>
                     </div>
@@ -99,7 +99,7 @@
     </div>
 
 
-    <div class="sigma-table-container">
+    <div>
         <div class="col-lg-12 col-sm-12">
             <div class="">
                 <div class="">
@@ -108,21 +108,34 @@
                             $failuresDesc = [0 => 'Rejection', 1 => 'Repeat', 2 => 'Modification', 3 => 'Redo'];
                             $counterTest = 0;
                             $monthHasNoFailures = false;
+                            $seenFailures = [];
 
                             // Calculate totals for main table
                             $mainTotals = [];
                             $totalUnits = 0;
                             foreach ($selectedMonths as $month) {
                                 foreach ($failureLogs[$month] as $failLog) {
+                                    $case = $failLog->case;
+                                    $caseClient = $case ? $case->client : null;
+                                    $caseClientId = $caseClient ? $caseClient->id : null;
+                                    if (!$caseClientId) {
+                                        continue;
+                                    }
+                                    $dedupeKey = $caseClientId . ':' . $failLog->failure_type . ':' . $case->id;
+                                    if (isset($seenFailures[$dedupeKey])) {
+                                        continue;
+                                    }
+                                    $seenFailures[$dedupeKey] = true;
+
                                     if (!in_array('all', $selectedClients)) {
-                                        if (isset($selectedClients) && !in_array($failLog->case->client->id, $selectedClients)) {
+                                        if (isset($selectedClients) && !in_array($caseClientId, $selectedClients)) {
                                             continue;
                                         }
                                     }
 
-                                    $clientName = $failLog->case->client->name ?? 'Unknown';
+                                    $clientName = $caseClient->name ?? 'Unknown';
                                     $failureType = $failLog->failure_type;
-                                    $units = isset($failLog->case) ? $failLog->case->failedUnitsAmount($failLog->failure_type) : 0;
+                                    $units = $case ? $case->failedUnitsAmount($failLog->failure_type) : 0;
 
                                     if (!isset($mainTotals[$clientName])) {
                                         $mainTotals[$clientName] = ['Rejection' => 0, 'Repeat' => 0, 'Modification' => 0, 'Redo' => 0, 'total' => 0];
@@ -136,8 +149,7 @@
                         @endphp
 
                         <!-- Main Summary Table -->
-                        <div id="mainSummaryTable" class="sigma-report-table-container">
-                            <table class="printable sigma-report-table">
+                        <table class="printable sigma-report-table">
                                 <thead>
                                     <tr>
                                         <th class="header-dark" style="color:white !important;">Doctor Name</th>
@@ -179,113 +191,7 @@
                                     @endif
                                 </tbody>
                             </table>
-                        </div>
 
-                        <!-- Monthly Breakdown Tables (hidden by default) -->
-                        <div id="monthlyBreakdown" style="display: none;">
-                        @foreach ($selectedMonths as $month)
-                            @if($loop->index > 0)
-                            {{ $monthHasNoFailures = false }}
-                            @php
-                                if ($amountOfCases[$month] == 0) {
-                                    $monthHasNoFailures = true;
-                                }
-                            @endphp
-                            <div class="sigma-report-table" style="margin-top: 1.5rem;">
-                            <div class="month-header-section">
-                                <h6 class="month-title"><i class="fas fa-calendar-alt me-2"></i>{{ $month }} {{ $amountOfCases != 0 ? '(' . $amountOfCases[$month] . ') Cases' : '' }}</h6>
-                            </div>
-                            <table class="printable sigma-report-table">
-                                <thead>
-                            @endif
-
-
-                                <tbody>
-                                    <!-- The Months row -->
-
-                                    @if ($monthHasNoFailures)
-                                        <tr>
-                                            <td colspan="6" class="text-center" style="padding: 2rem; color: #10b981; font-weight: 600;">
-                                                <i class="fas fa-check-circle me-2"></i>No Incidents
-                                            </td>
-                                        </tr>
-                                        @continue
-                                    @endif
-
-                                    <!--The MAIN row -->
-                                    <thead>
-                                    <tr>
-                                    <th class="header-dark" style="color:white !important;">Dr Name</th>
-                                        <th class="header-light">Patient</th>
-                                        <th class="header-light">Status</th>
-                                        <th class="header-light">Causes</th>
-                                        <th class="text-center header-light"># of Units</th>
-                                        <th class="header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Date Failure Registered</th>
-                                    </tr>
-                                    </thead>
-                                    <!-- Client ROWS -->
-
-                                    @foreach ($failureLogs[$month] as $failLog)
-                                        @if (!in_array('all', $selectedClients))
-                                            @if (isset($selectedClients) && !in_array($failLog->case->client->id, $selectedClients))
-                                                @continue;
-                                            @endif
-                                        @endif
-
-                                        <!-- if all is selected, dont check if client is selected or not, otherwise check each one by id -->
-                                        {{-- @if (!in_array('all', $selectedClients)) --}}
-                                        {{-- @if (isset($selectedClients) && !in_array($client->id, $selectedClients)) --}}
-                                        {{-- @continue; --}}
-                                        {{-- @endif --}}
-                                        {{-- @endif --}}
-
-                                        <tr>
-                                            <td class="primary-text">
-                                                {{ $failLog->case->client->name ?? 'Case Not found' }}</td>
-                                            <td>{{ $failLog->case->patient_name ?? 'Case Not found' }}</td>
-                                            <td>
-                                                <span class="sigma-status-badge {{ strtolower($failuresDesc[$failLog->failure_type]) }}">
-                                                    {{ $failuresDesc[$failLog->failure_type] }}
-                                                </span>
-                                            </td>
-                                            <td class="secondary-text">{{ $failLog->causeObject->text }}</td>
-                                            <td class="text-center">
-                                                @php
-                                                    if (isset($failLog->case)) {
-                                                        $numOfUnits = $failLog->case->failedUnitsAmount(
-                                                            $failLog->failure_type,
-                                                        );
-                                                        $counterTest =
-                                                            $counterTest +
-                                                            $failLog->case->failedUnitsAmount($failLog->failure_type);
-                                                    } else {
-                                                        $numOfUnits = 'Case Not found';
-                                                    }
-                                                @endphp
-                                                <strong>{{ $numOfUnits }}</strong>
-                                            </td>
-                                            <td class="secondary-text">{{ substr($failLog->created_at, 0, -3) }}</td>
-                                        </tr>
-                                    @endforeach
-
-
-                                    <!-- Totals for whole lab Row -->
-                                    {{-- <tr style=""> --}}
-                                    {{-- <td class="xl669957">Totals</td> --}}
-
-                                    {{-- @foreach ($labLevelTotal[$month] as $total) --}}
-                                    {{-- <td class="totalsRow" style="">{{$total}}</td> --}}
-                                    {{-- @endforeach --}}
-                                    {{-- <td class="totalsRow" style="">{{array_sum($labLevelTotal[$month])}}</td> --}}
-                                    {{-- </tr> --}}
-                                </tbody>
-                            </table>
-                            </div>
-                            @if($loop->index > 0)
-                            </div>
-                            @endif
-                        @endforeach
-                        </div>
                     </div>
                 </div>
             </div>
@@ -294,6 +200,7 @@
   <style>
       .footer{display: none !important;}  /* 2 todo this */
   </style>
+    </div>
 @endsection
 
 @push('js')
@@ -308,30 +215,6 @@
 
             console.log("Amount of units : ");
             console.log({!! $counterTest !!});
-
-            // Monthly breakdown toggle functionality
-            let monthlyVisible = false;
-
-            $('#monthly-breakdown-toggle').on('click', function() {
-                const $button = $(this);
-                const $monthlyTables = $('#monthlyBreakdown');
-
-                if (monthlyVisible) {
-                    // Hide monthly tables
-                    $monthlyTables.slideUp(300);
-                    $button.removeClass('btn-success').addClass('btn-outline-secondary')
-                           .html('<i class="fas fa-eye"></i>')
-                           .attr('title', 'Show Monthly Breakdown');
-                    monthlyVisible = false;
-                } else {
-                    // Show monthly tables
-                    $monthlyTables.slideDown(300);
-                    $button.removeClass('btn-outline-secondary').addClass('btn-success')
-                           .html('<i class="fas fa-eye-slash"></i>')
-                           .attr('title', 'Hide Monthly Breakdown');
-                    monthlyVisible = true;
-                }
-            });
         });
 
         function printData() {

@@ -1,152 +1,11 @@
 @extends('layouts.app', ['pageSlug' => isset($perUnitTrigger) ? 'Repeats Report (Per Unit)' : 'Repeats Report (Per Case)'])
 
-@push('css')
-<style>
-/* Connected Toggle Buttons - Rounded Rectangle Style */
-.connected-toggle-container {
-    display: inline-flex;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #fff;
-}
-
-.connected-toggle-btn {
-    border: none;
-    background: #f8f9fa;
-    padding: 8px 15px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6c757d;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    border-right: 1px solid #dee2e6;
-    min-width: 50px;
-    text-align: center;
-}
-
-.connected-toggle-btn:last-child {
-    border-right: none;
-}
-
-.connected-toggle-btn:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.connected-toggle-btn:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-.connected-toggle-btn:hover:not(.active) {
-    background: #e9ecef;
-    color: #495057;
-}
-
-.connected-toggle-btn.active {
-    background: linear-gradient(135deg, #2c5766 0%, #3a7080 100%);
-    color: #ffffff;
-    font-weight: 700;
-    box-shadow: 0 2px 4px rgba(44, 87, 102, 0.3);
-    transform: translateY(-1px);
-}
-
-.connected-toggle-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(44, 87, 102, 0.2);
-}
-
-/* Disabled state for toggle container */
-.connected-toggle-container.disabled {
-    opacity: 0.5;
-    pointer-events: none;
-    cursor: not-allowed;
-}
-
-.connected-toggle-container.disabled .connected-toggle-btn {
-    cursor: not-allowed;
-}
-
-/* Modern iOS-style Toggle Switch */
-.modern-toggle-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.modern-toggle-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: #6c757d;
-    transition: color 0.3s ease;
-    user-select: none;
-}
-
-.modern-toggle-label.active {
-    color: #2c5766;
-}
-
-.modern-toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 52px;
-    height: 28px;
-}
-
-.modern-toggle-switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.modern-toggle-slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #B8CDD9;
-    transition: 0.3s;
-    border-radius: 28px;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.modern-toggle-slider:before {
-    position: absolute;
-    content: "";
-    height: 22px;
-    width: 22px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: 0.3s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-.modern-toggle-switch input:checked + .modern-toggle-slider {
-    background-color: #638DFF;
-}
-
-.modern-toggle-switch input:checked + .modern-toggle-slider:before {
-    transform: translateX(24px);
-}
-
-.modern-toggle-switch:hover .modern-toggle-slider {
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(184, 205, 217, 0.2);
-}
-
-.modern-toggle-switch input:checked:hover + .modern-toggle-slider {
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(99, 141, 255, 0.2);
-}
-</style>
-@endpush
-
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     <!-- styles to carry on while printing -->
 
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{ route('repeats-report') }}">
             <!-- FILTERS -->
@@ -237,23 +96,22 @@
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         <label><i class="fas fa-chart-bar"></i> Display:</label>
-                        <div class="modern-toggle-container">
-                            <span class="modern-toggle-label {{ $countOrPercentage ? 'active' : '' }}">Count</span>
-                            <div class="modern-toggle-switch">
-                                <input type="checkbox" id="toggle-checkbox" {{ !$countOrPercentage ? 'checked' : '' }}>
-                                <label for="toggle-checkbox" class="modern-toggle-slider"></label>
-                            </div>
-                            <span class="modern-toggle-label {{ !$countOrPercentage ? 'active' : '' }}">%</span>
-                            <!-- Hidden input to persist the toggle state -->
-                            <input type="hidden" name="countOrPercentageToggle" id="countOrPercentageToggle" value="{{ $countOrPercentage ? '1' : '0' }}">
+                        <div class="connected-toggle-container" id="display-mode-container">
+                            <button type="button" class="connected-toggle-btn {{ $countOrPercentage ? 'active' : '' }}" id="count-toggle">
+                                COUNT
+                            </button>
+                            <button type="button" class="connected-toggle-btn {{ !$countOrPercentage ? 'active' : '' }}" id="percent-toggle">
+                                %
+                            </button>
                         </div>
+                        <input type="hidden" name="countOrPercentageToggle" id="countOrPercentageToggle" value="{{ $countOrPercentage ? '1' : '0' }}">
                     </div>
                 </div>
 
                 <!-- BUTTONS ROW 2: Actions -->
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <button type="submit" class="btn btn-primary-enhanced" style="height: 50px; padding: 12px 24px; font-size: 16px; font-weight: 600; width: 70%;">
+                        <button type="submit" class="btn btn-primary-enhanced">
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
@@ -272,17 +130,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="sigma-table-container">
+                <div>
                     <div style="overflow-x:auto;">
                         <div id="totalsTableHolder"> </div>
                         @foreach ($selectedMonths as $month)
+                            @continue(!$loop->first)
                             @php
                                 $labLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
                                 $clientLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
 
                             @endphp
-                            <div class="sigma-report-table-container" style="margin-bottom: 1.5rem;">
-                            <table class="printable sigma-report-table">
+                            <table class="printable sigma-report-table table-plain">
                                 <thead>
                                     <tr>
                                         <th class="header-dark" style="color:white !important; ">Doctor Name</th>
@@ -402,7 +260,6 @@
                                 </tbody>
 
                             </table>
-                            </div>
                         @endforeach
                         <div id="totalsTableTempHolder"></div>
                     </div>
@@ -411,6 +268,7 @@
         </div>
     </div>
 
+    </div>
 @endsection
 
 @push('js')
@@ -472,78 +330,58 @@
                 console.log('Allowing form submission');
             });
 
-            // Modern toggle switch functionality with label updates
-            const toggle = document.getElementById('toggle-checkbox');
-            const labels = document.querySelectorAll('.modern-toggle-label');
+            // Display mode toggle (Count / %)
+            const countToggle = document.getElementById('count-toggle');
+            const percentToggle = document.getElementById('percent-toggle');
             const viewModeContainer = document.getElementById('view-mode-container');
+            const displayContainer = document.getElementById('display-mode-container');
+            const hiddenInput = document.getElementById('countOrPercentageToggle');
 
-            if (toggle) {
-                // Update label active states based on toggle position
-                function updateLabels() {
-                    labels.forEach(label => {
-                        if (toggle.checked) {
-                            // When checked (percentage mode)
-                            if (label.textContent.trim() === '%') {
-                                label.classList.add('active');
-                            } else {
-                                label.classList.remove('active');
-                            }
-                        } else {
-                            // When unchecked (count mode)
-                            if (label.textContent.trim() === 'Count') {
-                                label.classList.add('active');
-                            } else {
-                                label.classList.remove('active');
-                            }
-                        }
-                    });
+            function setDisplayMode(isCount, submitForm) {
+                if (isCount) {
+                    countToggle.classList.add('active');
+                    percentToggle.classList.remove('active');
+                    hiddenInput.value = '1';
+                    viewModeContainer.classList.remove('disabled');
+                    $('#units-toggle, #cases-toggle').prop('disabled', false);
+                    console.log('Display mode: Count');
+                } else {
+                    percentToggle.classList.add('active');
+                    countToggle.classList.remove('active');
+                    hiddenInput.value = '0';
+                    viewModeContainer.classList.add('disabled');
+                    $('#units-toggle, #cases-toggle').prop('disabled', true);
+                    console.log('Display mode: Percentage');
                 }
 
-                // Enable/disable view mode toggle based on display mode
-                function updateViewModeToggle() {
-                    if (toggle.checked) {
-                        // Percentage mode - disable view mode toggle
-                        viewModeContainer.classList.add('disabled');
-                        $('#units-toggle, #cases-toggle').prop('disabled', true);
-                        console.log('View mode toggle disabled (percentage mode)');
-                    } else {
-                        // Count mode - enable view mode toggle
-                        viewModeContainer.classList.remove('disabled');
-                        $('#units-toggle, #cases-toggle').prop('disabled', false);
-                        console.log('View mode toggle enabled (count mode)');
-                    }
-                }
-
-                // Listen for toggle changes
-                toggle.addEventListener('change', function() {
-                    // Don't submit if page is still loading
-                    if (!isPageLoaded) {
-                        console.log('Page still loading, ignoring toggle change');
-                        return false;
-                    }
-
-                    console.log('Count/Percentage toggle changed:', this.checked ? 'Percentage' : 'Count');
-
-                    // Update label states
-                    updateLabels();
-
-                    // Update view mode toggle state
-                    updateViewModeToggle();
-
-                    // Update the hidden input field (unchecked = 1/count, checked = 0/percentage)
-                    const hiddenInput = document.getElementById('countOrPercentageToggle');
-                    hiddenInput.value = this.checked ? '0' : '1';
-
-                    // Submit the main form
+                if (submitForm && isPageLoaded) {
                     const form = document.querySelector('.kt-form');
                     if (form) {
                         form.submit();
                     }
+                }
+            }
+
+            if (countToggle && percentToggle && hiddenInput && displayContainer) {
+                countToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!isPageLoaded) {
+                        console.log('Page still loading, ignoring display toggle');
+                        return false;
+                    }
+                    setDisplayMode(true, true);
                 });
 
-                // Initialize label states and view mode toggle on page load
-                updateLabels();
-                updateViewModeToggle();
+                percentToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (!isPageLoaded) {
+                        console.log('Page still loading, ignoring display toggle');
+                        return false;
+                    }
+                    setDisplayMode(false, true);
+                });
+
+                setDisplayMode(hiddenInput.value === '1', false);
             }
         });
 

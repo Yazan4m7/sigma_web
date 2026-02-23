@@ -265,6 +265,309 @@ html, body {
     background: linear-gradient(90deg, var(--table-header-elegant) 0%, var(--sigma-accent-light) 100%);
 }
 
+/* ===================================================================
+   STANDARD REPORT OVERRIDES (ALL REPORTS EXCEPT MASTER)
+   =================================================================== */
+
+.sigma-report-standard .report-filters-card {
+    border-radius: 16px;
+}
+
+.sigma-report-standard .report-filters-card label i,
+.sigma-report-standard .report-filters-card .form-label i {
+    color: #2b7b7d;
+}
+
+.sigma-report-standard .btn-primary-enhanced {
+    height: 50px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    width: 70%;
+    max-width: 280px;
+}
+
+@media (max-width: 576px) {
+    .sigma-report-standard .btn-primary-enhanced {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+.sigma-report-standard .connected-toggle-container {
+    display: inline-flex;
+    border: 1px solid #d6dbe0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #f8fafb;
+}
+
+.sigma-report-standard .connected-toggle-btn {
+    border: none;
+    background: transparent;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #55606b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-right: 1px solid #d6dbe0;
+    min-width: 50px;
+    text-align: center;
+}
+
+.sigma-report-standard .connected-toggle-btn:last-child {
+    border-right: none;
+}
+
+.sigma-report-standard .connected-toggle-btn:hover:not(.active) {
+    background: #eef2f5;
+    color: #3f4a54;
+}
+
+.sigma-report-standard .connected-toggle-btn.active {
+    background: #b8cdd9;
+    color: #2b7b7d;
+    font-weight: 700;
+}
+
+.sigma-report-standard .connected-toggle-container.disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.connected-toggle-container {
+    display: inline-flex !important;
+    border: 1px solid #d6dbe0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+    background: #f8fafb !important;
+}
+
+.connected-toggle-btn {
+    border: none !important;
+    background: transparent !important;
+    padding: 8px 16px !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #55606b !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    border-right: 1px solid #d6dbe0 !important;
+    min-width: 50px !important;
+    text-align: center !important;
+}
+
+.connected-toggle-btn:last-child {
+    border-right: none !important;
+}
+
+.connected-toggle-btn:hover:not(.active) {
+    background: #eef2f5 !important;
+    color: #3f4a54 !important;
+}
+
+.connected-toggle-btn.active {
+    background: #b8cdd9 !important;
+    color: #2b7b7d !important;
+    font-weight: 700 !important;
+}
+
+.connected-toggle-container.disabled {
+    opacity: 0.6 !important;
+    pointer-events: none !important;
+}
+
+.sigma-report-standard .bootstrap-select .dropdown-toggle .filter-option,
+.sigma-report-standard .bootstrap-select .dropdown-toggle .filter-option-inner {
+    text-align: left !important;
+    color: #6c757d !important;
+    font-weight: 500 !important;
+    opacity: 1 !important;
+}
+
+.sigma-report-standard .sigma-report-table {
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.sigma-report-standard .sigma-report-table th,
+.sigma-report-standard .sigma-report-table td {
+    font-family: 'Cairo', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif !important;
+    font-size: 14px;
+    color: #2d3748;
+}
+
+.sigma-report-standard .sigma-report-table th {
+    font-weight: 600;
+}
+
+.sigma-report-standard .sigma-report-pagination-wrap {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sigma-report-standard .sigma-report-pagination {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    width: auto;
+}
+
+.sigma-report-standard .sigma-rows-per-page {
+    display: none;
+}
+
+.sigma-report-standard .sigma-pagination-info {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.sigma-report-standard .sigma-pagination-btn {
+    border: 1px solid #d6dbe0;
+    background: transparent;
+    color: #2b7b7d;
+}
+
+.sigma-report-pagination-wrap {
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+.sigma-report-pagination {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 8px 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+}
+
+.sigma-pagination-info {
+    color: #2d3748 !important;
+    font-weight: 500 !important;
+}
+
+.sigma-pagination-btn {
+    border: 1px solid #d6dbe0 !important;
+    background: transparent !important;
+    color: #2b7b7d !important;
+}
+
+/* ===================================================================
+   MATERIALS REPORT - TOTAL AMOUNT CARD
+   =================================================================== */
+
+.sigma-report-standard .materials-total-card {
+    background: var(--bg-white);
+    border: 1px solid rgba(188, 206, 216, 0.65);
+    border-radius: 14px;
+    padding: 18px 20px 18px 24px;
+    box-shadow: 0 6px 18px rgba(44, 87, 102, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sigma-report-standard .materials-total-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 6px;
+    background: var(--table-header-elegant);
+}
+
+.sigma-report-standard .materials-total-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.sigma-report-standard .materials-total-value {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.sigma-report-standard .materials-total-amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+}
+
+.sigma-report-standard .materials-total-currency {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.materials-total-card {
+    background: var(--bg-white) !important;
+    border: 1px solid rgba(188, 206, 216, 0.65) !important;
+    border-radius: 14px !important;
+    padding: 18px 20px 18px 24px !important;
+    box-shadow: 0 6px 18px rgba(44, 87, 102, 0.08) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.materials-total-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 6px !important;
+    background: var(--table-header-elegant) !important;
+}
+
+.materials-total-label {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase !important;
+    color: var(--text-secondary) !important;
+    margin-bottom: 6px !important;
+}
+
+.materials-total-value {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+}
+
+.materials-total-amount {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    line-height: 1.1 !important;
+}
+
+.materials-total-currency {
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    color: var(--text-secondary) !important;
+}
+
 .report-filters-card .form-label {
     font-weight: var(--font-weight-semibold);
     color: var(--text-primary);
@@ -425,6 +728,7 @@ html, body {
     /* backdrop-filter: blur(10px); */
     /* box-shadow: 0 4px 12px rgba(188, 206, 216, 0.25); */
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
     position: relative;
     overflow: hidden;
     flex-direction: row;
@@ -488,6 +792,11 @@ html, body {
     border-radius: 8px;
     overflow: hidden;
     animation: tableSlideIn 0.6s ease-out;
+}
+
+.sigma-report-table.table-plain {
+    box-shadow: none;
+    border-radius: 0;
 }
 
 /* Table Load Animation */

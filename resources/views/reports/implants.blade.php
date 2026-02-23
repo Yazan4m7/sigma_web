@@ -1,65 +1,11 @@
 @extends('layouts.app', ['pageSlug' => 'Implants Report'])
 
-@push('css')
-<style>
-/* Connected Toggle Buttons - Rounded Rectangle Style */
-.connected-toggle-container {
-    display: inline-flex;
-    border: 1px solid #dee2e6;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #fff;
-}
-
-.connected-toggle-btn {
-    border: none;
-    background: #fff;
-    padding: 8px 16px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #495057;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border-right: 1px solid #dee2e6;
-    min-width: 50px;
-    text-align: center;
-}
-
-.connected-toggle-btn:last-child {
-    border-right: none;
-}
-
-.connected-toggle-btn:first-child {
-    border-radius: 5px 0 0 5px;
-}
-
-.connected-toggle-btn:last-child {
-    border-radius: 0 5px 5px 0;
-}
-
-.connected-toggle-btn:hover {
-    background: #f8f9fa;
-}
-
-.connected-toggle-btn.active {
-    background: #B8CDD9;
-    color: #2c5766;
-    font-weight: 700;
-}
-
-.connected-toggle-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(184, 205, 217, 0.3);
-}
-</style>
-@endpush
-
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- All styles now centralized in sigma-reports-master.css -->
 
-
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{ route('implants-report') }}">
             <!-- FILTERS ROW 1: Main Filters -->
@@ -166,7 +112,7 @@
                 <!-- BUTTONS ROW 2: Actions -->
                 <div class="row g-3 align-items-center">
                     <div class="col-lg-4 col-md-4 col-12">
-                        <button type="submit" class="btn btn-primary-enhanced" style="height: 50px; padding: 12px 24px; font-size: 16px; font-weight: 600; width: 70%;">
+                        <button type="submit" class="btn btn-primary-enhanced">
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
@@ -181,10 +127,7 @@
     </div>
 
 
-
-
-    <div class="sigma-table-container">
-        <div class="col-lg-12 col-sm-12">
+    <div class="col-lg-12 col-sm-12">
             <div class="">
                 <div class="">
                     <!-- Column Visibility Controls (Hidden) -->
@@ -211,7 +154,6 @@
                         <!-- Main Totals Table -->
                         <div id="totals-table">
 
-                            <div class="sigma-report-table-container">
                                 <table class="sigma-report-table printable">
                                     <thead>
                                         <!--The MAIN header row -->
@@ -286,23 +228,16 @@
                                     </tbody>
                                 </table>
                                 <!-- Pagination matching reference design -->
-                                <div class="sigma-report-pagination">
-                                    <div class="sigma-rows-per-page">
-                                        <span>Rows per page:</span>
-                                        <select>
-                                            <option>10</option>
-                                            <option>25</option>
-                                            <option>50</option>
-                                        </select>
-                                    </div>
-                                    <div class="sigma-pagination-nav">
-                                        <span class="sigma-pagination-info">1-{{ count($filteredClients) }} of {{ count($filteredClients) }}</span>
-                                        <button class="sigma-pagination-btn disabled" disabled>‹</button>
-                                        <span class="sigma-pagination-info">1/1</span>
-                                        <button class="sigma-pagination-btn disabled" disabled>›</button>
+                                <div class="sigma-report-pagination-wrap">
+                                    <div class="sigma-report-pagination">
+                                        <div class="sigma-pagination-nav">
+                                            <span class="sigma-pagination-info">1-{{ count($filteredClients) }} of {{ count($filteredClients) }}</span>
+                                            <button class="sigma-pagination-btn disabled" disabled>‹</button>
+                                            <span class="sigma-pagination-info">1/1</span>
+                                            <button class="sigma-pagination-btn disabled" disabled>›</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                         </div>
 
                         <!-- Monthly Breakdown Tables (hidden by default) -->
@@ -395,7 +330,6 @@
             </div>
         </div>
     </div>
-
 @endsection
 
 @push('js')

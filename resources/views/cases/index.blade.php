@@ -14,7 +14,7 @@
             font-family: 'Roboto', sans-serif;
         }
 
-
+        .dropdown-toggle .filter-option{ height: auto !important;}
 
         #casesTable thead th:first-child,
         #casesTable tbody td:first-child {
@@ -202,9 +202,58 @@
             overflow-x: auto !important;
         }
 
+        .dataTables_wrapper .dataTables_info {
+            display: none;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            font-size: 0.85rem;
+            padding: 3px 7px;
+            min-width: 26px;
+            border-radius: 4px;
+            border: 1px solid #cddfe2;
+            background-color: #ffffff;
+            color: #1f6fb2 !important;
+            margin: 0 2px;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button .page-link {
+            padding: 3px 7px;
+            border-radius: 4px;
+            border: 1px solid #cddfe2;
+            background-color: #ffffff;
+            color: #1f6fb2 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            border-color: #1b5f97;
+            background-color: #eef5fb;
+            color: #1f6fb2 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover .page-link {
+            border-color: #1b5f97;
+            background-color: #eef5fb;
+            color: #1f6fb2 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background-color: #dbe9f6 !important;
+            border-color: #1f6fb2 !important;
+            color: #1f6fb2 !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current .page-link,
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover .page-link {
+            background-color: #dbe9f6 !important;
+            border-color: #1f6fb2 !important;
+            color: #1f6fb2 !important;
+        }
+
         /* Ensure parent container doesn't clip */
         #casesTable_wrapper {
-            overflow-x: auto;
+            overflow-x: hidden;
             max-width: 100%;
         }
 
@@ -423,23 +472,61 @@
         }
 
         /* Modal footer rounded bottom corners */
-
         .sigma-modal--cases-index-actions .modal-footer {
-
+            padding: 12px 16px;
             border-bottom-left-radius: 25px !important;
             border-bottom-right-radius: 25px !important;
         }
 
+        .sigma-modal--cases-index-actions .modal-footer .sigma-modal-actions {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-row,
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-grid {
+            width: 100%;
+            display: grid;
+            gap: 8px;
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-row--top {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-row--secondary {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-row--secondary:empty,
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-grid:empty {
+            display: none;
+        }
+
+        .sigma-modal--cases-index-actions .modal-footer .sigma-actions-row--cancel {
+            grid-template-columns: 1fr;
+        }
 
         .sigma-modal--cases-index-actions .modal-footer .btn {
-            min-width: 120px;
+            width: 100%;
+            min-width: 0;
             margin: 0;
-            display: flex;
-            grid-template-columns: 50% 50%;
+            display: inline-flex;
             align-items: center;
-            column-gap: 8px;
             justify-content: center;
+            gap: 8px;
+        }
 
+        @media (max-width: 575.98px) {
+            .sigma-modal--cases-index-actions .modal-footer .btn .btn-icon {
+                display: none !important;
+            }
         }
 
         .sigma-modal--cases-index-actions .modal-footer .btn .btn-icon {
@@ -521,57 +608,103 @@
 
         /* Compact filter section */
         .cases-filter-row {
+            --cases-filter-height: 36px;
+            --cases-filter-font-size: 13px;
+            --cases-filter-color: #495057;
+            --cases-filter-gap: 6px;
+            --cases-filter-gap-half: 3px;
+            --cases-filter-radius: 4px;
+            --cases-filter-border: 1px solid #ced4da;
+            --cases-filter-padding: 4px 10px;
             padding: 11px 8px !important;
             align-items: center;
         }
 
+        .cases-search-group {
+            display: flex;
+            align-items: center;
+            gap: var(--cases-filter-gap);
+        }
+
+        .cases-search-group .cases-filter-btn {
+            margin-left: 0 !important;
+        }
+
+        @media (min-width: 768px) {
+            .cases-filter-row .cases-search-group #tableSearch {
+                flex: 0 0 calc(50% - var(--cases-filter-gap-half));
+                max-width: calc(50% - var(--cases-filter-gap-half));
+            }
+        }
+
         .cases-filter-row .form-control,
-        .cases-filter-row .dtp-input {
-            height: 36px !important;
-            font-size: 13px !important;
-            padding: 4px 10px !important;
-            border-radius: 4px;
-            border: 1px solid #ced4da;
+        .cases-filter-row .dtp-input,
+        .cases-filter-row .bootstrap-select > .dropdown-toggle {
+            height: var(--cases-filter-height) !important;
+            font-size: var(--cases-filter-font-size) !important;
+            padding: var(--cases-filter-padding) !important;
+            border-radius: var(--cases-filter-radius);
+            border: var(--cases-filter-border);
+            color: var(--cases-filter-color) !important;
+            text-align: left;
+            background-color: #fff;
+            font-family: inherit;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .cases-filter-row .bootstrap-select .filter-option-inner-inner,
+        .cases-filter-row .ios-dtp-trigger {
+            font-size: var(--cases-filter-font-size) !important;
+            color: var(--cases-filter-color) !important;
+            text-align: left;
+        }
+
+        .cases-filter-row .form-control::placeholder {
+            color: var(--cases-filter-color) !important;
+            opacity: 1;
+            text-align: left;
+        }
+
+        .cases-filter-row .bootstrap-select > .dropdown-toggle.bs-placeholder .filter-option-inner-inner {
+            color: var(--cases-filter-color) !important;
         }
 
         .cases-filter-row .bootstrap-select > .dropdown-toggle {
-            height: 36px !important;
-            padding: 4px 10px !important;
-            font-size: 13px !important;
-            border-radius: 4px;
             display: flex;
             align-items: center;
         }
 
+        .cases-filter-row .dtp-input {
+            cursor: pointer;
+        }
+
+        .cases-filter-row .dtp-input:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        }
+
         .cases-filter-btn {
             width: 100%;
-            height: 36px;
+            height: var(--cases-filter-height);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 0 !important;
         }
 
+        .cases-filter-btn--search {
+            width: auto;
+            min-width: 120px;
+        }
+
+        .cases-filter-btn--trash {
+            width: auto;
+            min-width: 40px;
+        }
+
         .cases-filter-row .mb-2 {
             margin-bottom: 6px !important;
-        }
-
-        #cases_from.dtp-input, #cases_to.dtp-input {
-            font-family: inherit;
-            font-size: 0.9rem;
-            font-weight: 400;
-            line-height: 1.5;
-            padding: 0.375rem 0.75rem;
-            border-radius: 4px;
-            border: 1px solid #ced4da;
-            background-color: #fff;
-            color: #495057;
-            cursor: pointer;
-        }
-
-        #cases_from.dtp-input:focus, #cases_to.dtp-input:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
         }
 
         /* Filter container with subtle shadow and border */
@@ -617,7 +750,7 @@
         /* Responsive adjustments */
         @media screen and (max-width: 991px) {
             #casesTable {
-                min-width: 640px !important;
+                min-width: 920px !important;
                 width: 100% !important;
                 table-layout: fixed !important;
                 font-size: 12px !important;
@@ -636,43 +769,43 @@
             /* Column width distribution for mobile */
             #casesTable thead th:nth-child(1),
             #casesTable tbody td:nth-child(1) {
-                width: 19%;
+                width: 150px;
             }
 
             /* Doctor */
             #casesTable thead th:nth-child(2),
             #casesTable tbody td:nth-child(2) {
-                width: 19%;
+                width: 170px;
             }
 
             /* Patient */
             #casesTable thead th:nth-child(3),
             #casesTable tbody td:nth-child(3) {
-                width: 17%;
+                width: 150px;
             }
 
             /* Initial Deli Date */
             #casesTable thead th:nth-child(4),
             #casesTable tbody td:nth-child(4) {
-                width: 17%;
+                width: 140px;
             }
 
             /* Date Delivered */
             #casesTable thead th:nth-child(5),
             #casesTable tbody td:nth-child(5) {
-                width: 8%;
+                width: 70px;
             }
 
             /* Status */
             #casesTable thead th:nth-child(6),
             #casesTable tbody td:nth-child(6) {
-                width: 14%;
+                width: 140px;
             }
 
             /* Tags */
             #casesTable thead th:nth-child(7),
             #casesTable tbody td:nth-child(7) {
-                width: 6%;
+                width: 100px;
             }
 
             .tooltip-toggle-container {
@@ -695,8 +828,8 @@
 
             /* Allow horizontal scroll on small screens */
             .dataTables_wrapper {
-                overflow-x: auto;
-                width: 100% !important;
+                overflow-x: auto !important;
+                width: 100% ;
             }
 
             .cases-table-scroll {
@@ -712,7 +845,7 @@
             /* Better button display on mobile */
             .btn-primary {
                 width: 100%;
-                margin-bottom: 0.5rem;
+               
             }
 
             /* Fix filter layout on mobile */
@@ -837,19 +970,22 @@
                         @endif
                     </div>
 
-                    <!-- Search, Apply, and Trash -->
+                    <!-- Search and Apply -->
                     <div class="col-12 col-md-4 mb-2">
-                        <div class="d-flex">
+                        <div class="cases-search-group">
                             <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
-                            <button type="submit" class="btn btn-primary cases-filter-btn ml-2"
-                                    style="width: auto; min-width: 40px;">
+                            <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search">
                                 <i class="fas fa-search"></i>
                             </button>
-                            <a href="{{route('deleted-cases')}}" class="btn btn-danger cases-filter-btn ml-2"
-                               title="View Deleted Cases" style="width: auto; min-width: 40px;">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </a>
                         </div>
+                    </div>
+
+                    <!-- Trash button -->
+                    <div class="col-12 col-md-2 mb-2 d-flex justify-content-end">
+                        <a href="{{route('deleted-cases')}}" class="btn btn-danger cases-filter-btn cases-filter-btn--trash"
+                           title="View Deleted Cases">
+                            <i class="fa-regular fa-trash-can"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -858,8 +994,8 @@
         </form>
     @endif
     <div class="container full-width">
-        <div class="row" style="">
-            <div class="col-12">
+        <div class="row" >
+            <div class="col-12" style="padding:0">
                 <br>
                 <div class="cases-table-scroll">
                     <table id="casesTable"
@@ -1101,107 +1237,84 @@
                                 </div>
                                 <div class="modal-footer">
                                     @if(!isset($trashedCases))
-                                        <div class="row" style="width: 100%; margin: 0;">
-                                            <!-- Row 1: Print Voucher and View Case -->
-                                            <div class="col-6" style="padding: 5px;">
+                                        <div class="sigma-modal-actions">
+                                            <div class="sigma-actions-row sigma-actions-row--top">
                                                 <a href="{{route('view-voucher',$case->id)}}"
-                                                   class="btn btn-info" style="width: 100%;"><span class="btn-icon"><i
+                                                   class="btn btn-info"><span class="btn-icon"><i
                                                                 class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
-                                            </div>
-                                            <div class="col-6" style="padding: 5px;">
                                                 <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                   class="btn btn-info" style="width: 100%;"><span class="btn-icon"><i
+                                                   class="btn btn-info"><span class="btn-icon"><i
                                                                 class="far fa-file-alt"></i></span><span
                                                             class="btn-text">View</span></a>
                                             </div>
 
-                                            <!-- Row 2: Lock Case, Delete Case -->
-                                            @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
-                                                <div class="col-6" style="padding: 5px;">
+                                            <div class="sigma-actions-grid">
+                                                @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
                                                     @if(!$case->locked)
                                                         <a href="{{route('lock-case',$case->id)}}"
-                                                           class="btn btn-dark" style="width: 100%;"><span
-                                                                    class="btn-icon"><i
+                                                           class="btn btn-dark"><span class="btn-icon"><i
                                                                         class="fas fa-lock"></i></span><span
                                                                     class="btn-text">Lock</span></a>
                                                     @else
                                                         <a href="{{route('unlock-case',$case->id)}}"
-                                                           class="btn btn-dark" style="width: 100%;"><span
-                                                                    class="btn-icon"><i
+                                                           class="btn btn-dark"><span class="btn-icon"><i
                                                                         class="fas fa-lock-open"></i></span><span
                                                                     class="btn-text">Unlock</span></a>
                                                     @endif
-                                                </div>
-                                            @endif
-                                            @if(Auth()->user()->is_admin && !$case->locked)
-                                                <div class="col-6" style="padding: 5px;">
+                                                @endif
+                                                @if(Auth()->user()->is_admin && !$case->locked)
                                                     <a data-clientName="{{ $case->client->name ?? "-" }}"
                                                        data-patientName="{{ $case->patient_name }}"
-                                                       style="color:white; width: 100%;"
                                                        onclick="caseDelConfirmation(event)"
                                                        href="{{route('delete-case',$case->id)}}"
                                                        class="btn btn-danger"><span class="btn-icon"><i
                                                                     class="fas fa-trash"></i></span><span
                                                                 class="btn-text">Delete</span></a>
-                                                </div>
-                                            @endif
+                                                @endif
 
-                                            <!-- Row 3: For completed cases only - Reject, Repeat, Modify -->
-                                            @if (isset($case->actual_delivery_date))
-                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
-                                                    <div class="col-4" style="padding: 5px;">
+                                                @if (isset($case->actual_delivery_date))
+                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
                                                         <a href="{{route('reject-case-view',$case->id )}}"
-                                                           class="btn btn-outline-danger" style="width: 100%;"><span
+                                                           class="btn btn-outline-danger"><span
                                                                     class="btn-icon"><i class="fas fa-times"></i></span><span
                                                                     class="btn-text">Reject case</span></a>
-                                                    </div>
-                                                @endif
-                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
-                                                    <div class="col-4" style="padding: 5px;">
+                                                    @endif
+                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
                                                         <a href="{{route('repeat-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning" style="width: 100%;"><span
+                                                           class="btn btn-outline-warning"><span
                                                                     class="btn-icon"><i
                                                                         class="fas fa-undo"></i></span><span
                                                                     class="btn-text">Repeat case</span></a>
-                                                    </div>
-                                                @endif
-                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
-                                                    <div class="col-4" style="padding: 5px;">
+                                                    @endif
+                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
                                                         <a href="{{route('modify-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning" style="width: 100%;"><span
+                                                           class="btn btn-outline-warning"><span
                                                                     class="btn-icon"><i
                                                                         class="fa fa-broom"></i></span><span
                                                                     class="btn-text">Modify case</span></a>
-                                                    </div>
+                                                    @endif
                                                 @endif
-                                            @endif
 
-
-                                            <!-- Row 3: Redo case and Edit -->
-                                            @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
-                                                <div class="col-6" style="padding: 5px;">
+                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
                                                     <a href="{{route('redo-case-view',$case->id)}}"
-                                                       class="btn btn-outline-warning" style="width: 100%;"><span
+                                                       class="btn btn-outline-warning"><span
                                                                 class="btn-icon"><i class="fa fa-broom"></i></span><span
                                                                 class="btn-text">Redo case</span></a>
-                                                </div>
-                                            @endif
-                                            @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                <div class="col-6" style="padding: 5px;">
+                                                @endif
+                                                @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
                                                     <a href="{{route('edit-case-view',$case->id)}}"
-                                                       class="btn btn-warning" style="width: 100%;"><span
+                                                       class="btn btn-warning"><span
                                                                 class="btn-icon"><i
                                                                     class="fa-solid fa-pen-to-square"></i></span><span
                                                                 class="btn-text">Edit</span></a>
-                                                </div>
-                                            @endif
-                                            <!-- Cancel Row -->
-                                            <div class="col-12" style="padding: 5px;">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                        style="width: 100%;">Cancel
-                                                </button>
+                                                @endif
                                             </div>
 
+                                            <div class="sigma-actions-row sigma-actions-row--cancel">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </div>
                                     @else
                                         <a href="{{route('restore-case',$case->id)}}"
@@ -1576,8 +1689,10 @@
                                                               "responsive": false ,  // Disable responsive column hiding
                                                               "bLengthChange": false ,  // Disable "Show XX entries" dropdown
                                                               "iDisplayLength": 20 ,
+                                                              "ordering": false ,
                                                               "order": [] ,  // Disable initial sorting to preserve server-side order
                                                               "dom": 'rtip' ,  // Hide default search box ('f' removed) but keep table, info, pagination
+                                                              "info": false ,
                                                               "bProcessing": true ,
                                                               "searching": true ,  // Enable searching for real-time filter
                                                               "scrollX": false ,  // Disable horizontal scroll - let CSS handle it

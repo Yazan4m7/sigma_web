@@ -131,6 +131,32 @@ class client extends Model
         return $jobs;
     }
 
+    public function caseIdsByJobTypes(array $jobTypeIds, $month)
+    {
+        $jobTypeIds = array_values(array_filter($jobTypeIds));
+        if (empty($jobTypeIds)) {
+            return collect();
+        }
+
+        $monthYear = explode('-', $month);
+
+        $date = Carbon::parse($monthYear[0] . "-" . $monthYear[1] . "-01"); // universal truth month's first day is 1
+        $start = $date->startOfMonth()->format('Y-m-d H:i:s'); // 2000-02-01 00:00:00
+        $end = $date->endOfMonth()->format('Y-m-d H:i:s'); // 2000-02-29 23:59:59
+
+        return job::whereHas('case', function ($q) use ($start, $end): void {
+            $q->where('doctor_id', $this->id)->whereBetween('actual_delivery_date', [$start, $end]);
+        })->whereIn('type', $jobTypeIds)
+            ->where([
+                "is_rejection" => 0,
+                "is_repeat" => 0,
+                "is_modification" => 0,
+                "is_redo" => 0
+            ])
+            ->distinct()
+            ->pluck("case_id");
+    }
+
     public function numOfUnitsBy_abutment_implants($abutmentId,$selectedImplants, $month,$useFilter = false){
 
         $monthYear = explode('-', $month);

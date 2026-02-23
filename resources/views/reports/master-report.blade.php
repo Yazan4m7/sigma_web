@@ -1,8 +1,8 @@
 @extends('layouts.app', ['pageSlug' => 'Master Report'])
 
 @push('css')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -11,6 +11,9 @@
 @endpush
 
 @section('content')
+    @php
+        $permissions = Cache::get('user' . Auth()->user()->id);
+    @endphp
     <style>
 
         .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
@@ -156,11 +159,13 @@
             width: 100%;
             height: 44px;
             background: #f1f5f9;
+            background-image: none;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             padding: 4px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            overflow: hidden;
+            transition: border-color 0.2s ease;
         }
 
         .modern-toggle-btn:hover {
@@ -190,10 +195,10 @@
             left: 4px;
             width: calc(33.333% - 4px);
             height: calc(100% - 8px);
-            background: linear-gradient(135deg, #408385 0%, #2d5f61 100%);
+            background: linear-gradient(135deg, #1c7c54 0%, #2f9e73 100%);
             border-radius: 6px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 2px 8px rgba(64, 131, 133, 0.3);
+            transition: transform 0.25s ease;
+            box-shadow: none;
             z-index: 1;
         }
 
@@ -349,18 +354,18 @@
         }
 
         .badge-success {
-            background: #408284;
+
             color: white;
         }
 
 
         .badge-warning {
-            background: #408284;
+
             color: white;
         }
 
         .badge-primary {
-            background: #408284;
+
             color: white;
         }
 
@@ -558,6 +563,60 @@ button[type="submit"].modern-btn:hover {
     font-size: 0.92rem;
 }
 
+.filters-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filters-action-btn {
+    border: 1px solid var(--stroke);
+    background: #fff;
+    color: var(--ink);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.filters-action-btn i {
+    margin-right: 6px;
+}
+
+.filters-master-reset {
+    border: none;
+    background: none;
+    color: var(--accent-strong);
+    font-weight: 600;
+    font-size: 12px;
+    padding: 6px 8px;
+}
+
+.filters-master-reset:hover {
+    text-decoration: underline;
+}
+
+.filter-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.filter-reset-btn {
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.filter-reset-btn:hover {
+    color: var(--accent-strong);
+    text-decoration: underline;
+}
+
 .filters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -620,13 +679,41 @@ button[type="submit"].modern-btn:hover {
 }
 
 .filters-footer {
-    display: none;
-    justify-content: flex-end;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
     margin-top: 16px;
+}
+
+.filters-summary-card {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.filters-summary-row {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
 }
 
 .generate-btn i {
     margin-right: 6px;
+}
+
+.generate-btn {
+    background: linear-gradient(135deg, #2f7c7e 0%, #bdcfd9 100%) !important;
+    border-color: #2f7c7e !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(47, 124, 126, 0.35) !important;
+}
+
+.generate-btn:hover {
+    background: linear-gradient(135deg, #266b6d 0%, #a9c3d0 100%) !important;
+    border-color: #266b6d !important;
+    box-shadow: 0 10px 24px rgba(38, 107, 109, 0.35) !important;
 }
 
 @media (max-width: 900px) {
@@ -640,9 +727,11 @@ button[type="submit"].modern-btn:hover {
 }
 
 .modern-toggle-btn {
-    background: var(--pill);
+    background: #f1f5f9;
+    background-image: none;
     border: 1px solid var(--stroke);
     height: 46px;
+    overflow: hidden;
 }
 
 .modern-toggle-btn:hover {
@@ -658,7 +747,8 @@ button[type="submit"].modern-btn:hover {
 }
 
 .toggle-slider {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    background: linear-gradient(135deg, #1c7c54 0%, #2f9e73 100%);
+    box-shadow: none;
 }
 
 
@@ -682,31 +772,32 @@ button[type="submit"].modern-btn:hover {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
         }
 
-        /* === TABLE STICKY FIXES START === */
+        /* === MASTER REPORT TABLE STYLES === */
 
         /* Master Report Table Header Styles - Match other reports sizing */
         #master-report-table thead th {
             font-weight: 600;
-            font-size: 16px;
-            padding: 18px 16px;
+            font-size: 13px;
+            padding: 10px 12px;
             vertical-align: middle;
             white-space: nowrap;
-            min-height: 50px;
-            position: relative; /* Default positioning for non-sticky headers */
+            min-height: 40px;
+            position: relative; /* Default positioning for headers */
         }
 
         /* Body cells - normal size */
         #master-report-table tbody td {
-            font-size: 15px;
-            padding: 14px 16px;
+            font-size: 12.5px;
+            padding: 10px 12px;
             vertical-align: middle;
-            min-height: 45px;
+            min-height: 38px;
             white-space: nowrap; /* ADDED: Ensure cells don't wrap */
         }
 
         /* Dark headers */
         #master-report-table thead th.header-dark,
-        table#master-report-table thead th.header-dark {
+        table#master-report-table thead th.header-dark,
+        .sigma-report-table-container .dataTables_scrollHead th.header-dark {
             background-color: #408385 !important;
             background: #408385 !important;
             color: white !important;
@@ -715,7 +806,8 @@ button[type="submit"].modern-btn:hover {
 
         /* Light headers */
         #master-report-table thead th.header-light,
-        table#master-report-table thead th.header-light {
+        table#master-report-table thead th.header-light,
+        .sigma-report-table-container .dataTables_scrollHead th.header-light {
             background-color: transparent !important;
             background: none !important;
             color: #408385 !important;
@@ -729,70 +821,43 @@ button[type="submit"].modern-btn:hover {
             color:  #408385 !important;
         }
 
-        /* Sticky positioning for first 2 columns (Case ID, Doctor) */
-        #master-report-table thead th:nth-child(1),
-        #master-report-table tbody td:nth-child(1) {
-            position: sticky !important;
-            left: 0 !important;
-            z-index: 10 !important;
-            /* FIX: Background must be applied for sticky to cover content */
+        #master-report-table thead,
+        .sigma-report-table-container .dataTables_scrollHead {
+            display: none;
+        }
+
+        .master-report-header-row {
+            cursor: default;
+            background-color: #f8fafc !important;
+        }
+
+        .master-report-header-row td {
+            font-weight: 600;
+            font-size: 12.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background-color: #f8fafc !important;
+            color: #408385 !important;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .master-report-header-row td.header-dark {
             background-color: #408385 !important;
-        }
-
-        #master-report-table thead th:nth-child(2),
-        #master-report-table tbody td:nth-child(2) {
-            position: sticky !important;
-            /* left position set by JavaScript */
-            z-index: 10 !important;
-            /* FIX: Background must be applied for sticky to cover content */
-            background-color: #408385 !important;
-        }
-
-        /* Disable manual sticky when FixedColumns is active (class added in JS) */
-        #master-report-table.using-fixed-columns thead th:nth-child(1),
-        #master-report-table.using-fixed-columns thead th:nth-child(2),
-        #master-report-table.using-fixed-columns tbody td:nth-child(1),
-        #master-report-table.using-fixed-columns tbody td:nth-child(2) {
-            position: static !important;
-            left: auto !important;
-            z-index: auto !important;
-        }
-
-        /* FIX: Removed rules for :nth-child(3) */
-
-        /* Maintain proper styling for sticky columns */
-        #master-report-table tbody tr:nth-child(even) td:nth-child(1),
-        #master-report-table tbody tr:nth-child(even) td:nth-child(2) {
-            background-color: #f8fafb !important;
-        }
-
-        #master-report-table tbody tr:nth-child(odd) td:nth-child(1),
-        #master-report-table tbody tr:nth-child(odd) td:nth-child(2) {
-            background-color: #ffffff !important;
-        }
-
-        #master-report-table tbody tr:hover td:nth-child(1),
-        #master-report-table tbody tr:hover td:nth-child(2) {
-            background-color: rgba(64, 131, 133, 0.08) !important;
-        }
-
-        /* Ensure header cells for sticky columns have proper background */
-        #master-report-table thead th:nth-child(1).header-dark,
-        #master-report-table thead th:nth-child(2).header-dark {
-            background-color: #408385 !important;
-            color: white !important;
+            color: #ffffff !important;
         }
 
         /* Table container - enable horizontal scroll */
-        .sigma-report-table-container {
-            width: 100%;
-            overflow-x: auto;
-            overflow-y: visible;
-            position: relative;
-            max-width: 100%;
-        }
+.sigma-report-table-container {
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: visible;
+    position: relative;
+    max-width: 100%;
+    padding: 12px 20px 20px;
+    box-sizing: border-box;
+}
 
-        /* Ensure table doesn't inherit transforms that break position:sticky */
+        /* Ensure table doesn't inherit transforms that break layout */
         #master-report-table {
             position: relative;
             border-collapse: separate;
@@ -811,17 +876,86 @@ button[type="submit"].modern-btn:hover {
         }
 
         /* Ensure DataTables doesn't interfere with our layout */
-        #master-report-table_wrapper {
+#master-report-table_wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+}
+
+        .sigma-report-table-container .dataTables_filter,
+        .sigma-report-table-container .dataTables_length {
+            padding: 6px 4px 10px;
+        }
+
+        .sigma-report-table-container .dataTables_filter {
+            text-align: right;
+        }
+
+        .sigma-report-table-container .dataTables_scroll,
+        .sigma-report-table-container .dataTables_scrollHead,
+        .sigma-report-table-container .dataTables_scrollBody {
             width: 100% !important;
-            overflow: visible !important;
         }
 
-        #master-report-table thead {
-            display: table-header-group !important;
+        .sigma-report-table-container .dataTables_scrollBody {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+            max-width: 100%;
         }
 
-        /* === TABLE STICKY FIXES END === */
+        .columns-dropdown {
+            margin-right: 12px;
+        }
 
+        .master-report-row {
+            cursor: pointer;
+        }
+
+        .report-date-line {
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .report-time-line {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.2;
+        }
+
+        .sigma-case-status-badge {
+            width: 7.5em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto;
+            line-height: 1 !important;
+            padding: 0.3rem 0.45rem !important;
+            vertical-align: middle;
+        }
+
+        .sigma-case-status-badge.badge-primary {
+            color: #ffffff;
+        }
+
+        .sigma-case-status-badge .tooltipX {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            line-height: 1;
+        }
+
+        .sigma-case-status-badge .sigma-badge-label {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -836,6 +970,10 @@ button[type="submit"].modern-btn:hover {
             .card-header {
                 padding: 20px;
             }
+
+            #master-report-table {
+                min-width: 1200px;
+            }
         }
     </style>
 
@@ -848,63 +986,44 @@ button[type="submit"].modern-btn:hover {
             <div id="hidden-device-filters"></div>
             <script>
                 window.initialMaterialTypes = @json(request('material_type', []));
+                window.initialEmployeeFilters = @json(array_values((array) request('employee_filters', [])));
+                window.initialDeviceFilters = @json(array_values((array) request('device_filters', [])));
             </script>
 
-            <div class="report-hero">
-                <div class="hero-copy">
-                    <p class="eyebrow">Reporting</p>
-                    <h1 class="hero-title">Master Report</h1>
-                    <p class="hero-subtitle">Refine cases by doctor, material, device, and completion state.</p>
-                </div>
-                <div class="hero-actions">
-                    <button type="submit" class="modern-btn btn-primary generate-btn">
-                        <i class="fas fa-chart-line"></i>
-                        Generate Report
-                    </button>
-                </div>
-            </div>
-
             <div class="form-section basic-filters filters-surface">
-                <div class="filters-header">
-                    <div class="filters-title">
-                        <span class="filters-icon"><i class="fas fa-filter"></i></span>
-                        <div>
-                            <p class="eyebrow" style="margin: 0;">Filters</p>
-                            <h2 class="section-title" style="margin: 0;">Basic Filters</h2>
-                        </div>
-                    </div>
-                    <p class="filters-hint">Choose any combination to narrow down cases.</p>
-                </div>
-
                 <div class="filters-grid">
-                    <div class="filter-group span-2">
-                        <label class="form-label"><i class="fas fa-calendar-alt"></i> Date Range</label>
-                        <div class="range-pair">
-                            <div>
-                                <label class="form-label" for="master_from">From</label>
-                                <x-ios-dtp
-                                    name="from"
-                                    id="master_from"
-                                    :value="request('from', $from)"
-                                    mode="date"
-                                    :required="true"
-                                />
-                            </div>
-                            <div>
-                                <label class="form-label" for="master_to">To</label>
-                                <x-ios-dtp
-                                    name="to"
-                                    id="master_to"
-                                    :value="request('to', $to)"
-                                    mode="date"
-                                    :required="true"
-                                />
-                            </div>
-                        </div>
+                    <div class="filter-group">
+                        <label class="form-label filter-label" for="master_from">
+                            <span><i class="fas fa-calendar-alt"></i> From</span>
+                            <button type="button" class="filter-reset-btn" data-reset="date-from">Reset</button>
+                        </label>
+                        <x-ios-dtp
+                            name="from"
+                            id="master_from"
+                            :value="request('from', $from)"
+                            mode="date"
+                            :required="true"
+                        />
+                    </div>
+                    <div class="filter-group">
+                        <label class="form-label filter-label" for="master_to">
+                            <span><i class="fas fa-calendar-alt"></i> To</span>
+                            <button type="button" class="filter-reset-btn" data-reset="date-to">Reset</button>
+                        </label>
+                        <x-ios-dtp
+                            name="to"
+                            id="master_to"
+                            :value="request('to', $to)"
+                            mode="date"
+                            :required="true"
+                        />
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-user-md"></i> Doctor</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-user-md"></i> Doctor</span>
+                            <button type="button" class="filter-reset-btn" data-reset="doctor">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="doctor[]" id="doctor">
                             <option value="all" {{in_array('all', (array)request('doctor', ['all'])) ? 'selected' : ''}}>All Doctors</option>
                             @foreach($clients as $client)
@@ -916,7 +1035,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-tooth"></i> Material</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-tooth"></i> Material</span>
+                            <button type="button" class="filter-reset-btn" data-reset="material">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="material[]" id="material">
                             <option value="all" {{in_array('all', (array)request('material', ['all'])) ? 'selected' : ''}}>All Materials</option>
                             @foreach($materials as $material)
@@ -928,7 +1050,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-cog"></i> Job Type</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-cog"></i> Job Type</span>
+                            <button type="button" class="filter-reset-btn" data-reset="job-type">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="job_type[]" id="job_type">
                             <option value="all" {{in_array('all', (array)request('job_type', ['all'])) ? 'selected' : ''}}>All Job Types</option>
                             @foreach($jobTypes as $jobType)
@@ -940,14 +1065,20 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-layer-group"></i> Material Type</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-layer-group"></i> Material Type</span>
+                            <button type="button" class="filter-reset-btn" data-reset="material-type">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="material_type[]" id="material_type">
                             <option value="all">All Material Types</option>
                         </select>
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-exclamation-triangle"></i> Failure Type</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-exclamation-triangle"></i> Failure Type</span>
+                            <button type="button" class="filter-reset-btn" data-reset="failure-type">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="failure_type[]" id="failure_type">
                             <option value="all" {{in_array('all', (array)request('failure_type', ['all'])) ? 'selected' : ''}}>All Failure Types</option>
                             @foreach($failureCauses as $failureCause)
@@ -959,7 +1090,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-plug"></i> Abutments</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-plug"></i> Abutments</span>
+                            <button type="button" class="filter-reset-btn" data-reset="abutments">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="abutments[]" id="abutments">
                             <option value="all" {{in_array('all', (array)request('abutments', ['all'])) ? 'selected' : ''}}>All Abutments</option>
                             @foreach($abutments as $abutment)
@@ -971,7 +1105,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-tooth"></i> Implants</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-tooth"></i> Implants</span>
+                            <button type="button" class="filter-reset-btn" data-reset="implants">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="implants[]" id="implants">
                             <option value="all" {{in_array('all', (array)request('implants', ['all'])) ? 'selected' : ''}}>All Implants</option>
                             @foreach($implants as $implant)
@@ -983,7 +1120,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-tasks"></i> Workflow Stage</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-tasks"></i> Workflow Stage</span>
+                            <button type="button" class="filter-reset-btn" data-reset="status">Reset</button>
+                        </label>
                         <select class="modern-select select2-multiple" multiple name="status[]" id="status">
                             <option value="all" {{in_array('all', (array)request('status', ['all'])) ? 'selected' : ''}}>All Stages</option>
                             <option value="1" {{in_array('1', (array)request('status', [])) ? 'selected' : ''}}>Design</option>
@@ -998,7 +1138,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-dollar-sign"></i> Invoice Amount</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-dollar-sign"></i> Invoice Amount</span>
+                            <button type="button" class="filter-reset-btn" data-reset="amount">Reset</button>
+                        </label>
                         <div class="range-pair">
                             <input type="number" class="modern-input" name="amount_from" id="amount_from"
                                    placeholder="From JOD" value="{{request('amount_from')}}" min="0" step="0.01">
@@ -1011,7 +1154,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-cubes"></i> Number of Units</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-cubes"></i> Number of Units</span>
+                            <button type="button" class="filter-reset-btn" data-reset="units">Reset</button>
+                        </label>
                         <div class="range-pair">
                             <input type="number" class="modern-input" name="units_from" id="units_from"
                                    placeholder="From" value="{{request('units_from')}}" min="0" step="1">
@@ -1024,7 +1170,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-users"></i> Employees Filter</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-users"></i> Employees Filter</span>
+                            <button type="button" class="filter-reset-btn" data-reset="employees">Reset</button>
+                        </label>
                         <button type="button" class="trigger-field" data-toggle="modal" data-target="#employeesFilterModal">
                             Configure Employee Filters
                             <i class="fas fa-chevron-right"></i>
@@ -1033,7 +1182,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-microchip"></i> Devices Filter</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-microchip"></i> Devices Filter</span>
+                            <button type="button" class="filter-reset-btn" data-reset="devices">Reset</button>
+                        </label>
                         <button type="button" class="trigger-field" data-toggle="modal" data-target="#devicesFilterModal">
                             Configure Device Filters
                             <i class="fas fa-chevron-right"></i>
@@ -1042,7 +1194,10 @@ button[type="submit"].modern-btn:hover {
                     </div>
 
                     <div class="filter-group">
-                        <label class="form-label"><i class="fas fa-check-circle"></i> Case Completion</label>
+                        <label class="form-label filter-label">
+                            <span><i class="fas fa-check-circle"></i> Case Completion</span>
+                            <button type="button" class="filter-reset-btn" data-reset="completion">Reset</button>
+                        </label>
                         <div class="modern-toggle-container">
                             <input type="hidden" name="show_completed" id="show_completed_hidden" value="{{request('show_completed', 'all')}}">
                             <button type="button" class="modern-toggle-btn" id="completion_toggle" data-value="{{request('show_completed', 'all')}}">
@@ -1056,6 +1211,7 @@ button[type="submit"].modern-btn:hover {
                 </div>
 
                 <div class="filters-footer">
+                    <button type="button" class="filters-master-reset" id="filters-master-reset">Reset All</button>
                     <button type="submit" class="modern-btn btn-primary generate-btn">
                         <i class="fas fa-chart-line"></i>
                         Generate Report
@@ -1166,8 +1322,8 @@ button[type="submit"].modern-btn:hover {
     @endphp
 
     @if(!empty($summaryItems))
-        <div class="modern-card" style="margin-top: 8px; padding: 10px 14px;">
-            <div class="d-flex flex-wrap align-items-center" style="gap: 8px;">
+        <div class="modern-card filters-summary-card" style="margin-top: 8px; padding: 10px 14px;">
+            <div class="filters-summary-row">
                 @foreach($summaryItems as $item)
                     <span class="badge badge-light" style="border: 1px solid #e5e7eb; color: #374151; font-weight: 500; padding: 6px 10px; background: #f9fafb;">
                         {{ $item }}
@@ -1279,10 +1435,6 @@ button[type="submit"].modern-btn:hover {
                                     <input class="form-check-input column-toggle" type="checkbox" id="col-amount" data-column="20" checked>
                                     <label class="form-check-label" for="col-amount">Amount</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-actions" data-column="21" checked>
-                                    <label class="form-check-label" for="col-actions">Actions</label>
-                                </div>
                                 <div class="dropdown-divider"></div>
                                 <button class="btn btn-sm btn-primary btn-block" id="selectAllColumns" type="button">Select All</button>
                                 <button class="btn btn-sm btn-secondary btn-block mt-1" id="deselectAllColumns" type="button">Deselect All</button>
@@ -1319,10 +1471,32 @@ button[type="submit"].modern-btn:hover {
                         <th class="header-light text-center">Delivery</th>
                         <th class="header-dark">Status</th>
                         <th class="header-dark">Amount</th>
-                        <th class="header-dark">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <tr class="master-report-header-row">
+                        <td class="header-dark text-left" data-order="-1" data-search="">Case ID</td>
+                        <td class="header-dark text-left" data-order="-1" data-search="">Doctor Name</td>
+                        <td class="header-dark text-left" data-order="-1" data-search="">Patient Name</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Material</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Job Type</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Created Date</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Delivery Date</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Mill Device</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">3D Print Device</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Sinter Device</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Press Device</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Designer</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Miller</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">3D Printer</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Sintered</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Presser</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Finisher</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">QC</td>
+                        <td class="header-light text-center" data-order="-1" data-search="">Delivery</td>
+                        <td class="header-dark text-center" data-order="-1" data-search="">Status</td>
+                        <td class="header-dark text-center" data-order="-1" data-search="">Amount</td>
+                    </tr>
                     @foreach($cases as $case)
                         @php
                             // Get ALL devices used by stage across ALL jobs in this case
@@ -1392,14 +1566,31 @@ button[type="submit"].modern-btn:hover {
                             ];
 
                             // Format dates
-                            $createdDate = $case->created_at ? date('Y-m-d', strtotime($case->created_at)): '-';
-                            $deliveryDate =date('Y-m-d', strtotime($case->actual_delivery_date))  ?? date('Y-m-d', strtotime($case->initial_delivery_date ))?? '-';
+                            $createdAt = $case->created_at ? \Carbon\Carbon::parse($case->created_at) : null;
+                            $createdDate = $createdAt ? $createdAt->format('d M, Y') : '-';
+                            $createdTime = $createdAt ? $createdAt->format('h:i A') : '-';
+
+                            $deliveryRaw = $case->actual_delivery_date ?: $case->initial_delivery_date;
+                            $deliveryAt = $deliveryRaw ? \Carbon\Carbon::parse($deliveryRaw) : null;
+                            $deliveryDate = $deliveryAt ? $deliveryAt->format('d M, Y') : '-';
+                            $deliveryTime = $deliveryAt ? $deliveryAt->format('h:i A') : '-';
+
+                            $caseStatus = (string) $case->status();
                         @endphp
-                        <tr>
-                            <td class="text-left"><strong>{{$case->id}}</strong></td> <td class="text-left">{{$case->client->name ?? 'N/A'}}</td> <td class="text-left">{{$case->patient_name}}</td> <td class="text-center">{{$materialsStr}}</td>
+                        <tr class="master-report-row clickable" data-toggle="modal" data-target="#actionsDialog{{$case->id}}" data-case-id="{{$case->id}}">
+                            <td class="text-left"><strong>{{$case->id}}</strong></td>
+                            <td class="text-left">{{$case->client->name ?? 'N/A'}}</td>
+                            <td class="text-left">{{$case->patient_name}}</td>
+                            <td class="text-center">{{$materialsStr}}</td>
                             <td class="text-center">{{$jobTypesStr}}</td>
-                            <td class="text-center">{{$createdDate}}</td>
-                            <td class="text-center">{{$deliveryDate}}</td>
+                            <td class="text-center">
+                                <div class="report-date-line">{{$createdDate}}</div>
+                                <div class="report-time-line">{{$createdTime}}</div>
+                            </td>
+                            <td class="text-center">
+                                <div class="report-date-line">{{$deliveryDate}}</div>
+                                <div class="report-time-line">{{$deliveryTime}}</div>
+                            </td>
                             <td class="text-center">{{$millingDevicesStr}}</td>
                             <td class="text-center">{{$printingDevicesStr}}</td>
                             <td class="text-center">{{$sinteringDevicesStr}}</td>
@@ -1413,43 +1604,87 @@ button[type="submit"].modern-btn:hover {
                             <td class="text-center">{{$stageEmployees[7]}}</td>
                             <td class="text-center">{{$stageEmployees[8]}}</td>
                             <td class="text-center">
-                                @php
-                                    $stageNames = [
-                                        1 => 'Design',
-                                        2 => 'Milling',
-                                        3 => '3D Printing',
-                                        4 => 'Sintering',
-                                        5 => 'Pressing',
-                                        6 => 'Finishing',
-                                        7 => 'QC',
-                                        8 => 'Delivery',
-                                        -1 => 'Completed'
-                                    ];
+                                @if(str_contains($caseStatus, "Completed"))
+                                    <span class="badge badge-success sigma-case-status-badge sigma-status-width">
+                                        <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                    </span>
+                                @elseif(str_contains($caseStatus, "In-Progress") || str_contains($caseStatus, "Active"))
+                                    @php
+                                        $rawStatus = trim($caseStatus);
 
-                                    // Check if case is completed
-                                    $isCompleted = $case->actual_delivery_date && $case->jobs->every(function($job) {
-                                        return $job->stage == -1;
-                                    });
+                                        $stageText = $rawStatus;
+                                        if (Str::contains($rawStatus, 'Active in')) {
+                                            $stageText = trim(Str::after($rawStatus, 'Active in'));
+                                        } elseif (Str::contains($rawStatus, 'In-Progress in')) {
+                                            $stageText = trim(Str::after($rawStatus, 'In-Progress in'));
+                                        }
 
-                                    if ($isCompleted) {
-                                        $stageName = 'Completed';
-                                        $badgeClass = 'success';
-                                    } else {
-                                        $maxStage = $case->jobs->max('stage');
-                                        $stageName = $stageNames[$maxStage] ?? 'Unknown';
-                                        $badgeClass = $maxStage > 7 ? 'success' : ($maxStage < 3 ? 'warning' : 'primary');
-                                    }
-                                @endphp
-                                <span class="status-badge badge-{{$badgeClass}}">
-                                            {{$stageName}}
+                                        $assigneeInitials = '';
+                                        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+                                            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+                                        });
+
+                                        if (!$jobAtStage) {
+                                            $jobAtStage = $case->jobs->first(function ($job) {
+                                                return $job->assignee !== null && (string) $job->stage !== '-1';
+                                            });
+                                        }
+
+                                        if ($jobAtStage && $jobAtStage->assignedTo) {
+                                            $assigneeInitials = trim((string) (
+                                                $jobAtStage->assignedTo->name_initials
+                                                ?? $jobAtStage->assignedTo->first_name
+                                                ?? ''
+                                            ));
+                                        }
+
+                                        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+                                            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+                                        }
+
+                                        $formattedStatus = $assigneeInitials !== ''
+                                            ? (trim($stageText) . '/ ' . $assigneeInitials)
+                                            : trim($stageText);
+                                    @endphp
+
+                                    <span class="badge badge-primary sigma-case-status-badge sigma-status-width">
+                                        <span class="tooltipX">
+                                            <span class="sigma-badge-label">{{ $formattedStatus }}</span>
                                         </span>
+                                    </span>
+                                @elseif(str_contains($caseStatus, "Waiting"))
+                                    <span class="badge badge-danger sigma-case-status-badge sigma-status-width">
+                                        @php
+                                            $status = preg_replace('/' . "in" . '/', "", str_replace("Waiting", "", $caseStatus), 1);
+                                        @endphp
+                                        <span class="sigma-badge-label">{{ trim($status) }}</span>
+                                    </span>
+                                @else
+                                    @php
+                                        $isDeliveryAssigned = $case->jobs[0]->stage == 8 && $case->jobs[0]->assignee != null && $case->jobs[0]->delivery_accepted == null;
+                                        $deliveryBadgeText = $caseStatus;
+                                        if ($isDeliveryAssigned && $case->jobs[0]->assignedTo) {
+                                            $employeeInitials = trim((string) (
+                                                $case->jobs[0]->assignedTo->name_initials
+                                                ?? $case->jobs[0]->assignedTo->first_name
+                                                ?? ''
+                                            ));
+                                            $deliveryBadgeText = 'Delivery/ ' . $employeeInitials;
+                                        }
+                                    @endphp
+                                    <span class="badge badge-warning sigma-case-status-badge sigma-status-width">
+                                        @if($isDeliveryAssigned)
+                                            <span class="sigma-badge-label">{{ $deliveryBadgeText }}</span>
+                                        @else
+                                            <span class="tooltipX">
+                                                <span class="sigma-badge-label">{{ $caseStatus }}</span>
+                                                <span class="tooltiptext">{!! $case->getStatusToolTipHTML() !!}</span>
+                                            </span>
+                                        @endif
+                                    </span>
+                                @endif
                             </td>
                             <td class="text-center"><strong>{{abs($case->invoice->amount ?? 0)}}</strong></td>
-                            <td class="text-center">
-                                <a href="/cases/{{$case->id}}" target="_blank" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> View
-                                </a>
-                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -1457,12 +1692,148 @@ button[type="submit"].modern-btn:hover {
                     <tr class="totals-row">
                         <td colspan="20" class="text-right"><strong>Total Cases: {{$cases->count()}}</strong></td>
                         <td class="text-center"><strong>{{$cases->sum(function($case) { return abs($case->invoice->amount ?? 0); })}}</strong></td>
-                        <td></td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
+
+        @foreach($cases  as $case)
+            <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
+                 id="actionsDialog{{$case->id}}" data-backdrop="true" data-keyboard="true">
+
+                <input type="hidden" name="case_id" value="{{$case->id}}">
+                <div class="modal-dialog modal-dialog-centered   " role="document">
+                    <div class="modal-content  ">
+
+                        <div class="modal-body ">
+                            <!-- Sticky Doctor/Patient section -->
+                            <div class="form-group row" style="margin-bottom: 0px">
+                                <div class="form-group col-6 " style="margin-bottom: 0px">
+                                    <label for="doctor" class="patient-doctor-label">Doctor:</label>
+                                    <h5 id="doctor"
+                                        class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
+                                </div>
+                                <div class="form-group col-6 " style="margin-bottom: 0px">
+                                    <label for="pat" class="patient-doctor-label">patient:</label>
+                                    <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
+                                </div>
+                            </div>
+                            <hr>
+
+                            <!-- Scrollable Jobs and Notes section -->
+                            <div class="scrollable-content">
+                                <div class="form-group row">
+                                    <div class=" col-12 ">
+                                        <label><b>Jobs:</b></label><br>
+
+
+                                        @php
+                                            // Determine case's current stage (first job's stage)
+                                            $currentStage = $case->jobs->first()->stage ?? null;
+                                        @endphp
+
+                                        @foreach( $case->jobs as $job)
+                                            @php
+                                                $unit = explode(', ',$job->unit_num);
+                                                // Only show jobs that go through the current stage
+                                                $showJob = $job->goesThroughStage($currentStage);
+                                            @endphp
+
+                                            @if($showJob)
+                                                <div class="job-info-for-tooltip" style="display: none;">
+                                                    <span class="job-type">{{ $job->jobType->name ?? "No Job Type" }}</span>
+                                                    <span class="job-material">{{ $job->material->name ?? "no material" }}</span>
+                                                    <span class="job-units">{{ $job->unit_num }}</span>
+                                                </div>
+                                                <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
+                                                            {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
+                                                                            {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                                @if(count($case->notes)>0)
+                                    <hr>
+                                    <label><b>Notes:</b></label><br>
+                                    @foreach($case->notes as $note)
+                                        <div class="form-control note-container"
+                                             style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                             disabled>
+
+                                            <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><span
+                                                    class="noteText">{{$note->note}}</span>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            @if(!isset($trashedCases))
+                                <div class="sigma-modal-actions">
+                                    <div class="sigma-actions-row sigma-actions-row--top">
+                                        <a href="{{route('view-voucher',$case->id)}}"
+                                           class="btn btn-info"><span class="btn-icon"><i
+                                                    class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
+                                        <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
+                                           class="btn btn-info"><span class="btn-icon"><i
+                                                    class="far fa-file-alt"></i></span><span
+                                                    class="btn-text">View</span></a>
+                                    </div>
+
+                                    <div class="sigma-actions-grid">
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
+                                            @if(!$case->locked)
+                                                <a href="{{route('lock-case',$case->id)}}"
+                                                   class="btn btn-dark"><span class="btn-icon"><i
+                                                            class="fas fa-lock"></i></span><span
+                                                            class="btn-text">Lock</span></a>
+                                            @else
+                                                <a href="{{route('unlock-case',$case->id)}}"
+                                                   class="btn btn-dark"><span class="btn-icon"><i
+                                                            class="fas fa-lock-open"></i></span><span
+                                                            class="btn-text">Unlock</span></a>
+                                            @endif
+                                        @endif
+
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 131))
+                                            <a href="{{route('delete-case',$case->id)}}" onclick="caseDelConfirmation(event)"
+                                               class="btn btn-danger" data-clientName="{{ $case->client->name ?? '' }}" data-patientName="{{ $case->patient_name ?? '' }}">
+                                                <span class="btn-icon"><i class="fas fa-trash"></i></span><span class="btn-text">Delete</span>
+                                            </a>
+                                        @endif
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 124))
+                                            <a href="{{route('reject-case',$case->id)}}" class="btn btn-outline-danger">
+                                                <span class="btn-icon"><i class="fas fa-times"></i></span><span class="btn-text">Reject case</span>
+                                            </a>
+                                        @endif
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 125))
+                                            <a href="{{route('repeat-case',$case->id)}}" class="btn btn-outline-warning">
+                                                <span class="btn-icon"><i class="fas fa-undo"></i></span><span class="btn-text">Repeat case</span>
+                                            </a>
+                                        @endif
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 126))
+                                            <a href="{{route('modify-case',$case->id)}}" class="btn btn-outline-warning">
+                                                <span class="btn-icon"><i class="fas fa-pen"></i></span><span class="btn-text">Modify case</span>
+                                            </a>
+                                        @endif
+                                        @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 127))
+                                            <a href="{{route('edit-case',$case->id)}}" class="btn btn-warning">
+                                                <span class="btn-icon"><i class="fas fa-pen-to-square"></i></span><span class="btn-text">Edit</span>
+                                            </a>
+                                        @endif
+                                    </div>
+
+                                    <div class="sigma-actions-row sigma-actions-row--cancel">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
     @else
         <div class="modern-card" style="text-align: center; padding: 48px;">
             <div style="color: #6b7280; font-size: 18px;">
@@ -1578,17 +1949,179 @@ button[type="submit"].modern-btn:hover {
                     }
                 }
 
+                function setCompletionValue(value) {
+                    const $toggle = $('#completion_toggle');
+                    const $hidden = $('#show_completed_hidden');
+                    $toggle.attr('data-value', value);
+                    $hidden.val(value);
+                    $('.toggle-option').removeClass('active');
+                    $(`.toggle-option[data-value="${value}"]`).addClass('active');
+                }
+
+                function setDtpValue(inputId, value) {
+                    const input = document.getElementById(inputId);
+                    if (!input) {
+                        return;
+                    }
+                    input.value = value || '';
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+
+                function resetSelectToAll(selector) {
+                    const $select = $(selector);
+                    if (!$select.length) {
+                        return;
+                    }
+                    const hasAll = $select.find('option[value="all"]').length > 0;
+                    const nextValue = hasAll ? ['all'] : [];
+                    $select.val(nextValue);
+                    if ($select.hasClass('select2-hidden-accessible')) {
+                        $select.trigger('change.select2');
+                    } else {
+                        $select.trigger('change');
+                    }
+                }
+
+                function resetEmployeeFilters() {
+                    employeeFilterCount = 0;
+                    const container = document.getElementById('employee-filters-container');
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+                    const hiddenContainer = document.getElementById('hidden-employee-filters');
+                    if (hiddenContainer) {
+                        hiddenContainer.innerHTML = '';
+                    }
+                    addEmployeeFilterRow();
+                    const summary = document.getElementById('employees-filter-summary');
+                    if (summary) {
+                        summary.textContent = 'No employee filters applied';
+                        summary.className = 'filter-summary filter-pill muted trigger-summary';
+                    }
+                }
+
+                function resetDeviceFilters() {
+                    deviceFilterCount = 0;
+                    const container = document.getElementById('device-filters-container');
+                    if (container) {
+                        container.innerHTML = '';
+                    }
+                    const hiddenContainer = document.getElementById('hidden-device-filters');
+                    if (hiddenContainer) {
+                        hiddenContainer.innerHTML = '';
+                    }
+                    addDeviceFilterRow();
+                    const summary = document.getElementById('devices-filter-summary');
+                    if (summary) {
+                        summary.textContent = 'All devices included';
+                        summary.className = 'filter-summary filter-pill muted trigger-summary';
+                    }
+                }
+
+                function resetFilterByKey(key) {
+                    switch (key) {
+                        case 'date-from':
+                            setDtpValue('master_from', window.masterReportDefaults?.from);
+                            break;
+                        case 'date-to':
+                            setDtpValue('master_to', window.masterReportDefaults?.to);
+                            break;
+                        case 'doctor':
+                            resetSelectToAll('#doctor');
+                            break;
+                        case 'material':
+                            resetSelectToAll('#material');
+                            break;
+                        case 'job-type':
+                            resetSelectToAll('#job_type');
+                            break;
+                        case 'material-type':
+                            resetSelectToAll('#material_type');
+                            break;
+                        case 'failure-type':
+                            resetSelectToAll('#failure_type');
+                            break;
+                        case 'abutments':
+                            resetSelectToAll('#abutments');
+                            break;
+                        case 'implants':
+                            resetSelectToAll('#implants');
+                            break;
+                        case 'status':
+                            resetSelectToAll('#status');
+                            break;
+                        case 'amount':
+                            $('#amount_from').val('').trigger('input');
+                            $('#amount_to').val('').trigger('input');
+                            break;
+                        case 'units':
+                            $('#units_from').val('').trigger('input');
+                            $('#units_to').val('').trigger('input');
+                            break;
+                        case 'employees':
+                            resetEmployeeFilters();
+                            break;
+                        case 'devices':
+                            resetDeviceFilters();
+                            break;
+                        case 'completion':
+                            setCompletionValue('all');
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                function resetAllFilters() {
+                    resetFilterByKey('date-from');
+                    resetFilterByKey('date-to');
+                    resetFilterByKey('doctor');
+                    resetFilterByKey('material');
+                    resetFilterByKey('job-type');
+                    resetFilterByKey('material-type');
+                    resetFilterByKey('failure-type');
+                    resetFilterByKey('abutments');
+                    resetFilterByKey('implants');
+                    resetFilterByKey('status');
+                    resetFilterByKey('amount');
+                    resetFilterByKey('units');
+                    resetFilterByKey('employees');
+                    resetFilterByKey('devices');
+                    resetFilterByKey('completion');
+                }
+
+                function initializeFilterResets() {
+                    window.masterReportDefaults = {
+                        from: @json($from),
+                        to: @json($to)
+                    };
+                    document.querySelectorAll('.filter-reset-btn').forEach((btn) => {
+                        btn.addEventListener('click', function() {
+                            const key = this.getAttribute('data-reset');
+                            resetFilterByKey(key);
+                        });
+                    });
+                    const masterReset = document.getElementById('filters-master-reset');
+                    if (masterReset) {
+                        masterReset.addEventListener('click', function() {
+                            resetAllFilters();
+                        });
+                    }
+                }
+
                 // Initialize modern components
                 $(document).ready(function() {
                     function initializeComponents() {
                         initializeSelect2();
                         initializeFlatpickr();
-                        initializeDataTable(); // This will now initialize *without* FixedColumns
-                        addEmployeeFilterRow(); // Initialize with one employee filter row
-                        addDeviceFilterRow(); // Initialize with one device filter row
+                        initializeDataTable();
+                        initializeEmployeeFiltersState();
+                        initializeDeviceFiltersState();
                         initializeRangeValidation();
                         initializeColumnVisibility();
                         initializeCompletionToggle();
+                        initializeFilterResets();
                     }
 
                     // Check if libraries are loaded
@@ -1845,9 +2378,6 @@ button[type="submit"].modern-btn:hover {
                         const column = window.masterReportTable.column(columnIndex);
                         column.visible(isVisible);
                         window.masterReportTable.columns.adjust();
-                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
-                            window.masterReportTable.fixedColumns().update();
-                        }
                     } else {
                         const table = $('#master-report-table');
                         if (isVisible) {
@@ -1856,8 +2386,6 @@ button[type="submit"].modern-btn:hover {
                             table.find(`th:nth-child(${columnIndex + 1}), td:nth-child(${columnIndex + 1})`).hide();
                         }
                     }
-                    // FIX: Recalculate sticky positions after toggling
-                    fixStickyColumnPositions();
                 }
 
                 function saveColumnPreferences() {
@@ -1956,31 +2484,28 @@ button[type="submit"].modern-btn:hover {
                         ],
                         pageLength: 25,
                         responsive: false,
-                        scrollX: true, // Let DataTables manage horizontal scroll for header/body sync
-                        scrollY: '60vh',
-                        scrollCollapse: true,
+                        scrollX: false,
+                        scrollY: false,
+                        scrollCollapse: false,
                         autoWidth: false,
-                        order: [[0, 'asc']],
-                        orderCellsTop: true,
-                        fixedColumns: {
-                            leftColumns: 2
-                        },
+                        ordering: false,
+                        fixedColumns: false,
                         columnDefs: [
                             { targets: '_all', className: 'text-center' },
-                            { targets: [0, 1], className: 'text-left' }, // FIX: Only first 2 columns are text-left
+                            { targets: [0, 1, 2], className: 'text-left' }, // FIX: Only first 3 columns are text-left
                             { targets: [0, 1, 2, 3, 4, 5, 6, 19, 20], orderable: true },
-                            { targets: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21], orderable: false }
+                            { targets: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], orderable: false }
                         ],
                         drawCallback: function() {
                             // Apply header styling after DataTables draws
-                            $('#master-report-table thead th.header-light').css({
+                            $('#master-report-table thead th.header-light, .sigma-report-table-container .dataTables_scrollHead th.header-light').css({
                                 'background-color': 'transparent',
                                 'background': 'none',
                                 'border': 'none',
                                 'border-bottom': '2px solid #408385',
                                 'color': '#408385'
                             });
-                            $('#master-report-table thead th.header-dark').css({
+                            $('#master-report-table thead th.header-dark, .sigma-report-table-container .dataTables_scrollHead th.header-dark').css({
                                 'background-color': '#408385',
                                 'background': '#408385',
                                 'color': 'white',
@@ -1996,38 +2521,27 @@ button[type="submit"].modern-btn:hover {
                                 const isVisible = $(this).is(':checked');
                                 tableApi.column(columnIndex).visible(isVisible);
                             });
-                            if (tableApi.fixedColumns && typeof tableApi.fixedColumns().update === 'function') {
-                                tableApi.fixedColumns().update();
-                            }
-                            // Fix sticky column positions after table is drawn and visibility is set
-                            fixStickyColumnPositions();
                         }
                     });
 
                     window.masterReportTable.buttons().container().appendTo('.export-buttons');
-                    $('#master-report-table').addClass('using-fixed-columns');
 
                     // Apply header styling immediately after initialization
                     setTimeout(() => {
-                        $('#master-report-table thead th.header-light').css({
+                        $('#master-report-table thead th.header-light, .sigma-report-table-container .dataTables_scrollHead th.header-light').css({
                             'background-color': 'transparent',
                             'background': 'none',
                             'border': 'none',
                             'border-bottom': '2px solid #408385',
                             'color': '#408385'
                         });
-                        $('#master-report-table thead th.header-dark').css({
+                        $('#master-report-table thead th.header-dark, .sigma-report-table-container .dataTables_scrollHead th.header-dark').css({
                             'background-color': '#408385',
                             'background': '#408385',
                             'color': 'white',
                             'border': 'none'
                         });
 
-                        // Fix sticky column positions
-                        fixStickyColumnPositions();
-                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
-                            window.masterReportTable.fixedColumns().update();
-                        }
                         // Load preferences *after* table is built
                         loadColumnPreferences();
                         // Re-apply column visibility based on checkboxes after preferences load
@@ -2036,44 +2550,8 @@ button[type="submit"].modern-btn:hover {
                             const isVisible = $(this).is(':checked');
                             window.masterReportTable.column(columnIndex).visible(isVisible);
                         });
-                        if (window.masterReportTable.fixedColumns && typeof window.masterReportTable.fixedColumns().update === 'function') {
-                            window.masterReportTable.fixedColumns().update();
-                        }
                     }, 100);
                     @endif
-                }
-
-                // FIX: Modified this function to only handle 2 columns
-                function fixStickyColumnPositions() {
-                    // Skip custom sticky math when FixedColumns plugin is active
-                    if (window.masterReportTable && window.masterReportTable.fixedColumns) {
-                        return;
-                    }
-                    let leftOffset = 0;
-                    const $table = $('#master-report-table');
-
-                    // Handle Column 1
-                    const $col1 = $table.find('thead th:nth-child(1)');
-                    if ($col1.is(':visible')) {
-                        $table.find('thead th:nth-child(1), tbody td:nth-child(1)').css('left', '0px');
-                        leftOffset = $col1.outerWidth();
-                    } else {
-                        $table.find('thead th:nth-child(1), tbody td:nth-child(1)').css('left', 'auto');
-                    }
-
-                    // Handle Column 2
-                    const $col2 = $table.find('thead th:nth-child(2)');
-                    if ($col2.is(':visible')) {
-                        $table.find('thead th:nth-child(2), tbody td:nth-child(2)').css('left', leftOffset + 'px');
-                    } else {
-                        $table.find('thead th:nth-child(2), tbody td:nth-child(2)').css('left', 'auto');
-                    }
-
-                    // Recalculate on window resize
-                    $(window).off('resize.stickyColumns').on('resize.stickyColumns', function() {
-                        // Use a timeout to ensure widths are correct after resize
-                        setTimeout(fixStickyColumnPositions, 0);
-                    });
                 }
 
                 // Case viewing function
@@ -2081,6 +2559,30 @@ button[type="submit"].modern-btn:hover {
                     if (confirm(`View details for Case ID: ${caseId}?`)) {
                         window.open(`/cases/${caseId}`, '_blank');
                     }
+                }
+
+                $(document).on('show.bs.modal', '.sigma-modal--cases-index-actions', function() {
+                    $(this).removeAttr('aria-hidden');
+                });
+
+                function caseDelConfirmation(ev) {
+                    ev.preventDefault();
+                    var urlToRedirect = ev.currentTarget.getAttribute('href');
+                    var clientName = ev.currentTarget.getAttribute('data-clientName');
+                    var patientName = ev.currentTarget.getAttribute('data-patientName');
+
+                    swal.fire({
+                        title: "You sure You want to delete.. </br>" + clientName + " - " + patientName,
+                        text: "This will also delete related info. (invoice, photos .. etc)?",
+                        icon: "warning",
+                        showDenyButton: true,
+                        confirmButtonText: 'Delete Case',
+                        denyButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = urlToRedirect;
+                        }
+                    });
                 }
 
                 // --- Employee/Device Filter Modal Logic (Unaltered) ---
@@ -2124,6 +2626,7 @@ button[type="submit"].modern-btn:hover {
         `;
 
                     container.appendChild(row);
+                    return employeeFilterCount;
                 }
 
                 function updateEmployeeDropdown(filterId) {
@@ -2200,6 +2703,7 @@ button[type="submit"].modern-btn:hover {
         `;
 
                     container.appendChild(row);
+                    return deviceFilterCount;
                 }
 
                 function updateDeviceDropdown(filterId) {
@@ -2248,6 +2752,58 @@ button[type="submit"].modern-btn:hover {
                 }
 
                 document.getElementById('add-device-filter').addEventListener('click', addDeviceFilterRow);
+
+                function initializeEmployeeFiltersState() {
+                    const initialFilters = Array.isArray(window.initialEmployeeFilters) ? window.initialEmployeeFilters : [];
+                    if (initialFilters.length > 0) {
+                        initialFilters.forEach(filter => {
+                            const filterId = addEmployeeFilterRow();
+                            const row = document.querySelector(`[data-filter-id="${filterId}"]`);
+                            if (!row) {
+                                return;
+                            }
+                            const stageSelect = row.querySelector('.stage-select');
+                            const employeeSelect = row.querySelector('.employee-select');
+                            if (stageSelect && filter.stage) {
+                                stageSelect.value = filter.stage;
+                                updateEmployeeDropdown(filterId);
+                            }
+                            if (employeeSelect && filter.employee) {
+                                employeeSelect.value = filter.employee;
+                                employeeSelect.disabled = false;
+                            }
+                        });
+                        applyEmployeeFilters();
+                    } else {
+                        addEmployeeFilterRow();
+                    }
+                }
+
+                function initializeDeviceFiltersState() {
+                    const initialFilters = Array.isArray(window.initialDeviceFilters) ? window.initialDeviceFilters : [];
+                    if (initialFilters.length > 0) {
+                        initialFilters.forEach(filter => {
+                            const filterId = addDeviceFilterRow();
+                            const row = document.querySelector(`[data-filter-id="${filterId}"]`);
+                            if (!row) {
+                                return;
+                            }
+                            const typeSelect = row.querySelector('.device-type-select');
+                            const deviceSelect = row.querySelector('.device-select');
+                            if (typeSelect && filter.type) {
+                                typeSelect.value = filter.type;
+                                updateDeviceDropdown(filterId);
+                            }
+                            if (deviceSelect && filter.device) {
+                                deviceSelect.value = filter.device;
+                                deviceSelect.disabled = false;
+                            }
+                        });
+                        applyDeviceFilters();
+                    } else {
+                        addDeviceFilterRow();
+                    }
+                }
 
                 function applyEmployeeFilters() {
                     const filterRows = document.querySelectorAll('.employee-filter-row');

@@ -2,13 +2,14 @@
 
 
 @section('content')
-    <link href="{{ asset('assets/css/sigma-reports-master.css') }}" rel="stylesheet">
-    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
+    <div class="sigma-report-standard">
     <div class="report-filters-card">
         <form class="kt-form" method="GET" action="{{route('materials-report')}}">
             <!-- FILTERS ROW 1: Main Filters -->
@@ -55,12 +56,8 @@
                         </button>
                     </div>
                     <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end gap-2">
-                        <button type="button" id="exportExcelBtn" class="btn btn-success" style="display: none;">
-                            <i class="fas fa-file-excel me-2"></i> Export to Excel
-                        </button>
-                        <button type="button" onclick="window.print()" class="btn btn-secondary">
-                            <i class="fas fa-print me-2;font-size:15px"></i>
-                        </button>
+                        <i class="fas fa-file-excel printBtn d-none" id="exportExcelBtn" role="button" tabindex="0" aria-label="Export to Excel"></i>
+                        <i class="fas fa-print printBtn" role="button" tabindex="0" aria-label="Print" onclick="window.print()"></i>
                     </div>
                 </div>
             </div>
@@ -69,17 +66,15 @@
 
     <!-- Total Amount Card -->
     <div class="container-fluid mt-3 mb-3">
-        <div class="row">
-                <div class="col-lg-3 col-md-4 col-12">
-                <div class="report-summary-card" style="background: linear-gradient(135deg, #2c5766 0%, #3a7080 100%); border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(44, 87, 102, 0.3);">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h5 style="color: rgba(255, 255, 255, 0.9); margin-bottom: 8px; font-size: 14px; font-weight: 500;">Total Amount</h5>
-                            <h2 style="color: white; margin: 0; font-size: 32px; font-weight: 700;">
-                                {{number_format($totalAmount)}} <span style="font-size: 18px; font-weight: 600;">JOD</span>
-                            </h2>
+        <div class="row" style="background-color: transparent">
+            <div class="col-lg-3 col-md-4 col-12">
+                <div class="materials-total-card">
+                    <div>
+                        <div class="materials-total-label">Total Amount</div>
+                        <div class="materials-total-value">
+                            <div class="materials-total-amount">{{number_format($totalAmount)}}</div>
+                            <div class="materials-total-currency">JOD</div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -90,45 +85,42 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="sigma-table-container">
-                    <div class="sigma-report-table-container">
-                        <table id="datatable" class="sigma-report-table" role="grid">
-                            <thead>
-                            <tr>
-                                <th class="header-dark" style="color:white !important;">Doctor</th>
-                                <th class="header-light">Patient</th>
-                                <th class="text-center header-light">Zircon</th>
-                                <th class="text-center header-light">Emax</th>
-                                <th class="text-center header-light">Acrylic</th>
-                                <th class="text-center header-light">Model</th>
-                                <th class="text-center header-light">Amount</th>
-                                <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Delivered On</th>
+                <table id="datatable" class="sigma-report-table table-plain" role="grid">
+                    <thead>
+                    <tr>
+                        <th class="header-dark" style="color:white !important;">Doctor</th>
+                        <th class="header-light">Patient</th>
+                        <th class="text-center header-light">Zircon</th>
+                        <th class="text-center header-light">Emax</th>
+                        <th class="text-center header-light">Acrylic</th>
+                        <th class="text-center header-light">Model</th>
+                        <th class="text-center header-light">Amount</th>
+                        <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Delivered On</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    @foreach($cases as $case)
+                            <tr onclick="window.location='{{route('view-invoice', $case->id)}}';">
+
+                                <td class="primary-text">{{$case->client->name}}</td>
+                                <td>{{$case->patient_name}}</td >
+                                <td class="text-center">{{$case->materialUsed([1,20])}}</td>
+                                <td class="text-center">{{$case->materialUsed([2])}}</td>
+                                <td class="text-center">{{$case->materialUsed([3,4,6,7])}}</td>
+                                <td class="text-center">{{$case->materialUsed([9,10])}}</td>
+                                <td class="text-right currency">{{isset($case->invoice) ? number_format($case->invoice->amount): '0'}}</td>
+                                <td class="secondary-text">{{substr($case->actual_delivery_date,0,10)}}</td>
                             </tr>
-                            </thead>
-
-
-                            <tbody>
-                            @foreach($cases as $case)
-                                    <tr onclick="window.location='{{route('view-invoice', $case->id)}}';">
-
-                                        <td class="primary-text">{{$case->client->name}}</td>
-                                        <td>{{$case->patient_name}}</td >
-                                        <td class="text-center">{{$case->materialUsed([1,20])}}</td>
-                                        <td class="text-center">{{$case->materialUsed([2])}}</td>
-                                        <td class="text-center">{{$case->materialUsed([3,4,6,7])}}</td>
-                                        <td class="text-center">{{$case->materialUsed([9,10])}}</td>
-                                        <td class="text-right currency">{{isset($case->invoice) ? number_format($case->invoice->amount): '0'}}</td>
-                                        <td class="secondary-text">{{substr($case->actual_delivery_date,0,10)}}</td>
-                                    </tr>
-                                    @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
+    </div>
 @endsection
 
 
@@ -146,12 +138,12 @@
     $(document).ready(function() {
         // Initialize DataTable with Excel export
         var table = $('#datatable').DataTable({
-            dom: 'Bfrtip',
+            dom: 'frtip',
             buttons: [
                 {
                     extend: 'excelHtml5',
-                    text: '<i class="fas fa-file-excel"></i> Export to Excel',
-                    className: 'btn btn-success',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    className: 'printBtn',
                     title: 'Materials Report',
                     filename: 'materials_report_' + new Date().toISOString().split('T')[0],
                     exportOptions: {
@@ -177,7 +169,7 @@
         });
 
         // Show export button when table is ready
-        $('#exportExcelBtn').show();
+        $('#exportExcelBtn').removeClass('d-none');
         
         // Trigger DataTable export on custom button click
         $('#exportExcelBtn').on('click', function() {

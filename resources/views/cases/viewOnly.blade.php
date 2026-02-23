@@ -2,6 +2,129 @@
 
 @push('css')
     <style>
+        :root {
+            --surface-bg: #eff3f9;
+            --card-bg: #ffffff;
+            --border-muted: #dbe4f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+            --accent: #1b6ef3;
+            --accent-soft: rgba(27, 110, 243, 0.15);
+            --card-radius: 16px;
+            --card-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+            --card-shadow-hover: 0 16px 32px rgba(17, 24, 39, 0.1);
+        }
+
+        .viewcase-page {
+            border-radius: 20px;
+            background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);
+            border: 1px solid #e4ebf5;
+            position: relative;
+        }
+
+        .form-section-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            border-radius: var(--card-radius);
+            padding: 1.55rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-muted);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .form-section-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
+            opacity: 0.7;
+        }
+
+        .form-section-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            border-color: #ccdae9;
+            transform: translateY(-1px);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.05rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e8eef6;
+        }
+
+        .section-header-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .section-header h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, #e5ecf5 0%, #dde6f2 100%);
+            margin: 1.35rem 0;
+        }
+
+        .viewcase-card-row + .viewcase-card-row {
+            margin-top: 1.25rem;
+        }
+
+        .viewcase-page label {
+            font-weight: 650;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .viewcase-page .form-control,
+        .viewcase-page textarea.form-control,
+        .viewcase-page .selectpicker,
+        .viewcase-page .bootstrap-select .btn {
+            border-radius: 10px;
+            border: 1px solid var(--border-muted);
+            box-shadow: none !important;
+            min-height: 44px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            background-color: #ffffff;
+        }
+
+        .viewcase-page .form-control:focus,
+        .viewcase-page textarea.form-control:focus,
+        .viewcase-page .bootstrap-select .btn:focus,
+        .viewcase-page .bootstrap-select .btn:active,
+        .viewcase-page .bootstrap-select.open>.dropdown-toggle {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
+            outline: none !important;
+        }
         .table-responsive-wrapper {
             width: 100%;
             overflow-x: auto;
@@ -71,76 +194,25 @@
             display: block;
         }
 
-        /* Modern patient info styling */
-        .patient-info-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e8eef0;
-        }
-
-        .patient-info-section label {
-            font-weight: 600;
-            color: #2b7b7d;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 8px;
-            display: block;
-        }
-
-        .patient-info-section .form-control,
-        .patient-info-section .bootstrap-select .dropdown-toggle,
-        .patient-info-section select.form-control {
-            font-size: 14px;
-            font-weight: 500;
-            color: #2b7b7d;
-            padding: 10px 14px;
-            background-color: #f0f8f8;
-            border-radius: 6px;
-            border-left: 3px solid #2b7b7d;
-            border-top: 1px solid #d0e5e6;
-            border-right: 1px solid #d0e5e6;
-            border-bottom: 1px solid #d0e5e6;
-            transition: all 0.2s ease;
-        }
-
-        .patient-info-section .form-control:focus {
-            border-left-color: #1f6163;
-            box-shadow: 0 0 0 3px rgba(43, 123, 125, 0.08);
-            background-color: #ffffff;
+        /* Patient info rows inherit card styling */
+        .patient-info-section,
+        .info-row-secondary {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            margin-bottom: 0;
+            box-shadow: none;
+            border: none;
         }
 
         .case-id-display {
-            font-size: 15px;
+            font-size: 0.95rem;
             font-weight: 600;
-            color: #2b7b7d;
-            padding: 10px 14px;
-            background-color: #f0f8f8;
-            border-radius: 6px;
-            border-left: 3px solid #2b7b7d;
-        }
-
-        /* Second row styling */
-        .info-row-secondary {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            color: var(--text-main);
+            padding: 0.65rem 0.75rem;
+            background-color: #ffffff;
             border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e8eef0;
-        }
-
-        .info-row-secondary label {
-            font-weight: 600;
-            color: #2b7b7d;
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 8px;
-            display: block;
+            border: 1px solid var(--border-muted);
         }
 
         .delivery-date-field {
@@ -239,42 +311,6 @@
             flex: 1 1 auto;
         }
 
-        .info-row-secondary .form-control,
-        .info-row-secondary .bootstrap-select .dropdown-toggle,
-        .info-row-secondary select.form-control {
-            font-size: 14px;
-            font-weight: 500;
-            color: #2b7b7d;
-            padding: 10px 14px;
-            background-color: #f0f8f8;
-            border-radius: 6px;
-            border-left: 3px solid #2b7b7d;
-            border-top: 1px solid #d0e5e6;
-            border-right: 1px solid #d0e5e6;
-            border-bottom: 1px solid #d0e5e6;
-            transition: all 0.2s ease;
-        }
-
-        /* Section headers */
-        .kt-portlet__head {
-            margin-top: 30px;
-            margin-bottom: 15px;
-        }
-
-        .kt-portlet__head-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: #2b7b7d;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .kt-portlet__head-title i {
-            color: #2b7b7d;
-            margin-right: 12px;
-            font-size: 18px;
-        }
-
         /* Horizontal divider */
         hr {
             border: 0;
@@ -334,12 +370,14 @@
             margin-bottom: 19px;
         }
 
-        .viewcase-page {
-            position: relative;
+        .print-label-actions {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .print-label-actions {
-            margin-bottom: 15px;
+        .print-label-actions .btn {
+            white-space: nowrap;
         }
 
         .viewcase-timeline-btn {
@@ -357,6 +395,16 @@
 
         .viewcase-page .noteform {
             /*padding-right: 80px;*/
+        }
+
+        .attachments-section .demo-gallery .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .attachments-section .demo-gallery .row > [class*='col-'] {
+            padding-left: 6px;
+            padding-right: 6px;
         }
 
         @media screen and (max-width:760px) {
@@ -388,11 +436,6 @@
                 margin-bottom: 5px;
             }
 
-            .patient-info-section,
-            .info-row-secondary {
-                padding: 15px;
-            }
-
             .viewcase-timeline-btn {
                 top: 16px;
                 right: 17px;
@@ -410,15 +453,20 @@
         <form class="kt-form noteform" method="POST" enctype="multipart/form-data" action="#">
         @csrf
         <div>
-            <div class="row btnsRow print-label-actions">
-                <div class="col-12 d-flex justify-content-start">
-                    <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
-                    <button type="button" class="btn btn-primary ml-2" onclick="PrintLabel()">Print Label</button>
-                </div>
-            </div>
             <!-- CASE INFO -->
+            <div class="form-section-card viewcase-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Case</div>
+                        <h5>Order Information</h5>
+                    </div>
+                    <div class="section-header-actions print-label-actions">
+                        <button type="button" class="btn btn-primary printMiniLabelBtn" onclick="PrintMinimizedLabel()">Print Mini Label</button>
+                        <button type="button" class="btn btn-primary" onclick="PrintLabel()">Print Label</button>
+                    </div>
+                </div>
 
-            <div class="row patient-info-section">
+            <div class="row patient-info-section viewcase-card-row">
                 <div class="col-md-3 col-6">
                     <div class="col-12"><label>Doctor:</label></div>
                     <div class="col-12">
@@ -452,7 +500,9 @@
 
             </div>
 
-            <div class="row info-row-secondary">
+            <div class="section-divider"></div>
+
+            <div class="row info-row-secondary viewcase-card-row">
 
                 <div class="col-md-4 col-6">
                     <div class="col-12"><label>Delivery Date:</label></div>
@@ -561,21 +611,16 @@
                     </div>
                 </div>
             </div>
-
-
-            <!-- JOB INFO ICON-->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa  fa-suitcase" style="width:3%"></i> Job information
-                    </h5>
-                </div>
             </div>
-            <hr>
 
 
-            <!-- JOBS REPEATER -->
+            <div class="form-section-card viewcase-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Jobs</div>
+                        <h5>Job Information</h5>
+                    </div>
+                </div>
 
             <div id="kt_repeater_1" style=" padding-right: 15px">
                 <div data-repeater-list="repeat">
@@ -699,16 +744,15 @@
                     <i class="fa fa-plus-square"></i> Add
                 </a> -->
             </div>
-
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa-solid fa-clock-rotate-left"></i> Case History
-                    </h5>
-                </div>
             </div>
-            <hr>
+
+            <div class="form-section-card viewcase-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Tracking</div>
+                        <h5>Case History</h5>
+                    </div>
+                </div>
             <!-- HISTORY -->
             <div class="historyTable table-responsive-wrapper" style="padding:0 30px 0 30px ">
                 <table class="sunriseTable table sunriseTable table-striped ">
@@ -786,8 +830,6 @@
                     </tbody>
                 </table>
             </div>
-</div>
-
 
             <div class="Timeline">
 
@@ -1176,65 +1218,57 @@
                 </svg>
 
             </div>
-
-
-
-
+            </div>
 
             <!-- NOTES SECTION -->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="width:2%"></i> Additional information
-                    </h5>
+            <div class="form-section-card viewcase-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Notes</div>
+                        <h5>Additional Information</h5>
+                    </div>
+                </div>
+                <div class="form-group form-group">
+                    <label>Notes:</label>
+
+                    @foreach ($case->notes as $note)
+                        <div class="form-control"
+                            style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black"
+                            disabled>
+
+                            <span
+                                class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                            <span class="noteText">{{ $note->note }}</span>
+                        </div>
+                    @endforeach
+
+                    <form></form>
+                    <form style="" class="noteform " method="POST" enctype="multipart/form-data"
+                        action="{{ route('new-note') }}">
+                        @csrf
+                        <div class="row" style="padding:0px">
+                            <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
+                            <div class="col-md-6 col-xs-6">
+                                <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
+                            </div>
+
+                            <div class="col-md-3 col-xs-3" style="margin: 0px">
+                                <button type="submit" class="btn btn-primary">Add note</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-            <hr>
-            <br>
-            <div class="form-group form-group">
-                <label>Notes:</label>
 
-                @foreach ($case->notes as $note)
-                    <div class="form-control"
-                        style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black"
-                        disabled>
-
-                        <span
-                            class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                        <span class="noteText">{{ $note->note }}</span>
-                    </div>
-                @endforeach
-
-                <form></form>
-                <form style="" class="noteform " method="POST" enctype="multipart/form-data"
-                    action="{{ route('new-note') }}">
-                    @csrf
-                    <div class="row" style="padding:0px">
-                        <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
-                        <div class="col-md-6 col-xs-6">
-                            <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
-                        </div>
-
-                        <div class="col-md-3 col-xs-3" style="margin: 0px">
-                            <button type="submit" class="btn btn-primary">Add note</button>
-                        </div>
-
-
-                    </div>
-                </form>
-                <br><br>
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa fa-sticky-note" style="width:2%"></i> Attachments:
-                        </h5>
+            <div class="form-section-card viewcase-section-card attachments-section">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Files</div>
+                        <h5>Attachments</h5>
                     </div>
                 </div>
-                <hr>
                 <!-- Photos SECTION -->
-                <div class="container" style="margin-top:10px;">
-
+                <div class="attachments-grid" style="margin-top:10px;">
                     <div class="demo-gallery">
                         <ul id="lightgallery" class="list-unstyled row">
                             @foreach ($case->photos as $photo)
@@ -1245,17 +1279,14 @@
                                     </a>
                                 </li>
                             @endforeach
-
                         </ul>
                     </div>
                 </div>
 
-                <br>
                 {{-- <div class="form-group form-group-last"> --}}
                 {{-- <label for="images">Add Photos:</label> --}}
                 {{-- <input required type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple disabled> --}}
                 {{-- </div> --}}
-                <br>
                 <div class="kt-portlet__foot">
                     <div class="kt-form__actions">
                         <button type="submit" class="btn btn-primary" disabled>Submit</button>

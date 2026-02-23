@@ -652,19 +652,10 @@
         }
 
 
-        .ios-dtp-modal {
-            position: fixed;
-            top: 100%;
-            left: 50%;
-        }
-
         .modal-dialog{
             height: 100%;
             align-items: center;
             display: flex;
-        }
-        .ios-dtp-backdrop.visible{
-            opacity: 0 !important;
         }
 
         /* Sticky filters bar */

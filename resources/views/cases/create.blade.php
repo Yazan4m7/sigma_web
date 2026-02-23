@@ -22,7 +22,7 @@
 
         .create-case-page {
             border-radius: 20px;
-            padding: 1.25rem 2rem 2.25rem 2rem;
+
             background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);
             border: 1px solid #e4ebf5;
         }
