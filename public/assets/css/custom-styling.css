@@ -17,6 +17,127 @@
 
 }
 
+/* Centralized modal action button styling */
+.sigma-action-btn {
+    font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    line-height: 1.1;
+    white-space: nowrap;
+}
+
+.sigma-action-btn .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sigma-action-btn .btn-icon i {
+    color: currentColor;
+}
+
+.sigma-action-btn.btn-info,
+.sigma-action-btn.btn-dark,
+.sigma-action-btn.btn-danger,
+.sigma-action-btn.btn-warning,
+.sigma-action-btn.btn-secondary {
+    color: #ffffff !important;
+}
+
+.sigma-action-btn.btn-outline-danger,
+.sigma-action-btn.btn-outline-warning {
+    background: transparent !important;
+    border: 1px solid currentColor !important;
+}
+
+/* Global loading screen */
+.sigma-loading-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(8, 11, 16, 0.78);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.sigma-loading-screen.is-active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.sigma-loading-screen__content {
+    padding: 18px 28px;
+    border-radius: 16px;
+    background: transparent;
+    box-shadow: none;
+}
+
+.sigma-loading-screen__text {
+    /* font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; */
+    font-size: clamp(0.95rem, 1.1vw + 0.6rem, 1.5rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #272727;
+    position: relative;
+    isolation: isolate;
+    display: inline-block;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+    text-transform: uppercase;
+    text-shadow: none;
+}
+
+.sigma-loading-screen__text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    display: inline-block;
+    line-height: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: inherit;
+    color: transparent;
+    background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
+    background-size: 60% 100%;
+    background-repeat: no-repeat;
+    background-position: -120% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: sigma-loading-shimmer 2.6s linear infinite;
+    pointer-events: none;
+    text-shadow: none;
+}
+
+body.sigma-loading-active {
+    overflow: hidden;
+}
+
+@keyframes sigma-loading-shimmer {
+    0% { background-position: -140% 50%; }
+    100% { background-position: 180% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sigma-loading-screen__text {
+        animation: none;
+        color: #ffffff;
+        background: none;
+    }
+}
+
 .ellipsis-text {
     /* Must have a fixed or max width so the browser knows where to truncate */
     width: 200px;            /* or any suitable width */
@@ -7934,7 +8055,7 @@ h5, .h5 {
 }
 
 .navbar-brand.pageTitle {
-    text-transform: capitalize;
+    text-transform: uppercase;
 }
 .kt-nav__link-text, .dropdown-item {
     cursor: pointer;

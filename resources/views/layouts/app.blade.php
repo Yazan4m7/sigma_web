@@ -267,6 +267,11 @@
         }
     </style>
 </head>
+<div class="sigma-loading-screen" id="sigma-loading-screen" aria-hidden="true">
+    <div class="sigma-loading-screen__content" role="status" aria-live="polite">
+        <span class="sigma-loading-screen__text">Loading..</span>
+    </div>
+</div>
 {{--<div class="overlay" id="overlay"></div>--}}@auth()
     <!-- Impersonation Banner -->
     @if(session()->has('impersonator_id'))
@@ -356,6 +361,10 @@
 @endauth
 
 <script>
+    window.__sigmaTableWidthPrefs = @json($sigmaTableWidthPrefs ?? []);
+    window.__sigmaTableWidthDefaults = @json($sigmaTableWidthDefaults ?? []);
+</script>
+<script>
     // Disable Bootstrap tooltips completely
     if (typeof jQuery !== 'undefined') {
         jQuery.fn.tooltip = function() { return this; };
@@ -366,6 +375,57 @@
         const loadingOverlay = document.getElementById('loading-overlay');
         if (loadingOverlay) {
             loadingOverlay.style.display = 'none';
+        }
+        if (typeof window.hideLoadingScreen === 'function') {
+            window.hideLoadingScreen();
+        }
+    });
+
+    (function() {
+        const screen = document.getElementById('sigma-loading-screen');
+        if (!screen) {
+            return;
+        }
+        const textEl = screen.querySelector('.sigma-loading-screen__text');
+
+        function showLoadingScreen(message) {
+            const nextMessage = (typeof message === 'string' && message.trim() !== '')
+                ? message
+                : 'Processing...';
+            if (textEl) {
+                textEl.textContent = nextMessage;
+                textEl.setAttribute('data-text', nextMessage);
+            }
+            screen.classList.add('is-active');
+            screen.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('sigma-loading-active');
+        }
+
+        function hideLoadingScreen() {
+            screen.classList.remove('is-active');
+            screen.setAttribute('aria-hidden', 'true');
+            document.body.classList.remove('sigma-loading-active');
+        }
+
+        window.showLoadingScreen = showLoadingScreen;
+        window.hideLoadingScreen = hideLoadingScreen;
+
+        document.addEventListener('submit', function(event) {
+            const form = event.target;
+            if (!form || !form.matches || !form.matches('form')) {
+                return;
+            }
+            if (event.defaultPrevented) {
+                return;
+            }
+            const message = form.getAttribute('data-loading-screen-text');
+            showLoadingScreen(message);
+        }, false);
+    })();
+
+    window.addEventListener('pageshow', function() {
+        if (typeof window.hideLoadingScreen === 'function') {
+            window.hideLoadingScreen();
         }
     });
     // F2: Toggle column resize handles (non-dashboard pages)
@@ -378,39 +438,42 @@
         } else if (e.key === 'F3' && !document.getElementById('columnConfigPanel')) {
             // F3 on non-dashboard pages - clear all widths
             e.preventDefault();
-            var cleared = [];
-            for (var key in localStorage) {
-                if (key.endsWith('_widths')) {
-                    cleared.push(key);
-                    localStorage.removeItem(key);
+            var clearAction = window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.clearAll === 'function'
+                ? window.sigmaTableWidthStore.clearAll()
+                : Promise.resolve([]);
+
+            clearAction.then(function (cleared) {
+                if (!Array.isArray(cleared)) {
+                    cleared = [];
                 }
-            }
-            if (cleared.length > 0) {
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Reset Complete',
-                        html: 'Cleared: <br>' + cleared.join('<br>') + '<br><br>Refresh to see default widths.',
-                        confirmButtonText: 'OK'
-                    });
+                if (cleared.length > 0) {
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Reset Complete',
+                            html: 'Cleared: <br>' + cleared.join('<br>') + '<br><br>Refresh to see default widths.',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        alert('Cleared: ' + cleared.join(', ') + '\n\nRefresh to see defaults.');
+                    }
                 } else {
-                    alert('Cleared: ' + cleared.join(', ') + '\n\nRefresh to see defaults.');
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'No Saved Widths',
+                            text: 'No saved column widths found.',
+                            timer: 2000
+                        });
+                    } else {
+                        alert('No saved column widths found.');
+                    }
                 }
-            } else {
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'No Saved Widths',
-                        text: 'No saved column widths found.',
-                        timer: 2000
-                    });
-                } else {
-                    alert('No saved column widths found.');
-                }
-            }
+            });
         }
     });
 </script>
+<script src="{{ asset('js/table-width-preferences.js') }}"></script>
 <script src="{{ asset('js/user-preferences.js') }}"></script>
  <script src="{{ asset('js/sidebar-collapse.js') }}"></script>
 <script src="{{ asset('js/sigma-sticky-layout.js') }}"></script>

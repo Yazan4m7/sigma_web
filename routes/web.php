@@ -43,6 +43,12 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         ->name('audit-logs.index');
     Route::view('/user-settings', 'profile.user-settings')
         ->name('user-settings');
+    Route::get('/user-preferences/table-widths', [App\Http\Controllers\UserPreferencesController::class, 'tableWidthsIndex'])
+        ->name('user-preferences.table-widths.index');
+    Route::post('/user-preferences/table-widths', [App\Http\Controllers\UserPreferencesController::class, 'tableWidthsStore'])
+        ->name('user-preferences.table-widths.store');
+    Route::post('/user-preferences/table-widths/reset', [App\Http\Controllers\UserPreferencesController::class, 'tableWidthsReset'])
+        ->name('user-preferences.table-widths.reset');
 });
 // Public routes
 Route::get('/new-case', [App\Http\Controllers\CaseController::class, 'create'])->name('new-case-view');

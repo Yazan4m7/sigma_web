@@ -16,20 +16,20 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="materials_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="materials_from"
+                            label="From Date:"
                             :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="materials_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="materials_to"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
@@ -37,13 +37,20 @@
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($clients))
-                            <label ><i class="fas fa-user-md"></i> Doctor:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor" data-live-search="true" title="All Doctors" data-hide-disabled="true">
-                                <option value="all" selected>All</option>
-                                @foreach($clients as $d)
-                                    <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctor:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All Doctors"
+                            />
                         @endif
                     </div>
                 </div>
@@ -55,7 +62,7 @@
                             <i class="fas fa-chart-line me-2"></i>  &nbsp;   Generate Report
                         </button>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end gap-2">
+                    <div class="col-lg-8 col-md-8 col-12 report-action-icons">
                         <i class="fas fa-file-excel printBtn d-none" id="exportExcelBtn" role="button" tabindex="0" aria-label="Export to Excel"></i>
                         <i class="fas fa-print printBtn" role="button" tabindex="0" aria-label="Print" onclick="window.print()"></i>
                     </div>
@@ -82,7 +89,7 @@
     </div>
 
     <!-- Table Section -->
-    <div class="container-fluid">
+    <div class="container-fluid report-table-section">
         <div class="row">
             <div class="col-12">
                 <table id="datatable" class="sigma-report-table table-plain" role="grid">

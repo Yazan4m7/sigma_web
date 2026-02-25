@@ -35,17 +35,10 @@
     }
 
     function clearAllSavedWidthKeys() {
-        var removed = [];
-        for (var i = localStorage.length - 1; i >= 0; i--) {
-            var key = localStorage.key(i);
-            if (!key) continue;
-            if (key.endsWith('_widths') || key === 'dashboard_master_widths') {
-                removed.push(key);
-                localStorage.removeItem(key);
-            }
+        if (window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.clearAll === 'function') {
+            return window.sigmaTableWidthStore.clearAll();
         }
-        document.dispatchEvent(new CustomEvent('sigma:table-widths-reset', { detail: { removedKeys: removed } }));
-        return removed;
+        return Promise.resolve([]);
     }
 
     function syncSettingsPage() {
@@ -85,18 +78,20 @@
         var resetBtn = document.getElementById('resetAllTableWidthsBtn');
         if (resetBtn) {
             resetBtn.addEventListener('click', function () {
-                var removed = clearAllSavedWidthKeys();
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Reset Complete',
-                        text: removed.length ? 'Saved table widths were cleared.' : 'No saved table widths found.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                } else {
-                    alert(removed.length ? 'Saved table widths were cleared.' : 'No saved table widths found.');
-                }
+                clearAllSavedWidthKeys().then(function (removed) {
+                    removed = Array.isArray(removed) ? removed : [];
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Reset Complete',
+                            text: removed.length ? 'Saved table widths were cleared.' : 'No saved table widths found.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        alert(removed.length ? 'Saved table widths were cleared.' : 'No saved table widths found.');
+                    }
+                });
             });
         }
     }

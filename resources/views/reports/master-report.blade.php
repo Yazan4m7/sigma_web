@@ -89,7 +89,7 @@
         .form-label {
             font-size: 13px;
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             color: #374151;
             display: block;
         }
@@ -142,8 +142,8 @@
         }
 
         button[type="submit"].modern-btn:hover {
-            background: linear-gradient(135deg, #2d5f61 0%, #1f4547 100%) !important;
-            box-shadow: 0 6px 16px rgba(64, 131, 133, 0.4) !important;
+            background: linear-gradient(135deg, #276d6f 0%, #8fb4c5 100%) !important;
+            box-shadow: 0 6px 16px rgba(39, 109, 111, 0.28) !important;
             transform: translateY(-2px);
         }
 
@@ -410,7 +410,7 @@
 
 .master-report-container {
     background: var(--surface);
-    padding: 28px;
+    padding: 0  28px 28px 28px;
 }
 
 .modern-card {
@@ -418,341 +418,500 @@
     border: 1px solid var(--stroke);
     box-shadow: var(--shadow-lg);
 }
+        .fa-print, .fa-eye {
+           color: white;}
+        .form-section {
+            padding: 0;
+        }
 
-.form-section {
-    padding: 0;
-}
+        .basic-filters {
+            background: transparent;
+            border: none;
+        }
 
-.basic-filters {
-    background: transparent;
-    border: none;
-}
+        .section-title {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
 
-.section-title {
-    border-bottom: none;
-    padding-bottom: 0;
-}
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
 
-.form-label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 6px;
-}
+        .modern-input,
+        .modern-select {
+            border: 1px solid var(--stroke);
+            border-radius: 10px;
+            min-height: 42px;
+            padding: 10px 12px;
+            background-color: #fff;
+        }
 
-.modern-input,
-.modern-select {
-    border: 1px solid var(--stroke);
-    border-radius: 10px;
-    min-height: 42px;
-    padding: 10px 12px;
-    background-color: #fff;
-}
+        .modern-input:focus,
+        .modern-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.15);
+        }
 
-.modern-input:focus,
-.modern-select:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.15);
-}
+        .modern-btn {
+            border-radius: 12px;
+            font-weight: 600;
+        }
 
-.modern-btn {
-    border-radius: 12px;
-    font-weight: 600;
-}
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            border: 1px solid var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
 
-.btn-primary {
-    background: var(--accent);
-    color: #fff;
-    border: 1px solid var(--accent);
-    box-shadow: var(--shadow-lg);
-}
+        .btn-primary:hover {
+            background: var(--accent-strong);
+            border-color: var(--accent-strong);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 26px rgba(19, 79, 53, 0.3);
+        }
 
-.btn-primary:hover {
-    background: var(--accent-strong);
-    border-color: var(--accent-strong);
-    transform: translateY(-1px);
-    box-shadow: 0 12px 26px rgba(19, 79, 53, 0.3);
-}
+        button[type="submit"].modern-btn:hover {
+            background: linear-gradient(135deg, #276d6f 0%, #8fb4c5 100%) !important;
+            box-shadow: 0 10px 22px rgba(39, 109, 111, 0.28) !important;
+        }
 
-button[type="submit"].modern-btn:hover {
-    background: var(--accent-strong) !important;
-    box-shadow: 0 12px 26px rgba(19, 79, 53, 0.3) !important;
-}
+        .report-hero {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 18px;
+            background: linear-gradient(135deg, #f0f7f3 0%, #e8f1ff 100%);
+            border-bottom: 1px solid var(--stroke);
+        }
 
-.report-hero {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 18px;
-    background: linear-gradient(135deg, #f0f7f3 0%, #e8f1ff 100%);
-    border-bottom: 1px solid var(--stroke);
-}
+        .hero-copy .eyebrow {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            font-size: 0.75rem;
+            margin: 0;
+        }
 
-.hero-copy .eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    font-size: 0.75rem;
-    margin: 0;
-}
+        .hero-title {
+            margin: 4px 0 2px;
+            color: var(--ink);
+            font-size: 1.6rem;
+        }
 
-.hero-title {
-    margin: 4px 0 2px;
-    color: var(--ink);
-    font-size: 1.6rem;
-}
+        .hero-subtitle {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
 
-.hero-subtitle {
-    margin: 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-}
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
-.hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
+        .filters-card {
+            overflow: visible;
+            position: relative;
+            margin-top: 16px;
+            margin-bottom: 24px;
+        }
 
-.filters-card {
-    overflow: hidden;
-}
+        .filters-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background:linear-gradient(90deg, var(--table-header-elegant) 0%, var(--sigma-accent-light) 100%);
+            border-radius: 16px 16px 0 0;
+        }
 
-.filters-surface {
-    padding: 18px;
-    background: var(--panel);
-}
+        .filters-surface {
+            padding: 18px;
+            background: var(--panel);
+        }
 
-.filters-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 12px;
-}
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 12px;
+        }
 
-.filters-title {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
+        .filters-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
 
-.filters-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    background: var(--pill);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent-strong);
-}
+        .filters-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: var(--pill);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-strong);
+        }
 
-.filters-header h2 {
-    margin: 0;
-    color: var(--ink);
-    font-size: 1.1rem;
-}
+        .filters-header h2 {
+            margin: 0;
+            color: var(--ink);
+            font-size: 1.1rem;
+        }
 
-.filters-hint {
-    margin: 4px 0 0;
-    color: var(--muted);
-    font-size: 0.92rem;
-}
+        .filters-hint {
+            margin: 4px 0 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
 
-.filters-header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .filters-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-.filters-action-btn {
-    border: 1px solid var(--stroke);
-    background: #fff;
-    color: var(--ink);
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 12px;
-}
+        .filters-action-btn {
+            border: 1px solid var(--stroke);
+            background: #fff;
+            color: var(--ink);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 12px;
+        }
 
-.filters-action-btn i {
-    margin-right: 6px;
-}
+        .filters-action-btn i {
+            margin-right: 6px;
+        }
 
-.filters-master-reset {
-    border: none;
-    background: none;
-    color: var(--accent-strong);
-    font-weight: 600;
-    font-size: 12px;
-    padding: 6px 8px;
-}
+        .filters-master-reset {
+            border: none;
+            background: none;
+            color: var(--accent-strong);
+            font-weight: 600;
+            font-size: 12px;
+            padding: 6px 8px;
+            margin-top: 6px;
+        }
 
-.filters-master-reset:hover {
-    text-decoration: underline;
-}
+        .filters-master-reset:hover {
+            text-decoration: underline;
+        }
 
-.filter-label {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
+                .filter-label {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 8px;
+                }
 
-.filter-reset-btn {
-    border: none;
-    background: none;
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 600;
-    padding: 0;
-}
+                .filters-card .form-label,
+                .filters-card .filter-label {
+                    font-family: 'Tajawal', 'Cairo', sans-serif;
+                    color: var(--ink);
+                }
 
-.filter-reset-btn:hover {
-    color: var(--accent-strong);
-    text-decoration: underline;
-}
+                .filters-card .form-label i,
+                .filters-card .filter-label i {
+                    color: rgb(43, 123, 125);
+                }
 
-.filters-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 14px;
-}
+                .filter-label span {
+                    position: relative;
+                    padding-right: 10px;
+                }
 
-.filter-group {
-    margin-bottom: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
+                .filter-group.is-active .filter-label {
+                    color: #2f80ed;
+                }
 
-.filter-group.span-2 {
-    grid-column: span 2;
-}
+                .filter-group.is-active .filter-label i {
+                    color: #2f80ed;
+                }
 
-@media (max-width: 900px) {
-    .filter-group.span-2 {
-        grid-column: span 1;
-    }
-}
+        .filter-reset-btn {
+            border: none;
+            background: none;
+            color: #667b8991;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 0;
+        }
 
-.range-pair {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-}
+        .filter-reset-btn:hover {
+            color: var(--accent-strong);
+            text-decoration: underline;
+        }
 
-.range-error {
-    display: none;
-    font-size: 12px;
-    margin-top: 2px;
-}
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
 
-.trigger-field {
-    width: 100%;
-    text-align: left;
-    background: #fff;
-    border: 1px solid var(--stroke);
-    color: var(--ink);
-    height: 42px;
-    padding: 10px 12px;
-    border-radius: 10px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    cursor: pointer;
-}
+        .filter-group {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
 
-.trigger-field:hover {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.08);
-}
+        .filter-group.span-2 {
+            grid-column: span 2;
+        }
 
-.trigger-summary {
-    font-size: 12px;
-    margin-top: 2px;
-}
+        @media (max-width: 900px) {
+            .filter-group.span-2 {
+                grid-column: span 1;
+            }
+        }
 
-.filters-footer {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 12px;
-    margin-top: 16px;
-}
+        .range-pair {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
 
-.filters-summary-card {
-    display: flex;
-    justify-content: flex-start;
-}
+        .range-error {
+            display: none;
+            font-size: 12px;
+            margin-top: 2px;
+        }
 
-.filters-summary-row {
-    display: inline-flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 8px;
-}
+        .trigger-field {
+            width: 100%;
+            text-align: left;
+            background: #fff;
+            border: 1px solid var(--stroke);
+            color: #6b7280;
+            height: 42px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
 
-.generate-btn i {
-    margin-right: 6px;
-}
+        .trigger-field:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(28, 124, 84, 0.08);
+            color: #4b5563;
+        }
 
-.generate-btn {
-    background: linear-gradient(135deg, #2f7c7e 0%, #bdcfd9 100%) !important;
-    border-color: #2f7c7e !important;
-    color: #ffffff !important;
-    box-shadow: 0 6px 16px rgba(47, 124, 126, 0.35) !important;
-}
+        .trigger-summary {
+            font-size: 12px;
+            margin-top: 2px;
+        }
 
-.generate-btn:hover {
-    background: linear-gradient(135deg, #266b6d 0%, #a9c3d0 100%) !important;
-    border-color: #266b6d !important;
-    box-shadow: 0 10px 24px rgba(38, 107, 109, 0.35) !important;
-}
+        .filters-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-top: 20px;
+            width: 100%;
+        }
 
-@media (max-width: 900px) {
-    .hero-actions {
-        display: none;
-    }
+        .filters-summary-card {
+            display: flex;
+            justify-content: flex-start;
+        }
 
-    .filters-footer {
-        display: flex;
-    }
-}
+        .filters-applied-block {
+            margin-top: 10px;
+        }
 
-.modern-toggle-btn {
-    background: #f1f5f9;
-    background-image: none;
-    border: 1px solid var(--stroke);
-    height: 46px;
-    overflow: hidden;
-}
+        .filters-applied-divider {
+            height: 1px;
+            width: 100%;
+            background: #e5e7eb;
+            margin: 8px 0 10px;
+        }
 
-.modern-toggle-btn:hover {
-    border-color: var(--accent);
-}
+        .filters-applied-text {
+            font-size: 12px;
+            color: #4b5563;
+            line-height: 1.5;
+        }
 
-.toggle-option {
-    color: var(--muted);
-}
+        .filters-applied-text .filters-applied-label {
+            font-weight: 600;
+            color: #374151;
+            margin-right: 6px;
+        }
 
-.toggle-option.active {
-    color: #fff;
-}
+                .filters-summary-row {
+                    display: inline-flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 8px;
+                }
 
-.toggle-slider {
-    background: linear-gradient(135deg, #1c7c54 0%, #2f9e73 100%);
-    box-shadow: none;
-}
+                .filter-summary-badge {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 6px;
+                    border: 1px solid #e5e7eb;
+                    color: #374151;
+                    font-weight: 500;
+                    padding: 6px 10px;
+                    border-radius: 999px;
+                    background: #f9fafb;
+                    font-size: 12px;
+                }
+
+                .filter-summary-label {
+                    font-weight: 600;
+                    color: #1f2937;
+                }
+
+                .filter-badge--date {
+                    background: #e8f5ee;
+                    border-color: #c7e5d6;
+                    color: #2f6f52;
+                }
+
+                .filter-badge--people {
+                    background: #e8f0fb;
+                    border-color: #c9d9f1;
+                    color: #2b5f8a;
+                }
+
+                .filter-badge--devices {
+                    background: #f1e9fb;
+                    border-color: #dccff2;
+                    color: #5a3e7a;
+                }
+
+                .filter-badge--metrics {
+                    background: #fbeee3;
+                    border-color: #f1d8c2;
+                    color: #7a4d2c;
+                }
+
+                .filter-badge--workflow {
+                    background: #e6f4f5;
+                    border-color: #c7e3e5;
+                    color: #23696b;
+                }
+
+                .filter-badge--other {
+                    background: #f2f4f7;
+                    border-color: #d9dee5;
+                    color: #4b5563;
+                }
+
+                .completion-toggle {
+                    display: inline-flex;
+                    gap: 8px;
+                    border: none;
+                    background: transparent;
+                    padding: 0;
+                    width: 100%;
+                }
+
+                .completion-option {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 6px;
+                    padding: 8px 14px;
+                    border-radius: 8px;
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: var(--muted);
+                    cursor: pointer;
+                    user-select: none;
+                    transition: all 0.2s ease;
+                    flex: 1;
+                    min-height: 36px;
+                    background: #f1f4f7;
+                    border: 1px solid #e1e6ec;
+                }
+
+                .completion-option input {
+                    display: none;
+                }
+
+                .completion-option.active {
+                    background: linear-gradient(135deg, rgba(43, 123, 125, 0.45) 0%, rgba(27, 100, 129, 0.65) 100%);
+                    color: #ffffff;
+                }
+
+        .generate-btn i {
+            margin-right: 6px;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #2f7c7e 0%, #9fbfce 100%) !important;
+            border-color: #2f7c7e !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 16px rgba(47, 124, 126, 0.3) !important;
+            min-height: 48px;
+            min-width: 210px;
+        }
+
+        .generate-btn:hover {
+            background: linear-gradient(135deg, #276d6f 0%, #8fb4c5 100%) !important;
+            border-color: #276d6f !important;
+            box-shadow: 0 10px 22px rgba(39, 109, 111, 0.28) !important;
+        }
+
+        @media (max-width: 900px) {
+            .hero-actions {
+                display: none;
+            }
+
+            .filters-footer {
+                display: flex;
+            }
+        }
+
+        .modern-toggle-btn {
+            background: #f1f5f9;
+            background-image: none;
+            border: 1px solid var(--stroke);
+            height: 46px;
+            overflow: hidden;
+        }
+
+        .modern-toggle-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .toggle-option {
+            color: var(--muted);
+        }
+
+        .toggle-option.active {
+            color: #fff;
+        }
+
+        .toggle-slider {
+            background: linear-gradient(135deg, #1c7c54 0%, #2f9e73 100%);
+            box-shadow: none;
+        }
 
 
-        /* DataTable Export Buttons */
+                /* DataTable Export Buttons */
         .dt-buttons .btn {
             background: white !important;
             border: 1px solid #e5e7eb !important;
@@ -803,7 +962,9 @@ button[type="submit"].modern-btn:hover {
             color: white !important;
             border: none !important;
         }
-
+        .dataTables_wrapper.no-footer .dataTables_scrollBody{
+            border-bottom: 0;
+        }
         /* Light headers */
         #master-report-table thead th.header-light,
         table#master-report-table thead th.header-light,
@@ -905,6 +1066,181 @@ button[type="submit"].modern-btn:hover {
 
         .columns-dropdown {
             margin-right: 12px;
+            position: relative;
+            z-index: 1000 !important;
+        }
+
+        .columns-dropdown .dropdown-menu {
+            z-index: 1000 !important;
+        }
+
+        .export-buttons {
+            display: none;
+        }
+
+        .report-results-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .report-results-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .report-results-search input {
+            height: 36px;
+            min-width: 220px;
+            padding: 6px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #374151;
+            background: #fff;
+        }
+
+        .report-results-search input::placeholder {
+            color: #9aa3af;
+        }
+
+        .export-orbit {
+            position: relative;
+            width: 52px;
+            height: 52px;
+            z-index: 1100;
+        }
+
+        .export-orbit .export-main {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: none;
+            background: #2f7c7e;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 14px rgba(47, 124, 126, 0.28);
+            letter-spacing: 0.02em;
+        }
+
+        .export-orbit .export-option {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            top: 50%;
+            left: 50%;
+            --x: 0px;
+            --y: 0px;
+            border-radius: 50%;
+            border: none;
+            background: #f1f5f9;
+            color: #2f7c7e;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.6);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+            z-index: 1101;
+        }
+
+        .export-orbit.is-open .export-option,
+        .export-orbit:hover .export-option {
+            opacity: 1;
+            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1);
+            pointer-events: auto;
+        }
+
+        .export-orbit .export-option.export-excel {
+            --x: 0px;
+            --y: -58px;
+        }
+
+        .export-orbit .export-option.export-pdf {
+            --x: 55px;
+            --y: -18px;
+        }
+
+        .export-orbit .export-option.export-print {
+            --x: 34px;
+            --y: 47px;
+        }
+
+        .export-orbit .export-option.export-csv {
+            --x: -34px;
+            --y: 47px;
+        }
+
+        .export-orbit .export-option.export-whatsapp {
+            --x: -55px;
+            --y: -18px;
+        }
+
+        .report-results-totals {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .report-total-card {
+            padding: 6px 18px !important;
+            min-height: 44px;
+            min-width: 110px;
+        }
+
+        .report-total-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .report-total-inline .report-total-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+
+        .report-total-card  {
+            font-size: 11px;
+        }
+
+        #master-report-table tbody td.doctor-name-cell,
+        #master-report-table tbody td.patient-name-cell {
+            font-weight: 700;
+        }
+
+        .columns-dropdown {
+            position: relative;
+            z-index: 1;
+        }
+
+        .report-total-card  {
+            font-size: 16px;
+            line-height: 1.1;
+        }
+
+        .sigma-report-table-container .dataTables_filter {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            .report-results-search input {
+                min-width: 180px;
+            }
         }
 
         .master-report-row {
@@ -980,7 +1316,7 @@ button[type="submit"].modern-btn:hover {
     
 <div class="master-report-container">
     <div class="modern-card filters-card">
-        <form class="modern-form" method="GET" action="{{route('master-report')}}" id="master-report-form">
+        <form class="modern-form" method="GET" action="{{route('master-report')}}" id="master-report-form" data-loading-screen-text="Processing...">
             <input type="hidden" name="generate_report" value="1">
             <div id="hidden-employee-filters"></div>
             <div id="hidden-device-filters"></div>
@@ -991,18 +1327,23 @@ button[type="submit"].modern-btn:hover {
             </script>
 
             <div class="form-section basic-filters filters-surface">
+                @php
+                    $defaultFrom = \Carbon\Carbon::now()->startOfMonth()->format('Y-m-d');
+                    $defaultTo = \Carbon\Carbon::now()->format('Y-m-d');
+                @endphp
                 <div class="filters-grid">
                     <div class="filter-group">
                         <label class="form-label filter-label" for="master_from">
                             <span><i class="fas fa-calendar-alt"></i> From</span>
                             <button type="button" class="filter-reset-btn" data-reset="date-from">Reset</button>
                         </label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="master_from"
                             :value="request('from', $from)"
                             mode="date"
                             :required="true"
+                            :dataDefault="$defaultFrom"
                         />
                     </div>
                     <div class="filter-group">
@@ -1010,12 +1351,13 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-calendar-alt"></i> To</span>
                             <button type="button" class="filter-reset-btn" data-reset="date-to">Reset</button>
                         </label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="master_to"
                             :value="request('to', $to)"
                             mode="date"
                             :required="true"
+                            :dataDefault="$defaultTo"
                         />
                     </div>
 
@@ -1024,7 +1366,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-user-md"></i> Doctor</span>
                             <button type="button" class="filter-reset-btn" data-reset="doctor">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="doctor[]" id="doctor">
+                        <select class="modern-select select2-multiple" multiple name="doctor[]" id="doctor" data-default="all">
                             <option value="all" {{in_array('all', (array)request('doctor', ['all'])) ? 'selected' : ''}}>All Doctors</option>
                             @foreach($clients as $client)
                                 <option value="{{$client->id}}" {{in_array($client->id, (array)request('doctor', [])) ? 'selected' : ''}}>
@@ -1039,7 +1381,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-tooth"></i> Material</span>
                             <button type="button" class="filter-reset-btn" data-reset="material">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="material[]" id="material">
+                        <select class="modern-select select2-multiple" multiple name="material[]" id="material" data-default="all">
                             <option value="all" {{in_array('all', (array)request('material', ['all'])) ? 'selected' : ''}}>All Materials</option>
                             @foreach($materials as $material)
                                 <option value="{{$material->id}}" {{in_array($material->id, (array)request('material', [])) ? 'selected' : ''}}>
@@ -1054,7 +1396,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-cog"></i> Job Type</span>
                             <button type="button" class="filter-reset-btn" data-reset="job-type">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="job_type[]" id="job_type">
+                        <select class="modern-select select2-multiple" multiple name="job_type[]" id="job_type" data-default="all">
                             <option value="all" {{in_array('all', (array)request('job_type', ['all'])) ? 'selected' : ''}}>All Job Types</option>
                             @foreach($jobTypes as $jobType)
                                 <option value="{{$jobType->id}}" {{in_array($jobType->id, (array)request('job_type', [])) ? 'selected' : ''}}>
@@ -1069,7 +1411,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-layer-group"></i> Material Type</span>
                             <button type="button" class="filter-reset-btn" data-reset="material-type">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="material_type[]" id="material_type">
+                        <select class="modern-select select2-multiple" multiple name="material_type[]" id="material_type" data-default="all">
                             <option value="all">All Material Types</option>
                         </select>
                     </div>
@@ -1079,11 +1421,11 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-exclamation-triangle"></i> Failure Type</span>
                             <button type="button" class="filter-reset-btn" data-reset="failure-type">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="failure_type[]" id="failure_type">
+                        <select class="modern-select select2-multiple" multiple name="failure_type[]" id="failure_type" data-default="all">
                             <option value="all" {{in_array('all', (array)request('failure_type', ['all'])) ? 'selected' : ''}}>All Failure Types</option>
                             @foreach($failureCauses as $failureCause)
                                 <option value="{{$failureCause->id}}" {{in_array($failureCause->id, (array)request('failure_type', [])) ? 'selected' : ''}}>
-                                    {{$failureCause->name}}
+                                    {{$failureCause->text ?? $failureCause->name}}
                                 </option>
                             @endforeach
                         </select>
@@ -1094,7 +1436,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-plug"></i> Abutments</span>
                             <button type="button" class="filter-reset-btn" data-reset="abutments">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="abutments[]" id="abutments">
+                        <select class="modern-select select2-multiple" multiple name="abutments[]" id="abutments" data-default="all">
                             <option value="all" {{in_array('all', (array)request('abutments', ['all'])) ? 'selected' : ''}}>All Abutments</option>
                             @foreach($abutments as $abutment)
                                 <option value="{{$abutment->id}}" {{in_array($abutment->id, (array)request('abutments', [])) ? 'selected' : ''}}>
@@ -1109,7 +1451,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-tooth"></i> Implants</span>
                             <button type="button" class="filter-reset-btn" data-reset="implants">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="implants[]" id="implants">
+                        <select class="modern-select select2-multiple" multiple name="implants[]" id="implants" data-default="all">
                             <option value="all" {{in_array('all', (array)request('implants', ['all'])) ? 'selected' : ''}}>All Implants</option>
                             @foreach($implants as $implant)
                                 <option value="{{$implant->id}}" {{in_array($implant->id, (array)request('implants', [])) ? 'selected' : ''}}>
@@ -1124,7 +1466,7 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-tasks"></i> Workflow Stage</span>
                             <button type="button" class="filter-reset-btn" data-reset="status">Reset</button>
                         </label>
-                        <select class="modern-select select2-multiple" multiple name="status[]" id="status">
+                        <select class="modern-select select2-multiple" multiple name="status[]" id="status" data-default="all">
                             <option value="all" {{in_array('all', (array)request('status', ['all'])) ? 'selected' : ''}}>All Stages</option>
                             <option value="1" {{in_array('1', (array)request('status', [])) ? 'selected' : ''}}>Design</option>
                             <option value="2" {{in_array('2', (array)request('status', [])) ? 'selected' : ''}}>Milling</option>
@@ -1144,9 +1486,9 @@ button[type="submit"].modern-btn:hover {
                         </label>
                         <div class="range-pair">
                             <input type="number" class="modern-input" name="amount_from" id="amount_from"
-                                   placeholder="From JOD" value="{{request('amount_from')}}" min="0" step="0.01">
+                                   placeholder="From JOD" value="{{request('amount_from')}}" min="0" step="1" inputmode="decimal" data-precision="1" data-default="">
                             <input type="number" class="modern-input" name="amount_to" id="amount_to"
-                                   placeholder="To JOD" value="{{request('amount_to')}}" min="0" step="0.01">
+                                   placeholder="To JOD" value="{{request('amount_to')}}" min="0" step="1" inputmode="decimal" data-precision="1" data-default="">
                         </div>
                         <small class="text-danger range-error" id="amount-range-error">
                             <i class="fas fa-exclamation-circle"></i> "From" amount cannot be greater than "To" amount
@@ -1160,9 +1502,9 @@ button[type="submit"].modern-btn:hover {
                         </label>
                         <div class="range-pair">
                             <input type="number" class="modern-input" name="units_from" id="units_from"
-                                   placeholder="From" value="{{request('units_from')}}" min="0" step="1">
+                                   placeholder="From" value="{{request('units_from')}}" min="0" step="1" inputmode="numeric" data-default="">
                             <input type="number" class="modern-input" name="units_to" id="units_to"
-                                   placeholder="To" value="{{request('units_to')}}" min="0" step="1">
+                                   placeholder="To" value="{{request('units_to')}}" min="0" step="1" inputmode="numeric" data-default="">
                         </div>
                         <small class="text-danger range-error" id="units-range-error">
                             <i class="fas fa-exclamation-circle"></i> "From" units cannot be greater than "To" units
@@ -1178,7 +1520,7 @@ button[type="submit"].modern-btn:hover {
                             Configure Employee Filters
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                        <div id="employees-filter-summary" class="filter-summary filter-pill muted trigger-summary">No employee filters applied</div>
+                        <div id="employees-filter-summary" class="filter-summary filter-pill muted trigger-summary d-none">No employee filters applied</div>
                     </div>
 
                     <div class="filter-group">
@@ -1190,7 +1532,7 @@ button[type="submit"].modern-btn:hover {
                             Configure Device Filters
                             <i class="fas fa-chevron-right"></i>
                         </button>
-                        <div id="devices-filter-summary" class="filter-summary filter-pill muted trigger-summary">All devices included</div>
+                        <div id="devices-filter-summary" class="filter-summary filter-pill muted trigger-summary d-none">All devices included</div>
                     </div>
 
                     <div class="filter-group">
@@ -1198,167 +1540,313 @@ button[type="submit"].modern-btn:hover {
                             <span><i class="fas fa-check-circle"></i> Case Completion</span>
                             <button type="button" class="filter-reset-btn" data-reset="completion">Reset</button>
                         </label>
-                        <div class="modern-toggle-container">
-                            <input type="hidden" name="show_completed" id="show_completed_hidden" value="{{request('show_completed', 'all')}}">
-                            <button type="button" class="modern-toggle-btn" id="completion_toggle" data-value="{{request('show_completed', 'all')}}">
-                                <span class="toggle-option" data-value="all">All Cases</span>
-                                <span class="toggle-option" data-value="completed">Completed</span>
-                                <span class="toggle-option" data-value="in_progress">In Progress</span>
-                                <span class="toggle-slider"></span>
-                            </button>
+                        @php
+                            $completionSelections = request('show_completed', ['completed', 'in_progress']);
+                            if (!is_array($completionSelections)) {
+                                $completionSelections = [$completionSelections];
+                            }
+                            if (empty($completionSelections) || in_array('all', $completionSelections, true)) {
+                                $completionSelections = ['completed', 'in_progress'];
+                            }
+                            $completionSelections = array_map('strval', $completionSelections);
+                        @endphp
+                        <div class="completion-toggle" id="completion_toggle" data-default="completed,in_progress">
+                            <label class="completion-option">
+                                <input type="checkbox" name="show_completed[]" value="completed"
+                                       {{ in_array('completed', $completionSelections, true) ? 'checked' : '' }}>
+                                <span>Completed</span>
+                            </label>
+                            <label class="completion-option">
+                                <input type="checkbox" name="show_completed[]" value="in_progress"
+                                       {{ in_array('in_progress', $completionSelections, true) ? 'checked' : '' }}>
+                                <span>In Progress</span>
+                            </label>
                         </div>
                     </div>
                 </div>
 
+                @php
+                    $summaryItems = [];
+                    $clientMap = $clients->pluck('name', 'id');
+                    $materialMap = $materials->pluck('name', 'id');
+                    $jobTypeMap = $jobTypes->pluck('name', 'id');
+                    $failureCauseMap = $failureCauses->mapWithKeys(function ($failureCause) {
+                        return [$failureCause->id => ($failureCause->text ?? $failureCause->name)];
+                    });
+                    $abutmentMap = $abutments->pluck('name', 'id');
+                    $implantMap = $implants->pluck('name', 'id');
+                    $stageLabels = [
+                        '1' => 'Design',
+                        '2' => 'Milling',
+                        '3' => '3D Printing',
+                        '4' => 'Sintering',
+                        '5' => 'Pressing',
+                        '6' => 'Finishing',
+                        '7' => 'QC',
+                        '8' => 'Delivery',
+                    ];
+
+                    $addSummary = function($label, $values, $map = null, $category = 'other') use (&$summaryItems) {
+                        $arr = array_filter((array) $values, fn($v) => $v !== null && $v !== '');
+                        if (empty($arr) || in_array('all', $arr, true)) {
+                            return;
+                        }
+                        if ($map) {
+                            $names = collect($arr)->map(fn($id) => $map[$id] ?? $id)->implode(', ');
+                        } else {
+                            $names = implode(', ', $arr);
+                        }
+                        if ($names !== '') {
+                            $summaryItems[] = [
+                                'label' => $label,
+                                'value' => $names,
+                                'category' => $category
+                            ];
+                        }
+                    };
+
+                    // Date range
+                    $summaryItems[] = [
+                        'label' => 'Date',
+                        'value' => request('from', $from) . ' → ' . request('to', $to),
+                        'category' => 'date'
+                    ];
+
+                    // Core filters
+                    $doctorSelections = array_filter((array) request('doctor', []), fn($v) => $v !== null && $v !== '' && $v !== 'all');
+                    if (!empty($doctorSelections)) {
+                        $summaryItems[] = [
+                            'label' => 'Doctor Count',
+                            'value' => count($doctorSelections),
+                            'category' => 'people'
+                        ];
+                    }
+                    $addSummary('Material', request('material', []), $materialMap, 'other');
+                    $addSummary('Job Type', request('job_type', []), $jobTypeMap, 'other');
+                    $addSummary('Failure Type', request('failure_type', []), $failureCauseMap, 'other');
+                    $addSummary('Abutment', request('abutments', []), $abutmentMap, 'other');
+                    $addSummary('Implant', request('implants', []), $implantMap, 'other');
+
+                    // Material type names (loaded on demand)
+                    $materialTypes = (array) request('material_type', []);
+                    if (!empty($materialTypes) && !in_array('all', $materialTypes, true)) {
+                        $typeNames = \App\Type::whereIn('id', $materialTypes)->pluck('name')->implode(', ');
+                        if ($typeNames) {
+                            $summaryItems[] = [
+                                'label' => 'Material Type',
+                                'value' => $typeNames,
+                                'category' => 'other'
+                            ];
+                        }
+                    }
+
+                    // Workflow stage
+                    $statusFilters = array_filter((array) request('status', []));
+                    if (!empty($statusFilters) && !in_array('all', $statusFilters, true)) {
+                        $labels = collect($statusFilters)->map(fn($id) => $stageLabels[$id] ?? $id)->implode(', ');
+                        if ($labels) {
+                            $summaryItems[] = [
+                                'label' => 'Workflow Stage',
+                                'value' => $labels,
+                                'category' => 'workflow'
+                            ];
+                        }
+                    }
+
+                    // Completion toggle
+                    $completion = request('show_completed', ['completed', 'in_progress']);
+                    if (!is_array($completion)) {
+                        $completion = [$completion];
+                    }
+                    if (!empty($completion) && !in_array('all', $completion, true)) {
+                        $completion = array_values(array_unique($completion));
+                        $completionLabels = [];
+                        if (in_array('completed', $completion, true)) {
+                            $completionLabels[] = 'Completed';
+                        }
+                        if (in_array('in_progress', $completion, true)) {
+                            $completionLabels[] = 'In Progress';
+                        }
+                        if (!empty($completionLabels)) {
+                            $summaryItems[] = [
+                                'label' => 'Case Completion',
+                                'value' => implode(' / ', $completionLabels),
+                                'category' => 'workflow'
+                            ];
+                        }
+                    }
+
+                    // Amount and units ranges
+                    $amountFrom = request('amount_from');
+                    $amountTo = request('amount_to');
+                    if (($amountFrom !== null && $amountFrom !== '') || ($amountTo !== null && $amountTo !== '')) {
+                        if ($amountFrom !== null && $amountFrom !== '' && $amountTo !== null && $amountTo !== '') {
+                            $amountLabel = $amountFrom . ' - ' . $amountTo . ' JOD';
+                        } elseif ($amountFrom !== null && $amountFrom !== '') {
+                            $amountLabel = $amountFrom . ' JOD';
+                        } else {
+                            $amountLabel = $amountTo . ' JOD';
+                        }
+                        $summaryItems[] = [
+                            'label' => 'Amount Range',
+                            'value' => $amountLabel,
+                            'category' => 'metrics'
+                        ];
+                    }
+                    $unitsFrom = request('units_from');
+                    $unitsTo = request('units_to');
+                    if (($unitsFrom !== null && $unitsFrom !== '') || ($unitsTo !== null && $unitsTo !== '')) {
+                        if ($unitsFrom !== null && $unitsFrom !== '' && $unitsTo !== null && $unitsTo !== '') {
+                            $unitsLabel = $unitsFrom . ' - ' . $unitsTo . ' units';
+                        } elseif ($unitsFrom !== null && $unitsFrom !== '') {
+                            $unitsLabel = $unitsFrom . ' units';
+                        } else {
+                            $unitsLabel = $unitsTo . ' units';
+                        }
+                        $summaryItems[] = [
+                            'label' => 'Units Range',
+                            'value' => $unitsLabel,
+                            'category' => 'metrics'
+                        ];
+                    }
+
+                    // Employee/device filters counts
+                    $employeeFilters = (array) request('employee_filters', []);
+                    if (!empty($employeeFilters)) {
+                        $summaryItems[] = [
+                            'label' => 'Employee Count',
+                            'value' => count($employeeFilters),
+                            'category' => 'people'
+                        ];
+                    }
+                    $deviceFilters = (array) request('device_filters', []);
+                    if (!empty($deviceFilters)) {
+                        $summaryItems[] = [
+                            'label' => 'Device Count',
+                            'value' => count($deviceFilters),
+                            'category' => 'devices'
+                        ];
+                    }
+
+                    $summaryItems = array_filter($summaryItems);
+                    $summaryText = collect($summaryItems)->map(function ($item) {
+                        switch ($item['label']) {
+                            case 'Date':
+                                return $item['value'];
+                            case 'Workflow Stage':
+                                return $item['value'];
+                            case 'Doctor Count':
+                                return $item['value'] . ' ' . ((int) $item['value'] === 1 ? 'doctor' : 'doctors');
+                            case 'Employee Count':
+                                return $item['value'] . ' ' . ((int) $item['value'] === 1 ? 'employee' : 'employees');
+                            case 'Device Count':
+                                return $item['value'] . ' ' . ((int) $item['value'] === 1 ? 'device' : 'devices');
+                            case 'Amount Range':
+                                return $item['value'];
+                            case 'Units Range':
+                                return $item['value'];
+                            case 'Case Completion':
+                                return $item['value'];
+                            default:
+                                return $item['label'] . ': ' . $item['value'];
+                        }
+                    })->implode(' · ');
+                @endphp
+
+                @if(!empty($summaryItems))
+                    <div class="filters-applied-block">
+                        <div class="filters-applied-divider"></div>
+                        <div class="filters-applied-text">
+                            <span class="filters-applied-label">Filters applied:</span>{{ $summaryText }}
+                        </div>
+                    </div>
+                @endif
+
                 <div class="filters-footer">
-                    <button type="button" class="filters-master-reset" id="filters-master-reset">Reset All</button>
                     <button type="submit" class="modern-btn btn-primary generate-btn">
                         <i class="fas fa-chart-line"></i>
                         Generate Report
                     </button>
+                    <button type="button" class="filters-master-reset" id="filters-master-reset">Reset All</button>
                 </div>
             </div>
         </form>
     </div>
 
 
-    @php
-        $summaryItems = [];
-        $clientMap = $clients->pluck('name', 'id');
-        $materialMap = $materials->pluck('name', 'id');
-        $jobTypeMap = $jobTypes->pluck('name', 'id');
-        $failureCauseMap = $failureCauses->pluck('name', 'id');
-        $abutmentMap = $abutments->pluck('name', 'id');
-        $implantMap = $implants->pluck('name', 'id');
-        $stageLabels = [
-            '1' => 'Design',
-            '2' => 'Milling',
-            '3' => '3D Printing',
-            '4' => 'Sintering',
-            '5' => 'Pressing',
-            '6' => 'Finishing',
-            '7' => 'QC',
-            '8' => 'Delivery',
-        ];
-
-        $addSummary = function($label, $values, $map = null) use (&$summaryItems) {
-            $arr = array_filter((array) $values, fn($v) => $v !== null && $v !== '');
-            if (empty($arr) || in_array('all', $arr, true)) {
-                return;
-            }
-            if ($map) {
-                $names = collect($arr)->map(fn($id) => $map[$id] ?? $id)->implode(', ');
-            } else {
-                $names = implode(', ', $arr);
-            }
-            if ($names !== '') {
-                $summaryItems[] = "{$label}: {$names}";
-            }
-        };
-
-        // Date range
-        $summaryItems[] = "Date: " . request('from', $from) . " → " . request('to', $to);
-
-        // Core filters
-        $addSummary('Doctor', request('doctor', []), $clientMap);
-        $addSummary('Material', request('material', []), $materialMap);
-        $addSummary('Job Type', request('job_type', []), $jobTypeMap);
-        $addSummary('Failure Type', request('failure_type', []), $failureCauseMap);
-        $addSummary('Abutment', request('abutments', []), $abutmentMap);
-        $addSummary('Implant', request('implants', []), $implantMap);
-
-        // Material type names (loaded on demand)
-        $materialTypes = (array) request('material_type', []);
-        if (!empty($materialTypes) && !in_array('all', $materialTypes, true)) {
-            $typeNames = \App\Type::whereIn('id', $materialTypes)->pluck('name')->implode(', ');
-            if ($typeNames) {
-                $summaryItems[] = "Material Type: {$typeNames}";
-            }
-        }
-
-        // Workflow stage
-        $statusFilters = array_filter((array) request('status', []));
-        if (!empty($statusFilters) && !in_array('all', $statusFilters, true)) {
-            $labels = collect($statusFilters)->map(fn($id) => $stageLabels[$id] ?? $id)->implode(', ');
-            if ($labels) {
-                $summaryItems[] = "Workflow Stage: {$labels}";
-            }
-        }
-
-        // Completion toggle
-        $completion = request('show_completed', 'all');
-        if ($completion === 'completed') $summaryItems[] = 'Case Completion: Completed';
-        elseif ($completion === 'in_progress') $summaryItems[] = 'Case Completion: In Progress';
-
-        // Amount and units ranges
-        $amountFrom = request('amount_from');
-        $amountTo = request('amount_to');
-        if ($amountFrom !== null && $amountFrom !== '') {
-            $summaryItems[] = 'Amount From: ' . $amountFrom;
-        }
-        if ($amountTo !== null && $amountTo !== '') {
-            $summaryItems[] = 'Amount To: ' . $amountTo;
-        }
-        $unitsFrom = request('units_from');
-        $unitsTo = request('units_to');
-        if ($unitsFrom !== null && $unitsFrom !== '') {
-            $summaryItems[] = 'Units From: ' . $unitsFrom;
-        }
-        if ($unitsTo !== null && $unitsTo !== '') {
-            $summaryItems[] = 'Units To: ' . $unitsTo;
-        }
-
-        // Employee/device filters counts
-        $employeeFilters = (array) request('employee_filters', []);
-        if (!empty($employeeFilters)) {
-            $summaryItems[] = count($employeeFilters) . ' employee filter(s)';
-        }
-        $deviceFilters = (array) request('device_filters', []);
-        if (!empty($deviceFilters)) {
-            $summaryItems[] = count($deviceFilters) . ' device filter(s)';
-        }
-
-        $summaryItems = array_filter($summaryItems);
-    @endphp
-
-    @if(!empty($summaryItems))
-        <div class="modern-card filters-summary-card" style="margin-top: 8px; padding: 10px 14px;">
-            <div class="filters-summary-row">
-                @foreach($summaryItems as $item)
-                    <span class="badge badge-light" style="border: 1px solid #e5e7eb; color: #374151; font-weight: 500; padding: 6px 10px; background: #f9fafb;">
-                        {{ $item }}
-                    </span>
-                @endforeach
-            </div>
-        </div>
-    @endif
 
     @if($cases->count() > 0)
         <div class="modern-card" style="margin-top: 16px;">
+            @php
+                $totalCases = $cases->count();
+                $totalAmount = $cases->sum(function ($case) {
+                    return $case->invoice->amount ?? 0;
+                });
+                $totalUnits = 0;
+                foreach ($cases as $case) {
+                    foreach ($case->jobs as $job) {
+                        $unitNum = trim((string) ($job->unit_num ?? ''));
+                        if ($unitNum === '') {
+                            $totalUnits += 1;
+                            continue;
+                        }
+                        if (str_contains($unitNum, ',') || str_contains($unitNum, ' ')) {
+                            $parts = preg_split('/[,\s]+/', $unitNum);
+                            $count = count(array_filter(array_map('trim', $parts)));
+                            $totalUnits += max(1, $count);
+                        } else {
+                            $totalUnits += 1;
+                        }
+                    }
+                }
+            @endphp
             <div class="card-header" style="border-bottom: 1px solid #e2e8f0; padding: 12px 24px; background: white;">
-                        <div class="d-flex justify-content-between align-items-center"> <h4 style="font-weight: 600; color: #1a202c; margin: 0;">Report Results</h4>
-                    <div class="d-flex align-items-center gap-3">
+                <div class="report-results-header">
+                    <div class="report-results-totals">
+                        <div class="materials-total-card report-total-card">
+                            <div class="report-total-inline">
+                                <span class="report-total-number">{{ number_format($totalCases) }}</span>
+                                <span class="report-total-label">Cases</span>
+                            </div>
+                        </div>
+                        <div class="materials-total-card report-total-card">
+                            <div class="report-total-inline">
+                                <span class="report-total-number">{{ number_format($totalUnits) }}</span>
+                                <span class="report-total-label">Units</span>
+                            </div>
+                        </div>
+
+                        <div class="materials-total-card report-total-card">
+                            <div class="report-total-inline">
+                                <span class="report-total-number">{{ number_format($totalAmount) }}</span>
+                                <span class="report-total-label">JOD</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="report-results-actions">
+                        <div class="report-results-search">
+                            <input type="text" id="master-report-search" placeholder="Search cases..." autocomplete="off">
+                        </div>
                         <div class="dropdown columns-dropdown">
-                            <button class="btn" type="button" id="columnVisibilityDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background: white; border: 1px solid #e5e7eb; color: #374151; padding: 8px 16px; font-size: 13px; border-radius: 6px; transition: all 0.2s ease;">
-                                <i class="fas fa-columns" style="margin-right: 6px;"></i>
-                                Columns
+                            <button class="btn" type="button" id="columnVisibilityDropdown" aria-haspopup="true" aria-expanded="false" style="background: white; border: 1px solid #e5e7eb; color: #374151; padding: 8px 12px; font-size: 13px; border-radius: 50%; transition: all 0.2s ease; width: 40px; height: 40px;">
+                                <i class="fas fa-columns"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right p-3" aria-labelledby="columnVisibilityDropdown" style="min-width: 280px; max-height: 500px; overflow-y: auto;">
                                 <h6 class="dropdown-header">Basic Information</h6>
                                 <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-case-id" data-column="0" checked>
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-case-id" data-column="0">
                                     <label class="form-check-label" for="col-case-id">Case ID</label>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-doctor" data-column="1" checked>
-                                    <label class="form-check-label" for="col-doctor">Doctor</label>
+                                <div class="form-check is-locked">
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-doctor" data-column="1" checked disabled data-locked="true">
+                                    <label class="form-check-label text-muted" for="col-doctor">Doctor (required)</label>
+                                </div>
+                                <div class="form-check is-locked">
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-patient" data-column="2" checked disabled data-locked="true">
+                                    <label class="form-check-label text-muted" for="col-patient">Patient (required)</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-patient" data-column="2" checked>
-                                    <label class="form-check-label" for="col-patient">Patient</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-material" data-column="3">
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-material" data-column="3" checked>
                                     <label class="form-check-label" for="col-material">Material</label>
                                 </div>
                                 <div class="form-check">
@@ -1366,15 +1854,19 @@ button[type="submit"].modern-btn:hover {
                                     <label class="form-check-label" for="col-job-type">Job Type</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-created" data-column="5" checked>
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-created" data-column="5">
                                     <label class="form-check-label" for="col-created">Created Date</label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input column-toggle" type="checkbox" id="col-delivery" data-column="6" checked>
+                                    <input class="form-check-input column-toggle" type="checkbox" id="col-delivery" data-column="6">
                                     <label class="form-check-label" for="col-delivery">Delivery Date</label>
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Devices</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input column-toggle-group" type="checkbox" id="col-devices-all" data-columns="7,8,9,10">
+                                    <label class="form-check-label" for="col-devices-all">All Devices</label>
+                                </div>
                                 <div class="form-check">
                                     <input class="form-check-input column-toggle" type="checkbox" id="col-mill-device" data-column="7">
                                     <label class="form-check-label" for="col-mill-device">Mill Device</label>
@@ -1393,6 +1885,10 @@ button[type="submit"].modern-btn:hover {
                                 </div>
                                 <div class="dropdown-divider"></div>
                                 <h6 class="dropdown-header">Employees</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input column-toggle-group" type="checkbox" id="col-employees-all" data-columns="11,12,13,14,15,16">
+                                    <label class="form-check-label" for="col-employees-all">All Employees</label>
+                                </div>
                                 <div class="form-check">
                                     <input class="form-check-input column-toggle" type="checkbox" id="col-designer" data-column="11">
                                     <label class="form-check-label" for="col-designer">Designer</label>
@@ -1439,6 +1935,24 @@ button[type="submit"].modern-btn:hover {
                                 <button class="btn btn-sm btn-primary btn-block" id="selectAllColumns" type="button">Select All</button>
                                 <button class="btn btn-sm btn-secondary btn-block mt-1" id="deselectAllColumns" type="button">Deselect All</button>
                             </div>
+                        </div>
+                        <div class="export-orbit" aria-label="Export options">
+                            <button type="button" class="export-main">Export</button>
+                            <button type="button" class="export-option export-excel export-action" data-export="excel" title="Export Excel">
+                                <i class="fas fa-file-excel"></i>
+                            </button>
+                            <button type="button" class="export-option export-pdf export-action" data-export="pdf" title="Export PDF">
+                                <i class="fas fa-file-pdf"></i>
+                            </button>
+                            <button type="button" class="export-option export-print export-action" data-export="print" title="Print">
+                                <i class="fas fa-print" style="color: #2f7c7e;font-size: 14px"></i>
+                            </button>
+                            <button type="button" class="export-option export-csv export-action" data-export="csv" title="Export CSV">
+                                <i class="fas fa-file-csv"></i>
+                            </button>
+                            <button type="button" class="export-option export-whatsapp export-action" data-export="whatsapp" title="Send CSV to WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </button>
                         </div>
                         <div class="export-buttons">
                         </div>
@@ -1579,8 +2093,8 @@ button[type="submit"].modern-btn:hover {
                         @endphp
                         <tr class="master-report-row clickable" data-toggle="modal" data-target="#actionsDialog{{$case->id}}" data-case-id="{{$case->id}}">
                             <td class="text-left"><strong>{{$case->id}}</strong></td>
-                            <td class="text-left">{{$case->client->name ?? 'N/A'}}</td>
-                            <td class="text-left">{{$case->patient_name}}</td>
+                            <td class="text-left doctor-name-cell">{{$case->client->name ?? 'N/A'}}</td>
+                            <td class="text-left patient-name-cell">{{$case->patient_name}}</td>
                             <td class="text-center">{{$materialsStr}}</td>
                             <td class="text-center">{{$jobTypesStr}}</td>
                             <td class="text-center">
@@ -1688,12 +2202,6 @@ button[type="submit"].modern-btn:hover {
                         </tr>
                     @endforeach
                     </tbody>
-                    <tfoot>
-                    <tr class="totals-row">
-                        <td colspan="20" class="text-right"><strong>Total Cases: {{$cases->count()}}</strong></td>
-                        <td class="text-center"><strong>{{$cases->sum(function($case) { return abs($case->invoice->amount ?? 0); })}}</strong></td>
-                    </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>
@@ -1773,10 +2281,10 @@ button[type="submit"].modern-btn:hover {
                                 <div class="sigma-modal-actions">
                                     <div class="sigma-actions-row sigma-actions-row--top">
                                         <a href="{{route('view-voucher',$case->id)}}"
-                                           class="btn btn-info"><span class="btn-icon"><i
+                                           class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
                                                     class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
                                         <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                           class="btn btn-info"><span class="btn-icon"><i
+                                           class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
                                                     class="far fa-file-alt"></i></span><span
                                                     class="btn-text">View</span></a>
                                     </div>
@@ -1785,12 +2293,12 @@ button[type="submit"].modern-btn:hover {
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
                                             @if(!$case->locked)
                                                 <a href="{{route('lock-case',$case->id)}}"
-                                                   class="btn btn-dark"><span class="btn-icon"><i
+                                                   class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
                                                             class="fas fa-lock"></i></span><span
                                                             class="btn-text">Lock</span></a>
                                             @else
                                                 <a href="{{route('unlock-case',$case->id)}}"
-                                                   class="btn btn-dark"><span class="btn-icon"><i
+                                                   class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
                                                             class="fas fa-lock-open"></i></span><span
                                                             class="btn-text">Unlock</span></a>
                                             @endif
@@ -1798,34 +2306,34 @@ button[type="submit"].modern-btn:hover {
 
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 131))
                                             <a href="{{route('delete-case',$case->id)}}" onclick="caseDelConfirmation(event)"
-                                               class="btn btn-danger" data-clientName="{{ $case->client->name ?? '' }}" data-patientName="{{ $case->patient_name ?? '' }}">
+                                               class="btn btn-danger sigma-action-btn" data-clientName="{{ $case->client->name ?? '' }}" data-patientName="{{ $case->patient_name ?? '' }}">
                                                 <span class="btn-icon"><i class="fas fa-trash"></i></span><span class="btn-text">Delete</span>
                                             </a>
                                         @endif
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 124))
-                                            <a href="{{route('reject-case',$case->id)}}" class="btn btn-outline-danger">
+                                            <a href="{{route('reject-case',$case->id)}}" class="btn btn-outline-danger sigma-action-btn">
                                                 <span class="btn-icon"><i class="fas fa-times"></i></span><span class="btn-text">Reject case</span>
                                             </a>
                                         @endif
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 125))
-                                            <a href="{{route('repeat-case',$case->id)}}" class="btn btn-outline-warning">
+                                            <a href="{{route('repeat-case',$case->id)}}" class="btn btn-outline-warning sigma-action-btn">
                                                 <span class="btn-icon"><i class="fas fa-undo"></i></span><span class="btn-text">Repeat case</span>
                                             </a>
                                         @endif
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 126))
-                                            <a href="{{route('modify-case',$case->id)}}" class="btn btn-outline-warning">
+                                            <a href="{{route('modify-case',$case->id)}}" class="btn btn-outline-warning sigma-action-btn">
                                                 <span class="btn-icon"><i class="fas fa-pen"></i></span><span class="btn-text">Modify case</span>
                                             </a>
                                         @endif
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 127))
-                                            <a href="{{route('edit-case',$case->id)}}" class="btn btn-warning">
+                                            <a href="{{route('edit-case',$case->id)}}" class="btn btn-warning sigma-action-btn">
                                                 <span class="btn-icon"><i class="fas fa-pen-to-square"></i></span><span class="btn-text">Edit</span>
                                             </a>
                                         @endif
                                     </div>
 
                                     <div class="sigma-actions-row sigma-actions-row--cancel">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">Cancel</button>
                                     </div>
                                 </div>
                             @endif
@@ -1916,46 +2424,52 @@ button[type="submit"].modern-btn:hover {
             <script src="https://cdn.datatables.net/fixedcolumns/4.0.2/js/dataTables.fixedColumns.min.js"></script>
 
             <script>
-                // Initialize completion toggle
+                // Initialize completion toggle (completed/in-progress; at least one selected)
                 function initializeCompletionToggle() {
                     const $toggle = $('#completion_toggle');
-                    const $hidden = $('#show_completed_hidden');
-                    const values = ['all', 'completed', 'in_progress'];
-                    const currentValue = $toggle.attr('data-value') || 'all';
-                    setToggleValue(currentValue);
-
-                    $('.toggle-option').off('click.completion').on('click.completion', function(e) {
-                        e.preventDefault();
-                        const value = $(this).attr('data-value');
-                        setToggleValue(value);
-                    });
-
-                    $toggle.off('click.completion').on('click.completion', function(e) {
-                        if ($(e.target).hasClass('toggle-option')) return;
-                        const current = $toggle.attr('data-value') || 'all';
-                        const next = values[(values.indexOf(current) + 1) % values.length];
-                        setToggleValue(next);
-                    });
-
-                    function setToggleValue(value) {
-                        $toggle.attr('data-value', value);
-                        $hidden.val(value);
-                        updateToggleState(value);
+                    const $options = $toggle.find('input[type="checkbox"]');
+                    if ($options.length === 0) {
+                        return;
                     }
 
-                    function updateToggleState(value) {
-                        $('.toggle-option').removeClass('active');
-                        $(`.toggle-option[data-value="${value}"]`).addClass('active');
+                    function applyCompletionSelection(selectedValues) {
+                        const normalized = (selectedValues || []).map(value => String(value));
+                        $options.each(function() {
+                            const isChecked = normalized.includes(String(this.value));
+                            $(this).prop('checked', isChecked);
+                            $(this).closest('.completion-option').toggleClass('active', isChecked);
+                        });
+                        if ($options.filter(':checked').length === 0) {
+                            $options.first().prop('checked', true);
+                            $options.first().closest('.completion-option').addClass('active');
+                        }
+                        updateFilterIndicators();
                     }
+
+                    $options.off('change.completion').on('change.completion', function() {
+                        const selected = $options.filter(':checked').map(function() { return this.value; }).get();
+                        applyCompletionSelection(selected);
+                    });
+
+                    const initialSelected = $options.filter(':checked').map(function() { return this.value; }).get();
+                    applyCompletionSelection(initialSelected);
                 }
 
-                function setCompletionValue(value) {
+                function setCompletionValue(values) {
                     const $toggle = $('#completion_toggle');
-                    const $hidden = $('#show_completed_hidden');
-                    $toggle.attr('data-value', value);
-                    $hidden.val(value);
-                    $('.toggle-option').removeClass('active');
-                    $(`.toggle-option[data-value="${value}"]`).addClass('active');
+                    const $options = $toggle.find('input[type="checkbox"]');
+                    const normalized = Array.isArray(values) ? values.map(String) : [String(values)];
+                    const applied = normalized.length === 0 ? ['completed', 'in_progress'] : normalized;
+                    $options.each(function() {
+                        const isChecked = applied.includes(String(this.value));
+                        $(this).prop('checked', isChecked);
+                        $(this).closest('.completion-option').toggleClass('active', isChecked);
+                    });
+                    if ($options.filter(':checked').length === 0) {
+                        $options.first().prop('checked', true);
+                        $options.first().closest('.completion-option').addClass('active');
+                    }
+                    updateFilterIndicators();
                 }
 
                 function setDtpValue(inputId, value) {
@@ -1997,8 +2511,9 @@ button[type="submit"].modern-btn:hover {
                     const summary = document.getElementById('employees-filter-summary');
                     if (summary) {
                         summary.textContent = 'No employee filters applied';
-                        summary.className = 'filter-summary filter-pill muted trigger-summary';
+                        summary.className = 'filter-summary filter-pill muted trigger-summary d-none';
                     }
+                    updateFilterIndicators();
                 }
 
                 function resetDeviceFilters() {
@@ -2015,8 +2530,114 @@ button[type="submit"].modern-btn:hover {
                     const summary = document.getElementById('devices-filter-summary');
                     if (summary) {
                         summary.textContent = 'All devices included';
-                        summary.className = 'filter-summary filter-pill muted trigger-summary';
+                        summary.className = 'filter-summary filter-pill muted trigger-summary d-none';
                     }
+                    updateFilterIndicators();
+                }
+
+                function updateFilterIndicators() {
+                    const hasNonDefaultSelection = (selector) => {
+                        const $select = $(selector);
+                        if (!$select.length) {
+                            return false;
+                        }
+                        const values = $select.val() || [];
+                        const normalized = Array.isArray(values) ? values.map(String) : [String(values)];
+                        const defaultValue = String($select.data('default') || 'all');
+
+                        if (normalized.length === 0) {
+                            return true;
+                        }
+                        if (normalized.length === 1 && normalized[0] === defaultValue) {
+                            return false;
+                        }
+                        return true;
+                    };
+
+                    const hasRangeValue = (selector) => {
+                        const input = document.querySelector(selector);
+                        if (!input) {
+                            return false;
+                        }
+                        return String(input.value || '').trim() !== '';
+                    };
+
+                    document.querySelectorAll('.filter-group').forEach((group) => {
+                        const resetBtn = group.querySelector('.filter-reset-btn');
+                        if (!resetBtn) {
+                            return;
+                        }
+                        const key = resetBtn.getAttribute('data-reset');
+                        let isActive = false;
+
+                        switch (key) {
+                            case 'date-from': {
+                                const input = document.getElementById('master_from');
+                                const defaultValue = input ? (input.getAttribute('data-default') || '') : '';
+                                const currentValue = input ? (input.value || '') : '';
+                                isActive = defaultValue !== '' && currentValue !== defaultValue;
+                                break;
+                            }
+                            case 'date-to': {
+                                const input = document.getElementById('master_to');
+                                const defaultValue = input ? (input.getAttribute('data-default') || '') : '';
+                                const currentValue = input ? (input.value || '') : '';
+                                isActive = defaultValue !== '' && currentValue !== defaultValue;
+                                break;
+                            }
+                            case 'doctor':
+                                isActive = hasNonDefaultSelection('#doctor');
+                                break;
+                            case 'material':
+                                isActive = hasNonDefaultSelection('#material');
+                                break;
+                            case 'job-type':
+                                isActive = hasNonDefaultSelection('#job_type');
+                                break;
+                            case 'material-type':
+                                isActive = hasNonDefaultSelection('#material_type');
+                                break;
+                            case 'failure-type':
+                                isActive = hasNonDefaultSelection('#failure_type');
+                                break;
+                            case 'abutments':
+                                isActive = hasNonDefaultSelection('#abutments');
+                                break;
+                            case 'implants':
+                                isActive = hasNonDefaultSelection('#implants');
+                                break;
+                            case 'status':
+                                isActive = hasNonDefaultSelection('#status');
+                                break;
+                            case 'amount':
+                                isActive = hasRangeValue('#amount_from') || hasRangeValue('#amount_to');
+                                break;
+                            case 'units':
+                                isActive = hasRangeValue('#units_from') || hasRangeValue('#units_to');
+                                break;
+                            case 'employees': {
+                                const count = document.querySelectorAll('#hidden-employee-filters input').length;
+                                isActive = count > 0;
+                                break;
+                            }
+                            case 'devices': {
+                                const count = document.querySelectorAll('#hidden-device-filters input').length;
+                                isActive = count > 0;
+                                break;
+                            }
+                            case 'completion': {
+                                const toggle = document.getElementById('completion_toggle');
+                                const checked = toggle ? toggle.querySelectorAll('input[type="checkbox"]:checked').length : 0;
+                                isActive = checked === 1;
+                                break;
+                            }
+                            default:
+                                isActive = false;
+                                break;
+                        }
+
+                        group.classList.toggle('is-active', isActive);
+                    });
                 }
 
                 function resetFilterByKey(key) {
@@ -2066,11 +2687,12 @@ button[type="submit"].modern-btn:hover {
                             resetDeviceFilters();
                             break;
                         case 'completion':
-                            setCompletionValue('all');
+                            setCompletionValue(['completed', 'in_progress']);
                             break;
                         default:
                             break;
                     }
+                    updateFilterIndicators();
                 }
 
                 function resetAllFilters() {
@@ -2093,8 +2715,8 @@ button[type="submit"].modern-btn:hover {
 
                 function initializeFilterResets() {
                     window.masterReportDefaults = {
-                        from: @json($from),
-                        to: @json($to)
+                        from: @json($defaultFrom),
+                        to: @json($defaultTo)
                     };
                     document.querySelectorAll('.filter-reset-btn').forEach((btn) => {
                         btn.addEventListener('click', function() {
@@ -2108,6 +2730,7 @@ button[type="submit"].modern-btn:hover {
                             resetAllFilters();
                         });
                     }
+                    updateFilterIndicators();
                 }
 
                 // Initialize modern components
@@ -2145,6 +2768,21 @@ button[type="submit"].modern-btn:hover {
                         // Allow form to submit
                         return true;
                     });
+
+                    // Ensure master report rows open the case preview modal
+                    $(document).on('click', '#master-report-table tbody tr.master-report-row', function(e) {
+                        if ($(e.target).closest('a, button, input, select, label').length) {
+                            return;
+                        }
+                        const caseId = $(this).data('case-id');
+                        if (!caseId) {
+                            return;
+                        }
+                        const modal = $('#actionsDialog' + caseId);
+                        if (modal.length) {
+                            modal.modal('show');
+                        }
+                    });
                 });
 
                 // Initialize Select2 Dropdowns
@@ -2166,6 +2804,9 @@ button[type="submit"].modern-btn:hover {
                                 multiple: true,
                                 dropdownParent: dropdownParent, // attach to nearest filter group for correct layering
                             });
+                            $(this).off('change.filterIndicators').on('change.filterIndicators', function() {
+                                updateFilterIndicators();
+                            });
                         });
 
                         // Initialize material type dependency
@@ -2176,10 +2817,12 @@ button[type="submit"].modern-btn:hover {
 
                         // Clean up "all" option from multi-select dropdowns on page load
                         cleanupAllOptionOnLoad();
+                        updateFilterIndicators();
                     } catch (error) {
                         $('.select2-multiple').addClass('modern-select');
                         initializeMaterialTypeDependency();
                         initializeAllOptionLogic();
+                        updateFilterIndicators();
                     }
                 }
 
@@ -2212,7 +2855,7 @@ button[type="submit"].modern-btn:hover {
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                updateMaterialTypeDropdown(data.types);
+                                updateMaterialTypeDropdown(data.types, selectedMaterials);
                             }
                         })
                         .catch(error => {
@@ -2221,9 +2864,19 @@ button[type="submit"].modern-btn:hover {
                 }
 
                 // Update material type dropdown
-                function updateMaterialTypeDropdown(types) {
+                function updateMaterialTypeDropdown(types, selectedMaterials) {
                     const $materialType = $('#material_type');
-                    const currentValues = $materialType.val() || [];
+                    const currentValues = ($materialType.val() || []).map(String);
+                    const normalizedMaterials = (selectedMaterials || []).map(String);
+                    const hasAllMaterials = normalizedMaterials.length === 0 || normalizedMaterials.includes('all');
+                    const hasTypes = Array.isArray(types) && types.length > 0;
+                    let allLabel = 'All materials types';
+
+                    if (!hasTypes) {
+                        allLabel = 'No material types';
+                    } else if (!hasAllMaterials) {
+                        allLabel = 'All Selected M. types';
+                    }
 
                     // Destroy select2 before updating options
                     if (typeof $.fn.select2 !== 'undefined' && $materialType.hasClass('select2-hidden-accessible')) {
@@ -2231,7 +2884,8 @@ button[type="submit"].modern-btn:hover {
                     }
 
                     $materialType.empty();
-                    $materialType.append('<option value="all">All Material Types</option>');
+                    const selectAll = currentValues.length === 0 || currentValues.includes('all') || !hasTypes;
+                    $materialType.append(`<option value="all"${selectAll ? ' selected' : ''}>${allLabel}</option>`);
 
                     types.forEach(type => {
                         const selected = currentValues.includes(type.id.toString()) ||
@@ -2250,42 +2904,102 @@ button[type="submit"].modern-btn:hover {
                             dropdownParent: ($materialType.closest('.filter-group').length ? $materialType.closest('.filter-group') : $materialType.closest('form'))
                         });
                     }
+                    if (selectAll) {
+                        $materialType.val(['all']);
+                    }
 
                     if (window.initialMaterialTypes) {
                         window.initialMaterialTypes = null;
                     }
+                    updateFilterIndicators();
                 }
 
                 // Initialize exclusive "All" option logic for dropdowns
                 function initializeAllOptionLogic() {
                     const dropdownIds = ['doctor', 'material', 'job_type', 'failure_type', 'abutments', 'implants', 'status', 'material_type'];
 
+                    function normalizeValues(values) {
+                        return (values || []).map(value => String(value));
+                    }
+
+                    function enforceAllOptionState($dropdown, triggerSelect2) {
+                        const selectedValues = normalizeValues($dropdown.val());
+
+                        if (selectedValues.length === 0) {
+                            $dropdown.val(['all']);
+                            if (triggerSelect2) {
+                                $dropdown.trigger('change.select2');
+                            } else {
+                                $dropdown.trigger('change');
+                            }
+                            return;
+                        }
+
+                        if (selectedValues.includes('all') && selectedValues.length > 1) {
+                            const filteredValues = selectedValues.filter(val => val !== 'all');
+                            $dropdown.val(filteredValues);
+                            if (triggerSelect2) {
+                                $dropdown.trigger('change.select2');
+                            } else {
+                                $dropdown.trigger('change');
+                            }
+                        }
+                    }
+
                     dropdownIds.forEach(function(dropdownId) {
                         const $dropdown = $('#' + dropdownId);
+                        if ($dropdown.length === 0) {
+                            return;
+                        }
 
-                        // Use 'change.select2' to avoid recursion if available
-                        $dropdown.on('change.select2', function(e) {
-                            // Check if this event was triggered by our own logic
-                            if (e.hasOwnProperty('originalEvent')) return;
+                        let isApplying = false;
 
-                            const selectedValue = $(this).val();
-                            if (!Array.isArray(selectedValue)) return;
+                        const applyValues = (values) => {
+                            isApplying = true;
+                            $dropdown.val(values);
+                            if (typeof $.fn.select2 !== 'undefined' && $dropdown.hasClass('select2-hidden-accessible')) {
+                                $dropdown.trigger('change.select2');
+                            } else {
+                                $dropdown.trigger('change');
+                            }
+                            isApplying = false;
+                        };
 
-                            const hasAll = selectedValue.includes('all');
-                            const lastSelected = e.params?.data?.id;
+                        $dropdown.on('select2:select', function(e) {
+                            if (isApplying) return;
+                            const selectedValues = normalizeValues($dropdown.val());
+                            const selectedId = e && e.params && e.params.data ? String(e.params.data.id) : null;
 
-                            if (lastSelected === 'all' && hasAll) {
-                                // If "All" was just selected, deselect all others
-                                $(this).val(['all']).trigger('change.select2.dont-recurse');
-                            } else if (hasAll && selectedValue.length > 1) {
-                                // If a specific option was selected while "All" was present, remove "All"
-                                const filteredValues = selectedValue.filter(val => val !== 'all');
-                                $(this).val(filteredValues).trigger('change.select2.dont-recurse');
-                            } else if (selectedValue.length === 0) {
-                                // If everything is deselected, re-select "All"
-                                $(this).val(['all']).trigger('change.select2.dont-recurse');
+                            if (selectedId === 'all') {
+                                applyValues(['all']);
+                                return;
+                            }
+
+                            if (selectedValues.includes('all')) {
+                                applyValues(selectedValues.filter(val => val !== 'all'));
                             }
                         });
+
+                        $dropdown.on('select2:unselect', function() {
+                            if (isApplying) return;
+                            const selectedValues = normalizeValues($dropdown.val());
+                            if (selectedValues.length === 0) {
+                                applyValues(['all']);
+                                return;
+                            }
+                            if (selectedValues.includes('all') && selectedValues.length > 1) {
+                                applyValues(selectedValues.filter(val => val !== 'all'));
+                            }
+                        });
+
+                        $dropdown.on('change', function() {
+                            if (isApplying) return;
+                            const shouldTriggerSelect2 = typeof $.fn.select2 !== 'undefined' && $dropdown.hasClass('select2-hidden-accessible');
+                            enforceAllOptionState($dropdown, shouldTriggerSelect2);
+                        });
+
+                        const shouldTriggerSelect2 = typeof $.fn.select2 !== 'undefined' && $dropdown.hasClass('select2-hidden-accessible');
+                        enforceAllOptionState($dropdown, shouldTriggerSelect2);
                     });
                 }
 
@@ -2295,16 +3009,29 @@ button[type="submit"].modern-btn:hover {
 
                     dropdownIds.forEach(function(dropdownId) {
                         const $dropdown = $('#' + dropdownId);
-                        const currentValues = $dropdown.val() || [];
+                        if ($dropdown.length === 0) {
+                            return;
+                        }
+                        const currentValues = ($dropdown.val() || []).map(value => String(value));
 
-                        // If dropdown has both "all" and other specific values, remove "all"
+                        if (currentValues.length === 0) {
+                            $dropdown.val(['all']);
+                            if (typeof $.fn.select2 !== 'undefined' && $dropdown.hasClass('select2-hidden-accessible')) {
+                                $dropdown.trigger('change.select2');
+                            } else {
+                                $dropdown.trigger('change');
+                            }
+                            return;
+                        }
+
                         if (currentValues.includes('all') && currentValues.length > 1) {
                             const filteredValues = currentValues.filter(val => val !== 'all');
                             $dropdown.val(filteredValues);
 
-                            // Trigger change to update select2 UI
                             if (typeof $.fn.select2 !== 'undefined' && $dropdown.hasClass('select2-hidden-accessible')) {
                                 $dropdown.trigger('change.select2');
+                            } else {
+                                $dropdown.trigger('change');
                             }
                         }
                     });
@@ -2312,8 +3039,26 @@ button[type="submit"].modern-btn:hover {
 
                 // Initialize range validation
                 function initializeRangeValidation() {
-                    $('#amount_from, #amount_to').on('input', validateAmountRange);
-                    $('#units_from, #units_to').on('input', validateUnitsRange);
+                    $('#master_from, #master_to').on('change', function() {
+                        updateFilterIndicators();
+                    });
+                    $('#amount_from, #amount_to').on('input', function() {
+                        validateAmountRange();
+                    });
+                    $('#amount_from, #amount_to').on('blur change', function() {
+                        normalizeAmountInput(this);
+                        validateAmountRange();
+                        updateFilterIndicators();
+                    });
+                    $('#units_from, #units_to').on('input', function() {
+                        validateUnitsRange();
+                        updateFilterIndicators();
+                    });
+                    $('#units_from, #units_to').on('blur change', function() {
+                        normalizeUnitsInput(this);
+                        validateUnitsRange();
+                        updateFilterIndicators();
+                    });
                 }
 
                 function validateAmountRange() {
@@ -2329,6 +3074,27 @@ button[type="submit"].modern-btn:hover {
                         toAmountInput.css('border-color', '#d1d5db');
                         $('#amount-range-error').hide();
                         return true;
+                    }
+                }
+
+                function normalizeAmountInput(input) {
+                    if (!input) {
+                        return;
+                    }
+                    const raw = String(input.value || '').trim();
+                    if (raw === '') {
+                        return;
+                    }
+                    const parsed = parseFloat(raw);
+                    if (Number.isNaN(parsed)) {
+                        input.value = '';
+                        return;
+                    }
+                    const rounded = Math.round(parsed * 10) / 10;
+                    if (Number.isInteger(rounded)) {
+                        input.value = String(rounded);
+                    } else {
+                        input.value = rounded.toFixed(1);
                     }
                 }
 
@@ -2348,28 +3114,125 @@ button[type="submit"].modern-btn:hover {
                     }
                 }
 
+                function normalizeUnitsInput(input) {
+                    if (!input) {
+                        return;
+                    }
+                    const raw = String(input.value || '').trim();
+                    if (raw === '') {
+                        return;
+                    }
+                    const parsed = Math.floor(parseFloat(raw));
+                    if (Number.isNaN(parsed)) {
+                        input.value = '';
+                        return;
+                    }
+                    input.value = String(Math.max(0, parsed));
+                }
+
                 // Initialize column visibility
                 function initializeColumnVisibility() {
-                    // Prevent dropdown from closing on click
-                    $('#columnVisibilityDropdown').next('.dropdown-menu').on('click', function(e) {
+                    const $dropdown = $('.columns-dropdown');
+                    const $toggleButton = $('#columnVisibilityDropdown');
+                    const $menu = $dropdown.find('.dropdown-menu');
+
+                    $toggleButton.off('click.columns').on('click.columns', function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        $dropdown.toggleClass('show');
+                        $menu.toggleClass('show');
+                        $toggleButton.attr('aria-expanded', $menu.hasClass('show') ? 'true' : 'false');
+                    });
+
+                    $(document).off('click.columns').on('click.columns', function(e) {
+                        if (!$(e.target).closest('.columns-dropdown').length) {
+                            $dropdown.removeClass('show');
+                            $menu.removeClass('show');
+                            $toggleButton.attr('aria-expanded', 'false');
+                        }
+                    });
+
+                    $menu.off('click.columns').on('click.columns', function(e) {
                         e.stopPropagation();
                     });
 
+                    applyLockedColumns();
                     loadColumnPreferences();
+                    updateGroupToggles();
 
-                    $('.column-toggle').on('change', function() {
+                    $('.column-toggle').off('change.columns').on('change.columns', function() {
                         const columnIndex = $(this).data('column');
                         const isVisible = $(this).is(':checked');
                         toggleColumn(columnIndex, isVisible);
+                        updateGroupToggles();
                         saveColumnPreferences();
                     });
 
-                    $('#selectAllColumns').on('click', function() {
-                        $('.column-toggle').prop('checked', true).trigger('change');
+                    $('.column-toggle-group').off('change.columns').on('change.columns', function() {
+                        const columns = parseColumnList($(this).data('columns'));
+                        const isVisible = $(this).is(':checked');
+                        columns.forEach(function(columnIndex) {
+                            const $checkbox = $(`.column-toggle[data-column="${columnIndex}"]`);
+                            if ($checkbox.length && !$checkbox.prop('disabled')) {
+                                $checkbox.prop('checked', isVisible).trigger('change');
+                            }
+                        });
+                        updateGroupToggles();
                     });
 
-                    $('#deselectAllColumns').on('click', function() {
-                        $('.column-toggle').prop('checked', false).trigger('change');
+                    $('#selectAllColumns').off('click.columns').on('click.columns', function() {
+                        $('.column-toggle').each(function() {
+                            if (!$(this).prop('disabled')) {
+                                $(this).prop('checked', true).trigger('change');
+                            }
+                        });
+                    });
+
+                    $('#deselectAllColumns').off('click.columns').on('click.columns', function() {
+                        $('.column-toggle').each(function() {
+                            if (!$(this).prop('disabled')) {
+                                $(this).prop('checked', false).trigger('change');
+                            }
+                        });
+                    });
+                }
+
+                function parseColumnList(columnsAttr) {
+                    if (!columnsAttr) {
+                        return [];
+                    }
+                    if (Array.isArray(columnsAttr)) {
+                        return columnsAttr.map(Number).filter(Number.isFinite);
+                    }
+                    return String(columnsAttr)
+                        .split(',')
+                        .map(value => parseInt(value, 10))
+                        .filter(value => !Number.isNaN(value));
+                }
+
+                function applyLockedColumns() {
+                    const lockedColumns = [1, 2];
+                    lockedColumns.forEach(function(columnIndex) {
+                        const $checkbox = $(`.column-toggle[data-column="${columnIndex}"]`);
+                        if ($checkbox.length) {
+                            $checkbox.prop('checked', true);
+                            $checkbox.prop('disabled', true);
+                            $checkbox.attr('data-locked', 'true');
+                        }
+                    });
+                }
+
+                function updateGroupToggles() {
+                    $('.column-toggle-group').each(function() {
+                        const columns = parseColumnList($(this).data('columns'));
+                        if (columns.length === 0) {
+                            return;
+                        }
+                        const allChecked = columns.every(function(columnIndex) {
+                            const $checkbox = $(`.column-toggle[data-column="${columnIndex}"]`);
+                            return $checkbox.length ? $checkbox.is(':checked') : false;
+                        });
+                        $(this).prop('checked', allChecked);
                     });
                 }
 
@@ -2399,19 +3262,32 @@ button[type="submit"].modern-btn:hover {
 
                 function loadColumnPreferences() {
                     const savedPreferences = localStorage.getItem('masterReportColumnPreferences');
+                    const defaultVisibleColumns = [1, 2, 3, 4, 19, 20];
+                    let preferences = {};
+
                     if (savedPreferences) {
                         try {
-                            const preferences = JSON.parse(savedPreferences);
-                            Object.keys(preferences).forEach(columnIndex => {
-                                const checkbox = $(`.column-toggle[data-column="${columnIndex}"]`);
-                                const isVisible = preferences[columnIndex];
-                                checkbox.prop('checked', isVisible);
-                                // Toggle logic is now in initializeDataTable's setTimeout
-                            });
+                            preferences = JSON.parse(savedPreferences) || {};
                         } catch (error) {
                             console.warn('Error loading column preferences:', error);
+                            preferences = {};
                         }
                     }
+
+                    if (!savedPreferences || Object.keys(preferences).length === 0) {
+                        defaultVisibleColumns.forEach(function(columnIndex) {
+                            preferences[columnIndex] = true;
+                        });
+                    }
+
+                    $('.column-toggle').each(function() {
+                        const columnIndex = $(this).data('column');
+                        const isLocked = $(this).data('locked') === true || $(this).attr('data-locked') === 'true';
+                        const shouldShow = isLocked ? true : preferences[columnIndex] === true;
+                        $(this).prop('checked', shouldShow);
+                    });
+
+                    saveColumnPreferences();
                 }
 
                 // Initialize Flatpickr
@@ -2480,9 +3356,16 @@ button[type="submit"].modern-btn:hover {
                                 text: '<i class="fas fa-file-csv"></i> CSV',
                                 className: 'btn btn-info btn-sm',
                                 title: 'Master Report - {{date("Y-m-d")}}'
+                            },
+                            {
+                                extend: 'print',
+                                text: '<i class="fas fa-print"></i> Print',
+                                className: 'btn btn-secondary btn-sm',
+                                title: 'Master Report - {{date("Y-m-d")}}'
                             }
                         ],
                         pageLength: 25,
+                        info: false,
                         responsive: false,
                         scrollX: false,
                         scrollY: false,
@@ -2525,6 +3408,7 @@ button[type="submit"].modern-btn:hover {
                     });
 
                     window.masterReportTable.buttons().container().appendTo('.export-buttons');
+                    initializeReportHeaderActions();
 
                     // Apply header styling immediately after initialization
                     setTimeout(() => {
@@ -2552,6 +3436,55 @@ button[type="submit"].modern-btn:hover {
                         });
                     }, 100);
                     @endif
+                }
+
+                function initializeReportHeaderActions() {
+                    const $searchInput = $('#master-report-search');
+                    if ($searchInput.length) {
+                        $searchInput.off('input.masterSearch').on('input.masterSearch', function() {
+                            if (window.masterReportTable) {
+                                window.masterReportTable.search(this.value).draw();
+                            }
+                        });
+                    }
+
+                    const $exportOrbit = $('.export-orbit');
+                    if ($exportOrbit.length) {
+                        let exportOrbitTimer;
+                        $exportOrbit.off('mouseenter.exportOrbit mouseleave.exportOrbit')
+                            .on('mouseenter.exportOrbit', function() {
+                                clearTimeout(exportOrbitTimer);
+                                $(this).addClass('is-open');
+                            })
+                            .on('mouseleave.exportOrbit', function() {
+                                const $orbit = $(this);
+                                clearTimeout(exportOrbitTimer);
+                                exportOrbitTimer = setTimeout(() => {
+                                    $orbit.removeClass('is-open');
+                                }, 2000);
+                            });
+                    }
+
+                    $('.export-action').off('click.export').on('click.export', function() {
+                        const action = $(this).data('export');
+                        if (!window.masterReportTable) {
+                            return;
+                        }
+                        if (action === 'excel') {
+                            window.masterReportTable.button('.buttons-excel').trigger();
+                        } else if (action === 'pdf') {
+                            window.masterReportTable.button('.buttons-pdf').trigger();
+                        } else if (action === 'print') {
+                            window.masterReportTable.button('.buttons-print').trigger();
+                        } else if (action === 'csv') {
+                            window.masterReportTable.button('.buttons-csv').trigger();
+                        } else if (action === 'whatsapp') {
+                            window.masterReportTable.button('.buttons-csv').trigger();
+                            const message = 'Master report CSV exported. Please attach the downloaded file.';
+                            const whatsappUrl = 'whatsapp://send?text=' + encodeURIComponent(message);
+                            window.open(whatsappUrl, '_blank');
+                        }
+                    });
                 }
 
                 // Case viewing function
@@ -2840,11 +3773,12 @@ button[type="submit"].modern-btn:hover {
                     const summary = document.getElementById('employees-filter-summary');
                     if (activeFilters > 0) {
                         summary.textContent = `${activeFilters} employee filter(s) applied`;
-                        summary.className = 'filter-summary filter-pill active';
+                        summary.className = 'filter-summary filter-pill active d-none';
                     } else {
                         summary.textContent = 'No employee filters applied';
-                        summary.className = 'filter-summary filter-pill muted';
+                        summary.className = 'filter-summary filter-pill muted d-none';
                     }
+                    updateFilterIndicators();
                 }
 
                 function applyDeviceFilters() {
@@ -2882,11 +3816,12 @@ button[type="submit"].modern-btn:hover {
                     const summary = document.getElementById('devices-filter-summary');
                     if (activeFilters > 0) {
                         summary.textContent = `${activeFilters} device filter(s) applied`;
-                        summary.className = 'filter-summary filter-pill active';
+                        summary.className = 'filter-summary filter-pill active d-none';
                     } else {
                         summary.textContent = 'All devices included';
-                        summary.className = 'filter-summary filter-pill muted';
+                        summary.className = 'filter-summary filter-pill muted d-none';
                     }
+                    updateFilterIndicators();
                 }
 
                 document.getElementById('apply-employee-filters').addEventListener('click', function() {

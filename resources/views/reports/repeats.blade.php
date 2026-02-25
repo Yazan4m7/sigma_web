@@ -12,99 +12,94 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="repeats_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="repeats_from"
+                            label="From Date:"
                             :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="repeats_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="repeats_to"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-exclamation-circle"></i> Status Types:</label>
-                        <select class="selectpicker clearOnAll" multiple name="failureTypeInput[]"
-                            id="failureTypeInput" data-live-search="true" title="All Status Types" data-hide-disabled="true">
-
                         @php
-
+                            $failureTypeOptions = [
+                                ['value' => 0, 'label' => 'Reject'],
+                                ['value' => 1, 'label' => 'Repeat'],
+                                ['value' => 2, 'label' => 'Modification'],
+                                ['value' => 3, 'label' => 'Redo'],
+                                ['value' => 4, 'label' => 'Successful'],
+                            ];
                         @endphp
-                        @if ($allFailureTypesSelected)
-                            <option value="all" selected>All</option>
-
-                            <option value="0">Reject</option>
-                            <option value="1">Repeat</option>
-                            <option value="2">Modification</option>
-                            <option value="3">Redo</option>
-                            <option value="4">Successful</option>
-                        @else
-                            <option value="all">All</option>
-                            <option value="0" {{ in_array(0, $selectedFailureTypes) ? 'selected' : '' }}>Reject
-                            </option>
-                            <option value="1" {{ in_array(1, $selectedFailureTypes) ? 'selected' : '' }}>Repeat
-                            </option>
-                            <option value="2" {{ in_array(2, $selectedFailureTypes) ? 'selected' : '' }}>Modification
-                            </option>
-                            <option value="3" {{ in_array(3, $selectedFailureTypes) ? 'selected' : '' }}>Redo</option>
-                            <option value="4" {{ in_array(4, $selectedFailureTypes) ? 'selected' : '' }}>Successful
-                            </option>
-                        @endif
-
-                    </select>
+                        <x-report-dropdown
+                            name="failureTypeInput[]"
+                            id="failureTypeInput"
+                            label="Status Types:"
+                            :options="$failureTypeOptions"
+                            :selected="$selectedFailureTypes"
+                            :allSelected="$allFailureTypesSelected"
+                            title="All Status Types"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if (isset($clients))
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                            data-live-search="true" title="All Doctors" data-hide-disabled="true">
-
-                            <option value="all"
-                                {{ isset($selectedClients) && $selectedClients == 'all' ? 'selected' : '' }}>
-                                All
-                            </option>
-                            @foreach ($clients as $d)
-                                <option value="{{ $d->id }}"
-                                    {{ isset($selectedClients) && in_array($d->id, $selectedClients) ? 'selected' : '' }}>
-                                    {{ $d->name }}</option>
-                            @endforeach
-
-                        </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All Doctors"
+                            />
                     @endif
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-toggle-on"></i> View Mode:</label>
-                        <div class="connected-toggle-container" id="view-mode-container">
-                            <button type="button" class="connected-toggle-btn {{ $perUnitTrigger ? 'active' : '' }}" id="units-toggle">
-                                <input type="radio" name="perToggle" value="1" {{ $perUnitTrigger ? 'checked' : '' }} style="display: none;" id="units-radio">
-                                UNITS
-                            </button>
-                            <button type="button" class="connected-toggle-btn {{ !$perUnitTrigger ? 'active' : '' }}" id="cases-toggle">
-                                <input type="radio" name="perToggle" value="0" {{ !$perUnitTrigger ? 'checked' : '' }} style="display: none;" id="cases-radio">
-                                CASES
-                            </button>
-                        </div>
+                        @php
+                            $viewModeOptions = [
+                                ['label' => 'UNITS', 'value' => '1', 'id' => 'units'],
+                                ['label' => 'CASES', 'value' => '0', 'id' => 'cases'],
+                            ];
+                        @endphp
+                        <x-report-toggle
+                            name="perToggle"
+                            id="view-mode-container"
+                            label="View Mode:"
+                            :options="$viewModeOptions"
+                            :selected="$perUnitTrigger ? '1' : '0'"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-chart-bar"></i> Display:</label>
-                        <div class="connected-toggle-container" id="display-mode-container">
-                            <button type="button" class="connected-toggle-btn {{ $countOrPercentage ? 'active' : '' }}" id="count-toggle">
-                                COUNT
-                            </button>
-                            <button type="button" class="connected-toggle-btn {{ !$countOrPercentage ? 'active' : '' }}" id="percent-toggle">
-                                %
-                            </button>
-                        </div>
-                        <input type="hidden" name="countOrPercentageToggle" id="countOrPercentageToggle" value="{{ $countOrPercentage ? '1' : '0' }}">
+                        @php
+                            $displayOptions = [
+                                ['label' => 'COUNT', 'value' => '1', 'id' => 'count'],
+                                ['label' => '%', 'value' => '0', 'id' => 'percent'],
+                            ];
+                        @endphp
+                        <x-report-toggle
+                            name="countOrPercentageToggle"
+                            id="display-mode-container"
+                            label="Display:"
+                            :options="$displayOptions"
+                            :selected="$countOrPercentage ? '1' : '0'"
+                            inputType="hidden"
+                            hiddenId="countOrPercentageToggle"
+                        />
                     </div>
                 </div>
 
@@ -115,7 +110,7 @@
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end">
+                    <div class="col-lg-8 col-md-8 col-12 report-action-icons">
 
                             <i class="fas fa-print me-1"></i>
 
@@ -127,7 +122,7 @@
 
 
 
-    <div class="container-fluid">
+    <div class="container-fluid report-table-section">
         <div class="row">
             <div class="col-12">
                 <div>

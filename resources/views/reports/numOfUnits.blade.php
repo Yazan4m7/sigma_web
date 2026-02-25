@@ -15,20 +15,20 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="numunits_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="numunits_from"
+                            label="From Date:"
                             :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="numunits_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="numunits_to"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
@@ -36,26 +36,38 @@
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($materials))
-                            <label><i class="fas fa-cube"></i> Material:</label>
-                            <select class="selectpicker clearOnAll" multiple name="material[]" id="material"
-                                data-live-search="true" title="All Materials" data-hide-disabled="true">
-                                <option value="all" {{(isset($selectedMaterials) && $selectedMaterials== 'all') ? 'selected' : ''}}>All</option>
-                                @foreach($materials as $d)
-                                    <option value="{{$d->id}}" {{(isset($selectedMaterials) && in_array($d->id ,$selectedMaterials)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $materialOptions = $materials
+                                    ->map(fn($material) => ['value' => $material->id, 'label' => $material->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="material[]"
+                                id="material"
+                                label="Material:"
+                                :options="$materialOptions"
+                                :selected="$selectedMaterials ?? null"
+                                title="All Materials"
+                            />
                         @endif
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($clients))
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                                data-live-search="true" title="All" data-hide-disabled="true">
-                                <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
-                                @foreach($clients as $d)
-                                    <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All"
+                            />
                         @endif
                     </div>
                 </div>

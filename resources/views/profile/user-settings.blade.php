@@ -80,7 +80,7 @@
                     <h5 class="title mb-0">User Settings</h5>
                 </div>
                 <div class="card-body">
-                    <p class="text-muted mb-4">These preferences are saved on this device and browser.</p>
+                    <p class="text-muted mb-4">These preferences are saved to your account.</p>
 
                     <div class="sigma-settings-group">
                         <div class="sigma-settings-row">

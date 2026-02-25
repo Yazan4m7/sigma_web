@@ -15,7 +15,7 @@
    =================================================================== */
 
 /* Import Google Fonts for Arabic Support */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap');
 
 :root {
     /* === BRAND COLORS - ELEGANT MODERN PALETTE === */
@@ -249,6 +249,7 @@ html, body {
     border-radius: 16px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     padding: var(--card-padding);
+    margin-top: 16px;
     margin-bottom: var(--spacing-2xl);
     position: relative;
     overflow: visible; /* FIXED - Ensures dropdowns work properly */
@@ -263,6 +264,7 @@ html, body {
     right: 0;
     height: 4px;
     background: linear-gradient(90deg, var(--table-header-elegant) 0%, var(--sigma-accent-light) 100%);
+    border-radius: 16px 16px 0 0;
 }
 
 /* ===================================================================
@@ -278,12 +280,19 @@ html, body {
     color: #2b7b7d;
 }
 
-.sigma-report-standard .btn-primary-enhanced {
-    height: 50px;
-    padding: 12px 24px;
-    font-size: 16px;
+.sigma-report-standard .report-filters-card label,
+.sigma-report-standard .report-filters-card .form-label {
+    font-family: 'Tajawal', 'Cairo', 'Noto Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
     font-weight: 600;
-    width: 70%;
+}
+
+.sigma-report-standard .btn-primary-enhanced {
+    height: 48px;
+    padding: 0 24px;
+    font-size: 14px;
+    font-weight: 600;
+    width: auto;
+    min-width: 190px;
     max-width: 280px;
 }
 
@@ -386,9 +395,49 @@ html, body {
     opacity: 1 !important;
 }
 
+.sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: rgba(43, 123, 125, 0.12);
+    border-color: rgba(43, 123, 125, 0.35);
+    color: #2b7b7d;
+    border-radius: 12px;
+}
+
+.sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #2b7b7d;
+}
+
+.sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #1f5c5e;
+}
+
+.master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background: rgba(43, 123, 125, 0.12);
+    border-color: rgba(43, 123, 125, 0.35);
+    color: #2b7b7d;
+    border-radius: 12px;
+}
+
+.master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #2b7b7d;
+}
+
+.master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #1f5c5e;
+}
+
 .sigma-report-standard .sigma-report-table {
     border-radius: 12px;
     margin-bottom: 16px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.sigma-report-standard .sigma-report-table thead th:first-child {
+    border-top-left-radius: 12px;
+}
+
+.sigma-report-standard .sigma-report-table thead th:last-child {
+    border-top-right-radius: 12px;
 }
 
 .sigma-report-standard .sigma-report-table th,
@@ -425,12 +474,17 @@ html, body {
 .sigma-report-standard .sigma-pagination-info {
     color: #2d3748;
     font-weight: 500;
+    font-size: 12px;
 }
 
 .sigma-report-standard .sigma-pagination-btn {
-    border: 1px solid #d6dbe0;
-    background: transparent;
+    border: 1px solid #c9d7dc;
+    background: #e7f2f2;
     color: #2b7b7d;
+    border-radius: 8px;
+    padding: 6px 10px;
+    min-width: 32px;
+    font-weight: 600;
 }
 
 .sigma-report-pagination-wrap {
@@ -452,19 +506,25 @@ html, body {
 .sigma-pagination-info {
     color: #2d3748 !important;
     font-weight: 500 !important;
+    font-size: 12px !important;
 }
 
 .sigma-pagination-btn {
-    border: 1px solid #d6dbe0 !important;
-    background: transparent !important;
+    border: 1px solid #c9d7dc !important;
+    background: #e7f2f2 !important;
     color: #2b7b7d !important;
+    border-radius: 8px !important;
+    padding: 6px 10px !important;
+    min-width: 32px !important;
+    font-weight: 600 !important;
 }
 
 /* ===================================================================
    MATERIALS REPORT - TOTAL AMOUNT CARD
    =================================================================== */
 
-.sigma-report-standard .materials-total-card {
+.sigma-report-standard .materials-total-card,
+.materials-total-card {
     background: var(--bg-white);
     border: 1px solid rgba(188, 206, 216, 0.65);
     border-radius: 14px;
@@ -478,7 +538,8 @@ html, body {
     overflow: hidden;
 }
 
-.sigma-report-standard .materials-total-card::before {
+.sigma-report-standard .materials-total-card::before,
+.materials-total-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -624,38 +685,31 @@ html, body {
 
 /* Generate Report Button - Elegant Premium Design */
 .btn-primary-enhanced {
-    background: linear-gradient(135deg, #2f7c7e 0%, #bdcfd9 100%) !important;
-    box-shadow: 0 4px 16px rgba(46, 125, 154, 0.25);
-    border: none;
+    background: linear-gradient(135deg, #2f7c7e 0%, #9fbfce 100%) !important;
+    box-shadow: 0 6px 16px rgba(47, 124, 126, 0.3);
+    border: 1px solid #2f7c7e;
     position: relative;
     overflow: hidden;
-    color:white;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff;
+    transition: all 0.3s ease;
     border-radius: 12px;
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
 }
 
 .btn-primary-enhanced::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s;
+    content: none;
 }
 
 .btn-primary-enhanced:hover::before {
-    left: 100%;
+    content: none;
 }
 
 .btn-primary-enhanced:hover {
-    /* background: linear-gradient(135deg, var(--sigma-primary-dark) 0%, var(--sigma-primary) 100%) !important; */
-    box-shadow: 0 8px 24px rgba(46, 125, 154, 0.4);
-    transform: translateY(-3px) scale(1.02);
-    border: none;
+    background: linear-gradient(135deg, #276d6f 0%, #8fb4c5 100%) !important;
+    box-shadow: 0 10px 22px rgba(39, 109, 111, 0.28);
+    transform: translateY(-2px);
+    border-color: #276d6f;
     color: white !important;
 }
 
@@ -716,24 +770,33 @@ html, body {
 
 /* Enhanced Print and Eye Buttons - Elegant Glass Morphism */
 .printBtn, #monthly-breakdown-toggle {
-    min-width: 49px;
-    height: 55px;
+    min-width: 34px;
+    width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #2b7b7d;
+    border: none;
+    box-shadow: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.printBtn:hover,
+#monthly-breakdown-toggle:hover {
+    background: rgba(43, 123, 125, 0.12);
+    color: #236c6e;
+}
+
+.report-action-icons {
     display: flex;
     align-items: center;
-    padding: 0;
-    border-radius: 12px;
-    /* background: rgb(115 137 150) !important; */
-    color: chocolate;
-    /* border: 1px solid rgba(255, 255, 255, 0.2); */
-    /* backdrop-filter: blur(10px); */
-    /* box-shadow: 0 4px 12px rgba(188, 206, 216, 0.25); */
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    flex-direction: row;
-    justify-content: center;
-    align-content: flex-end;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 
@@ -797,6 +860,17 @@ html, body {
 .sigma-report-table.table-plain {
     box-shadow: none;
     border-radius: 0;
+}
+
+.sigma-report-standard .sigma-report-table.table-plain {
+    border-radius: 12px;
+}
+
+.report-table-section {
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    padding: 0;
 }
 
 /* Table Load Animation */

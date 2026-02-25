@@ -7,6 +7,7 @@ use App\job;
 use App\note;
 use App\Observers\JobObserver;
 use App\Observers\NoteObserver;
+use App\Services\TableWidthPreferences;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -53,6 +54,13 @@ class AppServiceProvider extends ServiceProvider
         note::observe(NoteObserver::class);
         View::composer('*', function ($view) {
             $view->with('stageConfig', OperationsUpgrade::STAGE_CONFIG);
+            if (auth()->check()) {
+                $view->with('sigmaTableWidthPrefs', TableWidthPreferences::getForUser(auth()->id()));
+                $view->with('sigmaTableWidthDefaults', TableWidthPreferences::getDefaults());
+            } else {
+                $view->with('sigmaTableWidthPrefs', []);
+                $view->with('sigmaTableWidthDefaults', []);
+            }
             
             // Share active employees for admin impersonation
             // Exclude soft-deleted users and admins

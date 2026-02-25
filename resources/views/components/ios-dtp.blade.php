@@ -5,7 +5,8 @@
     'required' => false,
     'class' => '',
     'mode' => 'datetime',
-    'disablePast' => false
+    'disablePast' => false,
+    'dataDefault' => null
 ])
 
 @php
@@ -766,7 +767,7 @@
 
 <div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }})" x-init="init()">
     <!-- Hidden input for form submission -->
-    <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }}>
+    <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }} @if($dataDefault !== null && $dataDefault !== '') data-default="{{ $dataDefault }}" @endif>
 
     <!-- Trigger Button styled as form input -->
     <button type="button" class="ios-dtp-trigger" @click="openPicker()" x-text="formatDisplayDate()"></button>
@@ -1168,6 +1169,22 @@
                 }
             },
 
+            syncBoundInput() {
+                const boundInput = document.getElementById('{{ $inputId }}');
+                if (boundInput) {
+                    boundInput.value = this.formValue;
+                    boundInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    boundInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            },
+
+            applySelection(emit = true) {
+                this.updateFormValue();
+                if (emit) {
+                    this.syncBoundInput();
+                }
+            },
+
             openPicker() {
                 this.originalFormValue = this.formValue; // Save current value when opening
                 this.syncStateFromValue(this.formValue); // Sync internal state from value
@@ -1258,6 +1275,7 @@
                 this.selectedMonth = day.month;
                 this.selectedYear = day.year;
                 this.updateRotations();
+                this.applySelection();
             },
 
             prevMonth() {
@@ -1293,6 +1311,7 @@
                 this.selectedYear = year;
                 this.updateRotations();
                 this.adjustSelectedDay();
+                this.applySelection();
             },
 
             selectMonthDirect(realIndex) {
@@ -1300,22 +1319,26 @@
                 this.monthVirtualOffset = virtualCopies * 12;
                 this.updateRotations();
                 this.adjustSelectedDay();
+                this.applySelection();
             },
 
             selectHourDirect(realIndex) {
                 this.selectedHourIndex = realIndex;
                 this.hourVirtualOffset = virtualCopies * 12;
                 this.updateRotations();
+                this.applySelection();
             },
 
             selectMinuteDirect(index) {
                 this.selectedMinuteIndex = index;
                 this.updateRotations();
+                this.applySelection();
             },
 
             selectAmpmDirect(index) {
                 this.selectedAmpmIndex = index;
                 this.updateRotations();
+                this.applySelection();
             },
 
             getRotationProp(type) {
@@ -1462,6 +1485,7 @@
                 } else if (type === 'ampm') {
                     this.selectedAmpmIndex = index;
                 }
+                this.applySelection();
             },
 
             getFormattedTime() {
@@ -1554,7 +1578,7 @@
                     }
                 }
 
-                this.updateFormValue();
+                this.applySelection();
                 this.open = false;
                 document.body.style.overflow = '';
             }

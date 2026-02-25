@@ -711,7 +711,7 @@
         .container.full-width {
             background-color: #f8f9fa;
             border-radius: 5px;
-            padding: 4px;
+
             box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
             margin-bottom: 20px;
             border: 1px solid #e9ecef;
@@ -1240,10 +1240,10 @@
                                         <div class="sigma-modal-actions">
                                             <div class="sigma-actions-row sigma-actions-row--top">
                                                 <a href="{{route('view-voucher',$case->id)}}"
-                                                   class="btn btn-info"><span class="btn-icon"><i
+                                                   class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
                                                                 class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
                                                 <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                   class="btn btn-info"><span class="btn-icon"><i
+                                                   class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
                                                                 class="far fa-file-alt"></i></span><span
                                                             class="btn-text">View</span></a>
                                             </div>
@@ -1252,12 +1252,12 @@
                                                 @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
                                                     @if(!$case->locked)
                                                         <a href="{{route('lock-case',$case->id)}}"
-                                                           class="btn btn-dark"><span class="btn-icon"><i
+                                                           class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
                                                                         class="fas fa-lock"></i></span><span
                                                                     class="btn-text">Lock</span></a>
                                                     @else
                                                         <a href="{{route('unlock-case',$case->id)}}"
-                                                           class="btn btn-dark"><span class="btn-icon"><i
+                                                           class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
                                                                         class="fas fa-lock-open"></i></span><span
                                                                     class="btn-text">Unlock</span></a>
                                                     @endif
@@ -1267,7 +1267,7 @@
                                                        data-patientName="{{ $case->patient_name }}"
                                                        onclick="caseDelConfirmation(event)"
                                                        href="{{route('delete-case',$case->id)}}"
-                                                       class="btn btn-danger"><span class="btn-icon"><i
+                                                       class="btn btn-danger sigma-action-btn"><span class="btn-icon"><i
                                                                     class="fas fa-trash"></i></span><span
                                                                 class="btn-text">Delete</span></a>
                                                 @endif
@@ -1275,20 +1275,20 @@
                                                 @if (isset($case->actual_delivery_date))
                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
                                                         <a href="{{route('reject-case-view',$case->id )}}"
-                                                           class="btn btn-outline-danger"><span
+                                                           class="btn btn-outline-danger sigma-action-btn"><span
                                                                     class="btn-icon"><i class="fas fa-times"></i></span><span
                                                                     class="btn-text">Reject case</span></a>
                                                     @endif
                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
                                                         <a href="{{route('repeat-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning"><span
+                                                           class="btn btn-outline-warning sigma-action-btn"><span
                                                                     class="btn-icon"><i
                                                                         class="fas fa-undo"></i></span><span
                                                                     class="btn-text">Repeat case</span></a>
                                                     @endif
                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
                                                         <a href="{{route('modify-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning"><span
+                                                           class="btn btn-outline-warning sigma-action-btn"><span
                                                                     class="btn-icon"><i
                                                                         class="fa fa-broom"></i></span><span
                                                                     class="btn-text">Modify case</span></a>
@@ -1297,13 +1297,13 @@
 
                                                 @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
                                                     <a href="{{route('redo-case-view',$case->id)}}"
-                                                       class="btn btn-outline-warning"><span
+                                                       class="btn btn-outline-warning sigma-action-btn"><span
                                                                 class="btn-icon"><i class="fa fa-broom"></i></span><span
                                                                 class="btn-text">Redo case</span></a>
                                                 @endif
                                                 @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
                                                     <a href="{{route('edit-case-view',$case->id)}}"
-                                                       class="btn btn-warning"><span
+                                                       class="btn btn-warning sigma-action-btn"><span
                                                                 class="btn-icon"><i
                                                                     class="fa-solid fa-pen-to-square"></i></span><span
                                                                 class="btn-text">Edit</span></a>
@@ -1311,7 +1311,7 @@
                                             </div>
 
                                             <div class="sigma-actions-row sigma-actions-row--cancel">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                <button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">
                                                     Cancel
                                                 </button>
                                             </div>
@@ -1682,6 +1682,31 @@
         <script type="text/javascript">
             $( document ).ready( function () {
                 var isMobileLayout = window.matchMedia( '(max-width: 991px)' ).matches;
+                var widthStore = window.sigmaTableWidthStore || null;
+                var casesWidthScope = 'casesTable_widths';
+
+                function applyCasesWidths(widths) {
+                    if (!widths) {
+                        return;
+                    }
+                    $( '#casesTable th' ).each( function (i) {
+                        if (typeof widths[i] === 'undefined') {
+                            return;
+                        }
+                        if (typeof widths[i] === 'string') {
+                            $( this ).css( 'width', widths[i] );
+                        } else {
+                            $( this ).width( widths[i] );
+                        }
+                    } );
+                }
+
+                if (!isMobileLayout && widthStore && typeof widthStore.get === 'function') {
+                    var preloadedWidths = widthStore.get(casesWidthScope);
+                    if (preloadedWidths) {
+                        applyCasesWidths(preloadedWidths);
+                    }
+                }
 
                 var table = $( "#casesTable" ).DataTable( {
                                                               "colResize": !isMobileLayout,
@@ -1700,23 +1725,24 @@
                                                               "initComplete": function () {
                                                                   var settings = this;
                                                                   if (isMobileLayout) {
-                                                                      localStorage.removeItem( 'casesTable_widths' );
                                                                       $( '#casesTable th' ).css( 'width' , '' );
                                                                       return;
                                                                   }
 
                                                                   // Restore saved widths
-                                                                  var widths = JSON.parse( localStorage.getItem( 'casesTable_widths' ) );
-                                                                  if (widths) {
-                                                                      $( '#casesTable th' ).each( function (i) {
-                                                                          $( this ).width( widths[i] );
-                                                                      } );
-                                                                      // Recalc resize handle positions after width restore
-                                                                      setTimeout(function() {
-                                                                          if (settings.colResize && settings.colResize._recalcPositions) {
-                                                                              settings.colResize._recalcPositions();
+                                                                  if (widthStore && typeof widthStore.whenReady === 'function') {
+                                                                      widthStore.whenReady(function () {
+                                                                          var widths = widthStore.get(casesWidthScope);
+                                                                          if (widths) {
+                                                                              applyCasesWidths(widths);
+                                                                              // Recalc resize handle positions after width restore
+                                                                              setTimeout(function() {
+                                                                                  if (settings.colResize && settings.colResize._recalcPositions) {
+                                                                                      settings.colResize._recalcPositions();
+                                                                                  }
+                                                                              }, 50);
                                                                           }
-                                                                      }, 50);
+                                                                      });
                                                                   }
 
                                                                   // Save widths on column resize (only on resize handles)
@@ -1727,8 +1753,9 @@
                                                                           $( '#casesTable th' ).each( function () {
                                                                               newWidths.push( $( this ).width() );
                                                                           } );
-                                                                          localStorage.setItem( 'casesTable_widths', JSON.stringify( newWidths ) );
-                                                                          console.log( "Saved widths", newWidths );
+                                                                          if (widthStore && typeof widthStore.set === 'function') {
+                                                                              widthStore.set( casesWidthScope, newWidths );
+                                                                          }
                                                                       }, 100 );
                                                                   } );
                                                               },
@@ -1781,15 +1808,26 @@
                     $( `#${tableId} th` ).each( function () {
                         widths.push( $( this ).width() );
                     } );
-                    localStorage.setItem( `table_${tableId}_widths` , JSON.stringify( widths ) );
+                    if (widthStore && typeof widthStore.set === 'function') {
+                        widthStore.set( `table_${tableId}_widths`, widths );
+                    }
                 }
 
                 // Restore on page load
                 function restoreColumnWidths(tableId) {
-                    const widths = JSON.parse( localStorage.getItem( `table_${tableId}_widths` ) );
+                    const widths = widthStore && typeof widthStore.get === 'function'
+                        ? widthStore.get( `table_${tableId}_widths` )
+                        : null;
                     if (widths) {
                         $( `#${tableId} th` ).each( function (i) {
-                            $( this ).width( widths[i] );
+                            if (typeof widths[i] === 'undefined') {
+                                return;
+                            }
+                            if (typeof widths[i] === 'string') {
+                                $( this ).css( 'width', widths[i] );
+                            } else {
+                                $( this ).width( widths[i] );
+                            }
                         } );
                     }
                 }

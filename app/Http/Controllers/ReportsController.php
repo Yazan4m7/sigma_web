@@ -676,23 +676,29 @@ class ReportsController extends Controller
             });
         }
 
-        // Completion status filter (toggle: all, completed, in_progress)
+        // Completion status filter (completed/in_progress; both selected => no filter)
         if ($request->filled('show_completed')) {
-            $completionStatus = $request->show_completed;
+            $completionStatus = array_values(array_filter((array) $request->show_completed, function ($value) {
+                return $value !== null && $value !== '' && $value !== 'all';
+            }));
+            $completionStatus = array_map('strval', $completionStatus);
 
-            if ($completionStatus === 'completed') {
+            $hasCompleted = in_array('completed', $completionStatus, true);
+            $hasInProgress = in_array('in_progress', $completionStatus, true);
+
+            if ($hasCompleted && !$hasInProgress) {
                 // Completed cases: all jobs at stage -1 AND actual_delivery_date not null
                 $query->whereNotNull('actual_delivery_date')
                       ->whereDoesntHave('jobs', function($q) {
                           $q->where('stage', '!=', -1);
                       });
-            } elseif ($completionStatus === 'in_progress') {
+            } elseif ($hasInProgress && !$hasCompleted) {
                 // In-progress cases: at least one job NOT at stage -1
                 $query->whereHas('jobs', function($jobQ) {
                     $jobQ->where('stage', '!=', -1);
                 });
             }
-            // 'all' - no filter applied
+            // Both selected (or none) => no filter applied
         }
 
         // Workflow stage filter - specific stages only (1-8) or completed

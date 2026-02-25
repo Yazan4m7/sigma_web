@@ -12,72 +12,79 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="qc_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="qc_from"
+                            label="From Date:"
                             :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="qc_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="qc_to"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-exclamation-triangle"></i> Failure Cause:</label>
-                        <select class="selectpicker clearOnAll" multiple name="causesInput[]" id="causesInput"
-                            data-live-search="true" title="All Failure Causes" data-hide-disabled="true">
-                            @if ($allCausesSelected)
-                                <option value="all" selected>All</option>
-                                @foreach ($allFailureCauses as $d)
-                                    <option value="{{ $d->id }}">{{ $d->text }}</option>
-                                @endforeach
-                            @else
-                                @php $idsOfSelectedCauses = $selectedFailureCauses->pluck('id')->toArray(); @endphp
-                                <option value="all">All</option>
-                                @foreach ($allFailureCauses as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ in_array($d->id, $idsOfSelectedCauses) ? 'selected' : '' }}>{{ $d->text }}
-                                    </option>
-                                @endforeach
-                            @endif
-                        </select>
+                        @php
+                            $failureCauseOptions = $allFailureCauses
+                                ->map(fn($cause) => ['value' => $cause->id, 'label' => $cause->text])
+                                ->values()
+                                ->all();
+                            $selectedFailureCauseIds = $selectedFailureCauses->pluck('id')->toArray();
+                        @endphp
+                        <x-report-dropdown
+                            name="causesInput[]"
+                            id="causesInput"
+                            label="Failure Cause:"
+                            :options="$failureCauseOptions"
+                            :selected="$selectedFailureCauseIds"
+                            :allSelected="$allCausesSelected"
+                            title="All Failure Causes"
+                            icon="fas fa-exclamation-triangle"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if (isset($clients))
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                                data-live-search="true" title="All" data-hide-disabled="true">
-                                <option value="all"
-                                    {{ isset($selectedClients) && $selectedClients == 'all' ? 'selected' : '' }}>
-                                    All
-                                </option>
-                                @foreach ($clients as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ isset($selectedClients) && in_array($d->id, $selectedClients) ? 'selected' : '' }}>
-                                        {{ $d->name }}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All"
+                            />
                         @endif
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-exclamation-circle"></i> Type of Failure:</label>
-                        <select class="selectpicker clearOnAll" multiple name="failureTypeInput[]"
-                            id="failureTypeInput" data-live-search="true" title="All" data-hide-disabled="true">
-                            <option value="all" {{ in_array('all', $typesSelected) ? 'selected' : '' }}>All</option>
-                            <option value="0" {{ in_array(0, $typesSelected) ? 'selected' : '' }}>Reject</option>
-                            <option value="1" {{ in_array(1, $typesSelected) ? 'selected' : '' }}>Repeat</option>
-                            <option value="2" {{ in_array(2, $typesSelected) ? 'selected' : '' }}>Modification</option>
-                            <option value="3" {{ in_array(3, $typesSelected) ? 'selected' : '' }}>Redo</option>
-                        </select>
+                        @php
+                            $failureTypeOptions = [
+                                ['value' => 0, 'label' => 'Reject'],
+                                ['value' => 1, 'label' => 'Repeat'],
+                                ['value' => 2, 'label' => 'Modification'],
+                                ['value' => 3, 'label' => 'Redo'],
+                            ];
+                        @endphp
+                        <x-report-dropdown
+                            name="failureTypeInput[]"
+                            id="failureTypeInput"
+                            label="Type of Failure:"
+                            :options="$failureTypeOptions"
+                            :selected="$typesSelected"
+                            title="All"
+                        />
                     </div>
                 </div>
 

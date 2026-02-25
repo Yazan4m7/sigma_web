@@ -156,23 +156,50 @@ $(document).ready(function() {
                     options.colResize = options.colResize !== false; // Enable by default unless explicitly disabled
                 }
 
-                const table = originalDataTable.call(this, options);
                 const tableId = $table.attr('id');
+                const scopeKey = tableId ? tableId + '_widths' : null;
+
+                function applySavedWidths(widths) {
+                    if (!widths || !Array.isArray(widths)) {
+                        return;
+                    }
+                    $table.find('th').each(function(i) {
+                        if (typeof widths[i] === 'undefined') {
+                            return;
+                        }
+                        if (typeof widths[i] === 'string') {
+                            $(this).css('width', widths[i]);
+                        } else {
+                            $(this).width(widths[i]);
+                        }
+                    });
+                }
+
+                if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.get === 'function') {
+                    const preloadedWidths = window.sigmaTableWidthStore.get(scopeKey);
+                    if (preloadedWidths) {
+                        applySavedWidths(preloadedWidths);
+                    }
+                }
+
+                const table = originalDataTable.call(this, options);
 
                 // Add save/restore functionality for sunriseTable with colResize (skip no-auto-colresize)
                 if ($table.hasClass('sunriseTable') && !$table.hasClass('no-auto-colresize') && tableId && options && options.colResize) {
                     // Restore saved widths
                     setTimeout(function() {
-                        const widths = JSON.parse(localStorage.getItem(tableId + '_widths'));
-                        if (widths) {
-                            $table.find('th').each(function(i) {
-                                $(this).width(widths[i]);
+                        if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.whenReady === 'function') {
+                            window.sigmaTableWidthStore.whenReady(function () {
+                                const widths = window.sigmaTableWidthStore.get(scopeKey);
+                                if (widths) {
+                                    applySavedWidths(widths);
+                                    // Recalc resize handle positions after width restore
+                                    var settings = table.settings()[0];
+                                    if (settings && settings.colResize && settings.colResize._recalcPositions) {
+                                        settings.colResize._recalcPositions();
+                                    }
+                                }
                             });
-                            // Recalc resize handle positions after width restore
-                            var settings = table.settings()[0];
-                            if (settings && settings.colResize && settings.colResize._recalcPositions) {
-                                settings.colResize._recalcPositions();
-                            }
                         }
                     }, 100);
 
@@ -183,7 +210,9 @@ $(document).ready(function() {
                             $table.find('th').each(function() {
                                 newWidths.push($(this).width());
                             });
-                            localStorage.setItem(tableId + '_widths', JSON.stringify(newWidths));
+                            if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.set === 'function') {
+                                window.sigmaTableWidthStore.set(scopeKey, newWidths);
+                            }
                         }, 100);
                     });
                 }

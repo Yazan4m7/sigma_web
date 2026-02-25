@@ -23,8 +23,8 @@
         .create-case-page {
             border-radius: 20px;
 
-            background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);
-            border: 1px solid #e4ebf5;
+            /*background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);*/
+            /*border: 1px solid #e4ebf5;*/
         }
 
         .create-case-header {
@@ -82,12 +82,19 @@
             height: 3px;
             background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
             opacity: 0.7;
+            border-top-left-radius: var(--card-radius);
+            border-top-right-radius: var(--card-radius);
+        }
+
+        .form-section-card .bootstrap-select.show,
+        .form-section-card .bootstrap-select.open {
+            z-index: 1050;
         }
 
         .form-section-card:hover {
             box-shadow: var(--card-shadow-hover);
             border-color: #ccdae9;
-            transform: translateY(-1px);
+            /*transform: translateY(-1px);*/
         }
 
         /* Keep iOS date-time popup visible inside Create Case card */
@@ -96,7 +103,7 @@
         }
 
         .form-section-card--with-dtp:hover {
-            transform: translateY(-1px);
+            /*transform: translateY(-1px);*/
         }
 
         /* Prevent fixed picker offset while it is open */
@@ -286,7 +293,7 @@
         }
 
         .case-id-part {
-            width: 54px;
+            width: 5.5rem;
             min-height: 38px;
             padding: 0.35rem 0.5rem;
             border-radius: 10px;
@@ -527,59 +534,62 @@
 
         
 .modal.show.sigma-modal--case-create-teeth .modal-dialog {
-            -webkit-transform: translate(0, 0%);
-            transform: translate(0, 0%);
+            -webkit-transform: translate(0, 15%);
+            transform: translate(0, 15%);
         }
 .modal.show.sigma-modal--case-create-files .modal-dialog {
             -webkit-transform: translate(0, 0%);
             transform: translate(0, 0%);
         }
 
+        .modal-content.teethJawsDialog {
+             padding: 0;
+            }
 
-        .row {
-            padding: 0
-        }
+                .row {
+                    padding: 0
+                }
 
 
-        .xdsoft_time_box {
+                .xdsoft_time_box {
 
-            width: 100px !important;
-        }
+                    width: 100px !important;
+                }
 
-        .xdsoft_datetimepicker {
-            padding-right: 50px;
-        }
+                .xdsoft_datetimepicker {
+                    padding-right: 50px;
+                }
 
-        hr {
-            border-color: rgba(28, 86, 88, 0.81);
-            margin-top: 0px
-        }
+                hr {
+                    border-color: rgba(28, 86, 88, 0.81);
+                    margin-top: 0px
+                }
 
-        #addJobBtn2 {
-            background-color: #ca0399;
-            border-color: #970371;
-        }
+                #addJobBtn2 {
+                    background-color: #ca0399;
+                    border-color: #970371;
+                }
 
-        .purpleBorder {
-            border: 1px solid #e14eca !important;
-            border-radius: 0.5rem;
-            background-color: #f8f9fa;
+                .purpleBorder {
+                    border: 1px solid #e14eca !important;
+                    border-radius: 0.5rem;
+                    background-color: #f8f9fa;
 
-        }
+                }
 
-        .abutmentsArea {
-            flex-basis: 100% !important;
-            width: 100% !important;
-            margin-top: 15px;
-        }
+                .abutmentsArea {
+                    flex-basis: 100% !important;
+                    width: 100% !important;
+                    margin-top: 15px;
+                }
 
-        img {
-            max-height: unset;
-        }
+                img {
+                    max-height: unset;
+                }
 
-        @media (min-width: 576px){
-            div.col-lg-7.col-md-7.noPadOnMobile {flex-wrap: wrap;}
-            /*.logo-col .noPadOnMobile{*/
+                @media (min-width: 576px){
+                    div.col-lg-7.col-md-7.noPadOnMobile {flex-wrap: wrap;}
+                    /*.logo-col .noPadOnMobile{*/
             /*    display:none;*/
             /*}*/
             
@@ -620,6 +630,12 @@
             width: 100%;
         }
 
+body.sigma-teeth-backdrop .modal-backdrop {
+            background: rgba(12, 16, 22, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+
 
 
     </style>
@@ -636,7 +652,7 @@
 
 
 
-    <div class="card">
+    <div class="teethBoxDontFlicker">
         @if (config('site_vars.environment') == 'testing')
             <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
                 action="{{ route('create-and-send-case-to') }}">
@@ -766,9 +782,12 @@
         </div>
             <!--REPEATER -->
 
-            <div class="form-section-card" style="margin-top: 2rem;">
+            <div class="form-section-card " style="margin-top: 2rem;">
 
-                <h5>Jobs Information</h5>
+                <div class="section-header">
+                    <h5 class=" " >Jobs Information</h5>
+                </div>
+
                 <div id="" style="" class="repeater jobsRepeater">
                     <div data-repeater-list="repeat">
                         <div data-repeater-item class="jobRow">
@@ -1446,6 +1465,13 @@
                     syncDtpCardState();
                 }
 
+                $('#unitsDialog').on('show.bs.modal', function() {
+                    document.body.classList.add('sigma-teeth-backdrop');
+                });
+
+                $('#unitsDialog').on('hidden.bs.modal', function() {
+                    document.body.classList.remove('sigma-teeth-backdrop');
+                });
 
             });
         </script>

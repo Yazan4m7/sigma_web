@@ -12,67 +12,74 @@
             <div class="container-fluid">
                 <div class="row g-3 align-items-end mb-3">
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="jobtypes_from"><i class="fas fa-calendar-alt"></i> From Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="from"
                             id="jobtypes_from"
+                            label="From Date:"
                             :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-6">
-                        <label for="jobtypes_to"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="jobtypes_to"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-briefcase"></i> Job Type:</label>
-                        <select class="selectpicker clearOnAll" multiple name="jobTypesInput[]" id="jobTypesInput"
-                            data-live-search="true" title="All Job Types" data-hide-disabled="true">
-                            @if ($allJobTypesSelected)
-                                <option value="all" selected>All</option>
-                                @foreach($jobTypes as $d)
-                                    <option value="{{$d->id}}">{{$d->name}}</option>
-                                @endforeach
-                            @else
-                                @php $idsOfSelectedJobTypes = $selectedJobTypes->pluck('id')->toArray(); @endphp
-                                <option value="all">All</option>
-                                @foreach($jobTypes as $d)
-                                    <option value="{{$d->id}}" {{(in_array($d->id ,$idsOfSelectedJobTypes)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                @endforeach
-                            @endif
-                        </select>
+                        @php
+                            $jobTypeOptions = $jobTypes
+                                ->map(fn($jobType) => ['value' => $jobType->id, 'label' => $jobType->name])
+                                ->values()
+                                ->all();
+                            $selectedJobTypeIds = $selectedJobTypes->pluck('id')->toArray();
+                        @endphp
+                        <x-report-dropdown
+                            name="jobTypesInput[]"
+                            id="jobTypesInput"
+                            label="Job Type:"
+                            :options="$jobTypeOptions"
+                            :selected="$selectedJobTypeIds"
+                            :allSelected="$allJobTypesSelected"
+                            title="All Job Types"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
                         @if(isset($clients))
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                                data-live-search="true" title="All" data-hide-disabled="true">
-                                <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
-                                @foreach($clients as $d)
-                                    <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All"
+                            />
                         @endif
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-toggle-on"></i> View Mode:</label>
-                        <div class="connected-toggle-container">
-                            <button type="button" class="connected-toggle-btn {{ $perUnitTrigger ? 'active' : '' }}" id="units-toggle">
-                                <input type="radio" name="perToggle" value="1" {{ $perUnitTrigger ? 'checked' : '' }} style="display: none;" id="units-radio">
-                                UNITS
-                            </button>
-                            <button type="button" class="connected-toggle-btn {{ !$perUnitTrigger ? 'active' : '' }}" id="cases-toggle">
-                                <input type="radio" name="perToggle" value="0" {{ !$perUnitTrigger ? 'checked' : '' }} style="display: none;" id="cases-radio">
-                                CASES
-                            </button>
-                        </div>
+                        @php
+                            $viewModeOptions = [
+                                ['label' => 'UNITS', 'value' => '1', 'id' => 'units'],
+                                ['label' => 'CASES', 'value' => '0', 'id' => 'cases'],
+                            ];
+                        @endphp
+                        <x-report-toggle
+                            name="perToggle"
+                            label="View Mode:"
+                            :options="$viewModeOptions"
+                            :selected="$perUnitTrigger ? '1' : '0'"
+                        />
                     </div>
                 </div>
 

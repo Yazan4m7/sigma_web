@@ -3593,6 +3593,40 @@
         var $panel = $('#columnConfigPanel');
         var $inputsContainer = $('#columnWidthInputs');
         var storageKey = 'dashboard_master_widths';
+        var widthStore = window.sigmaTableWidthStore || null;
+        var defaultColumnWidths = {
+            '[Checkbox]': 5,
+            '#': 40,
+            'Assigned To': 40,
+            'Delivery Date': 40,
+            'Doctor': 60,
+            'Patient': 80,
+            'Tags': 40
+        };
+
+        function getSavedWidths() {
+            if (!widthStore || typeof widthStore.get !== 'function') {
+                return {};
+            }
+            var saved = widthStore.get(storageKey);
+            return saved && typeof saved === 'object' ? saved : {};
+        }
+
+        function setSavedWidths(widths) {
+            if (widthStore && typeof widthStore.set === 'function') {
+                widthStore.set(storageKey, widths || {});
+            }
+        }
+
+        function clearSavedWidths() {
+            if (widthStore && typeof widthStore.reset === 'function') {
+                widthStore.reset(storageKey);
+            }
+        }
+
+        function getDefaultColumnWidth(colName) {
+            return defaultColumnWidths[colName] || null;
+        }
 
         function getDefaultColumnWeight(colName) {
             var key = (colName || '').toLowerCase();
@@ -3621,7 +3655,7 @@
         function applyDefaultWidthsToTable($table) {
             if (!$table || !$table.length) return;
 
-            var saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            var saved = getSavedWidths();
             if (Object.keys(saved).length > 0) return;
             if ($table.attr('data-sigma-width-mode') === 'default') return;
 
@@ -3633,22 +3667,37 @@
             });
             if (!names.length) return;
 
-            var widths = buildDefaultWidthPercentages(names);
+            var applied = false;
             $table.css('table-layout', 'fixed');
 
             $table.find('thead th').each(function(i) {
-                var width = widths[i] + '%';
-                $(this).css({ width: width, minWidth: width, maxWidth: width });
+                var colName = names[i];
+                var width = getDefaultColumnWidth(colName);
+                if (!width) return;
+                applied = true;
+                $(this).css({
+                    width: width + 'px',
+                    minWidth: width + 'px',
+                    maxWidth: width + 'px'
+                });
             });
 
             $table.find('tbody tr').each(function() {
                 $(this).find('td').each(function(i) {
-                    if (typeof widths[i] === 'undefined') return;
-                    var width = widths[i] + '%';
-                    $(this).css({ width: width, minWidth: width, maxWidth: width });
+                    var colName = names[i];
+                    var width = getDefaultColumnWidth(colName);
+                    if (!width) return;
+                    $(this).css({
+                        width: width + 'px',
+                        minWidth: width + 'px',
+                        maxWidth: width + 'px'
+                    });
                 });
             });
-            $table.attr('data-sigma-width-mode', 'default');
+
+            if (applied) {
+                $table.attr('data-sigma-width-mode', 'default');
+            }
         }
 
         function applyDefaultWidthsToAllTables() {
@@ -3658,7 +3707,7 @@
         }
 
         function runManagedWidthsPass() {
-            var savedWidths = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            var savedWidths = getSavedWidths();
             if (Object.keys(savedWidths).length > 0) {
                 applyWidths();
                 return;
@@ -3704,17 +3753,17 @@
             var columnNames = getColumnNames();
             if (columnNames.length === 0) return;
 
-            var savedWidths = JSON.parse(localStorage.getItem(storageKey) || '{}');
+            var savedWidths = getSavedWidths();
             $inputsContainer.empty();
 
             console.log('Available columns:', columnNames);
 
             columnNames.forEach(function(colName) {
-                var defaultWidth = savedWidths[colName] || '';
+                var defaultWidth = savedWidths[colName] || getDefaultColumnWidth(colName) || '';
                 var displayName = colName === '[Checkbox]' ? '☑ Checkbox' : colName;
                 var html = '<div class="column-input-row">' +
                     '<label>' + displayName + '</label>' +
-                    '<input type="number" class="width-input" data-col-name="' + colName + '" value="' + defaultWidth + '" placeholder="Auto" min="20" step="5">' +
+                    '<input type="number" class="width-input" data-col-name="' + colName + '" value="' + defaultWidth + '" placeholder="Auto" min="5" step="5">' +
                     '</div>';
                 $inputsContainer.append(html);
             });
@@ -3734,8 +3783,8 @@
                 if (value) widths[colName] = value;
             });
 
-            // Save to localStorage
-            localStorage.setItem(storageKey, JSON.stringify(widths));
+            // Save widths to user preferences
+            setSavedWidths(widths);
 
             // Apply to all waitingTable and activeTable
             $('.waitingTable, .activeTable').each(function() {
@@ -3785,8 +3834,8 @@
 
         // Reset to auto widths
         function resetToAuto() {
-            // Clear localStorage
-            localStorage.removeItem(storageKey);
+            // Clear saved widths
+            clearSavedWidths();
 
             // Clear all custom widths from tables
             $('.waitingTable, .activeTable').each(function() {
@@ -3810,10 +3859,18 @@
         }
 
         // Initialize panel on first load
-        populatePanel();
+        function initPanel() {
+            populatePanel();
 
-        // Reset to Auto button
-        $('#resetToAutoBtn').on('click', resetToAuto);
+            // Reset to Auto button
+            $('#resetToAutoBtn').on('click', resetToAuto);
+        }
+
+        if (widthStore && typeof widthStore.whenReady === 'function') {
+            widthStore.whenReady(initPanel);
+        } else {
+            initPanel();
+        }
 
         // F2: Toggle panel
         // F3: Reset widths
@@ -3823,7 +3880,7 @@
                 $panel.toggleClass('active');
             } else if (e.key === 'F3') {
                 e.preventDefault();
-                localStorage.removeItem(storageKey);
+                clearSavedWidths();
                 populatePanel();
                 $('.waitingTable, .activeTable').each(function() {
                     $(this).css('table-layout', '');
@@ -3848,9 +3905,17 @@
         });
 
         // Single managed pass after initial render.
-        setTimeout(function() {
-            runManagedWidthsPass();
-        }, 180);
+        if (widthStore && typeof widthStore.whenReady === 'function') {
+            widthStore.whenReady(function() {
+                setTimeout(function() {
+                    runManagedWidthsPass();
+                }, 180);
+            });
+        } else {
+            setTimeout(function() {
+                runManagedWidthsPass();
+            }, 180);
+        }
 
         // Re-apply once each time a DataTable is initialized (prevents reload flicker).
         $(document).on('init.dt', function(e, settings) {
@@ -3859,25 +3924,42 @@
             var $table = $(table);
             if (!$table.hasClass('waitingTable') && !$table.hasClass('activeTable')) return;
 
-            var savedWidths = JSON.parse(localStorage.getItem(storageKey) || '{}');
-            if (Object.keys(savedWidths).length > 0) {
-                applyWidths();
+            var applyForTable = function() {
+                var savedWidths = getSavedWidths();
+                if (Object.keys(savedWidths).length > 0) {
+                    applyWidths();
+                } else {
+                    $table.removeAttr('data-sigma-width-mode');
+                    applyDefaultWidthsToTable($table);
+                }
+            };
+
+            if (widthStore && typeof widthStore.whenReady === 'function') {
+                widthStore.whenReady(applyForTable);
             } else {
-                $table.removeAttr('data-sigma-width-mode');
-                applyDefaultWidthsToTable($table);
+                applyForTable();
             }
         });
 
         // Hidden tabs/tables should still get normalized widths once shown.
         $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function() {
             setTimeout(function() {
-                runManagedWidthsPass();
+                if (widthStore && typeof widthStore.whenReady === 'function') {
+                    widthStore.whenReady(function() {
+                        runManagedWidthsPass();
+                    });
+                } else {
+                    runManagedWidthsPass();
+                }
             }, 50);
         });
 
         // Reset triggered from user settings page.
-        document.addEventListener('sigma:table-widths-reset', function() {
-            localStorage.removeItem(storageKey);
+        document.addEventListener('sigma:table-widths-reset', function(event) {
+            var removedKeys = event && event.detail && Array.isArray(event.detail.removedKeys) ? event.detail.removedKeys : [];
+            if (removedKeys.length > 0 && removedKeys.indexOf(storageKey) === -1) {
+                return;
+            }
             populatePanel();
             $('.waitingTable, .activeTable').removeAttr('data-sigma-width-mode');
             runManagedWidthsPass();

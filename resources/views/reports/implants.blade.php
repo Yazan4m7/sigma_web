@@ -13,100 +13,103 @@
                 <div class="row g-3 align-items-end mb-3">
 
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label for="implants_to_primary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="implants_to_primary"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label for="implants_to_secondary"><i class="fas fa-calendar-alt"></i> To Date:</label>
-                        <x-ios-dtp
+                        <x-report-datetimepicker
                             name="to"
                             id="implants_to_secondary"
+                            label="To Date:"
                             :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label><i class="fas fa-tooth"></i> Implants:</label>
-                        <select class="selectpicker clearOnAll" multiple name="implantsInput[]" id="implantsInput"
-                            data-live-search="true" title="All Implants" data-hide-disabled="true">
-                        @if ($allImplantsSelected)
-                            <option value="all" selected>All</option>
-                            @foreach ($implants as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        @else
-                            @php $idsOfImplantsSelected = $selectedImplants->pluck('id')->toArray(); @endphp
-                            <option value="all">All</option>
-                            @foreach ($implants as $d)
-                                <option value="{{ $d->id }}"
-                                    {{ in_array($d->id, $idsOfImplantsSelected) ? 'selected' : '' }}>{{ $d->name }}
-                                </option>
-                            @endforeach
-                        @endif
-                        </select>
+                        @php
+                            $implantOptions = $implants
+                                ->map(fn($implant) => ['value' => $implant->id, 'label' => $implant->name])
+                                ->values()
+                                ->all();
+                            $selectedImplantIds = $selectedImplants->pluck('id')->toArray();
+                        @endphp
+                        <x-report-dropdown
+                            name="implantsInput[]"
+                            id="implantsInput"
+                            label="Implants:"
+                            :options="$implantOptions"
+                            :selected="$selectedImplantIds"
+                            :allSelected="$allImplantsSelected"
+                            title="All Implants"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
-                        <label><i class="fas fa-cog"></i> Abutments:</label>
-                        <select class="selectpicker clearOnAll" multiple name="abutmentsInput[]" id="abutmentsInput"
-                            data-live-search="true" title="All Abutments" data-hide-disabled="true">
-                        @if ($allAbutmentsSelected)
-                            <option value="all" selected>All</option>
-                            @foreach ($abutments as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        @else
-                            @php $idsOfAbutmentsSelected = $selectedAbutments->pluck('id')->toArray(); @endphp
-                            <option value="all">All</option>
-                            @foreach ($abutments as $d)
-                                <option value="{{ $d->id }}"
-                                    {{ in_array($d->id, $idsOfAbutmentsSelected) ? 'selected' : '' }}>
-                                    {{ $d->name }}</option>
-                            @endforeach
-                        @endif
-                        </select>
+                        @php
+                            $abutmentOptions = $abutments
+                                ->map(fn($abutment) => ['value' => $abutment->id, 'label' => $abutment->name])
+                                ->values()
+                                ->all();
+                            $selectedAbutmentIds = $selectedAbutments->pluck('id')->toArray();
+                        @endphp
+                        <x-report-dropdown
+                            name="abutmentsInput[]"
+                            id="abutmentsInput"
+                            label="Abutments:"
+                            :options="$abutmentOptions"
+                            :selected="$selectedAbutmentIds"
+                            :allSelected="$allAbutmentsSelected"
+                            title="All Abutments"
+                        />
                     </div>
                     <div class="col-lg-2 col-md-3 col-6">
                         @if (isset($clients) && count($clients) > 0)
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                                data-live-search="true" title="All Doctors" data-hide-disabled="true">
-                                <option value="all"
-                                    {{ isset($selectedClients) && $selectedClients == 'all' ? 'selected' : '' }}>
-                                    All
-                                </option>
-                                @foreach ($clients as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ isset($selectedClients) && in_array($d->id, $selectedClients) ? 'selected' : '' }}>
-                                        {{ $d->name }}</option>
-                                @endforeach
-                            </select>
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All Doctors"
+                            />
                         @else
-                            <label><i class="fas fa-user-md"></i> Doctors:</label>
-                            <select class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor"
-                                data-live-search="true" title="No Doctors Available" data-hide-disabled="true" disabled>
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctors:"
+                                :options="[]"
+                                title="No Doctors Available"
+                                :disabled="true"
+                            >
                                 <option value="">No doctors found in database</option>
-                            </select>
+                            </x-report-dropdown>
                         @endif
                     </div>
                     <div class="col-lg-2 col-md-4 col-12">
-                        <label><i class="fas fa-toggle-on"></i> View Mode:</label>
-                        <div class="connected-toggle-container">
-                            <button type="button" class="connected-toggle-btn {{ $perUnitTrigger == 'on' ? 'active' : '' }}" id="units-toggle">
-                                <input type="radio" name="perToggle" value="1" {{ $perUnitTrigger == 'on' ? 'checked' : '' }} style="display: none;" id="units-radio">
-                                UNITS
-                            </button>
-                            <button type="button" class="connected-toggle-btn {{ $perUnitTrigger != 'on' ? 'active' : '' }}" id="cases-toggle">
-                                <input type="radio" name="perToggle" value="0" {{ $perUnitTrigger != 'on' ? 'checked' : '' }} style="display: none;" id="cases-radio">
-                                CASES
-                            </button>
-                        </div>
+                        @php
+                            $viewModeOptions = [
+                                ['label' => 'UNITS', 'value' => '1', 'id' => 'units'],
+                                ['label' => 'CASES', 'value' => '0', 'id' => 'cases'],
+                            ];
+                        @endphp
+                        <x-report-toggle
+                            name="perToggle"
+                            label="View Mode:"
+                            :options="$viewModeOptions"
+                            :selected="$perUnitTrigger == 'on' ? '1' : '0'"
+                        />
                     </div>
                 </div>
                 <!-- BUTTONS ROW 2: Actions -->
