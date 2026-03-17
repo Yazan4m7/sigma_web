@@ -45,6 +45,37 @@
 
         </div>
         </div>
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Clinic Phone:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <input class="form-control" type="text" name="clinic_phone" placeholder="Clinic Phone Number"/>
+                    <span class="help-block text-muted"><small>Optional</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Doctor Mobile App Password:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <input class="form-control" type="password" name="doc_password" placeholder="New password"/>
+                    <span class="help-block text-muted"><small>For mobile application access</small></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                <div class="col-md-12 col-xs-12"><label>Clinic Mobile App Password:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <input class="form-control" type="password" name="clinic_password" placeholder="New password"/>
+                    <span class="help-block text-muted"><small>For clinic staff access</small></span>
+                </div>
+            </div>
+        </div>
+
         <br>
         <h6  class="kt-portlet__head-title">
             <i class="fa fa-minus-square"  style="width:3%"></i> Dentist Discount:

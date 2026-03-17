@@ -7,8 +7,484 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
     <style>
-        @media screen and (max-width: 991px) {
-            .modal-content .modal-footer button {
+        :root {
+            --surface-bg: #eff3f9;
+            --card-bg: #ffffff;
+            --border-muted: #dbe4f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+            --accent: #1b6ef3;
+            --accent-soft: rgba(27, 110, 243, 0.15);
+            --card-radius: 16px;
+            --card-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
+            --card-shadow-hover: 0 16px 32px rgba(17, 24, 39, 0.1);
+        }
+
+        .create-case-page {
+            border-radius: 20px;
+
+            /*background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);*/
+            /*border: 1px solid #e4ebf5;*/
+        }
+
+        .create-case-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .create-case-header h3 {
+            margin: 0;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.02em;
+        }
+
+        .create-case-header p {
+            margin: 0.15rem 0 0 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .required-hint {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .case-form {
+            padding: 0;
+        }
+
+        .form-section-card {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+            border-radius: var(--card-radius);
+            padding: 1.55rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--border-muted);
+            transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .form-section-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
+            opacity: 0.7;
+            border-top-left-radius: var(--card-radius);
+            border-top-right-radius: var(--card-radius);
+        }
+
+        .form-section-card .bootstrap-select.show,
+        .form-section-card .bootstrap-select.open {
+            z-index: 1050;
+        }
+
+        .form-section-card:hover {
+            box-shadow: var(--card-shadow-hover);
+            border-color: #ccdae9;
+            /*transform: translateY(-1px);*/
+        }
+
+        /* Keep iOS date-time popup visible inside Create Case card */
+        .form-section-card--with-dtp {
+            overflow: visible;
+        }
+
+        .form-section-card--with-dtp:hover {
+            /*transform: translateY(-1px);*/
+        }
+
+        /* Prevent fixed picker offset while it is open */
+        .form-section-card--with-dtp.picker-open,
+        .form-section-card--with-dtp.picker-open:hover {
+            transform: none !important;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.05rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid #e8eef6;
+        }
+
+        .section-header h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.9rem;
+            margin: 0;
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .section-header .section-meta {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            text-align: right;
+        }
+
+        .section-subtitle {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+            font-weight: 600;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, #e5ecf5 0%, #dde6f2 100%);
+            margin: 1.35rem 0;
+        }
+
+        .section-block {
+            margin-top: 2rem;
+        }
+
+        .form-section-card label {
+            font-weight: 650;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-control, textarea.form-control, .selectpicker, .bootstrap-select .btn {
+            border-radius: 10px;
+            border: 1px solid var(--border-muted);
+            box-shadow: none !important;
+            min-height: 44px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .form-control:focus, textarea.form-control:focus, .bootstrap-select .btn:focus, .bootstrap-select .btn:active, .bootstrap-select.open>.dropdown-toggle {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
+            outline: none !important;
+        }
+
+        .slctUnitsBtn, .btn-primary, .btn-success {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+            color: #fff !important;
+
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            padding: 0.6rem 1.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .slctUnitsBtn:hover, .btn-primary:hover, .btn-success:hover {
+            background: #1553b7 !important;
+            border-color: #1553b7 !important;
+        }
+
+        .submit-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: linear-gradient(135deg, #1b6ef3 0%, #8739f9 100%) !important;
+            box-shadow: 0 18px 35px rgba(27, 110, 243, 0.35) !important;
+            padding: 0.95rem 2.8rem;
+            border-radius: 999px;
+        }
+
+        .submit-button i {
+            font-size: 1.1rem;
+        }
+
+        .repeater .row-item {
+            border-radius: 14px;
+            border: 1px solid var(--border-muted);
+            padding: 0.9rem 0.95rem;
+            margin-bottom: 1rem;
+            background: #ffffff;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        }
+
+        .mandatorySmallTag {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .deleteBtn, .deleteBtn2 {
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+        }
+
+        .deleteBtn {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: #fff;
+            padding: 0.5rem;
+            border-radius:4px;
+        }
+
+        .deleteBtn:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: #fff;
+        }
+
+        .deleteBtn2 {
+            background: #f97316;
+            border-color: #f97316;
+            color: #fff;
+        }
+
+        .deleteBtn2:hover {
+            background: #ea580c;
+            border-color: #ea580c;
+            color: #fff;
+        }
+
+        .deleteBtn i, .deleteBtn:hover i, .deleteBtn2 i, .deleteBtn2:hover i {
+            color: currentColor;
+        }
+
+        input[type="file"].form-control {
+            padding: 0.4rem 0.75rem;
+            height: auto;
+        }
+
+        .file-input {
+            cursor: pointer;
+        }
+
+        .case-id-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+        }
+
+        .case-id-prefix {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .case-id-part {
+            width: 5.5rem;
+            min-height: 38px;
+            padding: 0.35rem 0.5rem;
+            border-radius: 10px;
+        }
+
+        .case-id-part.case-id-part--xs {
+            width: 48px;
+        }
+
+        .case-id-sep {
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: center;
+            margin: 3.25rem 0 0.75rem;
+        }
+        
+.sigma-modal--case-create-teeth .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -50%) !important;}
+.sigma-modal--case-create-files .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -50%) !important;}
+
+        .toggle-discount {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #d1d5db;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-switch input:checked+.switch-slider {
+            background-color: var(--accent);
+        }
+
+        .toggle-switch input:checked+.switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .discountPortion {
+            border: 1px solid var(--border-muted);
+            border-radius: 16px;
+            padding: 1rem;
+            background: #f9fafc;
+        }
+
+        .verticalSpacing {
+            margin-top: 1.5rem;
+        }
+
+        .primary-submit {
+            width: 100%;
+            max-width: 320px;
+            margin: 40px auto 10px;
+            display: block;
+            font-size: 1rem;
+            padding: 0.85rem 2.5rem;
+            border-radius: 999px;
+            box-shadow: 0 18px 35px rgba(27, 110, 243, 0.35);
+        }
+
+        /* ============================================
+           TEETH PICKER DIALOG - SAVE BUTTON STYLING
+           ============================================ */
+
+        /* Teeth picker dialog save button - larger and primary styled */
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[type="button"]:last-child, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-primary, .sigma-modal--case-create-teeth #unitsDialog .modal-footer button.saveBtn {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            padding: 14px 40px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3) !important;
+            transition: all 0.2s ease !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[type="button"]:last-child, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-primary, .sigma-modal--case-create-files #unitsDialog .modal-footer button.saveBtn {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+            color: white !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
+            padding: 14px 40px !important;
+            border-radius: 6px !important;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3) !important;
+            transition: all 0.2s ease !important;
+        }
+
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[type="button"]:last-child:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-primary:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer button.saveBtn:hover {
+            background-color: #218838 !important;
+            border-color: #218838 !important;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4) !important;
+            transform: translateY(-1px);
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[type="button"]:last-child:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-primary:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer button.saveBtn:hover {
+            background-color: #218838 !important;
+            border-color: #218838 !important;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Close button - keep it secondary/muted */
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[data-dismiss="modal"], .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-secondary {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: white !important;
+            font-size: 14px !important;
+            padding: 10px 24px !important;
+            border-radius: 6px !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[data-dismiss="modal"], .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-secondary {
+            background-color: #6c757d !important;
+            border-color: #6c757d !important;
+            color: white !important;
+            font-size: 14px !important;
+            padding: 10px 24px !important;
+            border-radius: 6px !important;
+        }
+
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-footer button[data-dismiss="modal"]:hover, .sigma-modal--case-create-teeth #unitsDialog .modal-footer .btn-secondary:hover {
+            background-color: #5a6268 !important;
+            border-color: #5a6268 !important;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-footer button[data-dismiss="modal"]:hover, .sigma-modal--case-create-files #unitsDialog .modal-footer .btn-secondary:hover {
+            background-color: #5a6268 !important;
+            border-color: #5a6268 !important;
+        }
+        .card {
+            padding: 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: transparent;
+            background-clip: border-box;
+            border-radius: 18px;
+        }
+        @media screen and (max-width: 991px){
+            
+.sigma-modal--case-create-teeth .modal-content .modal-footer button {
+                margin: 15px;
+                padding: 10px 50px;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-create-files .modal-content .modal-footer button {
                 margin: 15px;
                 padding: 10px 50px;
                 width: auto;
@@ -17,11 +493,16 @@
         }
 
 
-        .fa,
-        .fas {
+        .fa, .fas {
             color: black;
         }
-
+        
+.sigma-modal--case-create-teeth .modal-content {
+            width: 100%;
+        }
+.sigma-modal--case-create-files .modal-content {
+            width: 100%;
+        }
 
         .checked {
             filter: invert(26%) sepia(73%) saturate(492%) hue-rotate(133deg) brightness(94%) contrast(86%);
@@ -51,65 +532,114 @@
         .btn:not(.unstyled) {}
 
 
-        .modal.show .modal-dialog {
+        
+.modal.show.sigma-modal--case-create-teeth .modal-dialog {
+            -webkit-transform: translate(0, 5%);
+            transform: translate(0, 5%);
+        }
+.modal.show.sigma-modal--case-create-files .modal-dialog {
             -webkit-transform: translate(0, 0%);
             transform: translate(0, 0%);
         }
 
+        .modal-content.teethJawsDialog {
+             padding: 0;
+            }
 
-        .row {
-            padding: 0
-        }
+                .row {
+                    padding: 0
+                }
 
 
-        .xdsoft_time_box {
+                .xdsoft_time_box {
 
-            width: 100px !important;
-        }
+                    width: 100px !important;
+                }
 
-        .xdsoft_datetimepicker {
-            padding-right: 50px;
-        }
+                .xdsoft_datetimepicker {
+                    padding-right: 50px;
+                }
 
-        hr {
-            border-color: rgba(28, 86, 88, 0.81);
-            margin-top: 0px
-        }
+                hr {
+                    border-color: rgba(28, 86, 88, 0.81);
+                    margin-top: 0px
+                }
 
-        #addJobBtn2 {
-            background-color: #ca0399;
-            border-color: #970371;
-        }
+                #addJobBtn2 {
+                    background-color: #ca0399;
+                    border-color: #970371;
+                }
 
-        .purpleBorder {
-            border: 1px solid #e14eca !important;
-            border-radius: 0.5rem;
-            background-color: #f8f9fa;
+                .purpleBorder {
+                    border: 1px solid #e14eca !important;
+                    border-radius: 0.5rem;
+                    background-color: #f8f9fa;
 
-        }
+                }
 
-        img {
-            max-width: unset;
-        }
+                .abutmentsArea {
+                    flex-basis: 100% !important;
+                    width: 100% !important;
+                    margin-top: 15px;
+                }
 
-        @media (min-width: 576px) {
-            .modal-dialog {
+                img {
+                    max-height: unset;
+                }
+
+                @media (min-width: 576px){
+                    div.col-lg-7.col-md-7.noPadOnMobile {flex-wrap: wrap;}
+                    /*.logo-col .noPadOnMobile{*/
+            /*    display:none;*/
+            /*}*/
+            
+.sigma-modal--case-create-teeth .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+.sigma-modal--case-create-files .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
 
         }
+        @media screen and (min-width: 1000px){
+       #left-toggler {
+            flex-wrap: wrap !important;
+        }
+        }
 
+        /* Teeth picker dialog sizing */
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-dialog.teethJawsDocument {
+            max-width: 420px;
+            width: 100%;
+            margin: 1rem auto;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-dialog.teethJawsDocument {
+            max-width: 420px;
+            width: 100%;
+            margin: 1rem auto;
+        }
 
-        .teethJawsDialog{}
-        .teethJawsDocument{}
+        
+.sigma-modal--case-create-teeth #unitsDialog .modal-content.teethJawsDialog {
+            width: 100%;
+        }
+.sigma-modal--case-create-files #unitsDialog .modal-content.teethJawsDialog {
+            width: 100%;
+        }
 
-
-
+body.sigma-teeth-backdrop .modal-backdrop {
+            background: rgba(12, 16, 22, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
 
 
 
     </style>
+    <div class="create-case-page">
 
 
 
@@ -121,141 +651,149 @@
 
 
 
-    <div class="card">
+
+    <div class="teethBoxDontFlicker">
         @if (config('site_vars.environment') == 'testing')
-            <form style="padding:0px" class="kt-form" method="POST" enctype="multipart/form-data"
+            <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
                 action="{{ route('create-and-send-case-to') }}">
-            @else
-                <form style="padding:10px" class="kt-form" method="POST" enctype="multipart/form-data"
+        @else
+                <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
                     action="{{ route('new-case-post') }}">
         @endif
         @csrf
-        <div class="portlet__head">
-            <div class="portlet__head-label">
-                <h5 class="portlet__head-title">
-                    <i class="fa-solid fa-folder-closed" style="height:3%;color:inherit"></i> Case
-                    information
-                </h5>
-            </div>
-        </div>
-        <hr>
-        <!-- ORDER INFO -->
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
+
+        <div class="form-section-card form-section-card--with-dtp">
+
+
+        <div class=" ">
+
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Case</div>
+                        <h5>Order Information</h5>
+                    </div>
+
                 </div>
-                <div class="col-md-12 col-xs-12 padding5px">
-
-                    <div class="dropdown">
-                        <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
-                            title="Select a doctor" data-tap-disabled="true">
 
 
-                            @foreach ($doctors as $doctor)
-                                <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                            @endforeach
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin  bold">Doctor:</label>
+                    </div>
+                    <div class="col-md-12 col-xs-12 padding5px">
 
-                        </select>
+                        <div class="dropdown">
+                            <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
+                                title="Select a doctor" data-tap-disabled="true">
+
+
+                                @foreach ($doctors as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                @endforeach
+
+                            </select>
+                            <small class="mandatorySmallTag">* Mandatory</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
+                            name:</label></div>
+                    <div class="col-md-12 col-xs-12 ">
+                        <input class="form-control blueTBBorder" type="text" name="patient_name" required />
                         <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
-                        name:</label></div>
-                <div class="col-md-12 col-xs-12 ">
-                    <input class="form-control blueTBBorder" type="text" name="patient_name" required />
-                    <small class="mandatorySmallTag">* Mandatory</small>
-                </div>
-            </div>
-            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
-                <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
-                        ID:</label></div>
-                <div class="col-md-12 col-xs-12">
+                <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
+                            ID:</label></div>
+                    <div class="col-md-12 col-xs-12">
 
-                    <label>{{ Auth()->user()->id . '_' . now()->format('Y') }}</label>
-                    <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
-                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ now()->format('m') }}" required />
-                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ now()->format('d') }}" required />
-                    <label>_</label>
-                    <input name="caseId4" placeholder="0000"
-                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
-                        type="text" required />
-                    <small class="mandatorySmallTag">* Mandatory</small>
+                        <div class="case-id-group">
+                            <span class="case-id-prefix">{{ Auth()->user()->id . '_' . now()->format('Y') }}</span>
+                            <input name="caseId1" type="hidden" value="{{ Auth()->user()->id . '_' . now()->format('Y') }}" />
+                            <input name="caseId2" placeholder="MM" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ now()->format('m') }}" required inputmode="numeric" />
+                            <input name="caseId3" placeholder="DD" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ now()->format('d') }}" required inputmode="numeric" />
+                            <span class="case-id-sep">_</span>
+                            <input name="caseId4" placeholder="0000" class="form-control case-id-part"
+                                type="text" required inputmode="numeric" />
+                        </div>
+                        <small class="mandatorySmallTag">* Mandatory</small>
+                    </div>
+
                 </div>
 
+
             </div>
 
+
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression
+                            Type:</label></div>
+                    <div class="col-md-12 col-xs-12"><select class="form-control" name="impression_type" type="text"
+                            data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
+                            @foreach ($impressionTypes as $impression)
+                                <option value="{{ $impression->id }}">
+                                    {{ $impression->name }}
+                                </option>
+                            @endforeach
+
+                        </select></div>
+                </div>
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
+                            Date:</label></div>
+                    @php
+                        $time = new DateTime('tomorrow 13:00');
+                        // $time = $time->format("Y-m-d\TH:i");
+                        $time = $time->format('d M, Y h:i a');
+                    @endphp
+
+                    <div class="col-md-12 col-xs-12">
+                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $time ?? '')" :required="true" :disablePast="true" />
+
+{{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"--}}
+{{--                            required readonly />--}}
+                        <small class="mandatorySmallTag">* Mandatory</small>
+                    </div>
+                </div>
+                <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <select class="select selectpicker greyBG" name="tags[]" multiple data-mdb-placeholder="Tags">
+                            @foreach ($tags as $tag)
+                                <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+            </div>
 
         </div>
 
+            <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
 
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression
-                        Type:</label></div>
-                <div class="col-md-12 col-xs-12"><select class="form-control" name="impression_type" type="text"
-                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
-                        @foreach ($impressionTypes as $impression)
-                            <option value="{{ $impression->id }}">
-                                {{ $impression->name }}
-                            </option>
-                        @endforeach
 
-                    </select></div>
-            </div>
-            <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
-                        Date:</label></div>
-                @php
-                    $time = new DateTime('tomorrow 13:00');
-                    // $time = $time->format("Y-m-d\TH:i");
-                    $time = $time->format('d M, Y h:i a');
-                @endphp
-
-                <div class="col-md-12 col-xs-12">
-                    <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}"
-                        required readonly />
-                    <small class="mandatorySmallTag">* Mandatory</small>
-                </div>
-            </div>
-            <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
-                <div class="col-md-12 col-xs-12">
-                    <select class="select selectpicker greyBG" name="tags[]" multiple data-mdb-placeholder="Tags">
-                        @foreach ($tags as $tag)
-                            <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">{{ $tag->text }}
-                            </option>
-                        @endforeach
-                    </select>
-
-                </div>
-            </div>
         </div>
-        <div class="verticalSpacing"></div>
+            <!--REPEATER -->
 
-        <!-- JOB INFO ICON-->
+            <div class="form-section-card " style="margin-top: 2rem;">
 
+                <div class="section-header">
+                    <h5 class=" " >Jobs Information</h5>
+                </div>
 
-        <div class="portlet__head">
-            <div class="portlet__head-label">
-                <h5 class="portlet__head-title">
-                    <i class="fa-solid fa-boxes-stacked" style="height:3%;color:inherit"></i> Jobs
-                    information
-                </h5>
-            </div>
-        </div>
-        <hr>
-        <!-- JOBS REPEATER -->
-        <div id="" style="" class="repeater jobsRepeater">
-            <div data-repeater-list="repeat">
-                <div data-repeater-item class="jobRow">
-                    <div class="form-group form-group ">
-                        <div data-repeater-list="repeat" class="col-12 padding5px">
-                            <div data-repeater-item class="form-group row align-items-center row-item"
-                                style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
+                <div id="" style="" class="repeater jobsRepeater">
+                    <div data-repeater-list="repeat">
+                        <div data-repeater-item class="jobRow">
+                            <div class="form-group form-group ">
+                                <div data-repeater-list="repeat" class="col-12 padding5px">
+                                    <div data-repeater-item class="form-group row align-items-center row-item">
 
 
                                 <div class="col-md-2">
@@ -421,7 +959,7 @@
                                                     </div>
                                                     <div class="col-md-1">
                                                         <button data-repeater-delete class="btn deleteBtn2 btn-sm"
-                                                            type="button" value="Delete" style=""><i
+                                                            type="button" value="Delete" style=""><span><i
                                                                 class="fa fa-trash " style=""></i></span>
                                                         </button>
                                                     </div>
@@ -444,25 +982,46 @@
                 </div>
 
             </div>
-            <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
-                <i class="fa fa-plus-square" style="color:white"></i> Add
-            </a>
-            <div class="verticalSpacing"></div>
-            <!-- DISCOUNTS SECTION -->
+            <div class="text-left">
+                <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
+                    <i class="fa fa-plus-square" style="color:white"></i> Add Job
+                </a>
+            </div>
+        </div>
+            </div>
+
+
+        <div class="verticalSpacing"></div>
+
+
+
+
+
+
+
+
+
+        <!-- DISCOUNTS / NOTES / ATTACHMENTS -->
+        <div class="form-section-card form-section-stack">
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
-                        </h5>
+                <div>
+
+                    <div class="section-header">
+                        <div>
+                            <div class="section-subtitle">Optional</div>
+                            <h5>Discount</h5>
+                        </div>
+
                     </div>
+                    <label class="toggle-discount mb-0">
+                        <span class="toggle-switch">
+                            <input type="checkbox" class="discountCB" name="discountCB"
+                                onclick='toggleDiscountPortion(this)' />
+                            <span class="switch-slider"></span>
+                        </span>
+                        Enable Discount
+                    </label>
                 </div>
-                <hr>
-                <label style="cursor: pointer">
-                    <input type="checkbox" class="discountCB" name="discountCB" onclick='toggleDiscountPortion(this)' />
-                    Make a Discount
-                </label>
-                <br>
                 <div class="form-group form-group row discountPortion" style="display:none">
                     <div class="col-md-3 col-xs-6">
                         <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)" />
@@ -473,40 +1032,147 @@
                             placeholder="Explanation of discount" /></textarea>
                     </div>
                 </div>
-                <div class="verticalSpacing"></div>
+                <div class="section-divider"></div>
             @endif
 
-            <!-- NOTES SECTION -->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
-                        information
-                    </h5>
+            <div class="section-block">
+
+
+
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Additional Information</h5>
+                    </div>
+
+                </div>
+                <div class="form-group form-group-last">
+                    <label for="exampleTextarea">Note</label>
+                    <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
                 </div>
             </div>
-            <hr>
 
-            <div class="form-group form-group-last">
-                <label for="exampleTextarea">Note</label>
-                <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
-            </div>
-            <div class="verticalSpacing"></div>
-            <!-- Attachments SECTION -->
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
-                    </h5>
+            <div class="section-divider"></div>
+
+            <div class="section-block">
+
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Attachments</h5>
+                    </div>
+
+                </div>
+                <div class="form-group form-group-last">
+                    <input type="file" id="images" class="form-control file-input" name="images[]" placeholder="address" multiple>
                 </div>
             </div>
-            <hr>
-            <div class="form-group form-group-last">
+                <style>
+                    .button.create-case-page {
+                        border-radius: 18px;
+                        padding: 0 1rem;
+                        position: relative;
+                        transition: all 0.3s ease-in-out;
+                        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+                        /* padding-block: 0.5rem; */
+                         padding-inline: 1.25rem;
+                        background-color: #0069d9;
+                        /* border-radius: 9999px; */
+                        display: flex;
+                        align-items: center;
+                        color: #ffff;
+                        gap: 0px;
+                        font-weight: bold;
+                        border: 3px solid #ffffff4d;
+                        outline: none;
+                        overflow: hidden;
+                        font-size: 17px;
+                        cursor: pointer;
+                    }
 
-                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
-                    multiple style="cursor: pointer;">
-            </div>
+                    .icon.create-case-page {
+                        box-sizing: initial;
+                        padding: 1rem;
+                        width: 24px;
+                        height: 24px;
+                        transition: all 0.3s ease-in-out;
+                    }
+
+                    .button.create-case-page:hover {
+                        transform: scale(1.05);
+                        border-color: #fff9;
+                    }
+
+                    .button.create-case-page:hover .icon {
+
+                        transform: translate(4px);
+                    }
+
+                    .button.create-case-page:hover::before {
+                        box-sizing: initial;
+                        animation: shine 1.5s ease-out infinite;
+                    }
+
+                    .button.create-case-page::before {
+                        box-sizing: initial;
+                        content: "";
+                        position: absolute;
+                        width: 100px;
+                        height: 100%;
+                        background-image: linear-gradient(
+                                120deg,
+                                rgba(255, 255, 255, 0) 30%,
+                                rgba(255, 255, 255, 0.8),
+                                rgba(255, 255, 255, 0) 70%
+                        );
+                        top: 0;
+                        left: -100px;
+                        opacity: 0.6;
+                    }
+
+                    @keyframes shine {
+                        0% {
+                            left: -100px;
+                        }
+
+                        60% {
+                            left: 100%;
+                        }
+
+                        to {
+                            left: 100%;
+                        }
+                    }
+
+                </style>
+                <div class="kt-portlet__foot" style="margin-top:3rem">
+                    <div class="kt-form__actions">
+
+{{--                        Fance Submit button --}}
+                        <button class="button create-case-page">
+                            SUBMIT
+                            <svg class="icon create-case-page" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                        fill-rule="evenodd"
+                                        d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
+                                        clip-rule="evenodd"
+                                ></path>
+                            </svg>
+                        </button>
+
+
+                    </div>
+                </div>
+        </div>
+
+
+
+
+
+
+
+
+
 
             <br>
             @if (config('site_vars.environment') == 'testing')
@@ -527,18 +1193,14 @@
                 </div>
             @endif
 
-            <div class="kt-portlet__foot">
-                <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary extraPadding" style="margin: 60px 5px 10px 5px">Submit</button>
 
-                </div>
-            </div>
-        </div>
+
+
         </form>
 
         <!-- TEETH PICK DIALOG -->
 
-        <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-create-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog  teethJawsDocument" role="document" style="margin-top: 5px;">
                 <div class="modal-content teethJawsDialog">
@@ -689,23 +1351,17 @@
 
 
                     </div>
-                    <div class="modal-footer" name="model-footer" style="padding-top:45px">
-
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="submitDialog" onclick="">Save</button>
+                    <div class="modal-footer" name="model-footer" style="padding: 12px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-primary" id="submitDialog" onclick="" style="flex: 2; font-weight: normal !important; font-size: 13px !important; background-color: #007bff !important; border-color: #007bff !important;    padding: 8px 3px !important; text-align: center;">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="flex: 1; font-weight: normal !important; font-size: 13px !important; background-color: #6c757d !important; border-color: #6c757d !important;    padding: 8px 3px !important; text-align: center;">Close</button>
                     </div>
                 </div>
-
             </div>
-
         </div>
             </form></div>
 
-
-
     <!-- FILES DIALOG -->
-
-    <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
+    <div class="modal fade sigma-modal--case-create-files" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
         style="display: none;" aria-hidden="true" name="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -732,367 +1388,452 @@
 
 
 @endsection
+</div>
+
 @push('js')
-    <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
-    <script>
-        $(document).ready(function() {
-            $('.selectpicker').selectpicker();
-            $('.selectpicker').selectpicker('refresh');
-            $('.repeater').repeater({
-                // (Required if there is a nested repeater)
-                // Specify the configuration of the nested repeaters.
-                // Nested configuration follows the same format as the base configuration,
-                // supporting options "defaultValues", "show", "hide", etc.
-                // Nested repeaters additionally require a "selector" field.
-                repeaters: [{
-                    // (Required)
-                    // Specify the jQuery selector for this nested repeater
-                    selector: '.abutments-repeater',
+        <script src="{{ asset('assets/js/jquery.repeater3.min.js') }}" defer></script>
+        <script>
+    
+            $(document).ready(function() {
+                $('.repeater').repeater({
+                    // (Required if there is a nested repeater)
+                    // Specify the configuration of the nested repeaters.
+                    // Nested configuration follows the same format as the base configuration,
+                    // supporting options "defaultValues", "show", "hide", etc.
+                    // Nested repeaters additionally require a "selector" field.
+                    repeaters: [{
+                        // (Required)
+                        // Specify the jQuery selector for this nested repeater
+                        selector: '.abutments-repeater',
+                        show: function() {
+                            $(this).slideDown();
+                        },
+    
+                        hide: function(deleteElement) {
+                            $(this).slideUp(deleteElement);
+                        }
+                    }],
+    
+    
+                    defaultValues: {},
+    
                     show: function() {
                         $(this).slideDown();
                     },
-
+                    initEmpty: false,
                     hide: function(deleteElement) {
                         $(this).slideUp(deleteElement);
                     }
-                }],
+                });
+    
+                // removing first job because it causes UI errors with the repeater
+                $(".jobsRepeater").find(".jobRow").first().html("");
+                $("#addJobBtn").click();
+                //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
+                //        $("#addJobBtn2").click();
 
+                const dtpCard = document.querySelector('.form-section-card--with-dtp');
+                if (dtpCard) {
+                    const syncDtpCardState = function() {
+                        const isOpen = !!dtpCard.querySelector('.ios-dtp-modal.visible');
+                        dtpCard.classList.toggle('picker-open', isOpen);
+                    };
 
-                defaultValues: {},
+                    const queueSync = function() {
+                        requestAnimationFrame(() => requestAnimationFrame(syncDtpCardState));
+                    };
 
-                show: function() {
-                    $(this).slideDown();
-                },
-                initEmpty: false,
-                hide: function(deleteElement) {
-                    $(this).slideUp(deleteElement);
+                    dtpCard.addEventListener('click', function(event) {
+                        if (event.target.closest('.ios-dtp-trigger')) {
+                            dtpCard.classList.add('picker-open');
+                            queueSync();
+                            return;
+                        }
+
+                        if (event.target.closest('.ios-dtp-set-btn') || event.target.closest('.ios-dtp-backdrop')) {
+                            queueSync();
+                        }
+                    }, true);
+
+                    const observer = new MutationObserver(queueSync);
+                    observer.observe(dtpCard, {
+                        subtree: true,
+                        attributes: true,
+                        attributeFilter: ['class']
+                    });
+
+                    syncDtpCardState();
                 }
+
+                $('#unitsDialog').on('show.bs.modal', function() {
+                    document.body.classList.add('sigma-teeth-backdrop');
+                });
+
+                $('#unitsDialog').on('hidden.bs.modal', function() {
+                    document.body.classList.remove('sigma-teeth-backdrop');
+                });
+
             });
-
-            // removing first job because it causes UI errors with the repeater
-            $(".jobsRepeater").find(".jobRow").first().html("");
-            $("#addJobBtn").click();
-            //        $(".abutmentsRepeater").find(".abutmentsRow").first().html("");
-            //        $("#addJobBtn2").click();
-
-
-        });
-    </script>
-    <script>
-        function toggleDiscountPortion(ele) {
-
-            var discountPortion = $(".discountPortion");
-            if (ele.checked) {
-                discountPortion.show(200);
-            } else {
-                discountPortion.hide(200);
-            }
-        }
-
-        var teethSelected = [];
-        var lstSelectedJobUNName = "";
-        var repeaterName = ""; // should be something like 'repeat[xx]'
-        function materialChanged(materialDD) {
-            // Material changed - no type handling needed in create case
-            console.log('Material changed:', $(materialDD).val());
-        }
-
-        function jobTypeChanged(jobTypeDD) {
-            var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
-            var jobTypes = {!! json_encode($types->toArray()) !!};
-            var materials = {!! json_encode($materials->toArray()) !!};
-            var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
-
-            var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
-
-            var colorsDDName = repeaterName + "[color]";
-            if ($(jobTypeDD).val() == 14) {
-                $("[name='" + colorsDDName + "']").parent().parent().parent().show();
-            }
-
-            if (repeaterNumber > 1) {
-                var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
-                var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
-                var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
-
-                //  console.log("selector : " +"[name='repeat[" + (repeaterNumber -1) + "][abutments][0][abutmentUnits][]']");
-            } else {
-                var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
-                var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
-                var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-                //  console.log("selector : " + "[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
-            }
-
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-
-            var materialBox = $("[name='" + repeaterName + "[material_id]']");
-            var openDialogBtn = $("[name='" + repeaterName + "[openDialogBtn]']");
-            var jobTypeSelectedId = $(jobTypeDD).val();
-            var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
-
-            // Store currently selected material to preserve selection if possible
-            var currentlySelectedMaterial = materialBox.val();
-
-            // Clear material dropdown
-            materialBox.empty();
-
-            // Add default option for materials
-            materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
-
-            // Populate materials compatible with selected job type
-            $.each(jobTypeMaterials, function(key, value) {
-                materialBox.append($("<option></option>")
-                    .attr("value", value.material_id)
-                    .text(materials.find(x => x.id === value.material_id).name));
-            });
-
-            // If the previously selected material is still compatible, reselect it
-            if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
-                materialBox.val(currentlySelectedMaterial);
-            }
-            var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
-            var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
-            var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
-                .val().split(',');
-            if ($(jobTypeDD).find(":selected").val() == 6) {
-
-                // get to parent of the main repeater and find abutment units box
-
-                $(abutmentBox).attr('required', '');
-                $(implantBox).attr('required', '');
-
-                $(abutmentsArea).css("display", "block");
-                // $(".abutmentsUnitsPicker").find('option').html('');
-                // show the 6th parent of the box which has display none property
-                // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
-
-                $.each(currentlySelectedUnits, function(index, value) {
-                    abutmentUnitsBox.append($("<option></option>")
-                        .attr("value", value)
-                        .text(value));
-                });
-                abutmentUnitsBox.selectpicker();
-                $(jobTypeDD).attr("readonly", "true");
-                $(openDialogBtn).attr("disabled", "true");
-            } else {
-                $(abutmentBox).removeAttr('required');
-                $(implantBox).removeAttr('required');
-                $(abutmentsArea).css("display", "none");
-                abutmentUnitsBox.val(0);
-                //            implantBox.val(0);
-                // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
-            }
-        }
-
-        function addAbutmentJob(ele) {
-            // get units selected originally in the job
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-            // wait for new repeater row to populate then add unit selected to abutment units box
-            setTimeout(function() {
-                var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
-
-
-                $.each(teethSelectedAsArr, function(index, value) {
-                    $(lastAbutmentUnitsBox).last().append($("<option></option>")
-                        .attr("value", value)
-                        .text(value));
-                });
-                lastAbutmentUnitsBox.selectpicker();
-            }, 500);
-
-        }
-
-        $("#submitDialog").click(function() {
-
-            var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
-            var jobTypeBoxName = repeaterName + "[jobType]";
-            var selectBtnName = repeaterName + "[openDialogBtn]";
-
-            var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
-            var jobTypes = {!! json_encode($types->toArray()) !!};
-            var colorsDDName = repeaterName + "[color]";
-            var styleOptionsName = repeaterName + "[style]";
-            /* Updating dropdowns according to teeth selection
-             * First if is for jaws, second is for teeth
-             * @Yazan -
-             */
-            if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
-                    teethSelectedAsArr) !== -1) {
-                // clear all options
-                jobTypeBox.empty();
-                // filter all job types to only jaws.
-                var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
-                // fill up the options with the array above.
-                $.each(jawOnlyTypes, function(key, value) {
-                    jobTypeBox.append($("<option></option>")
-                        .attr("value", value.id)
-                        .text(value.name));
-                });
-                // Notify Job type changed function to update materials with which box changed
-                jobTypeChanged(jobTypeBox);
-                $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
-
-                // set style to none (prevent back-end errors) and hide it
-                $("[name='" + styleOptionsName + "']").val('None');
-                $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
-
-            }
-
-            // No jaws selected
-            else {
-                jobTypeBox.empty();
-                const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
-                $.each(jawOnlyTypes, function(key, value) {
-                    jobTypeBox.append($("<option></option>")
-                        .attr("value", value.id)
-                        .text(value.name));
-                });
-                if (teethSelectedAsArr.length > 1)
-                    $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
-                else
-                    $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
-                // Notify Job type changed function to update materials with which box changed
-                jobTypeChanged(jobTypeBox);
-
-            }
-
-            // Change button label with selected teeth
-            if (teethSelectedAsArr.length > 0)
-                $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
-            else
-                $("[name='" + selectBtnName + "']").html("Select Units");
-
-
-            $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
-
-            // close dialog
-            $(".modal").modal('hide');
-
-        });
-
-
-        $(".teeth").click(function() {
-
-            // Check if any jaws is selected, if any remove them from array
-            if (jQuery.inArray("upper", teethSelected) !== -1) {
-                const jawIndex = teethSelected.indexOf("upper");
-                teethSelected.splice(jawIndex, 1);
-            }
-            if (jQuery.inArray("lower", teethSelected) !== -1) {
-                const jawIndex = teethSelected.indexOf("lower");
-                teethSelected.splice(jawIndex, 1);
-            }
-
-            // remove the light of the jaws buttons
-            var list = $('.jaw');
-            list.removeClass("checked");
-
-
-            //if not pre selected light up the teeth and add it to array
-            if ($(this).hasClass("checked")) {
-                $(this).removeClass("checked");
-                var teethNumber = $(this).attr("alt");
-                const index = teethSelected.indexOf(teethNumber);
-
-                if (index > -1) {
-                    teethSelected.splice(index, 1);
+        </script>
+        <script>
+            function toggleDiscountPortion(ele) {
+    
+                var discountPortion = $(".discountPortion");
+                if (ele.checked) {
+                    discountPortion.show(200);
+                } else {
+                    discountPortion.hide(200);
                 }
-
-                // remove the selection if previously selected
-            } else {
-                var teethNumber = $(this).attr("alt");
-                teethSelected.push(teethNumber);
-                $(this).addClass("checked");
-                // console.log("Added a teeth" + teethSelected);
             }
-
-            //console.log("Updating units input : "  + teethSelected);
-
-            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-        });
-        $(".jaw").click(function() {
-
-            if ($(this).hasClass("checked")) {
-                $(this).removeClass("checked");
-                var jaw = $(this).attr("alt");
-                const index = teethSelected.indexOf(jaw);
-
-                if (index > -1) {
-                    teethSelected.splice(index, 1);
+    
+            var teethSelected = [];
+             var lstSelectedJobUNName = "";
+             var repeaterName = ""; // should be something like 'repeat[xx]'
+             function materialChanged(materialDD) {
+                 $(materialDD).data('manualSelection', true);
+             }
+    
+             function jobTypeChanged(jobTypeDD) {
+                 var thisRowRepeaterName = $(jobTypeDD).attr("name").replace('[jobType]', '');
+                 var jobTypes = {!! json_encode($types->toArray()) !!};
+                 var materials = {!! json_encode($materials->toArray()) !!};
+                 var materialJobTypeRelations = {!! json_encode($jobTypeMaterials->toArray()) !!};
+    
+                var repeaterNumber = thisRowRepeaterName.replace('repeat[', '').replace(']', '');
+    
+                var colorsDDName = thisRowRepeaterName + "[color]";
+                if ($(jobTypeDD).val() == 14) {
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().show();
                 }
-                var unitNumsBox = $("[id=units]:last").attr("name");
-                $("[name='" + unitNumsBox + "']").val(teethSelected);
-
-            } else {
-
-                var jaw = $(this).attr("alt");
-                // add visuall selection to the jaw the selection
-                $(this).addClass("checked");
-
-                // remove visual selection of all teeth if a jaw is selected
-                var list = $('.teeth');
-                list.removeClass("checked");
-
-                // remove all selected teeth
-                for (var index = 0; index <= teethSelected.length; index++) {
-                    if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
-                        teethSelected.splice(index);
+    
+                if (repeaterNumber > 1) {
+                    var implantBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][implant]']");
+                    var abutmentBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutment]']");
+                    var abutUnitsBox = $("[name='repeat[" + (repeaterNumber - 1) + "][abutments][0][abutmentUnits][]']");
+                } else {
+                    var implantBox = $("[name='" + thisRowRepeaterName + "[abutments][0][implant]']");
+                    var abutmentBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutment]']");
+                    var abutUnitsBox = $("[name='" + thisRowRepeaterName + "[abutments][0][abutmentUnits][]']");
+                }
+    
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+    
+                 var materialBox = $("[name='" + thisRowRepeaterName + "[material_id]']");
+                 var openDialogBtn = $("[name='" + thisRowRepeaterName + "[openDialogBtn]']");
+                 var jobTypeSelectedId = $(jobTypeDD).val();
+    
+                 var previousJobTypeId = $(jobTypeDD).data('previousJobTypeId');
+                 var jobTypeActuallyChanged = (previousJobTypeId === undefined || String(previousJobTypeId) !== String(jobTypeSelectedId));
+                 $(jobTypeDD).data('previousJobTypeId', jobTypeSelectedId);
+                 if (jobTypeActuallyChanged) {
+                     materialBox.data('manualSelection', false);
+                 }
+    
+                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+                 var selectedJobType = jobTypes.find(x => String(x.id) === String(jobTypeSelectedId));
+                 var defaultMaterialId = selectedJobType ? selectedJobType.default_material_id : null;
+    
+                 // Store currently selected material to preserve selection if possible
+                 var currentlySelectedMaterial = materialBox.val();
+    
+                 // Clear material dropdown
+                materialBox.empty();
+    
+                // Add default option for materials
+                materialBox.append($("<option></option>").attr("value", "").text("Select Material"));
+    
+                 // Populate materials compatible with selected job type
+                  $.each(jobTypeMaterials, function(key, value) {
+                      var material = materials.find(x => String(x.id) === String(value.material_id));
+                      materialBox.append($("<option></option>")
+                          .attr("value", value.material_id)
+                          .text(material ? material.name : ('Material #' + value.material_id)));
+                  });
+    
+                 var previousIsAllowed = currentlySelectedMaterial && jobTypeMaterials.some(jm => String(jm.material_id) === String(currentlySelectedMaterial));
+                 var defaultIsAllowed = defaultMaterialId && jobTypeMaterials.some(jm => String(jm.material_id) === String(defaultMaterialId));
+    
+                 if (jobTypeActuallyChanged && defaultIsAllowed) {
+                     materialBox.val(defaultMaterialId);
+                 } else if (previousIsAllowed) {
+                     materialBox.val(currentlySelectedMaterial);
+                 } else {
+                     materialBox.val('');
+                 }
+                 var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
+                 var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
+                 var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
+                     .val().split(',');
+                 if ($(jobTypeDD).find(":selected").val() == 6) {
+    
+                    // get to parent of the main repeater and find abutment units box
+    
+                    $(abutmentBox).attr('required', '');
+                    $(implantBox).attr('required', '');
+    
+                    $(abutmentsArea).css("display", "block");
+                    // $(".abutmentsUnitsPicker").find('option').html('');
+                    // show the 6th parent of the box which has display none property
+                    // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
+    
+                    // Destroy existing selectpicker if it exists to avoid conflicts
+                    if (abutmentUnitsBox.hasClass('selectpicker')) {
+                        abutmentUnitsBox.selectpicker('destroy');
                     }
+    
+                    // Clear and repopulate options
+                    abutmentUnitsBox.empty();
+                    $.each(currentlySelectedUnits, function(index, value) {
+                        abutmentUnitsBox.append($("<option></option>")
+                            .attr("value", value)
+                            .text(value));
+                    });
+    
+                    // Initialize selectpicker fresh
+                    abutmentUnitsBox.selectpicker();
+    
+                    $(jobTypeDD).attr("readonly", "true");
+                    $(openDialogBtn).attr("disabled", "true");
+                } else {
+                    $(abutmentBox).removeAttr('required');
+                    $(implantBox).removeAttr('required');
+                    $(abutmentsArea).css("display", "none");
+                    abutmentUnitsBox.val(0);
+                    //            implantBox.val(0);
+                    // $(found).parent().parent().parent().parent().parent().parent().css("display","none");
                 }
-                // add selected jaw to the array and update value
-                teethSelected.push(jaw);
-
-
             }
-
-            $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
-        });
-
-        function preOpenDialog(element) {
-            // if repeater reached 2 digit or not
-            if (element.name.length == 24) {
-                lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
-                repeaterName = element.name.substr(0, 9);
-            } else {
-                repeaterName = element.name.substr(0, 10);
-                lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
+    
+            function addAbutmentJob(ele) {
+                // get units selected originally in the job
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+                // wait for new repeater row to populate then add unit selected to abutment units box
+                setTimeout(function() {
+                    var lastAbutmentUnitsBox = $("select[name$='[abutmentUnits][]']").last();
+    
+                    // Destroy existing selectpicker if it exists to avoid conflicts
+                    if (lastAbutmentUnitsBox.hasClass('selectpicker')) {
+                        lastAbutmentUnitsBox.selectpicker('destroy');
+                    }
+    
+                    // Clear and repopulate options
+                    lastAbutmentUnitsBox.empty();
+                    $.each(teethSelectedAsArr, function(index, value) {
+                        lastAbutmentUnitsBox.append($("<option></option>")
+                            .attr("value", value)
+                            .text(value));
+                    });
+    
+                    // Initialize selectpicker fresh
+                    lastAbutmentUnitsBox.selectpicker();
+                }, 500);
+    
             }
-            var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
-            // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
-            if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
-                teethSelected = currentJobUnits.val().split(',');
-                // console.log("is defined and its now : " + teethSelected);
-            } else {
-                // console.log("NOT defined,cleared");
-                teethSelected = [];
-            }
-            if (teethSelected.length !== 0) {
-                var teethPreSelected = currentJobUnits.val().split(',');
-                // console.log("Lighting up : " + teethPreSelected);
-                // light on and off according to the pre selected
-                $(".teeth").each(function() {
-                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
-                        // console.log("true");
-                        $(this).addClass("checked");
-                    } else
-                        $(this).removeClass("checked");
-                });
-                $(".jaw").each(function() {
-                    if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
-                        $(this).addClass("checked");
+    
+            $("#submitDialog").click(function() {
+    
+                var teethSelectedAsArr = $("[name='" + lstSelectedJobUNName + "']").val().split(',');
+                var jobTypeBoxName = repeaterName + "[jobType]";
+                var selectBtnName = repeaterName + "[openDialogBtn]";
+    
+                var jobTypeBox = $("[name='" + jobTypeBoxName + "']");
+                var jobTypes = {!! json_encode($types->toArray()) !!};
+                var colorsDDName = repeaterName + "[color]";
+                var styleOptionsName = repeaterName + "[style]";
+                /* Updating dropdowns according to teeth selection
+                 * First if is for jaws, second is for teeth
+                 * @Yazan -
+                 */
+                if (jQuery.inArray("lower", teethSelectedAsArr) !== -1 || jQuery.inArray("upper",
+                        teethSelectedAsArr) !== -1) {
+                    // clear all options
+                    jobTypeBox.empty();
+                    // filter all job types to only jaws.
+                    var jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 1);
+                    // fill up the options with the array above.
+                    $.each(jawOnlyTypes, function(key, value) {
+                        jobTypeBox.append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.name));
+                    });
+                    // Notify Job type changed function to update materials with which box changed
+                    jobTypeChanged(jobTypeBox);
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().hide();
+    
+                    // set style to none (prevent back-end errors) and hide it
+                    $("[name='" + styleOptionsName + "']").val('None');
+                    $("[name='" + styleOptionsName + "']").parent().parent().parent().hide();
+    
+                }
+    
+                // No jaws selected
+                else {
+                    jobTypeBox.empty();
+                    const jawOnlyTypes = jobTypes.filter(element => element.teeth_or_jaw == 0);
+                    $.each(jawOnlyTypes, function(key, value) {
+                        jobTypeBox.append($("<option></option>")
+                            .attr("value", value.id)
+                            .text(value.name));
+                    });
+                    $("[name='" + styleOptionsName + "']").parent().parent().parent().show();
+                    $("[name='" + colorsDDName + "']").parent().parent().parent().show();
+                    if (teethSelectedAsArr.length > 1)
+                        $("[name='" + styleOptionsName + "'][value='Bridge']").prop("checked", true);
                     else
-                        $(this).removeClass("checked");
-                });
-            } else {
-                $(".teeth").removeClass("checked");
-                $(".jaw").removeClass("checked");
+                        $("[name='" + styleOptionsName + "'][value='Single']").prop("checked", true);
+                    // Notify Job type changed function to update materials with which box changed
+                    jobTypeChanged(jobTypeBox);
+    
+                }
+    
+                // Change button label with selected teeth
+                if (teethSelectedAsArr.length > 0)
+                    $("[name='" + selectBtnName + "']").html(teethSelectedAsArr.join(","));
+                else
+                    $("[name='" + selectBtnName + "']").html("Select Units");
+    
+    
+                $("[name='" + colorsDDName + "']").val($("[name='" + colorsDDName + "'] option:first").val());
+    
+                // close dialog
+                $("#unitsDialog").modal('hide');
+    
+                // Remove focus from the save button to prevent aria-hidden issues
+                $("#submitDialog").blur();
+    
+                // Ensure all modal backdrops are removed and body classes are cleaned up
+                setTimeout(function() {
+                    $('.modal-backdrop').remove();
+                    $('body').removeClass('modal-open');
+                    $('body').css('padding-right', '');
+                }, 300);
+    
+            });
+    
+    
+            $(document).on('click', '.teeth', function() {
+    
+                // Check if any jaws is selected, if any remove them from array
+                if (jQuery.inArray("upper", teethSelected) !== -1) {
+                    const jawIndex = teethSelected.indexOf("upper");
+                    teethSelected.splice(jawIndex, 1);
+                }
+                if (jQuery.inArray("lower", teethSelected) !== -1) {
+                    const jawIndex = teethSelected.indexOf("lower");
+                    teethSelected.splice(jawIndex, 1);
+                }
+    
+                // remove the light of the jaws buttons
+                var list = $('.jaw');
+                list.removeClass("checked");
+    
+    
+                //if not pre selected light up the teeth and add it to array
+                if ($(this).hasClass("checked")) {
+                    $(this).removeClass("checked");
+                    var teethNumber = $(this).attr("alt");
+                    const index = teethSelected.indexOf(teethNumber);
+    
+                    if (index > -1) {
+                        teethSelected.splice(index, 1);
+                    }
+    
+                    // remove the selection if previously selected
+                } else {
+                    var teethNumber = $(this).attr("alt");
+                    teethSelected.push(teethNumber);
+                    $(this).addClass("checked");
+                    // console.log("Added a teeth" + teethSelected);
+                }
+    
+                //console.log("Updating units input : "  + teethSelected);
+    
+                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+            });
+            $(document).on('click', '.jaw', function() {
+    
+                if ($(this).hasClass("checked")) {
+                    $(this).removeClass("checked");
+                    var jaw = $(this).attr("alt");
+                    const index = teethSelected.indexOf(jaw);
+    
+                    if (index > -1) {
+                        teethSelected.splice(index, 1);
+                    }
+                    var unitNumsBox = $("[id=units]:last").attr("name");
+                    $("[name='" + unitNumsBox + "']").val(teethSelected);
+    
+                } else {
+    
+                    var jaw = $(this).attr("alt");
+                    // add visuall selection to the jaw the selection
+                    $(this).addClass("checked");
+    
+                    // remove visual selection of all teeth if a jaw is selected
+                    var list = $('.teeth');
+                    list.removeClass("checked");
+    
+                    // remove all selected teeth
+                    for (var index = 0; index <= teethSelected.length; index++) {
+                        if (teethSelected[index] != "lower" && teethSelected[index] != "upper") {
+                            teethSelected.splice(index);
+                        }
+                    }
+                    // add selected jaw to the array and update value
+                    teethSelected.push(jaw);
+    
+    
+                }
+    
+                $("[name='" + lstSelectedJobUNName + "']").val(teethSelected);
+            });
+    
+            function preOpenDialog(element) {
+                // if repeater reached 2 digit or not
+                if (element.name.length == 24) {
+                    lstSelectedJobUNName = element.name.substr(0, 9) + "[units]";
+                    repeaterName = element.name.substr(0, 9);
+                } else {
+                    repeaterName = element.name.substr(0, 10);
+                    lstSelectedJobUNName = element.name.substr(0, 10) + "[units]";
+                }
+                var currentJobUnits = $("[name='" + lstSelectedJobUNName + "']");
+                // console.log("Current job units box name :" + element.name.substr(0,9) +  "[units]");
+                if (typeof currentJobUnits !== "undefined" && currentJobUnits.val()) {
+                    teethSelected = currentJobUnits.val().split(',');
+                    // console.log("is defined and its now : " + teethSelected);
+                } else {
+                    // console.log("NOT defined,cleared");
+                    teethSelected = [];
+                }
+                if (teethSelected.length !== 0) {
+                    var teethPreSelected = currentJobUnits.val().split(',');
+                    // console.log("Lighting up : " + teethPreSelected);
+                    // light on and off according to the pre selected
+                    $(".teeth").each(function() {
+                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1) {
+                            // console.log("true");
+                            $(this).addClass("checked");
+                        } else
+                            $(this).removeClass("checked");
+                    });
+                    $(".jaw").each(function() {
+                        if (jQuery.inArray($(this).attr("alt"), teethPreSelected) !== -1)
+                            $(this).addClass("checked");
+                        else
+                            $(this).removeClass("checked");
+                    });
+                } else {
+                    $(".teeth").removeClass("checked");
+                    $(".jaw").removeClass("checked");
+                }
             }
-        }
-    </script>
-    <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
-    {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
-    {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
-    {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
-
-    <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
-@endpush
+        </script>
+        <script src="{{ asset('assets/js/jquery.imagesloader-1.0.1.js') }}"></script>
+        {{-- <script src="{{asset('assets/js/jquery.repeater.js')}}" defer></script> --}}
+        {{-- <script src="{{asset('assets/js/jquery.repeater.min.js')}}" defer></script> --}}
+        {{-- <script src="{{asset('assets/js/jquery.repeater3.min.js')}}" defer></script> --}}
+    
+        <script src="{{ asset('assets/js/lightgallery.js') }}"></script>
+    @endpush
+    

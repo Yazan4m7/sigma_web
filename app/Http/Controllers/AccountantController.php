@@ -63,15 +63,15 @@ class AccountantController extends Controller
 
     public function receivablePayments(Request $request){
         if ($request->from && $request->to) {
-            $from = $request->from ;
-            $to = $request->to ;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
             $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';
             $to = now()->toDateString(). ' 23:59';
         }
         if ($request->doctor && !in_array( "all",$request->doctor))
-            $payments = payment::whereBetween('created_at', [$from, $to . ' 23:59'])->whereIn('doctor_id',$request->doctor)->get();
+            $payments = payment::whereBetween('created_at', [$from, $to])->whereIn('doctor_id',$request->doctor)->get();
         else
             $payments = payment::whereBetween('created_at', [$from, $to ])->get();
         $selectedClients = $request->doctor;
@@ -95,8 +95,8 @@ class AccountantController extends Controller
 
     public function paymentsWithCollectors(Request $request){
         if ($request->from && $request->to) {
-            $from = $request->from ;
-            $to = $request->to ;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
             $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';

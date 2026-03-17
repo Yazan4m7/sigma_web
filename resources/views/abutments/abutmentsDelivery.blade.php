@@ -27,7 +27,7 @@
         }
     </style>
     @php
-        $permissions = Cache::get('user'.Auth()->user()->id);
+        $permissions = safe_permissions();
 
     @endphp
     <form class="kt-form" method="GET" action="{{route('abutments-delivery-index')}}">
@@ -35,14 +35,31 @@
             <div class="row " style="padding-bottom:0">
                 <div class=" col-sm-6 col-md-3 mb-3">
                     <div class="kt-subheader__search" style="">
-                        <label>From (Start of):</label>
-                        <input type="date" class="form-control" name="from" value="{{$from}}">
-                    </div>
+                        <label for="abutments_from">From (Start of):</label>
+                        <x-ios-dtp name="from" id="abutments_from" :value=" \Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                        <input class="form-control SDTP"--}}
+{{--                               id="abutments_from"--}}
+{{--                               name="from"--}}
+{{--                               type="text"--}}
+{{--                               value="{{ \Carbon\Carbon::parse($from)->format('d M, YYYY') }}"--}}
+{{--                               required=""--}}
+{{--                               readonly=""--}}
+{{--                        >    --}}
+  </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                     <div class="kt-subheader__search" style="">
-                        <label>To (End of):</label>
-                        <input type="date" class="form-control" name="to" value="{{$to}}">
+                        <label for="abutments_to">To (End of):</label>
+                        <x-ios-dtp name="to" id="abutments_to" :value="\Carbon\Carbon::parse($to)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                        <input class="form-control SDTP"--}}
+{{--                               id="abutments_to"--}}
+{{--                               name="to"--}}
+{{--                               type="text"--}}
+{{--                               value="{{ \Carbon\Carbon::parse($to)->format('d M, YYYY') }}"--}}
+{{--                               required=""--}}
+{{--                               readonly=""--}}
+{{--                        > --}}
+
                     </div>
                 </div>
 
@@ -126,13 +143,13 @@
 
                         </tr>
                         <!-- ACTIONS DIALOG -->
-                        <div class="modal fade" tabindex="-1" role="dialog" id="actionsDialog{{$item->id}}">
+                        <div class="modal fade sigma-modal--abutments-delivery-actions" tabindex="-1" role="dialog" id="actionsDialog{{$item->id}}">
 
                             <input type="hidden" name="case_id" value="{{$item->id}}">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title">Case Actions</h5>
+
 
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
@@ -241,7 +258,7 @@
                         </div>
 
                         <!-- RECEIVE ABUTMENTS DIALOG -->
-                        <div class="modal fade" tabindex=" " role="dialog" id="receiveAbuts{{$item->id}}">
+                        <div class="modal fade sigma-modal--abutments-delivery-receive" tabindex=" " role="dialog" id="receiveAbuts{{$item->id}}">
                             <input type="hidden" name="case_id" value="{{$item->id}}">
                             <form action="{{route('receive-abutments')}}"
                                   method="POST">

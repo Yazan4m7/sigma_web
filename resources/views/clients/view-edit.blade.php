@@ -68,15 +68,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="example-tel-input" class="col-2 col-form-label">Doctor Mobile Application Password</label>
+                    <label for="doc_password" class="col-2 col-form-label">Doctor Mobile Application Password</label>
                     <div class="col-10">
-                        <input class="form-control" type="tel" name="doc_password" id="example-tel-input" >
+                        <input class="form-control" type="password" name="doc_password" id="doc_password" placeholder="New password (leave empty to keep current)">
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="example-tel-input" class="col-2 col-form-label">Clinic Mobile Application Password</label>
+                    <label for="clinic_password" class="col-2 col-form-label">Clinic Mobile Application Password</label>
                     <div class="col-10">
-                        <input class="form-control" type="tel" name="clinic_password" id="example-tel-input" >
+                        <input class="form-control" type="password" name="clinic_password" id="clinic_password" placeholder="New password (leave empty to keep current)">
                     </div>
                 </div>
                 <div class="form-group">

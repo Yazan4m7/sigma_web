@@ -1,38 +1,35 @@
 
 <div class="sidebar">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,1,0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,200,1,0" crossorigin="anonymous" />
 
     @php
         $permissions = Cache::get('user'.Auth()->user()->id);
     @endphp
     <div class="sidebar-wrapper">
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <div class="logo">
+                <!-- Pin Button - Outside the link -->
+                <button type="button" id="sidebar-pin-btn" class="sidebar-pin-button" title="Pin sidebar">
+                    <i class="fa fa-thumbtack"></i>
+                </button>
+
+                <a href="{{ route('home') }}" class="simple-text logo-normal">
+                    <img src="{{ asset('assets') }}/images/logo_horiz.svg" alt="SIGMA Logo" class="logo-expanded" />
+                    <img src="{{ asset('assets') }}/images/green.png" alt="SIGMA Logo Compact" class="logo-collapsed" />
+                </a>
+            </div>
+        </div>
 
         <ul class="nav">
 
-                @if(($permissions && $permissions->contains('permission_id', 123)) || Auth()->user()->is_admin)
-                    <div class="homePageOptionInSideBar" style="padding:0;">
 
-                        <li class="{{Route::currentRouteName() == 'home' ? 'active' : ''}}" >
-                                                            <a style="
-                                    margin-right: 0px;
-                                    padding-right: 0px !important;
-                                     padding-left: 0px !important;
-                                " href="{{route('home')}}">
-                                <i class="fa-solid fa-house"></i>
-                                <span>Home Screen</span>
-                            </a>
-                            <hr style="border-color:#b4b4b4;margin-top: 0.5rem;margin-bottom: 0.5rem;">
-                    </div>
-
-                @endif
                     @if(($permissions && $permissions->contains('permission_id', 106)) || Auth()->user()->is_admin)
                         <div class="" style="padding:0" >
 
                              <li class="{{Route::currentRouteName() == 'admin-dashboard-v2' ? 'active' : ''}}" >
                                 <a href="{{route('admin-dashboard-v2')}}" style=" margin-right: 0px;">
-                                    <span class="material-symbols-outlined googleIconInSideBar">
-                                    dashboard
-                                    </span>
+                                    <i class="fas fa-project-diagram"></i>
                                     <span>OPERATIONS DASHBOARD</span>
                                 </a>
 
@@ -66,20 +63,20 @@
                 @if(($permissions && $permissions->contains('permission_id', 109)) || Auth()->user()->is_admin)
                     <li class="{{Route::currentRouteName() == 'delivery-schedule' ? 'active' : ''}}"><a href="{{route('delivery-schedule')}}"> <i class="fa-regular fa-clock"></i> <span>Delivery Schedule</span></a>
                 @endif
-                @if(($permissions && $permissions->contains('permission_id', 9)) || Auth()->user()->is_admin)
-                    <li class="{{Route::currentRouteName() == 'deli-cases-accountant-index' ? 'active' : ''}}"><a href="{{route('deli-cases-accountant-index')}}"><i class="fa fa-car" aria-hidden="true"></i>Delivery Monitor</a></li>
-                @endif
+{{--                @if(($permissions && $permissions->contains('permission_id', 9)) || Auth()->user()->is_admin)--}}
+{{--                    <li class="{{Route::currentRouteName() == 'deli-cases-accountant-index' ? 'active' : ''}}"><a href="{{route('deli-cases-accountant-index')}}"><i class="fa fa-car" aria-hidden="true"></i><span>Delivery Monitor</span></a></li>--}}
+{{--                @endif--}}
                 @if(($permissions && $permissions->contains('permission_id', 125)) || Auth()->user()->is_admin)
-                    <li class="{{Route::currentRouteName() == 'abutments-delivery-index' ? 'active' : ''}}"><a href="{{route('abutments-delivery-index')}}"><i class="fa-solid fa-bullseye"></i>Abutments Delivery</a></li>
+                    <li class="{{Route::currentRouteName() == 'abutments-delivery-index' ? 'active' : ''}}"><a href="{{route('abutments-delivery-index')}}"><i class="fa-solid fa-bullseye"></i><span>Abutments Delivery</span></a></li>
                 @endif
                 @if(($permissions && $permissions->contains('permission_id', 113)) || Auth()->user()->is_admin)
-                    <li class="{{Route::currentRouteName() == 'view-cases-monitor' ? 'active' : ''}}"><a href="{{route('view-cases-monitor')}}"><i class="fa-solid fa-table-cells-large"></i>Cases Monitor</a></li>
+                    <li class="{{Route::currentRouteName() == 'view-cases-monitor' ? 'active' : ''}}"><a href="{{route('view-cases-monitor')}}"><i class="fa-solid fa-table-cells-large"></i><span>Cases Monitor</span></a></li>
                 @endif
                 @if(($permissions && $permissions->contains('permission_id', 133)) || Auth()->user()->is_admin)
-                    <li class="{{Route::currentRouteName() == 'devices-page' ? 'active' : ''}}"><a href="{{route('devices-page')}}"><i class="fa-solid fa-desktop"></i>Devices Monitor</a></li>
+                    <li class="{{Route::currentRouteName() == 'devices-page' ? 'active' : ''}}"><a href="{{route('devices-page')}}"><i class="fa-solid fa-desktop"></i><span>Devices Monitor</span></a></li>
                 @endif
             @if(($permissions && ($permissions->contains('permission_id', 107))) || Auth()->user()->is_admin)
-                <li class="{{Route::currentRouteName() == 'clients-index' ? 'active' : ''}}" ><a href="{{route('clients-index')}}"><i class="fa fa-user-md"></i> <span>Doctors</span></a>
+                <li class="{{Route::currentRouteName() == 'clients-index' ? 'active' : ''}}" ><a href="{{route('clients-index')}}"><i class="fa fa-user-md" style="color: white !important;"></i> <span>Doctors</span></a>
             @endif
                     @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
                         <li class="{{Route::currentRouteName() == 'my-collections' ? 'active' : ''}}"><a href="{{route('my-collections')}}"> <i class="fa-solid fa-circle-dollar-to-slot"></i> <span>My Collections</span></a>
@@ -93,57 +90,65 @@
             @if(($permissions && $permissions->contains('permission_id', 120)) || Auth()->user()->is_admin)
                 @php
                     $reportsExpanded = in_array(Route::currentRouteName(),
-                                array('num-of-units-report',
+                                array('master-report',
+                                 'num-of-units-report',
                                  'job-types-report',
                                  'QC-report',
                                  'repeats-report',
-                                 'implants-report'))
+                                 'implants-report',
+                                 'materials-report'))
                                 ? 'true' : 'false';
                 @endphp
 
                 <li >
-                    <a data-toggle="collapse" href="#laravel-examples"
+                    <a data-sigma-toggle="submenu" data-target="#laravel-examples"
                        aria-expanded="{{$reportsExpanded}}" >
                         <i class="fab fa-laravel" ></i>
                         <span class="nav-link-text">{{ __('Reports') }}</span>
                         <b class="caret mt-1"></b>
                     </a>
 
-                    <div class="collapse{{$reportsExpanded == 'true' ? 'show' : ''}}" id="laravel-examples">
+                    <div class="sigma-submenu{{$reportsExpanded == 'true' ? ' sigma-submenu-open' : ''}}" id="laravel-examples">
                         <ul class="nav pl-4">
+                            <li class="{{Route::currentRouteName() == 'master-report' ? 'active' : ''}}" >
+                                <a href="{{route('master-report')}}">
+                                    <i class="fas fa-chart-line"></i>
+                                    <p>{{ ('Master Report') }}</p>
+                                </a>
+                            </li>
                             <li class="{{Route::currentRouteName() == 'num-of-units-report' ? 'active' : ''}}" >
                                 <a href="{{route('num-of-units-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-calculator"></i>
                                     <p>{{ ('Number Of Units') }}</p>
                                 </a>
                             </li>
                             <li class="{{Route::currentRouteName() == 'job-types-report' ? 'active' : ''}}">
                                 <a href="{{route('job-types-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-briefcase" style="color: white !important;"></i>
                                     <p>{{ ('Job Types') }}</p>
                                 </a>
                             </li>
                             <li class="{{Route::currentRouteName() == 'QC-report' ? 'active' : ''}}">
                                 <a href="{{route('QC-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-check-circle"></i>
                                     <p>{{ __('QC') }}</p>
                                 </a>
                             </li>
                             <li class="{{Route::currentRouteName() == 'repeats-report' ? 'active' : ''}}">
                                 <a href="{{route('repeats-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-redo"></i>
                                     <p>{{ ('Repeats') }}</p>
                                 </a>
                             </li>
                             <li class="{{Route::currentRouteName() == 'implants-report' ? 'active' : ''}}">
                                 <a href="{{route('implants-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-tooth"></i>
                                     <p>{{ ('Implants') }}</p>
                                 </a>
                             </li>
                             <li class="{{Route::currentRouteName() == 'materials-report' ? 'active' : ''}}">
                                 <a href="{{route('materials-report')}}">
-                                    <i class="tim-icons icon-bullet-list-67"></i>
+                                    <i class="fas fa-cubes"></i>
                                     <p>Materials Report</p>
                                 </a>
                             </li>
@@ -160,12 +165,12 @@
                                  'clients-index4payment','payments-with-collectors'));
                 @endphp
                  <li>
-                <a data-toggle="collapse" href="#accountancyList"
+                <a data-sigma-toggle="submenu" data-target="#accountancyList"
                    aria-expanded="{{$accountancyExpanded}}" >
                     <i class="fa-solid fa-dollar-sign"></i> <span class="nav-link-text">Accountancy</span>
                     <b class="caret mt-1"></b>
                 </a>
-                <div class="collapse {{$accountancyExpanded == 'true' ? 'show' : ''}}" id="accountancyList">
+                <div class="sigma-submenu {{$accountancyExpanded == 'true' ? 'sigma-submenu-open' : ''}}" id="accountancyList">
                     <ul class="nav pl-4">
                         @if(($permissions && $permissions->contains('permission_id', 104)) || Auth()->user()->is_admin)
                             <li class="{{Route::currentRouteName() == 'payments-with-collectors' ? 'active' : ''}}" >
@@ -181,7 +186,7 @@
                             <li class="{{Route::currentRouteName() == 'payments-index' ? 'active' : ''}}"><a href="{{route('payments-index')}}"><i class="fa fa-credit-card"></i> <span>Payments</span></a>
                         @endif
                         @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
-                                <li class="{{Route::currentRouteName() == 'clients-index4payment' ? 'active' : ''}}" ><a href="{{route('clients-index4payment')}}"><i class="fa fa-user-md"></i> <span>Take A Payment</span></a>
+                                <li class="{{Route::currentRouteName() == 'clients-index4payment' ? 'active' : ''}}" ><a href="{{route('clients-index4payment')}}"><i class="fa fa-user-md" style="color: white !important;"></i> <span>Take A Payment</span></a>
                         @endif
                     </ul>
                 </div>
@@ -201,23 +206,28 @@
                                  'devices-index',
                                  'sys-config',
                                  'configuration.index',
-                                 'media-index'))
+                                 'media-index',
+                                 'audit-logs.index',
+                                 'tools.invoice-check',
+                                 'tools.create-case',
+                                 'tools.page-load-tester',
+                                 'admin.case.timeline'))
                                 ? 'true' : 'false';
                 @endphp
 
                 <li>
-                    <a data-toggle="collapse" href="#configList"
+                    <a data-sigma-toggle="submenu" data-target="#configList"
                        aria-expanded="{{$configExpanded}}" >
                         <i class="fa-solid fa-gear" ></i>
                         <span class="nav-link-text">Configuration</span>
                         <b class="caret mt-1"></b>
                     </a>
 
-                    <div class="collapse {{$configExpanded == 'true' ? 'show' : ''}}" id="configList">
+                    <div class="sigma-submenu {{$configExpanded == 'true' ? 'sigma-submenu-open' : ''}}" id="configList">
                     <ul class="nav pl-4">
                     <li class="{{Route::currentRouteName() == ' media-index' ? 'active' : ''}}"><a href="{{route('media-index')}}"><i class="fa-solid fa-video"></i> <span>Gallery Media</span></a>
                     <li class="{{Route::currentRouteName() == 'material-index' ? 'active' : ''}}"><a href="{{route('material-index')}}"><i class="fa fa-cubes"></i> <span>Materials</span></a>
-                    <li class="{{Route::currentRouteName() == 'job-type-index' ? 'active' : ''}}"><a href="{{route('job-type-index')}}"><i class="fa fa-object-group" aria-hidden="true"></i> <span>Job Types</span></a>
+                    <li class="{{Route::currentRouteName() == 'job-type-index' ? 'active' : ''}}"><a href="{{route('job-type-index')}}"><i class="fa fa-object-group" style="color: white !important;" aria-hidden="true"></i> <span>Job Types</span></a>
                     <li class="{{Route::currentRouteName() == 'users-index' ? 'active' : ''}}"><a href="{{route('users-index')}}"><i class="fa fa-users"></i> <span>Users</span></a>
                     <li class="{{Route::currentRouteName() == 'labs-index' ? 'active' : ''}}"><a href="{{route('labs-index')}}"><i class="fa fa-building"></i> <span>External Labs</span></a>
                     <li class="{{Route::currentRouteName() == 'implants-index' ? 'active' : ''}}"><a href="{{route('implants-index')}}"><i class="fa-solid fa-tooth"></i> <span>Implants</span></a>
@@ -225,8 +235,55 @@
                     <li class="{{Route::currentRouteName() == 'tags-index' ? 'active' : ''}}"><a href="{{route('tags-index')}}"><i class="fa fa-tag"></i><span>Tags</span></a>
                     <li class="{{Route::currentRouteName() == 'f-causes-index' ? 'active' : ''}}"><a href="{{route('f-causes-index')}}"><i class="fa-solid fa-repeat"></i><span>Failure Causes</span></a>
                     <li class="{{Route::currentRouteName() == 'devices-index' ? 'active' : ''}}"><a href="{{route('devices-index')}}"><i class="fa-solid fa-tachograph-digital"></i><span>Devices</span></a>
-                    <li class="{{Route::currentRouteName() == 'configuration.index' ? 'active' : ''}}"><a href="{{route('configuration.index')}}"><i class="fa-solid fa-screwdriver-wrench"></i><span>System Configuration</span></a>
-
+                    <li>
+                        <a data-sigma-toggle="submenu" data-target="#toolsList" aria-expanded="false">
+                            <i class="fa-solid fa-screwdriver-wrench"></i>
+                            <span class="nav-link-text">Tools</span>
+                            <b class="caret mt-1"></b>
+                        </a>
+                        <div class="sigma-submenu" id="toolsList">
+                            <ul class="nav pl-4">
+                                <li class="{{Route::currentRouteName() == 'audit-logs.index' ? 'active' : ''}}">
+                                    <a href="{{route('audit-logs.index')}}">
+                                        <i class="fa fa-user-secret"></i>
+                                        <p>Audit Log</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.invoice-check' ? 'active' : ''}}">
+                                    <a href="{{route('tools.invoice-check')}}">
+                                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                                        <p>Invoices Check</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.create-case' ? 'active' : ''}}">
+                                    <a href="{{route('tools.create-case')}}">
+                                        <i class="fa-solid fa-plus-square"></i>
+                                        <p>Create Case</p>
+                                    </a>
+                                </li>
+                                <li class="{{Route::currentRouteName() == 'tools.page-load-tester' ? 'active' : ''}}">
+                                    <a href="{{route('tools.page-load-tester')}}">
+                                        <i class="fa-solid fa-gauge-high"></i>
+                                        <p>Page Load Tester</p>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" onclick="openCaseTimeline()">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <p>Case Timeline</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <script>
+                        function openCaseTimeline() {
+                            const caseId = prompt('Enter Case ID to view timeline:');
+                            if (caseId && caseId.trim() !== '') {
+                                window.location.href = '/admin/case/' + caseId.trim() + '/timeline';
+                            }
+                        }
+                    </script>
                     </ul>
                     </div>
                 </li>
@@ -236,5 +293,3 @@
         </ul>
     </div>
 </div>
-
-

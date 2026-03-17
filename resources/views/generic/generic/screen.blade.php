@@ -201,19 +201,19 @@
                                                             else
                                                             $employee= null;
                                                             @endphp
-                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-primary">
+                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-primary sigma-status-width">
                                                                <span> {{$employee != null ? $employee->name_initials : "N/A"}}
                                                                </span></span>
                                                         @elseif(str_contains($case->statusAt($stage), "Assigned"))
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-warning">
+                                                                  class="badge badge-warning sigma-status-width">
                                                         Assigned</span>
 
                                                         @elseif(str_contains($case->statusAt($stage), "Waiting"))
-                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-danger">
+                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-danger sigma-status-width">
                                                         {{$case->statusAt($stage)}}</span>
                                                         @else
-                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-info">
+                                                            <span style="width:auto; margin: auto; text-align: center" class="badge badge-info sigma-status-width">
                                                              {{$case->statusAt($stage)}} </span>
 
                                                         @endif

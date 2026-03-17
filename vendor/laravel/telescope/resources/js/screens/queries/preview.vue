@@ -1,7 +1,7 @@
 <script type="text/ecmascript-6">
 import hljs from 'highlight.js/lib/core';
 import sql from 'highlight.js/lib/languages/sql';
-import { format } from 'sql-formatter';
+import { format, supportedDialects } from 'sql-formatter';
 
 hljs.registerLanguage('sql', sql);
 
@@ -12,8 +12,24 @@ export default {
                 hljs.highlightElement(this.$refs.sqlcode);
             });
         },
-        formatSql(sql) {
-            return format(sql);
+        formatSql(sql, driver) {
+            let formatterConfig = {};
+
+            if (driver) {
+                if (driver === 'pgsql') {
+                    driver = 'postgresql';
+                }
+
+                if (driver === 'sqlsrv') {
+                    driver = 'transactsql';
+                }
+
+                if (supportedDialects.includes(driver)) {
+                    formatterConfig = {language: driver};
+                }
+            }
+
+            return format(sql, formatterConfig);
         }
     }
 }
@@ -54,8 +70,8 @@ export default {
                     </li>
                 </ul>
                 <div class="code-bg p-4 mb-0 text-white">
-                    <copy-clipboard :data="formatSql(slotProps.entry.content.sql)">
-                        <pre class="code-bg text-white" ref="sqlcode">{{ formatSql(slotProps.entry.content.sql) }}</pre>
+                    <copy-clipboard :data="formatSql(slotProps.entry.content.sql, slotProps.entry.content.driver)">
+                        <pre class="code-bg text-white" ref="sqlcode">{{ formatSql(slotProps.entry.content.sql, slotProps.entry.content.driver) }}</pre>
                     </copy-clipboard>
                 </div>
             </div>

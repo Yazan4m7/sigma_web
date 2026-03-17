@@ -17,6 +17,7 @@ use App\UserPermission;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Traits\helperTrait;
 use App\client;
 use App\material;
 use App\JobType;
@@ -33,7 +34,8 @@ use App\caseLog;
 use App\User;
 use App\lab;
 use App\editLog;
-use App\Http\Traits\helperTrait;
+use App\Services\AuditLogger;
+
 use Illuminate\Support\Facades\Auth;
 use Faker\Factory as Faker;
 use Log;
@@ -42,10 +44,14 @@ use App\Http\Controllers\OperationsUpgrade;
 
 class CaseController extends Controller
 {
+    use helperTrait;
+
     public function __construct()
     {
 
     }
+
+    use helperTrait;
 
     public function devicesPage()
     {
@@ -83,10 +89,10 @@ class CaseController extends Controller
 
             // Special handling for 3D printing builds (same as operations dashboard)
             if ($deviceType == 3) {
-                $deviceUnitsCounts[$deviceId]['waitingBuilds'] = Build::where('printer_id', $deviceId)
+                $deviceUnitsCounts[$deviceId]['waitingBuilds'] = Build::where('device_used', $deviceId)
                     ->whereNotNull('set_at')->whereNull('finished_at')->whereNull('started_at')->count();
 
-                $deviceUnitsCounts[$deviceId]['activeBuilds'] = Build::where('printer_id', $deviceId)
+                $deviceUnitsCounts[$deviceId]['activeBuilds'] = Build::where('device_used', $deviceId)
                     ->whereNotNull('set_at')->whereNotNull('started_at')->whereNull('finished_at')->count();
             }
         }
@@ -103,10 +109,10 @@ class CaseController extends Controller
             'jobs.implantR:id,name',
             'jobs.abutmentR:id,name'
         ])
-        ->whereHas('jobs', function ($q) {
-            $q->whereIn('stage', [2, 3, 4, 5]); // Only device-using stages
-        })
-        ->get();
+            ->whereHas('jobs', function ($q) {
+                $q->whereIn('stage', [2, 3, 4, 5]); // Only device-using stages
+            })
+            ->get();
 
         // Add stage configuration for dialog components
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
@@ -129,6 +135,7 @@ class CaseController extends Controller
             \DB::transaction(function () use ($deviceIds) {
                 foreach ($deviceIds as $index => $deviceId) {
                     device::where('id', $deviceId)->update(['sorting_order' => $index + 1]);
+
                 }
             });
 
@@ -139,30 +146,26 @@ class CaseController extends Controller
     }
 
 
-
-
-    use helperTrait;
-
     // Sub-stage action mapping for main manufacturing stages
     private array $stageActions = [
         // Milling
-        'MILLING_SET'      => 2.1,
-        'MILLING_START'    => 2.2,
+        'MILLING_SET' => 2.1,
+        'MILLING_START' => 2.2,
         'MILLING_COMPLETE' => 2.3,
         // 3D Printing
-        'PRINTING_SET'      => 3.1,
-        'PRINTING_START'    => 3.2,
+        'PRINTING_SET' => 3.1,
+        'PRINTING_START' => 3.2,
         'PRINTING_COMPLETE' => 3.3,
-        // Sintering
-        'SINTERING_SET'      => 4.1,
-        'SINTERING_START'    => 4.2,
-        'SINTERING_COMPLETE' => 4.3,
-        // Pressing
-        'PRESSING_START'    => 5.1,
-        'PRESSING_COMPLETE' => 5.2,
+        // Sintering (2 logs: START, COMPLETE)
+        'SINTERING_START' => 4.1,
+        'SINTERING_COMPLETE' => 4.2,
+        // Pressing (3 logs: SET, START, COMPLETE)
+        'PRESSING_SET' => 5.1,
+        'PRESSING_START' => 5.2,
+        'PRESSING_COMPLETE' => 5.3,
         // Delivery
-        'DELIVERY_ASSIGN'   => 8.1,
-        'DELIVERY_ACCEPT'   => 8.2,
+        'DELIVERY_ASSIGN' => 8.1,
+        'DELIVERY_ACCEPT' => 8.2,
         'DELIVERY_COMPLETE' => 8.3,
     ];
 
@@ -179,50 +182,82 @@ class CaseController extends Controller
             $from = date('Y-m-d', strtotime('first day of this month'));
             $to = now()->toDateString();
         }
+//        dd($from,$to);
 
-        // Determine which date column to filter by
-        $dateColumn = 'created_at'; // Default
-        if ($request->date_column) {
-            if (in_array($request->date_column, ['initial_delivery_date', 'actual_delivery_date', 'created_at'])) {
-                $dateColumn = $request->date_column;
-            }
-        }
+        // Build query for IN-PROGRESS cases (NO date filter, only doctor filter)
+        $inProgressQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
+            ->whereNull('actual_delivery_date');  // In-progress cases (stage != 8)
 
-        // Build query based on selected doctors
-        $query = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at'])
-            ->whereBetween($dateColumn, [$from . ' 00:00', $to . ' 23:59']);
-
-        // Filter by doctor if specified
+        // Apply doctor filter to in-progress cases if specified
         if (isset($request->doctor) && !(isset($request->doctor[0]) && $request->doctor[0] === 'all')) {
-            $query->whereIn('doctor_id', $request->doctor);
+            $inProgressQuery->whereIn('doctor_id', $request->doctor);
         }
 
-        // Order results and limit to prevent excessive memory usage
-        $cases = $query->orderByRaw('CASE WHEN actual_delivery_date IS NULL THEN 0 ELSE 1 END, COALESCE(actual_delivery_date, initial_delivery_date)')
-            ->limit(500)
-            ->get();
+        // Build query for COMPLETED cases (filter by actual_delivery_date with date range)
+        $completedQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
+            ->whereNotNull('actual_delivery_date')  // Completed cases (stage = 8)
+            ->whereBetween('actual_delivery_date', [$from . ' 00:00', $to . ' 23:59']);  // Apply date range to completed cases
+
+        // Apply doctor filter to completed cases if specified
+        if (isset($request->doctor) && !(isset($request->doctor[0]) && $request->doctor[0] === 'all')) {
+            $completedQuery->whereIn('doctor_id', $request->doctor);
+        }
+
+        // Get both sets of cases and load relationships immediately
+        $inProgressCases = $inProgressQuery->get();
+        $completedCases = $completedQuery->get();
 
         // Load relationships using eager loading with specific columns to reduce memory usage
-        $cases->load([
+        $inProgressCases->load([
             'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
             'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
+            'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
             'jobs.subType:id,name,material_id'
         ]);
+
+        $completedCases->load([
+            'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
+            'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
+            'jobs.assignedTo:id,name_initials,first_name',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
+            'jobs.subType:id,name,material_id'
+        ]);
+
+        // Sort in-progress cases by initial_delivery_date (oldest first)
+        $inProgressCases = $inProgressCases->sortBy('initial_delivery_date')->values();
+
+        // Sort completed cases by actual_delivery_date (newest first)
+        $completedCases = $completedCases->sortByDesc('actual_delivery_date')->values();
+
+        // Merge: in-progress first, then completed
+        $cases = $inProgressCases->merge($completedCases);
+
+        // Limit to 500 total cases
+        $cases = $cases->take(500);
 
         $selectedClients = $request->doctor;
         $clients = client::select(['id', 'name'])->get();
 
         // Pass all necessary data to the view
-        return view('cases.index', compact('cases', 'from', 'to', 'selectedClients', 'clients', 'dateColumn'));
+        return view('cases.index', compact('cases', 'from', 'to', 'selectedClients', 'clients'));
     }
 
     public function view($id, $stage = -2)
     {
         $case = sCase::with([
             'jobs.jobType:id,name',
-            'jobs.material:id,name',
+            'jobs.material:id,name,count_as_unit',
             'jobs.subType:id,name,material_id'
         ])->findOrFail($id);
         $materials = material::all();
@@ -243,8 +278,8 @@ class CaseController extends Controller
     {
         $doctors = client::where('active', '!=', 0)->get();
         $materials = material::all();
-        $types = JobType::all();
-        $jobTypeMaterials = materialJobtype::all();
+        $types = JobType::select('id', 'name', 'teeth_or_jaw', 'default_material_id')->get();
+        $jobTypeMaterials = materialJobtype::select('jobtype_id', 'material_id')->get();
         $tags = tag::where('hidden', 0)->get();
         $impressionTypes = impressionType::all();
         $implants = implant::all();
@@ -255,80 +290,93 @@ class CaseController extends Controller
     // takes inputs and creates a new case
     public function returnCreate(Request $request)
     {
-        DB::beginTransaction();
-
-        /*
-        *     CASE BASIC INFO
-        */
-        $case = new sCase();
-        $case->case_id = $request->caseId1 . $request->caseId2 . $request->caseId3 . '_' . $request->caseId4;
-        $case->patient_name = $request->patient_name;
-        $case->doctor_id = $request->doctor;
-        $case->impression_type = $request->impression_type;
-        $case->initial_delivery_date = $request->delivery_date;
-        $case->created_by = Auth()->user()->id;
-        $case->save();
-
-
-        /*  SAVING TAGS  */
-
-        if ($request->tags)
-            foreach ($request->tags as $tag) {
-                $this->createTag($case, $tag);
-
+        // Simple validation for material_id
+        if ($request->repeat) {
+            foreach ($request->repeat as $index => $job) {
+                if (isset($job["units"]) && empty($job["material_id"])) {
+                    return back()->with('error', 'Please select a material for all jobs.');
+                }
             }
-        //dd($request->repeat);
-        /*  STORING JOBS */
-        if ($request->repeat)
-            foreach ($request->repeat as $job) {
-                try {
+        }
 
-                    //if(!isset($job["units"])) continue;
-                    if (isset($job["units"])) {
-                        $newJob = new job(['unit_num' => $job["units"],
-                            'type' => $job["jobType"],
-                            'color' => $job["color"],
-                            'style' => $job["style"] ?? 'None',
-                            'abutment' => $job["abutment"] ?? '0',
-                            'implant' => $job["implant"] ?? '0',
-                            'material_id' => $job["material_id"],
-                            'type_id' => $job["type_id"] ?? null,
-                            'case_id' => $case->id,
-                            'doctor_id' => $request->doctor,
-                            'stage' => 1]);
-                        $newJob->save();
-                        $newJob->unit_price = material::FindOrFail($job["material_id"])->price - ($this->getDiscount($newJob, $case) / count(explode(',', $newJob->unit_num)));
-                        $newJob->save();
-                    }
-                    if (isset($job['abutments'])) { // dd($job);
-                        foreach ($job['abutments'] as $abut) {
-                            $record = new abutmentDeliveryRecord();
-                            $record->case_id = $case->id;
-                            $record->job_id = $newJob->id;
-                            $record->abutment_id = $abut["abutment"] ?? '0';
-                            $record->implant_id = $abut["implant"] ?? '0';
-                            $record->code = $abut["abutmentCode"] ?? '0';
-                            $units = implode(',', $abut["abutmentUnits"] ?? [0]);
-                            $record->units = $units;
-                            $record->qty = count($abut["abutmentUnits"] ?? []);
-                            $record->remaining_qty = count($abut["abutmentUnits"] ?? []);
-                            if ($record->abutment_id != '0')
-                                $record->save();
-                        }
-                    }
+        try {
+            /*
+            *     CASE BASIC INFO
+            */
+            $case = new sCase();
+            $case->case_id = $request->caseId1 . $request->caseId2 . $request->caseId3 . '_' . $request->caseId4;
+            $case->patient_name = $request->patient_name;
+            $case->doctor_id = $request->doctor;
+            $case->impression_type = $request->impression_type;
+            $case->initial_delivery_date = $request->delivery_date;
+            $case->created_by = Auth()->user()->id;
+            $case->save();
 
-                } catch (\Exception $e) {
-                    $request->flash();
-                    return back()->with('error', "Something went Wrong :( ");
+
+            /*  SAVING TAGS  */
+
+            if ($request->tags)
+                foreach ($request->tags as $tag) {
+                    $this->createTag($case, $tag);
 
                 }
-                if (isset($newJob))
-                    if ($newJob->material->id != 6) {
-                        $newJob->implant = null;
-                        $newJob->abutment = null;
-                        $newJob->save();
+            //dd($request->repeat);
+            /*  STORING JOBS */
+            if ($request->repeat)
+                foreach ($request->repeat as $job) {
+                    try {
+
+                        //if(!isset($job["units"])) continue;
+                        if (isset($job["units"])) {
+                            $newJob = new job([
+                                'unit_num' => $job["units"],
+                                'type' => $job["jobType"],
+                                'color' => $job["color"],
+                                'style' => $job["style"] ?? 'None',
+                                'abutment' => $job["abutment"] ?? '0',
+                                'implant' => $job["implant"] ?? '0',
+                                'material_id' => $job["material_id"],
+                                'type_id' => $job["type_id"] ?? null,
+                                'case_id' => $case->id,
+                                'doctor_id' => $request->doctor,
+                                'stage' => 1
+                            ]);
+                            $newJob->save();
+
+                            // Set unit price based on material
+                            $newJob->unit_price = material::FindOrFail($job["material_id"])->price - ($this->getDiscount($newJob, $case) / count(explode(',', $newJob->unit_num)));
+                            $newJob->save();
+                        }
+                        if (isset($job['abutments'])) { // dd($job);
+                            foreach ($job['abutments'] as $abut) {
+                                $record = new abutmentDeliveryRecord();
+                                $record->case_id = $case->id;
+                                $record->job_id = $newJob->id;
+                                $record->abutment_id = $abut["abutment"] ?? '0';
+                                $record->implant_id = $abut["implant"] ?? '0';
+                                $record->code = $abut["abutmentCode"] ?? '0';
+                                $units = implode(',', $abut["abutmentUnits"] ?? [0]);
+                                $record->units = $units;
+                                $record->qty = count($abut["abutmentUnits"] ?? []);
+                                $record->remaining_qty = count($abut["abutmentUnits"] ?? []);
+                                if ($record->abutment_id != '0')
+                                    $record->save();
+                            }
+                        }
+
+                    } catch (\Exception $e) {
+                        return back()->with('error', "Error creating job: " . $e->getMessage());
                     }
-            }
+                    if (isset($newJob))
+                        if ($newJob->material && $newJob->material->id != 6) {
+                            $newJob->implant = null;
+                            $newJob->abutment = null;
+                            $newJob->save();
+                        }
+                }
+        } catch (\Exception $e) {
+            return back()->with('error', "Error creating case: " . $e->getMessage());
+        }
 
 
         /*
@@ -377,6 +425,19 @@ class CaseController extends Controller
 
         //DB::rollBack();
         DB::commit();
+
+        AuditLogger::log(
+            'case_created',
+            $case,
+            [
+                'case_id' => $case->id,
+                'case_number' => $case->case_id,
+                'doctor_id' => $case->doctor_id,
+                'job_count' => $case->jobs()->count(),
+            ],
+            sprintf('Case %s created', $case->case_id)
+        );
+
         return redirect('operations-dashboard')->with('success', "Case Saved Successfully!");
 //        return redirect('operations-dashboard');
 //        return back()->with('success', "Case Saved Successfully!");
@@ -442,22 +503,29 @@ class CaseController extends Controller
                     $jobId = $job["job_id"];
 
                     array_push($jobsLeftInTheForm, $jobId);
+
+                    // Validate material_id is present for existing jobs
+                    if (empty($job["material_id" . $jobId])) {
+                        throw new \Exception('Material selection is required for all jobs.');
+                    }
+
                     if (isset($job["material_id" . $jobId])) {
                         $job2 = job::where('id', $jobId)->first();
-                        $job2->update(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId],
-                            'color' => $job["color" . $jobId] ?? 'None', 'style' => $job["style" . $jobId] ?? 'None',
-                            'abutment' => $job["abutment" . $jobId] ?? '0', 'implant' => $job["implant" . $jobId] ?? '0',
-                            'material_id' => $job["material_id" . $jobId], 'type_id' => $job["type_id" . $jobId] ?? null, 'doctor_id' => $request->doctor,
-                        ]);
-                        $job2->unit_price = material::FindOrFail($job["material_id" . $jobId])->price - ($this->getDiscount($job2, $case) / count(explode(',', $job2->unit_num)));
-                        $job2->save();
-                    } else {
-                        $job2 = job::where('id', $jobId)->first();
-                        $job2->update(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId], 'color' => $job["color" . $jobId], 'style' => $job["style" . $jobId] ?? 'None', 'abutment' => null, 'implant' => null, 'material_id' => $job["material_id" . $jobId], 'type_id' => $job["type_id" . $jobId] ?? null, 'doctor_id' => $request->doctor]);
-                        $job2->unit_price = material::FindOrFail($job["material_id" . $jobId])->price - ($this->getDiscount($job2, $case) / count(explode(',', $job2->unit_num)));
-                        $job2->save();
+                        if ($job2) {
+                            $job2->unit_num = $job["units" . $jobId] ?? $job2->unit_num;
+                            $job2->type = $job["jobType" . $jobId] ?? $job2->type;
+                            $job2->color = $job["color" . $jobId] ?? 'None';
+                            $job2->style = $job["style" . $jobId] ?? 'None';
+                            $job2->abutment = $job["abutment" . $jobId] ?? '0';
+                            $job2->implant = $job["implant" . $jobId] ?? '0';
+                            $job2->material_id = $job["material_id" . $jobId];
+                            $job2->type_id = $job["type_id" . $jobId] ?? null;
+                            $job2->doctor_id = $request->doctor;
+                            $job2->unit_price = material::FindOrFail($job["material_id" . $jobId])->price - ($this->getDiscount($job2, $case) / count(explode(',', $job2->unit_num)));
+                            $job2->save();
+                        }
                     }
-                }
+}
             //dd( $case->jobs()->whereNotIn('id',$jobsLeftInTheForm)->get());
             // if no jobs left in the repeater, delete all jobs
             // if(!$request->repeat)
@@ -481,6 +549,11 @@ class CaseController extends Controller
                     if (isset($job["units"])) {
                         $i++;
 
+                        // Validate material_id is present before creating job
+                        if (empty($job["material_id"])) {
+                            throw new \Exception('Material selection is required for all new jobs.');
+                        }
+
                         $newJob = new job();
                         $newJob->unit_num = $job["units"];
                         $newJob->type = $job["jobType"];
@@ -497,14 +570,9 @@ class CaseController extends Controller
                         if ($this->isCaseFinished($case->id)) {
                             $newJob->stage = -1;
                             $newJob->save();
-                        }
-//                    else if (!isset($job['autoStageDetect']) && isset($job["newJobStage"]) && $job["newJobStage"] != 0) {
-//                        $newJob->stage = $job["newJobStage"];
-//                       // dd($job["newJobStage"]);
-//
-//
-                        else {
-                            $newJob->stage = $this->lowestJobStageApplicable($newJob, $case->id);
+                        } else {
+                            // Always set new jobs to Design stage (stage 1)
+                            $newJob->stage = 1;
                             $newJob->save();
                         }
 
@@ -590,6 +658,19 @@ class CaseController extends Controller
                 $this->reflectCaseChanges($request->id);
                 $debug = "invoice updated";
             }
+
+            $case->refresh();
+            AuditLogger::log(
+                'case_updated',
+                $case,
+                [
+                    'case_id' => $case->id,
+                    'case_number' => $case->case_id,
+                    'doctor_id' => $case->doctor_id,
+                ],
+                sprintf('Case %s updated', $case->case_id)
+            );
+
             return back()->with('success', 'Case has been updated successfully ');
         } else {
             return back()->with('error', 'Something went wrong');
@@ -652,9 +733,11 @@ class CaseController extends Controller
     public function employeeDashboard($stage)
     {
 
-        $drivers = User::whereHas('permissions', function ($q) {
-            $q->whereIn('permission_id', array(8));
-        })->orWhere("is_admin", 1)->get();
+        $drivers = User::where('status', 1)->where(function ($query) {
+            $query->whereHas('permissions', function ($q) {
+                $q->whereIn('permission_id', array(8));
+            })->orWhere("is_admin", 1);
+        })->get();
 
         // Delivery dashboard
         if ($stage == 8) {
@@ -667,10 +750,10 @@ class CaseController extends Controller
 
             // Add cases where a job has delivery_assignee equal to current user
             $jobsWithDeliveryAssignee = job::where('delivery_assignee', Auth()->user()->id)
-                                          ->whereNull('delivery_accepted')
-                                          ->where('stage', 8)
-                                          ->pluck('case_id')
-                                          ->toArray();
+                ->whereNull('delivery_accepted')
+                ->where('stage', 8)
+                ->pluck('case_id')
+                ->toArray();
 
             // Combine both arrays and remove duplicates
             $assignedCaseIds = array_unique(array_merge($jobsAssignedToMe, $jobsWithDeliveryAssignee));
@@ -701,9 +784,11 @@ class CaseController extends Controller
         }
 
         if ($stage == 7) {
-            $drivers = User::whereHas('permissions', function ($q) {
-                $q->whereIn('permission_id', array(8));
-            })->orWhere("is_admin", 1)->get();
+            $drivers = User::where('status', 1)->where(function ($query) {
+                $query->whereHas('permissions', function ($q) {
+                    $q->whereIn('permission_id', array(8));
+                })->orWhere("is_admin", 1);
+            })->get();
             return view('generic.emp-cases', compact('activeCases', 'waitingCases', 'stage', 'jobs', 'drivers'));
         }
         if ($stage == 2) {
@@ -718,7 +803,7 @@ class CaseController extends Controller
     {
 
         if (!Cache::has('user' . Auth::user()->id)) {
-            $permissions =  UserPermission::where('user_id', Auth::user()->id)->get();
+            $permissions = UserPermission::where('user_id', Auth::user()->id)->get();
             Cache::forever('user' . Auth::user()->id, $permissions);
         }
     }
@@ -738,7 +823,9 @@ class CaseController extends Controller
         $startTime = microtime(true);
 
         // Cache key for dashboard data (5-minute cache)
-        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user');
+        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user') . '_v2';
+        $devices = collect();
+        $deviceUnitsCounts = [];
 
         // Try to get data from cache first
         if (Cache::has($cacheKey)) {
@@ -767,125 +854,135 @@ class CaseController extends Controller
                 'tags.originalTagRecord:id,text,color,icon',
                 'notes.writtenBy:id,name_initials'
             ])
-            ->whereHas('jobs', function ($q) {
-                $q->whereIn('stage', [1, 2, 3, 4, 5, 6, 7, 8]);
-            })
-            ->get();
+                ->whereHas('jobs', function ($q) {
+                    $q->whereIn('stage', [1, 2, 3, 4, 5, 6, 7, 8]);
+                })
+                ->get();
 
             // Apply different queries for admin vs normal users
+            // Helper: Check if job is a primary/main unit (not accessory like 3D Model)
+            $isPrimaryJob = fn($job) => !$job->jobType || $job->jobType->a_secondary_item != 1;
+
             if ($isAdmin) {
-                // Optimized: Filter from single collection instead of multiple DB queries
-                $aDesign = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 1)->where('is_active', 1)->isNotEmpty();
+                // Optimized: Filter from single collection - only consider PRIMARY jobs
+                $aDesign = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aMilling = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 2)->where('is_set', 1)->isNotEmpty();
+                $aMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 2)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
                 $aPrinting = $allCases->filter(function ($case) {
+                    // Stage 3 must include all printable jobs, including secondary items (e.g., model prints).
                     return $case->jobs->where('stage', 3)->filter(function ($job) {
                         return $job->is_set == 1 || $job->is_active == 1 || !is_null($job->printing_build_id);
                     })->isNotEmpty();
                 });
 
-                $aSintering = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 4)->where('is_set', 1)->isNotEmpty();
+                $aSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aPressing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 5)->where('is_set', 1)->isNotEmpty();
+                $aPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aFinishing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 6)->whereNotNull('assignee')->where('is_active', 1)->isNotEmpty();
+                $aFinishing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aQC = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 7)->whereNotNull('assignee')->where('is_active', 1)->isNotEmpty();
+                $aQC = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->whereNotNull('assignee')->isNotEmpty();
                 });
 
-                $aDelivery = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 8)->whereNotNull('delivery_accepted')->isNotEmpty();
+                $aDelivery = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->whereNotNull('delivery_accepted')->isNotEmpty();
                 });
             } else {
-                // Optimized: User-specific queries using collection filtering
-                $aDesign = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 1)->where('assignee', $currentUserId)->where('is_active', 1)->isNotEmpty();
+                // Optimized: User-specific queries - only consider PRIMARY jobs
+                $aDesign = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aMilling = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 2)->where('is_set', 1)->isNotEmpty();
+                $aMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 2)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
                 $aPrinting = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 3)->where('is_set', 1)->isNotEmpty();
+                    // Stage 3 must include all printable jobs, including secondary items (e.g., model prints).
+                    return $case->jobs->where('stage', 3)->filter(function ($job) {
+                        return $job->is_set == 1 || $job->is_active == 1 || !is_null($job->printing_build_id);
+                    })->isNotEmpty();
                 });
 
-                $aSintering = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 4)->where('is_set', 1)->isNotEmpty();
+                $aSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aPressing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 5)->where('is_set', 1)->isNotEmpty();
+                $aPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->where('is_set', 1)->isNotEmpty();
                 });
 
-                $aFinishing = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 6)->where('is_active', 1)->isNotEmpty();
+                // Non-admin users only see their own assigned active cases in Finishing stage
+                $aFinishing = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aQC = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 7)->where('is_active', 1)->isNotEmpty();
+                // Non-admin users only see their own assigned active cases in QC stage
+                $aQC = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->where('assignee', $currentUserId)->isNotEmpty();
                 });
 
-                $aDelivery = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 8)->where('assignee', $currentUserId)->whereNotNull('delivery_accepted')->isNotEmpty();
+                $aDelivery = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->where('assignee', $currentUserId)->whereNotNull('delivery_accepted')->isNotEmpty();
                 });
             }
 
-            // Optimized: Waiting cases using collection filtering
-            $wDesign = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 1)->whereNull('assignee')->isNotEmpty();
+            // Optimized: Waiting cases - only consider PRIMARY jobs (accessories don't determine case stage)
+            $wDesign = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 1)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            $wMilling = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 2)->filter(function ($job) {
-                    return is_null($job->is_set) || $job->is_set == 0;
+            $wMilling = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 2)->filter(function ($job) use ($isPrimaryJob) {
+                    return $isPrimaryJob($job) && (is_null($job->is_set) || $job->is_set == 0);
                 })->isNotEmpty();
             });
 
             $wPrinting = $allCases->filter(function ($case) {
                 return $case->jobs->where('stage', 3)->filter(function ($job) {
-                    return (is_null($job->is_set) || $job->is_set == 0) &&
-                           (is_null($job->is_active) || $job->is_active == 0) &&
-                           is_null($job->printing_build_id);
+                    return
+                        (is_null($job->is_set) || $job->is_set == 0) &&
+                        (is_null($job->is_active) || $job->is_active == 0) &&
+                        is_null($job->printing_build_id);
                 })->isNotEmpty();
             });
 
-            $wSintering = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 4)->whereNull('is_active')->isNotEmpty();
+            $wSintering = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 4)->filter($isPrimaryJob)->whereNull('is_active')->isNotEmpty();
             });
 
-            $wPressing = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 5)->whereNull('is_active')->isNotEmpty();
+            $wPressing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 5)->filter($isPrimaryJob)->whereNull('is_active')->isNotEmpty();
             });
 
-            $wFinishing = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 6)->whereNull('assignee')->isNotEmpty();
+            $wFinishing = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 6)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            $wQC = $allCases->filter(function ($case) {
-                return $case->jobs->where('stage', 7)->whereNull('assignee')->isNotEmpty();
+            $wQC = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                return $case->jobs->where('stage', 7)->filter($isPrimaryJob)->whereNull('assignee')->isNotEmpty();
             });
 
-            // Optimized: Delivery cases using collection filtering
+            // Optimized: Delivery cases - only consider PRIMARY jobs
             if ($isAdmin || $permissions->contains('permission_id', 129)) {
-                $wDelivery = $allCases->filter(function ($case) {
-                    return $case->jobs->where('stage', 8)->whereNull('delivery_accepted')->isNotEmpty();
+                $wDelivery = $allCases->filter(function ($case) use ($isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->whereNull('delivery_accepted')->isNotEmpty();
                 });
             } else {
-                $wDelivery = $allCases->filter(function ($case) use ($currentUserId) {
-                    return $case->jobs->where('stage', 8)->where('assignee', $currentUserId)->whereNull('delivery_accepted')->isNotEmpty();
+                $wDelivery = $allCases->filter(function ($case) use ($currentUserId, $isPrimaryJob) {
+                    return $case->jobs->where('stage', 8)->filter($isPrimaryJob)->where('assignee', $currentUserId)->whereNull('delivery_accepted')->isNotEmpty();
                 });
             }
 
@@ -895,10 +992,10 @@ class CaseController extends Controller
                                          SUM(CASE WHEN is_set = 0 THEN 1 ELSE 0 END) as waiting_count,
                                          SUM(CASE WHEN is_set = 1 THEN 1 ELSE 0 END) as set_count,
                                          SUM(CASE WHEN is_active = 1 THEN 1 ELSE 0 END) as active_count')
-                            ->whereIn('device_id', $devices->pluck('id'))
-                            ->groupBy('device_id')
-                            ->get()
-                            ->keyBy('device_id');
+                ->whereIn('device_id', $devices->pluck('id'))
+                ->groupBy('device_id')
+                ->get()
+                ->keyBy('device_id');
 
             foreach ($devices as $device) {
                 $deviceId = $device['id'];
@@ -911,16 +1008,16 @@ class CaseController extends Controller
                 $deviceModel->id = $deviceId;
                 $deviceModel->type = $deviceType;
 
-                foreach ([ 2, 3, 4, 5,] as $stage) {
+                foreach ([2, 3, 4, 5,] as $stage) {
                     $deviceUnitsCounts[$deviceId][$stage]['waiting'] = $deviceModel->countOfUnits($stage, false);
                     $deviceUnitsCounts[$deviceId][$stage]['active'] = $deviceModel->countOfUnits($stage, true);
                 }
 
-                $deviceUnitsCounts[$deviceId]['waitingBuilds'] = Build::where('printer_id', $deviceId)
-                    ->whereNotNull('set_at')->whereNull('finished_at')->whereNull('started_at')->count() ;
+                $deviceUnitsCounts[$deviceId]['waitingBuilds'] = Build::where('device_used', $deviceId)
+                    ->whereNotNull('set_at')->whereNull('finished_at')->whereNull('started_at')->count();
 
-                $deviceUnitsCounts[$deviceId]['activeBuilds'] =  Build::where('printer_id', $deviceId)
-                    ->whereNotNull('set_at')->whereNotNull('started_at')->whereNull('finished_at')->count() ;
+                $deviceUnitsCounts[$deviceId]['activeBuilds'] = Build::where('device_used', $deviceId)
+                    ->whereNotNull('set_at')->whereNotNull('started_at')->whereNull('finished_at')->count();
 
                 $stats = $deviceStats->get($deviceId);
                 // Note: We can't set properties on arrays, so we'll skip these assignments
@@ -929,7 +1026,7 @@ class CaseController extends Controller
                 // $device->jobsActive = $stats ? $stats->active_count : 0;
             }
 
-            $drivers = User::whereHas('permissions', function ($q) {
+            $drivers = User::where('status', 1)->whereHas('permissions', function ($q) {
                 $q->where('permission_id', 8);
             })->whereHas('permissions', function ($q) {
                 $q->where('permission_id', 131);
@@ -955,8 +1052,27 @@ class CaseController extends Controller
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
 
         // Get material types for operation dialogs
-        $types = \App\Type::with('material')->enabled()->get();
+        $types = \App\Type::enabled()->get();
 
+        // Group types by material_id using the pivot table (material_types)
+        $typesByMaterial = \DB::table('material_types')
+            ->join('types', 'material_types.type_id', '=', 'types.id')
+            ->join('materials', 'material_types.material_id', '=', 'materials.id')
+            ->where('types.is_enabled', true)
+            ->select('material_types.material_id', 'material_types.type_id', 'types.name as type_name', 'materials.name as material_name')
+            ->get()
+            ->groupBy('material_id')
+            ->map(function ($group) {
+                return $group->map(function ($item) {
+                    return [
+                        'id' => $item->type_id,
+                        'name' => $item->type_name,
+                        'material_id' => $item->material_id,
+                        'material_name' => $item->material_name
+                    ];
+                });
+            });
+    
         // Log execution time - can be removed in production
         $executionTime = microtime(true) - $startTime;
         \Log::info("Dashboard loaded in {$executionTime} seconds");
@@ -966,8 +1082,8 @@ class CaseController extends Controller
             'wMilling', 'aMilling', 'wPrinting', 'aPrinting',
             'wSintering', 'aSintering', 'wPressing', 'aPressing',
             'wFinishing', 'aFinishing', 'wQC', 'aQC', 'wDelivery',
-            'aDelivery', 'drivers', 'activeOuterTab', 'devices','deviceUnitsCounts',
-            'permissions', 'stageConfig', 'types'
+            'aDelivery', 'drivers', 'activeOuterTab', 'devices', 'deviceUnitsCounts',
+            'permissions', 'stageConfig', 'types', 'typesByMaterial'
         ));
     }
 
@@ -1017,7 +1133,8 @@ class CaseController extends Controller
     public function assignToMe($caseId, $stage, $returnMessages = true)
     {
         $jobs = job::where("case_id", $caseId)->where("stage", $stage)->whereNull('assignee')->get();
-        if (!$jobs) return back()->with('error', 'Case has no jobs, add jobs first.');
+        $assignmentsCount = $jobs->count();
+        if (!$jobs) return $this->getAssignmentRedirect()->with('error', 'Case has no jobs, add jobs first.');
         foreach ($jobs as $job) {
             if ($stage != 2 && $stage != 3)
                 $job->is_active = 1;
@@ -1028,22 +1145,68 @@ class CaseController extends Controller
         // Sub-stage logic for main manufacturing stages
         $logStage = $stage;
         $isCompletion = 0;
-        if ($stage == 2) { $logStage = $this->stageActions['MILLING_SET']; }
-        if ($stage == 3) { $logStage = $this->stageActions['PRINTING_SET']; }
-        if ($stage == 4) { $logStage = $this->stageActions['SINTERING_SET']; }
-        if ($stage == 5) { $logStage = $this->stageActions['PRESSING_START']; }
-        if ($stage == 8) { $logStage = $this->stageActions['DELIVERY_ASSIGN']; }
+        if ($stage == 2) {
+            $logStage = $this->stageActions['MILLING_SET'];
+        }
+        if ($stage == 3) {
+            $logStage = $this->stageActions['PRINTING_SET'];
+        }
+        if ($stage == 4) {
+            $logStage = $this->stageActions['SINTERING_START'];
+        }
+        if ($stage == 5) {
+            $logStage = $this->stageActions['PRESSING_START'];
+        }
+        if ($stage == 8) {
+            $logStage = $this->stageActions['DELIVERY_ASSIGN'];
+        }
         $log = new caseLog(['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $logStage, 'is_completion' => $isCompletion]);
         $log->save();
+
+        if ($assignmentsCount > 0) {
+            if ($case = sCase::find($caseId)) {
+                AuditLogger::log(
+                    'case_assigned',
+                    $case,
+                    [
+                        'case_id' => $case->id,
+                        'case_number' => $case->case_id,
+                        'stage' => $stage,
+                        'jobs_assigned' => $assignmentsCount,
+                    ],
+                    sprintf(
+                        'Case %s assigned to %s for stage %s',
+                        $case->case_id ?? $case->id,
+
+                        Auth()->user()->id,
+                        $stage
+
+                    )
+                );
+            }
+        }
+
         if ($returnMessages)
-            return back()->with('success', "Case has been assigned to you!");
+            return $this->getAssignmentRedirect()->with('success', "Case has been assigned to you!");
+    }
+
+    private function getAssignmentRedirect()
+    {
+        // Check if request came from operations dashboard
+        $referer = request()->header('referer');
+        if ($referer && (str_contains($referer, '/operations-dashboard') || str_contains($referer, 'admin-dashboard'))) {
+            return redirect()->route('admin-dashboard-v2');
+        }
+
+        // Default to operations dashboard for better UX
+        return redirect()->route('admin-dashboard-v2');
     }
 
     public function assignAndFinish($caseId, $stage)
     {
         $this->assignToMe($caseId, $stage, false);
         $this->finishCaseStage($caseId, $stage, false);
-        return back()->with('success', "Case completed & sent to the next stage!");
+        return $this->getAssignmentRedirect()->with('success', "Case completed & sent to the next stage!");
     }
 
     public function sendCaseToDelivery($caseId)
@@ -1059,24 +1222,25 @@ class CaseController extends Controller
     }
 
     public function finishCaseStage($caseId, $stage, $returnMessages = true, $jobs = [])
-    {$returnMessages = true;
+    {
+        $returnMessages = true;
         Log::info('[finishCaseStage] called with parameters', [
             'caseId' => $caseId,
             'stage' => $stage,
             'returnMessages' => $returnMessages,
             'jobs' => count($jobs)
         ]);
-        $jobs= empty($jobs) ? job::where("case_id", $caseId)->where("stage", $stage)->get() : $jobs;
+        $jobs = empty($jobs) ? job::with('material')->where("case_id", $caseId)->where("stage", $stage)->get() : $jobs;
 
-          Log::info('[finishCaseStage] firstJob case_id: ' . $caseId .' stage: ' . $stage .'  ', ['$jobs' => count($jobs)]);
-      //  if($firstJob) return back()->with("Case's jobs are currently at different stage");
+        Log::info('[finishCaseStage] firstJob case_id: ' . $caseId . ' stage: ' . $stage . '  ', ['$jobs' => count($jobs)]);
+        //  if($firstJob) return back()->with("Case's jobs are currently at different stage");
 
-        $assignee = $jobs->first()?->assignee;
-        Log::info( '[finishCaseStage] assignee', ['assignee' => $assignee]);
+        $assignee = $jobs->first()->assignee;
+        Log::info('[finishCaseStage] assignee', ['assignee' => $assignee]);
         if (!$assignee) return back()->with('error', "Case Already Completed");
 
 //        if (empty($jobs))
-          $jobs = job::where("case_id", $caseId)->where("stage", $stage)->where("assignee", $assignee ?? Auth()->user()->id)->get();
+        $jobs = job::with('material')->where("case_id", $caseId)->where("stage", $stage)->where("assignee", $assignee ?? Auth()->user()->id)->get();
         $case = sCase::findOrFail($caseId);
 
         if (!$jobs) return back()->with('error', 'No Jobs found.');
@@ -1089,12 +1253,12 @@ class CaseController extends Controller
             // before QC ( 7 = QC ) just send them to next stage
 
             if ($nextStage != 7) {
-                    $job->assignee = null;
-                    $job->stage = $nextStage;
+                $job->assignee = null;
+                $job->stage = $nextStage;
 
-                    $job->is_active =null;
-                    $job->is_set = null;
-                    $job->device_id = null;
+                $job->is_active = null;
+                $job->is_set = null;
+                $job->device_id = null;
 
                 $job->save();
                 //dd($job, $job->stage, $nextStage);
@@ -1102,13 +1266,13 @@ class CaseController extends Controller
             } // If Next stage is QC check if all jobs are ready (in finishing) or not before sending them to QC
             else {
                 if ($this->allJobsAreIn($case, 6)) {
-                    $job->is_active =null;
+                    $job->is_active = null;
                     $job->is_set = null;
                     $job->device_id = null;
                     $job->assignee = null;
                     $job->stage = $nextStage;
                     if ($nextStage != 8)
-                    $this->issueInvoice($job);
+                        $this->issueInvoice($job);
                     $job->save();
                 } else {
                     if ($returnMessages)
@@ -1119,34 +1283,62 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8) $this->applyInvoice($job);
+//        if ($nextStage == 8) $this->applyInvoice($job);
 
         // if all jobs are finished, apply invoice and set date delivered
         if ($nextStage == -1) {
 
-            // if contains modification
+            // Check for modification cases
             if ($case->contains_modification == 1) {
-                $log = failureLog::where("case_id", $case->id)->first();
+                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
+                // This handles cases where a case is modified multiple times - we always want the original date
+                $log = failureLog::where("case_id", $case->id)
+                    ->where('failure_type', 2)
+                    ->whereNotNull('old_delivery_date')
+                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
+                    ->withTrashed()
+                    ->first();
 
-                // if the failure log is found
-                if ($log) {
+                // If no log with valid date found, try to get any modification log
+                if (!$log) {
+                    $log = failureLog::where("case_id", $case->id)
+                        ->where('failure_type', 2)
+                        ->orderBy('id', 'desc')
+                        ->withTrashed()
+                        ->first();
+                }
+
+                // if the failure log is found with a valid old_delivery_date
+                if ($log && $log->old_delivery_date) {
+                    // Preserve original delivery date from failure log
                     $case->actual_delivery_date = $log->old_delivery_date;
                     $note = new note();
                     $note->case_id = $case->id;
-                    $note->note = "Modification Delivered On: " . now();
+                    $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
+                    $note->note = "Modification Delivered - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
                     $note->written_by = Auth()->user()->id;
                     $note->save();
 
-                    // if contains modification and the failure was not found
+                    // if contains modification and the failure was not found or has no date
                 } else {
                     $case->actual_delivery_date = now();
                     $note = new note();
                     $note->case_id = $case->id;
-                    $note->note = "Failure Log was not found, no previous delivery date";
+                    $note->note = "Modification Delivered - No previous delivery date found, using current time";
                     $note->written_by = Auth()->user()->id;
                     $note->save();
                 }
+            } // Check for repeat cases (they don't use contains_modification flag)
+            elseif ($case->first_case_if_repeated) {
+                // Repeat cases should be treated as new deliveries
+                $case->actual_delivery_date = now();
+                $note = new note();
+                $note->case_id = $case->id;
+                $note->note = "Repeat Case Delivered - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
+                $note->written_by = Auth()->user()->id;
+                $note->save();
             } else {
+                // Normal case - use current delivery time
                 $case->actual_delivery_date = now();
             }
 
@@ -1155,8 +1347,6 @@ class CaseController extends Controller
             $case->save();
             $this->applyInvoice($job);
         }
-        // TODO: Fix this later
-        // FIXME: Bug here
 
         // Get the device ID from the job if available
         $deviceId = null;
@@ -1184,7 +1374,7 @@ class CaseController extends Controller
         }
         $log = new caseLog([
             'user_id' => Auth()->user()->id,
-            'case_id' =>  $caseId,
+            'case_id' => $caseId,
             'stage' => $logStage,
             'device_id' => $deviceId,
             'action_type' => 3, // 3 = complete
@@ -1201,7 +1391,7 @@ class CaseController extends Controller
         //$assignee is the employee currently working on the jobs
         $assignee = job::where("case_id", $caseId)->where("stage", 8)->first()->assignee;
         if (!$assignee) return back()->with('error', "Case Already Completed");
-       // $assignee = job::where("case_id", $caseId)->where("stage", 8)->first()->assignee;
+        // $assignee = job::where("case_id", $caseId)->where("stage", 8)->first()->assignee;
         $jobs = job::where("case_id", $caseId)->where("stage", 8)->where("assignee", $assignee)->get();
         $case = sCase::findOrFail($caseId);
 
@@ -1214,7 +1404,7 @@ class CaseController extends Controller
 
             // before QC ( 7 = QC ) just send them to next stage
             if ($nextStage != 7) {
-                    $job->assignee = null;
+                $job->assignee = null;
 
                 $job->stage = $nextStage;
                 $job->save();
@@ -1232,36 +1422,68 @@ class CaseController extends Controller
 
 
         // if next stage is Delivery, create invoice
-        if ($nextStage == 8){ $this->applyInvoice($job);
-        $job->is_set=null; $job->assignee=$assignee;$job->is_set=null;}
+        if ($nextStage == 8) {
+
+            $job->is_set = null;
+            $job->assignee = $assignee;
+            $job->is_set = null;
+        }
 
         // if all jobs are finished, apply invoice and set date delivered
         if ($nextStage == -1) {
             $case->delivered_in_box = 1;
             $this->createTag($case, 15);
-            // if contains modification
+            // Check for modification cases
             if ($case->contains_modification == 1) {
-                $log = failureLog::where("case_id", $case->id)->first();
+                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
+                // This handles cases where a case is modified multiple times - we always want the original date
+                $log = failureLog::where("case_id", $case->id)
+                    ->where('failure_type', 2)
+                    ->whereNotNull('old_delivery_date')
+                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
+                    ->withTrashed()
+                    ->first();
 
-                // if the failure log is found
-                if ($log) {
-                    $case->actual_delivery_date = now();
+                // If no log with valid date found, try to get any modification log
+                if (!$log) {
+                    $log = failureLog::where("case_id", $case->id)
+                        ->where('failure_type', 2)
+                        ->orderBy('id', 'desc')
+                        ->withTrashed()
+                        ->first();
+                }
+
+                // if the failure log is found with a valid old_delivery_date
+                if ($log && $log->old_delivery_date) {
+                    // Preserve original delivery date from failure log
+                    $case->actual_delivery_date = $log->old_delivery_date;
                     $note = new note();
                     $note->case_id = $case->id;
-                    $note->note = "Modification Delivered On: " . now();
+                    $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
+                    $note->note = "Modification Delivered (In Box) - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
                     $note->written_by = Auth()->user()->id;
                     $note->save();
 
-                    // if contains modification and the failure was not found
+                    // if contains modification and the failure was not found or has no date
                 } else {
                     $case->actual_delivery_date = now();
                     $note = new note();
                     $note->case_id = $case->id;
-                    $note->note = "Failure Log was not found, no previous delivery date";
+                    $note->note = "Modification Delivered (In Box) - No previous delivery date found, using current time";
                     $note->written_by = Auth()->user()->id;
                     $note->save();
                 }
+            } // Check for repeat cases (they don't use contains_modification flag)
+            elseif ($case->first_case_if_repeated) {
+                // Repeat cases should be treated as new deliveries
+                $case->actual_delivery_date = now();
+                $note = new note();
+                $note->case_id = $case->id;
+                $note->note = "Repeat Case Delivered (In Box) - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
+                $note->written_by = Auth()->user()->id;
+                $note->save();
             } else {
+                // Normal case - use current delivery time
                 $case->actual_delivery_date = now();
             }
             $case->delivered_to_client = 1;
@@ -1270,7 +1492,7 @@ class CaseController extends Controller
         }
 
 
-        $log = new caseLog(['user_id' => Auth()->user()->id , 'case_id' => $caseId, 'stage' => $this->stageActions['DELIVERY_COMPLETE'], 'is_completion' => 1]);
+        $log = new caseLog(['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['DELIVERY_COMPLETE'], 'is_completion' => 1]);
         $log->save();
 
         return back()->with('success', "Case have been marked as finished & delivered in box.");
@@ -1309,19 +1531,32 @@ class CaseController extends Controller
     public function issueInvoice($job)
     {
         $case = sCase::findOrFail($job->case_id);
-        /*invoice::where('case_id',$case->id)->delete();*/
+
         if ($case->contains_modification) return;
+
+        // Check if invoice already exists for this case
+        $existingInvoice = invoice::where('case_id', $case->id)->first();
+
         if ($job->is_repeat) {
-            $invoice = new invoice();
-            $invoice->status = 0;
-            $invoice->amount = 0;
-            $invoice->case_id = $case->id;
-            $invoice->doctor_id = $case->client->id;
-            $invoice->save();
+            // For repeat jobs, create/update invoice with zero amount
+            if ($existingInvoice) {
+                // Update existing invoice
+                $existingInvoice->status = 0;
+                $existingInvoice->amount = 0;
+                $existingInvoice->save();
+            } else {
+                // Create new invoice
+                $invoice = new invoice();
+                $invoice->status = 0;
+                $invoice->amount = 0;
+                $invoice->case_id = $case->id;
+                $invoice->doctor_id = $case->client->id;
+                $invoice->save();
+            }
             return;
         }
 
-
+        // Calculate invoice amount
         $invoiceApplicable = true;
         $invoiceAmount = 0;
         foreach ($case->jobs as $job) {
@@ -1330,33 +1565,75 @@ class CaseController extends Controller
             $jobPrice = (count(explode(',', $job->unit_num)) * $job->material->price) - $this->getDiscount($job, $case);
             $invoiceAmount += $jobPrice;
         }
+
         if ($invoiceApplicable) {
-            $invoice = new invoice();
-            $invoice->status = 0;
-            $invoice->case_id = $case->id;
-            $invoice->doctor_id = $case->client->id;
-            if (isset($case->discount)) {
-                $invoice->amount_before_discount = $invoiceAmount;
-                $invoice->amount = $invoiceAmount - $case->discount->discount;
+            if ($existingInvoice) {
+                // Update existing invoice instead of creating a new one
+                $invoice = $existingInvoice;
+                $invoice->status = 0;
+                $invoice->case_id = $case->id;
+                $invoice->doctor_id = $case->client->id;
+                if (isset($case->discount)) {
+                    $invoice->amount_before_discount = $invoiceAmount;
+                    $invoice->amount = $invoiceAmount - $case->discount->discount;
+                } else {
+                    $invoice->amount = $invoiceAmount;
+                    $invoice->amount_before_discount = $invoiceAmount;
+                }
+                $invoice->save();
             } else {
-                $invoice->amount = $invoiceAmount;
-                $invoice->amount_before_discount = $invoiceAmount;
+                // Create new invoice only if one doesn't exist
+                $invoice = new invoice();
+                $invoice->status = 0;
+                $invoice->case_id = $case->id;
+                $invoice->doctor_id = $case->client->id;
+                if (isset($case->discount)) {
+                    $invoice->amount_before_discount = $invoiceAmount;
+                    $invoice->amount = $invoiceAmount - $case->discount->discount;
+                } else {
+                    $invoice->amount = $invoiceAmount;
+                    $invoice->amount_before_discount = $invoiceAmount;
+                }
+                $invoice->save();
             }
-            $invoice->save();
         }
     }
 
     public function applyInvoice($job)
     {
-        $case = sCase::with('invoice')->where('id', $job->case_id)->get();
-        $patientName = $case[0]->patient_name;
-        $client = $case[0]->client;
+        $case = sCase::with(['invoice', 'client', 'jobs'])->find($job->case_id);
+
+        if (!$case) {
+            return;
+        }
+
+        // Only notify/apply invoices after the case is actually completed
+        $allJobsCompleted = $case->jobs->every(function ($job) {
+            return $job->stage == -1;
+        });
+
+        if (!$allJobsCompleted) {
+            return;
+        }
+        if ($case->notification_sent == 1) {
+            return;
+        } else {
+            $case->notification_sent = 1;
+            $case->save();
+        }
+
+        $patientName = $case->patient_name;
+        $client = $case->client;
         $clientTokens = MobileNotificationToken::where("client_id", $client->id)->get();
+
         foreach ($clientTokens as $token) {
-            if ($case[0]->delivered_in_box)
+            if ($case->delivered_in_box) {
+//                dd("Sent in-box notification for case id :  " . $case->id);
                 $this->sendCaseNotification($token->token, "Case has been delivered in box", "Case of $patientName has been delivered In-Box", "1");
-            else
+            } else {
+//                dd("Sent notification for case id :  " . $case->id);
                 $this->sendCaseNotification($token->token, "Case has been delivered", "Case of $patientName has been delivered", "1");
+            }
         }
 
 //        if ($case[0]->delivered_in_box) {
@@ -1367,23 +1644,20 @@ class CaseController extends Controller
 //            $this->sendCaseNotification($client->doc_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
 //            $this->sendCaseNotification($client->clinic_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
 //        }
-        if ($case[0]->contains_modification) return;
-        $allJobsCompleted = true;
-        foreach ($case[0]->jobs as $job)
-            if ($job->stage != -1)
-                $allJobsCompleted = false;
-
-        if ($allJobsCompleted) {
-            $client = $case[0]->client;
-            $invoice = $case[0]->invoice;
-            $client->balance = $client->balance + ($invoice->amount ?? 0);
-            $invoice->status = 1;
-            $invoice->date_applied = now();
-            $invoice->save();
-            $client->save();
-
-
+        if ($case->contains_modification) {
+            return;
         }
+
+        $invoice = $case->invoice;
+        if (!$invoice) {
+            return;
+        }
+
+        $client->balance = $client->balance + ($invoice->amount ?? 0);
+        $invoice->status = 1;
+        $invoice->date_applied = now();
+        $invoice->save();
+        $client->save();
     }
 
     public function invoicesList(Request $request)
@@ -1485,21 +1759,41 @@ class CaseController extends Controller
 
     public function deliverySchedule(Request $request)
     {
-        if ($request->from && $request->to) {
-            $data['from'] = $request->from;
-            $data['to'] = $request->to;
-            $cases = sCase::with('client')->whereBetween(
-                'initial_delivery_date', array($data['from'], $data['to']))
-                ->where('delivered_to_client', '=', 0)
-                ->orderBy('cases.initial_delivery_date', 'ASC')->get();
+        $query = sCase::with([
+            'client:id,name',
+            'jobs' => function ($query) {
+                $query->with([
+                    'jobType:id,name',
+                    'material:id,name,count_as_unit',
+                    'assignedTo:id,name_initials,first_name',
+                ]);
+            },
+        ])
+            ->where('delivered_to_client', '=', 0)
+            ->orderBy('cases.initial_delivery_date', 'ASC');
+
+        if ($request->filled('from') && $request->filled('to')) {
+            $fromInput = $request->from;
+            $toInput = $request->to;
         } else {
-            $data['from'] = today()->subDays(356)->toDateString() . ' 00:00';
-            $data['to'] = today()->addDays(1)->toDateString() . ' 23:59';
-            $cases = sCase::with('client')->whereBetween(
-                'initial_delivery_date', array($data['from'], $data['to']))
-                ->where('delivered_to_client', '=', 0)
-                ->orderBy('cases.initial_delivery_date', 'ASC')->get();
+            $fromInput = today()->subYear()->toDateString();
+            $toInput = today()->addDay()->toDateString();
         }
+
+        $fromDate = \Carbon\Carbon::parse($fromInput);
+        $toDate = \Carbon\Carbon::parse($toInput);
+        if ($fromDate->gt($toDate)) {
+            [$fromDate, $toDate] = [$toDate, $fromDate];
+        }
+
+        $data['from'] = $fromDate->toDateString();
+        $data['to'] = $toDate->toDateString();
+
+        $fromRange = $fromDate->copy()->startOfDay()->format('Y-m-d H:i:s');
+        $toRange = $toDate->copy()->endOfDay()->format('Y-m-d H:i:s');
+
+        $cases = $query->whereBetween('initial_delivery_date', [$fromRange, $toRange])->get();
+
         return view('delivery.delivery-schedule', compact('cases', 'data'));
     }
 
@@ -1544,6 +1838,8 @@ class CaseController extends Controller
     {
         $case = sCase::where('id', $id)->first();
         DB::beginTransaction();
+        $caseNumber = $case->case_id ?? $id;
+        $doctorId = $case->doctor_id ?? null;
         $case->jobs()->delete();
         $case->notes()->delete();
         $case->photos()->delete();
@@ -1554,6 +1850,19 @@ class CaseController extends Controller
         caseLog::where('case_id', $id)->delete();
 
         DB::commit();
+
+        AuditLogger::log(
+            'case_deleted',
+            [
+                'id' => $id,
+            ],
+            [
+                'case_id' => $id,
+                'case_number' => $caseNumber,
+                'doctor_id' => $doctorId,
+            ],
+            sprintf('Case %s deleted', $caseNumber)
+        );
 
         return back()->with('success', 'Case and all its information deleted successfully.');
     }
@@ -1588,17 +1897,53 @@ class CaseController extends Controller
         return view('generic.invoice-view', compact('case'));
     }
 
-    public function deletedCases()
+    public function deletedCases(Request $request)
     {
-        $cases = sCase::onlyTrashed()->paginate(10);
+        if ($request->from && $request->to) {
+            $from = $request->from;
+            $to = $request->to;
+        } else {
+            $from = date('Y-m-d', strtotime('-30 days'));
+            $to = now()->toDateString();
+        }
+
+        $casesQuery = sCase::onlyTrashed()->with([
+            'client:id,name',
+            'jobs' => function ($query) {
+                $query->withTrashed()->with(['jobType', 'material', 'implantR', 'abutmentR', 'subType', 'assignedTo:id,name_initials,first_name']);
+            },
+            'notes' => function ($query) {
+                $query->withTrashed()->with('writtenBy:id,name_initials');
+            },
+            'tags' => function ($query) {
+                $query->withTrashed()->with('originalTagRecord:id,text,color,icon');
+            }
+        ]);
+
+        if ($request->doctor && !in_array('all', $request->doctor)) {
+            $casesQuery->whereIn('doctor_id', $request->doctor);
+        }
+
+        $cases = $casesQuery
+            ->whereBetween('deleted_at', [$from . ' 00:00', $to . ' 23:59'])
+            ->orderBy('deleted_at', 'desc')
+            ->paginate(20)
+            ->withQueryString();
+
+        $selectedClients = $request->doctor;
+        $clients = client::select(['id', 'name'])->get();
         $trashedCases = true;
-        return view('cases.index', compact('cases', 'trashedCases'));
+        return view('cases.index', compact('cases', 'trashedCases', 'from', 'to', 'selectedClients', 'clients'));
     }
 
     public function lockCase($caseId)
     {
         $case = sCase::findOrFail($caseId);
         $case->update(['locked' => 1]);
+        if (Auth::check()) {
+            $case->tags()->where('tag_id', 14)->delete();
+            $this->createTag($case, 16);
+        }
         return back()->with('success', 'Case locked successfully.');
 
     }
@@ -1607,7 +1952,10 @@ class CaseController extends Controller
     {
         $case = sCase::findOrFail($caseId);
         $case->update(['locked' => 0]);
-        $this->createTag($case, 14);
+        if (Auth::check()) {
+            $case->tags()->where('tag_id', 16)->delete();
+            $this->createTag($case, 14);
+        }
 
         return back()->with('success', 'Case un-locked successfully.');
 
@@ -1645,6 +1993,18 @@ class CaseController extends Controller
         });
 
         $cases = $cases->orderByRaw('-`actual_delivery_date` ASC')->orderBy("initial_delivery_date", 'asc')->get();
+        $cases->load([
+            'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
+            'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
+            'jobs.assignedTo:id,name_initials,first_name',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
+            'jobs.subType:id,name,material_id'
+        ]);
 
 
         $isSearchResults = true;
@@ -1703,54 +2063,54 @@ class CaseController extends Controller
         return back()->with('success', 'Case has been overridden & completed successfully.');
     }
 
-    public function testNotification($type = 2)
-    {
-        //   $docClient = DB::select('SELECT * FROM clients WHERE phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
-        //   $clinicAccount = DB::select('SELECT * FROM clients WHERE clinic_phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
+//    public function testNotification($type = 2)
+//    {
+    //   $docClient = DB::select('SELECT * FROM clients WHERE phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
+    //   $clinicAccount = DB::select('SELECT * FROM clients WHERE clinic_phone LIKE ? LIMIT 1', ['%' . "0788160088" . '%']);
 
 //        $docClient = client::where('phone', 'like', '%' . "0788160088" . '%')->get()->first();
 //        $clinicAccount= client::where('clinic_phone', 'like', '%' . "0788160088" . '%')->get()->first();
 //        dd($docClient, $clinicAccount);
-        // print_r($docClient[0] ?? "NO DOC **" );
-        // print_r("--------------");
-        //   print_r($clinicAccount[0]);
-        $client = client::where("id", 1)->first();
-        $patient_name = "يزن شريتح";
-        // 1=> inbox  2=> case delivered  3=> new payment
-
-        echo("test $type");
-        echo(" doc not : " . $client->doc_notification_token);
-        echo(" clinic not : " . $client->clinic_notification_token);
-        switch ($type) {
-            case 1:
-                if ($client->doc_notification_token)
-                    $this->sendCaseNotification($client->doc_notification_token, "Case Delivered In-Box",
-                        "Case of $patient_name has been delivered in box "
-                    );
-                if ($client->clinic_notification_token)
-                    $this->sendCaseNotification($client->clinic_notification_token, "Case Delivered In-Box",
-                        "Case of $patient_name has been delivered in box ");
-                break;
-            case 2:
-                if ($client->doc_notification_token)
-                    $this->sendCaseNotification($client->doc_notification_token,
-                        "Case Delivered", "Case of $patient_name has been delivered");
-                if ($client->clinic_notification_token)
-                    $this->sendCaseNotification($client->clinic_notification_token,
-                        "Case Delivered", "Case of $patient_name has been delivered");
-                break;
-            case 3:
-                if ($client->doc_notification_token)
-                    $this->sendPaymentNotification($client->doc_notification_token,
-                        "Payment Received",
-                        "100 " . "JOD has been received",
-                    );
-                break;
-            default:
-                dd("Enter Notification Type [ 0 => ");
-        }
-        echo("end switch");
-    }
+    // print_r($docClient[0] ?? "NO DOC **" );
+    // print_r("--------------");
+    //   print_r($clinicAccount[0]);
+//        $client = client::where("id", 1)->first();
+//        $patient_name = "يزن شريتح";
+    // 1=> inbox  2=> case delivered  3=> new payment
+//
+//        echo("test $type");
+//        echo(" doc not : " . $client->doc_notification_token);
+//        echo(" clinic not : " . $client->clinic_notification_token);
+//        switch ($type) {
+//            case 1:
+//                if ($client->doc_notification_token)
+//                    $this->sendCaseNotification($client->doc_notification_token, "Case Delivered In-Box",
+//                        "Case of $patient_name has been delivered in box "
+//                    );
+//                if ($client->clinic_notification_token)
+//                    $this->sendCaseNotification($client->clinic_notification_token, "Case Delivered In-Box",
+//                        "Case of $patient_name has been delivered in box ");
+//                break;
+//            case 2:
+//                if ($client->doc_notification_token)
+//                    $this->sendCaseNotification($client->doc_notification_token,
+//                        "Case Delivered", "Case of $patient_name has been delivered");
+//                if ($client->clinic_notification_token)
+//                    $this->sendCaseNotification($client->clinic_notification_token,
+//                        "Case Delivered", "Case of $patient_name has been delivered");
+//                break;
+//            case 3:
+//                if ($client->doc_notification_token)
+//                    $this->sendPaymentNotification($client->doc_notification_token,
+//                        "Payment Received",
+//                        "100 " . "JOD has been received",
+//                    );
+//                break;
+//            default:
+//
+//        }
+//        echo("end switch");
+//    }
 
     public function finishCaseCompletely($caseId)
     {
@@ -1778,7 +2138,7 @@ class CaseController extends Controller
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 1, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['MILLING_SET'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRINTING_SET'], 'is_completion' => 0],
-            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_SET'], 'is_completion' => 0],
+            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRESSING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 6, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 7, 'is_completion' => 0],
@@ -1813,7 +2173,7 @@ class CaseController extends Controller
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 1, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['MILLING_SET'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRINTING_SET'], 'is_completion' => 0],
-            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_SET'], 'is_completion' => 0],
+            ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['SINTERING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['PRESSING_START'], 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 6, 'is_completion' => 0],
             ['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => 7, 'is_completion' => 0],
@@ -1823,54 +2183,63 @@ class CaseController extends Controller
         return back()->with('success', 'Case is Active at Delivery Stage.');
     }
 
-    public function createDummyCase($stage = 1, $amount =1)
+    public function createDummyCase($stage = 1, $amount = 1)
     {
-        if ($stage > 8 || $stage < 1) { dd("-_-");}
+        if ($stage > 8 || $stage < 1) {
+            dd("-_- ");
+        }
         DB::beginTransaction();
         $faker = Faker::create();
 
         try {
             $faker = \Faker\Factory::create('ar_SA');
+
+            $availableMaterialIds = material::pluck('id')->toArray();
+            $availableDoctorIds = client::where('active', '!=', 0)->pluck('id')->toArray();
+            $availableJobTypeIds = JobType::pluck('id')->toArray();
+
+            if (empty($availableMaterialIds)) {
+                DB::rollBack();
+                return "Error: No materials available to create dummy cases.";
+            }
+
+            if (empty($availableDoctorIds)) {
+                DB::rollBack();
+                return "Error: No doctors available to create dummy cases.";
+            }
+
+            if (empty($availableJobTypeIds)) {
+                DB::rollBack();
+                return "Error: No job types available to create dummy cases.";
+            }
+
             while ($amount != -1) {
                 $case = new sCase();
                 $case->case_id = $faker->unique()->numerify('Y####');
                 $case->patient_name = $faker->name;
-                $case->doctor_id = $faker->numberBetween(1, 10);
+                $case->doctor_id = $faker->randomElement($availableDoctorIds);
                 $case->impression_type = $faker->randomElement([1, 2, 3]);
                 $case->initial_delivery_date = $faker->dateTimeBetween('now', '+1 month');
                 $case->created_by = Auth::id() ?? 1;
-                $case->save();// Generating random tags
-               // $tags = range(1, 4);
-              //  shuffle($tags);
-//                foreach (array_slice($tags, 0, rand(1, 3)) as $tag) {
-//                    $this->createTag($case, $tag);
-//               // }// Creating random jobs
-                $teeth = $faker->randomElement([0, 1]);
-                $units = ($teeth == 0 ? $faker->randomElement(['1', '1,2', '1,2,3']) : null ?? $faker->randomElement(['upper', "lower,upper", "lower"]));
+                $case->save();
+
+                $units = $faker->randomElement(['1', '1,2', '1,2,3', 'upper', 'lower,upper', 'lower']);
                 $jobCount = rand(1, 2);
                 for ($i = 0; $i < $jobCount; $i++) {
-
                     $newJob = new job([
                         'unit_num' => $units,
-                        'type' => 1,
+                        'type' => $faker->randomElement($availableJobTypeIds),
                         'color' => "A1",
                         'style' => "Single",
                         'abutment' => $faker->randomElement([0, 1]),
                         'implant' => $faker->randomElement([0, 1]),
-                        'material_id' => $faker->randomElement(['1', '2', '6']),
+                        'material_id' => $faker->randomElement($availableMaterialIds),
                         'case_id' => $case->id,
                         'doctor_id' => $case->doctor_id,
                         'stage' => $stage,
                     ]);
                     $newJob->save();
-
-
-//                    $material = Material::find(1,2,6)->first();
-//                    if ($material) {
-//                        $newJob->unit_price = $material->price;
-//                        $newJob->save();
-//                    }
-                }// Adding a dummy note
+                }
 
                 $amount--;
             }
@@ -1892,4 +2261,518 @@ class CaseController extends Controller
         $types = $material->types()->get(['id', 'name', 'description']);
         return response()->json($types);
     }
+
+    public function validateCaseMaterials(Request $request)
+    {
+        try {
+            $caseIds = $request->input('case_ids', []);
+            $stage = $request->input('stage', '');
+
+            if (empty($caseIds)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No case IDs provided'
+                ]);
+            }
+
+            // Get all cases with their jobs and materials
+            $cases = sCase::whereIn('id', $caseIds)
+                ->with(['jobs.material'])
+                ->get();
+
+            if ($cases->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No valid cases found'
+                ]);
+            }
+
+            // Extract unique materials from all jobs across all cases
+            $uniqueMaterials = [];
+            $uniqueMaterialIds = [];
+
+            foreach ($cases as $case) {
+                foreach ($case->jobs as $job) {
+                    if ($job->material) {
+                        $materialName = $job->material->name;
+                        $materialId = $job->material->id;
+
+                        if (!in_array($materialName, $uniqueMaterials)) {
+                            $uniqueMaterials[] = $materialName;
+                            $uniqueMaterialIds[] = $materialId;
+                        }
+                    }
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'unique_materials' => $uniqueMaterials,
+                'unique_material_ids' => $uniqueMaterialIds,
+                'case_count' => $cases->count(),
+                'stage' => $stage
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error validating materials: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get material types for a specific stage and cases
+     * Filters materials by stage column and returns types from material_types pivot table
+     */
+    public function getMaterialTypesForStage(Request $request)
+    {
+        try {
+            $stage = $request->input('stage');
+            $caseIds = $request->input('case_ids', []);
+
+            \Log::info('[BACKEND] getMaterialTypesForStage called', ['stage' => $stage, 'case_ids' => $caseIds]);
+
+            if (empty($caseIds)) {
+                \Log::warning('[BACKEND] No cases provided');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No cases provided'
+                ], 400);
+            }
+
+            // Map stage to materials table column
+            $stageColumnMap = [
+                'design' => 'design',
+                'milling' => 'mill',
+                '3dprinting' => 'print_3d',
+                'sintering' => 'sinter_furnace',
+                'pressing' => 'press_furnace',
+                'finishing' => 'finish',
+                'qc' => 'qc',
+                'delivery' => 'delivery'
+            ];
+
+            if (!isset($stageColumnMap[$stage])) {
+                \Log::warning('[BACKEND] Invalid stage', ['stage' => $stage]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid stage'
+                ], 400);
+            }
+
+            $stageColumn = $stageColumnMap[$stage];
+            \Log::info('[BACKEND] Stage column mapped', ['stage' => $stage, 'column' => $stageColumn]);
+
+            // Get all cases with their jobs and materials
+            $cases = sCase::whereIn('id', $caseIds)
+                ->with(['jobs.material'])
+                ->get();
+
+            \Log::info('[BACKEND] Cases retrieved', ['count' => $cases->count()]);
+
+            if ($cases->isEmpty()) {
+                \Log::warning('[BACKEND] No valid cases found');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No valid cases found'
+                ], 400);
+            }
+
+            // Find the shared material among all selected cases
+            // Get unique material IDs from all jobs
+            $materialIds = [];
+            foreach ($cases as $case) {
+                foreach ($case->jobs as $job) {
+                    if ($job->material) {
+                        $materialIds[] = $job->material->id;
+                    }
+                }
+            }
+
+            $materialIds = array_unique($materialIds);
+            \Log::info('[BACKEND] Material IDs collected', ['material_ids' => $materialIds, 'count' => count($materialIds)]);
+
+            if (empty($materialIds)) {
+                \Log::warning('[BACKEND] No materials found');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No materials found in selected cases'
+                ], 400);
+            }
+
+            // FIRST: Filter materials by which ones go through this stage
+            $validMaterialIds = [];
+            $validMaterialNames = [];
+
+            foreach ($materialIds as $materialId) {
+                $material = \App\material::find($materialId);
+                if (!$material) {
+                    \Log::warning('[BACKEND] Material not found, skipping', ['material_id' => $materialId]);
+                    continue;
+                }
+
+                \Log::info('[BACKEND] Checking material', [
+                    'material_id' => $material->id,
+                    'material_name' => $material->name,
+                    'stage_column' => $stageColumn,
+                    'stage_column_value' => $material->$stageColumn
+                ]);
+
+                // Only include materials that go through this stage
+                if ($material->$stageColumn) {
+                    $validMaterialIds[] = $materialId;
+                    $validMaterialNames[] = $material->name;
+                    \Log::info('[BACKEND] Material goes through this stage', ['material' => $material->name]);
+                } else {
+                    \Log::info('[BACKEND] Material does not go through this stage, filtering out', [
+                        'material' => $material->name,
+                        'stage' => $stage
+                    ]);
+                }
+            }
+
+            \Log::info('[BACKEND] Materials after stage filtering', [
+                'valid_materials' => $validMaterialNames,
+                'count' => count($validMaterialIds)
+            ]);
+
+            // SECOND: Now check if there's exactly one shared material for this stage
+            if (empty($validMaterialIds)) {
+                \Log::warning('[BACKEND] No materials go through this stage');
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No materials from selected cases go through this stage'
+                ], 400);
+            }
+
+            if (count($validMaterialIds) > 1) {
+                \Log::warning('[BACKEND] Multiple materials found for this stage', [
+                    'materials' => $validMaterialNames,
+                    'material_ids' => $validMaterialIds
+                ]);
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Multiple materials found in selected cases'
+                ], 400);
+            }
+
+            // THIRD: We have exactly one material - get its types
+            $sharedMaterialId = $validMaterialIds[0];
+            $sharedMaterialName = $validMaterialNames[0];
+
+            \Log::info('[BACKEND] Single shared material found', [
+                'material_id' => $sharedMaterialId,
+                'material_name' => $sharedMaterialName
+            ]);
+
+            // Get types for this material from material_types pivot table
+            \Log::info('[BACKEND] Querying material_types pivot table', [
+                'material_id' => $sharedMaterialId
+            ]);
+
+            $types = \DB::table('material_types')
+                ->join('types', 'material_types.type_id', '=', 'types.id')
+                ->where('material_types.material_id', $sharedMaterialId)
+                ->where('types.is_enabled', true)
+                ->select('types.id', 'types.name', 'material_types.material_id')
+                ->get();
+
+            \Log::info('[BACKEND] Types query result', [
+                'types_count' => $types->count(),
+                'types' => $types->toArray()
+            ]);
+
+            // Check if material type should be selected at this stage
+            $material = \App\material::find($sharedMaterialId);
+            $typeSelectionStage = $material->type_selection_stage;
+            $shouldShowTypes = false;
+
+            if (!empty($typeSelectionStage)) {
+                // Material has specific stage configured - only show if current stage matches
+                $shouldShowTypes = ($typeSelectionStage === $stage);
+            } else {
+                // No specific stage configured - show for default stages (milling, 3dprinting, pressing)
+                $shouldShowTypes = in_array($stage, ['milling', '3dprinting', 'pressing']);
+            }
+
+            $response = [
+                'success' => true,
+                'material_id' => $sharedMaterialId,
+                'material_name' => $sharedMaterialName,
+                'stage' => $stage,
+                'type_selection_stage' => $typeSelectionStage,
+                'should_show_types' => $shouldShowTypes,
+                'types' => $types
+            ];
+
+            \Log::info('[BACKEND] Returning response', ['response' => $response]);
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+            \Log::error('[BACKEND] Exception in getMaterialTypesForStage', [
+                'message' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error getting material types: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function caseTimeline($id)
+    {
+        $case = sCase::with(['client', 'jobs.material', 'jobs.jobType'])->findOrFail($id);
+
+        $timeline = collect();
+
+        // Stage name mappings
+        $stageNames = [
+            1 => 'Design',
+            2 => 'Milling',
+            3 => '3D Printing',
+            4 => 'Sintering',
+            5 => 'Pressing',
+            6 => 'Finishing',
+            7 => 'QC',
+            8 => 'Delivery',
+            -1 => 'Completed'
+        ];
+
+        $subStageNames = [
+            '2.1' => 'Set on Milling device',
+            '2.2' => 'Started Milling',
+            '2.3' => 'Completed Milling',
+            '3.1' => 'Set on 3D Printer',
+            '3.2' => 'Started 3D Printing',
+            '3.3' => 'Completed 3D Printing',
+            '4.1' => 'Set in Sintering Furnace',
+            '4.2' => 'Started Sintering',
+            '5.1' => 'Set in Pressing Furnace',
+            '5.2' => 'Started Pressing',
+            '5.3' => 'Completed Pressing',
+            '8.1' => 'Assigned to Driver',
+            '8.2' => 'Driver Accepted',
+            '8.3' => 'Delivered'
+        ];
+
+        $failureTypes = [
+            0 => 'Rejection',
+            1 => 'Repeat',
+            2 => 'Modification',
+            3 => 'Redo'
+        ];
+
+        // Event priority for sorting when timestamps are equal (lower = earlier in chronological order)
+        // In DESC timeline: higher priority = appears first (top)
+        $eventPriority = [
+            'created' => 1,
+            'job' => 2,
+            'started' => 3,      // Started happens before completion
+            'assignment' => 3,
+            'completion' => 4,   // Completion happens after started
+            'failure' => 5,
+            'note' => 6,
+            'financial' => 7
+        ];
+
+        // 1. Case created
+        $timeline->push([
+            'timestamp' => $case->created_at,
+            'type' => 'created',
+            'priority' => $eventPriority['created'],
+            'user' => $case->createdBy ?? null,
+            'description' => 'Case created',
+            'details' => "Patient: {$case->patient_name}"
+        ]);
+
+        // 2. Case logs (assignments, completions)
+        foreach ($case->caseLogs as $log) {
+            $stageName = $subStageNames[$log->stage] ?? $stageNames[$log->stage] ?? "Stage {$log->stage}";
+            $stageNum = (string) $log->stage;
+
+            if ($log->is_completion) {
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "{$stageName} / {$userName}";
+                $type = 'completion';
+            } elseif ($stageNum === '8.1' || $stageNum === '8') {
+                // Delivery assignment - keep as "assignment", show who assigned to whom
+                $assignerName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $assigneeName = $log->assignee ? ($log->assignee->first_name ?? $log->assignee->name ?? 'Driver') : 'Driver';
+                $description = "Delivery by {$assignerName} to {$assigneeName}";
+                $type = 'assignment';
+            } elseif ($stageNum === '8.2') {
+                // Driver accepted - this is "started" for delivery
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "Delivery / {$userName}";
+                $type = 'started';
+            } else {
+                // All other stages - "started" instead of "assignment"
+                $userName = $log->user ? ($log->user->first_name ?? $log->user->name ?? 'Unknown') : 'Unknown';
+                $description = "{$stageName} / {$userName}";
+                $type = 'started';
+            }
+
+            $timeline->push([
+                'timestamp' => $log->created_at,
+                'type' => $type,
+                'priority' => $eventPriority[$type],
+                'user' => $log->user,
+                'description' => $description,
+                'details' => null
+            ]);
+        }
+
+        // 3. Notes
+        foreach ($case->notes as $note) {
+            $timeline->push([
+                'timestamp' => $note->created_at,
+                'type' => 'note',
+                'priority' => $eventPriority['note'],
+                'user' => $note->writtenBy,
+                'description' => 'Added note',
+                'details' => $note->content
+            ]);
+        }
+
+        // 4. Failures
+        foreach ($case->failureLogs as $failure) {
+            $timeline->push([
+                'timestamp' => $failure->created_at,
+                'type' => 'failure',
+                'priority' => $eventPriority['failure'],
+                'user' => $failure->user ?? null,
+                'description' => $failureTypes[$failure->failure_type] ?? 'Issue',
+                'details' => $failure->cause->name ?? null
+            ]);
+        }
+
+        // 5. Discount
+        if ($discount = $case->discount) {
+            $timeline->push([
+                'timestamp' => $discount->created_at,
+                'type' => 'financial',
+                'priority' => $eventPriority['financial'],
+                'user' => $discount->createdBy ?? null,
+                'description' => 'Discount applied',
+                'details' => number_format($discount->amount, 2) . ' JOD'
+            ]);
+        }
+
+        // 6. Invoice events
+        if ($invoice = $case->invoice) {
+            $timeline->push([
+                'timestamp' => $invoice->created_at,
+                'type' => 'financial',
+                'priority' => $eventPriority['financial'],
+                'user' => null,
+                'description' => 'Invoice issued',
+                'details' => number_format($invoice->amount, 2) . ' JOD'
+            ]);
+
+            if ($invoice->date_applied) {
+                $timeline->push([
+                    'timestamp' => $invoice->date_applied,
+                    'type' => 'financial',
+                    'priority' => $eventPriority['financial'],
+                    'user' => null,
+                    'description' => 'Invoice applied to client balance',
+                    'details' => null
+                ]);
+            }
+        }
+
+        // 7. Jobs created
+        foreach ($case->jobs as $job) {
+            $timeline->push([
+                'timestamp' => $job->created_at,
+                'type' => 'job',
+                'priority' => $eventPriority['job'],
+                'user' => null,
+                'description' => 'Job added',
+                'details' => "{$job->jobType->name} - {$job->material->name} - Units: {$job->unit_num}"
+            ]);
+        }
+
+        // 8. Abutment delivery records
+        foreach ($case->abutmentsDeliveries as $abutmentRecord) {
+            $abutmentName = $abutmentRecord->abutment->name ?? 'N/A';
+            $implantName = $abutmentRecord->implant->name ?? 'N/A';
+            $timeline->push([
+                'timestamp' => $abutmentRecord->created_at,
+                'type' => 'job',
+                'priority' => $eventPriority['job'],
+                'user' => null,
+                'description' => 'Abutment delivery record',
+                'details' => "Abutment: {$abutmentName}, Implant: {$implantName}, Units: {$abutmentRecord->units}"
+            ]);
+        }
+
+        // Sort by timestamp DESC, then by priority DESC (when timestamps equal)
+        // Higher priority = appears first at top (completion before started for same second)
+        $timelineArray = $timeline->toArray();
+        usort($timelineArray, function($a, $b) {
+            $timeA = strtotime($a['timestamp']);
+            $timeB = strtotime($b['timestamp']);
+
+            // Primary: timestamp DESC (newer first)
+            if ($timeA !== $timeB) {
+                return $timeB - $timeA;
+            }
+
+            // Secondary: priority DESC (higher priority = later event = appears first in DESC view)
+            return $b['priority'] - $a['priority'];
+        });
+        $timeline = collect($timelineArray);
+
+        return view('admin.case-timeline', compact('case', 'timeline'));
+    }
+
 }
+    {
+        $user = $user ?? Auth()->user();
+
+        if (!$user) {
+            return 'system';
+        }
+
+        if (!empty($user->name_initials)) {
+            return $user->name_initials;
+        }
+
+        $parts = array_filter([
+            $user->first_name ?? null,
+            $user->last_name ?? null,
+        ]);
+
+        $fullName = trim(implode(' ', $parts));
+
+        if ($fullName !== '') {
+            return $fullName;
+        }
+
+        if (!empty($user->username)) {
+            return $user->username;
+        }
+
+        return (string) $user->id;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -27,6 +27,11 @@ class Build extends Model
         return $this->hasMany(job::class, 'milling_build_id');
     }
 
+    public function sinteringJobs()
+    {
+        return $this->hasMany(job::class, 'sintering_build_id');
+    }
+
     public function pressingJobs()
     {
         return $this->hasMany(job::class, 'pressing_build_id');
@@ -42,5 +47,19 @@ class Build extends Model
         return $this->belongsTo(Build::class, 'printing_build_id');
     }
 
+    public function device()
+    {
+        return $this->belongsTo('App\device', 'device_id', 'id');
+    }
+
+    public function printer()
+    {
+        return $this->belongsTo('App\device', 'device_used', 'id');
+    }
+
+    public function deviceUsed()
+    {
+        return $this->belongsTo('App\device', 'device_used', 'id');
+    }
 
 }

@@ -1,12 +1,44 @@
 
-
-
-
 let deviceSelected = 0;
 let selectedCases = [];
 let currentModalId = 0;
 let caseIDFromOldDialog = 0;
 
+// Function to handle outer tab (stage) switching
+function setOuterTab(btnElement) {
+    const id = btnElement.id;
+
+    // Save active outer tab to cookie
+    Cookies.set('activeOuterTab', id);
+    console.log("Set outer tab to:", id);
+
+    // Hide all outer tab panels
+    $('.macaw-aurora-tabs > div[role="tabpanel"]').attr('hidden', true);
+
+    // Show the selected panel
+    const panelId = $(btnElement).attr('aria-controls');
+    $(`#${panelId}`).removeAttr('hidden');
+
+    // Update tab button states
+    const tablist = $(btnElement).closest('[role="tablist"]');
+    tablist.find('[role="tab"]').attr('aria-selected', false).attr('tabindex', -1);
+    $(btnElement).attr('aria-selected', true).removeAttr('tabindex');
+
+    // Set current stage for global use
+    const stageMapping = {
+        'design': 1,
+        'milling': 2,
+        '3dprinting': 3,
+        'sintering': 4,
+        'pressing': 5,
+        'finishing': 6,
+        'qc': 7,
+        'delivery': 8
+    };
+
+    window.currentStage = stageMapping[id] || 1;
+    console.log("Current stage set to:", window.currentStage);
+}
 
 function setInnerTab(btnElement) {
     let id = btnElement.id;
@@ -49,7 +81,7 @@ function setInnerTab(btnElement) {
     $(btnElement).attr('aria-selected', true).removeAttr('tabindex');
 
     // Initialize DataTables for the newly visible panel
-
+    forceInitializeAllTables();
 }
 
 // setOuterTab function is now defined in the main dashboard view file
@@ -59,6 +91,14 @@ function handleDialogBackdropClick(event, deviceId) {
     // Only close if clicking on the backdrop itself, not child elements
     if (event.target === event.currentTarget) {
         closeDeviceDialog(deviceId);
+    }
+}
+
+// Handle waiting dialog backdrop click for dismissal
+function handleWaitingDialogBackdropClick(event, type) {
+    // Only close if clicking on the backdrop itself, not child elements
+    if (event.target === event.currentTarget) {
+        closeModal({id: type, isWaiting: true});
     }
 }
 
@@ -308,189 +348,70 @@ function selectAll(ele, classname) {
 
 
 
-// Function to initialize DataTables safely
-var dataTableInitialized = false;
-
 function initializeDataTables() {
-    // Prevent multiple initialization attempts
-    if (dataTableInitialized) {
+    if (typeof $ === 'undefined' || typeof $.fn.DataTable === 'undefined') {
+        console.warn('jQuery or DataTables not available yet. Skipping initialization.');
         return;
     }
 
-    // Check if jQuery is available first
-    if (typeof $ === 'undefined') {
-        console.warn("jQuery is not loaded. Cannot initialize DataTables.");
-        return;
-    }
+    $('.sunriseTable').each(function() {
+        const $table = $(this);
 
-    // Check if DataTables is available before trying to initialize
-    if (typeof $.fn.DataTable !== 'function') {
-        console.warn("DataTables plugin is not loaded. Tables will display without DataTable functionality.");
-        return;
-    }
-
-    // Mark as initialized to prevent duplicate attempts
-    dataTableInitialized = true;
-
-    // Use the optimized function
-    initializeVisibleTables();
-
-}
-
-// Optimized initialization with caching
-var initializedTables = new Set();
-
-function initializeVisibleTables() {
-    // ✅ Check if DataTables is available
-    if (typeof $.fn.DataTable === 'undefined') {
-        console.log('DataTables not yet loaded, retrying...');
-        setTimeout(initializeVisibleTables, 100); // retry after 100ms
-        return;
-    }
-
-    // 🗑️ This does nothing (should be removed)
-    // setTimeout(function(){}, 1000);
-
-    var tables = $('.sunriseTable');
-
-    tables.each(function() {
-        var tableId = this.id || $(this).index();
-
-        if (initializedTables.has(tableId)) return;
-
-        var $table = $(this);
-        var $parent = $table.closest('[role="tabpanel"]');
-
-        if ($table.is(':visible') || ($parent.length && !$parent.attr('hidden'))) {
-            if (!$.fn.DataTable.isDataTable(this)) {
-                initializeSingleTable(this);
-                initializedTables.add(tableId);
+        if ($.fn.DataTable.isDataTable(this)) {
+            $table.DataTable().columns.adjust();
+            if (typeof window.sigmaRunManagedTableWidths === 'function') {
+                window.sigmaRunManagedTableWidths();
             }
-        }
-    });
-}
-
-
-// Initialize a single table
-function initializeSingleTable(table) {
-    // Check if DataTables is available
-    if (typeof $.fn.DataTable === 'undefined') {
-        console.log('DataTables not available for single table initialization');
-        return;
-    }
-
-    const $table = $(table);
-
-    // Cache DOM elements
-    const $thead = $table.find('thead');
-    const $tbody = $table.find('tbody');
-
-    // Check table structure
-    if ($thead.length === 0 || $tbody.length === 0) {
-        return;
-    }
-
-    try {
-        // Cache header row
-        const $headerRow = $thead.find('tr').first();
-        const $headerCells = $headerRow.find('th');
-
-        // BOOLEAN: Check if first column has checkbox
-        let hasCheckbox = $headerCells.first().find('input[type="checkbox"]').length > 0;
-
-        // INTEGER: Count total columns
-        let columnCount = $headerCells.length;
-
-        // Lightweight column configuration
-        let columnDefs = [];
-
-        // Simple width configuration based on checkbox and column count
-        if (hasCheckbox && columnCount === 7) {
-            columnDefs = [
-                { width: "5%", targets: 0},
-                { width: "20%", targets: 1 },
-                { width: "20%", targets: 2 },
-                {className: 'dt-center', width: "20%", targets: 3 },
-                {className: 'dt-center', width: "10%", targets: 4 },
-                {className: 'dt-center', width: "15%", targets: 5 },
-                {className: 'dt-center', width: "10%", targets: 6 }
-            ];
-        } else if (hasCheckbox && columnCount === 6) {
-            columnDefs = [
-                { width: "5%", targets: 0 },// checkbox
-                { width: "20%", targets: 1, },
-                { width: "20%", targets: 2 },
-                { className: 'dt-center',width: "20%", targets: 3 },
-                { className: 'dt-center',width: "10%", targets: 4 },
-                { className: 'dt-center', width: "25%", targets: 5 },
-
-            ];
-        } else if (!hasCheckbox && columnCount === 6) {
-            columnDefs = [
-                { width: "30%", targets: 0 },
-                { width: "20%", targets: 1 },
-                {className: 'dt-center', width: "20%", targets: 2 },
-                { className: 'dt-center',width: "10%", targets: 3 },
-                {className: 'dt-center', width: "10%", targets: 4 },
-                {className: 'dt-center', width: "10%", targets: 5 }
-            ];
-        } else if (!hasCheckbox && columnCount === 5) {
-            columnDefs = [
-                { width: "25%", targets: 0 },// doctor
-                { width: "20%", targets: 1 },// patient
-                {className: 'dt-center', width: "20%", targets: 2 },//deli
-                {className: 'dt-center', width: "10%", targets: 3 },// # of units
-                {className: 'dt-center', width: "25%", targets: 4 } // tags
-            ];
-        } else {
-            // Default configuration
-            for (let i = 0; i < columnCount; i++) {
-                let config = { width: (100 / columnCount) + "%", targets: i };
-                if (hasCheckbox && i === 0) {
-                    config.width = "50px";
-                    config.orderable = true;
-                }
-                columnDefs.push(config);
-            }
+            return;
         }
 
-        // Lightweight DataTable initialization
         $table.DataTable({
+            paging: false,
             searching: false,
+            info: false,
             ordering: false,
-             autoWidth: false,
-            responsive: true,
             lengthChange: false,
-//             stateSave: true,
-            pageLength: 10,
-            pagingType: "simple_numbers",
-            // processing: false,
-            //    deferRender: true,
-            columnDefs: columnDefs,
-            language: {
-                emptyTable: "No data available"
-            },
-  //           lengthMenu: [[25, 50, 100], [25, 50, 100]]
+            responsive: false,
+            autoWidth: false
         });
 
-        $table.addClass("nowrap hover compact stripe");
+        $table.data('dtShowAllApplied', true);
+        if (typeof window.sigmaRunManagedTableWidths === 'function') {
+            window.sigmaRunManagedTableWidths();
+        }
+    });
 
-    } catch (error) {
-        console.error("Error initializing DataTable:", error);
+    adjustVisibleTables();
+}
+
+function setupTabPanelObserver() {}
+
+function adjustVisibleTables() {
+    if (typeof $.fn.DataTable === 'undefined') {
+        return;
+    }
+
+    $('.sunriseTable:visible').each(function() {
+        if ($.fn.DataTable.isDataTable(this)) {
+            $(this).DataTable().columns.adjust();
+        }
+    });
+
+    if (typeof window.sigmaRunManagedTableWidths === 'function') {
+        window.sigmaRunManagedTableWidths();
     }
 }
 
-// Single efficient initialization approach
-$(document).ready(function () {
-    // Only one initialization call with a reasonable delay
-    setTimeout(function() {
-        initializeVisibleTables();
-    }, 300);
-});
+function forceInitializeAllTables() {
+    setTimeout(() => {
+        initializeDataTables();
+        adjustVisibleTables();
+    }, 50);
+}
 
 // Export function globally so it can be called from blade templates
-window.initializeVisibleTables = initializeVisibleTables;
-window.initializeSingleTable = initializeSingleTable;
+window.initializeDataTables = initializeDataTables;
+window.forceInitializeAllTables = forceInitializeAllTables;
 
 // ESC key handler for dialog dismissal
 document.addEventListener('keydown', function(event) {
@@ -509,18 +430,39 @@ try {
     $(".macaw-aurora-tabs").macawTabs({
         autoVerticalOrientation: true,
         tabPanelTransitionLogic: true,
-        tabPanelTransitionTimeoutDuration: 10
+        tabPanelTransitionTimeoutDuration: 10,
+        onTabActivation: function() {
+            forceInitializeAllTables();
+        }
     });
 
     // Nested Tabs
     $(".macaw-silk-tabs").macawTabs({
         autoVerticalOrientation: false,
+        onTabActivation: function() {
+            forceInitializeAllTables();
+        }
     });
 
 
 } catch (e) {
     console.error("Error initializing tabs:", e);
 }
+
+// Add direct click listeners to tab buttons
+$(document).ready(function() {
+    // Outer tabs
+    $('.stageSidebar button[role="tab"]').on('click', function() {
+        forceInitializeAllTables();
+    });
+
+    // Inner tabs
+    $('.macaw-silk-tabs [role="tab"]').on('click', function() {
+        forceInitializeAllTables();
+    });
+
+    forceInitializeAllTables();
+});
 
 // Original document ready code continues below...
 
@@ -628,23 +570,28 @@ for (let i = 1; i < 11; i++) {
 $("[id^='active']").click(function (e) {
     // Store just the ID value (not prefixing with 'inner')
     Cookies.set('inner' + $(this).attr('href'), $(this).attr('id'));
-    console.log("set cookie for : " + 'inner' + $(this).attr('href') + ' => ' + $(this).attr('id'));
+    // console.log("set cookie for : " + 'inner' + $(this).attr('href') + ' => ' + $(this).attr('id'));
 });
 
 
 
 let escapedKey = "NotAvailable";
 $(document).ready(function () {
-    enableAllChoices();
-    disableTextInput();
-
-    // Make the dialog responsive on window resize
-    $(window).resize(function () {
-        adjustDialogLayout();
-    });
-
-    // Initial layout adjustment
-    adjustDialogLayout();
+    // enableAllChoices();
+    // disableTextInput();
+    //
+    // setupTabPanelObserver();
+    //
+    // // Make the dialog responsive on window resize
+    // $(window).resize(function () {
+    //     adjustDialogLayout();
+    // });
+    //
+    // // Initial layout adjustment
+    // adjustDialogLayout();
+    //
+    // // Initialize tables on page load
+    // initializeDataTables();
 });
 
 function adjustDialogLayout() {
@@ -1065,18 +1012,20 @@ function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
             document.activeElement.blur();
         }
 
-        // Add fade-out animation
+        // Add Animate.css fade-out animation (fadeOutUp to top) - faster
         const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
         if (dialogContent) {
-            dialogContent.classList.add('fade-out');
+            dialogContent.classList.remove('animate__fadeIn');
+            dialogContent.classList.add('animate__fadeOut');
         }
 
-        // Hide modal after animation
+        // Hide modal after animation completes (300ms for faster)
         setTimeout(() => {
             modal.classList.remove('active', 'show');
             modal.style.display = 'none';
             if (dialogContent) {
-                dialogContent.classList.remove('fade-out', 'fade-in');
+                dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
+                dialogContent.style.willChange = 'auto'; // Reset GPU optimization
             }
 
             // Reset dialog state if needed
@@ -1294,14 +1243,3 @@ function showNoJobsMessage() {
     console.log("No jobs available for this device.");
     // alert("No jobs available for this device."); // Example
 }
-
-// Also try when window is fully loaded (fallback for DataTables)
-$(window).on('load', function() {
-    // Try one more time when window is fully loaded
-    if (!dataTableInitialized) {
-        initializeDataTables();
-    }
-    // Reset global variables - Ensure these are not causing unintended side effects
-    // window.selectedBuildId = null; // Consider if this is necessary or causing issues
-    // selectedBuildId = null; // Consider if this is necessary or causing issues
-});

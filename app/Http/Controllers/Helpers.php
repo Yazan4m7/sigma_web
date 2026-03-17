@@ -10,7 +10,6 @@ use App\Http\Traits\helperTrait;
 
 
 class Helpers{
-    use helperTrait;
 
     public function filterByStage($cases,$stage){
         $filteredList =collect([]);

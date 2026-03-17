@@ -37,10 +37,16 @@ Route::post('/job-types-report',[ApiController::class,'jobTypesReport']);
 Route::post('/QC-report',[ApiController::class,'QCReport']);
 Route::post('/implants-report',[ApiController::class,'implantsReport']);
 
-Route::post('/register-login-time',[ApiController::class,'logSignin']);
+Route::match(['get', 'post'], '/register-login-time', [ApiController::class, 'logSignin']);
 
 // TYPES
 Route::get('/materials/{id}/types', [App\Http\Controllers\MaterialController::class, 'getTypes']);
+Route::get('/material-types', [App\Http\Controllers\ReportsController::class, 'getMaterialTypes']);
+
+// CASES
+Route::post('/cases/materials', [App\Http\Controllers\CaseController::class, 'validateCaseMaterials']);
+Route::post('/cases/material-types', [App\Http\Controllers\MaterialController::class, 'getMaterialTypesForCase']);
+
 
 //AUTH
 Route::post('/login',[ApiController::class,'login']);

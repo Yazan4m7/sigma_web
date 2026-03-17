@@ -1,0 +1,285 @@
+/* Enhanced Repeats Report Styling */
+/* Status-based color coding for professional failure analysis */
+
+:root {
+    /* Status Colors - Professional Healthcare Palette (Report-specific) */
+    --status-reject: #dc3545;
+    --status-reject-light: #f8d7da;
+    --status-repeat: #fd7e14;
+    --status-repeat-light: #ffe8d1;
+    --status-modification: #ffc107;
+    --status-modification-light: #fff3cd;
+    --status-redo: #6f42c1;
+    --status-redo-light: #e2d9f3;
+    --status-successful: #28a745;
+    --status-successful-light: #d4edda;
+
+    /* Using master SIGMA variables from sigma-reports-master.css */
+    /* Removed conflicting --sigma-primary, --sigma-secondary, etc. */
+}
+
+/* Enhanced Status Column Headers */
+.status-reject {
+    background: linear-gradient(135deg, var(--status-reject) 0%, #c82333 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    position: relative;
+}
+
+.status-repeat {
+    background: linear-gradient(135deg, var(--status-repeat) 0%, #e8590c 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.status-modification {
+    background: linear-gradient(135deg, var(--status-modification) 0%, #e0a800 100%) !important;
+    color: #212529 !important;
+    font-weight: 700 !important;
+}
+
+.status-redo {
+    background: linear-gradient(135deg, var(--status-redo) 0%, #59359a 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+.status-successful {
+    background: linear-gradient(135deg, var(--status-successful) 0%, #1e7e34 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+}
+
+/* Data Cells with Status-based Subtle Backgrounds */
+.status-data-0 {
+    background-color: var(--status-reject-light) !important;
+    border-left: 3px solid var(--status-reject) !important;
+    font-weight: 600;
+    color: var(--status-reject);
+}
+
+.status-data-1 {
+    background-color: var(--status-repeat-light) !important;
+    border-left: 3px solid var(--status-repeat) !important;
+    font-weight: 600;
+    color: var(--status-repeat);
+}
+
+.status-data-2 {
+    background-color: var(--status-modification-light) !important;
+    border-left: 3px solid var(--status-modification) !important;
+    font-weight: 600;
+    color: #856404;
+}
+
+.status-data-3 {
+    background-color: var(--status-redo-light) !important;
+    border-left: 3px solid var(--status-redo) !important;
+    font-weight: 600;
+    color: var(--status-redo);
+}
+
+.status-data-4 {
+    background-color: var(--status-successful-light) !important;
+    border-left: 3px solid var(--status-successful) !important;
+    font-weight: 600;
+    color: var(--status-successful);
+}
+
+/* Enhanced Toggle Containers for Repeats Report */
+.modern-toggle-container {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    background: linear-gradient(135deg, #f8fcfc 0%, #f1f9f1 100%);
+    border: 2px solid var(--sigma-border);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.modern-toggle-container:hover {
+    border-color: var(--sigma-primary);
+    box-shadow: 0 2px 8px rgba(43, 123, 125, 0.1);
+}
+
+/* Enhanced Modern Toggle Styling */
+.modern-toggle {
+    transform: scale(1.3);
+    accent-color: var(--sigma-primary);
+    margin-right: 0.75rem;
+}
+
+.toggle-label {
+    color: var(--sigma-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    letter-spacing: 0.3px;
+}
+
+/* Percentage Display Enhancement */
+.table-number:contains('%') {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e8f4f5 0%, #d1ecf1 100%);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Zero Values Styling */
+.table-number:contains('0'):not(:contains('%')):not(:contains('10')):not(:contains('20')):not(:contains('30')) {
+    color: #6c757d;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+/* High Value Alert (for counts > 10) */
+.table-number[data-value]:after {
+    content: attr(data-value);
+}
+
+/* Professional Hover Effects for Data Cells */
+.table-data-row:hover .table-cell {
+    transform: translateX(2px);
+    transition: all 0.2s ease;
+}
+
+.table-data-row:hover .table-doctor-name {
+    color: var(--sigma-primary);
+    font-weight: 700;
+    transform: translateX(4px);
+}
+
+/* Enhanced Filters Card for Repeats Report */
+/* Report Filters Card - Using master definition from sigma-reports-master.css */
+
+.report-filters-card::before {
+    display: none; /* Hide the gradient top border for this specific report */
+}
+
+/* Enhanced Action Buttons */
+.btn-primary-modern {
+    background: linear-gradient(135deg, var(--sigma-primary) 0%, #357a7c 50%, var(--status-successful) 100%);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 2rem;
+    font-weight: 700;
+    font-size: 14px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.4s ease;
+    box-shadow: 0 4px 16px rgba(43, 123, 125, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-primary-modern:hover::before {
+    left: 100%;
+}
+
+.btn-primary-modern:hover {
+    background: linear-gradient(135deg, #1a5d5f 0%, var(--sigma-primary) 50%, var(--status-successful) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(43, 123, 125, 0.35);
+}
+
+/* Professional Status Icons */
+.status-reject::before { content: '⚠️'; margin-right: 0.5rem; }
+.status-repeat::before { content: '🔄'; margin-right: 0.5rem; }
+.status-modification::before { content: '✏️'; margin-right: 0.5rem; }
+.status-redo::before { content: '🔧'; margin-right: 0.5rem; }
+.status-successful::before { content: '✅'; margin-right: 0.5rem; }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .modern-toggle-container {
+        padding: 0.5rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .toggle-label {
+        font-size: 0.75rem;
+    }
+
+    .btn-primary-modern {
+        padding: 0.75rem 1.5rem;
+        font-size: 12px;
+    }
+
+    .status-reject::before,
+    .status-repeat::before,
+    .status-modification::before,
+    .status-redo::before,
+    .status-successful::before {
+        display: none;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .status-reject,
+    .status-repeat,
+    .status-modification,
+    .status-redo,
+    .status-successful {
+        background: #f8f9fa !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    .status-data-0,
+    .status-data-1,
+    .status-data-2,
+    .status-data-3,
+    .status-data-4 {
+        background-color: white !important;
+        border-left: 2px solid #666 !important;
+        color: #212529 !important;
+    }
+
+    .report-filters-card::before {
+        display: none;
+    }
+}
+
+/* Animation for Status Changes */
+@keyframes statusHighlight {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(43, 123, 125, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.table-data-row:nth-child(even):hover {
+    animation: statusHighlight 1.5s ease-in-out;
+}
+
+/* Enhanced Focus States for Accessibility */
+.form-control-modern:focus,
+.selectpicker-modern:focus,
+.modern-toggle:focus {
+    outline: 3px solid rgba(43, 123, 125, 0.3);
+    outline-offset: 2px;
+}
+
+/* Professional Loading State */
+.table-loading::after {
+    content: 'Analyzing Failure Patterns...';
+    background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248, 252, 252, 0.95) 100%);
+    color: var(--sigma-primary);
+    font-weight: 600;
+    border: 2px solid var(--sigma-primary);
+}

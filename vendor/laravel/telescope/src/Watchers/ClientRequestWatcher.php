@@ -97,20 +97,22 @@ class ClientRequestWatcher extends Watcher
      */
     protected function response(Response $response)
     {
-        $content = $response->body();
-
         $stream = $response->toPsrResponse()->getBody();
 
-        if ($stream->isSeekable()) {
-            $stream->rewind();
+        if (! $stream->isSeekable()) {
+            return 'Stream Response';
         }
+
+        $content = $response->body();
+
+        $stream->rewind();
 
         if (is_string($content)) {
             if (is_array(json_decode($content, true)) &&
                 json_last_error() === JSON_ERROR_NONE) {
                 return $this->contentWithinLimits($content)
-                        ? $this->hideParameters(json_decode($content, true), Telescope::$hiddenResponseParameters)
-                        : 'Purged By Telescope';
+                    ? $this->hideParameters(json_decode($content, true), Telescope::$hiddenResponseParameters)
+                    : 'Purged By Telescope';
             }
 
             if (Str::startsWith(strtolower($response->header('Content-Type') ?? ''), 'text/plain')) {

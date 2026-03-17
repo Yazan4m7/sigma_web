@@ -5906,7 +5906,7 @@ button.close {
 
 @media screen and (prefers-reduced-motion: reduce) {
   .modal.fade .modal-dialog {
-    transition: none;
+
   }
 }
 
@@ -11823,19 +11823,8 @@ fieldset[disabled] .btn-link.active {
 }
 
 .dropdown-menu:before {
-  display: inline-block;
-  position: absolute;
-  width: 0;
-  height: 0;
-  vertical-align: middle;
-  content: "";
-  top: -5px;
-  left: 10px;
-  right: auto;
-  color: #ffffff;
-  border-bottom: .4em solid;
-  border-right: .4em solid transparent;
-  border-left: .4em solid transparent;
+
+
 }
 
 .dropdown-menu.dropdown-menu-right {
@@ -15056,14 +15045,7 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active>a:not([data-toggle="collapse"]):before,
 .off-canvas-sidebar .nav li.active>a:not([data-toggle="collapse"]):before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 22px;
-  left: -4px;
-  background: #ffffff;
-  border-radius: 50%;
+
 }
 
 .sidebar .nav li.active>a[data-toggle="collapse"],
@@ -15093,26 +15075,12 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active>a[data-toggle="collapse"]+div .nav .active a:before,
 .off-canvas-sidebar .nav li.active>a[data-toggle="collapse"]+div .nav .active a:before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 17px;
-  left: -4px;
-  background: #ffffff;
-  border-radius: 50%;
+
 }
 
 .sidebar .nav li.active>a[data-toggle="collapse"]:before,
 .off-canvas-sidebar .nav li.active>a[data-toggle="collapse"]:before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 22px;
-  left: -4px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
+
 }
 
 .sidebar .nav p,
@@ -16929,9 +16897,6 @@ Copyright (c) 2015 Daniel Eden
   color: rgba(255, 255, 255, 0.8);
 }
 
-.white-content .main-panel {
-  background: #f5f6fa;
-}
 
 .white-content h1,
 .white-content h2,
@@ -17299,7 +17264,7 @@ Copyright (c) 2015 Daniel Eden
 }
 
 .card .card-header .card-title {
-  color: #ffffff;
+
   font-weight: 100;
 }
 

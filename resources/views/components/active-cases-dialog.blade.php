@@ -12,30 +12,65 @@
 
     // Get stage configuration
     $stageConfig = OperationsUpgrade::STAGE_CONFIG;
+    $stageNumber = $stageConfig[$type]['number'] ?? null;
 
     // Get all builds for this device that have not been finished
-    $builds = Build::where('printer_id', $deviceId)
+    $builds = Build::where('device_used', $deviceId)
         ->whereNotNull('set_at')
         ->whereNull('finished_at')
         ->get();
 
-    // Create an array to store job data for each build
     $buildData = [];
+    $buildIds = $builds->pluck('id')->values()->all();
+    $buildIdField = null;
+
+    if ($type == 'milling') {
+        $buildIdField = 'milling_build_id';
+    } else if ($type == '3dprinting') {
+        $buildIdField = 'printing_build_id';
+    } else if ($type == 'sintering') {
+        $buildIdField = 'sintering_build_id';
+    } else if ($type == 'pressing') {
+        $buildIdField = 'pressing_build_id';
+    }
+
+    $buildJobs = collect();
+    $casesById = collect();
+
+    if (!empty($buildIds) && $buildIdField) {
+        $buildJobs = job::whereIn($buildIdField, $buildIds)
+            ->with(['jobType', 'subType'])
+            ->get();
+
+        $caseIds = $buildJobs->pluck('case_id')->unique()->values()->all();
+
+        if (!empty($caseIds)) {
+            $casesById = sCase::whereIn('id', $caseIds)
+                ->with([
+                    'client:id,name',
+                    'jobs' => function ($q) use ($stageNumber) {
+                        $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'sintering_build_id', 'pressing_build_id', 'milling_build_id', 'type_id');
+                        if ($stageNumber !== null) {
+                            $q->where('stage', $stageNumber);
+                        }
+                    },
+                    'jobs.material:id,name,count_as_unit',
+                    'jobs.jobType:id,name',
+                    'jobs.subType:id,name,material_id',
+                    'jobs.implantR:id,name',
+                    'jobs.abutmentR:id,name',
+                    'notes.writtenBy:id,name_initials'
+                ])
+                ->get()
+                ->keyBy('id');
+        }
+    }
+
+    $jobsByBuild = $buildIdField ? $buildJobs->groupBy($buildIdField) : collect();
 
     // For each build, get its jobs and cases
     foreach ($builds as $build) {
-        // Get all jobs with this build ID based on workflow type
-        $buildJobs = [];
-
-        if ($type == 'milling') {
-            $buildJobs = job::where('milling_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == '3dprinting') {
-            $buildJobs = job::where('printing_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == 'sintering') {
-            $buildJobs = job::where('sintering_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        } else if ($type == 'pressing') {
-            $buildJobs = job::where('pressing_build_id', $build->id)->with(['jobType', 'subType'])->get();
-        }
+        $buildJobs = $jobsByBuild->get($build->id, collect());
 
         // Count the jobs
         $jobCount = count($buildJobs);
@@ -49,19 +84,12 @@
         ];
 
         // Group jobs by case
-        $jobsByCaseId = [];
-        foreach ($buildJobs as $job) {
-            $caseId = $job->case_id;
-            if (!isset($jobsByCaseId[$caseId])) {
-                $jobsByCaseId[$caseId] = [];
-            }
-            $jobsByCaseId[$caseId][] = $job;
-        }
+        $jobsByCaseId = $buildJobs->groupBy('case_id');
          Log::info("Active cases dialog : jobsByCaseId count : ".count($jobsByCaseId));
 
         // For each case, get case details and job info
         foreach ($jobsByCaseId as $caseId => $jobs) {
-            $case = sCase::find($caseId);
+            $case = $casesById->get($caseId);
               Log::info("Active cases dialog : case : ". json_encode($case));
             if (!$case) continue;
 
@@ -118,6 +146,10 @@ foreach($buildData as $data)
 Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 @endphp
 <style>
+    .row.info-case-row {
+
+    }
+
     .animated-button {
         position: relative;
         display: flex;
@@ -270,7 +302,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
     .sigma-case-info-row {
         display: grid;
-        grid-template-columns: 2fr 2fr 1fr auto;
+        grid-template-columns: 1fr 1fr !important;
         gap: 16px;
         align-items: center;
         padding: 8px 16px;
@@ -280,8 +312,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
 
-    .sigma-case-patient,
-    .sigma-case-units {
+    .sigma-case-patient, .sigma-case-units {
         font-size: 16px;
         text-align: left;
         overflow: hidden;
@@ -334,7 +365,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     /* Responsive adjustments */
-    @media (max-width: 768px) {
+    @media (max-width: 768px){
         .sigma-case-info-row {
             grid-template-columns: 1fr 1fr auto;
             gap: 8px;
@@ -458,16 +489,19 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     /* Dialog Dismissal Enhancements */
-    .sigma-workflow-modal {
+
+.sigma-workflow-modal.sigma-modal--active-cases-preview {
         backdrop-filter: blur(4px);
         -webkit-backdrop-filter: blur(4px);
     }
 
-    .sigma-workflow-modal.active {
-        animation: fadeIn 0.3s ease-out;
+
+.sigma-workflow-modal.active.sigma-modal--active-cases-preview {
+        animation: fadeIn 0.3s ease-out !important;
     }
 
-    .sigma-workflow-modal.closing {
+
+.sigma-workflow-modal.closing.sigma-modal--active-cases-preview {
         animation: fadeOut 0.3s ease-in;
     }
 
@@ -500,9 +534,9 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 </style>
 {{--{{collect($buildData)--}}
 {{--    ->flatMap(fn($data) => $data['cases'])}}--}}
-<div class="sigma-workflow-modal" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
+<div class="sigma-workflow-modal animate__animated sigma-modal--active-cases-preview" id="{{$deviceId}}casesListDialog" tabindex="-1" role="dialog"
      onclick="handleDialogBackdropClick(event, '{{ $deviceId }}')">
-    <div class="sigma-workflow-dialog" onclick="event.stopPropagation()">
+    <div class="sigma-workflow-dialog" onclick="event.stopPropagation()" style="will-change: transform, opacity;">
         <div class="sigma-workflow-header">
             <h2 class="sigma-workflow-title">{{ $title }}</h2>
             <button class="sigma-close-button" onclick="closeDeviceDialog('{{ $deviceId }}')">
@@ -566,15 +600,23 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
                                 @if($type == 'sintering')
                                     {{-- For sintering, show formatted date instead of build name --}}
-                                    <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? $data['build']->created_at->format('M d, Y') : 'Recent Build' }}</div>
+                                    <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? ui_dialog_date($data['build']->created_at) : 'Recent Build' }}</div>
                                 @else
                                     {{-- For other stages, show build info --}}
                                     <div class="sigma-build-title">{{ $data['build']->name }}</div>
                                 @endif
 
                                 <div class="sigma-build-units">{{ $totalUnits }}</div>
-                                <div class="sigma-build-toggle">
-                                    <i class="fas fa-chevron-down"></i>
+                                <div class="sigma-build-actions">
+                                    <button type="button"
+                                            class="sigma-build-remove"
+                                            aria-label="Remove build"
+                                            onclick="event.stopPropagation(); requestBuildRemoval('{{ $deviceId }}', '{{ $type }}', '{{ $data['build']->id }}', {{ $caseActive ? 'true' : 'false' }})">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <div class="sigma-build-toggle">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -590,11 +632,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                         @foreach($data['cases'] as $caseData)
 
                                             <div class="sigma-case-item">
-                                                <div class="sigma-case-info-row">
-                                                    <div class="sigma-case-doctor">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
-                                                    <div class="sigma-case-patient">{{ $caseData['case']->patient_name }}</div>
-                                                    <div class="sigma-case-units">{{ $caseData['unitCount'] }}</div>
-                                                    <div class="sigma-case-view">
+                                                <div class="  info-case-row">
+                                                    <div class="  ">{{ $caseData['case']->client ? $caseData['case']->client->name : 'No Client' }}</div>
+                                                    <div class=" ">{{ $caseData['case']->patient_name }}</div>
+                                                    <div class="  ">{{ $caseData['unitCount'] }}</div>
+                                                    <div class=" ">
                                                         <button class="sigma-case-view-btn"
                                                                 onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
                                                             <i class="fas fa-eye"></i>
@@ -651,7 +693,13 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     <input type="hidden" name="type" id="action-type-{{ $deviceId }}" value="{{ $type }}">
     <input type="hidden" class="buildsIdsHiddenInput{{$deviceId}}" name="buildsIdsHiddenInput{{$deviceId}}"
            id="action-buildsIds-{{ $deviceId }}" value="">
-    <input type="hidden" name="redirect_to" value="devices">
+</form>
+
+<form id="remove-build-form-{{ $deviceId }}" method="POST" action="{{ route('remove-builds') }}" class="d-none">
+    @csrf
+    <input type="hidden" name="deviceId" value="{{ $deviceId }}">
+    <input type="hidden" name="type" value="{{ $type }}">
+    <input type="hidden" name="buildIds" id="remove-build-ids-{{ $deviceId }}" value="">
 </form>
 
 
@@ -776,8 +824,42 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         margin-top: 4px;
     }
 
-    .sigma-build-toggle {
+    .sigma-build-actions {
         margin-left: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .sigma-build-remove {
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        background-color: rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .sigma-build-remove:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateY(-1px);
+    }
+
+    .sigma-build-remove:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+    }
+
+    .sigma-build-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .sigma-build-toggle i {
@@ -786,34 +868,127 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .sigma-build-details {
-        display: none;
-        padding: 0 16px 16px;
-        background-color: #f8f9fa;
+        max-height: 0;
+        overflow: hidden;
+        padding: 0 16px;
+        background-color: #f8fafc;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        margin: 0;
+        box-shadow: none;
+        /* GPU acceleration for smooth 60fps animations */
+        transform: translate3d(0, 0, 0);
+        transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                    opacity 0.25s ease,
+                    margin 0.25s ease,
+                    box-shadow 0.25s ease,
+                    border-color 0.25s ease;
+        opacity: 0;
+        will-change: max-height, opacity;
+        backface-visibility: hidden;
     }
 
     .sigma-build-row.expanded .sigma-build-details {
-        display: block;
+        max-height: 2000px; /* Large enough for content */
+        padding: 12px 16px 16px;
+        opacity: 1;
+        border-color: #ffffff;
+        margin: 8px 0 12px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
     .sigma-build-row.expanded .sigma-build-toggle i {
         transform: rotate(180deg);
     }
 
+    /* Performance optimization for build rows */
+    .sigma-build-row {
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+        will-change: transform;
+    }
+
+    .sigma-case-info-row {
+        transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+    }
+
     .sigma-build-cases {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
+        gap: 12px;
+        margin-top: 6px;
     }
 
     .sigma-case-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: white;
-        padding: 12px;
-        border-radius: 8px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        background-color: #ffffff;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+        transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .sigma-case-item:hover {
+        transform: translateY(-1px);
+        border-color: #cbd5f5;
+        box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    .sigma-case-item .info-case-row {
+        width: 100%;
+        margin: 0;
+        color: #1f2937;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div {
+        display: flex;
+        align-items: center;
+        padding: 6px 8px;
+        min-height: 34px;
+        font-size: 0.95rem;
+        min-width: 0;
+        max-width: none;
+        flex: none;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(1) {
+        font-weight: 600;
+        color: #0f172a;
+        flex: 1.4 1 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(2) {
+        color: #475569;
+        flex: 1.2 1 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(3) {
+        justify-content: center;
+        font-weight: 700;
+        color: #1d4ed8;
+        white-space: nowrap;
+        flex: 0.6 0 0;
+    }
+
+    .sigma-case-item .info-case-row > div:nth-child(4) {
+        justify-content: flex-end;
+        flex: 0 0 auto;
     }
 
     .sigma-case-info {
@@ -857,18 +1032,87 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     }
 
     .sigma-case-view-btn {
-        background: none;
-        border: none;
-        color: #6c757d;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #475569;
         cursor: pointer;
-        padding: 8px;
-        border-radius: 50%;
-        transition: background-color 0.2s, color 0.2s;
+        padding: 0;
+        border-radius: 10px;
+        width: 36px;
+        height: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
     }
 
     .sigma-case-view-btn:hover {
-        background-color: #007bff;
-        color: white;
+        background-color: #1d4ed8;
+        border-color: #1d4ed8;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    @media (max-width: 768px) {
+        .sigma-case-item {
+            position: relative;
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 55%, #eef2ff 100%);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+        }
+
+        .sigma-case-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 8px;
+            bottom: 8px;
+            width: 4px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #2563eb 0%, #38bdf8 100%);
+            opacity: 0.7;
+        }
+
+        .sigma-case-item .info-case-row {
+            gap: 6px;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+        }
+
+        .sigma-case-item .info-case-row > div {
+            padding: 4px 6px;
+            font-size: 0.85rem;
+            width: auto !important;
+            max-width: none !important;
+            flex: 0 0 auto !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(1) {
+            flex: 1.4 1 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(2) {
+            flex: 1.2 1 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(3) {
+            flex: 0.6 0 0 !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(4) {
+            flex: 0 0 auto !important;
+        }
+
+        .sigma-case-item .info-case-row > div:nth-child(3) {
+            font-size: 0.9rem;
+        }
+
+        .sigma-case-view-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+        }
     }
 
     /* Regular jobs list styling */
@@ -957,8 +1201,4 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
 </style>
 
-</div>
-</div>
-</div>
-</div>
-</div>
+

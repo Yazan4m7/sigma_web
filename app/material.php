@@ -9,7 +9,7 @@ class material extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'price'];
+    protected $fillable = ['name', 'price', 'default_type_id', 'type_selection_stage'];
 
     public function jobtypes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -24,21 +24,15 @@ class material extends Model
                     ->wherePivot('deleted_at', null);
     }
 
-    public function implants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function defaultType(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsToMany('App\implant', 'material_implants', 'material_id', 'implant_id')
-                    ->withTimestamps()
-                    ->withPivot(['compatibility_level', 'notes', 'is_active', 'deleted_at'])
-                    ->wherePivot('deleted_at', null)
-                    ->wherePivot('is_active', true);
+        return $this->belongsTo('App\Type', 'default_type_id', 'id');
     }
 
-    public function allImplants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public static function getDefaultType()
     {
-        return $this->belongsToMany('App\implant', 'material_implants', 'material_id', 'implant_id')
-                    ->withTimestamps()
-                    ->withPivot(['compatibility_level', 'notes', 'is_active', 'deleted_at'])
-                    ->wherePivot('deleted_at', null);
+        $material = static::whereNotNull('default_type_id')->first();
+        return $material ? $material->default_type_id : null;
     }
 
 }

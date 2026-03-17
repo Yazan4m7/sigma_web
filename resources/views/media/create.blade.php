@@ -53,9 +53,9 @@
                 <button type="submit" class="btn btn-info waves-effect waves-light">
                     Submit
                 </button>
-                <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                <a href="{{ route('media-index') }}" class="btn btn-secondary waves-effect m-l-5">
                     Cancel
-                </button>
+                </a>
             </div>
         </div>
 

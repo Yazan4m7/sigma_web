@@ -1,10 +1,10 @@
 @props(['title', 'btnText', 'type', 'drivers', 'stageId'])
 
-<div class="sigma-workflow-modal waiting-dialog" id="DeliveryDialog" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog sigma-modal--waiting-delivery" id="DeliveryDialog" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
-            <h2 class="sigma-workflow-title">{{ $title }}</h2>
+            <span class="sigma-workflow-title">{{ $title }}</span>
             <button class="sigma-close-button" onclick="closeModal({id: 'DeliveryDialog', isWaiting:false})">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -13,15 +13,13 @@
         <!-- Driver selection grid -->
         <div class="sigma-workflow-body">
             <div class="sigma-drivers-grid">
-                <!-- Add "ME" option -->
-
 
                 <!-- Show all delivery drivers -->
                 @foreach($drivers as $driver)
                     <div class="sigma-driver-card"
                          onclick="selectDeliveryDriver(this, {{ $driver->id }})">
                         <div class="sigma-driver-image-container">
-                            <img src="{{ $driver->has_photo ? asset('/users/'.$driver->id.'/profile_picture.png') : asset('/users/no_profile_picture.png') }}"
+                            <img src="{{ asset($driver->avatar_path) }}"
                                  alt="{{ $driver->first_name }} {{ $driver->last_name }}"
                                  class="sigma-driver-image grayscale">
                         </div>
@@ -119,6 +117,10 @@ function closeModal(options) {
         document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
             backdrop.remove();
         });
+
+        if (typeof window.updateDialogScrollLock === 'function') {
+            window.updateDialogScrollLock();
+        }
     }, 300);
 }
 </script>

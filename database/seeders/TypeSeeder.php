@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class TypeSeeder extends Seeder
 {
@@ -11,8 +12,8 @@ class TypeSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run(): void
+    {DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $types = [
             // Zirconia Types (material_id: 1)
             ['name' => 'Full Contour', 'description' => 'Full contour zirconia crown', 'material_id' => 1],

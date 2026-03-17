@@ -15,6 +15,72 @@ jQuery(document).ready(function($) {
     window.lastCaseClickedCase= null;
     $('.sigma-build-radio').on('click', e => e.stopPropagation());});
 
+(function initModalPositioning() {
+    const root = document.documentElement;
+    const modalSelector = '.modal, .sigma-workflow-modal, .blackbox-modal, .silicon-valley-delivery-modal';
+    const dialogSelector = '.modal-dialog, .sigma-workflow-dialog, .blackbox-dialog, .silicon-valley-delivery-dialog';
+
+    function normalizeAxis(value, axis) {
+        const defaultValue = 'center';
+
+        if (value === undefined || value === null || value === '') {
+            value = defaultValue;
+        }
+
+        if (typeof value === 'number' && Number.isFinite(value)) {
+            return { value: value + 'px', center: false };
+        }
+
+        if (typeof value === 'string') {
+            const trimmed = value.trim().toLowerCase();
+
+            if (trimmed === 'center') {
+                return { value: '50%', center: true };
+            }
+
+            if (/^-?\d+(\.\d+)?px$/.test(trimmed)) {
+                return { value: trimmed, center: false };
+            }
+
+            if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+                return { value: trimmed + 'px', center: false };
+            }
+        }
+
+        return { value: '50%', center: true };
+    }
+
+    // function applyModalPositioning() {
+    //     if (!window.enableModalPositioning) {
+    //         return;
+    //     }
+    //
+    //     const posX = normalizeAxis(window.modalPosX, 'x');
+    //     const posY = normalizeAxis(window.modalPosY, 'y');
+    //
+    //     root.style.setProperty('--modal-x', posX.value);
+    //     root.style.setProperty('--modal-y', posY.value);
+    //
+    //     document.querySelectorAll(modalSelector).forEach(modal => {
+    //         modal.classList.add('modal-positioning-enabled');
+    //     });
+    //
+    //     document.querySelectorAll(dialogSelector).forEach(dialog => {
+    //         dialog.classList.toggle('modal-pos-center-x', posX.center);
+    //         dialog.classList.toggle('modal-pos-center-y', posY.center);
+    //     });
+    // }
+
+    if (typeof window.modalPosX === 'undefined') {
+        window.modalPosX = 'center';
+    }
+
+    if (typeof window.modalPosY === 'undefined') {
+        window.modalPosY = 'center';
+    }
+
+})();
+
 
     /**
      * Handle click on a device in the devices block
@@ -312,6 +378,9 @@ function submitWorkflow(type) {
         caseIds: checkedCases.join(',')
     });
 
+    // Close the modal immediately to provide instant feedback
+    closeModal({id: type, isWaiting: true});
+
     // Submit the form
     hiddenForm.submit();
 }
@@ -373,6 +442,36 @@ function submitDeviceDialog(deviceId, type, itemType, actionType) {
     // document.getElementById(`.#process-form-${deviceId}`).submit();
 // Submit the form
     hideLoadingIndicator();
+}
+
+function requestBuildRemoval(deviceId, type, buildId, isActive) {
+    if (!buildId) {
+        if (typeof showToast === 'function') {
+            showToast('No build selected.', 'warning');
+        }
+        return;
+    }
+
+    const message = isActive
+        ? 'This build is active. Removing it will cancel the operation and return cases to waiting. Continue?'
+        : 'Remove this build and return cases to waiting?';
+
+    if (!confirm(message)) {
+        return;
+    }
+
+    const form = document.getElementById(`remove-build-form-${deviceId}`);
+    const input = document.getElementById(`remove-build-ids-${deviceId}`);
+
+    if (!form || !input) {
+        if (typeof showToast === 'function') {
+            showToast('Remove build form not found.', 'error');
+        }
+        return;
+    }
+
+    input.value = buildId;
+    form.submit();
 }
 $(document).on('change', '.single-choice', function () {
     let $clicked = $(this);
@@ -508,16 +607,20 @@ function openDeviceDialog(deviceId, type) {
         dialog.classList.add('delivery-dialog');
     }
 
-    // Show dialog with animation
-    dialog.classList.add('active', 'show');
-    dialog.style.display = 'flex';
+    // Clear any existing animations
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.add('fade-in');
-        // Remove animation class after animation completes
-        setTimeout(() => {
-            dialogContent.classList.remove('fade-in');
-        }, 300);
+        dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
+    }
+
+    // Show dialog with smooth Animate.css animation (instant, no delay)
+    dialog.classList.add('active', 'show');
+    dialog.style.display = 'flex';
+
+    if (dialogContent) {
+        // Use faster animation (300ms) with GPU acceleration for smooth performance
+        dialogContent.style.willChange = 'transform, opacity';
+        dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
     }
 
     // Set up case list with improved visuals for delivery
@@ -681,17 +784,20 @@ function closeDeviceDialog(deviceId) {
         document.activeElement.blur();
     }
 
-    // Add fade-out animation
+    // Add Animate.css fade-out animation (fadeOutUp to top) - smooth and fast
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.add('fade-out');
+        dialogContent.classList.remove('animate__fadeIn');
+        dialogContent.classList.add('animate__fadeOut');
     }
 
-    // Hide dialog after animation completes
+    // Hide dialog after animation completes (300ms for faster, smoother)
     setTimeout(() => {
-        dialog.classList.remove('active');
+        dialog.classList.remove('active', 'show');
+        dialog.style.display = 'none';
         if (dialogContent) {
-            dialogContent.classList.remove('fade-out', 'fade-in');
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
+            dialogContent.style.willChange = 'auto'; // Reset GPU optimization
         }
 
         // Clean up any overlays
@@ -703,28 +809,42 @@ function closeDeviceDialog(deviceId) {
 
 /**
  * Toggle build details visibility
+ * Auto-closes all other expanded build headers before opening the clicked one
  *
  * @param {HTMLElement} header - The build header element
  */
 function toggleBuildDetails(header) {
     const buildRow = header.closest('.sigma-build-row');
-    buildRow.classList.toggle('expanded');
-
-    // Rotate chevron
-    // const chevron = header.querySelector('.sigma-build-toggle i');
-    // chevron.style.transform = buildRow.classList.contains('expanded') ? 'rotate(180deg)' : 'rotate(0)';
-    //   const buildRow = headerElement.closest('.sigma-build-row');
     const details = buildRow.querySelector('.sigma-build-details');
     const toggleIcon = header.querySelector('.sigma-build-toggle i');
 
-    if (details.style.display === 'block') {
-        details.style.display = 'none';
-        toggleIcon.classList.remove('fa-chevron-up');
-        toggleIcon.classList.add('fa-chevron-down');
-    } else {
-        details.style.display = 'block';
-        toggleIcon.classList.remove('fa-chevron-down');
-        toggleIcon.classList.add('fa-chevron-up');
+    // Check if this row is currently expanded
+    const isCurrentlyExpanded = buildRow.classList.contains('expanded');
+
+    // ALWAYS close all other expanded build rows first
+    const allBuildRows = document.querySelectorAll('.sigma-build-row.expanded');
+    allBuildRows.forEach(row => {
+        // Close all expanded rows
+        row.classList.remove('expanded');
+
+        // Reset all toggle icons to chevron-down
+        const icon = row.querySelector('.sigma-build-toggle i');
+        if (icon) {
+            icon.classList.remove('fa-chevron-up');
+            icon.classList.add('fa-chevron-down');
+        }
+    });
+
+    // If the clicked row was NOT expanded, expand it now
+    // (If it was already expanded, we just closed it above, so keep it closed)
+    if (!isCurrentlyExpanded) {
+        buildRow.classList.add('expanded');
+
+        // Update icon to chevron-up
+        if (toggleIcon) {
+            toggleIcon.classList.remove('fa-chevron-down');
+            toggleIcon.classList.add('fa-chevron-up');
+        }
     }
 }
 
@@ -1180,46 +1300,70 @@ function showNoJobsMessage() {
 //  * @param {HTMLElement} checkbox - The changed checkbox
 //  * @param {string} caseId - The case ID
 //  */
-// function multiCBChanged(type, checkbox, caseId) {
-//     // For 3D Printing, enforce single selection
-//     if (type === '3dprinting' && checkbox.checked) {
-//         const checkboxes = document.querySelectorAll(`.multipleCB.${type}`);
-//         checkboxes.forEach(cb => {
-//             if (cb !== checkbox) {
-//                 cb.checked = false;
-//             }
-//         });
-//     }
-//
-//     // Show/hide SET button based on selection
-//     const setButton = document.querySelector(`.receiveSelectBtn.${type}`);
-//
-//     if (setButton) {
-//         const hasSelection = document.querySelectorAll(`.multipleCB.${type}:checked`).length > 0;
-//
-//         if (hasSelection && setButton.style.display !== 'flex') {
-//             setButton.style.opacity = '0';
-//             // setButton.style.display = 'flex';
-//
-//             // Fade in the button
-//             setTimeout(() => {
-//                 setButton.style.opacity = '1';
-//             }, 10);
-//         } else if (!hasSelection) {
-//             // Fade out the button
-//             setButton.style.opacity = '1';
-//
-//             setTimeout(() => {
-//                 setButton.style.opacity = '0';
-//
-//                 // Hide button after fade out
-//                 setTimeout(() => {
-//                     setButton.style.display = 'none';
-//                 }, 300);
-//             }, 10);
-//         }
-//     }
-// }
+function multiCBChanged(type, checkbox, caseId) {
+    // For 3D Printing, enforce single selection
+    // if (type === '3dprinting' && checkbox.checked) {
+    //     // Use attribute selector for 3dprinting since class name starts with number
+    //     const checkboxes = document.querySelectorAll(`input.multipleCB[class*="${type}"]`);
+    //     checkboxes.forEach(cb => {
+    //         if (cb !== checkbox) {
+    //             cb.checked = false;
+    //         }
+    //     });
+    // }
+
+    // Filter material types based on selected cases (for milling, pressing, sintering)
+    if (['milling', 'pressing', 'sintering'].includes(type)) {
+        // Call the filtering function defined in waiting-dialog component
+        if (typeof filterMaterialTypesBySelectedCases === 'function') {
+            filterMaterialTypesBySelectedCases(type);
+        }
+    }
+
+    // Show/hide SET button based on selection
+    // Handle CSS selector for class names starting with numbers (like 3dprinting)
+    let buttonSelector;
+    if (type.match(/^\d/)) {
+        // For class names starting with numbers, use attribute selector
+        buttonSelector = `button.receiveSelectBtn[class*="${type}"]`;
+    } else {
+        buttonSelector = `.receiveSelectBtn.${type}`;
+    }
+    const setButton = document.querySelector(buttonSelector);
+
+    if (setButton) {
+        // Handle checkbox selector for class names starting with numbers
+        let checkboxSelector;
+        if (type.match(/^\d/)) {
+            checkboxSelector = `input.multipleCB[class*="${type}"]:checked`;
+        } else {
+            checkboxSelector = `.multipleCB.${type}:checked`;
+        }
+        const hasSelection = document.querySelectorAll(checkboxSelector).length > 0;
+
+        if (hasSelection && setButton.style.display !== 'flex') {
+            setButton.style.opacity = '0';
+            setButton.style.display = 'flex';
+
+            // Fade in the button
+            setTimeout(() => {
+                setButton.style.opacity = '1';
+            }, 10);
+        } else if (!hasSelection) {
+            // Fade out the button
+            setButton.style.opacity = '1';
+
+            setTimeout(() => {
+                setButton.style.opacity = '0';
+
+                // Hide button after fade out
+                setTimeout(() => {
+                    setButton.style.display = 'none';
+                }, 300);
+            }, 10);
+        }
+    }
+}
 //
 // /**
 //  * Select or deselect all checkboxes
@@ -1245,31 +1389,10 @@ function showNoJobsMessage() {
 //  * Document ready handler to initialize the UI
 //  */
 document.addEventListener('DOMContentLoaded', function () {
-    // Initialize loading indicator
-    const loadingIndicator = document.createElement('div');
-    loadingIndicator.id = 'sigma-loading-indicator';
-    loadingIndicator.innerHTML = `
-        <div class="sigma-loading-container">
-            <div class="sigma-loading-animation">
-                <div class="sigma-spinner-wrapper">
-                    <div class="sigma-spinner">
-                        <div class="sigma-dot sigma-dot-1"></div>
-                        <div class="sigma-dot sigma-dot-2"></div>
-                        <div class="sigma-dot sigma-dot-3"></div>
-                        <div class="sigma-dot sigma-dot-4"></div>
-                        <div class="sigma-dot sigma-dot-5"></div>
-                        <div class="sigma-dot sigma-dot-6"></div>
-                        <div class="sigma-dot sigma-dot-7"></div>
-                        <div class="sigma-dot sigma-dot-8"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="sigma-loading-text">
-                <div class="sigma-loading-title">Processing...</div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(loadingIndicator);
+    // Initialize loading indicator safely (defer creation to showLoadingIndicator)
+    if (typeof window.loadingIndicator !== 'undefined' && window.loadingIndicator instanceof HTMLElement) {
+        document.body.appendChild(window.loadingIndicator);
+    }
 
     // Check for flash messages on page load
     if (typeof flashMessage !== 'undefined' && flashMessage.message) {
@@ -1783,6 +1906,7 @@ function closeAllModals() {
     document.body.classList.remove('modal-open');
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
+    updateDialogScrollLock();
 }
 
 /**
@@ -1812,10 +1936,473 @@ function initializeDeliveryDialog() {
 }
 
 /**
+ * Filter material types dropdown based on selected cases
+ * @param {string} type - The workflow type/stage
+ */
+function filterMaterialTypesForSelectedCases(type) {
+    console.log(`[DEBUG] Starting material type filtering for ${type} dialog`);
+
+    // Get checked cases
+    let checkedCases = getCheckedValues(type);
+
+    // If no checkboxes are selected, check if we have a case from the waiting dialog
+    if ((!checkedCases || checkedCases.length === 0) && window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
+        checkedCases = [window.caseIDFromOldDialog];
+    }
+
+    if (!checkedCases || checkedCases.length === 0) {
+        console.log('[DEBUG] No cases selected, keeping all material types');
+        return;
+    }
+
+    console.log(`[DEBUG] Selected cases for filtering: [${checkedCases.join(', ')}]`);
+
+    // Get the material types dropdown
+    const typesDropdown = document.querySelector(`#sigma-material-type-${type}`);
+    if (!typesDropdown) {
+        console.log(`[DEBUG] No material types dropdown found for type: ${type}`);
+        return;
+    }
+
+    console.log(`[DEBUG] Found dropdown with ${typesDropdown.options.length} options`);
+
+    // Store all original options if not already stored
+    if (!typesDropdown.dataset.originalOptions) {
+        // Remove any placeholder option before storing
+        const tempDropdown = typesDropdown.cloneNode(true);
+        const placeholderOption = tempDropdown.querySelector('option[value=""]');
+        if (placeholderOption && placeholderOption.textContent.includes('Select')) {
+            placeholderOption.remove();
+        }
+        // Auto-select first option if any exist
+        const remainingOptions = tempDropdown.querySelectorAll('option');
+        if (remainingOptions.length > 0) {
+            remainingOptions.forEach(opt => opt.removeAttribute('selected'));
+            remainingOptions[0].setAttribute('selected', 'selected');
+        }
+        typesDropdown.dataset.originalOptions = tempDropdown.innerHTML;
+        typesDropdown.innerHTML = tempDropdown.innerHTML;
+    }
+
+    // For 3D printing, we need to populate the dropdown first since it starts empty
+    if (type === '3dprinting' && typesDropdown.children.length <= 1) {
+        populateAllMaterialTypes(typesDropdown).then(() => {
+            // After populating, filter the options
+            fetchAndFilterMaterials(type, typesDropdown, checkedCases);
+        });
+    } else {
+        // For other dialogs, directly filter
+        fetchAndFilterMaterials(type, typesDropdown, checkedCases);
+    }
+}
+
+/**
+ * Populate dropdown with all material types
+ * @param {HTMLSelectElement} dropdown - The dropdown element
+ */
+function populateAllMaterialTypes(dropdown) {
+    return fetch('/api/materials/types/all', {
+        method: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        }
+    })
+    .then(response => response.json())
+    .then(typesData => {
+        if (typesData.success && typesData.types) {
+            let optionsHtml = '';
+
+            typesData.types.forEach((type, index) => {
+                // Select the first option as default
+                const selectedAttr = index === 0 ? ' selected' : '';
+                optionsHtml += `<option value="${type.id}" data-material-id="${type.material_id}"${selectedAttr}>${type.material_name}</option>`;
+            });
+
+            dropdown.innerHTML = optionsHtml;
+            dropdown.dataset.originalOptions = optionsHtml;
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching all material types:', error);
+    });
+}
+
+/**
+ * Fetch case materials and filter dropdown
+ * @param {string} type - Workflow type
+ * @param {HTMLSelectElement} dropdown - Dropdown element
+ * @param {Array} checkedCases - Selected case IDs
+ */
+function fetchAndFilterMaterials(type, dropdown, checkedCases) {
+    // Make AJAX call to get material types for selected cases as flat list
+    fetch('/api/cases/material-types', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        },
+        body: JSON.stringify({
+            case_ids: checkedCases,
+            stage: type
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('[DEBUG] API Response:', data);
+        if (data.success && data.types) {
+            console.log(`[DEBUG] Got ${data.types.length} material types from selected cases`);
+            populateDropdownWithTypes(dropdown, data.types);
+        } else {
+            console.error('[DEBUG] Failed to get material types for cases:', data.message);
+            // If no types found, show empty message
+            dropdown.innerHTML = '<option value="" selected>No material types available for selected cases</option>';
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching case material types:', error);
+        dropdown.innerHTML = '<option value="" selected>Error loading material types</option>';
+    });
+}
+
+/**
+ * Populate dropdown with material types as a flat list
+ * @param {HTMLSelectElement} dropdown - The dropdown element
+ * @param {Array} types - Array of material type objects
+ * @param {number|null} defaultTypeId - The default type ID for this material
+ */
+function populateDropdownWithTypes(dropdown, types, defaultTypeId = null) {
+    console.log(`[DEBUG] Populating dropdown with ${types.length} material types, default: ${defaultTypeId}`);
+
+    if (!types || types.length === 0) {
+        console.log('[DEBUG] No types available');
+        dropdown.innerHTML = '<option value="" selected>No material types available for selected cases</option>';
+        return;
+    }
+
+    let optionsHtml = '';
+    let hasDefaultSelected = false;
+
+    types.forEach((type, index) => {
+        // Check if this is the default type, otherwise select first as fallback
+        const isDefault = defaultTypeId && type.id == defaultTypeId;
+        const isSelected = isDefault || (index === 0 && !defaultTypeId);
+        const selectedAttr = isSelected ? ' selected' : '';
+        if (isSelected) hasDefaultSelected = true;
+
+        const selectionReason = isDefault ? '(MATERIAL DEFAULT)' : (isSelected ? '(FIRST FALLBACK)' : '');
+        console.log(`[DEBUG] Adding type: "${type.name}" (ID: ${type.id}) ${selectionReason}`);
+        optionsHtml += `<option value="${type.id}" data-material-id="${type.material_id}"${selectedAttr}>${type.name}</option>`;
+    });
+
+    dropdown.innerHTML = optionsHtml;
+
+    // Set the dropdown value
+    if (defaultTypeId) {
+        dropdown.value = defaultTypeId;
+        console.log(`[DEBUG] Selected material default type (ID: ${defaultTypeId})`);
+    } else if (types.length > 0) {
+        dropdown.value = types[0].id;
+        console.log(`[DEBUG] Selected first type as fallback: "${types[0].name}" (ID: ${types[0].id})`);
+    }
+
+    console.log(`[DEBUG] Final dropdown has ${dropdown.options.length} options`);
+}
+
+/**
+ * Validate materials in background (non-blocking)
+ */
+function validateMaterialsInBackground(modalId, checkedCases) {
+    console.log(`[VALIDATION] Checking materials for ${checkedCases.length} cases in ${modalId} stage`);
+
+    // Make AJAX call to validate materials (non-blocking)
+    fetch('/api/cases/materials', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        },
+        body: JSON.stringify({
+            case_ids: checkedCases,
+            stage: modalId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('[VALIDATION] Material validation response:', data);
+
+        if (!data.success) {
+            console.warn('[VALIDATION] Validation failed:', data.message);
+            return;
+        }
+
+        if (data.unique_materials.length === 0) {
+            console.warn('[VALIDATION] No materials found');
+            return;
+        }
+
+        // Validation passed
+        console.log(`[VALIDATION] Passed! Found ${data.unique_materials.length} material(s): ${data.unique_materials.join(', ')}`);
+        window.validatedMaterialId = data.unique_materials[0];
+        window.validatedMaterialIds = data.unique_material_ids;
+
+    })
+    .catch(error => {
+        console.error('[VALIDATION] Error validating materials:', error);
+    });
+}
+
+/**
+ * Continue with modal opening after validation passes
+ */
+function proceedWithModalOpen(modalId, isWaiting, caseId) {
+    // Close any currently open modals first to prevent overlays
+    document.querySelectorAll('.modal.show, .modal.fade.show').forEach(modal => {
+        modal.classList.remove('show', 'fade');
+        modal.style.display = 'none';
+    });
+
+    closeAllModals();
+
+    // Store case ID if provided for single case operations
+    if (caseId > 0) {
+        window.caseIDFromOldDialog = caseId;
+        console.log('Stored case ID from dialog:', caseId);
+    }
+
+    // Construct the modal ID, adding waiting suffix if needed
+    let fullModalId = modalId;
+    if (isWaiting && !modalId.includes('-waiting')) {
+        fullModalId = modalId + '-waiting';
+    }
+
+    console.log(`Looking for modal with ID: ${fullModalId}`);
+
+    const modal = document.getElementById(fullModalId);
+    if (modal) {
+        // Clear any existing animation classes
+        const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
+        if (dialogContent) {
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
+        }
+
+        // Show the modal immediately with Animate.css
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        updateDialogScrollLock();
+
+        // Add Animate.css fade-in animation (fadeInDown from top) - instant, no delay
+        if (dialogContent) {
+            // Use faster animation (300ms) with GPU acceleration
+            dialogContent.style.willChange = 'transform, opacity';
+            dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
+        }
+
+        console.log('Successfully opened modal:', fullModalId);
+
+        // Initialize dialog state for delivery
+        if (modalId === 'DeliveryDialog') {
+            initializeDeliveryDialog();
+        }
+
+        // Initialize dialog state for other types
+        const modalType = modalId.replace('-waiting', '').replace('Dialog', '');
+        if (typeof initializeDialog === 'function' && modalType !== 'Delivery') {
+            initializeDialog(modalType);
+        }
+
+        // Load material types for the validated material using backend filtering (NOT sintering)
+        if (isWaiting && ['milling', 'pressing', '3dprinting'].includes(modalType)) {
+            console.log(`[TYPES] Loading material types for ${modalType}`);
+
+            // Get selected case IDs
+            let caseIds = getCheckedValues(modalType);
+
+            // If no checkboxes selected, use single case ID from dialog
+            if ((!caseIds || caseIds.length === 0) && window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
+                caseIds = [window.caseIDFromOldDialog];
+            }
+
+            if (caseIds && caseIds.length > 0) {
+                loadMaterialTypesForStage(modalType, caseIds);
+            }
+        }
+
+    } else {
+        console.error('Modal not found:', fullModalId);
+        // Continue with original error handling logic...
+    }
+}
+
+/**
+ * Load material types for the stage and selected cases
+ */
+function loadMaterialTypesForStage(stage, caseIds) {
+    console.log(`[FRONTEND] ============ Starting loadMaterialTypesForStage ============`);
+    console.log(`[FRONTEND] Stage: ${stage}`);
+    console.log(`[FRONTEND] Case IDs:`, caseIds);
+
+    const typesDropdown = document.querySelector(`#sigma-material-type-${stage}`);
+    console.log(`[FRONTEND] Dropdown element found:`, typesDropdown !== null);
+
+    if (!typesDropdown) {
+        console.error(`[FRONTEND] ❌ No material types dropdown found for stage: ${stage}`);
+        return;
+    }
+
+    // Show loading state
+    console.log(`[FRONTEND] Setting dropdown to loading state...`);
+    typesDropdown.innerHTML = '<option value="">Loading types...</option>';
+    typesDropdown.disabled = true;
+
+    // Prepare request payload
+    const requestPayload = {
+        stage: stage,
+        case_ids: caseIds
+    };
+    console.log(`[FRONTEND] Request payload:`, JSON.stringify(requestPayload, null, 2));
+
+    // Get CSRF token
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    console.log(`[FRONTEND] CSRF token found:`, csrfToken ? 'Yes' : 'No');
+
+    // Make AJAX call to get types for the stage and material
+    console.log(`[FRONTEND] Making fetch request to /get-material-types-for-stage...`);
+
+    fetch('/get-material-types-for-stage', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken
+        },
+        body: JSON.stringify(requestPayload)
+    })
+    .then(response => {
+        console.log(`[FRONTEND] Response received`);
+        console.log(`[FRONTEND] Response status:`, response.status);
+        console.log(`[FRONTEND] Response ok:`, response.ok);
+        console.log(`[FRONTEND] Response headers:`, Object.fromEntries(response.headers.entries()));
+
+        if (!response.ok) {
+            console.error(`[FRONTEND] ❌ Response not OK, status: ${response.status}`);
+        }
+
+        return response.json();
+    })
+    .then(data => {
+        console.log(`[FRONTEND] ============ Response Data Received ============`);
+        console.log(`[FRONTEND] Full response:`, JSON.stringify(data, null, 2));
+        console.log(`[FRONTEND] Success:`, data.success);
+        console.log(`[FRONTEND] Material ID:`, data.material_id);
+        console.log(`[FRONTEND] Material Name:`, data.material_name);
+        console.log(`[FRONTEND] Stage:`, data.stage);
+        console.log(`[FRONTEND] Types array:`, data.types);
+        console.log(`[FRONTEND] Types count:`, data.types ? data.types.length : 0);
+
+        if (data.success) {
+            console.log(`[FRONTEND] ✅ Request successful`);
+
+            if (data.types && data.types.length > 0) {
+                console.log(`[FRONTEND] ✅ Types found: ${data.types.length}`);
+                console.log(`[FRONTEND] Types details:`, data.types);
+
+                // Populate dropdown with types
+                console.log(`[FRONTEND] Starting to populate dropdown...`);
+                typesDropdown.innerHTML = '<option value="">Select Material Type</option>';
+
+                data.types.forEach((type, index) => {
+                    console.log(`[FRONTEND] Adding type ${index + 1}/${data.types.length}:`, {
+                        id: type.id,
+                        name: type.name,
+                        material_name: data.material_name
+                    });
+
+                    const option = document.createElement('option');
+                    option.value = type.id;
+                    option.textContent = type.name;
+                    if (index === 0) {
+                        option.selected = true;
+                        console.log(`[FRONTEND] Set first option as selected`);
+                    }
+                    typesDropdown.appendChild(option);
+                });
+
+                console.log(`[FRONTEND] Dropdown populated, total options:`, typesDropdown.options.length);
+                typesDropdown.disabled = false;
+                console.log(`[FRONTEND] Dropdown enabled`);
+
+                // Trigger validation to update hidden field
+                if (typeof validateMaterialTypeSelection === 'function') {
+                    console.log(`[FRONTEND] Triggering validateMaterialTypeSelection...`);
+                    validateMaterialTypeSelection(stage);
+                } else {
+                    console.warn(`[FRONTEND] ⚠️ validateMaterialTypeSelection function not found`);
+                }
+
+                console.log(`[FRONTEND] ✅ Dropdown population complete`);
+            } else {
+                console.error(`[FRONTEND] ❌ No types in response or empty types array`);
+                console.log(`[FRONTEND] data.types:`, data.types);
+                typesDropdown.innerHTML = '<option value="">No material types available</option>';
+                typesDropdown.disabled = true;
+            }
+        } else {
+            console.error(`[FRONTEND] ❌ Request failed with message:`, data.message);
+            typesDropdown.innerHTML = '<option value="">No material types available</option>';
+            typesDropdown.disabled = true;
+        }
+
+        console.log(`[FRONTEND] ============ End of Response Processing ============`);
+    })
+    .catch(error => {
+        console.error(`[FRONTEND] ❌ ============ Fetch Error ============`);
+        console.error(`[FRONTEND] Error type:`, error.name);
+        console.error(`[FRONTEND] Error message:`, error.message);
+        console.error(`[FRONTEND] Full error:`, error);
+        console.error(`[FRONTEND] Error stack:`, error.stack);
+        typesDropdown.innerHTML = '<option value="">Error loading material types</option>';
+        typesDropdown.disabled = true;
+    });
+}
+
+function updateDialogScrollLock() {
+    const hasOpenDialog = document.querySelector('.sigma-workflow-modal.active, .YSH-slide-overlay.YSH-active, .modal.show, .modal.fade.show') !== null;
+    document.body.classList.toggle('ysh-dialog-open', hasOpenDialog);
+}
+
+/**
  * Open a modal dialog
  */
 function openModal(modalId, isWaiting = false, caseId = 0) {
     console.log(`openModal called with: ${modalId}, isWaiting: ${isWaiting}, caseId: ${caseId}`);
+
+    // For waiting dialogs, validate materials in background (non-blocking) - NOT sintering
+    if (isWaiting && ['milling', '3dprinting', 'pressing'].includes(modalId)) {
+        console.log(`[VALIDATION] Validating materials for ${modalId} stage`);
+
+        // Get selected cases
+        let checkedCases = getCheckedValues(modalId);
+
+        // If no checkboxes are selected, check if we have a specific case ID (from "Assign to Me" button)
+        if ((!checkedCases || checkedCases.length === 0) && caseId && caseId !== 0) {
+            checkedCases = [caseId];
+            window.caseIDFromOldDialog = caseId;
+            console.log(`Using provided case ID for "Assign to Me": ${caseId}`);
+        } else if ((!checkedCases || checkedCases.length === 0) && window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
+            checkedCases = [window.caseIDFromOldDialog];
+        }
+
+        if (!checkedCases || checkedCases.length === 0) {
+            alert('Please select builds first');
+            return;
+        }
+
+        // Open modal immediately, validate in background
+        proceedWithModalOpen(modalId, isWaiting, caseId);
+
+        // Validate materials in background (non-blocking)
+        validateMaterialsInBackground(modalId, checkedCases);
+        return;
+    }
 
     // Close any currently open modals first to prevent overlays
     // Special handling for Bootstrap modals with specific classes
@@ -1850,6 +2437,7 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
 
         // Show the modal
         modal.classList.add('active');
+        updateDialogScrollLock();
 
         // Add fade-in animation
         if (dialogContent) {
@@ -1886,6 +2474,7 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
             if (altModal) {
                 console.log('Found modal with alternative ID:', altId);
                 altModal.classList.add('active');
+                updateDialogScrollLock();
                 return;
             }
         }
@@ -1904,6 +2493,9 @@ document.addEventListener('DOMContentLoaded', function () {
             img.classList.add('grayscale');
         }
     });
+
+    document.addEventListener('shown.bs.modal', updateDialogScrollLock);
+    document.addEventListener('hidden.bs.modal', updateDialogScrollLock);
 });
 
 
@@ -2058,24 +2650,133 @@ function updateActionXXXXXButtonState(deviceId, type) {
 }
 
 function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
-    // Store the stage type for the panel to use (default to 3dprinting for backward compatibility)
-    window.currentPanelStage = stageType;
+    try {
+        window.currentPanelStage = stageType;
 
-    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-active');
-    const panel = document.getElementById('YSH-slide-panel-' + caseId);
-    panel.style.right = '0%';
+        const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+        const panel = document.getElementById('YSH-slide-panel-' + caseId);
+
+        if (!overlay || !panel) {
+            console.warn('Slide panel missing for case', caseId, 'stage', stageType);
+            return;
+        }
+
+        if (!overlay.dataset.movedToBody) {
+            document.body.appendChild(overlay);
+            overlay.dataset.movedToBody = '1';
+        }
+
+        // Cancel any pending close cleanup from a previous open/close cycle
+        if (overlay._yshCloseTimeout) {
+            clearTimeout(overlay._yshCloseTimeout);
+            overlay._yshCloseTimeout = null;
+        }
+        if (overlay._yshCloseHandlers) {
+            panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+            panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+            overlay._yshCloseHandlers = null;
+        }
+        delete overlay.dataset.yshClosing;
+
+        overlay.classList.remove('YSH-closing');
+        overlay.style.display = 'block';
+
+        requestAnimationFrame(() => {
+            overlay.classList.add('YSH-active');
+            updateDialogScrollLock();
+        });
+    } catch (e) {
+        console.error('Error opening slide panel:', e);
+    }
 }
-
 
 function YSH_closeSlidePanel(caseId) {
     const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    overlay.classList.add('YSH-closing');
     const panel = document.getElementById('YSH-slide-panel-' + caseId);
-    panel.style.right = '-100%';
-    overlay.addEventListener('animationend', () => {
-        overlay.classList.remove('YSH-active', 'YSH-closing');
-    }, {
-        once: true
-    });
+
+    if (!overlay || !panel) {
+        return;
+    }
+
+    // Prevent duplicate close calls (e.g., bubbling clicks)
+    if (overlay.dataset.yshClosing === '1') {
+        return;
+    }
+    overlay.dataset.yshClosing = '1';
+
+    // Remove any prior listeners/timeouts for this overlay
+    if (overlay._yshCloseTimeout) {
+        clearTimeout(overlay._yshCloseTimeout);
+        overlay._yshCloseTimeout = null;
+    }
+    if (overlay._yshCloseHandlers) {
+        panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+        panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+        overlay._yshCloseHandlers = null;
+    }
+
+    overlay.classList.remove('YSH-active');
+    overlay.classList.add('YSH-closing');
+    const finishClose = () => {
+        if (overlay.dataset.yshClosing !== '1') {
+            return;
+        }
+
+        overlay.style.display = 'none';
+        overlay.classList.remove('YSH-closing');
+        delete overlay.dataset.yshClosing;
+
+        if (overlay._yshCloseTimeout) {
+            clearTimeout(overlay._yshCloseTimeout);
+            overlay._yshCloseTimeout = null;
+        }
+        if (overlay._yshCloseHandlers) {
+            panel.removeEventListener('transitionend', overlay._yshCloseHandlers.onTransitionEnd);
+            panel.removeEventListener('animationend', overlay._yshCloseHandlers.onAnimationEnd);
+            overlay._yshCloseHandlers = null;
+        }
+        updateDialogScrollLock();
+    };
+
+    const onTransitionEnd = (event) => {
+        if (event.target !== panel) {
+            return;
+        }
+        if (event.propertyName && event.propertyName !== 'transform' && event.propertyName !== 'opacity') {
+            return;
+        }
+        finishClose();
+    };
+
+    const onAnimationEnd = (event) => {
+        if (event.target !== panel) {
+            return;
+        }
+        finishClose();
+    };
+
+    overlay._yshCloseHandlers = { onTransitionEnd, onAnimationEnd };
+    panel.addEventListener('transitionend', onTransitionEnd);
+    panel.addEventListener('animationend', onAnimationEnd);
+
+    // Fallback: ensure cleanup even if no events fire
+    overlay._yshCloseTimeout = window.setTimeout(finishClose, 450);
 }
+
+// Sigma: Scroll feedback for sticky table headers (no layout calculations)
+(function initSigmaStickyHeaderScrollFeedback() {
+    const headerCells = document.querySelectorAll('table.sigma-sticky-table-header thead th');
+    if (!headerCells || headerCells.length === 0) {
+        return;
+    }
+
+    const update = () => {
+        const isScrolled = window.scrollY > 0;
+        for (let i = 0; i < headerCells.length; i++) {
+            headerCells[i].classList.toggle('is-scrolled', isScrolled);
+        }
+    };
+
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+})();

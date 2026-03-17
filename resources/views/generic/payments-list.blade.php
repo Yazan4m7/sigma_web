@@ -20,15 +20,25 @@
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>From:</label>
-
-                            <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
+                            <x-ios-dtp
+                                name="from"
+                                id="from"
+                                :value="$from ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>To:</label>
-                            <input class="form-control SDTP" name="to"  type="text"   value="{{$to ?? ''}}" required readonly/>
-
+                            <x-ios-dtp
+                                name="to"
+                                id="to"
+                                :value="$to ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
 
@@ -85,7 +95,7 @@
 
                                         <tbody>
                                         @php
-                                            $permissions = Cache::get('user'.Auth()->user()->id);
+                                            $permissions = safe_permissions();
                                         @endphp
                                         @foreach($payments as $payment)
                                             <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$payment->id}}">
@@ -102,7 +112,7 @@
 
 
 
-                                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
+                                            <div class="modal sigma-modal--generic-payments" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
                                                 <input type="hidden" name="case_id" value="{{$payment->id}}">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -146,13 +156,13 @@
                                                                     <!-----------------------
                                                                      -------------------------->
                                                                     @if(!isset($payment->recieved_on))
-                                                                    <div class="col-12 padding5px" >
+                                                                    <div class="col-6 padding5px" >
                                                                         <a href="{{route('receive-payment',$payment->id )}}">
                                                                             <button type="button" class="btn btn-warning "><i class="fa-solid fa-pen-to-square"></i> Receive From Delivery</button>
                                                                         </a></div>
                                                                     @endif
                                                                     @if(Auth()->user()->is_admin)
-                                                                        <div class="col-12 padding5px" >
+                                                                        <div class="col-6 padding5px" >
                                                                             <a  onclick="confirmation(event)"  href="{{route('delete-payment',$payment->id )}}"  style="color:red">
                                                                                 <button type="button" class="btn btn-danger "><i class="fa-solid fa-pen-to-square"></i> Delete Payment</button>
                                                                             </a>
@@ -217,12 +227,12 @@
                 confirmButtonText: 'Delete Payment',
                 denyButtonText: `Cancel`,
             })
-                .then((willDelete) => {
+                .then((result) => {
                     // redirect with javascript here as per your logic after showing the alert using the urlToRedirect value
-                    if (willDelete.isConfirmed) {
+                    if (result.isConfirmed) {
                         window.location = urlToRedirect;
                         //swal.fire("Poof! Your imaginary file has been deleted!");
-                    } else {
+                    } else if (result.isDenied) {
                        swal.fire("Payment not deleted.");
                     }
                 });

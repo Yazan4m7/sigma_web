@@ -85,7 +85,7 @@
 
                                         <tbody>
                                         @php
-                                            $permissions = Cache::get('user'.Auth()->user()->id);
+                                            $permissions = safe_permissions();
                                         @endphp
                                         @foreach($payments as $payment)
                                             <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$payment->id}}">
@@ -102,7 +102,7 @@
 
 
 
-                                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
+                                            <div class="modal sigma-modal--generic-payments-alt" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
                                                 <input type="hidden" name="case_id" value="{{$payment->id}}">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -217,12 +217,12 @@
                 confirmButtonText: 'Delete Payment',
                 denyButtonText: `Cancel`,
             })
-                .then((willDelete) => {
+                .then((result) => {
                     // redirect with javascript here as per your logic after showing the alert using the urlToRedirect value
-                    if (willDelete.isConfirmed) {
+                    if (result.isConfirmed) {
                         window.location = urlToRedirect;
                         //swal.fire("Poof! Your imaginary file has been deleted!");
-                    } else {
+                    } else if (result.isDenied) {
                        swal.fire("Payment not deleted.");
                     }
                 });

@@ -17,8 +17,8 @@ class ViewCasesMonitorMiddleware
     public function handle($request, Closure $next)
     {
         if (Auth()->check()) {
-            $permissions = Cache::get('user'.Auth()->user()->id);
-            if (Auth()->user()->is_admin || $permissions->contains('permission_id', 113)) {
+            $permissions = safe_permissions();
+            if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 113))) {
                 return $next($request);
             }else{
                 return abort(403, "Insufficient Privileges, You don't have the permission view cases screen, Contact Admin");

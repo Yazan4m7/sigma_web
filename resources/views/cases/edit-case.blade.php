@@ -7,74 +7,592 @@
     <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
-        label {
-            font-size: 1rem;
-            font-weight: 500;
+        /* Unified styling from create case */
+        :root {
+            --surface-bg: #f4f6fb;
+            --card-bg: #ffffff;
+            --border-muted: #e3e8f0;
+            --text-main: #1f2a37;
+            --text-muted: #6b7280;
+            --accent: #1b6ef3;
+            --accent-soft: rgba(27, 110, 243, 0.15);
         }
-        .kt-form__label > label {
+
+        .edit-case-page {
+            border-radius: 18px;
+            padding: 1rem 2rem 2rem 2rem;
+        }
+
+        .form-section-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 1.75rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+            border: 1px solid var(--border-muted);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-header h5 {
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-size: 0.95rem;
+            margin: 0;
+            color: var(--text-main);
+        }
+
+        .section-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.2rem;
+        }
+
+        .section-divider {
+            width: 100%;
+            height: 0px;
+            background: var(--border-muted);
+            margin: 1.5rem 0;
+        }
+
+        .form-section-card label {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        .form-control, textarea.form-control, .selectpicker, .bootstrap-select .btn {
+            border-radius: 10px;
+            border: 1px solid var(--border-muted);
+            box-shadow: none !important;
+            min-height: 44px;
+            padding: 0.65rem 0.75rem;
+            font-size: 0.95rem;
+            color: var(--text-main);
+        }
+
+        .form-control:focus, textarea.form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.15rem var(--accent-soft) !important;
+            outline: none !important;
+        }
+
+        .toggle-discount {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 52px;
+            height: 28px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #d1d5db;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: .3s;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+        }
+
+        .toggle-switch input:checked + .switch-slider {
+            background-color: var(--accent);
+        }
+
+        .toggle-switch input:checked + .switch-slider:before {
+            transform: translateX(24px);
+        }
+
+        .discountPortion {
+            border: 1px solid var(--border-muted);
+            border-radius: 16px;
+            padding: 1rem;
+            background: #f9fafc;
+            margin-top: 1rem;
+        }
+
+        .verticalSpacing {
+            margin-top: 1.5rem;
+        }
+
+        .submit-row {
+            display: flex;
+            justify-content: flex-start;
+            gap: 1rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .submit-row .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        label {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        img {
+            max-height: 100%;
+            max-width: unset !important;
+        }
+        
+.sigma-modal--case-edit-teeth .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+.sigma-modal--case-edit-teeth-secondary .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+.sigma-modal--case-edit-files .dialog_width_Padding {
+
+            margin-bottom: 5px;
+
+
+            @media (max-width: 768px) {
+
+                #unitsDialog > div {
+                    max-width: 426px;
+                    width: auto;
+                }
+
+                .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+                    transform: translate(-85%, -49%) !important;
+                }
+
+                .teethJawsDialog {
+                    max-width: 421px;
+                    width: 175%;
+                    padding-top: 30px;
+                }
+            }
+        }
+
+
+
+        
+.sigma-modal--case-edit-teeth .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+.sigma-modal--case-edit-teeth-secondary .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+.sigma-modal--case-edit-files .teethJawsDialog {
+            max-width: 421px;
+            width: 175%;
+            padding-top:30px;
+
+
+
+        }
+        
+.sigma-modal--case-edit-teeth .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+.sigma-modal--case-edit-teeth-secondary .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+.sigma-modal--case-edit-files .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
+            transform: translate(-100%, -49%) !important;
+        }
+        .teethJawsDocument {
+            width : -webkit-fill-available;
+        }
+
+
+
+        .kt-form__label>label {
             font-size: 0.9rem;
             font-weight: 400;
         }
-        
-        /* IMPROVED JOB ROW STYLING */
+
+        /* Repeater Item Layout Fix - Unified with create case */
         .row-item {
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            background-color: #f9fafc;
+            border-radius: 16px;
+            border: 1px solid var(--border-muted);
             margin-bottom: 1rem;
-            display: flex !important;
-            align-items: center !important;
-            min-height: 60px;
-            padding: 12px 16px !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 12px !important;
-            background: #ffffff;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
             gap: 12px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            justify-content: space-between;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
         }
-        
+
+        .row-item > div {
+            flex: 1 1 150px;
+        }
+
+        .row-item label {
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .row-item .form-control,
+        .row-item select {
+            min-height: 40px;
+        }
+
+        /* Bridge/Single Toggle Contrast Fix */
+        .style-toggle {
+            background-color: #e9ecef;
+            border-radius: 20px;
+            padding: 4px;
+        }
+
+        .style-toggle-option {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        .style-toggle input[type="radio"]:checked + .style-toggle-option {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 16px;
+        }
+
+        .style-toggle-slider {
+            background-color: transparent;
+        }
+
+        /* CASE EDIT PAGE - CLEAN FUNCTIONAL LAYOUT */
+
+        /* Header Section */
+        .case-header {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-header .row > .col-md-4 {
+            margin-bottom: 15px;
+        }
+
+        /* Job Information Section */
+        .job-information-section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 0px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Existing Jobs - Clean Row Layout */
+        .row-item {
+            display: flex !important;
+            align-items: center;
+            background: #f8fafc;
+            padding: 12px 10px;
+            margin-bottom: 10px;
+            gap: 8px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+
+        .row-item > div {
+            flex: 0 0 auto;
+            /*min-width: 100px;*/
+        }
+
+        /* Specific column widths */
+        .row-item .units-col { flex: 0 0 130px; }
+        .row-item .jobtype-col { flex: 0 0 140px; }
+        .row-item .material-col { flex: 0 0 140px; }
+        .row-item .type-col { flex: 0 0 130px; }
+        .row-item .color-col { flex: 0 0 100px; }
+        .row-item .style-col { flex: 0 0 140px; }
+        .row-item .status-col { flex: 0 0 120px; }
+        .row-item .delete-col { flex: 0 0 60px; }
+
         .row-item .kt-form__group--inline {
             margin-bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-            flex: 1;
         }
-        
-        .row-item .kt-form__label {
-            margin-bottom: 4px;
-        }
-        
+
         .row-item .kt-form__label > label {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 600;
             color: #6b7280;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            display: block;
         }
-        
-        .row-item .form-control {
-            height: 38px !important;
-            padding: 0.5rem 0.75rem;
+
+        .row-item .form-control, .row-item .slctUnitsBtn {
+            width: 100%;
+            height: 36px;
             font-size: 0.875rem;
             border: 1px solid #d1d5db;
             border-radius: 6px;
-            transition: all 0.2s ease;
-            width: 100%;
+            padding: 6px 12px;
+
         }
-        
+
         .row-item .form-control:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            border-color: #4fd1c7;
+            box-shadow: 0 0 0 2px rgba(79, 209, 199, 0.2);
+            outline: none;
         }
-        
-        .row-item .btn {
-            padding: 0.5rem 0.75rem;
-            height: 38px;
-            display: flex;
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .status-badge.btn-info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .status-badge.btn-warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-badge.btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-badge.btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Toggle Buttons - SINGLE/BRIDGE - Compact Text-Only Style */
+        .style-toggle {
+            display: inline-flex;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            overflow: hidden;
+            height: auto;
+            gap: 2px;
+        }
+
+        .style-toggle input[type="radio"] {
+            display: none;
+        }
+
+        .style-toggle label {
+            padding: 4px 10px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #94a3b8;
+            text-align: center;
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
+            transition: all 0.15s ease;
+            border-radius: 3px;
+            background: transparent;
+            text-decoration: none;
         }
-        
+
+        .style-toggle label:hover {
+            color: #64748b;
+        }
+
+        .style-toggle input[type="radio"]:checked + label {
+            color: #2b7b7d;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            background: transparent;
+        }
+
+        /* New Jobs Section - spacing only (card styles come from form-section-card) */
+        .new-jobs-section {
+            margin: 1.5rem 0 20px;
+        }
+
+        .jobRow .col-12.padding5px {
+            display: flex !important;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .jobRow .col-12.padding5px > div {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        /* Delete Button */
+        .btn-danger {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+            border-radius: 6px;
+            padding: 6px 12px;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            border-color: #dc2626;
+        }
+
+        /* Add Button */
+        .btn-success {
+            background: #10b981;
+            border-color: #10b981;
+            color: white;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-weight: 500;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        /* Units Button */
+        .slctUnitsBtn {
+
+            border: 1px solid #d1d5db;
+            color: #374151;
+            font-weight: 500;
+        }
+
+        .slctUnitsBtn:hover {
+            color: #262626 !important;
+
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px){
+            .row-item, .jobRow .col-12.padding5px {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0px;
+            }
+
+            .row-item > div, .jobRow .col-12.padding5px > div {
+                min-width: 100%;
+            }
+        }
+
+        /* Section Headers */
+        .kt-portlet__head-title {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .kt-portlet__head {
+            margin-bottom: 15px;
+        }
+
+        /* Form Validation */
+        .is-invalid {
+            border-color: #ef4444 !important;
+        }
+
+        .invalid-feedback {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 4px;
+        }
+
         /* Units Button Styling */
         .slctUnitsBtn {
             width: 100% !important;
@@ -87,13 +605,13 @@
             border-radius: 6px;
             transition: all 0.2s ease;
         }
-        
+
         .slctUnitsBtn:hover {
+            color: #262626 !important;
             background: #f1f5f9;
-            border-color: #9ca3af;
             transform: translateY(-1px);
         }
-        
+
         /* STATUS BADGES */
         .status-badge {
             display: inline-flex;
@@ -109,25 +627,25 @@
             min-width: 80px;
             text-align: center;
         }
-        
+
         .status-badge.waiting {
             background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
             color: #dc2626;
             border: 1px solid #f87171;
         }
-        
+
         .status-badge.processing {
             background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
             color: #2563eb;
             border: 1px solid #93c5fd;
         }
-        
+
         .status-badge.completed {
             background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
             color: #059669;
             border: 1px solid #6ee7b7;
         }
-        
+
         /* MODERN TOGGLE SWITCHES */
         .style-toggle-container {
             display: flex;
@@ -136,7 +654,7 @@
             height: 38px;
             width: 100%;
         }
-        
+
         .style-toggle {
             position: relative;
             display: inline-flex;
@@ -148,13 +666,13 @@
             width: 100%;
             height: 36px;
         }
-        
+
         .style-toggle input[type="radio"] {
             position: absolute;
             opacity: 0;
             pointer-events: none;
         }
-        
+
         .style-toggle-option {
             position: relative;
             padding: 6px 12px;
@@ -173,33 +691,33 @@
             align-items: center;
             justify-content: center;
         }
-        
-        .style-toggle input[type="radio"]:checked + .style-toggle-option {
+
+        .style-toggle input[type="radio"]:checked+.style-toggle-option {
             color: #ffffff;
         }
-        
+
         .style-toggle-slider {
             position: absolute;
             top: 2px;
             left: 2px;
             width: calc(50% - 2px);
             height: calc(100% - 4px);
-            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+
             border-radius: 16px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 1;
             box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
         }
-        
-        .style-toggle input[type="radio"]:nth-child(2):checked ~ .style-toggle-slider {
+
+        .style-toggle input[type="radio"]:nth-of-type(2):checked~.style-toggle-slider {
             transform: translateX(calc(100% + 2px));
         }
-        
+
         /* Delete Button Styling */
         .row-item .btn-danger {
-            background: #fee2e2;
-            border: 1px solid #fecaca;
-            color: #dc2626;
+            background: #ef4444;
+            border: 1px solid #ef4444;
+            color: #ffffff;
             width: 38px;
             height: 38px;
             border-radius: 6px;
@@ -210,74 +728,99 @@
             transition: all 0.2s ease;
             flex-shrink: 0;
         }
-        
+
         .row-item .btn-danger:hover {
-            background: #fecaca;
-            border-color: #f87171;
+            background: #dc2626;
+            border-color: #dc2626;
             transform: translateY(-1px);
         }
-        
-        /* Column Responsive Widths */
-        .row-item .col-md-2 {
-            min-width: 0;
-            flex: 0 0 auto;
-            width: auto;
-            padding: 0;
+
+        .row-item > div {
+            flex: 1 1 0;
+            padding: 0 0;
         }
-        
-        .row-item .col-md-1 {
-            min-width: 0;
-            flex: 0 0 auto;
-            width: auto;
-            padding: 0;
-        }
-        
-        /* Specific column widths for better alignment */
-        .row-item .units-col {
-            flex: 0 0 140px;
-        }
-        
-        .row-item .jobtype-col {
-            flex: 0 0 120px;
-        }
-        
-        .row-item .material-col {
-            flex: 0 0 120px;
-        }
-        
-        .row-item .type-col {
-            flex: 0 0 120px;
-        }
-        
-        .row-item .color-col {
-            flex: 0 0 80px;
-        }
-        
-        .row-item .style-col {
-            flex: 0 0 120px;
-        }
-        
-        .row-item .status-col {
-            flex: 0 0 100px;
-        }
-        
+
         .row-item .delete-col {
             flex: 0 0 50px;
+            padding: 0 8px;
+            position: sticky;
+            right: 0;
+            background: #f8fafc;
+            z-index: 2;
         }
-        
-        @media screen and (max-width: 991px) {
-            .modal-content .modal-footer button {
+
+        /* Case Header Styling */
+        .case-header {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .case-header .row {
+            margin: 0;
+        }
+
+        .case-header .row > div {
+            padding: 0 15px;
+        }
+
+        /* Job Information Section */
+        .job-information-section {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        @media screen and (max-width: 991px){
+            
+.sigma-modal--case-edit-teeth .modal-content .modal-footer button {
+                margin: 0;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-edit-teeth-secondary .modal-content .modal-footer button {
+                margin: 0;
+                width: auto;
+                white-space: break-spaces;
+            }
+.sigma-modal--case-edit-files .modal-content .modal-footer button {
                 margin: 0;
                 width: auto;
                 white-space: break-spaces;
             }
         }
 
-        @media (min-width: 576px) {
-            .modal-dialog {
+        @media (min-width: 576px){
+            
+.sigma-modal--case-edit-teeth .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
             }
+.sigma-modal--case-edit-teeth-secondary .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+.sigma-modal--case-edit-files .modal-dialog {
+                max-width: 400px;
+                margin: 1.75rem auto;
+            }
+        }
+
+        
+.sigma-modal--case-edit-teeth #unitsDialog .modal-dialog, .sigma-modal--case-edit-teeth #unitsDialog2 .modal-dialog {
+            max-width: 460px;
+        }
+.sigma-modal--case-edit-teeth-secondary #unitsDialog .modal-dialog, .sigma-modal--case-edit-teeth-secondary #unitsDialog2 .modal-dialog {
+            max-width: 460px;
+        }
+.sigma-modal--case-edit-files #unitsDialog .modal-dialog, .sigma-modal--case-edit-files #unitsDialog2 .modal-dialog {
+            max-width: 460px;
         }
 
         .slctUnitsBtn {
@@ -287,28 +830,79 @@
             display: block;
         }
 
-        #addJobBtn {
-            background-color: #24c143 !important;
-            border-color: #f3f4f5 !important;
-            padding: 0.45rem 0.9rem;
-            border-radius: 0.3rem;
+        .slctUnitsBtn {
+            background: var(--accent) !important;
+            border-color: var(--accent) !important;
+            color: #fff !important;
+            font-weight: 600;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            width: 100%;
+        }
+
+        .slctUnitsBtn:hover {
+            background: #1553b7 !important;
+            border-color: #1553b7 !important;
+        }
+
+        #addJobBtn, #addJobBtn2 {
+            background-color: #22c55e !important;
+            border-color: #22c55e !important;
+            color: #fff !important;
+            font-weight: 600;
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        #addJobBtn:hover, #addJobBtn2:hover {
+            background-color: #16a34a !important;
+            border-color: #16a34a !important;
+        }
+
+        /* Delete button styling - matching create case */
+        .deleteBtn, .btn-danger.btn-sm[data-repeater-delete] {
+            background: #ef4444 !important;
+            border-color: #ef4444 !important;
+            color: #fff !important;
+            padding: 0.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .deleteBtn:hover, .btn-danger.btn-sm[data-repeater-delete]:hover {
+            background: #dc2626 !important;
+            border-color: #dc2626 !important;
+        }
+
+        .deleteBtn2 {
+            background: #f97316 !important;
+            border-color: #f97316 !important;
+            color: #fff !important;
+        }
+
+        .deleteBtn2:hover {
+            background: #ea580c !important;
+            border-color: #ea580c !important;
         }
 
         body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) {
             overflow-y: visible !important;
         }
 
-        .stage,
-        .implant,
-        .abutment {
+        .stage, .implant, .abutment {
             margin-top: 10px;
             margin-bottom: 5px;
         }
 
-        .implant,
-        .abutment {
+        .implant, .abutment {
             padding-left: 0px !important;
+        }
 
+        .abutmentsArea {
+            flex-basis: 100% !important;
+            width: 100% !important;
+            margin-top: 15px;
         }
     </style>
 
@@ -330,23 +924,33 @@
         .hidden {
             display: none;
         }
+        #kt_repeater_1 > div > div > div > div > div * {
+            /* padding: 0 !important; */
+        }
     </style>
     @php
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-
-    <form style="padding:10px" class="kt-form card" method="POST" enctype="multipart/form-data"
+    <div class="edit-case-page">
+    <form class="kt-form" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
 
-
         <input name="id" type="hidden" value="{{ $case->id }}" />
-        <!-- CASE INFO -->
 
-        <div class="row">
-            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
+        <!-- ORDER INFORMATION CARD -->
+        <div class="form-section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-subtitle">Case</div>
+                    <h5>Order Information</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
                 <div class="col-md-12 col-xs-12">
 
 
@@ -376,9 +980,9 @@
 
                     <label>{{ substr($case->case_id, 0, 7) }}</label>
                     <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
-                    <input name="caseId2" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                    <input name="caseId2" placeholder="Time" style="width:3.45rem; border:1px solid #ced4da;height:30px"
                         type="text" value="{{ substr($case->case_id, 7, 2) }}" />
-                    <input name="caseId3" placeholder="Time" style="width:30px; border:1px solid #ced4da;height:30px"
+                    <input name="caseId3" placeholder="Time" style="width:3.45rem; border:1px solid #ced4da;height:30px"
                         type="text" value="{{ substr($case->case_id, 9, 2) }}" />
                     <label>_</label>
                     <input name="caseId4" placeholder="0000"
@@ -391,61 +995,71 @@
         </div>
 
         <br />
-        <div class="row">
+     
+            <div class="row">
+                <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
+                            Date:</label></div>
+                    @php
+                        $time = new DateTime('tomorrow 13:00');
+                        // $time = $time->format("Y-m-d\TH:i");
+                        $time = $time->format('d M, Y h:i a');
+                    @endphp
 
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Delivery Date:</label></div>
-                <div class="col-md-12 col-xs-12">
-                    <input class="form-control SDTP" name="delivery_date" type="text"
-                        value="{{ $case->initial_delivery_date }}" required readonly />
+                    <div class="col-md-12 col-xs-12">
+                        <x-ios-dtp name="delivery_date" id="delivery_date" :value="old('delivery_date', $case->initial_delivery_date  ?? '')" :required="true" />
+
+{{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $case->initial_delivery_date  }}"--}}
+{{--                               required readonly />--}}
+                        <small class="mandatorySmallTag">* Mandatory</small>
+                    </div>
+                </div>
+                <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
+                    <div class="col-md-12 col-xs-12">
+
+                        <select class="select selectpicker greyBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
+
+                            @foreach ($tags as $tag)
+                                <option style="color:{{ $tag->color }}" value="{{ $tag->id }}"
+                                    {{ in_array($tag->id, $tagsAsArray) ? 'selected' : '' }}>{{ $tag->text }}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
+                    <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
+                            data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
+
+                            @foreach ($impressionTypes as $impression)
+                                <option value="{{ $impression->id }}"
+                                    {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
+                                    {{ $impression->name }}
+                                </option>
+                            @endforeach
+                        </select></div>
                 </div>
             </div>
-            <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
-                <div class="col-md-12 col-xs-12">
 
-                    <select class="select selectpicker greyBG" name="tags[]" data-mdb-placeholder="Tags" multiple>
+        </div><!-- End Order Information Card -->
 
-                        @foreach ($tags as $tag)
-                            <option style="color:{{ $tag->color }}" value="{{ $tag->id }}"
-                                {{ in_array($tag->id, $tagsAsArray) ? 'selected' : '' }}>{{ $tag->text }}</option>
-                        @endforeach
-                    </select>
 
+        <!-- JOB INFORMATION CARD -->
+        <div class="form-section-card">
+            <div class="section-header">
+                <div>
+                    <div class="section-subtitle">Jobs</div>
+                    <h5>Job Information</h5>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
-                <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
-                        data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
 
-                        @foreach ($impressionTypes as $impression)
-                            <option value="{{ $impression->id }}"
-                                {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
-                                {{ $impression->name }}
-                            </option>
-                        @endforeach
-                    </select></div>
+            <!-- EXISTING JOBS -->
+            <div style="margin-bottom: 0.5rem;">
+                <span style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">Existing Jobs</span>
             </div>
-        </div>
-
-
-        <!-- JOB INFO ICON-->
-        <br>
-        <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-                <h5 class="kt-portlet__head-title">
-                    <i class="fa  fa-suitcase" style="width:3%"></i> Job information
-                </h5>
-            </div>
-        </div>
-        <hr>
-
-
-
-        <!-- EXISITING JOBS REPEATER -->
-
-        <div id="kt_repeater_1" style="padding-left: 15px; padding-right: 15px">
+            <div id="kt_repeater_1" style="">
             <div data-repeater-list="repeat">
                 <div data-repeater-item>
                     <div class="form-group form-group ">
@@ -463,7 +1077,7 @@
                                     $unit = explode(', ', $job->unit_num);
                                 @endphp
                                 <div data-repeater-item class="form-group row align-items-center row-item"
-                                    style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
+                                    >
                                     <input type="hidden" name="job_id" value="{{ $job->id }}" />
 
                                     <div class="units-col">
@@ -483,7 +1097,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="jobtype-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
@@ -508,7 +1122,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="material-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
@@ -516,15 +1130,26 @@
                                             </div>
                                             <div class="kt-form__control">
                                                 <select {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                    class="form-control material-dropdown" id="material_id{{ $job->id }}"
+                                                    class="form-control material-dropdown"
+                                                    id="material_id{{ $job->id }}"
                                                     name="material_id{{ $job->id }}"
                                                     onchange="loadTypesForMaterial(this, {{ $job->id }})">
 
+                                                    @php
+                                                        // Filter materials to only show those compatible with this job type
+                                                        $compatibleMaterialIds = $jobTypeMaterials
+                                                            ->where('jobtype_id', $job->jobType->id)
+                                                            ->pluck('material_id')
+                                                            ->toArray();
+                                                    @endphp
+
                                                     @foreach ($materials as $m)
-                                                        <option value="{{ $m->id }}"
-                                                            {{ $job->material_id == $m->id ? 'selected' : '' }}>
-                                                            {{ $m->name }}
-                                                        </option>
+                                                        @if (in_array($m->id, $compatibleMaterialIds))
+                                                            <option value="{{ $m->id }}"
+                                                                {{ $job->material_id == $m->id ? 'selected' : '' }}>
+                                                                {{ $m->name }}
+                                                            </option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                                 @if ($job->jobType->id == 6)
@@ -534,7 +1159,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="type-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
@@ -564,7 +1189,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="color-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
@@ -623,7 +1248,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="style-col">
                                         <div class="kt-form__group--inline"
                                             style="display:{{ $job->style == 'None' ? 'None' : 'Block' }}">
@@ -632,18 +1257,20 @@
                                             </div>
                                             <div class="style-toggle-container">
                                                 <div class="style-toggle">
-                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                        type="radio" id="single_{{ $job->id }}" class="single"
+                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }} type="radio"
+                                                        id="single_{{ $job->id }}" class="single"
                                                         name="style{{ $job->id }}" value="Single"
                                                         {{ $job->style == 'Single' ? 'checked' : '' }} />
-                                                    <label class="style-toggle-option" for="single_{{ $job->id }}">Single</label>
-                                                    
-                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }}
-                                                        type="radio" id="bridge_{{ $job->id }}" class="bridge"
+                                                    <label class="style-toggle-option"
+                                                        for="single_{{ $job->id }}">Single</label>
+
+                                                    <input {{ $job->jobType->id == 6 ? 'disabled' : '' }} type="radio"
+                                                        id="bridge_{{ $job->id }}" class="bridge"
                                                         name="style{{ $job->id }}" value="Bridge"
                                                         {{ $job->style == 'Bridge' ? 'checked' : '' }} />
-                                                    <label class="style-toggle-option" for="bridge_{{ $job->id }}">Bridge</label>
-                                                    
+                                                    <label class="style-toggle-option"
+                                                        for="bridge_{{ $job->id }}">Bridge</label>
+
                                                     <div class="style-toggle-slider"></div>
                                                 </div>
                                                 @if ($job->jobType->id == 6)
@@ -653,7 +1280,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="status-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
@@ -665,7 +1292,10 @@
                                                     $badgeClass = 'processing';
                                                     if (strpos($status, 'Waiting') !== false) {
                                                         $badgeClass = 'waiting';
-                                                    } elseif (strpos($status, 'Completed') !== false || strpos($status, 'Delivered') !== false) {
+                                                    } elseif (
+                                                        strpos($status, 'Completed') !== false ||
+                                                        strpos($status, 'Delivered') !== false
+                                                    ) {
                                                         $badgeClass = 'completed';
                                                     }
                                                 @endphp
@@ -675,25 +1305,25 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="delete-col">
                                         <div class="kt-form__group--inline">
                                             <div class="kt-form__label">
                                                 <label>&nbsp;</label>
                                             </div>
                                             <div class="kt-form__control">
-                                                <button data-repeater-delete class="btn btn-danger btn-sm"
-                                                    type="button" value="Delete" style="height:100%"> <i
-                                                        class="fa fa-trash"></i></span> </button>
+                                                <button data-repeater-delete class="btn btn-danger btn-sm" type="button"
+                                                    value="Delete"> <i
+                                                        class="fa fa-trash"></i> </button>
                                             </div>
                                         </div>
                                     </div>
 
-                                    @if (isset($job->abutmentDelivery))
+                                    @if (isset($job->abutmentDelivery) && count($job->abutmentDelivery) > 0)
                                         <div class="col-md-4">
                                             @foreach ($job->abutmentDelivery as $delivery)
                                                 <p style="margin-bottom: 2px;">{{ $delivery->implant->name ?? 'None' }} -
-                                                    {{ $delivery->abut ment->name ?? 'None' }} -
+                                                    {{ $delivery->abutment->name ?? 'None' }} -
                                                     {{ $delivery->code ?? 'None' }} </p>
                                             @endforeach
                                         </div>
@@ -705,17 +1335,17 @@
                 </div>
             </div>
         </div>
-
-        <br>
-
-        <div class="kt-portlet__head">
-            <div class="kt-portlet__head-label">
-                <h5 class="kt-portlet__head-title">
-                    <i class="fa-solid fa-square-plus"></i> New Jobs:
-                </h5>
-            </div>
         </div>
-        <hr>
+
+        <div class="section-divider"></div>
+
+        <div class="form-section-card new-jobs-section">
+            <div class="section-header" style="margin-bottom: 1rem;">
+                <div>
+                    <div class="section-subtitle">Add</div>
+                    <h5>New Jobs</h5>
+                </div>
+            </div>
         <!-- NEW JOBS REPEATER -->
         <div id="" style="" class="repeater jobsRepeater">
             <div data-repeater-list="repeat2" class="jobDataRepeaterList">
@@ -723,7 +1353,7 @@
                     <div class="form-group form-group ">
                         <div data-repeater-list="repeat2" class="col-12 padding5px">
                             <div data-repeater-item class="form-group row align-items-center row-item"
-                                style="border: 1px solid #ccc;border-radius: 16px;padding:5px">
+                                style="padding:5px">
 
                                 <div class="units-col">
                                     <div class="kt-form__group--inline">
@@ -737,7 +1367,7 @@
                                             onclick="preOpenDialog2(this)">Select Units</button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="jobtype-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
@@ -753,15 +1383,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="material-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Material:</label>
                                         </div>
                                         <div class="kt-form__control">
-                                            <select class="form-control material-dropdown-new" id="material_id" name="material_id"
-                                                onchange="loadTypesForNewJob(this)">
+                                            <select class="form-control material-dropdown-new"
+                                                name="material_id" onchange="loadTypesForNewJob(this)">
                                                 @foreach ($materials as $m)
                                                     <option value="{{ $m->id }}">
                                                         {{ $m->name }}
@@ -771,20 +1401,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="type-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
                                             <label>Type:</label>
                                         </div>
                                         <div class="kt-form__control">
-                                            <select class="form-control type-dropdown-new" id="type_id" name="type_id">
+                                            <select class="form-control type-dropdown-new" name="type_id">
                                                 <option value="">Select Type</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="color-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
@@ -817,7 +1447,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="style-col">
                                     <div class="kt-form__group--inline">
                                         <div class="kt-form__label">
@@ -825,14 +1455,14 @@
                                         </div>
                                         <div class="style-toggle-container">
                                             <div class="style-toggle">
-                                                <input type="radio" id="new_single" class="single" checked="checked" 
+                                                <input type="radio" id="new_single" class="single" checked="checked"
                                                     name="style" value="Single" />
                                                 <label class="style-toggle-option" for="new_single">Single</label>
-                                                
-                                                <input type="radio" id="new_bridge" class="bridge" 
-                                                    name="style" value="Bridge" />
+
+                                                <input type="radio" id="new_bridge" class="bridge" name="style"
+                                                    value="Bridge" />
                                                 <label class="style-toggle-option" for="new_bridge">Bridge</label>
-                                                
+
                                                 <div class="style-toggle-slider"></div>
                                             </div>
                                         </div>
@@ -846,9 +1476,8 @@
                                             <label>&nbsp;</label>
                                         </div>
                                         <div class="kt-form__control">
-                                            <button data-repeater-delete class="btn deleteBtn btn-sm" type="button"
-                                                value="Delete" style=""><i class="fa fa-trash "
-                                                    style=""></i></span>
+                                            <button data-repeater-delete class="btn btn-danger btn-sm" type="button"
+                                                value="Delete"><i class="fa fa-trash"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -877,7 +1506,8 @@
                                                             <option value="0" selected>None
                                                             </option>
                                                             @foreach ($implants as $implant)
-                                                                <option value="{{ $implant->id }}">{{ $implant->name }}
+                                                                <option value="{{ $implant->id }}">
+                                                                    {{ $implant->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -889,7 +1519,8 @@
                                                             name="abutment">
                                                             <option value="0" selected>None</option>
                                                             @foreach ($abutments as $abutment)
-                                                                <option value="{{ $abutment->id }}">{{ $abutment->name }}
+                                                                <option value="{{ $abutment->id }}">
+                                                                    {{ $abutment->name }}
                                                                 </option>
                                                             @endforeach
                                                         </select>
@@ -930,171 +1561,135 @@
             <a href="javascript:" data-repeater-create="" class="btn btn-success btn-sm" id="addJobBtn">
                 <i class="fa fa-plus-square" style="color:white"></i> Add
             </a>
-            <div class="verticalSpacing"></div>
-            <!-- DISCOUNTS SECTION -->
+        </div>
+        </div><!-- End Job Information Card -->
+
+            <!-- DISCOUNTS CARD -->
             @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa-regular fa-circle-down" style="height:3%"></i> Discount
-                        </h5>
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Discount</h5>
                     </div>
                 </div>
-                <hr>
 
                 @php
                     $discountExists = $case->discount != null;
                 @endphp
 
-                <label style="cursor: pointer">
-                    <input type="checkbox" class="discountCB" name="discountCB" value="on"
-                        {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
-                    Make a Discount {{ $discountExists }}
+                <label class="toggle-discount">
+                    <span class="toggle-switch">
+                        <input type="checkbox" class="discountCB" name="discountCB" value="on"
+                            {{ $discountExists ? 'checked' : '' }} onclick='toggleDiscountPortion(this)' />
+                        <span class="switch-slider"></span>
+                    </span>
+                    <span>Apply Discount</span>
                 </label>
 
-                <br>
-                <div class="form-group form-group row discountPortion"
-                    style="{{ $discountExists ? '' : 'display:none' }}">
-                    <div class="col-md-3 col-xs-6">
-                        <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
-                            value="{{ $discountExists ? $case->discount->discount : '' }}" />
-                        <small>JOD</small>
+                <div class="discountPortion" style="{{ $discountExists ? '' : 'display:none' }}">
+                    <div class="row">
+                        <div class="col-md-3 col-xs-6">
+                            <label>Amount</label>
+                            <input class="form-control" type="number" name="discount_amount" placeholder="Amount (JOD)"
+                                value="{{ $discountExists ? $case->discount->discount : '' }}" />
+                            <small class="text-muted">JOD</small>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <label>Description</label>
+                            <input class="form-control" type="text" name="discount_reason"
+                                value="{{ $discountExists ? $case->discount->reason : '' }}" placeholder="Reason for discount" />
+                        </div>
                     </div>
-                    <div class="col-md-6 col-xs-6">
-                        <input class="form-control" type="text" name="discount_reason"
-                            value=" {{ $discountExists ? $case->discount->reason : '' }}" placeholder="Description" />
-                    </div>
-                </div>
-                <div class="verticalSpacing"></div>
-            @endif
-
-            <!-- NOTES SECTION -->
-            <br>
-            <div class="kt-portlet__head">
-                <div class="kt-portlet__head-label">
-                    <h5 class="kt-portlet__head-title">
-                        <i class="fa fa-sticky-note" style="height:3%;color:inherit"></i> Additional
-                        information
-                    </h5>
                 </div>
             </div>
-            <hr>
+            @endif
 
-            <div class="form-group form-group">
-                <label>Notes:</label>
+            <!-- NOTES CARD -->
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Notes</h5>
+                    </div>
+                </div>
 
                 @foreach ($case->notes as $note)
-                    <div class="form-control"
-                        style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black"
-                        disabled>
-
-                        <span
-                            class="noteHeader">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                        <span class="noteText">{{ $note->note }}</span>
+                    <div style="background-color: #f8fafc; border: 1px solid var(--border-muted); border-radius: 10px; padding: 0.75rem 1rem; margin-bottom: 0.5rem;">
+                        <span class="noteHeader" style="font-size: 0.85rem; color: var(--text-muted);">
+                            {{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . ']' }}
+                        </span>
+                        <div class="noteText" style="margin-top: 0.25rem; color: var(--text-main);">{{ $note->note }}</div>
                     </div>
                 @endforeach
 
-                <form></form>
-                <form style="" class="noteform " method="POST" enctype="multipart/form-data"
-                    action="{{ route('new-note') }}">
-                    @csrf
-                    <div class="row" style="padding:0px">
-                        <input type="hidden" name="case_id_for_note" value ="{{ $case->id }}">
-                        <div class="col-md-6 col-xs-6">
-                            <input class="form-control" type="text" name="newNote" placeholder="Add a note" />
+                <div class="noteform" style="margin-top: 1rem;">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}" form="noteForm">
+                    <input type="hidden" name="case_id_for_note" value="{{ $case->id }}" form="noteForm">
+                    <div class="row align-items-end">
+                        <div class="col-md-8 col-xs-8">
+                            <label>Add a note</label>
+                            <input class="form-control" type="text" name="newNote" placeholder="Type your note here..." form="noteForm" />
                         </div>
-
-                        <div class="col-md-3 col-xs-3" style="margin: 0px">
-                            <button type="submit" class="btn btn-primary">Add note</button>
+                        <div class="col-md-4 col-xs-4">
+                            <button type="submit" class="btn btn-outline-secondary" form="noteForm">Add Note</button>
                         </div>
-
-
-                    </div>
-                </form>
-                <br><br>
-                <div class="kt-portlet__head">
-                    <div class="kt-portlet__head-label">
-                        <h5 class="kt-portlet__head-title">
-                            <i class="fa fa-photo" style="height:3%;color:inherit"></i> Attachments
-                        </h5>
                     </div>
                 </div>
-                <hr>
-                <!-- Photos SECTION -->
-                <div class="container" style="margin-top:10px;">
+            </div>
 
-                    <div class="demo-gallery">
-                        <ul id="lightgallery" class="list-unstyled row">
-                            @foreach ($case->photos as $photo)
-                                <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2"
-                                    data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
-                                    <a href="">
-                                        <img class="img-responsive" src="{{ asset($photo->path) }}">
-                                    </a>
-                                </li>
-                            @endforeach
-
-                        </ul>
+            <!-- ATTACHMENTS CARD -->
+            <div class="form-section-card">
+                <div class="section-header">
+                    <div>
+                        <div class="section-subtitle">Optional</div>
+                        <h5>Attachments</h5>
                     </div>
                 </div>
 
-                <br>
-                {{-- <div class="form-group form-group-last"> --}}
-                {{-- <label for="images">Add Photos:</label> --}}
-                {{-- <input required type="file" id="images" class="form-control" name="images[]" placeholder="address" multiple disabled> --}}
-                {{-- </div> --}}
-                {{--                <br> --}}
-                {{--                <div class="kt-portlet__foot"> --}}
-                {{--                    <div class="kt-form__actions"> --}}
-                {{--                        <button type="submit" class="btn btn-primary" disabled>Submit</button> --}}
-                {{--                        <button type="reset" class="btn btn-danger" disabled>Reset</button> --}}
-                {{--                    </div> --}}
-                {{--                </div> --}}
+                @if($case->photos->count() > 0)
+                <div class="demo-gallery" style="margin-bottom: 1.5rem;">
+                    <ul id="lightgallery" class="list-unstyled row">
+                        @foreach ($case->photos as $photo)
+                            <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2" style="margin-bottom: 1rem;"
+                                data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
+                                <a href="">
+                                    <img class="img-responsive" src="{{ asset($photo->path) }}" style="border-radius: 10px; border: 1px solid var(--border-muted);">
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
+
+                <div>
+                    <label for="images">Add Files</label>
+                    <input type="file" id="images" class="form-control" name="images[]" multiple style="cursor: pointer;">
+                </div>
+                <div class="submit-row" style="margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
             </div>
-
-            <!-- Attachments SECTION -->
-
-            <div class="form-group form-group-last">
-                <label for="images" style="cursor: pointer;padding: 10px 18px 10px 18px;">
-                    <h4><i class="fa-solid fa-circle-plus"></i>
-                    </h4>
-                </label>
-                <input type="file" id="images" class="form-control" name="images[]" placeholder="address"
-                    multiple style="cursor: pointer;">
-            </div>
-
-            <br>
             @if (config('site_vars.environment') == 'testing')
-                <div class="col-md-3" style="border: 1px solid red;padding:10px;border-radius: 10px;margin:5px">
-                    <div class="kt-form__actions"><label for="sendTo">Testing helpers:</label><br>
-                        <div class="btn-group show" role="group">
-                            <select class="form-control" id="stageToSendTo" name="stageToSendTo">
-
-                                <option value="1">Design</option>
-                                <option value="6">Finishing</option>
-                                <option value="7">QC</option>
-                                <option value="8">Delivery</option>
-                                <option value="10" style="color:green">Completed</option>
-                            </select>
-
-                        </div>
+                <div class="form-section-card" style="border: 2px solid #ef4444;">
+                    <div class="section-header">
+                        <h5 style="color: #ef4444;">Testing Helpers</h5>
                     </div>
+                    <select class="form-control" id="stageToSendTo" name="stageToSendTo" style="max-width: 200px;">
+                        <option value="1">Design</option>
+                        <option value="6">Finishing</option>
+                        <option value="7">QC</option>
+                        <option value="8">Delivery</option>
+                        <option value="10" style="color:green">Completed</option>
+                    </select>
                 </div>
             @endif
 
-            <div class="kt-portlet__foot">
-                <div class="kt-form__actions">
-                    <button type="submit" class="btn btn-primary extraPadding">Submit</button>
-                    <button type="reset" class="btn btn-danger extraPadding">Reset</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Existing TEETH PICK DIALOG -->
-        <div data-repeater-item class="modal fade" id="unitsDialog" tabindex="-1" role="dialog"
+        <!-- Existing TEETH PICK DIALOG (inside form for proper submission) -->
+        <div data-repeater-item class="modal fade sigma-modal--case-edit-teeth" id="unitsDialog" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
+                <div class="modal-content teethJawsDialog">
 
                     <div class="modal-body" style="height: 36em;">
 
@@ -1245,21 +1840,20 @@
 
 
                     </div>
-                    <div class="modal-footer teethSelection" name ="model-footer">
-
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="modal-footer teethSelection" name="model-footer" style="padding: 12px; display: flex; gap: 8px;">
                         <button type="button" class="btn btn-primary" id="submitDialog"
-                            onclick="submitDialogFun(this)">Save changes</button>
+                            onclick="submitDialogFun(this)" style="flex: 2; height: 36px; font-weight: 500; font-size: 13px; background-color: #007bff !important; border-color: #007bff !important; text-align: center;">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="flex: 1; height: 36px; font-weight: 500; font-size: 13px; background-color: #6c757d; border-color: #6c757d; text-align: center;">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- NEW TEETH PICK DIALOG -->
-        <div data-repeater-item class="modal fade" id="unitsDialog2" tabindex="-1" role="dialog"
+        <div data-repeater-item class="modal fade sigma-modal--case-edit-teeth-secondary" id="unitsDialog2" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLongTitle" style="display: none;" aria-hidden="true" name="dialog2">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered teethJawsDocument" role="document">
+                <div class="modal-content teethJawsDialog">
 
                     <div class="modal-body" style="height: 36em;">
 
@@ -1410,18 +2004,17 @@
 
 
                     </div>
-                    <div class="modal-footer teethSelection" name ="model-footer">
-
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="submitDialog2">Save changes</button>
+                    <div class="modal-footer teethSelection" name="model-footer" style="padding: 12px; display: flex; gap: 8px;">
+                        <button type="button" class="btn btn-primary" id="submitDialog2" style="flex: 2; height: 36px; font-weight: 500; font-size: 13px; background-color: #007bff !important; border-color: #007bff !important; text-align: center;">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="flex: 1; height: 36px; font-weight: 500; font-size: 13px; background-color: #6c757d; border-color: #6c757d; text-align: center;">Close</button>
                     </div>
-                </div>
+                </div>b
             </div>
         </div>
 
 
         <!-- FILES DIALOG -->
-        <div class="modal fade" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
+        <div class="modal fade sigma-modal--case-edit-files" id="filesDialog" tabindex="-1" role="dialog" aria-labelledby="fileDialog"
             style="display: none;" aria-hidden="true" name="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -1446,11 +2039,26 @@
                 </div>
             </div>
         </div>
+    </form>
+    <form id="noteForm" method="POST" enctype="multipart/form-data" action="{{ route('new-note') }}"></form>
+    </div><!-- End edit-case-page wrapper -->
     @endsection
     @push('js')
         <script></script>
         <script>
             $(document).ready(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                // Prevent double-submit on main form
+                $('form.kt-form').on('submit', function() {
+                    var $btn = $(this).find('button[type="submit"]').not('.noteform button');
+                    $btn.prop('disabled', true).text('Saving...');
+                });
+
                 $('#lightgallery').lightGallery();
                 $('.repeater').repeater({
                     // (Required if there is a nested repeater)
@@ -1480,6 +2088,8 @@
                         $(this).slideUp(deleteElement);
                     }
                 });
+
+
                 //            $(".jobsRepeater").find(".jobDataRepeaterList").first().html("");
                 //            $("#addJobBtn").click();
             });
@@ -1506,6 +2116,10 @@
                 var materialBox = $("[name='" + repeaterName + "[material_id" + jobId + "]']");
                 var jobTypeSelectedId = $(jobTypeDD).val();
                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
+
+                // Store currently selected material to preserve if compatible
+                var currentlySelectedMaterial = materialBox.val();
+
                 materialBox.empty();
                 $.each(jobTypeMaterials, function(key, value) {
                     var material = materials.find(x => x.id === value.material_id);
@@ -1515,18 +2129,38 @@
                             .text(material.name));
                     }
                 });
+
+                // If previously selected material is still compatible, reselect it
+                if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
+                    materialBox.val(currentlySelectedMaterial);
+                } else if (jobTypeMaterials.length > 0) {
+                    // Auto-select first material if available
+                    materialBox.val(jobTypeMaterials[0].material_id);
+                }
                 console.log("Exisiting job type changed " + abutmentBox.attr('name') + "Selector : " + "[name='" +
                     repeaterName + "[abutment" + jobId + "]']");
-                if ($(jobTypeDD).find(":selected").val() == 6) {
+
+                // Check if job type name contains "screw" (case insensitive)
+                var selectedJobType = jobTypes.find(x => x.id == jobTypeSelectedId);
+                var isImplantJob = selectedJobType && selectedJobType.name.toLowerCase().includes('screw');
+
+                console.log("Selected job type:", selectedJobType?.name, "Is implant job:", isImplantJob);
+
+                // Find the abutmentsArea container
+                var abutmentsArea = $(jobTypeDD).closest('.row-item').find('.abutmentsArea');
+
+                if (isImplantJob) {
+                    abutmentsArea.show();
                     abutmentBox.parent().parent().parent().show();
                     implantBox.parent().parent().parent().show();
                 } else {
+                    abutmentsArea.hide();
                     abutmentBox.val(0);
                     implantBox.val(0);
                     abutmentBox.parent().parent().parent().hide();
                     implantBox.parent().parent().parent().hide();
                 }
-                
+
                 // Load types for the material when job type changes
                 var materialSelect = $('#material_id' + jobId);
                 if (materialSelect.length > 0) {
@@ -1754,6 +2388,91 @@
                     jobTypeChanged(value);
                 });
             }
+
+            function loadTypesForMaterial(materialSelect, jobId) {
+                const materialId = $(materialSelect).val();
+                const typeDropdown = $(`#type_id${jobId}`);
+
+                // Clear existing options
+                typeDropdown.empty().append('<option value="">Select Type</option>');
+
+                if (materialId) {
+                    // Fetch types for the selected material
+                    $.ajax({
+                        url: `/api/materials/${materialId}/types`,
+                        type: 'GET',
+                        beforeSend: function() {
+                            console.log('AJAX request is about to be sent for job '+jobId+'.');
+                        },
+                        success: function(types) {
+                            console.log('Successfully loaded types for job '+jobId+':', types);
+                            if (types && types.length > 0) {
+                                types.forEach(function(type) {
+                                    typeDropdown.append($('<option>', {
+                                        value: type.id,
+                                        text: type.name
+                                    }));
+                                });
+                            } else {
+                                typeDropdown.append('<option value="" disabled>No Types</option>');
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Failed to load types for material for job '+jobId+'.');
+                            console.error('Status:', textStatus);
+                            console.error('Error:', errorThrown);
+                            console.error('Response:', jqXHR.responseText);
+                            typeDropdown.append('<option value="" disabled>Error loading types</option>');
+                        }
+                    });
+                }
+            }
+
+            function typeChanged(typeSelect, jobId) {
+                // This function is called when the type is changed.
+                // We can add logic here if needed in the future.
+                console.log(`Type changed for job ${jobId} to ${$(typeSelect).val()}`);
+            }
+
+            function loadTypesForNewJob(materialSelect) {
+                const materialId = $(materialSelect).val();
+                console.log('Loading types for new job material:', materialId);
+                const typeDropdown = $(materialSelect).closest('.row-item').find('.type-dropdown-new');
+
+                // Clear existing options
+                typeDropdown.empty().append('<option value="">Select Type</option>');
+
+                if (materialId) {
+                    // Fetch types for the selected material
+                    $.ajax({
+                        url: `/api/materials/${materialId}/types`,
+                        type: 'GET',
+                        beforeSend: function() {
+                            console.log('AJAX request is about to be sent.');
+                        },
+                        success: function(types) {
+                            console.log('Successfully loaded types:', types);
+                            if (types && types.length > 0) {
+                                types.forEach(function(type) {
+                                    typeDropdown.append($('<option>', {
+                                        value: type.id,
+                                        text: type.name
+                                    }));
+                                });
+                            } else {
+                                typeDropdown.append('<option value="" disabled>No Types</option>');
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error('Failed to load types for material.');
+                            console.error('Status:', textStatus);
+                            console.error('Error:', errorThrown);
+                            console.error('Response:', jqXHR.responseText);
+                            typeDropdown.append('<option value="" disabled>Error loading types</option>');
+                        }
+                    });
+                }
+            }
         </script>
 
 
@@ -1926,6 +2645,10 @@
                 var jobTypeSelectedId = $(jobTypeDD).val();
                 var jobTypeMaterials = materialJobTypeRelations.filter(element => element.jobtype_id == jobTypeSelectedId);
 
+                // Store currently selected material to preserve if compatible
+                var currentlySelectedMaterial = materialBox.val();
+
+                // Filter materials by job type
                 materialBox.empty();
                 $.each(jobTypeMaterials, function(key, value) {
                     var material = materials.find(x => x.id === value.material_id);
@@ -1935,13 +2658,21 @@
                             .text(material.name));
                     }
                 });
+
+                // If previously selected material is still compatible, reselect it
+                if (currentlySelectedMaterial && jobTypeMaterials.some(jm => jm.material_id == currentlySelectedMaterial)) {
+                    materialBox.val(currentlySelectedMaterial);
+                } else if (jobTypeMaterials.length > 0) {
+                    // Auto-select first material if available
+                    materialBox.val(jobTypeMaterials[0].material_id);
+                }
                 var abutmentsArea = $(jobTypeDD).parent().parent().parent().parent().parent().find(".abutmentsArea");
                 var abutmentUnitsBox = $(abutmentsArea).find(".abutmentsUnitsPicker");
                 var currentlySelectedUnits = $(jobTypeDD).parent().parent().parent().parent().parent().find(".hiddenUnitsInput")
                     .val().split(',');
                 var openDialogBtn = $("[name='" + repeaterName2 + "[openDialogBtn]']");
                 console.log("New job type changed " + $(jobTypeDD).find(":selected").val());
-                
+
                 materialChanged();
 
                 if ($(jobTypeDD).find(":selected").val() == 6) {
@@ -1952,12 +2683,22 @@
                     // show the 6th parent of the box which has display none property
                     // $(found).parent().parent().parent().parent().parent().parent().css("display","block");
 
+                    // Destroy existing selectpicker if it exists to avoid conflicts
+                    if (abutmentUnitsBox.hasClass('selectpicker')) {
+                        abutmentUnitsBox.selectpicker('destroy');
+                    }
+
+                    // Clear and repopulate options
+                    abutmentUnitsBox.empty();
                     $.each(currentlySelectedUnits, function(index, value) {
                         abutmentUnitsBox.append($("<option></option>")
                             .attr("value", value)
                             .text(value));
                     });
+
+                    // Initialize selectpicker fresh
                     abutmentUnitsBox.selectpicker();
+
                     $(jobTypeDD).attr("readonly", "true");
                     $(openDialogBtn).attr("disabled", "true");
                 } else {
@@ -2169,7 +2910,7 @@
             function loadTypesForMaterial(materialSelect, jobId) {
                 var materialId = $(materialSelect).val();
                 var typeSelect = $('#type_id' + jobId);
-                
+
                 console.log('Loading types for existing job material:', materialId, 'jobId:', jobId);
 
                 // Clear current options
@@ -2239,11 +2980,11 @@
             // Add change handler for material dropdowns
             $(document).ready(function() {
                 console.log('Initializing type dropdown handlers...');
-                
+
                 // Debug materials data
                 var materials = @json($materials);
                 console.log('Materials loaded:', materials.length, 'materials');
-                
+
                 // Handle material changes for existing jobs
                 $('select[name^="material_id"]').on('change', function() {
                     var name = $(this).attr('name');
@@ -2263,7 +3004,7 @@
                     var name = $(this).attr('name');
                     var jobId = name.replace('material_id', '');
                     var typeSelect = $('#type_id' + jobId);
-                    
+
                     // Only reload if type dropdown seems uninitialized or has no selected value
                     if (typeSelect.length > 0) {
                         console.log('Initializing types for existing job:', jobId);

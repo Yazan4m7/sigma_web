@@ -2,175 +2,216 @@
 
 
 @section('content')
-    <head>
+    <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-    </head>
-    <style>
-        @media screen and (max-width: 991px){
-            #datatable_wrapper {
-                overflow: auto;
-            }
-        }
-        .card-body{
-            padding: 0;
-        }
-        .row, .container-fluid{
-            padding-left:0px;
-            padding-right:0px;
-        }
-        /*.col-sm-12 {*/
-        /*padding-right:0px;*/
-        /*padding-left:0px;*/
-        /*}*/
-        tr { cursor: pointer; }
-        td {border : 0 !important;}
-    </style>
+    <div class="sigma-report-standard">
+    <div class="report-filters-card">
+        <form class="kt-form" method="GET" action="{{route('materials-report')}}">
+            <!-- FILTERS ROW 1: Main Filters -->
+            <div class="container-fluid">
+                <div class="row g-3 align-items-end mb-3">
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <x-report-datetimepicker
+                            name="from"
+                            id="materials_from"
+                            label="From Date:"
+                            :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-6">
+                        <x-report-datetimepicker
+                            name="to"
+                            id="materials_to"
+                            label="To Date:"
+                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            mode="date"
+                            :required="true"
+                        />
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-12">
+                        @if(isset($clients))
+                            @php
+                                $doctorOptions = $clients
+                                    ->map(fn($doctor) => ['value' => $doctor->id, 'label' => $doctor->name])
+                                    ->values()
+                                    ->all();
+                            @endphp
+                            <x-report-dropdown
+                                name="doctor[]"
+                                id="doctor"
+                                label="Doctor:"
+                                :options="$doctorOptions"
+                                :selected="$selectedClients ?? null"
+                                title="All Doctors"
+                            />
+                        @endif
+                    </div>
+                </div>
 
-    <div class="bg-white">
-
-            <form  class="kt-form" method="GET" action="{{route('materials-report')}}">
-
-
-                        <div class="col-lg-12 col-sm-12 ">
-
-                            <div class="row" style="">
-
-                                <div class="col-lg-2 col-md-3 ">
-                                    <div class="kt-subheader__search" style="">
-                                        <label>From:</label>
-                                        <input type="date" class="form-control" name="from" value="{{$from}}">
-                                    </div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 ">
-                                    <div class="kt-subheader__search" style="">
-                                        <label>To:</label>
-                                        <input type="date" class="form-control" name="to" value="{{$to}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-3 col-md-3 ">
-                                    @if(isset($clients))
-                                        <div class="dropdown">
-                                            <label>Doctor:</label>
-                                            <select style="width:100%"  class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor" data-live-search="true" title="All" data-hide-disabled="true">
-
-                                                    <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
-                                                    @foreach($clients as $d)
-                                                        <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
-                                                @endforeach
-                                            </select>
-
-                                        </div>
-                                        @endif
-
-
-                                </div>
-                                {{--<div class="col-lg-2 col-md-3 ">--}}
-                                {{--<div class="kt-subheader__search">--}}
-                                {{--<label>Patient Name:</label>--}}
-                                {{--<br>--}}
-                                {{--<input type="text" name="patient_name" value="{{$patientName ?? ''}}"--}}
-                                {{--class="form-control">--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                <div class="col-lg-3 col-md-3 ">
-
-                                    <div class="kt-subheader__search" style="width:100%">
-                                        <label>&nbsp; &nbsp; </label>
-
-                                        <div class="kt-form__actions">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
-
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-
+                <!-- BUTTONS ROW 2: Actions -->
+                <div class="row g-3 align-items-center">
+                    <div class="col-lg-4 col-md-4 col-12">
+                        <button type="submit" class="btn btn-primary-enhanced">
+                            <i class="fas fa-chart-line me-2"></i>  &nbsp;   Generate Report
+                        </button>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-12 report-action-icons">
+                        <i class="fas fa-file-excel printBtn d-none" id="exportExcelBtn" role="button" tabindex="0" aria-label="Export to Excel"></i>
+                        <i class="fas fa-print printBtn" role="button" tabindex="0" aria-label="Print" onclick="window.print()"></i>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <hr>
-    <div class="card-body table-responsive">
-        <h5 class="header-title">Total Amount:</h5>
-        <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($totalAmount)}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
-        <p class="text-muted"></p>
-        <div class="table-odd">
-            <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12" style="padding:5px">
 
-                        <table id="datatable" class="dataTable no-footer  order-column  display nowrap compact cell-border sunriseTable" role="grid" aria-describedby="datatable_info">
-                            <thead>
-                            <tr role="row">
-                                <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">Doctor</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 100px;">Patient</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 83.1445px;">Zircon</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 83.1445px;">Emax</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 83.1445px;">Acrylic</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 83.1445px;">Model</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 83.1445px;">Amount</th>
-                                <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending" style="width: 83.1445px;">Delivered On</th>
-                            </tr>
-                            </thead>
-
-
-                            <tbody>
-                            @foreach($cases as $case)
-                                    <tr role="row" class="odd" onclick="window.location='{{route('view-invoice', $case->id)}}';">
-
-                                        <td class="sorting_1">{{$case->client->name}}</td> <!--bold -->
-                                        <td>{{$case->patient_name}}</td>
-                                        <td>{{$case->materialUsed([1,20])}}</td>
-                                        <td>{{$case->materialUsed([2])}}</td>
-                                        <td>{{$case->materialUsed([3,4,6,7])}}</td>
-                                        <td>{{$case->materialUsed([9,10])}}</td>
-                                        <td>{{isset($case->invoice) ? $case->invoice->amount : 0}} </td> <!--JOD -->
-                                        <td>{{substr($case->actual_delivery_date,0,10)}} </td>
-                                    </tr>
-                                    @endforeach
-                            </tbody>
-                        </table></div></div></div>
+    <!-- Total Amount Card -->
+    <div class="container-fluid mt-3 mb-3">
+        <div class="row" style="background-color: transparent">
+            <div class="col-lg-3 col-md-4 col-12">
+                <div class="materials-total-card">
+                    <div>
+                        <div class="materials-total-label">Total Amount</div>
+                        <div class="materials-total-value">
+                            <div class="materials-total-amount">{{number_format($totalAmount)}}</div>
+                            <div class="materials-total-currency">JOD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+    <!-- Table Section -->
+    <div class="container-fluid report-table-section">
+        <div class="row">
+            <div class="col-12">
+                <table id="datatable" class="sigma-report-table table-plain" role="grid">
+                    <thead>
+                    <tr>
+                        <th class="header-dark" style="color:white !important;">Doctor</th>
+                        <th class="header-light">Patient</th>
+                        <th class="text-center header-light">Zircon</th>
+                        <th class="text-center header-light">Emax</th>
+                        <th class="text-center header-light">Acrylic</th>
+                        <th class="text-center header-light">Model</th>
+                        <th class="text-center header-light">Amount</th>
+                        <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Delivered On</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody>
+                    @foreach($cases as $case)
+                            <tr onclick="window.location='{{route('view-invoice', $case->id)}}';">
+
+                                <td class="primary-text">{{$case->client->name}}</td>
+                                <td>{{$case->patient_name}}</td >
+                                <td class="text-center">{{$case->materialUsed([1,20])}}</td>
+                                <td class="text-center">{{$case->materialUsed([2])}}</td>
+                                <td class="text-center">{{$case->materialUsed([3,4,6,7])}}</td>
+                                <td class="text-center">{{$case->materialUsed([9,10])}}</td>
+                                <td class="text-right currency">{{isset($case->invoice) ? number_format($case->invoice->amount): '0'}}</td>
+                                <td class="secondary-text">{{substr($case->actual_delivery_date,0,10)}}</td>
+                            </tr>
+                            @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    </div>
 @endsection
 
 
 
 
 @push('js')
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 
 <script type="text/javascript">
-    //        $(document).ready(function() {
-    //            $('#datatable').DataTable({
-    //                dom: 'Bfrtip',
-    //                buttons: [ 'csv', 'excel', 'pdf', 'print' ],
-    //                "pageLength": 25,
-    //                "searching": false,
-    //                "lengthChange": false,
-    //                "order": [[ 4, "desc" ]]
-    //            });
-    //        });
     $(document).ready(function() {
-
-        $('#datatable').dataTable({
-            "fixedHeader": true,
-            "colReorder": true,
-            "responsive": true,
-            "sPaginationType": "full_numbers",
-            "bLengthChange": true,
-            "aLengthMenu": [[5, 10, 15, 20, -1], [5, 10, 15, 20, "All"]],
-            "iDisplayLength": 20,
-            "order": [[ 7, "desc" ]],
-            "dom": 'Bfrtip',
-            "bProcessing": true,
+        // Initialize DataTable with Excel export
+        var table = $('#datatable').DataTable({
+            dom: 'frtip',
             buttons: [
-                {extend: 'excel',text: 'Export Excel'}
-
-            ]
-            //{ dom: 'Bfrtip', buttons: ['colvis', 'excel', 'print'] }
-            //  "bJQueryUI": true
-            // "sDom": 'l<"H"Rf>t<"F"ip>'
+                {
+                    extend: 'excelHtml5',
+                    text: '<i class="fas fa-file-excel"></i>',
+                    className: 'printBtn',
+                    title: 'Materials Report',
+                    filename: 'materials_report_' + new Date().toISOString().split('T')[0],
+                    exportOptions: {
+                        columns: ':visible'
+                    }
+                }
+            ],
+            "pageLength": 50,
+            "searching": true,
+            "lengthChange": true,
+            "order": [[ 0, "asc" ]],
+            "language": {
+                "search": "Search:",
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
         });
+
+        // Show export button when table is ready
+        $('#exportExcelBtn').removeClass('d-none');
+        
+        // Trigger DataTable export on custom button click
+        $('#exportExcelBtn').on('click', function() {
+            table.button('.buttons-excel').trigger();
+        });
+
+        // FORCE DROPDOWN POSITIONING - Fix for DataTable interference
+        function forceDropdownPositioning() {
+            $('.bootstrap-select').each(function() {
+                const $select = $(this);
+                const $menu = $select.find('.dropdown-menu');
+
+                $select.on('show.bs.dropdown', function() {
+                    setTimeout(() => {
+                        const selectRect = $select[0].getBoundingClientRect();
+                        $menu.addClass('dropdown-force-visible').css({
+                            'top': (selectRect.bottom + window.scrollY) + 'px',
+                            'left': (selectRect.left + window.scrollX) + 'px',
+                            'min-width': selectRect.width + 'px'
+                        });
+                    }, 10);
+                });
+
+                $select.on('hide.bs.dropdown', function() {
+                    $menu.removeClass('dropdown-force-visible');
+                });
+            });
+        }
+
+        // Initialize immediately and after any potential DataTable initialization
+        forceDropdownPositioning();
+        setTimeout(forceDropdownPositioning, 100);
+        setTimeout(forceDropdownPositioning, 500);
+        setTimeout(forceDropdownPositioning, 1000);
+
     });
 </script>
 @endpush

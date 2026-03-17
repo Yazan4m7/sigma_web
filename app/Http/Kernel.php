@@ -35,9 +35,12 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
              \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \App\Http\Middleware\PageLoadTestToken::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
+            \App\Http\Middleware\PreventDuplicateSubmissions::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\EnsureUserPermissionsCached::class,
             \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
         ],
 

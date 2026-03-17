@@ -2,11 +2,13 @@
 @section('content')
 
     <style>
-        .modal-footer {
+        
+.sigma-modal--cases-rejected-actions .modal-footer {
             flex-wrap: wrap;
             justify-content: flex-start;
         }
-        .modal-footer .btn {
+        
+.sigma-modal--cases-rejected-actions .modal-footer .btn {
             margin: 5px;
         }
         .tooltiptext {
@@ -25,14 +27,32 @@
                             <div class="row " style="padding-bottom:0">
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                                     <div class="kt-subheader__search" style="">
-                                        <label>From (Start of):</label>
-                                        <input type="date" class="form-control" name="from" value="{{$from}}">
+                                        <label for="rejected_from">From (Start of):</label>
+                                        <x-ios-dtp name="from" id="rejected_from" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                                        <input class="form-control SDTP"--}}
+{{--                                               id="rejected_from"--}}
+{{--                                               name="from"--}}
+{{--                                               type="text"--}}
+{{--                                               value="{{ \Carbon\Carbon::parse($from)->format('d M, YYYY') }}"--}}
+{{--                                               required=""--}}
+{{--                                               readonly=""--}}
+{{--                                        >   --}}
+{{--                                    --}}
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
                                     <div class="kt-subheader__search" style="">
-                                        <label>To (End of):</label>
-                                        <input type="date" class="form-control" name="to" value="{{$to}}">
+                                        <label for="rejected_to">To (End of):</label>
+                                        <x-ios-dtp name="to" id="rejected_to" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+{{--                                        <input class="form-control SDTP"--}}
+{{--                                               id="rejected_to"--}}
+{{--                                               name="to"--}}
+{{--                                               type="text"--}}
+{{--                                               value="{{ \Carbon\Carbon::parse($to)->format('d M, YYYY') }}"--}}
+{{--                                               required=""--}}
+{{--                                               readonly=""--}}
+{{--                                        >               --}}
+
                                     </div>
                                 </div>
                                 <div class="col-12 col-sm-6 col-md-3 mb-3">
@@ -214,21 +234,21 @@
                                                         &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
                                                     <td>
                                                         @if(str_contains($case->status(), "Completed") )
-                                                            <span class="badge badge-success">
+                                                            <span class="badge badge-success sigma-status-width">
                                                                            {{$case->status()}} </span>
                                                         @elseif(str_contains($case->status(), "In-Progress") || str_contains($case->status(), "Active"))
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-primary">
+                                                                  class="badge badge-primary sigma-status-width">
                                                                            <span class="tooltipX"> {{$case->status()}}
                                                                                <span class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
                                                                 </span></span>
                                                         @elseif(str_contains($case->status(), "Waiting"))
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-danger">
+                                                                  class="badge badge-danger sigma-status-width">
                                                                      {{$case->status()}} </span>
                                                         @else
                                                             <span style="width:auto; margin: auto; text-align: center"
-                                                                  class="badge badge-warning">
+                                                                  class="badge badge-warning sigma-status-width">
                                                                            <span class="tooltipX"> {{$case->status()}}
                                                                                <span class="tooltiptext">{!!  $case->getStatusToolTipHTML() !!}</span>
                                                                 </span></span>
@@ -239,9 +259,11 @@
                                                     <td>
 
                                                         @foreach($case->tags as $tag)
-                                                            <i title="{{$tag->originalTagRecord->text}}"
-                                                               style="color:{{$tag->originalTagRecord->color}}"
-                                                               class="{{$tag->originalTagRecord->icon}}  fa-lg"></i>
+                                                            @if(isset($tag->originalTagRecord))
+                                                                <i title="{{$tag->originalTagRecord->text}}"
+                                                                   style="color:{{$tag->originalTagRecord->color}}"
+                                                                   class="{{$tag->originalTagRecord->icon}}  fa-lg"></i>
+                                                            @endif
                                                         @endforeach
                                                     </td>
                                                     <td>{{$case->createdAtDate()}}
@@ -249,13 +271,13 @@
 
 
                                                 </tr>
-                                                <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
+                                                <div class="modal sigma-modal--cases-rejected-actions" tabindex="-1" role="dialog" id="actionsDialog{{$case->id}}">
 
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Case Actions</h5>
+                                                                <h5 class="modal-title">.</h5>
 
                                                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                                     <span aria-hidden="true">&times;</span>
@@ -297,7 +319,7 @@
                                                                     @foreach($case->notes as $note)
                                                                         <div class="form-control" style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px" disabled>
 
-                                                                            <span class="noteHeader">{{'['. substr( $note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br> <span class="noteText">{{$note->note}}</span>
+                                                                            <span class="noteHeader">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br> <span class="noteText">{{$note->note}}</span>
                                                                         </div>
                                                                     @endforeach
                                                                 @endif
@@ -316,8 +338,8 @@
                                                                             <a data-clientName="{{ $case->client->name }}" data-patientName="{{ $case->patient_name }}" style="color:white;" onclick="caseDelConfirmation(event)" href="{{route('delete-case',$case->id)}}" class="btn btn-danger"><i class="fas fa-trash"></i> Delete Case</a>
                                                                         @endif
                                                                     @endif
-                                                                    @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || ($case->jobs[0]->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                                        <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit Case</a>
+                                                                    @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
+                                                                        <a href="{{route('edit-case-view',$case->id)}}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i> Edit </a>
                                                                     @endif
                                                                     @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
                                                                         <a href="{{route('reject-case-view',$case->id )}}" class="btn btn-outline-danger"><i class="fas fa-times x2"></i> Reject case</a>
@@ -422,4 +444,3 @@
 
 
 @endsection
-

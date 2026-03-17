@@ -1,4 +1,5 @@
 @extends('layouts.app', ['pageSlug' => 'devices'])
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 @php
     // Load global configuration for device styling
@@ -14,10 +15,10 @@
 @endphp
 
 @push('css')
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" crossorigin="anonymous"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" crossorigin="anonymous">
 
     <!-- Include existing stylesheets from operations dashboard -->
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
@@ -28,6 +29,13 @@
     <link href="{{ asset('assets') }}/css/devices-page.css" rel="stylesheet">
 
     <style>
+
+        .sigma-workflow-dialog {
+            max-width: none !important;
+            width: auto !important;
+            min-width: 600px !important;
+            /* Minimum width for proper machine display */
+        }
         /* Main devices page container with enhanced background */
         .devices-page-container {
             padding: 20px;
@@ -65,7 +73,7 @@
             right: -320px;
             background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
             border-radius: 16px;
-            box-shadow: 
+            box-shadow:
                 0 20px 60px rgba(0, 0, 0, 0.1),
                 0 8px 25px rgba(0, 0, 0, 0.08),
                 0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -536,12 +544,11 @@
         }
     </style>
 @endpush
-
+        
 @section('content')
 <div class="devices-page-container">
     <div class="devices-page-header">
-        <h1 class="devices-page-title">Devices</h1>
-        <p class="devices-page-subtitle">Manufacturing Equipment Overview</p>
+        <h1 class="devices-page-title">DEVICES</h1>
 
         <!-- Configuration Toggle Button -->
         <button class="config-toggle" onclick="toggleConfigPanel()">
@@ -636,6 +643,7 @@
                     <input type="number" id="deviceNameFontSize" value="14" min="10" max="21" onchange="updateConfig()" style="width: 60px; margin-left: 8px;">
                 </div>
             </div>
+            <button class="btn btn-primary" id="saveOrderBtn" style="display: none;" onclick="saveDeviceOrder()">Save Order</button>
         </div>
     </div>
 
@@ -648,10 +656,10 @@
 </div>
 
 <!-- Include waiting dialog components for device-using stages only -->
-<x-waiting-dialog title="Select Milling Machine" btnText="NEST" type="milling" :devices="$devices" stageId="2" :showBuildName="true"/>
-<x-waiting-dialog title="Select 3D Printer" btnText="SET" type="3dprinting" :devices="$devices" stageId="3" :showBuildName="true"/>
-<x-waiting-dialog title="Select Sintering Furnace" btnText="START" type="sintering" :devices="$devices" stageId="4" :showBuildName="false"/>
-<x-waiting-dialog title="Select Pressing Furnace" btnText="SET" type="pressing" :devices="$devices" stageId="5" :showBuildName="true"/>
+<x-waiting-dialog title="Select Milling Machine" btnText="NEST" type="milling" :devices="$devices" stageId="2" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select 3D Printer" btnText="SET" type="3dprinting" :devices="$devices" stageId="3" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select Sintering Furnace" btnText="START" type="sintering" :devices="$devices" stageId="4" :showBuildName="false" :deviceUnitsCounts="$deviceUnitsCounts"/>
+<x-waiting-dialog title="Select Pressing Furnace" btnText="SET" type="pressing" :devices="$devices" stageId="5" :showBuildName="true" :deviceUnitsCounts="$deviceUnitsCounts"/>
 
 <x-waiting-3dprinting-dialog title="3D Printing Setup" :devices="$devices" stageId="3"/>
 
@@ -735,10 +743,10 @@
         }
     };
 
-    // Add enhanced closeDeviceDialog function 
+    // Add enhanced closeDeviceDialog function
     window.closeDeviceDialog = function(deviceId) {
         console.log(`closeDeviceDialog called for device: ${deviceId}`);
-        
+
         // Try all possible dialog IDs
         const possibleDialogIds = [
             `${deviceId}casesListDialog`,
@@ -1167,6 +1175,7 @@
 
         const container = document.querySelector('.devices-page-container');
         console.log('🎯 container:', container);
+        const saveOrderBtn = document.getElementById('saveOrderBtn');
 
         // Target the correct container based on grouping mode
         let devicesGrid;
@@ -1181,6 +1190,7 @@
         }
 
         if (sortableMode && devicesGrid) {
+            saveOrderBtn.style.display = 'block';
             console.log('Enabling sortable mode...');
             console.log('devicesGrid:', devicesGrid);
             console.log('Sortable available:', typeof Sortable !== 'undefined');
@@ -1212,18 +1222,6 @@
                     },
                     onEnd: function(evt) {
                         console.log('🟡 Drag ended, old index:', evt.oldIndex, 'new index:', evt.newIndex);
-
-                        // Get the new order of device IDs
-                        const deviceIds = Array.from(devicesGrid.children).map(card =>
-                            card.dataset.deviceId
-                        );
-
-                        console.log('New device order:', deviceIds);
-
-                        if (evt.oldIndex !== evt.newIndex) {
-                            // Send new order to server
-                            updateDeviceOrder(deviceIds);
-                        }
                     }
                 });
 
@@ -1234,6 +1232,7 @@
                 document.getElementById('sortableMode').checked = false;
             }
         } else {
+            saveOrderBtn.style.display = 'none';
             container.classList.remove('sortable-mode');
 
             // Re-enable device click handlers
@@ -1252,6 +1251,16 @@
         }
     }
 
+    function saveDeviceOrder() {
+        const devicesGrid = document.getElementById('devicesGrid');
+        const deviceIds = Array.from(devicesGrid.children).map(card =>
+            card.dataset.deviceId
+        );
+
+        console.log('New device order:', deviceIds);
+        updateDeviceOrder(deviceIds);
+    }
+
     function updateDeviceOrder(deviceIds) {
         fetch('/devices/reorder', {
             method: 'POST',
@@ -1268,6 +1277,8 @@
                 // Show success message
                 if (typeof showToast === 'function') {
                     showToast('Device order updated successfully', 'success');
+                } else {
+                    alert('Device order updated successfully');
                 }
             } else {
                 console.error('Failed to update device order:', data.error);

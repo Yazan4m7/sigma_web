@@ -1,7 +1,14 @@
 @extends('layouts.app' ,[ 'pageSlug' =>'Receive Payments'])
 
 @section('content')
+<style>
+    
+.modal.sigma-modal--delivery-receive-payment {
 
+        z-index: 9999999;
+    }
+
+</style>
 
        <form  class="kt-form" method="GET" action="{{route('payments-with-collectors')}}">
 
@@ -10,15 +17,25 @@
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>From:</label>
-
-                            <input class="form-control SDTP" name="from"  type="text"   value="{{$from ?? ''}}" required readonly/>
+                            <x-ios-dtp
+                                name="from"
+                                id="from"
+                                :value="$from ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-3 mb-3">
                         <div class="kt-subheader__search" style="">
                             <label>To:</label>
-                            <input class="form-control SDTP" name="to"  type="text"   value="{{$to ?? ''}}" required readonly/>
-
+                            <x-ios-dtp
+                                name="to"
+                                id="to"
+                                :value="$to ?? ''"
+                                mode="date"
+                                :required="true"
+                            />
                         </div>
                     </div>
 
@@ -92,7 +109,7 @@
 
                                         <tbody>
                                         @php
-                                            $permissions = Cache::get('user'.Auth()->user()->id);
+                                            $permissions = safe_permissions();
                                         @endphp
                                         @foreach($payments as $payment)
                                             <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$payment->id}}">
@@ -110,7 +127,7 @@
 
 
 
-                                            <div class="modal" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
+                                            <div class="modal sigma-modal--delivery-receive-payment" tabindex="-1" role="dialog" id="actionsDialog{{$payment->id}}">
                                                 <input type="hidden" name="case_id" value="{{$payment->id}}">
                                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                                     <div class="modal-content">
@@ -232,12 +249,12 @@
                 confirmButtonText: 'Delete Payment',
                 denyButtonText: `Cancel`,
             })
-                .then((willDelete) => {
+                .then((result) => {
                     // redirect with javascript here as per your logic after showing the alert using the urlToRedirect value
-                    if (willDelete.isConfirmed) {
+                    if (result.isConfirmed) {
                         window.location = urlToRedirect;
                         //swal.fire("Poof! Your imaginary file has been deleted!");
-                    } else {
+                    } else if (result.isDenied) {
                        swal.fire("Payment not deleted.");
                     }
                 });

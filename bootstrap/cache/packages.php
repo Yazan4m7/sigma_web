@@ -1,15 +1,4 @@
 <?php return array (
-  'barryvdh/laravel-debugbar' => 
-  array (
-    'aliases' => 
-    array (
-      'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
-    ),
-    'providers' => 
-    array (
-      0 => 'Barryvdh\\Debugbar\\ServiceProvider',
-    ),
-  ),
   'facade/ignition' => 
   array (
     'aliases' => 
@@ -37,24 +26,6 @@
     'providers' => 
     array (
       0 => 'Inspector\\Laravel\\InspectorServiceProvider',
-    ),
-  ),
-  'jaybizzle/laravel-crawler-detect' => 
-  array (
-    'aliases' => 
-    array (
-      'Crawler' => 'Jaybizzle\\LaravelCrawlerDetect\\Facades\\LaravelCrawlerDetect',
-    ),
-    'providers' => 
-    array (
-      0 => 'Jaybizzle\\LaravelCrawlerDetect\\LaravelCrawlerDetectServiceProvider',
-    ),
-  ),
-  'jeremykenedy/laravel-logger' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'jeremykenedy\\LaravelLogger\\LaravelLoggerServiceProvider',
     ),
   ),
   'juststeveking/laravel-feature-flags' => 
@@ -89,13 +60,6 @@
       0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
-  'laravel/telescope' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
-    ),
-  ),
   'laravel/tinker' => 
   array (
     'providers' => 
@@ -122,6 +86,18 @@
     'providers' => 
     array (
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    ),
+  ),
+  'sentry/sentry-laravel' => 
+  array (
+    'aliases' => 
+    array (
+      'Sentry' => 'Sentry\\Laravel\\Facade',
+    ),
+    'providers' => 
+    array (
+      0 => 'Sentry\\Laravel\\ServiceProvider',
+      1 => 'Sentry\\Laravel\\Tracing\\ServiceProvider',
     ),
   ),
 );

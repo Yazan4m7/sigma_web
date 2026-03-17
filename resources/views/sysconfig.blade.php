@@ -101,7 +101,7 @@
 
 </style>
     @php
-        $permissions = Cache::get('user'.Auth()->user()->id);
+        $permissions = safe_permissions();
     @endphp
     <div class="row" style="padding:20px;">
         <form class="kt-form" method="POST" action="{{route('update-sys-config')}}">

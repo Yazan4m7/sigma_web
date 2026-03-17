@@ -23,31 +23,21 @@
             overflow: hidden;
         }
 
-        .modern-login-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('{{ asset('assets/images/general/login.jpg') }}') center/cover;
-            opacity: 0.1;
-            z-index: 1;
-        }
 
         .login-card {
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 3rem;
-            max-width: 450px;
-            width: 100%;
-            margin: 2rem;
-            position: relative;
-            z-index: 2;
-            animation: slideUp 0.8s ease-out;
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+padding: 2rem;
+    max-width: 92vw;
+    width: 420px;
+    margin: 2rem;
+    position: relative;
+    z-index: 2;
+    animation: slideUp 0.8s
+ease-out;
         }
 
         @keyframes slideUp {
@@ -67,25 +57,25 @@
         }
 
         .login-logo {
-            width: 120px;
-            height: auto;
-            margin-bottom: 1.5rem;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+            margin-top: 1.6em;
+            width: 121px;
+    height: auto;
+    margin-bottom: 2.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .login-title {
             color: #2d3748;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.025em;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
         }
 
         .login-subtitle {
             color: #718096;
-            font-size: 1rem;
-            font-weight: 400;
-            margin-bottom: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 0;
         }
 
         .form-group-modern {
@@ -94,14 +84,14 @@
         }
 
         .form-input-modern {
-            width: 100%;
-            padding: 1rem 1rem 1rem 3rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #ffffff;
-            color: #2d3748;
+            width: 85%;
+    padding: 0.5rem 0rem 0.5rem 3rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #ffffff;
+    color: #2d3748;
         }
 
         .form-input-modern:focus {
@@ -117,33 +107,44 @@
 
         .input-icon {
             position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a0aec0;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
+    left: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a0aec0;
+    font-size: 0.9rem;
+    transition: color 0.3s
+ease;
+            /* Ensure icon remains visible and doesn't intercept pointer focus */
+            pointer-events: none;
+            z-index: 2;
+            opacity: 1;
+            visibility: visible;
         }
 
         .form-group-modern:focus-within .input-icon {
-            color: #667eea;
+            color: #38b44a;
+        }
+        /* Also highlight when JS toggles the 'focused' class */
+        .form-group-modern.focused .input-icon {
+            color: #38b44a;
         }
 
         .login-button {
             text-align: center;
-            width: 80%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #38b449 0%, #38b449 100%);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+    width: 60%;
+    padding: 0.6rem 0.5rem;
+    background: linear-gradient(135deg, #38b449 0%, #38b449 100%);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s
+ease;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
         }
 
         .login-button:hover {
@@ -242,10 +243,11 @@
                 padding: 2rem 1.5rem;
                 margin: 1rem;
                 border-radius: 16px;
+                width: 90%;
             }
 
             .login-title {
-                font-size: 1.5rem;
+                font-size: 1.2rem;
             }
 
             .login-logo {
@@ -318,6 +320,22 @@
 @push('js')
 <script>
     $(document).ready(function() {
+        // Refresh CSRF token every 5 minutes to prevent expiry
+        setInterval(function() {
+            $.get('{{ route("login") }}', function(data) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data, 'text/html');
+                const newToken = doc.querySelector('meta[name="csrf-token"]');
+                if (newToken) {
+                    $('meta[name="csrf-token"]').attr('content', newToken.content);
+                    $('input[name="_token"]').val(newToken.content);
+                }
+            }).fail(function() {
+                // If refresh fails, reload the page to get a new token
+                console.log('CSRF token refresh failed, will reload on next submit');
+            });
+        }, 300000); // 5 minutes
+
         // Add focus/blur effects for modern inputs
         $('.form-input-modern').on('focus', function() {
             $(this).closest('.form-group-modern').addClass('focused');
@@ -328,18 +346,18 @@
         });
 
         // Add loading state to login button
-        $('form').on('submit', function() {
+        $('form').on('submit', function(e) {
             const button = $('.login-button');
             const originalText = button.html();
 
             button.html('<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Signing In...');
             button.prop('disabled', true);
 
-            // Re-enable after 5 seconds to handle failed logins
+            // Re-enable after 10 seconds to handle failed logins or network issues
             setTimeout(function() {
                 button.html(originalText);
                 button.prop('disabled', false);
-            }, 5000);
+            }, 10000);
         });
 
         // Add enter key support
@@ -348,6 +366,9 @@
                 $('form').submit();
             }
         });
+
+        // Auto-focus username field
+        $('input[name="username"]').focus();
     });
 </script>
 @endpush

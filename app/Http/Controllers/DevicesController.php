@@ -35,7 +35,7 @@ class DevicesController extends Controller
         try {
             $device->name = $request->device_name;
             $device->type = $request->device_type;
-            $device->sorting_order =$request->device_order;
+            $device->sorting_order = 0;
             $device->save();
 
             if ($request->hasFile('device_image')) {
@@ -61,7 +61,8 @@ class DevicesController extends Controller
     {
 
         $device = device::findOrFail($id);
-        return view('devices.edit2',compact('device'));
+        $devices_of_same_type = device::where('type', $device->type)->orderBy('sorting_order')->get();
+        return view('devices.edit2',compact('device', 'devices_of_same_type'));
     }
     public function update(Request $request)
     {
@@ -74,23 +75,56 @@ class DevicesController extends Controller
             }
             $device->name = $request->device_name;
             $device->type = $request->device_type;
-            $device->sorting_order=$request->device_order;
             $device->save();
             if ($request->hasFile('device_image')) {
-
-
-                $file = $request->file('device_image');
-               // dd("file"  .  $file);
-                $name = $file->getClientOriginalName();
-                $file->move('devicesImages/' . $device->id . '/', $name);
-                $newFile = new file();
-                $newFile->path = 'devicesImages/' . $device->id . '/' . $name;
-                $newFile->case_id = $device->id;
-                $newFile->added_by = Auth()->user()->id;
-                $newFile->save();
-                //dd("newfile"  .  $newFile);
-                $device->img= isset($newFile)? $newFile->path : "N/A";
-                $device->save();
+                try {
+                    $file = $request->file('device_image');
+                    
+                    // Validate file
+                    $request->validate([
+                        'device_image' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                    ]);
+                    
+                    // Create directory if it doesn't exist
+                    $directory = public_path('devicesImages/' . $device->id);
+                    if (!file_exists($directory)) {
+                        mkdir($directory, 0755, true);
+                    }
+                    
+                    // Generate unique filename to avoid conflicts
+                    $extension = $file->getClientOriginalExtension();
+                    $filename = 'device_' . $device->id . '_' . time() . '.' . $extension;
+                    
+                    // Move file to destination
+                    $file->move($directory, $filename);
+                    
+                    // Delete old file record if exists
+                    $oldFile = file::where('case_id', $device->id)->where('path', 'LIKE', 'devicesImages/' . $device->id . '/%')->first();
+                    if ($oldFile) {
+                        // Delete old physical file
+                        $oldFilePath = public_path($oldFile->path);
+                        if (file_exists($oldFilePath)) {
+                            unlink($oldFilePath);
+                        }
+                        $oldFile->delete();
+                    }
+                    
+                    // Create new file record
+                    $newFile = new file();
+                    $newFile->path = 'devicesImages/' . $device->id . '/' . $filename;
+                    $newFile->case_id = $device->id;
+                    $newFile->added_by = Auth()->user()->id;
+                    $newFile->save();
+                    
+                    // Update device image path
+                    $device->img = $newFile->path;
+                    $device->save();
+                    
+                } catch (\Exception $imageException) {
+                    // Log the specific image upload error but continue with device update
+                    \Log::error('Device image upload failed: ' . $imageException->getMessage());
+                    return back()->with('warning', 'Device updated successfully but image upload failed: ' . $imageException->getMessage());
+                }
             }
 
            //s dd("======"  .  $device);
@@ -140,6 +174,21 @@ class DevicesController extends Controller
         }
     }
 
+    public function updateDeviceOrder(Request $request)
+    {
+        $deviceIds = $request->input('device_ids');
 
+        foreach ($deviceIds as $index => $deviceId) {
+            device::where('id', $deviceId)->update(['sorting_order' => $index + 1]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function getDevicesByType($type)
+    {
+        $devices = device::where('type', $type)->orderBy('sorting_order')->get();
+        return response()->json($devices);
+    }
 
 }

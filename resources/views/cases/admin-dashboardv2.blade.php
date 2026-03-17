@@ -1,4 +1,5 @@
-@extends('layouts.app', ['pageSlug' => config('site_vars.labWorkFlowLabel')])
+@extends('layouts.app', ['pageSlug' => config('site_vars.labWorkFlowLabel'), 'class' => ' ops-dashboard'])
+
 @php
     // Load global configuration
     $deviceConfig = config('app_config.device_images', [
@@ -14,105 +15,1449 @@
 
 
 @push('css')
+    <!--suppress ALL -->
     <link rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/fixedcolumns/5.0.4/css/fixedColumns.dataTables.css" rel="stylesheet">
-
-
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet"/>
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" />
+    {{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/> --}}
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/operations-dashboard-table-fix.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/v3styles.css" rel="stylesheet">
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet">
-
-   <style>
-    .modal-footer {
-        flex-wrap: wrap;
-        justify-content: flex-start;
-    }
-    .modal-footer .btn {
-        margin: 5px;
-    }
-    .YSH-button {
-    text-decoration: none;
-    line-height: 1;
-    border-radius: 1.5rem;
-    overflow: hidden;
-    position: relative;
-    box-shadow: 10px 10px 20px rgba(0,0,0,.05);
-    background-color: #fff;
-    color: #121212;
-    border: none;
-    cursor: pointer;
-    }
-
-    .YSH-button-decor {
-    position: absolute;
-    inset: 0;
-    background-color: var(--clr);
-    transform: translateX(-100%);
-    transition: transform .3s;
-    z-index: 0;
-    }
-
-    .YSH-button-content {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    position: relative;
-    overflow: hidden;
-    }
-
-    .YSH-button__icon {
-    width: 48px;
-    height: 40px;
-    background-color: var(--clr);
-    display: grid;
-    place-items: center;
-    }
-
-    .YSH-button__text {
-    display: inline-block;
-    transition: color .2s;
-    padding: 2px 1.5rem 2px;
-    padding-left: .75rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    max-width: 150px;
-    }
-
-    .YSH-button:hover .YSH-button__text {
-    color: #fff;
-    }
-
-    .YSH-button:hover .YSH-button-decor {
-    transform: translate(0);
-    }
-</style>
+    <!-- Responsive CSS - Mobile-first approach for full device compatibility -->
+    <link href="{{ asset('assets') }}/css/responsive.css" rel="stylesheet">
+    <!-- Operations Dashboard Navigation - Responsive CSS for mobile stage icons -->
+    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/waiting-dialog-merged.css" rel="stylesheet" />
 
     <style>
-        .dt-layout-row{
+        .btn-outline-danger:hover{
+            color:white !important;
+        }
+        .col-12 {
+            padding: 0;
+        }
+        .input-group, .form-group {
+            padding-left: 5px !important;
+        }
+
+        /* Scrollable jobs/notes section - applies to all screen sizes */
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content {
+            max-height: 40vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 480px){
+            
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
+            {
+                max-width: none !important;
+                width: auto !important;
+                min-width: -webkit-fill-available;
+                margin: 0 15px;
+                /* Minimum width for proper machine display */
+            }
+            }
+
+            
+.sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--cases-dashboard-loading .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--active-cases-preview .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-3d-printing .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-delivery .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+.sigma-modal--waiting-generic .modal-footer .col-12 {
+                padding-left: 0 !important;
+            }
+
+            @media (max-width: 700px){
+                
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
+                {
+                    max-width: none !important;
+                    width: 90% !important;
+
+                    /* Minimum width for proper machine display */
+                }
+                }
+
+                @media (min-width: 700px){
+                    
+.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-delivery .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+.sigma-modal--waiting-generic .sigma-workflow-dialog {
+                        max-width: none !important;
+
+                        /* Minimum width for proper machine display */
+                    }
+                }
+
+                /* Use Animate.css for Case Completion modal */
+                
+.modal.fade.sigma-modal--cases-dashboard-case-completion .modal-dialog {
+                  /*  width: 90%; */
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--cases-dashboard-case-completion-alt .modal-dialog {
+                        width: 100%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--cases-dashboard-loading .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--active-cases-preview .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-3d-printing .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-delivery .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+.modal.fade.sigma-modal--waiting-generic .modal-dialog {
+                    width: 90%;
+                    /* Will be animated by Animate.css classes */
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--cases-dashboard-loading .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--active-cases-preview .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-3d-printing .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-delivery .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+.sigma-modal--waiting-generic .modal-content {
+                    border-radius: 25px !important;
+                    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                    border: none;
+                }
+
+                /* Modal footer rounded bottom corners */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+.sigma-modal--waiting-generic .modal-footer {
+                    border-bottom-left-radius: 25px !important;
+                    border-bottom-right-radius: 25px !important;
+                }
+
+                /* Modal header styling with divider */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--active-cases-preview .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-3d-printing .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-delivery .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+.sigma-modal--waiting-generic .modal-header {
+                    display: none !important;
+                    border-bottom: 1px solid #dee2e6 !important;
+                    padding-bottom: 12px;
+                }
+
+                /* Modal title styling */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--cases-dashboard-loading .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--active-cases-preview .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-3d-printing .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-delivery .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+.sigma-modal--waiting-generic .modal-title {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                    font-size: 18px;
+                    margin-bottom: 0;
+                }
+
+                /* Skip to delivery icon styling */
+                .skip-to-delivery-icon {
+                    font-size: 20px;
+                    color: #2d5f6d;
+                    transition: color 0.3s ease;
+                }
+
+                .skip-to-delivery-icon:hover {
+                    color: #1a3d47;
+                }
+
+                /* Close button styling - more visible */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--active-cases-preview .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-3d-printing .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-delivery .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+.sigma-modal--waiting-generic .modal-header button.close {
+                    font-size: 32px;
+                    font-weight: 300;
+                    color: #000;
+                    opacity: 0.8;
+                    text-shadow: none;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--cases-dashboard-loading .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--active-cases-preview .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-3d-printing .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-delivery .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+.sigma-modal--waiting-generic .modal-header button.close:hover {
+                    opacity: 1;
+                    color: #000;
+                }
+
+                /* Doctor/Patient names styling */
+                .patient-doctor-names {
+                    color: #2d5f6d;
+                    font-weight: 600;
+                }
+
+                .patient-doctor-label {
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    letter-spacing: 0.3px;
+                    color: #6c757d;
+                    margin-bottom: 2px;
+                    display: block;
+                }
+
+                /* Scrollable section for jobs and notes only */
+                .scrollable-content {
+                    max-height: 40vh;
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                }
+
+                /* Notes container styling */
+                .form-control.note-container {
+                    background-color: #e8f0f2;
+                    border: 1px solid #b8d4db;
+                    color: #212529;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--active-cases-preview .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-delivery .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+.sigma-modal--waiting-generic .modal-footer {
+                    display: block;
+                    padding: 1rem;
+                    border-top: 1px solid #dee2e6;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--active-cases-preview .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-delivery .modal-footer .row {
+                    margin: 0;
+                }
+.sigma-modal--waiting-generic .modal-footer .row {
+                    margin: 0;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .col-6, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-4, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-6, .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-4, .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .col-6, .sigma-modal--cases-dashboard-loading .modal-footer .col-4, .sigma-modal--cases-dashboard-loading .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .col-6, .sigma-modal--active-cases-preview .modal-footer .col-4, .sigma-modal--active-cases-preview .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .col-6, .sigma-modal--waiting-3d-printing .modal-footer .col-4, .sigma-modal--waiting-3d-printing .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .col-6, .sigma-modal--waiting-delivery .modal-footer .col-4, .sigma-modal--waiting-delivery .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .col-6, .sigma-modal--waiting-generic .modal-footer .col-4, .sigma-modal--waiting-generic .modal-footer .col-12 {
+                    padding-left: 0 !important;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn {
+                    width: 100%;
+                    margin: 3px;
+                    font-weight: 400;
+                    padding: 10px 12px;
+                    border: none;
+                    transition: all 0.3s ease;
+                    font-size: 14px;
+                }
+
+                /* Button color improvements with proper contrast */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-info {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-info:hover {
+                    background-color: #138496;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success {
+                    background-color: #28a745;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success:hover {
+                    background-color: #218838;
+                    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-success:disabled {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    opacity: 0.6;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-warning {
+                    background-color: #ffc107;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-warning:hover {
+                    background-color: #e0a800;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-dark {
+                    background-color: #343a40;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-dark:hover {
+                    background-color: #23272b;
+                    box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-info {
+                    border: 2px solid #17a2b8;
+                    background-color: transparent;
+                    color: #17a2b8 !important;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-info:hover {
+                    background-color: #17a2b8;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-danger {
+                    border: 2px solid #dc3545;
+                    background-color: transparent;
+                    color: #dc3545 !important;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-danger:hover {
+                    background-color: #dc3545;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-secondary {
+                    border: 2px solid #6c757d;
+                    background-color: transparent;
+                    color: #6c757d !important;
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-outline-secondary:hover {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-secondary {
+                    background-color: #6c757d;
+                    color: #ffffff !important;
+                    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
+                }
+
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+.sigma-modal--waiting-generic .modal-footer .btn-secondary:hover {
+                    background-color: #5a6268;
+                    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
+                }
+
+                /* Icon spacing */
+                
+.sigma-modal--cases-dashboard-case-completion .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--cases-dashboard-loading .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--active-cases-preview .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-3d-printing .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-delivery .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+.sigma-modal--waiting-generic .modal-footer .btn i {
+                    margin-right: 6px;
+                }
+
+                .YSH-button {
+                    text-decoration: none;
+                    line-height: 1;
+                    border-radius: 1.5rem;
+                    overflow: hidden;
+                    position: relative;
+                    box-shadow: 10px 10px 20px rgba(0, 0, 0, .05);
+                    background-color: #fff;
+                    color: #121212;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                .YSH-button-decor {
+                    position: absolute;
+                    inset: 0;
+                    background-color: var(--clr);
+                    transform: translateX(-100%);
+                    transition: transform .3s;
+                    z-index: 0;
+                }
+
+                .YSH-button-content {
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .YSH-button__icon {
+                    width: 48px;
+                    height: 40px;
+                    background-color: var(--clr);
+                    display: grid;
+                    place-items: center;
+                }
+
+                .YSH-button__text {
+                    display: inline-block;
+                    transition: color .2s;
+                    padding: 2px 1.5rem 2px;
+                    padding-left: .75rem;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    max-width: 150px;
+                }
+
+                .YSH-button:hover .YSH-button__text {
+                    color: #fff;
+                }
+
+                .YSH-button:hover .YSH-button-decor {
+                    transform: translate(0);
+                }
+            }
+        }
+        
+
+    </style>
+    <style>
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-jobs-list,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-jobs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--teeth,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--teeth {
+            width: 85px;
+            flex: 0 0 85px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type {
+            width: 100px;
+            flex: 0 0 100px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--mat,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--mat {
+            width: 100px;
+            flex: 0 0 100px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--shade,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--shade {
+            width: 25px;
+            flex: 0 0 25px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--unit,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--unit {
+            width: 70px;
+            flex: 0 0 70px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row .sigma-case-job-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row .sigma-case-job-cell,
+        /* Apply ellipsis to job-grid-cell within any relevant modal context */
+        .sigma-modal--active-cases-preview .job-grid-cell,
+        .sigma-modal--cases-dashboard-case-completion .job-grid-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .job-grid-cell,
+        .sigma-modal--waiting-3d-printing .job-grid-cell,
+        .sigma-modal--waiting-delivery .job-grid-cell,
+        .sigma-modal--waiting-generic .job-grid-cell
+        {
+            text-align: left;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+    <style>
+        .dt-layout-row {
             margin: 0px !important;
         }
 
         .dt-center {
             text-align: center !important;
         }
-        tr > th.dt-orderable-none.dt-type-numeric > div > span{
+
+        tr>th.dt-orderable-none.dt-type-numeric>div>span {
             text-align: center !important;
         }
 
 
 
-        input[type="checkbox"],
-        input[type="radio"] {
+        input[type="checkbox"], input[type="radio"] {
             transform: scale(1.3);
         }
 
@@ -121,30 +1466,30 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: {{ $deviceConfig["container_gap"] ?? '15px' }};
+            gap: {{ $deviceConfig['container_gap'] ?? '15px' }};
             width: 100%;
         }
 
         .device-item {
             width: 100%;
-            max-width: {{ $deviceConfig["max_width"] ?? '150px' }};
+            max-width: {{ $deviceConfig['max_width'] ?? '150px' }};
             text-align: center;
-            margin-bottom: {{ $deviceConfig["margin_bottom"] ?? '15px' }};
+            margin-bottom: {{ $deviceConfig['margin_bottom'] ?? '15px' }};
             transition: all 0.3s ease;
         }
 
         .device-item img {
-            width: {{ $deviceConfig["width"] ?? '100%' }};
-            height: {{ $deviceConfig["height"] ?? 'auto' }};
-            max-width: {{ $deviceConfig["max_width"] ?? '150px' }};
-            padding: {{ $deviceConfig["padding"] ?? '10px' }};
-            border-radius: {{ $deviceConfig["border_radius"] ?? '8px' }};
-            background: {{ $deviceConfig["background"] ?? 'transparent' }};
+            width: {{ $deviceConfig['width'] ?? '100%' }};
+            height: {{ $deviceConfig['height'] ?? 'auto' }};
+            max-width: {{ $deviceConfig['max_width'] ?? '150px' }};
+            padding: {{ $deviceConfig['padding'] ?? '10px' }};
+            border-radius: {{ $deviceConfig['border_radius'] ?? '8px' }};
+            background: {{ $deviceConfig['background'] ?? 'transparent' }};
             object-fit: contain;
         }
 
         .device-item:hover {
-            transform: {{ $deviceConfig["hover_effect"] ? 'scale(1.05)' : 'none' }};
+            transform: {{ $deviceConfig['hover_effect'] ? 'scale(1.05)' : 'none' }};
             box-shadow: none !important;
         }
 
@@ -160,35 +1505,34 @@
         }
 
         /* Responsive adjustments */
-        @media (max-width: 768px) {
+        @media (max-width: 768px){
             .device-item {
-                max-width: {{ $deviceConfig["responsive_sizes"]["tablet"] ?? '120px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['tablet'] ?? '120px' }};
             }
 
             .device-item img {
-                max-width: {{ $deviceConfig["responsive_sizes"]["tablet"] ?? '120px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['tablet'] ?? '120px' }};
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 576px){
             .device-item {
-                max-width: {{ $deviceConfig["responsive_sizes"]["mobile"] ?? '100px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['mobile'] ?? '100px' }};
             }
 
             .device-item img {
-                max-width: {{ $deviceConfig["responsive_sizes"]["mobile"] ?? '100px' }};
+                max-width: {{ $deviceConfig['responsive_sizes']['mobile'] ?? '100px' }};
             }
         }
 
-        @media (max-width: 376px) {
+        @media (max-width: 376px){
             max-width: 0 !important;
         }
 
-        td > p {
+        td>p {
             margin-bottom: 5px;
-        !important;
+            !important;
         }
-
     </style>
 
     <style>
@@ -198,6 +1542,7 @@
                 opacity: 0;
                 transform: translate3d(0, -20px, 0);
             }
+
             to {
                 opacity: 1;
                 transform: translate3d(0, 0, 0);
@@ -209,27 +1554,153 @@
             animation-duration: 0.4s;
             animation-fill-mode: both;
         }
+        .sunriseTable {
+            overflow: auto;
+        }
     </style>
 
+    <style>
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+
+            100% {
+                background-position: 200px 0;
+            }
+        }
+
+        .loading * {
+            color: transparent !important;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .loading td, .loading th, .loading div, .loading button, .loading span, .loading li {
+            position: relative;
+            background: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .loading td::after, .loading th::after, .loading div::after, .loading button::after, .loading span::after, .loading li::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right,
+                    #e0e0e0 0%,
+                    #f6f6f6 20%,
+                    #e0e0e0 40%,
+                    #e0e0e0 100%);
+            background-size: 800px 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+
+        /* Loading shimmer overlay */
+        /*.dashboard-shimmer-overlay {*/
+        /*    position: absolute;*/
+        /*    top: 0;*/
+        /*    left: 0;*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    background: linear-gradient(*/
+        /*        90deg,*/
+        /*        rgba(240, 240, 240, 0.8) 0%,*/
+        /*        rgba(255, 255, 255, 0.9) 50%,*/
+        /*        rgba(240, 240, 240, 0.8) 100%*/
+        /*    );*/
+        /*    background-size: 1000px 100%;*/
+        /*    animation: shimmer 2s infinite linear;*/
+        /*    z-index: 9999;*/
+        /*    pointer-events: none;*/
+        /*}*/
+
+        /* Hide shimmer when loaded */
+        .dashboard-shimmer-overlay.loaded {
+            display: none;
+        }
+    </style>
 @endpush
 
 
 
 @section('content')
-    {{--    @php--}}
-    {{--        try {--}}
-    {{--    @endphp--}}
+    <script>
+        window.enableModalPositioning = true;
+    </script>
+    {{-- Define setOuterTab early to prevent race condition errors when clicking tabs before page fully loads --}}
+    <script>
+        // Early placeholder function - will be overridden by full implementation in footer
+        function setOuterTab(element) {
+            // Check if jQuery is loaded yet
+            if (typeof jQuery === 'undefined') {
+                console.warn('setOuterTab called before jQuery loaded, deferring...');
+                // Retry after a short delay
+                setTimeout(function() {
+                    setOuterTab(element);
+                }, 100);
+                return;
+            }
+
+            // Check if Cookies library is loaded
+            if (typeof Cookies === 'undefined') {
+                console.warn('Cookies library not loaded yet, loading basic functionality...');
+            }
+
+            try {
+                // Basic implementation that works even during page load
+                var $ = jQuery;
+
+                // Remove active class from all tab buttons
+                $('.stageSidebar button[role="tab"]').attr('aria-selected', 'false');
+
+                // Set current tab as selected
+                $(element).attr('aria-selected', 'true');
+
+                // Hide all tab panels
+                $('div[role="tabpanel"]').attr('hidden', true);
+
+                // Get the target panel ID
+                var targetPanelId = $(element).attr('aria-controls');
+
+                // Show the corresponding panel
+                $('#' + targetPanelId).removeAttr('hidden');
+
+                // Save the selected outer tab to cookies if Cookies is available
+                var tabId = $(element).attr('id');
+                if (tabId && typeof Cookies !== 'undefined') {
+                    Cookies.set('activeOuterTab', tabId);
+                    console.log("Saved outer tab to cookie:", tabId);
+                }
+
+                // Reinitialize Macaw Tabs if available
+                if (typeof MacawTabs !== 'undefined') {
+                    MacawTabs.init();
+                }
+
+                console.log('setOuterTab executed successfully for:', tabId);
+            } catch (error) {
+                console.error('Error in setOuterTab:', error);
+            }
+        }
+    </script>
+
+    {{--    @php --}}
+    {{--        try { --}}
+    {{--    @endphp --}}
 
 
     @php
         $color = '#01292b';
-            //dd($devices);
+        //dd($devices);
 
-            $permissions = Cache::get('user' . Auth()->user()->id);
-            $canEditCase = false;
-            if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102))) {
-                $canEditCase = true;
-            }
+        $permissions = Cache::get('user' . Auth()->user()->id);
+        $canEditCase = false;
+        if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102))) {
+            $canEditCase = true;
+        }
     @endphp
     @php
         $stages = [
@@ -322,7 +1793,7 @@
                 'waitingCases' => $wPressing,
                 'numericStage' => 5,
                 'icon' => "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512'>
-            <defs><style>.fa-secondary{opacity:.4}</style>
+            <defs><style>.fa-secondary {opacity:.4}</style>
             </defs><path class='fa-primary' d='M350 206.6c3.781 8.803 1.984 19.03-4.594 26l-136 144.1c-9.062 9.601-25.84 9.601-34.91 0l-136-144.1C31.97 225.7 30.17 215.4 33.95 206.6C37.75 197.8 46.42 192.1 56 192.1L128 192.1V64.03c0-17.69 14.33-32.02 32-32.02h64c17.67 0 32 14.34 32 32.02v128.1l72 .0314C337.6 192.1 346.3 197.8 350 206.6z'/>
             <path class='fa-secondary' d='M352 416H31.1C14.33 416 0 430.3 0 447.1S14.33 480 31.1 480H352C369.7 480 384 465.7 384 448S369.7 416 352 416z'/></svg>",
             ],
@@ -346,40 +1817,52 @@
             ],
         ];
         if (!Auth()->user()->is_admin) {
-            if (!$permissions->contains('permission_id', 1)) {
+            if (!($permissions && $permissions->contains('permission_id', 1))) {
                 unset($stages['design']);
             }
-            if (!$permissions->contains('permission_id', 2)) {
+            if (!($permissions && $permissions->contains('permission_id', 2))) {
                 unset($stages['milling']);
             }
-            if (!$permissions->contains('permission_id', 3)) {
+            if (!($permissions && $permissions->contains('permission_id', 3))) {
                 unset($stages['3dprinting']);
             }
-            if (!$permissions->contains('permission_id', 4)) {
+            if (!($permissions && $permissions->contains('permission_id', 4))) {
                 unset($stages['sintering']);
             }
-            if (!$permissions->contains('permission_id', 5)) {
+            if (!($permissions && $permissions->contains('permission_id', 5))) {
                 unset($stages['pressing']);
             }
-            if (!$permissions->contains('permission_id', 6)) {
+            if (!($permissions && $permissions->contains('permission_id', 6))) {
                 unset($stages['finishing']);
             }
-            if (!$permissions->contains('permission_id', 7)) {
+            if (!($permissions && $permissions->contains('permission_id', 7))) {
                 unset($stages['qc']);
+                unset($stages['QC']);
+                unset($stages['Qc']);
             }
-            if (!$permissions->contains('permission_id', 8)) {
+            if (!($permissions && $permissions->contains('permission_id', 8))) {
                 unset($stages['delivery']);
             }
         }
-
     @endphp
-        <!-- Begin .site-wrapper -->
+    <!-- Begin .site-wrapper -->
     <div class="site-wrapper">
         <!-- Begin waiting milling dialog -->
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->
-            <div class="macaw-tabs macaw-aurora-tabs notransition">
+<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
+
                 <div role="tablist" class="stageSidebar" aria-orientation="vertical">
                     @foreach ($stages as $key => $stage)
                         @php
@@ -387,18 +1870,17 @@
                             $keyId = strtolower($key);
                             $displayKey = $key;
 
-                        $displayKey=  ( $key == "3dprinting")? "Printing" : $displayKey;
-                        $displayKey=  ( $key == "Qc")? "QC" : $displayKey;
+                            $displayKey = $key == '3dprinting' ? 'Printing' : $displayKey;
+                            $displayKey = $key == 'Qc' ? 'QC' : $displayKey;
                         @endphp
                         <button role="tab" aria-selected="false" aria-controls="{{ $keyId . 'label' }}"
-                                id="{{ $keyId }}" style="" onclick="setOuterTab(this)">
+                            id="{{ $keyId }}"  onclick="setOuterTab(this)">
                             <span class="iconSpan" style="display: flex;align-items: center;">{!! $stage['icon'] !!}
                                 <span style=" padding-left:6px" class="stageName"> {{ $displayKey }}</span></span>
                             <div>
-                                <span class="badge bg-info m-1 activeBadge"
-                                      style="padding: 0.25em 0.4em;">{{ count($stage['activeCases']) }}</span>
+                                <span class="badge bg-info m-1 activeBadge">{{ count($stage['activeCases']) }}</span>
                                 <span class="badge bg-info m-1 waitingBadge"
-                                      style="padding: 0.25em 0.4em;">{{ count($stage['waitingCases']) }} </span>
+                                    >{{ count($stage['waitingCases']) }} </span>
                             </div>
                         </button>
                     @endforeach
@@ -411,7 +1893,7 @@
                     @endphp
                     {{--                <h1>{{$key}}</h1> --}}
                     <div class="notransition" tabindex="0" role="tabpanel" aria-labelledby="{{ $key }}"
-                         id="{{ $key . 'label' }}" hidden>
+                        id="{{ $key . 'label' }}" hidden>
                         <!-- Begin .macaw-tabs -->
                         <div class="macaw-tabs macaw-silk-tabs notransition">
                             @include('cases.dashboards-partials.tabs', ['key' => $key, 'stage' => $stage])
@@ -420,308 +1902,408 @@
                             {{-- ----------------waiting TABLE--------------- --}}
                             {{-- ----------------waiting TABLE--------------- --}}
                             <div tabindex="0" role="tabpanel" hidden aria-labelledby="{{ 'waiting-' . $key . 'label' }}"
-                                 id="{{ 'waiting-' . $key }}">
+                                id="{{ 'waiting-' . $key }}" class="stage-panel-pane">
+
                                 @switch(strtolower($key))
                                     @case('milling')
-                                        <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          stageId="2"/>
+                                        <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="2" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn milling"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('milling',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('milling',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('3dprinting')
                                         @php $key = "3dprinting"; @endphp
-                                        <x-waiting-3dprinting-dialog title="Choose Printer" btnText="SET"
-                                                                     type="3dprinting"
-                                                                     :devices="$devices"
-                                                                     stageId="3" showBuildName="true"/>
+                                        <x-waiting-3dprinting-dialog title="Choose Printer" btnText="SET" type="3dprinting"
+                                            :devices="$devices" stageId="3" showBuildName="true" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('3dprinting',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('3dprinting',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('sintering')
-                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          stageId="4"/>
+                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="4" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('sintering',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('sintering',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('pressing')
-                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing"
-                                                          :devices="$devices"
-                                                          :types="$types"
-                                                          stageId="5"/>
+                                        <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing" :devices="$devices"
+                                            :types="$types" :typesByMaterial="$typesByMaterial" stageId="5" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('pressing',true)">SET
+                                            style="display:none; margin:5px;" onclick="openModal('pressing',true)">SET
                                         </button>
-                                        @break
+                                    @break
 
                                     @case('delivery')
-                                        <x-waiting-delivery-dialog title="Assign to" btnText="ASSIGN"
-                                                                   :drivers="$drivers" stageId="5"/>
+                                        @php
+                                            // Define this BEFORE using it - includes admins and users with permission 129
+                                            $isDeliveryAndAssignable =
+                                                Auth()->user()->is_admin ||
+                                                ($permissions && $permissions->contains('permission_id', 129));
+                                        @endphp
+
+                                        <x-waiting-delivery-dialog title="Assign to"
+                                            btnText="{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}" :drivers="$drivers"
+                                            stageId="5" />
                                         <button type="submit" class="btn btn-primary receiveSelectBtn delivery"
-                                                style="display:none; margin:5px;"
-                                                onclick="openModal('DeliveryDialog',false)">ASSIGN
+                                            style="display:none; margin:5px;"
+                                            onclick="openModal('DeliveryDialog',false)">{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}
                                         </button>
-                                        @break
+                                    @break
                                 @endswitch
-                                <table class="{{ $key }} waitingTable sunriseTable" style="width:100%">
+                                <div class="stage-panel-scroll">
+                                <table class="{{ $key }}  waitingTable sunriseTable no-auto-colresize" style="width:100%">
                                     <thead>
-                                    <tr>
-                                        @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                            {{-- Checkbox column header --}}
-                                            @if (count($stage['waitingCases']) != 0)
-                                                <th class="no-sort text-center" style="width: 50px;">
-                                                    <input type="checkbox" class="selectAllCases {{$key}}" value="0"
-                                                           name="selectAllCases"
-                                                           onchange="selectAll(this, '{{ $key }}')"/>
-                                                </th>
-                                            @endif
-                                        @endif
+                                        <tr>
+                                            {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                            @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                    {{-- Checkbox column header --}}
 
-                                        <th>Doctor</th>
-                                        <th>Patient</th>
-                                        <th class="deliveryDateHeader"><span
-                                                class="innerSpan4Mobile">D.Date</span><span
-                                                class="innerSpan4DeskTop">Delivery Date</span></th>
+                                                    @if (count($stage['waitingCases']) != 0)
+                                                        <th class="no-sort text-center ops-col ops-col--select" style="width: 50px;">
+                                                            <input type="checkbox"
+                                                                class="selectAllCases {{ $key }}" value="0"
+                                                                name="selectAllCases"
+                                                                onchange="selectAll(this, '{{ $key }}')" />
+                                                        </th>
+                                                    @endif
+                                                @endif
+                                            @endif
+                                            <th class="ops-col ops-col--doctor">Doctor</th>
+                                            <th class="ops-col ops-col--patient">Patient</th>
+                                            <th class="deliveryDateHeader ops-col ops-col--delivery"><span
+                                                    class="innerSpan4Mobile">D.Date</span><span
+                                                    class="innerSpan4DeskTop">Delivery Date</span></th>
                                             @if ($key == 'delivery')
-                                                <th> Assigned To</th>
+                                                <th class="ops-col ops-col--assigned"> Assigned To</th>
                                             @endif
-                                        <th>#</th>
+                                            <th class="ops-col ops-col--count">#</th>
 
-                                        <th>Tags</th>
-                                    </tr>
+                                            <th class="ops-col ops-col--tags">Tags</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
 
-                                    @foreach ($stage['waitingCases'] as $case)
-                                        <tr style="color:{{ $color }}">
-                                            @php
-                                                // Normalize key case
-                                                $key = strtolower($key);
-
-                                            @endphp
-
-
-
-                                            @if ($key == 'finishing')
+                                        @foreach ($stage['waitingCases'] as $case)
+                                            <tr style="color:{{ $color }}">
                                                 @php
-                                                    $notReadyA = false;
-                                                    $abutmentsReceived = $case->abutmentsReceived();
-                                                    if (!$case->allUnitsAtFinishing()) {
-                                                        $notReadyA = true;
-                                                    }
+                                                    // Normalize key case
+                                                    $key = strtolower($key);
 
                                                 @endphp
-                                            @endif
-                                            @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                                <td class="no-sort">
-                                                    <input type="checkbox"
-                                                           data-type="{{$key}}"
-                                                           data-group-id="{{$key}}"
-                                                           class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{$key}}"
-                                                           value="{{ $case->id }}"
-                                                           name="CheckBoxes{{ $key }}[]"
-                                                           onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
 
+
+
+                                                @if ($key == 'finishing')
+                                                    @php
+                                                        $notReadyA = false;
+                                                        $abutmentsReceived = $case->abutmentsReceived();
+                                                        if (!$case->allUnitsAtFinishing()) {
+                                                            $notReadyA = true;
+                                                        }
+
+                                                    @endphp
+                                                @endif
+                                                {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                                @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                    @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                        <td class="no-sort ops-col ops-col--select">
+                                                            <input type="checkbox" data-type="{{ $key }}"
+                                                                data-group-id="{{ $key }}"
+                                                                class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
+                                                                value="{{ $case->id }}"
+                                                                name="CheckBoxes{{ $key }}[]"
+                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
+
+                                                        </td>
+                                                    @endif
+                                                @endif
+                                                <td class="clickable ops-col ops-col--doctor" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
                                                 </td>
-                                            @endif
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
-                                            </td>
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->patient_name }}
-                                                    @if ($key == 'finishing')
-                                                        @if ($notReadyA)
-                                                            <span
-                                                                style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                <td class="clickable ops-col ops-col--patient" data-toggle="modal" dir="auto"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->patient_name }}
+                                                        @if ($key == 'finishing')
+                                                            @if ($notReadyA)
+                                                                <span
+                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
                                                                     Not <br>
                                                                     Ready
                                                                 </span>
-                                                        @endif
-                                                        @if (!$abutmentsReceived)
-                                                            <span
-                                                                style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                            @endif
+                                                            @if (!$abutmentsReceived)
+                                                                <span
+                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
                                                                     Abutment <br>
                                                                     Missing
                                                                 </span>
+                                                            @endif
                                                         @endif
-                                                    @endif
-                                                </p>
-                                            </td>
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">
-                                                    {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}</p>
-                                            </td>
-                                            <!-- Assigned to for delivery stage -->
-                                            @if ($key == 'delivery')
-                                                <td class="clickable" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">
-                                                        {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
-                                                            ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
-                                                            : 'None' }}
                                                     </p>
                                                 </td>
-                                            @endif
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-                                                <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
-                                            </td>
+                                                <td class="clickable ops-col ops-col--delivery" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">
+                                                        {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                    </p>
+                                                </td>
+                                                <!-- Assigned to for delivery stage -->
+                                                @if ($key == 'delivery')
+                                                    <td class="clickable ops-col ops-col--assigned" data-toggle="modal"
+                                                        data-target="#waitingDialog{{ $key . $case->id }}">
+                                                        <p class="">
+                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
+                                                                ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
+                                                                : 'None' }}
+                                                        </p>
+                                                    </td>
+                                                @endif
+                                                <td class="clickable ops-col ops-col--count" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
+                                                </td>
 
-                                            <td class="clickable" data-toggle="modal"
-                                                data-target="#waitingDialog{{ $key . $case->id }}">
-
-                                                @foreach ($case->tags as $tag)
-                                                    <i title="{{$tag->originalTagRecord != null ? $tag->originalTagRecord->text : "" }}"
-                                                       style="color:{{ $tag->originalTagRecord->color }}"
-                                                       class="{{ $tag->originalTagRecord->icon }}  fa-lg"></i>
-                                                @endforeach
-                                            </td>
-                                        </tr>
-                                        {{--                                        {{dd("key  is  " . $key)}} --}}
-                                        {{-- BEGIN WAITING DIALOG --}}
-                                        <div class="modal fade" tabindex="-1" role="dialog"
-                                             id="waitingDialog{{ $key . $case->id }}">
-                                            <form
-                                                action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-                                                method="GET">
-                                                @csrf
-                                                <input type="hidden" name="case_id" value="{{ $case->id }}">
-                                                <div class="modal-dialog modal-dialog-centered" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title">Case Completion</h5>
-                                                            @if (Auth()->user()->is_admin)
-                                                                <div class="tooltipY">
-                                                                    <a
-                                                                        href="{{ route('finish-case-completely', ['caseId' => $case->id]) }}">
-                                                                        <i class="fa-solid fa-forward-fast close "></i>
-                                                                    </a>
-                                                                    <span class="tooltiptextY">Skip To Delivery
+                                                <td class="clickable ops-col ops-col--tags" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <div>
+                                                        @foreach ($case->tags as $tag)
+                                                            <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                        @endforeach
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{--                                        {{dd("key  is  " . $key)}} --}}
+                                            {{-- BEGIN WAITING DIALOG --}}
+                                            <div class="modal fade sigma-modal--cases-dashboard-case-completion{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
+                                                id="waitingDialog{{ $key . $case->id }}">
+                                                <form
+                                                    action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                    method="GET">
+                                                    @csrf
+                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
+                                                    <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Case Completion</h5>
+                                                                @if (Auth()->user()->is_admin)
+                                                                    <div class="tooltipY">
+                                                                        <a
+                                                                            href="{{ route('finish-case-completely', ['caseId' => $case->id]) }}">
+                                                                            <i
+                                                                                class="fa-solid fa-forward-fast skip-to-delivery-icon"></i>
+                                                                        </a>
+                                                                        <span class="tooltiptextY">Skip To Delivery
                                                                             Stage</span>
-                                                                </div>
-                                                            @endif
-                                                            <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="false">&times;</span>
-                                                            </button>
-
-                                                        </div>
-                                                        <div class="modal-body">
-
-                                                            <div class="form-group row" style="margin-bottom: 0px">
-                                                                <div class="form-group col-6 "
-                                                                     style="margin-bottom: 0px">
-                                                                    <label for="doctor">Doctor: </label>
-                                                                    <h5 id="doctor">
-                                                                        <b>{{ $case->client?->name }}</b></h5>
-                                                                </div>
-                                                                <div class="form-group col-6 "
-                                                                     style="margin-bottom: 0px">
-                                                                    <label for="pat">Patient: </label>
-                                                                    <h5 id="pat">
-                                                                        <b>{{ $case->patient_name }}</b></h5>
-                                                                </div>
-                                                            </div>
-                                                            <hr>
-                                                            <div class="form-group row">
-                                                                <div class=" col-12 ">
-                                                                    <label><b>Jobs:</b></label><br>
-
-
-                                                                    @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
-                                                                        @php
-                                                                            $unit = explode(', ', $job->unit_num);
-                                                                        @endphp
-
-                                                                        <span>{{ $job->unit_num }}
-                                                                                -
-                                                                                {{ $job->jobType->name ?? 'No Job Type' }}
-                                                                                -
-                                                                                {{ $job->material->name ?? 'no material' }}
-                                                                            {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                            {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                            {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
-                                                                                <br>
-                                                                                {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                            </span>
-                                                                    @endforeach
-                                                                </div>
-                                                            </div>
-                                                            @if (count($case->notes) > 0)
-                                                                <hr>
-                                                                <label><b>Notes:</b></label><br>
-                                                                @foreach ($case->notes as $note)
-                                                                    <div class="form-control"
-                                                                         style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px"
-                                                                         disabled>
-
-                                                                            <span
-                                                                                class="noteHeader">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-
-                                                                        <span
-                                                                            class="noteText">{{ $note->note }}</span>
                                                                     </div>
-                                                                @endforeach
-                                                            @endif
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fas fa-eye"></i> View</a>
-                                                            @if ($key == 'milling')
-                                                                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('milling',true,'{{ $case->id }}')"><i class="fas fa-user-plus"></i> Assign To Me..</button>
-                                                            @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
-                                                                <button type="button" class="btn btn-success" data-dismiss="modal" onclick="openModal('{{ $key }}',true,'{{ $case->id }}')"><i class="fas fa-user-plus"></i> Assign To Me..</button>
-                                                            @else
-                                                                <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
-                                                            @endif
-                                                            <a href="{{ route('edit-case-view', $case->id) }}" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"><i class="fas fa-edit"></i> Edit Case</a>
-                                                            @if ($key == 'qc')
-                                                                <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fa-solid fa-arrow-trend-up"></i>Complete</a>
-                                                            @endif
-                                                            @if ($key == 'delivery')
-                                                                @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
-                                                                    @if ($case->jobs[0]->assignee == null)
-                                                                        <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)">Assign to..</button>
-                                                                    @else
-                                                                        <button type="button" class="btn btn-warning" onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)">Re-Assign..</button>
-                                                                    @endif
                                                                 @endif
-                                                                <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-info"><i class="fas fa-print"></i> Print Voucher</a>
-                                                            @endif
-                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="close"
+                                                                    data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="false">&times;</span>
+                                                                </button>
+
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <!-- Sticky Doctor/Patient section -->
+                                                                <div class="form-group row" style="margin-bottom: 0px">
+                                                                    <div class="form-group col-6 "
+                                                                        style="margin-bottom: 0px">
+                                                                        <label for="doctor" class="patient-doctor-label">Doctor:</label>
+                                                                        <h5 id="doctor" class="patient-doctor-names">
+                                                                            {{ $case->client?->name }}</h5>
+                                                                    </div>
+                                                                    <div class="form-group col-6 "
+                                                                        style="margin-bottom: 0px">
+                                                                        <label for="pat" class="patient-doctor-label">Patient name:</label>
+                                                                        <h5 id="pat" class="patient-doctor-names">
+                                                                            {{ $case->patient_name }}</h5>
+                                                                    </div>
+                                                                </div>
+                                                                <hr>
+
+                                                                <!-- Scrollable Jobs and Notes section -->
+                                                                <div class="scrollable-content">
+                                                                    <div class="form-group row">
+                                                                        <div class=" col-12 ">
+                                                                            <label><b>Jobs:</b></label>
+                                                                            <div class="sigma-case-jobs-list">
+                                                                                @foreach ($case->jobs as $job)
+                                                                                    @php
+                                                                                        $unit = explode(
+                                                                                            ', ',
+                                                                                            $job->unit_num,
+                                                                                        );
+                                                                                        // Check if this job goes through the current stage based on material
+                                                                                        $showJob = $job->goesThroughStage($stage['numericStage']);
+                                                                                    @endphp
+
+                                                                                    @if ($showJob)
+                                                                                        @php
+                                                                                            $jobTypeName = $job->jobType->name ?? 'No Job Type';
+                                                                                            $materialName = $job->material->name ?? 'no material';
+                                                                                            $colorLabel = $job->color == '0' ? '' : $job->color;
+                                                                                            $styleLabel = $job->style == 'None' ? '' : $job->style;
+                                                                                            $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                            $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                        @endphp
+                                                                                        <div class="sigma-case-job-row">
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                                {{ $styleLabel }}
+                                                                                                @if ($implantLabel || $abutmentLabel)
+                                                                                                    <span class="sigma-case-job-extra">
+                                                                                                        @if ($implantLabel)
+                                                                                                            <span>{{ $implantLabel }}</span>
+                                                                                                        @endif
+                                                                                                        @if ($abutmentLabel)
+                                                                                                            <span>{{ $abutmentLabel }}</span>
+                                                                                                        @endif
+                                                                                                    </span>
+                                                                                                @endif
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    @endif
+                                                                                @endforeach
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @if (count($case->notes) > 0)
+                                                                        <hr>
+                                                                        <label><b>Notes:</b></label><br>
+                                                                        @foreach ($case->notes as $note)
+                                                                            <div class="form-control note-container"
+                                                                                style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                disabled>
+
+                                                                                <span class="noteHeader"
+                                                                                    style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+
+                                                                                <span
+                                                                                    class="noteText">{{ $note->note }}</span>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <div class="row btnsRow">
+                                                                    <!-- Row 1: View (25%) | Action (50%) | Edit (25%) -->
+                                                                    <div class="col-3 padding5px" style="display: flex;">
+                                                                        <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                            style="width:100%; display: flex;">
+                                                                            <button type="button" class="btn btn-info"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-6 padding5px" style="display: flex;">
+                                                                        @if ($key == 'milling')
+                                                                            <button type="button" class="btn btn-success"
+                                                                                data-dismiss="modal"
+                                                                                onclick="openModal('milling',true,'{{ $case->id }}')"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i> Assign To
+                                                                                Me</button>
+                                                                        @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
+                                                                            <button type="button" class="btn btn-success"
+                                                                                data-dismiss="modal"
+                                                                                onclick="openModal('{{ $key }}',true,'{{ $case->id }}')"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i> Assign To
+                                                                                Me</button>
+                                                                        @else
+                                                                            <button type="submit" class="btn btn-success"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;"><i
+                                                                                    class="fas fa-user-plus"></i>
+                                                                                {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
+                                                                        @endif
+                                                                    </div>
+                                                                    <div class="col-3 padding5px" style="display: flex;">
+                                                                        <a href="{{ route('edit-case-view', $case->id) }}"
+                                                                            style="width:100%; display: flex;">
+                                                                            <button type="button"
+                                                                                class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
+                                                                                style="width:100%; display: flex; align-items: center; justify-content: center;">Edit</button>
+                                                                        </a>
+                                                                    </div>
+
+                                                                    <!-- Row 2: QC Complete (100%) OR Delivery Assign (100%) -->
+                                                                    @if ($key == 'qc')
+                                                                        <div class="col-12 padding5px">
+                                                                            <a href="{{ route('assign-and-finish', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                class="btn btn-info" style="width:100%;color:white"><i
+                                                                                    class="fa-solid fa-arrow-trend-up"></i>
+                                                                                Assign & Complete</a>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    @if ($key == 'delivery')
+                                                                        @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 129)))
+                                                                            @if ($case->jobs[0]->assignee == null)
+                                                                                <div class="col-12 padding5px">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning"
+                                                                                        onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog',false)"
+                                                                                        style="width:100%">Assign
+                                                                                        to..</button>
+                                                                                </div>
+                                                                            @else
+                                                                                <div class="col-12 padding5px">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-warning"
+                                                                                        onclick="closeModal({id:'waitingDialog{{ $key . $case->id }}'}); openModal('DeliveryDialog', false)"
+                                                                                        style="width:100%">Re-Assign..</button>
+                                                                                </div>
+                                                                            @endif
+                                                                        @endif
+                                                                    @endif
+
+                                                                    <!-- Row 3: Delivery Print Voucher (100%) -->
+                                                                    @if ($key == 'delivery')
+                                                                        <div class="col-12 padding5px">
+                                                                            <a href="{{ route('view-voucher', $case->id) }}"
+                                                                                class="btn btn-info" style="width:100%; color:white"><i
+                                                                                    class="fas fa-print"></i> Print
+                                                                                Voucher</a>
+                                                                        </div>
+                                                                    @endif
+
+                                                                    <!-- Row 4: Cancel (100%) -->
+                                                                    <div class="col-12 padding5px">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-dismiss="modal"
+                                                                            style="width:100%">Cancel</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    @endforeach
+                                                </form>
+                                            </div>
+                                        @endforeach
 
 
-                                    <!-- Begin Active tab -->
+                                        <!-- Begin Active tab -->
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
 
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             {{-- ----------------ACTIVE TABLE--------------- --}}
                             <div tabindex="0" role="tabpanel" aria-labelledby="{{ 'active-' . $key . 'label' }}"
-                                 id="{{ 'active-' . $key }}" hidden>
+                                id="{{ 'active-' . $key }}" hidden class="stage-panel-pane">
                                 @php
                                     $key = strtolower($key);
 
@@ -732,236 +2314,344 @@
 
                                 @endphp
                                 @if ($key == 'milling')
-
-                                    <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
-                                                     :devices="$devices" stageId="2" :counts="$deviceUnitsCounts"/>
-
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Milling" btnText="Start" type="milling" units="0"
+                                            :devices="$devices" stageId="2" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == '3dprinting')
-
-                                    <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
-                                                     units="3" :devices="$devices" stageId="3"
-                                                     :counts="$deviceUnitsCounts"/>
-
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="3D Printing" btnText="Start" type="3dprinting"
+                                            units="3" :devices="$devices" stageId="3" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == 'sintering')
-                                    <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
-                                                     :devices="$devices" stageId="4" :counts="$deviceUnitsCounts"/>
-
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Sintering" btnText="Start" type="sintering" units="4"
+                                            :devices="$devices" stageId="4" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @elseif($key == 'pressing')
-                                    <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
-                                                     :devices="$devices" stageId="5" :counts="$deviceUnitsCounts"/>
-
+                                    <div class="stage-panel-scroll stage-panel-scroll--devices">
+                                        <x-devices-block title="Pressing" btnText="Start" type="pressing" units="5"
+                                            :devices="$devices" stageId="5" :counts="$deviceUnitsCounts" />
+                                    </div>
                                 @else
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
-                                    <table class=" activeTable sunriseTable" style="width:100%;">
+                                    <div class="stage-panel-scroll">
+                                    <table class=" activeTable sunriseTable no-auto-colresize" style="width:100%;">
                                         <thead>
-                                        <tr>
-                                            <th>Doctor</th>
-                                            <th>Patient</th>
-                                            <th class="deliveryToHeader">Delivery Date</th>
-                                            <th class="assignedToHeader">Assigned To</th>
-                                            <th class="">#</th>
-                                            <th class="">Tags</th>
-                                        </tr>
+                                            <tr>
+                                                <th class="ops-col ops-col--doctor">Doctor</th>
+                                                <th class="ops-col ops-col--patient">Patient</th>
+                                                <th class="deliveryToHeader ops-col ops-col--delivery">Delivery Date</th>
+                                                <th class="assignedToHeader ops-col ops-col--assigned">Assigned To</th>
+                                                <th class="ops-col ops-col--count">#</th>
+                                                <th class="ops-col ops-col--tags">Tags</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
 
-                                        @foreach ($stage['activeCases'] as $case)
-                                            <tr class="clickable" style="color:{{ $color }}"
-                                                data-toggle="modal"
-                                                data-target="#confirmCompletion{{ $key . $case->id }}">
-                                                @if ($key == 'finishing')
-                                                    @php
-                                                        $notReadyA = false;
-                                                        $abutmentsReceived = $case->abutmentsReceived();
-                                                        if (!$case->allUnitsAtFinishing()) {
-                                                            $notReadyA = true;
-                                                        }
-                                                    @endphp
-                                                @endif
-                                                <td>
-                                                    <p class="">{{ $case->client ? $case->client->name : 'No Client' }}</p>
-                                                </td>
-                                                <td>
-                                                    <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
-                                                            @if ($notReadyA)
-                                                                <span
-                                                                    style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
+                                            @foreach ($stage['activeCases'] as $case)
+                                                <tr class="clickable" style="color:{{ $color }}"
+                                                    data-toggle="modal"
+                                                    data-target="#confirmCompletion{{ $key . $case->id }}">
+                                                    @if ($key == 'finishing')
+                                                        @php
+                                                            $notReadyA = false;
+                                                            $abutmentsReceived = $case->abutmentsReceived();
+                                                            if (!$case->allUnitsAtFinishing()) {
+                                                                $notReadyA = true;
+                                                            }
+                                                        @endphp
+                                                    @endif
+                                                    <td class="ops-col ops-col--doctor">
+                                                        <p class="">
+                                                            {{ $case->client ? $case->client->name : 'No Client' }}</p>
+                                                    </td>
+                                                    <td class="ops-col ops-col--patient" dir="auto">
+                                                        <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
+                                                                @if ($notReadyA)
+                                                                    <span
+                                                                        style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
                                                                         Not <br>
                                                                         Ready
                                                                     </span>
-                                                            @endif
+                                                                @endif
 
-                                                            @if (!$abutmentsReceived)
-                                                                <span
-                                                                    style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
+                                                                @if (!$abutmentsReceived)
+                                                                    <span
+                                                                        style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
                                                                         Abutment <br>
                                                                         Missing
                                                                     </span>
+                                                                @endif
                                                             @endif
-                                                        @endif
 
-                                                    </p>
-                                                </td>
-                                                <td class="">
-                                                    <p class="">
-                                                        {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
-                                                    </p>
-                                                </td>
-                                                <td>
-                                                    <p class="">
-                                                        {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
-                                                    </p>
-                                                </td>
-                                                <td class="">
-                                                    <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
-                                                    </p>
-                                                </td>
-                                                <td class="">
-
-                                                    @foreach ($case->tags as $tag)
-                                                         <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : "-"}}"
-                                                           style="color:{{ $tag->originalTagRecord->color }}"
-                                                           class="{{ $tag->originalTagRecord->icon }}  fa-lg"></i>
-                                                    @endforeach
-                                                </td>
-                                            </tr>
-  <!-- Active case actions Dialog -->
-                                            <div class="modal fade" tabindex="-1" role="dialog"
-                                                 id="confirmCompletion{{ $key . $case->id }}">
-                                                <form
-
-
-                                                    action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-
-
-                                                    method="GET">
-                                                    @csrf
-                                                    <input type="hidden" name="case_id"
+                                                        </p>
+                                                    </td>
+                                                    <td class="ops-col ops-col--delivery">
+                                                        <p class="">
+                                                            {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="ops-col ops-col--assigned">
+                                                        <p class="">
+                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="ops-col ops-col--count">
+                                                        <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
+                                                        </p>
+                                                    </td>
+                                                    <td class="ops-col ops-col--tags">
+                                                        <div>
+                                                            @foreach ($case->tags as $tag)
+                                                                <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                    style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                    class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                            @endforeach
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <!-- Active case actions Dialog -->
+                                                <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
+                                                    id="confirmCompletion{{ $key . $case->id }}">
+                                                    <form
+                                                        action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                        method="GET">
+                                                        @csrf
+                                                        <input type="hidden" name="case_id"
                                                             value="{{ $case->id }}">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Case Completion</h5>
+                                                        <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Case Completion</h5>
 
-                                                                <button type="button" class="close"
+                                                                    <button type="button" class="close"
                                                                         data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="false">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-
-                                                                <div class="form-group row"
-                                                                     style="margin-bottom: 0px">
-                                                                    <div class="form-group col-6 "
-                                                                         style="margin-bottom: 0px">
-                                                                        <label for="doctor">Doctor: </label>
-                                                                        <h5 id="doctor">
-                                                                            <b>{{ $case->client?->name }}</b>
-                                                                        </h5>
-                                                                    </div>
-                                                                    <div class="form-group col-6 "
-                                                                         style="margin-bottom: 0px">
-                                                                        <label for="pat">Patient: </label>
-                                                                        <h5 id="pat">
-                                                                            <b>{{ $case->patient_name }}</b></h5>
-                                                                    </div>
+                                                                        <span aria-hidden="false">&times;</span>
+                                                                    </button>
                                                                 </div>
-                                                                <hr>
-                                                                <div class="form-group row">
-                                                                    <div class=" col-12 ">
-                                                                        <label><b>Jobs:</b></label><br>
-
-
-                                                                        @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
-                                                                            @php
-                                                                                $unit = explode(
-                                                                                    ', ',
-                                                                                    $job->unit_num,
-                                                                                );
-                                                                            @endphp
-
-                                                                            <span>{{ $job->unit_num }}
-                                                                                    -
-                                                                                    {{ $job->jobType->name ?? 'No Job Type' }}
-                                                                                    -
-                                                                                    {{ $job->material->name ?? 'no material' }}
-                                                                                {{ $job->color == '0' ? '' : ' - ' . $job->color }}
-                                                                                {{ $job->style == 'None' ? '' : ' - ' . $job->style }}
-                                                                                {{ isset($job->implantR) && $job->jobType->id == 6 ? ' - Implant Type: ' . $job->implantR->name : '' }}
-                                                                                    <br>
-                                                                                    {{ isset($job->abutmentR) && $job->jobType->id == 6 ? ' Abutment Type: ' . $job->abutmentR->name : '' }}
-                                                                                </span>
-                                                                        @endforeach
-                                                                    </div>
-                                                                </div>
-                                                                @if (count($case->notes) > 0)
-                                                                    <hr>
-                                                                    <label><b>Notes:</b></label><br>
-                                                                    @foreach ($case->notes as $note)
-                                                                        <div class="form-control"
-                                                                             style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px"
-                                                                             disabled>
-
-                                                                                <span
-                                                                                    class="noteHeader">{{ '[' . substr($note->created_at, 0, 16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                                                                            <span
-                                                                                class="noteText">{{ $note->note }}</span>
+                                                                <div class="modal-body">
+                                                                    <!-- Sticky Doctor/Patient section -->
+                                                                    <div class="form-group row"
+                                                                        style="margin-bottom: 0px">
+                                                                        <div class="form-group col-6 "
+                                                                            style="margin-bottom: 0px">
+                                                                            <label for="doctor" class="patient-doctor-label">Doctor: </label>
+                                                                            <h5 id="doctor"
+                                                                                class="patient-doctor-names">
+                                                                                {{ $case->client?->name }}</h5>
                                                                         </div>
-                                                                    @endforeach
-                                                                @endif
+                                                                        <div class="form-group col-6 "
+                                                                            style="margin-bottom: 0px">
+                                                                            <label for="pat" class="patient-doctor-label">Patient name: </label>
+                                                                            <h5 id="pat"
+                                                                                class="patient-doctor-names">
+                                                                                {{ $case->patient_name }}</h5>
+                                                                        </div>
+                                                                    </div>
+                                                                    <hr>
 
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                @if ($key == 'delivery')
-                                                                    <a href="{{ route('delivered-in-box', $case->id) }}" class="btn btn-outline-info">Delivered In Box</a>
-                                                                @endif
-                                                                <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-info"><i class="fas fa-eye"></i> View</a>
-                                                                @php
-                                                                    $isAdmin = Auth()->user()->is_admin;
-                                                                    $canBeFinished = true;
-                                                                    $isUserCase = false;
-                                                                    $canComplete = false;
-                                                                    if ($case->jobs->where('stage', $stage['numericStage'])->first() && $case->jobs->where('stage', $stage['numericStage'])->first()->assignee == Auth()->user()->id) {
-                                                                        $canComplete = true;
-                                                                        $isUserCase = true;
-                                                                    }
-                                                                    if ($key == 'finishing') {
-                                                                        if ($notReadyA || !$abutmentsReceived) {
-                                                                            $canComplete = false;
-                                                                            $canBeFinished = false;
-                                                                        }
-                                                                    }
-                                                                @endphp
-                                                                @if ($isAdmin && $canBeFinished && !$isUserCase)
-                                                                    <a href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-success">Override Complete</a>
-                                                                @else
-                                                                    <button type="submit" class="btn btn-success" {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Cannot be completed' }}</button>
-                                                                @endif
-                                                                <a href="{{ route('edit-case-view', $case->id) }}" class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}">Edit Case</a>
-                                                                @if ($key == 'milling')
-                                                                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#MEX{{ $case->id }}" data-dismiss="modal">Externally Milled</button>
-                                                                @endif
-                                                                @if ($key == 'delivery')
-                                                                    <a href="{{ route('view-voucher', $case->id) }}" class="btn btn-outline-info">Print voucher</a>
-                                                                    @if ($case->delivered_to_client == 1)
-                                                                        @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 9)))
-                                                                            <a href="{{ route('receive-voucher', $case->id) }}" class="btn btn-outline-secondary">Receive Voucher</a>
+                                                                    <!-- Scrollable Jobs and Notes section -->
+                                                                    <div class="scrollable-content">
+                                                                        <div class="form-group row">
+                                                                            <div class=" col-12 ">
+                                                                                <label><b>Jobs:</b></label>
+                                                                                <div class="sigma-case-jobs-list">
+                                                                                    @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
+                                                                                        @php
+                                                                                            $unit = explode(
+                                                                                                ', ',
+                                                                                                $job->unit_num,
+                                                                                            );
+                                                                                            // Check if this job goes through the current stage based on material
+                                                                                            $showJob = $job->goesThroughStage(
+                                                                                                $stage['numericStage'],
+                                                                                            );
+                                                                                        @endphp
+
+                                                                                        @if ($showJob)
+                                                                                            @php
+                                                                                                $jobTypeName = $job->jobType->name ?? 'No Job Type';
+                                                                                                $materialName = $job->material->name ?? 'no material';
+                                                                                                $colorLabel = $job->color == '0' ? '' : $job->color;
+                                                                                                $styleLabel = $job->style == 'None' ? '' : $job->style;
+                                                                                                $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                                $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                            @endphp
+                                                                                            <div class="sigma-case-job-row">
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                                    {{ $styleLabel }}
+                                                                                                    @if ($implantLabel || $abutmentLabel)
+                                                                                                        <span class="sigma-case-job-extra">
+                                                                                                            @if ($implantLabel)
+                                                                                                                <span>{{ $implantLabel }}</span>
+                                                                                                            @endif
+                                                                                                            @if ($abutmentLabel)
+                                                                                                                <span>{{ $abutmentLabel }}</span>
+                                                                                                            @endif
+                                                                                                        </span>
+                                                                                                    @endif
+                                                                                                </span>
+                                                                                            </div>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        @if (count($case->notes) > 0)
+                                                                            <hr>
+                                                                            <label><b>Notes:</b></label><br>
+                                                                            @foreach ($case->notes as $note)
+                                                                                <div class="form-control note-container"
+                                                                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                    disabled>
+
+                                                                                    <span class="noteHeader"
+                                                                                        style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                                                                    <span
+                                                                                        class="noteText">{{ $note->note }}</span>
+                                                                                </div>
+                                                                            @endforeach
+
                                                                         @endif
-                                                                    @endif
-                                                                @endif
-                                                                <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}" class="btn btn-outline-danger">Reset To Waiting</a>
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                                            </div>
-                                                    </div>
+                                                                    </div>
 
-                                                </form>
-                                            </div>
-                                            {{--                                            /////////// v2 DIALOG --}}
-                                        @endforeach
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <div class="row">
+                                                                        @php
+                                                                            $isAdmin = Auth()->user()->is_admin;
+                                                                            $canBeFinished = true;
+                                                                            $isUserCase = false;
+                                                                            $canComplete = false;
+                                                                            if (
+                                                                                $case->jobs
+                                                                                    ->where(
+                                                                                        'stage',
+                                                                                        $stage['numericStage'],
+                                                                                    )
+                                                                                    ->first() &&
+                                                                                $case->jobs
+                                                                                    ->where(
+                                                                                        'stage',
+                                                                                        $stage['numericStage'],
+                                                                                    )
+                                                                                    ->first()->assignee ==
+                                                                                    Auth()->user()->id
+                                                                            ) {
+                                                                                $canComplete = true;
+                                                                                $isUserCase = true;
+                                                                            }
+                                                                            if ($key == 'finishing') {
+                                                                                if ($notReadyA || !$abutmentsReceived) {
+                                                                                    $canComplete = false;
+                                                                                    $canBeFinished = false;
+                                                                                }
+                                                                            }
+                                                                        @endphp
+
+
+                                                                        <!-- Row 2: View (25%) | Complete (50%) | Edit (25%) -->
+                                                                        <div class="col-3 padding5px"
+                                                                            style="display: flex;">
+                                                                            <a href="{{ route('view-case', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                style="width:100%; display: flex;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-info"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">View</button>
+                                                                            </a>
+                                                                        </div>
+
+                                                                        <div class="col-6 padding5px"
+                                                                            style="display: flex;">
+                                                                            @if ($isAdmin && $canBeFinished && !$isUserCase)
+                                                                                <a href="{{ route('complete-by-admin', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                    style="width:100%; display: flex;">
+                                                                                    <button type="button"
+                                                                                        class="btn btn-success"
+                                                                                        style="width:100%; display: flex; align-items: center; justify-content: center;">override
+                                                                                        Complete</button>
+                                                                                </a>
+                                                                            @else
+                                                                                <button type="submit"
+                                                                                    class="btn btn-success"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;"
+                                                                                    {{ $canComplete ? '' : 'disabled' }}>{{ $canComplete ? 'Complete' : 'Case cannot be completed' }}</button>
+                                                                            @endif
+                                                                        </div>
+
+                                                                        <div class="col-3 padding5px"
+                                                                            style="display: flex;">
+                                                                            <a href="{{ route('edit-case-view', $case->id) }}"
+                                                                                style="width:100%; display: flex;">
+                                                                                <button type="button"
+                                                                                    class="btn btn-warning {{ $canEditCase ? '' : 'disabled' }}"
+                                                                                    style="width:100%; display: flex; align-items: center; justify-content: center;">Edit</button>
+                                                                            </a>
+                                                                        </div>
+                                                                        <!-- Row 1: Delivery status (100%) - Layout 3 only -->
+                                                                        @if ($key == 'delivery')
+                                                                            <div class="col-12 padding5px">
+                                                                                <a href="{{ route('delivered-in-box', $case->id) }}"
+                                                                                    class="btn btn-outline-info"
+                                                                                    style="width:100%">Delivered In Box</a>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 3: Print Voucher (100%) - Layout 3 only -->
+                                                                        @if ($key == 'delivery')
+                                                                            <div class="col-12">
+                                                                                <a href="{{ route('view-voucher', $case->id) }}"
+                                                                                    class="btn btn-outline-info"
+                                                                                    style="width:100%">Print Voucher</a>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 4: Externally Milled (100%) - Layout 5 only -->
+                                                                        @if ($key == 'milling')
+                                                                            <div class="col-12 padding5px">
+                                                                                <button type="button"
+                                                                                    class="btn btn-dark"
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#MEX{{ $case->id }}"
+                                                                                    data-dismiss="modal"
+                                                                                    style="width:100%">Externally
+                                                                                    Milled</button>
+                                                                            </div>
+                                                                        @endif
+
+                                                                        <!-- Row 5: Reset To Waiting (100%) -->
+                                                                        <div class="col-12 padding5px ">
+                                                                            <a href="{{ route('reset-to-waiting', ['id' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                                class="btn btn-outline-danger"
+                                                                                style="width:100%">Reset To Waiting</a>
+                                                                        </div>
+
+                                                                        <!-- Row 6: Cancel (100%) -->
+                                                                        <div class="col-12 padding5px ">
+                                                                            <button type="button"
+                                                                                class="btn btn-secondary "
+                                                                                data-dismiss="modal"
+                                                                                style="width:100%">Cancel</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                {{--                                            /////////// v2 DIALOG --}}
+                                            @endforeach
                                         </tbody>
                                     </table>
+                                    </div>
                                 @endif
                             </div>
                         </div>
@@ -973,31 +2663,27 @@
                 @foreach ($devices as $device)
                     @switch($device['type'])
                         @case(2)
-                            <x-active-cases-dialog title="Milling Jobs" btnText="COMPLETE" type="milling"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Milling Jobs" btnText="COMPLETE" type="milling" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @case(3)
-                            <x-active-cases-dialog title="Printer Builds" btnText="COMPLETE" type="3dprinting"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="true"/>
-                            @break
+                            <x-active-cases-dialog title="Printer Builds" btnText="COMPLETE" type="3dprinting" :deviceId="$device['id']"
+                                :isBuilds="true" />
+                        @break
 
                         @case(4)
-                            <x-active-cases-dialog title="Sintering Jobs" btnText="COMPLETE" type="sintering"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Sintering Jobs" btnText="COMPLETE" type="sintering" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @case(5)
-                            <x-active-cases-dialog title="Pressing Jobs" btnText="COMPLETE" type="pressing"
-                                                   :deviceId="$device['id']"
-                                                   :isBuilds="false"/>
-                            @break
+                            <x-active-cases-dialog title="Pressing Jobs" btnText="COMPLETE" type="pressing" :deviceId="$device['id']"
+                                :isBuilds="false" />
+                        @break
 
                         @default
-                            @break
+                        @break
                     @endswitch
                 @endforeach
             </div>
@@ -1013,10 +2699,10 @@
             <form id="hiddenForm{{ $stage }}" action="#" method="POST">
                 @csrf
                 <input type="hidden" name="deviceId-{{ $stage }}" id="deviceId-{{ $stage }}"
-                       value="">
+                    value="">
                 <input type="hidden" name="type" value="{{ $stage }}">
                 <input type="hidden" name="WaitingPopupCheckBoxes{{ $stage }}[]"
-                       id="WaitingPopupCheckBoxes{{ $stage }}" value="">
+                    id="WaitingPopupCheckBoxes{{ $stage }}" value="">
 
                 @if ($stage == '3dprinting')
                     <input type="hidden" name="buildName" id="hidden3dprintingBuildName" value="">
@@ -1028,9 +2714,9 @@
         <input type="hidden" id="caseIdFromWaitingDialog" name="caseIdFromWaitingDialog" value="">
 
         <!-- Generic loading dialog -->
-        <div id="loadingDialog" class="modal" tabindex="-1" role="dialog"
-             style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+        <div id="loadingDialog" class="modal sigma-modal--cases-dashboard-loading" tabindex="-1" role="dialog"
+            style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
+            <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
@@ -1040,52 +2726,50 @@
             </div>
         </div>
     </div>
-    {{--    @php--}}
-    {{--        } catch (Exception $e) {--}}
-    {{--            dd($e->getMessage(), $e->getTraceAsString());--}}
-    {{--        }--}}
-    {{--    @endphp--}}
+    {{--    @php --}}
+    {{--        } catch (Exception $e) { --}}
+    {{--            dd($e->getMessage(), $e->getTraceAsString()); --}}
+    {{--        } --}}
+    {{--    @endphp --}}
+
+    <!-- Column Width Config Panel -->
+    <div class="config-panel" id="columnConfigPanel">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <div>
+                <h4 style="margin: 0; color: #1e293b; font-weight: 700;">Table Column Widths</h4>
+                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">
+                    Adjust widths in pixels. Press <span class="reset-hint">F3</span> to reset all.
+                </p>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button id="resetToAutoBtn" class="btn btn-sm btn-warning">Reset to Auto</button>
+                <button onclick="$('#columnConfigPanel').removeClass('active')" class="btn btn-sm btn-outline-secondary">Close</button>
+            </div>
+        </div>
+        <div id="columnWidthInputs"></div>
+    </div>
 @endsection
 
 
 @push('js')
-    <!-- Make sure jQuery is loaded first -->
-    <script src="{{ asset('white') }}/js/core/jquery.min.js"></script>
-
-    <!-- DataTables CSS and JS -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
     <!-- Custom DataTables CSS fixes -->
     <style>
         /* Completely hide DataTables sorting arrows */
-        .sunriseTable.dataTable thead th.sorting:before,
-        .sunriseTable.dataTable thead th.sorting:after,
-        .sunriseTable.dataTable thead th.sorting_asc:before,
-        .sunriseTable.dataTable thead th.sorting_asc:after,
-        .sunriseTable.dataTable thead th.sorting_desc:before,
-        .sunriseTable.dataTable thead th.sorting_desc:after,
-        .sunriseTable.dataTable thead .sorting:before,
-        .sunriseTable.dataTable thead .sorting:after,
-        .sunriseTable.dataTable thead .sorting_asc:before,
-        .sunriseTable.dataTable thead .sorting_asc:after,
-        .sunriseTable.dataTable thead .sorting_desc:before,
-        .sunriseTable.dataTable thead .sorting_desc:after {
+        .sunriseTable.dataTable thead th.sorting:before, .sunriseTable.dataTable thead th.sorting:after, .sunriseTable.dataTable thead th.sorting_asc:before, .sunriseTable.dataTable thead th.sorting_asc:after, .sunriseTable.dataTable thead th.sorting_desc:before, .sunriseTable.dataTable thead th.sorting_desc:after, .sunriseTable.dataTable thead .sorting:before, .sunriseTable.dataTable thead .sorting:after, .sunriseTable.dataTable thead .sorting_asc:before, .sunriseTable.dataTable thead .sorting_asc:after, .sunriseTable.dataTable thead .sorting_desc:before, .sunriseTable.dataTable thead .sorting_desc:after {
             display: none !important;
             content: none !important;
+            background-image: none !important;
         }
 
         /* Force first column to not be sortable and fix alignment */
-        .sunriseTable.dataTable thead th:first-child,
-        .sunriseTable.dataTable thead th:first-child.sorting,
-        .sunriseTable thead th:first-child {
+        .sunriseTable.dataTable thead th:first-child, .sunriseTable.dataTable thead th:first-child.sorting, .sunriseTable thead th:first-child {
             min-width: 25px !important;
 
             text-align: left !important;
 
             background-image: none !important;
             cursor: default !important;
-            position: relative !important;
+            /*position: relative !important;*/
         }
 
         /* Remove any sorting arrows specifically from first column */
@@ -1111,8 +2795,7 @@
             border-color: #adb5bd !important;
         }
 
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
             background: #007bff !important;
             color: white !important;
             border-color: #007bff !important;
@@ -1126,6 +2809,7 @@
 
         /* Table enhancements (removable) */
         .table-enhancement {
+
             /* Subtle row hover effect */
             .sunriseTable tbody tr:hover {
                 background-color: #f8f9fa !important;
@@ -1170,8 +2854,7 @@
         }
 
         /* Tags column width - make narrower */
-        .sunriseTable th:nth-child(8),
-        .sunriseTable td:nth-child(8) {
+        .sunriseTable th:nth-child(8), .sunriseTable td:nth-child(8) {
             width: 80px !important;
             max-width: 80px !important;
             min-width: 80px !important;
@@ -1190,8 +2873,42 @@
 
 
 
-        .waitingTable > thead {
+        .waitingTable>thead {
             height: 4.9vh;
+        }
+
+        /* Dashboard table styling with Cairo font */
+        .waitingTable, .activeTable {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .waitingTable th, .waitingTable td,
+        .activeTable th, .activeTable td {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        /* Prevent content wrapping in cells */
+        .waitingTable tbody td p,
+        .activeTable tbody td p {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            margin: 0 !important;
+        }
+
+        /* Fix tags column to prevent vertical stacking */
+        .ops-col--tags > div {
+            display: flex !important;
+            flex-wrap: nowrap !important;
+            gap: 4px !important;
+            overflow: hidden !important;
+            align-items: center !important;
+            line-height: normal !important;
+        }
+
+        .ops-col--tags i {
+            line-height: 1 !important;
+            display: inline-block !important;
         }
 
         /* Fix the span container around checkbox */
@@ -1217,6 +2934,37 @@
             width: 100% !important;
         }
 
+        .sunriseTable tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .sunriseTable tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+
+        .sunriseTable tbody tr:hover {
+            background-color: #eef3ff !important;
+        }
+
+        @media (min-width: 992px){
+            .stageSidebar {
+                margin-top: 68px;
+            }
+        }
+
+        /* Mobile: when columns hide, stretch remaining columns to fill width */
+        @media (max-width: 768px){
+            .sunriseTable.dataTable {
+                table-layout: fixed !important;
+            }
+
+            .sunriseTable.dataTable th, .sunriseTable.dataTable td {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
 
 
         /* Force equal column widths and prevent expansion of empty columns */
@@ -1230,7 +2978,7 @@
 
 
             p {
-                margin: 2px !important;
+                /*margin: 2px !important;*/
             }
 
             /* Patient and Doctor column spacing */
@@ -1265,39 +3013,64 @@
 
         }
     </style>
-    <!-- ✅ jQuery (must be first) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
-    <!-- ✅ Bootstrap Bundle -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-
-    <!-- ✅ DataTables Core -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-
-    <!-- ✅ DataTables CSS (classic) -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
-
-    <!-- ✅ jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <!-- ✅ DataTables core JS -->
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+{{--            $('.sunriseTable').each(function() {--}}
+{{--                if (!$.fn.DataTable.isDataTable(this)) {--}}
+{{--                    $(this).DataTable();--}}
+{{--                }--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
 
-    <!-- ✅ Your Initialization Script -->
     <script>
-        $(document).ready(function () {
-            if (typeof initializeVisibleTables === 'function') {
-                initializeVisibleTables();
-            } else {
-                console.warn('initializeVisibleTables is not defined');
-            }
-        });
+        // Simple shimmer loading controller
+        // $(document).ready(function() {
+        //     var shimmerOverlay = document.getElementById('dashboardShimmer');
+        //
+        //     if (!shimmerOverlay) {
+        //         return;
+        //     }
+        //
+        //     // Function to hide shimmer
+        //     function hideShimmer() {
+        //         shimmerOverlay.classList.add('loaded');
+        //     }
+        //
+        //     // Wait for DataTables to finish initializing
+        //     var checkTablesInterval = setInterval(function() {
+        //         var allTablesReady = true;
+        //
+        //         // Check if DataTables are initialized
+        //         if (typeof $.fn.DataTable !== 'undefined') {
+        //             var tableCount = $('.sunriseTable').length;
+        //             var initializedCount = $('.sunriseTable').filter(function() {
+        //                 return $.fn.DataTable.isDataTable(this);
+        //             }).length;
+        //
+        //             // If we have tables but none are initialized yet, keep waiting
+        //             if (tableCount > 0 && initializedCount === 0) {
+        //                 allTablesReady = false;
+        //             }
+        //         }
+        //
+        //         // If all tables are ready, hide shimmer
+        //         if (allTablesReady) {
+        //             clearInterval(checkTablesInterval);
+        //             setTimeout(hideShimmer, 200);
+        //         }
+        //     }, 100);
+        //
+        //     // Failsafe: Always hide shimmer after 2.5 seconds
+        //     setTimeout(function() {
+        //         clearInterval(checkTablesInterval);
+        //         hideShimmer();
+        //     }, 2500);
+        // });
     </script>
 
     <!-- Then load Macaw Tabs -->
-    <script
-        src="{{ asset('https://cdn.jsdelivr.net/gh/htmlcssfreebies/macaw-tabs@v1.0.4/dist/js/macaw-tabs.js') }}"></script>
+    <script src="{{ asset('https://cdn.jsdelivr.net/gh/htmlcssfreebies/macaw-tabs@v1.0.4/dist/js/macaw-tabs.js') }}">
+    </script>
 
     <!-- Then load your custom scripts -->
     <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js"></script>
@@ -1400,11 +3173,24 @@
 
             }, 100);
         }
-
     </script>
     <script>
+        const container = document.getElementById('dashboardShimmer');
+
+        // function startLoading() {
+        //     container.classList.add('loading');
+        // }
+        //
+        // function stopLoading() {
+        //     container.classList.remove('loading');
+        // }
+        //
+        // // Simulate loading
+        // startLoading();
+        // setTimeout(stopLoading, 2000); // remove shimmer after 2s
+
         // Apply device image configuration when document is ready
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Initialize Macaw Tabs if available
             if (typeof MacawTabs !== 'undefined') {
                 MacawTabs.init();
@@ -1415,43 +3201,43 @@
             if (typeof jQuery !== 'undefined') {
                 // Apply to all device images
                 jQuery('.device-item img').css({
-                    'width': '{{ $deviceConfig["width"] }}',
-                    'max-width': '{{ $deviceConfig["max_width"] }}',
-                    'height': '{{ $deviceConfig["height"] }}',
-                    'padding': '{{ $deviceConfig["padding"] }}',
-                    'border-radius': '{{ $deviceConfig["border_radius"] }}',
-                    'background': '{{ $deviceConfig["background"] }}',
+                    'width': '{{ $deviceConfig['width'] }}',
+                    'max-width': '{{ $deviceConfig['max_width'] }}',
+                    'height': '{{ $deviceConfig['height'] }}',
+                    'padding': '{{ $deviceConfig['padding'] }}',
+                    'border-radius': '{{ $deviceConfig['border_radius'] }}',
+                    'background': '{{ $deviceConfig['background'] }}',
                     'object-fit': 'contain'
                 });
 
                 // Apply to device containers
                 jQuery('.device-container').css({
-                    'gap': '{{ $deviceConfig["container_gap"] ?? "15px" }}',
+                    'gap': '{{ $deviceConfig['container_gap'] ?? '15px' }}',
                     'width': '100%'
                 });
 
                 // Remove hover effects if disabled in config
-                @if(!$deviceConfig["hover_effect"])
-                jQuery('.device-item').hover(
-                    function () {
-                        jQuery(this).css({
-                            'box-shadow': 'none',
-                            'transform': 'none'
-                        });
-                    },
-                    function () {
-                        jQuery(this).css({
-                            'box-shadow': 'none',
-                            'transform': 'none'
-                        });
-                    }
-                );
+                @if (!$deviceConfig['hover_effect'])
+                    jQuery('.device-item').hover(
+                        function() {
+                            jQuery(this).css({
+                                'box-shadow': 'none',
+                                'transform': 'none'
+                            });
+                        },
+                        function() {
+                            jQuery(this).css({
+                                'box-shadow': 'none',
+                                'transform': 'none'
+                            });
+                        }
+                    );
                 @endif
 
                 // Ensure images don't break out of containers
                 jQuery('.device-item').css({
                     'overflow': 'hidden',
-                    'max-width': '{{ $deviceConfig["max_width"] }}'
+                    'max-width': '{{ $deviceConfig['max_width'] }}'
                 });
 
                 // Setup dialog reset functionality
@@ -1464,11 +3250,11 @@
          */
         function setupDialogResetHandlers() {
             // Store original states when a modal is opened
-            jQuery('.modal').on('show.bs.modal', function () {
+            jQuery('.modal').on('show.bs.modal', function() {
                 var $modal = jQuery(this);
 
                 // Store original button states
-                $modal.find('button').each(function () {
+                $modal.find('button').each(function() {
                     var $btn = jQuery(this);
                     $btn.data('original-disabled', $btn.prop('disabled'));
                     $btn.data('original-text', $btn.text());
@@ -1476,7 +3262,7 @@
                 });
 
                 // Store original input values
-                $modal.find('input, textarea, select').each(function () {
+                $modal.find('input, textarea, select').each(function() {
                     var $input = jQuery(this);
                     $input.data('original-value', $input.val());
                     $input.data('original-checked', $input.prop('checked'));
@@ -1484,7 +3270,7 @@
                 });
 
                 // Store original image states
-                $modal.find('img').each(function () {
+                $modal.find('img').each(function() {
                     var $img = jQuery(this);
                     $img.data('original-src', $img.attr('src'));
                     $img.data('original-class', $img.attr('class'));
@@ -1492,7 +3278,7 @@
                 });
 
                 // Store device selection states
-                $modal.find('.device-item').each(function () {
+                $modal.find('.device-item').each(function() {
                     var $device = jQuery(this);
                     $device.data('original-class', $device.attr('class'));
                     $device.data('original-style', $device.attr('style'));
@@ -1500,18 +3286,18 @@
                 });
 
                 // Store checkbox states
-                $modal.find('input[type="checkbox"]').each(function () {
+                $modal.find('input[type="checkbox"]').each(function() {
                     var $checkbox = jQuery(this);
                     $checkbox.data('original-checked', $checkbox.prop('checked'));
                 });
             });
 
             // Reset to original state when a modal is hidden
-            jQuery('.modal').on('hidden.bs.modal', function () {
+            jQuery('.modal').on('hidden.bs.modal', function() {
                 var $modal = jQuery(this);
 
                 // Reset buttons
-                $modal.find('button').each(function () {
+                $modal.find('button').each(function() {
                     var $btn = jQuery(this);
                     if ($btn.data('original-disabled') !== undefined) {
                         $btn.prop('disabled', $btn.data('original-disabled'));
@@ -1525,7 +3311,7 @@
                 });
 
                 // Reset inputs
-                $modal.find('input, textarea, select').each(function () {
+                $modal.find('input, textarea, select').each(function() {
                     var $input = jQuery(this);
                     if ($input.data('original-value') !== undefined) {
                         $input.val($input.data('original-value'));
@@ -1539,7 +3325,7 @@
                 });
 
                 // Reset images
-                $modal.find('img').each(function () {
+                $modal.find('img').each(function() {
                     var $img = jQuery(this);
                     if ($img.data('original-src')) {
                         $img.attr('src', $img.data('original-src'));
@@ -1553,7 +3339,7 @@
                 });
 
                 // Reset device selections
-                $modal.find('.device-item').each(function () {
+                $modal.find('.device-item').each(function() {
                     var $device = jQuery(this);
                     if ($device.data('original-class')) {
                         $device.attr('class', $device.data('original-class'));
@@ -1572,7 +3358,7 @@
                 });
 
                 // Reset checkboxes
-                $modal.find('input[type="checkbox"]').each(function () {
+                $modal.find('input[type="checkbox"]').each(function() {
                     var $checkbox = jQuery(this);
                     if ($checkbox.data('original-checked') !== undefined) {
                         $checkbox.prop('checked', $checkbox.data('original-checked'));
@@ -1592,33 +3378,613 @@
             });
         }
 
-        /**
-         /**
-         * Reset custom form data specific to certain dialogs
-         * This can be extended for specific dialog types
-         */
-        function resetCustomFormData($modal) {
-            // Reset build name for 3D printing
-            if ($modal.find('#hidden3dprintingBuildName').length) {
-                $modal.find('#hidden3dprintingBuildName').val('');
-            }
 
-            // Reset device selection
-            if (typeof selectedMachineId !== 'undefined') {
-                selectedMachineId = null;
-            }
+    </script>
+    <style>
 
-            // Reset any selected cases arrays
-            if (typeof selectedCases !== 'undefined') {
-                selectedCases = [];
-            }
-
-            // Reset any waiting popup checkboxes
-            jQuery('[id^="WaitingPopupCheckBoxes"]').val('');
-
-            // Reset any device-specific selections
-            jQuery('.device-item').removeClass('selected');
-            jQuery('.device-item img').removeClass('selected');
+        /* Ensure badges are perfect circles on all screen sizes */
+        .activeBadge, .waitingBadge {
+            min-width: 26px !important;
+            min-height: 26px !important;
+            aspect-ratio: 1 !important;
+            border-radius: 50% !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            padding: 5px !important;
+            flex-shrink: 0 !important;
+            line-height: 1 !important;
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            color: #fff !important;
+            vertical-align: middle !important;
+            box-sizing: border-box !important;
+            transition: none !important;
         }
+        .activeBadge {
+            background-color: #007bff !important; /* Deeper blue */
+        }
+        .waitingBadge {
+            background-color: #dc3545 !important; /* Deeper red */
+        }
+
+        /* Ensure badge container aligns items horizontally */
+        .stageSidebar button[role="tab"] > div {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 4px !important;
+            vertical-align: middle !important;
+        }
+
+        @media (min-width: 992px){ /* Apply only on desktop */
+            /* Sidebar and Inner Tabs should stick below the main navbar */
+            .stageSidebar.kt-portlet--sticky-on, .macaw-silk-tabs > [role="tablist"].kt-portlet--sticky-on {
+                top: 60px !important; /* Assuming main navbar height of 60px */
+                z-index: 1020 !important; /* Ensure they are above content */
+            }
+
+            /* Table header should stick below the inner tabs */
+            .sunriseTable > thead.kt-portlet--sticky-on {
+                top: 100px !important; /* 60px (navbar) + 40px (inner tabs height) */
+                z-index: 1000 !important; /* Below sidebar and inner tabs */
+            }
+
+            /* Ensure consistent badge positioning within the stageSidebar buttons */
+            .stageSidebar button[role="tab"] {
+                display: flex; /* Enable flexbox for horizontal alignment */
+                justify-content: space-between; /* Space out items */
+                align-items: center; /* Vertically align items */
+            }
+
+        }
+
+        /* Column Width Config Panel */
+        .config-panel {
+            position: fixed;
+            bottom: -400px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15), 0 -4px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px 24px;
+            width: 90%;
+            max-width: 1200px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(226, 232, 240, 0.6);
+            backdrop-filter: blur(12px);
+        }
+
+        .config-panel.active {
+            bottom: 20px;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .config-panel #columnWidthInputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Mobile optimization */
+        @media (max-width: 768px) {
+            .config-panel {
+                width: 95%;
+                padding: 12px 16px;
+                max-height: 400px;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .config-panel h4 {
+                font-size: 16px;
+            }
+
+            .config-panel p {
+                font-size: 11px;
+            }
+
+            .config-panel #columnWidthInputs {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                border: none;
+            }
+
+            .config-panel .column-input-row {
+                padding: 8px 10px;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                min-width: unset;
+            }
+
+            .config-panel .column-input-row label {
+                font-size: 10px;
+                margin-bottom: 4px;
+            }
+
+            .config-panel .column-input-row input {
+                padding: 6px 8px;
+                font-size: 13px;
+            }
+
+            .config-panel .btn-sm {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        .config-panel .column-input-row {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            padding: 12px 16px;
+            background: white;
+            border-right: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+            min-width: 150px;
+            transition: all 0.2s ease;
+        }
+
+        .config-panel .column-input-row:hover {
+            background: #f8fafc;
+        }
+
+        .config-panel .column-input-row label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .config-panel .column-input-row input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 600;
+            background: white;
+            text-align: center;
+            color: #1e293b;
+            -webkit-appearance: auto;
+            -moz-appearance: textfield;
+        }
+
+        /* Show spinner controls on webkit */
+        .config-panel .column-input-row input::-webkit-inner-spin-button,
+        .config-panel .column-input-row input::-webkit-outer-spin-button {
+            opacity: 1;
+            height: 30px;
+        }
+
+        .config-panel .column-input-row input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .config-panel .reset-hint {
+            display: inline-block;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+    </style>
+
+    <!-- Dashboard: Column width config panel -->
+    <script>
+    $(document).ready(function() {
+        var $panel = $('#columnConfigPanel');
+        var $inputsContainer = $('#columnWidthInputs');
+        var storageKey = 'dashboard_master_widths';
+        var widthStore = window.sigmaTableWidthStore || null;
+        var defaultColumnWidths = {
+            '[Checkbox]': 5,
+            '#': 40,
+            'Assigned To': 40,
+            'Delivery Date': 40,
+            'Doctor': 60,
+            'Patient': 80,
+            'Tags': 40
+        };
+        var defaultColumnClassWidths = {
+            'ops-col--select': 5,
+            'ops-col--count': 40,
+            'ops-col--assigned': 40,
+            'ops-col--delivery': 40,
+            'ops-col--doctor': 60,
+            'ops-col--patient': 80,
+            'ops-col--tags': 40
+        };
+
+        function getSavedWidths() {
+            if (!widthStore || typeof widthStore.get !== 'function') {
+                return {};
+            }
+            var saved = widthStore.get(storageKey);
+            return saved && typeof saved === 'object' ? saved : {};
+        }
+
+        function setSavedWidths(widths) {
+            if (widthStore && typeof widthStore.set === 'function') {
+                widthStore.set(storageKey, widths || {});
+            }
+        }
+
+        function clearSavedWidths() {
+            if (widthStore && typeof widthStore.reset === 'function') {
+                widthStore.reset(storageKey);
+            }
+        }
+
+        function getDefaultColumnWidth(colName) {
+            return defaultColumnWidths[colName] || null;
+        }
+
+        function getDefaultColumnWeight(colName) {
+            var key = (colName || '').toLowerCase();
+            if (key.includes('patient') || key.includes('doctor') || key.includes('name')) return 2.8;
+            if (key.includes('status') || key.includes('stage') || key.includes('material') || key.includes('type')) return 1.7;
+            if (key.includes('date') || key.includes('time') || key.includes('delivery')) return 1.8;
+            if (key.includes('id') || key.includes('unit') || key.includes('qty') || key.includes('count') || key.includes('tag')) return 0.9;
+            if (key.includes('checkbox') || key === '[checkbox]') return 0.7;
+            return 1.3;
+        }
+
+        function buildDefaultWidthPercentages(columnNames) {
+            var weights = columnNames.map(getDefaultColumnWeight);
+            var total = weights.reduce(function(sum, w) { return sum + w; }, 0) || 1;
+            var percentages = weights.map(function(w) {
+                return Math.round((w / total) * 1000) / 10;
+            });
+            var allocated = percentages.reduce(function(sum, p) { return sum + p; }, 0);
+            var delta = Math.round((100 - allocated) * 10) / 10;
+            if (percentages.length) {
+                percentages[percentages.length - 1] = Math.max(4, Math.round((percentages[percentages.length - 1] + delta) * 10) / 10);
+            }
+            return percentages;
+        }
+
+        function applyDefaultWidthsToTable($table) {
+            if (!$table || !$table.length) return;
+
+            var saved = getSavedWidths();
+            if (Object.keys(saved).length > 0) return;
+            if ($table.attr('data-sigma-width-mode') === 'default') return;
+
+            var names = [];
+            $table.find('thead th').each(function() {
+                var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+                names.push(text || '[Checkbox]');
+            });
+            if (!names.length) return;
+
+            var applied = false;
+            $table.css('table-layout', 'fixed');
+
+            Object.keys(defaultColumnClassWidths).forEach(function(className) {
+                var width = defaultColumnClassWidths[className];
+                var $cells = $table.find('thead th.' + className + ', tbody td.' + className);
+                if (!$cells.length || !width) return;
+                applied = true;
+                $cells.css({
+                    width: width + 'px',
+                    minWidth: width + 'px',
+                    maxWidth: width + 'px'
+                });
+            });
+
+            $table.find('thead th').each(function(i) {
+                var colName = names[i];
+                var width = getDefaultColumnWidth(colName);
+                if (!width) return;
+                applied = true;
+                $(this).css({
+                    width: width + 'px',
+                    minWidth: width + 'px',
+                    maxWidth: width + 'px'
+                });
+            });
+
+            $table.find('tbody tr').each(function() {
+                $(this).find('td').each(function(i) {
+                    var colName = names[i];
+                    var width = getDefaultColumnWidth(colName);
+                    if (!width) return;
+                    $(this).css({
+                        width: width + 'px',
+                        minWidth: width + 'px',
+                        maxWidth: width + 'px'
+                    });
+                });
+            });
+
+            if (applied) {
+                $table.attr('data-sigma-width-mode', 'default');
+            }
+        }
+
+        function applyDefaultWidthsToAllTables() {
+            $('.waitingTable.sunriseTable, .activeTable.sunriseTable').each(function() {
+                applyDefaultWidthsToTable($(this));
+            });
+        }
+
+        function runManagedWidthsPass() {
+            var savedWidths = getSavedWidths();
+            if (Object.keys(savedWidths).length > 0) {
+                applyWidths();
+                return;
+            }
+            applyDefaultWidthsToAllTables();
+        }
+
+        window.sigmaRunManagedTableWidths = runManagedWidthsPass;
+
+        // Get unique column names from all tables
+        function getColumnNames() {
+            var columnNames = new Set();
+
+            $('.waitingTable, .activeTable').each(function() {
+                $(this).find('thead th').each(function() {
+                    // Prioritize desktop span text if it exists
+                    var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                    var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+
+                    if (text) {
+                        columnNames.add(text);
+                    } else {
+                        // For checkbox columns or empty headers
+                        columnNames.add('[Checkbox]');
+                    }
+                });
+            });
+
+            var columnsArray = Array.from(columnNames);
+
+            // Sort: Checkbox first, then alphabetically
+            columnsArray.sort(function(a, b) {
+                if (a === '[Checkbox]') return -1;
+                if (b === '[Checkbox]') return 1;
+                return a.localeCompare(b);
+            });
+
+            return columnsArray;
+        }
+
+        // Populate panel with inputs
+        function populatePanel() {
+            var columnNames = getColumnNames();
+            if (columnNames.length === 0) return;
+
+            var savedWidths = getSavedWidths();
+            $inputsContainer.empty();
+
+            console.log('Available columns:', columnNames);
+
+            columnNames.forEach(function(colName) {
+                var defaultWidth = savedWidths[colName] || getDefaultColumnWidth(colName) || '';
+                var displayName = colName === '[Checkbox]' ? '☑ Checkbox' : colName;
+                var html = '<div class="column-input-row">' +
+                    '<label>' + displayName + '</label>' +
+                    '<input type="number" class="width-input" data-col-name="' + colName + '" value="' + defaultWidth + '" placeholder="Auto" min="5" step="5">' +
+                    '</div>';
+                $inputsContainer.append(html);
+            });
+
+            // Attach instant apply on input change
+            $('.width-input').on('input change', function() {
+                applyWidths();
+            });
+        }
+
+        // Apply widths to all tables
+        function applyWidths() {
+            var widths = {};
+            $inputsContainer.find('input').each(function() {
+                var colName = $(this).data('col-name');
+                var value = parseInt($(this).val()) || null;
+                if (value) widths[colName] = value;
+            });
+
+            // Save widths to user preferences
+            setSavedWidths(widths);
+
+            // Apply to all waitingTable and activeTable
+            $('.waitingTable, .activeTable').each(function() {
+                var $table = $(this);
+
+                // Force table-layout: fixed for pixel widths
+                $table.css('table-layout', 'fixed');
+
+                // Build column name to index mapping for this table
+                var colMap = {};
+                $table.find('thead th').each(function(i) {
+                    // Prioritize desktop span text if it exists
+                    var desktopSpan = $(this).find('.innerSpan4DeskTop');
+                    var text = desktopSpan.length > 0 ? desktopSpan.text().trim() : $(this).text().trim();
+                    if (!text) text = '[Checkbox]';
+                    colMap[text] = i;
+                });
+
+                // Apply to thead th by matching column name
+                for (var colName in widths) {
+                    if (colMap[colName] !== undefined) {
+                        var idx = colMap[colName];
+                        $table.find('thead th').eq(idx).css({
+                            'width': widths[colName] + 'px',
+                            'min-width': widths[colName] + 'px',
+                            'max-width': widths[colName] + 'px'
+                        });
+                    }
+                }
+
+                // Apply to tbody td
+                $table.find('tbody tr').each(function() {
+                    for (var colName in widths) {
+                        if (colMap[colName] !== undefined) {
+                            var idx = colMap[colName];
+                            $(this).find('td').eq(idx).css({
+                                'width': widths[colName] + 'px',
+                                'min-width': widths[colName] + 'px',
+                                'max-width': widths[colName] + 'px'
+                            });
+                        }
+                    }
+                });
+                $table.attr('data-sigma-width-mode', 'custom');
+            });
+        }
+
+        // Reset to auto widths
+        function resetToAuto() {
+            // Clear saved widths
+            clearSavedWidths();
+
+            // Clear all custom widths from tables
+            $('.waitingTable, .activeTable').each(function() {
+                $(this).css('table-layout', '');
+                $(this).find('th, td').css({
+                    'width': '',
+                    'min-width': '',
+                    'max-width': ''
+                });
+                $(this).removeAttr('data-sigma-width-mode');
+            });
+
+            // Repopulate panel with empty values (all Auto)
+            populatePanel();
+            applyDefaultWidthsToAllTables();
+
+            // Show toast notification
+            if (typeof showToast === 'function') {
+                showToast('All column widths reset to Auto', 'success');
+            }
+        }
+
+        // Initialize panel on first load
+        function initPanel() {
+            populatePanel();
+
+            // Reset to Auto button
+            $('#resetToAutoBtn').on('click', resetToAuto);
+        }
+
+        if (widthStore && typeof widthStore.whenReady === 'function') {
+            widthStore.whenReady(initPanel);
+        } else {
+            initPanel();
+        }
+
+        // F2: Toggle panel
+        // F3: Reset widths
+        $(document).on('keydown', function(e) {
+            if (e.key === 'F2') {
+                e.preventDefault();
+                $panel.toggleClass('active');
+            } else if (e.key === 'F3') {
+                e.preventDefault();
+                clearSavedWidths();
+                populatePanel();
+                $('.waitingTable, .activeTable').each(function() {
+                    $(this).css('table-layout', '');
+                    $(this).find('th, td').css({
+                        'width': '',
+                        'min-width': '',
+                        'max-width': ''
+                    });
+                    $(this).removeAttr('data-sigma-width-mode');
+                });
+                applyDefaultWidthsToAllTables();
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reset Complete',
+                        text: 'Column widths cleared - using browser defaults',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                }
+            }
+        });
+
+        // Single managed pass after initial render.
+        if (widthStore && typeof widthStore.whenReady === 'function') {
+            widthStore.whenReady(function() {
+                setTimeout(function() {
+                    runManagedWidthsPass();
+                }, 180);
+            });
+        } else {
+            setTimeout(function() {
+                runManagedWidthsPass();
+            }, 180);
+        }
+
+        // Re-apply once each time a DataTable is initialized (prevents reload flicker).
+        $(document).on('init.dt', function(e, settings) {
+            var table = settings && settings.nTable ? settings.nTable : null;
+            if (!table) return;
+            var $table = $(table);
+            if (!$table.hasClass('waitingTable') && !$table.hasClass('activeTable')) return;
+
+            var applyForTable = function() {
+                var savedWidths = getSavedWidths();
+                if (Object.keys(savedWidths).length > 0) {
+                    applyWidths();
+                } else {
+                    $table.removeAttr('data-sigma-width-mode');
+                    applyDefaultWidthsToTable($table);
+                }
+            };
+
+            if (widthStore && typeof widthStore.whenReady === 'function') {
+                widthStore.whenReady(applyForTable);
+            } else {
+                applyForTable();
+            }
+        });
+
+        // Hidden tabs/tables should still get normalized widths once shown.
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function() {
+            setTimeout(function() {
+                if (widthStore && typeof widthStore.whenReady === 'function') {
+                    widthStore.whenReady(function() {
+                        runManagedWidthsPass();
+                    });
+                } else {
+                    runManagedWidthsPass();
+                }
+            }, 50);
+        });
+
+        // Reset triggered from user settings page.
+        document.addEventListener('sigma:table-widths-reset', function(event) {
+            var removedKeys = event && event.detail && Array.isArray(event.detail.removedKeys) ? event.detail.removedKeys : [];
+            if (removedKeys.length > 0 && removedKeys.indexOf(storageKey) === -1) {
+                return;
+            }
+            populatePanel();
+            $('.waitingTable, .activeTable').removeAttr('data-sigma-width-mode');
+            runManagedWidthsPass();
+        });
+    });
     </script>
 @endpush

@@ -57,53 +57,64 @@ class TestingController extends Controller
 
     public function createCase(Request $request)
     {
-        DB::beginTransaction();
-
-        /*
-        *     CASE BASIC INFO
-        */
-        $case = new sCase();
-        $case->case_id = $request->caseId1 . $request->caseId2 .$request->caseId3 . '_' . $request->caseId4;
-        $case->patient_name = $request->patient_name;
-        $case->doctor_id = $request->doctor;
-        $case->impression_type = $request->impression_type;
-        $case->initial_delivery_date = $request->delivery_date;
-        $case->created_by = Auth()->user()->id;
-        $case->save();
-
-
-        /*
-        *     SAVING TAGS
-        */
-        if ($request->tags)
-            foreach($request->tags as $tag){
-                $newTag = new caseTag(['case_id' => $case->id, 'tag_id' => $tag , 'added_by' => Auth()->user()->id]);
-                $newTag->save();
-            }
-
-        /*
-        *     STORING JOBS
-        */
-        if ($request->repeat)
-            foreach($request->repeat as $job){
-                try {
-                    if(!isset($job["units"])) continue;
-                    $newJob = new job(['unit_num' => $job["units"],'type' =>$job["jobType"] ,'color'=>$job["color"],'style'=>$job["style"] ?? 'None','abutment'=>$job["abutment"] ?? 'None','implant'=>$job["implant"] ?? 'None','material_id'=> $job["material_id"],'case_id' => $case->id , 'doctor_id' =>$request->doctor, 'stage'=>1]);
-                    $newJob->save();
-                    $newJob->unit_price = material::FindOrFail($job["material_id"])->price   - ($this->getDiscount($newJob,$case)/count(explode(',',$newJob->unit_num)));
-
-                    $newJob->save();
-                } catch (\Exception $e) {
-                    $request->flash();
-                    return back()->with('error',"One of the jobs is missing 1 or more properties!" );
-                }
-                if($newJob->material->id != 6)
-                {
-                    $newJob->implant =null;
-                    $newJob->abutment =null;
-                    $newJob->save();
+        // Simple validation for material_id
+        if ($request->repeat) {
+            foreach ($request->repeat as $index => $job) {
+                if (isset($job["units"]) && empty($job["material_id"])) {
+                    return back()->with('error', 'Please select a material for all jobs.');
                 }
             }
+        }
+
+        try {
+            /*
+            *     CASE BASIC INFO
+            */
+            $case = new sCase();
+            $case->case_id = $request->caseId1 . $request->caseId2 .$request->caseId3 . '_' . $request->caseId4;
+            $case->patient_name = $request->patient_name;
+            $case->doctor_id = $request->doctor;
+            $case->impression_type = $request->impression_type;
+            $case->initial_delivery_date = $request->delivery_date;
+            $case->created_by = Auth()->user()->id;
+            $case->save();
+
+
+            /*
+            *     SAVING TAGS
+            */
+            if ($request->tags)
+                foreach($request->tags as $tag){
+                    $newTag = new caseTag(['case_id' => $case->id, 'tag_id' => $tag , 'added_by' => Auth()->user()->id]);
+                    $newTag->save();
+                }
+
+            /*
+            *     STORING JOBS
+            */
+            if ($request->repeat)
+                foreach($request->repeat as $job){
+                    try {
+                        if(!isset($job["units"])) continue;
+
+                        $newJob = new job(['unit_num' => $job["units"],'type' =>$job["jobType"] ,'color'=>$job["color"],'style'=>$job["style"] ?? 'None','abutment'=>$job["abutment"] ?? 'None','implant'=>$job["implant"] ?? 'None','material_id'=> $job["material_id"],'case_id' => $case->id , 'doctor_id' =>$request->doctor, 'stage'=>1]);
+                        $newJob->save();
+                        $newJob->unit_price = material::FindOrFail($job["material_id"])->price   - ($this->getDiscount($newJob,$case)/count(explode(',',$newJob->unit_num)));
+
+                        $newJob->save();
+                    } catch (\Exception $e) {
+                        return back()->with('error',"Error creating job: " . $e->getMessage());
+                    }
+                    if($newJob->material && $newJob->material->id != 6)
+                    {
+                        $newJob->implant =null;
+                        $newJob->abutment =null;
+                        $newJob->save();
+                    }
+                }
+        } catch (\Exception $e) {
+            return back()->with('error', "Error creating case: " . $e->getMessage());
+        }
 
 
         /*
@@ -169,6 +180,10 @@ class TestingController extends Controller
 
     public function issueInvoice($job){
         $case = sCase::findOrFail($job->case_id);
+
+        // Check if invoice already exists for this case
+        $existingInvoice = invoice::where('case_id', $case->id)->first();
+
         $invoiceApplicable = true;
         $invoiceAmount = 0;
         foreach($case->jobs as $job) {
@@ -177,7 +192,14 @@ class TestingController extends Controller
             $invoiceAmount += $jobPrice;
         }
         if ($invoiceApplicable){
-            $invoice = new invoice();
+            if ($existingInvoice) {
+                // Update existing invoice instead of creating a new one
+                $invoice = $existingInvoice;
+            } else {
+                // Create new invoice only if one doesn't exist
+                $invoice = new invoice();
+            }
+
             $invoice->status =1;
             $invoice->case_id =$case->id;
             $invoice->doctor_id =$case->client->id;

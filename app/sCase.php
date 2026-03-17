@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Config;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Observers\AbutmentsObserver;
+use Illuminate\Validation\ValidationException;
 use function PHPSTORM_META\elementType;
 
 class sCase extends Model
@@ -17,6 +18,20 @@ class sCase extends Model
     protected $guarded = ['id'];
 
     protected $table = 'cases';
+
+
+    protected static function booted(): void
+    {
+        static::saving(function ($case) {
+            if ($case->delivered_to_client == 1 && is_null($case->actual_delivery_date)) {
+                throw ValidationException::withMessages([
+                    'actual_delivery_date' => 'Case cannot be marked as delivered without a delivery date.',
+                ]);
+            }
+        });
+    }
+
+
     /**
      * Scope a query to only exclude specific Columns.
      *
@@ -35,6 +50,7 @@ class sCase extends Model
         }
         return $query;
     }
+
 
     /**
      * Shows All the columns of the Corresponding Table of Model
@@ -92,6 +108,21 @@ class sCase extends Model
     {
         return $this->hasMany('App\caseLog', 'case_id', 'id');
     }
+
+    public function caseLogs()
+    {
+        return $this->hasMany('App\caseLog', 'case_id', 'id');
+    }
+
+    public function failureLogs()
+    {
+        return $this->hasMany('App\failureLog', 'case_id', 'id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User', 'created_by', 'id');
+    }
     public function getInitialDeliveryDateAttribute( $value ) {
         return substr($this->attributes['initial_delivery_date'],0,10) .'T' .  substr($this->attributes['initial_delivery_date'],11,5);
     }
@@ -135,19 +166,21 @@ class sCase extends Model
 
     public function unitsAmount($stage = -2)
     {
-        // -2 means no stage is specified
-        // if no stage is specified and job is still before finishing count all jobs
-        if($stage == -2 )$jobs = $this->jobs;
-        else $jobs = $this->jobs->where("stage",$stage);
+        // -2 means no stage is specified; otherwise filter jobs by stage
+        $jobs = $stage == -2 ? $this->jobs : $this->jobs->where('stage', $stage);
 
-        $amountOfUnits =0;
-        foreach($jobs as $job)
-            if($stage != 3)
-            {if($job->material->count_as_unit)
-            $amountOfUnits += count(explode(',',$job->unit_num));
+        $amountOfUnits = 0;
+        foreach ($jobs as $job) {
+            if (!$job->material || $job->material->count_as_unit != 1) {
+                continue;
             }
-            else
-            $amountOfUnits += count(explode(',',$job->unit_num));
+            // unit_num can be comma separated; count non-empty entries, fallback to 1 per job
+            $unitCount = count(array_filter(explode(',', (string) $job->unit_num), function ($value) {
+                return trim($value) !== '';
+            }));
+
+            $amountOfUnits += max(1, $unitCount);
+        }
 
         return $amountOfUnits;
     }
@@ -196,7 +229,7 @@ class sCase extends Model
           //  return("4 , " . $status);
             if ($this->jobs[0]->assignee != null) {
                 if ($this->jobs[0]->delivery_accepted == null)
-                    return "Assigned To Driver";
+                    return $this->jobs[0]->assignedTo->first_name;
                 else
                     return "Active in Delivery";
             }
@@ -423,35 +456,33 @@ class sCase extends Model
 
     public function countUnitsSet($typeId): int
     {
-        return array_reduce(
-            $this->jobs
-                ->where('stage', $typeId)
-                ->filter(function ($job) {
-                    return $job->is_set !== null && $job->is_set != 0
-                        && ($job->is_active === null || $job->is_active == 0);
-                })
-                ->toArray(),
-            function ($carry, $job) {
-                return $carry + count(explode(',', $job['unit_num']));
-            },
-            0
-        );
+        return $this->jobs
+            ->where('stage', $typeId)
+            ->filter(function ($job) {
+                return $job->is_set !== null && $job->is_set != 0
+                    && ($job->is_active === null || $job->is_active == 0);
+            })
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public function countUnitsActive($typeId): int
     {
-        return array_reduce(
-            $this->jobs
-                ->where('stage', $typeId)
-                ->filter(function ($job) {
-                    return $job->is_active !== null && $job->is_active != 0;
-                })
-                ->toArray(),
-            function ($carry, $job) {
-                return $carry + count(explode(',', $job['unit_num']));
-            },
-            0
-        );
+        return $this->jobs
+            ->where('stage', $typeId)
+            ->filter(function ($job) {
+                return $job->is_active !== null && $job->is_active != 0;
+            })
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
 }

@@ -5,11 +5,11 @@
     'stageId'
 ])
 
-<div class="sig1ma-workflo1w-mo1dal waiting-dialog modal fade animate__animated animate__bounc"  id="3dprinting-waiting" tabindex="-1" role="dialog">
+<div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc sigma-modal--waiting-3d-printing" id="3dprinting-waiting" tabindex="-1" role="dialog">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
-            <h2 class="sigma-workflow-title waiting">{{ $title }}</h2>
+            <span class="sigma-workflow-title waiting">{{ $title }}</span>
             <button class="sigma-close-button" onclick="closeModal({id: '3dprinting', isWaiting:true})">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -17,6 +17,7 @@
 
         <!-- Machine selection grid -->
         <div class="sigma-workflow-body">
+
             <div class="sigma-machines-grid">
                 @if(isset($devices) && $devices->count() > 0)
                     @foreach($devices->where('type', $stageId) as $device)
@@ -24,7 +25,9 @@
                              onclick="selectMachine(this, '3dprinting', {{ $device['id'] }})">
                             <div class="sigma-machine-image-container">
                                 <img src="{{ asset(isset($device['img']) ? $device['img'] : 'images/default-device.png') }}"
-                                     alt="{{ isset($device['name']) ? $device['name'] : 'Device' }}" class="sigma-machine-image">
+                                     alt="{{ isset($device['name']) ? $device['name'] : 'Device' }}"
+                                     class="sigma-machine-image"
+                                     onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<div style=\'display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:12px;text-align:center;padding:10px;\'>Image Not Found</div>';">
                             </div>
                             <div class="sigma-machine-name">{{ isset($device['name']) ? $device['name'] : 'Unknown Device' }}</div>
                         </div>
@@ -34,17 +37,34 @@
                 @endif
             </div>
 
-            <!-- Build name input (only for 3D printing) -->
-            <div class="sigma-form-group">
-                <label for="sigma-build-name-3dprinting">Build Name</label>
-                <input type="text"
-                       id="sigma-build-name-3dprinting"
-                       class="sigma-form-control   {{$stageConfig['3dprinting']['multiple-waiting']?'multiple-choice' :'single-choice' }}"
-                       placeholder="Enter Build name"
+            <!-- Build name and Material Type inputs -->
+            <div class="sigma-inputs-container " style="display: flex; gap: 10px; align-items: end;">
 
-                       oninput="validateAndSetBuildName('3dprinting')">
+                <!-- Build name input -->
+                <div class="sigma-form-group " style="flex: 1;">
+
+                    <input type="text"
+                           id="sigma-build-name-3dprinting"
+                           class="sigma-form-control {{$stageConfig['3dprinting']['multiple-waiting']?'multiple-choice' :'single-choice' }}"
+                           placeholder="Enter Build name"
+                           oninput="validateAndSetBuildName('3dprinting')">
+                </div>
+
+                <!-- Material Type selection for 3D printing -->
+                <div class="sigma-form-group " style="flex: 1;">
+
+
+
+                    <select id="sigma-material-type-3dprinting"
+                            class="sigma-form-control "
+                            onchange="validateMaterialTypeSelection('3dprinting')">
+                        <!-- Options will be populated by JavaScript based on selected cases -->
+                    </select>
+
+                </div>
 
             </div>
+
 
         </div>
 

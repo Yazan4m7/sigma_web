@@ -33,4 +33,28 @@ class User extends Authenticatable
         return $this->first_name .' ' . $this->last_name ;
     }
 
+    public function getAvatarPathAttribute(): string
+    {
+        $default = 'assets/images/avatars/default.png';
+        if (!empty($this->img)) {
+            if (preg_match('~^https?://~i', $this->img)) {
+                return $this->img;
+            }
+            $path = ltrim($this->img, '/');
+            if (strpos($path, 'public/') === 0) {
+                $path = substr($path, 7);
+            }
+            if (file_exists(public_path($path))) {
+                return $path;
+            }
+        }
+        if ($this->has_photo) {
+            $path = 'assets/images/avatars/user_' . $this->id . '.webp';
+            if (file_exists(public_path($path))) {
+                return $path;
+            }
+        }
+        return $default;
+    }
+
 }

@@ -1,0 +1,12 @@
+# codemcp.toml (in your project root)
+[project]
+name = "SIGMA Dental"
+language = "javascript"
+framework = "laravel"
+
+[commands]
+test = "npm run cy:run"
+test-ui = "npm run cy:open"
+test-headed = "npm run cy:run:headed"
+serve = "php artisan serve"
+cache-clear = "php artisan cache:clear"

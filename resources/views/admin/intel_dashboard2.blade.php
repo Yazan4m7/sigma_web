@@ -568,7 +568,7 @@ background-color: transparent">
 
                 <!-- BEGIN Shortcuts -->
                 <!-- modal shortcut -->
-                <div class="modal fade modal-backdrop-transparent" id="modal-shortcut" tabindex="-1" role="dialog" aria-labelledby="modal-shortcut" aria-hidden="true">
+                <div class="modal fade modal-backdrop-transparent sigma-modal--admin-intel2-shortcut" id="modal-shortcut" tabindex="-1" role="dialog" aria-labelledby="modal-shortcut" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-top modal-transparent" role="document">
                         <div class="modal-content">
                             <div class="modal-body">
@@ -619,7 +619,7 @@ background-color: transparent">
     <!-- END Page Wrapper -->
 
     <!-- BEGIN Page Settings -->
-    <div class="modal fade js-modal-settings modal-backdrop-transparent" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade js-modal-settings modal-backdrop-transparent sigma-modal--admin-intel2-settings" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-right modal-md">
             <div class="modal-content">
                 <div class="dropdown-header bg-trans-gradient d-flex justify-content-center align-items-center w-100">

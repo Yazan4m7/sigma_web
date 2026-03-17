@@ -1861,7 +1861,7 @@ pre code {
   background-color: #ffffff;
   border-color: rgba(50, 151, 211, 0.25);
   outline: 0;
-  box-shadow: none, none;
+
 }
 
 .form-control::placeholder {
@@ -2340,6 +2340,7 @@ textarea.form-control {
 
 .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
+    font-color: #2c3041 !important;
 }
 
 .btn:not(:disabled):not(.disabled):active,
@@ -2393,7 +2394,7 @@ fieldset:disabled a.btn {
 .btn-primary:not(:disabled):not(.disabled):active:focus,
 .btn-primary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-primary.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(225, 78, 202, 0.5);
+  box-shadow: 0 0 0 0 rgba(225, 78, 202, 0.5);
 }
 
 .btn-secondary {
@@ -2432,7 +2433,7 @@ fieldset:disabled a.btn {
 .btn-secondary:not(:disabled):not(.disabled):active:focus,
 .btn-secondary:not(:disabled):not(.disabled).active:focus,
 .show>.btn-secondary.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(244, 245, 247, 0.5);
+  box-shadow: 0 0 0 0 rgba(244, 245, 247, 0.5);
 }
 
 .btn-success {
@@ -2471,7 +2472,7 @@ fieldset:disabled a.btn {
 .btn-success:not(:disabled):not(.disabled):active:focus,
 .btn-success:not(:disabled):not(.disabled).active:focus,
 .show>.btn-success.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(0, 242, 195, 0.5);
+  box-shadow: 0 0 0 0 rgba(0, 242, 195, 0.5);
 }
 
 .btn-info {
@@ -2510,7 +2511,7 @@ fieldset:disabled a.btn {
 .btn-info:not(:disabled):not(.disabled):active:focus,
 .btn-info:not(:disabled):not(.disabled).active:focus,
 .show>.btn-info.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(29, 140, 248, 0.5);
+  box-shadow: 0 0 0 0 rgba(29, 140, 248, 0.5);
 }
 
 .btn-warning {
@@ -2549,7 +2550,7 @@ fieldset:disabled a.btn {
 .btn-warning:not(:disabled):not(.disabled):active:focus,
 .btn-warning:not(:disabled):not(.disabled).active:focus,
 .show>.btn-warning.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(255, 141, 114, 0.5);
+  box-shadow: 0 0 0 0 rgba(255, 141, 114, 0.5);
 }
 
 .btn-danger {
@@ -2588,7 +2589,7 @@ fieldset:disabled a.btn {
 .btn-danger:not(:disabled):not(.disabled):active:focus,
 .btn-danger:not(:disabled):not(.disabled).active:focus,
 .show>.btn-danger.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(253, 93, 147, 0.5);
+  box-shadow: 0 0 0 0 rgba(253, 93, 147, 0.5);
 }
 
 .btn-light {
@@ -2627,7 +2628,7 @@ fieldset:disabled a.btn {
 .btn-light:not(:disabled):not(.disabled):active:focus,
 .btn-light:not(:disabled):not(.disabled).active:focus,
 .show>.btn-light.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(173, 181, 189, 0.5);
+  box-shadow: 0 0 0 0 rgba(173, 181, 189, 0.5);
 }
 
 .btn-dark {
@@ -2666,7 +2667,7 @@ fieldset:disabled a.btn {
 .btn-dark:not(:disabled):not(.disabled):active:focus,
 .btn-dark:not(:disabled):not(.disabled).active:focus,
 .show>.btn-dark.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(33, 37, 41, 0.5);
+  box-shadow: 0 0 0 0 rgba(33, 37, 41, 0.5);
 }
 
 .btn-default {
@@ -2705,7 +2706,7 @@ fieldset:disabled a.btn {
 .btn-default:not(:disabled):not(.disabled):active:focus,
 .btn-default:not(:disabled):not(.disabled).active:focus,
 .show>.btn-default.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(52, 70, 117, 0.5);
+  box-shadow: 0 0 0 0 rgba(52, 70, 117, 0.5);
 }
 
 .btn-white {
@@ -2744,7 +2745,7 @@ fieldset:disabled a.btn {
 .btn-white:not(:disabled):not(.disabled):active:focus,
 .btn-white:not(:disabled):not(.disabled).active:focus,
 .show>.btn-white.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn-neutral {
@@ -2783,7 +2784,7 @@ fieldset:disabled a.btn {
 .btn-neutral:not(:disabled):not(.disabled):active:focus,
 .btn-neutral:not(:disabled):not(.disabled).active:focus,
 .show>.btn-neutral.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
 }
 
 .btn-darker {
@@ -2822,7 +2823,7 @@ fieldset:disabled a.btn {
 .btn-darker:not(:disabled):not(.disabled):active:focus,
 .btn-darker:not(:disabled):not(.disabled).active:focus,
 .show>.btn-darker.dropdown-toggle:focus {
-  box-shadow: none, 0 0 0 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5);
 }
 
 .btn-outline-primary {
@@ -5913,7 +5914,7 @@ button.close {
 
 @media screen and (prefers-reduced-motion: reduce) {
   .modal.fade .modal-dialog {
-    transition: none;
+
   }
 }
 
@@ -5934,6 +5935,7 @@ button.close {
 }
 
 .modal-content {
+  padding: 28px 14px;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -6041,6 +6043,7 @@ button.close {
 }
 
 .tooltip {
+  width: 14vh !important;
   position: absolute;
   z-index: 1070;
   display: block;
@@ -12090,10 +12093,10 @@ fieldset[disabled] .btn-link.active {
   visibility: visible;
 
   /** COMMENT BELOW **/
-  -webkit-transform: translate3d(0, 1px, 0) !important;
-  -moz-transform: translate3d(0, 1px, 0) !important;
-  -o-transform: translate3d(0, 1px, 0) !important;
-  -ms-transform: translate3d(0, 1px, 0) !important;
+  /*-webkit-transform: translate3d(0, 1px, 0) !important;*/
+  /*-moz-transform: translate3d(0, 1px, 0) !important;*/
+  /*-o-transform: translate3d(0, 1px, 0) !important;*/
+  /*-ms-transform: translate3d(0, 1px, 0) !important;*/
   transform: translate3d(0, 1px, 0) !important;
 }
 
@@ -12449,6 +12452,7 @@ img {
 
 .modal-content {
   border: 0;
+  padding: 28px 14px;
 }
 
 .modal-content .modal-header {
@@ -14819,14 +14823,14 @@ table.tablesorter thead tr .headerSortDown {
 
 .fixed-plugin .dropdown .dropdown-menu:before,
 .fixed-plugin .dropdown .dropdown-menu:after {
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: 74px;
-  width: 16px;
-  transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
-  -moz-transform: translateY(-50%);
+  /*content: "";*/
+  /*display: inline-block;*/
+  /*position: absolute;*/
+  /*top: 74px;*/
+  /*width: 16px;*/
+  /*transform: translateY(-50%);*/
+  /*-webkit-transform: translateY(-50%);*/
+  /*-moz-transform: translateY(-50%);*/
 }
 
 .fixed-plugin .dropdown.show .dropdown-menu {
@@ -15066,14 +15070,7 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active>a:not([data-toggle="collapse"]):before,
 .off-canvas-sidebar .nav li.active>a:not([data-toggle="collapse"]):before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 22px;
-  left: -4px;
-  background: #ffffff;
-  border-radius: 50%;
+
 }
 
 .sidebar .nav li.active>a[data-toggle="collapse"],
@@ -15103,26 +15100,12 @@ table.tablesorter thead tr .headerSortDown {
 
 .sidebar .nav li.active>a[data-toggle="collapse"]+div .nav .active a:before,
 .off-canvas-sidebar .nav li.active>a[data-toggle="collapse"]+div .nav .active a:before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 17px;
-  left: -4px;
-  background: #ffffff;
-  border-radius: 50%;
+
 }
 
 .sidebar .nav li.active>a[data-toggle="collapse"]:before,
 .off-canvas-sidebar .nav li.active>a[data-toggle="collapse"]:before {
-  content: " ";
-  position: absolute;
-  height: 6px;
-  width: 6px;
-  top: 22px;
-  left: -4px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
+
 }
 
 .sidebar .nav p,
@@ -16939,9 +16922,7 @@ Copyright (c) 2015 Daniel Eden
   color: rgba(255, 255, 255, 0.8);
 }
 
-.white-content .main-panel {
-  background: #f5f6fa;
-}
+
 
 .white-content h1,
 .white-content h2,
@@ -17119,7 +17100,7 @@ Copyright (c) 2015 Daniel Eden
 
 .white-content .card:not(.card-white) {
   background: #ffffff;
-  box-shadow: 0 1px 15px 0 rgba(123, 123, 123, 0.05);
+  box-shadow: 0 1px 15px 0 rgba(123, 123, 123, 0.01);
 }
 
 .white-content .card:not(.card-white) .card-header {

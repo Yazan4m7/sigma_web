@@ -9,7 +9,11 @@
                             <span class="navbar-toggler-bar bar3"></span>
                         </button>
                     </div>
-                    <div class="navbar-brand" href="#"><img src="{{ asset('assets') }}/images/logo_horiz.svg"  width=190/> </div>
+                    <div class="navbar-brand" href="#">
+                        <a class="navbar-brand logo-navbar" href="{{ route('home') }}">
+                            <img src="{{ asset('assets') }}/images/logo_horiz.svg"  width=190/> </div>
+                        </a>
+
                 </div></div>
             <div class="col-md-4"> <div style = "flex-grow: 5"> {{$pageSlug ?? "SIGMA"}} </div></div>
             <div class="col-md-4"><button stlyle= "flex-grow: 3" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

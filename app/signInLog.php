@@ -2,7 +2,7 @@
 
 namespace App;
 use Illuminate\Database\Eloquent\Model;
-class signinLog extends Model
+class signInLog extends Model
 {
     public $timestamps = false;
     protected $guarded = ['id'];

@@ -45,6 +45,9 @@ class MaterialController extends Controller
             $material->qc = isset($request->qc) ? 1 : 0;
             $material->delivery = isset($request->delivery) ? 1 : 0;
         $material->count_as_unit = isset($request->count_as_unit) ? 1 : 0;
+        if ($request->filled('default_type_id')) {
+            $material->default_type_id = $request->default_type_id;
+        }
             $material->save();
 
         foreach($request->jobTypes as $jobType){
@@ -54,9 +57,27 @@ class MaterialController extends Controller
           $jt->save();
          }
 
-        // Handle material types if provided
+        // Handle new type names - create them first
+        $newTypeIds = [];
+        if ($request->has('newTypeNames') && is_array($request->newTypeNames)) {
+            foreach ($request->newTypeNames as $typeName) {
+                $type = new \App\Type();
+                $type->name = $typeName;
+                $type->material_id = $material->id;
+                $type->is_enabled = true;
+                $type->save();
+                $newTypeIds[] = $type->id;
+            }
+        }
+
+        // Handle existing material types if provided
+        $allTypeIds = $newTypeIds;
         if ($request->has('materialTypes') && is_array($request->materialTypes)) {
-            $material->types()->sync($request->materialTypes);
+            $allTypeIds = array_merge($allTypeIds, $request->materialTypes);
+        }
+
+        if (!empty($allTypeIds)) {
+            $material->types()->sync($allTypeIds);
         }
 
             return back()->with('success', 'Material has been successfully created');
@@ -92,6 +113,7 @@ class MaterialController extends Controller
             $material->qc = isset($request->qc) ? 1 : 0;
             $material->delivery = isset($request->delivery) ? 1 : 0;
             $material->count_as_unit = isset($request->count_as_unit) ? 1 : 0;
+            $material->default_type_id = $request->default_type_id;
             $material->save();
 
         foreach($material->jobTypes as $jobTypeRelation){
@@ -113,22 +135,9 @@ class MaterialController extends Controller
                 $material->types()->detach(); // Remove all types if none selected
             }
 
-            // Handle material implants update
-            if ($request->has('materialImplants') && is_array($request->materialImplants)) {
-                $syncData = [];
-                foreach ($request->materialImplants as $implantData) {
-                    $syncData[$implantData['implant_id']] = [
-                        'compatibility_level' => $implantData['compatibility_level'] ?? 'compatible',
-                        'notes' => $implantData['notes'] ?? null,
-                        'is_active' => true
-                    ];
-                }
-                $material->implants()->sync($syncData);
-            } else {
-                $material->implants()->detach(); // Remove all implants if none selected
-            }
 
-            return back()->with('success', 'Material has been successfully updated');
+
+            return redirect()->route('material-index')->with('success', 'Material has been successfully updated');
 
     }
 
@@ -145,5 +154,151 @@ class MaterialController extends Controller
         }
 
         return response()->json($types);
+    }
+
+    public function getAllTypes()
+    {
+        try {
+            $types = \App\Type::with('material:id,name')
+                ->where('is_enabled', true)
+                ->get(['id', 'name', 'material_id'])
+                ->map(function($type) {
+                    return [
+                        'id' => $type->id,
+                        'name' => $type->name,
+                        'material_id' => $type->material_id,
+                        'material_name' => $type->material ? $type->material->name : 'Unknown Material'
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'types' => $types
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error getting material types: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+
+    public function createType(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'material_id' => 'required|integer|exists:materials,id'
+            ]);
+
+            // Check if type name already exists for this material
+            $existingType = \App\Type::where('name', $request->name)
+                ->where('material_id', $request->material_id)
+                ->first();
+
+            if ($existingType) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'A material type with this name already exists for this material'
+                ], 422);
+            }
+
+            // Create new material type
+            $type = new \App\Type();
+            $type->name = $request->name;
+            $type->material_id = $request->material_id;
+            $type->is_enabled = true;
+            $type->save();
+
+            // Return the created type with material relationship
+            $type->load('material');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Material type created successfully',
+                'type' => [
+                    'id' => $type->id,
+                    'name' => $type->name,
+                    'material_id' => $type->material_id,
+                    'material' => $type->material
+                ]
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error creating material type: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getMaterialTypesForCase(Request $request)
+    {
+        try {
+            $materialId = $request->input('material_id');
+
+            if (!$materialId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Material ID is required'
+                ]);
+            }
+
+            // Try to find material by ID first, then by name if ID fails
+            $material = material::find($materialId);
+
+            if (!$material) {
+                // Try finding by name in case the frontend is passing material name instead of ID
+                $material = material::where('name', $materialId)->first();
+            }
+
+            if (!$material) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Material not found for ID/name: {$materialId}"
+                ]);
+            }
+
+            // Get all types for this material - specify table names to avoid ambiguity
+            $allTypes = $material->types()->get(['types.id', 'types.name', 'types.is_enabled']);
+
+            // Get the default type from the material's default_type_id column
+            $defaultType = null;
+            if ($material->default_type_id) {
+                $defaultType = $allTypes->firstWhere('id', $material->default_type_id);
+            }
+
+            return response()->json([
+                'success' => true,
+                'types' => $allTypes->map(function($type) {
+                    return [
+                        'id' => $type->id,
+                        'name' => $type->name,
+                        'is_enabled' => $type->is_enabled
+                    ];
+                }),
+                'default_type_id' => $material->default_type_id,
+                'default_type' => $defaultType ? [
+                    'id' => $defaultType->id,
+                    'name' => $defaultType->name,
+                    'is_enabled' => $defaultType->is_enabled
+                ] : null,
+                'material_id' => $materialId,
+                'material_name' => $material->name
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error fetching material types: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -58,11 +58,14 @@ class MediaController extends Controller
     public function editPost(Request $request)
     {
         $media = GalleryMedia::where('id',$request->media_id)->first();
-        $path = public_path(). '/media/'.$media->id;
+        $path = public_path('/gallery/' . $media->id);
+        if (!File::exists($path)) {
+            File::makeDirectory($path, 0755, true);
+        }
         if($request->hasFile("video"))
-        $request->file('video')->move($path,$media->id.'.mp4');
+        $request->file('video')->move($path,'video.mp4');
         if($request->hasFile("image"))
-        $request->file('image')->move($path,$media->id.'.jpg');
+        $request->file('image')->move($path,'thumbnail.jpg');
         $media->text = $request->title;
         $media->save();
         return redirect()->route("media-index",compact('media'))->with("success", "Media updated successfully");

@@ -57,7 +57,7 @@
 @section('content')
 @php
 $color= "#212529";
-$permissions = Cache::get('user'.Auth()->user()->id);
+$permissions = safe_permissions();
 @endphp
 <div class="row ">
     <div class="col-lg-12 col-sm-12 stuffContainer">
@@ -123,13 +123,13 @@ $permissions = Cache::get('user'.Auth()->user()->id);
                                                             <a class="dropdown-item" data-toggle="modal" data-target="#confirmCompletion{{$case->id}}"> <i class="kt-nav__link-icon flaticon2-contract"></i> <span class="kt-nav__link-text">Complete</span> </a>
 
                                                             @if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102)||$permissions->contains('permission_id', 1))))
-                                                                <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit case</a>
+                                                                <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit</a>
                                                             @endif
                                                         <a class="dropdown-item" href="{{route('view-case', ['id' => $case->id, 'stage' =>$stage])}}">View case</a>
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <div class="modal" tabindex="-1" role="dialog" id="myModal{{$case->id}}">
+                                            <div class="modal sigma-modal--generic-emp-cases-alt-primary" tabindex="-1" role="dialog" id="myModal{{$case->id}}">
                                                 <form action="{{route('assign-to-delivery-person')}}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">
@@ -167,7 +167,7 @@ $permissions = Cache::get('user'.Auth()->user()->id);
                                                 </form>
                                             </div>
                                             @if($stage =='2')
-                                                <div class="modal" tabindex="-1" role="dialog" id="MEX{{$case->id}}">
+                                                <div class="modal sigma-modal--generic-emp-cases-alt-secondary" tabindex="-1" role="dialog" id="MEX{{$case->id}}">
                                                     <form action="{{route('externally-milled')}}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="case_id" value="{{$case->id}}">
@@ -201,7 +201,7 @@ $permissions = Cache::get('user'.Auth()->user()->id);
                                                     </form>
                                                 </div>
                                             @endif
-                                            <div class="modal" tabindex="-1" role="dialog" id="confirmCompletion{{$case->id}}">
+                                            <div class="modal sigma-modal--generic-emp-cases-alt-tertiary" tabindex="-1" role="dialog" id="confirmCompletion{{$case->id}}">
                                                 <form action="{{route('finish-case',['caseId'=> $case->id,'stage'=>$stage] )}}" method="GET">
                                                     @csrf
                                                     <input type="hidden" name="case_id" value="{{$case->id}}">
@@ -340,7 +340,7 @@ $permissions = Cache::get('user'.Auth()->user()->id);
                                                         <a class="dropdown-item" href="{{route('assign-to-me',['caseId'=> $case->id,'stage'=>$stage] )}}">Assign To Me</a>
                                                         <a class="dropdown-item" href="{{route('view-case', ['id' => $case->id, 'stage' =>$stage])}}">View case</a>
                                                         @if(Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102)||$permissions->contains('permission_id', 1))))
-                                                            <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit case</a>
+                                                            <a class="dropdown-item" href="{{route('edit-case-view',$case->id)}}">Edit </a>
                                                         @endif
                                                     </div>
                                                 </td>

@@ -92,13 +92,13 @@ class job extends Model
         {
             if($this->stage == 8){
             if($this->delivery_accepted)
-                return "Active in ".$stageName . " w/ ". $assignee->name_initials;
+                return $stageName . " w/ ". $assignee->name_initials;
                 else
             return "Assigned to ". $assignee->name_initials;
 
             }
             else
-            return "Active in ".$stageName . " w/ ". $assignee->name_initials;
+            return $stageName . " w/ ". $assignee->name_initials;
 
         }
         else
@@ -116,31 +116,39 @@ class job extends Model
 
     public static function countUnitsSet($deviceId, $stageId): int
     {
-        return array_reduce(self::where('device_id', $deviceId)
+        return self::where('device_id', $deviceId)
             ->where('stage', $stageId)
             ->where('is_set', 1)
             ->where(function ($q) {
                 $q->whereNull('is_active')
                     ->orWhere('is_active', 0);
             })
+            ->with('material:id,count_as_unit')
             ->get()
-            ->toArray(), function ($carry, $job) {
-            return $carry + count(explode(',', $job['unit_num']));
-        }, 0);
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public static function countUnitsActive($deviceId, $stageId): int
     {
-        return array_reduce(self::where('device_id', $deviceId)
+        return self::where('device_id', $deviceId)
             ->where('stage', $stageId)
             ->where(function ($q) {
                 $q->whereNotNull('is_active')
                     ->where('is_active', '!=', 0);
             })
+            ->with('material:id,count_as_unit')
             ->get()
-            ->toArray(), function ($carry, $job) {
-            return $carry + count(explode(',', $job['unit_num']));
-        }, 0);
+            ->reduce(function ($carry, $job) {
+                if (!$job->material || $job->material->count_as_unit != 1) {
+                    return $carry;
+                }
+                return $carry + count(explode(',', $job->unit_num));
+            }, 0);
     }
 
     public function build()
@@ -158,8 +166,49 @@ class job extends Model
         return $this->belongsTo(Build::class, 'printing_build_id');
     }
 
+    public function sinteringBuild()
+    {
+        return $this->belongsTo(Build::class, 'sintering_build_id');
+    }
+
     public function pressingBuild()
     {
         return $this->belongsTo(Build::class, 'pressing_build_id');
+    }
+
+    public function device()
+    {
+        return $this->belongsTo('App\device', 'device_id', 'id');
+    }
+
+    /**
+     * Check if this job goes through a specific manufacturing stage
+     * based on its material properties
+     *
+     * @param int $stage Stage number (2=Milling, 3=3D Printing, 4=Sintering, 5=Pressing)
+     * @return bool
+     */
+    public function goesThroughStage($stage)
+    {
+        if (!$this->material) {
+            return true; // If no material info, assume it goes through all stages
+        }
+
+        switch ($stage) {
+            case 2: // Milling
+                return true;
+
+            case 3: // 3D Printing
+                return true;
+
+            case 4: // Sintering
+                return true;
+
+            case 5: // Pressing
+                return true;
+
+            default:
+                return true; // Design (1), Finishing (6), QC (7), Delivery (8) - all jobs go through these
+        }
     }
 }

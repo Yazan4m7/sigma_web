@@ -1,4 +1,7 @@
 <footer class="footer">
+
+    <script src="{{ asset('assets/js/submit-lock.js') }}" defer></script>
+
     <script>
         // Show the spinner as soon as the page starts loading
         // window.addEventListener('beforeunload', function() {
@@ -25,10 +28,7 @@
     </script>
 
 {{--   --}}
-    <!-- Core Libraries -->
-    <script src="{{ asset('white') }}/js/core/jquery.min.js"></script>
-    <script src="{{ asset('white') }}/js/core/popper.min.js"></script>
-    <script src="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js')}}" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+    <!-- Core Libraries loaded in header -->
 
     <!-- Moment.js (needed by several plugins) -->
     <script src="{{asset('assets/js/moment-with-locales.min.js')}}"></script>
@@ -41,17 +41,193 @@
 
     <!-- Bootstrap Plugins -->
     <script src="{{ asset('white') }}/js/plugins/bootstrap-notify.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
+    
+
+<script src="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js')}}" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+<!-- Bootstrap Select No-Scroll Fix -->
+<script>
+// Override scrollIntoView globally for Bootstrap Select elements
+(function() {
+    const originalScrollIntoView = Element.prototype.scrollIntoView;
+    Element.prototype.scrollIntoView = function(arg) {
+        // If this element is inside a bootstrap-select dropdown, do nothing
+        if (this.closest && this.closest('.bootstrap-select .dropdown-menu')) {
+            return; // Block all scroll-into-view calls
+        }
+        // Otherwise, call the original method
+        return originalScrollIntoView.call(this, arg);
+    };
+})();
+
+$(document).ready(function() {
+    // Override scroll methods after Bootstrap Select loads
+    setTimeout(function() {
+        // Completely disable scrolling on dropdown menus
+        $('.bootstrap-select .dropdown-menu .inner').each(function() {
+            const element = this;
+            let isScrolling = false;
+
+            // Override scrollTop setter
+            Object.defineProperty(element, 'scrollTop', {
+                get: function() {
+                    return this._scrollTop || 0;
+                },
+                set: function(value) {
+                    // Only allow scroll if user initiated it
+                    if (!isScrolling) {
+                        this._scrollTop = value;
+                        HTMLElement.prototype.__lookupSetter__('scrollTop').call(this, value);
+                    }
+                }
+            });
+
+            // Mark user-initiated scrolling
+            $(element).on('wheel touchmove', function() {
+                isScrolling = true;
+                setTimeout(() => { isScrolling = false; }, 100);
+            });
+        });
+
+        // Re-initialize selectpickers to apply our overrides
+        $('.selectpicker').each(function() {
+            if ($(this).data('selectpicker')) {
+                const currentScrollTops = {};
+                $(this).siblings('.dropdown-menu').find('.inner').each(function(i) {
+                    currentScrollTops[i] = $(this).scrollTop();
+                });
+
+                $(this).selectpicker('refresh');
+
+                // Restore scroll positions
+                $(this).siblings('.dropdown-menu').find('.inner').each(function(i) {
+                    if (currentScrollTops[i] !== undefined) {
+                        $(this).scrollTop(currentScrollTops[i]);
+                    }
+                });
+            }
+        });
+    }, 200);
+
+    // Prevent focus events from causing scroll (DISABLED - was blocking dropdown selection)
+    // $(document).on('mousedown', '.bootstrap-select .dropdown-menu li a', function(e) {
+    //     e.preventDefault();
+    //     const $this = $(this);
+    //     const $menuInner = $this.closest('.dropdown-menu').find('.inner');
+    //     const scrollPos = $menuInner.scrollTop();
+
+    //     // Trigger the click but prevent focus
+    //     setTimeout(() => {
+    //         $this.click();
+    //         $menuInner.scrollTop(scrollPos);
+    //     }, 1);
+
+    //     return false;
+    // });
+});
+</script>
+    <!-- ALPINE -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- DataTables Core & Extensions (keep together) -->
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
+    <script src="{{ asset('assets/js/dataTables.colResize.js') }}"></script>
 
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b0187a4476.js" crossorigin="anonymous"></script>
+    <!-- Global sunriseTable colResize support -->
+    <script>
+        // Wrap DataTable initialization to auto-enable colResize for sunriseTable
+        (function() {
+            if (!$.fn.DataTable) return;
+
+            const originalDataTable = $.fn.DataTable;
+
+            $.fn.DataTable = function(options) {
+                const $table = $(this);
+
+                // Auto-enable colResize for sunriseTable instances (unless no-auto-colresize)
+                if ($table.hasClass('sunriseTable') && !$table.hasClass('no-auto-colresize') && options) {
+                    options.colResize = options.colResize !== false; // Enable by default unless explicitly disabled
+                }
+
+                const tableId = $table.attr('id');
+                const scopeKey = tableId ? tableId + '_widths' : null;
+
+                function applySavedWidths(widths) {
+                    if (!widths || !Array.isArray(widths)) {
+                        return;
+                    }
+                    $table.find('th').each(function(i) {
+                        if (typeof widths[i] === 'undefined') {
+                            return;
+                        }
+                        if (typeof widths[i] === 'string') {
+                            $(this).css('width', widths[i]);
+                        } else {
+                            $(this).width(widths[i]);
+                        }
+                    });
+                }
+
+                if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.get === 'function') {
+                    const preloadedWidths = window.sigmaTableWidthStore.get(scopeKey);
+                    if (preloadedWidths) {
+                        applySavedWidths(preloadedWidths);
+                    }
+                }
+
+                const table = originalDataTable.call(this, options);
+
+                // Add save/restore functionality for sunriseTable with colResize (skip no-auto-colresize)
+                if ($table.hasClass('sunriseTable') && !$table.hasClass('no-auto-colresize') && tableId && options && options.colResize) {
+                    // Restore saved widths
+                    setTimeout(function() {
+                        if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.whenReady === 'function') {
+                            window.sigmaTableWidthStore.whenReady(function () {
+                                const widths = window.sigmaTableWidthStore.get(scopeKey);
+                                if (widths) {
+                                    applySavedWidths(widths);
+                                    // Recalc resize handle positions after width restore
+                                    var settings = table.settings()[0];
+                                    if (settings && settings.colResize && settings.colResize._recalcPositions) {
+                                        settings.colResize._recalcPositions();
+                                    }
+                                }
+                            });
+                        }
+                    }, 100);
+
+                    // Save on resize
+                    $(document).on('mouseup.sunriseTable_' + tableId, '.dt-colresizable-col', function() {
+                        setTimeout(function() {
+                            const newWidths = [];
+                            $table.find('th').each(function() {
+                                newWidths.push($(this).width());
+                            });
+                            if (scopeKey && window.sigmaTableWidthStore && typeof window.sigmaTableWidthStore.set === 'function') {
+                                window.sigmaTableWidthStore.set(scopeKey, newWidths);
+                            }
+                        }, 100);
+                    });
+                }
+
+                return table;
+            };
+
+            // Copy static methods and properties
+            $.extend($.fn.DataTable, originalDataTable);
+        })();
+
+    </script>
+
+    <!-- Font Awesome (Kit disabled - 403 error, using CDN versions loaded in pages) -->
+    {{-- <script src="https://kit.fontawesome.com/b0187a4476.js" crossorigin="anonymous"></script> --}}
     <script src="{{asset('assets/js/fontawesome-iconpicker.js')}}"></script>
 
     <!-- Third-party Utilities -->
@@ -63,6 +239,8 @@
     <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js" defer></script>
     <!-- UI Components & Features -->
     <script src="{{asset('assets/js/sweetalert2.min.js')}}"></script>
+    <!-- SweetAlert Global Safety Configuration - Must load after SweetAlert -->
+    <script src="{{asset('assets/js/sweetalert-global-config.js')}}"></script>
     <script src="{{asset('assets/js/sidebar-scroll.js')}}"></script>
 
 
@@ -393,47 +571,66 @@
         // });
     </script>
     <script>
-        // Select the navbar-toggle div and overlay
-        const navbarToggle = document.querySelector('.navbar-toggle');
+        // Select the navbar-toggle div and overlay (support both .navbar-toggle and .navbar-toggler)
+        const navbarToggle = document.querySelector('.navbar-toggle') || document.querySelector('.navbar-toggler');
         const overlay = document.getElementById('overlay');
-        try{
-        // Toggle "toggled" class and show/hide overlay on click
-        navbarToggle.addEventListener('click', function () {
-            console.log("nav clicked");
-            // Toggle the "toggled" class
-            // navbarToggle.classList.toggle('toggled');
-            // navbarToggle.classList.toggle('toggled');
 
-            setTimeout(() => {
+        try {
+            // Function to close sidebar
+            function closeSidebar() {
+                document.documentElement.classList.remove('nav-open');
+                if (navbarToggle) navbarToggle.classList.remove('toggled');
+                if (overlay) overlay.classList.remove('active');
+                console.log("closing sidebar");
+            }
 
-                // Show or hide overlay based on the "toggled" class
-                if (navbarToggle.classList.contains('toggled') || document.documentElement.classList.contains('nav-open')) {
-                    document.documentElement.classList.remove('nav-open');
-                    console.log("removing active class");
-                    overlay.classList.remove('active'); // Hide overlay
+            // Function to open sidebar
+            function openSidebar() {
+                document.documentElement.classList.add('nav-open');
+                if (navbarToggle) navbarToggle.classList.add('toggled');
+                if (overlay) overlay.classList.add('active');
+                console.log("opening sidebar");
+            }
 
-                } else {
+            // Toggle "toggled" class and show/hide overlay on click
+            if (navbarToggle) {
+                navbarToggle.addEventListener('click', function () {
+                    console.log("nav clicked");
+                    const isOpen = document.documentElement.classList.contains('nav-open');
 
-                    document.documentElement.classList.add('nav-open');
-                    console.log("adding active class");
-                    overlay.classList.add('active');
+                    setTimeout(() => {
+                        if (isOpen) {
+                            closeSidebar();
+                        } else {
+                            openSidebar();
+                        }
+                    }, 10);
+                });
+            }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                const isOpen = document.documentElement.classList.contains('nav-open');
+                const sidebar = document.querySelector('.sidebar');
+                const clickedInsideSidebar = sidebar && sidebar.contains(e.target);
+                const clickedToggle = navbarToggle && navbarToggle.contains(e.target);
+
+                // Only close if: sidebar is open, click is outside sidebar, and not on toggle button
+                if (isOpen && !clickedInsideSidebar && !clickedToggle && window.innerWidth <= 991) {
+                    closeSidebar();
                 }
-            }, 10);
-        });
+            });
+
+            // Close on ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && document.documentElement.classList.contains('nav-open')) {
+                    closeSidebar();
+                }
+            });
 
         } catch (e) {
             console.log(e);
         }
-
-
-        // // Close overlay and remove "toggled" class when overlay is clicked
-        // overlay.addEventListener('click', function () {
-        //     console.log("overlay clicked");
-        //     // $('.bodyClick').remove();
-        //     document.documentElement.classList.remove('nav-open');
-        //     navbarToggle.classList.remove('toggled'); // Remove "toggled" class
-        //     overlay.classList.remove('active'); // Hide overlay
-        // });
     </script>
 
     <ul class="nav">
@@ -465,6 +662,118 @@
             $.fn.dataTable = jQuery.fn.dataTable;
             $.fn.DataTable = jQuery.fn.DataTable;
         }
+    </script>
+
+    <script>
+        $('.dialog-popup-content').on('mfp-hide', function () {
+            console.log("Dialog mfp-hide fired")
+            document.querySelectorAll('.date-input').forEach(input => {
+                console.log(input.getAttribute('value'));
+                input.value = input.getAttribute('value');
+            });
+        });
+    </script>
+    <script>
+        // (function () {
+        //     function resolveAxis(value, axis) {
+        //         var center = { position: '50%', mode: 'center' };
+        //         var isX = axis === 'x';
+        //
+        //         if (value === undefined || value === null || value === '') {
+        //             return center;
+        //         }
+        //
+        //         if (typeof value === 'number') {
+        //             return { position: value + 'px', mode: 'value' };
+        //         }
+        //
+        //         if (typeof value === 'string') {
+        //             var trimmed = value.trim();
+        //             var lower = trimmed.toLowerCase();
+        //
+        //             if (lower === 'center') {
+        //                 return center;
+        //             }
+        //
+        //             if (isX) {
+        //                 if (lower === 'left') {
+        //                     return { position: '0px', mode: 'value' };
+        //                 }
+        //                 if (lower === 'right') {
+        //                     return { position: '100%', mode: 'edge-end' };
+        //                 }
+        //             } else {
+        //                 if (lower === 'top') {
+        //                     return { position: '0px', mode: 'value' };
+        //                 }
+        //                 if (lower === 'bottom') {
+        //                     return { position: '100%', mode: 'edge-end' };
+        //                 }
+        //             }
+        //
+        //             if (/^-?\d+(?:\.\d+)?$/.test(lower)) {
+        //                 return { position: lower + 'px', mode: 'value' };
+        //             }
+        //
+        //             return { position: trimmed, mode: 'value' };
+        //         }
+        //
+        //         return center;
+        //     }
+
+            // function applyDialogClasses(dialog, axisModes) {
+            //     dialog.classList.toggle('modal-pos-center-x', axisModes.x === 'center');
+            //     dialog.classList.toggle('modal-pos-center-y', axisModes.y === 'center');
+            //     dialog.classList.toggle('modal-pos-right', axisModes.x === 'edge-end');
+            //     dialog.classList.toggle('modal-pos-bottom', axisModes.y === 'edge-end');
+            // }
+            //
+            // function clearDialogClasses(dialog) {
+            //     dialog.classList.remove('modal-pos-center-x', 'modal-pos-center-y', 'modal-pos-right', 'modal-pos-bottom');
+            // }
+
+            // function applyModalPositioning() {
+            //     var posX = window.modalPosX;
+            //     var posY = window.modalPosY;
+            //     var enabled = !(posX === undefined && posY === undefined);
+            //     var root = document.documentElement;
+            //     var modals = document.querySelectorAll('.modal');
+            //     var dialogs = document.querySelectorAll('.modal-dialog');
+            //
+            //     modals.forEach(function (modal) {
+            //         modal.classList.toggle('modal-positioning-enabled', enabled);
+            //     });
+            //
+            //     if (!enabled) {
+            //         root.style.removeProperty('--modal-x');
+            //         root.style.removeProperty('--modal-y');
+            //         dialogs.forEach(clearDialogClasses);
+            //         return;
+            //     }
+            //
+            //     var resolvedX = resolveAxis(posX, 'x');
+            //     var resolvedY = resolveAxis(posY, 'y');
+            //
+            //     root.style.setProperty('--modal-x', resolvedX.position);
+            //     root.style.setProperty('--modal-y', resolvedY.position);
+            //
+            //     dialogs.forEach(function (dialog) {
+            //         applyDialogClasses(dialog, { x: resolvedX.mode, y: resolvedY.mode });
+            //     });
+            // }
+
+            // window.applyModalPositioning = applyModalPositioning;
+        //
+        //     if (document.readyState === 'loading') {
+        //         document.addEventListener('DOMContentLoaded', applyModalPositioning);
+        //     } else {
+        //         applyModalPositioning();
+        //     }
+        //
+        //     if (window.jQuery) {
+        //         jQuery(document).on('show.bs.modal', '.modal', applyModalPositioning);
+        //     }
+        // })();
     </script>
     {{--/////////////////////////////////////////////////////////////////////--}}
     @stack('js'){{--  //////////////////  JAVASCRIPT STACK ///////////////--}}

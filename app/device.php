@@ -14,17 +14,22 @@ use Illuminate\Support\Facades\Log;
 class Device extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * Disable model caching to prevent incomplete object exceptions
      */
     protected $cacheable = false;
-    
+
     /**
      * Attributes that are mass assignable
      */
     protected $fillable = ['name', 'type', 'sorting_order', 'img', 'hidden'];
-    
+
+    /**
+     * Cache build IDs per request to avoid repeated queries
+     */
+    protected $cachedBuildIds = null;
+
     /**
      * Prevent serialization issues by implementing Serializable
      */
@@ -32,13 +37,13 @@ class Device extends Model
     {
         return $this->toArray();
     }
-    
+
     public function __unserialize(array $data): void
     {
         $this->fill($data);
         $this->exists = true;
     }
-    
+
     public function __construct() {
         parent::__construct();
 
@@ -162,33 +167,45 @@ class Device extends Model
     {   //stage : 3 , Device : 44 , waiting
         $count = 0;
         $stageColumn = $this->getStageColumnName();
-        $builds = $this->builds()->get();
-        foreach ($builds as $build) {
-            // Get jobs that have this build ID in the appropriate stage column and are set but not active
-            if ($isActive) {
-                $jobs = \App\Job::where($stageColumn, $build->id)
-                    ->where('stage', $stage)
-                    ->where('is_set', 1)
-                    ->where('is_active', 1)
-                    ->get();
-            } else {
+        if (!$stageColumn) {
+            return 0;
+        }
 
+        $buildIds = $this->getBuildIds();
+        if ($buildIds->isEmpty()) {
+            return 0;
+        }
 
-                $jobs = \App\Job::where($stageColumn, $build->id)
-                    ->where('is_set', 1)->where('stage', $stage)
-                    ->where(function ($query) {
-                        $query->whereNull('is_active')
-                            ->orWhere('is_active', 0);
-                    })
-                    ->get();
-            }
-            foreach ($jobs as $job) {
-                $units = $this->parseJobUnits($job->unit_num);
-                $count += count($units);
-            }
+        $jobsQuery = \App\Job::query()
+            ->select('unit_num')
+            ->whereIn($stageColumn, $buildIds)
+            ->where('stage', $stage)
+            ->where('is_set', 1);
+
+        if ($isActive) {
+            $jobsQuery->where('is_active', 1);
+        } else {
+            $jobsQuery->where(function ($query) {
+                $query->whereNull('is_active')
+                    ->orWhere('is_active', 0);
+            });
+        }
+
+        foreach ($jobsQuery->get() as $job) {
+            $units = $this->parseJobUnits($job->unit_num);
+            $count += count($units);
         }
 
         return $count;
+    }
+
+    private function getBuildIds()
+    {
+        if ($this->cachedBuildIds === null) {
+            $this->cachedBuildIds = $this->builds()->pluck('id');
+        }
+
+        return $this->cachedBuildIds;
     }
 
     private function getStageColumnName()
@@ -229,6 +246,6 @@ class Device extends Model
 
     public function builds()
     {
-        return $this->hasMany(Build::class, 'printer_id');
+        return $this->hasMany(Build::class, 'device_used');
     }
 }

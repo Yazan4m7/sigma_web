@@ -111,7 +111,16 @@ class ClientsController extends Controller
         $dentist = new client();
         $dentist->name = $request->dentist_name;
         $dentist->phone = $request->phone_number;
+        $dentist->clinic_phone = $request->clinic_phone;
         $dentist->address = $request->address;
+
+        // Set passwords if provided
+        if (!empty($request->doc_password)) {
+            $dentist->doc_password = Hash::make($request->doc_password);
+        }
+        if (!empty($request->clinic_password)) {
+            $dentist->clinic_password = Hash::make($request->clinic_password);
+        }
 
         $dentist->save();
         foreach ($request->repeat as $rep) {
@@ -139,13 +148,28 @@ class ClientsController extends Controller
             abort(404);
         }
 
-        //update.
-        $doctor->name = $request->name;
-        $doctor->phone = $request->phone;
-        $doctor->clinic_phone = $request->clinic_phone;
-        $doctor->address = $request->address;
-         $doctor->doc_password = Hash::make($request->doc_password);
-         $doctor->clinic_password = Hash::make($request->clinic_password);
+        // Only update fields that have changed
+        if ($doctor->name !== $request->name) {
+            $doctor->name = $request->name;
+        }
+        if ($doctor->phone !== $request->phone) {
+            $doctor->phone = $request->phone;
+        }
+        if ($doctor->clinic_phone !== $request->clinic_phone) {
+            $doctor->clinic_phone = $request->clinic_phone;
+        }
+        if ($doctor->address !== $request->address) {
+            $doctor->address = $request->address;
+        }
+
+        // Only update passwords if they are provided (not empty)
+        if (!empty($request->doc_password)) {
+            $doctor->doc_password = Hash::make($request->doc_password);
+        }
+        if (!empty($request->clinic_password)) {
+            $doctor->clinic_password = Hash::make($request->clinic_password);
+        }
+
         $doctor->save();
         clientDiscount::where('client_id', $request->id)->delete();
         if (is_array($request->ids)) {
@@ -297,8 +321,8 @@ class ClientsController extends Controller
     }
     public function paymentsIndex(Request $request){
         if ($request->from && $request->to) {
-            $from = $request->from ;
-            $to = $request->to;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
             $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';
@@ -344,15 +368,46 @@ class ClientsController extends Controller
         return back()->with('success', 'Payment removed.');
     }
 
+    public function deleteDiscount($id){
+        $invoice = invoice::where('id',$id)->first();
+
+        // Check if invoice exists
+        if(!$invoice){
+            return back()->with('error', 'Discount invoice not found.');
+        }
+
+        // Check if it's actually a discount (case_id = -1)
+        if($invoice->case_id != -1){
+            return back()->with('error', 'This is not a discount invoice.');
+        }
+
+        // Get the doctor/client
+        $doctor = client::where('id', $invoice->doctor_id)->first();
+
+        if(!$doctor){
+            return back()->with('error', 'Doctor not found.');
+        }
+
+        // Reverse the discount effect on doctor's balance
+        // Since discount amount is negative, subtracting it will increase the balance
+        $doctor->balance = $doctor->balance - $invoice->amount;
+        $doctor->save();
+
+        // Soft delete the invoice
+        $invoice->delete();
+
+        return back()->with('success', 'Discount removed successfully. Doctor balance updated.');
+    }
+
     public function doctorInvoices(Request $request)
     {
         if ($request->from && $request->to) {
-            $from = $request->from ;
-            $to = $request->to ;
+            $from = $request->from . ' 00:00:00';
+            $to = $request->to . ' 23:59:59';
         }
         else {
-            $from = date('Y-m-d', strtotime('first day of this month'));
-            $to = now()->toDateString();
+            $from = date('Y-m-d', strtotime('first day of this month')) . ' 00:00';
+            $to = now()->toDateString()  . ' 23:59';
         }
         $invoices = Invoice::where('doctor_id', $request->id)->whereBetween('created_at', [$from, $to ])->get();
         return view('generic.invoices-list',compact('invoices','to','from'))->with('id',$request->id);
@@ -373,7 +428,7 @@ class ClientsController extends Controller
         $cases = sCase::where('doctor_id', $request->id)->whereBetween('actual_delivery_date', [ $from. ' 00:00', $to . ' 23:59'])
             ->orWhereNull('actual_delivery_date');
         $cases = $cases->where('doctor_id', $request->id);
-        $cases = $cases->orderByRaw('-`actual_delivery_date` ASC')->orderBy("initial_delivery_date",'asc')->paginate(20)->withQueryString();
+        $cases = $cases->orderByRaw('-`actual_delivery_date` ASC')->orderBy("initial_delivery_date",'asc')->get();
 
         return view ('cases.index',compact('cases','from','to'))->with('id',$request->id);
 
@@ -405,11 +460,11 @@ class ClientsController extends Controller
             if (!$client) {
                 return back()->with('error', 'Doctor not found');
             }
-            
+
             // Toggle the active status
             $client->active = $client->active ? 0 : 1;
             $client->save();
-            
+
             $status = $client->active ? 'enabled' : 'disabled';
             return back()->with('success', "Doctor has been {$status} successfully");
         } catch (\Exception $e) {

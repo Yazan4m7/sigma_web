@@ -105,6 +105,12 @@ class FailuresController extends Controller
         $case = sCase::where('id', $request->id)->first();
         if ($case->locked == 1) back()->with('error',"Case is locked");
         DB::beginTransaction();
+
+        // Remove discount when rejecting case - customer refused the product
+        if ($case->discount) {
+            $case->discount->delete();
+        }
+
         if ($request->repeat)
             foreach($request->repeat as $job) {
                 $jobId = $job["job_id"];
@@ -164,6 +170,8 @@ class FailuresController extends Controller
                 if (isset($job["units". $jobId])) {
 
                     $originalJob = job::findOrFail($jobId);
+
+
                     $repeatedJob = new job(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId],
                         'color' => $job["color" . $jobId] ?? 'None', 'style' => $job["style" . $jobId] ?? 'None',
                         'abutment' => $job["abutment" . $jobId] ?? 'None', 'implant' => $job["implant" . $jobId] ?? 'None',
@@ -247,16 +255,39 @@ class FailuresController extends Controller
 
     }
     public function modifyCase(Request $request){
-        $case = sCase::where('id', $request->id)->first();
-        if ($case->locked == 1) back()->with('error',"Case is locked");
-        $case->patient_name = str_replace(' / تعديل','',$case->patient_name) . ' / تعديل';
         DB::beginTransaction();
+        try {
+            // Lock the case row to prevent race conditions (double modification)
+            $case = sCase::where('id', $request->id)->lockForUpdate()->first();
+
+            if (!$case) {
+                DB::rollBack();
+                return back()->with('error', "Case not found");
+            }
+
+            if ($case->locked == 1) {
+                DB::rollBack();
+                return back()->with('error', "Case is locked");
+            }
+
+            // Ensure case has been delivered before allowing modification
+            if (!$case->actual_delivery_date) {
+                DB::rollBack();
+                return back()->with('error', "Cannot modify case - case must be delivered first (no delivery date found)");
+            }
+
+            // Store the delivery date BEFORE any changes
+            $originalDeliveryDate = $case->actual_delivery_date;
+
+            $case->patient_name = str_replace(' / تعديل','',$case->patient_name) . ' / تعديل';
         if ($request->repeat)
             foreach($request->repeat as $job) {
                 $jobId = $job["job_id"];
                 if (isset($job["units". $jobId])) {
 
                     $originalJob = job::findOrFail($jobId);
+
+
                     $modifiedJob = new job(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId],
                         'color' => $job["color" . $jobId] ?? 'None', 'style' => $job["style" . $jobId] ?? 'None',
                         'abutment' => $job["abutment" . $jobId] ?? null, 'implant' => $job["implant" . $jobId] ?? null,
@@ -272,43 +303,7 @@ class FailuresController extends Controller
                 }
             }
 
-//        if ($request->repeat2)
-//            foreach($request->repeat2 as $job){
-//                if (isset($job["units"])) {
-//                    $newJob = new job();
-//                    $newJob->unit_num = $job["units"];
-//                    $newJob->type = $job["jobType"];
-//                    $newJob->color = $job["color"]?? 'None';
-//                    $newJob->style = $job["style"] ?? 'None';
-//                    $newJob->abutment = $job["abutment"] ?? 'None';
-//                    $newJob->implant = $job["implant"] ?? 'None';
-//                    $newJob->material_id = $job["material_id"];
-//                    $newJob->case_id = $case->id;
-//                    $newJob->stage = 1;
-//
-//                    $newJob->unit_price = material::FindOrFail($job["material_id"])->price - ($this->clientDiscount4rejection($newJob, $case) / count(explode(',', $newJob->unit_num)));
-//                    $newJob->save();
-//
-//
-//
-//
-//                    if($newJob->material->teeth_or_jaw == 1)
-//                    {
-//                        $newJob->implant =null;
-//                        $newJob->abutment =null;
-//                        $newJob->save();
-//                    }
-//                }}
 
-
-        /*
-  *     SAVING TAGS
-  */
-//        if ($request->tags)
-//            foreach($request->tags as $tag){
-//                $newTag = new caseTag(['case_id' => $case->id, 'tag_id' => $tag , 'added_by' => Auth()->user()->id]);
-//                $newTag->save();
-//            }
         if($files=$request->file('images')){
 
             foreach($files as $file){
@@ -325,8 +320,9 @@ class FailuresController extends Controller
         }
 
 
+        // Use the stored originalDeliveryDate (captured before any changes)
         $failureLog = new failureLog(['case_id'=>$case->id,'failure_type' =>2,'cause_id' =>$request->failure_cause_id , 'explanation' =>$request->failure_explanation,
-            'done_by' =>Auth()->user()->id,'old_delivery_date' =>$case->actual_delivery_date ]);
+            'done_by' =>Auth()->user()->id,'old_delivery_date' => $originalDeliveryDate ]);
         $failureLog->save();
 
         $this->createModificationNote($case,$failureLog);
@@ -336,6 +332,10 @@ class FailuresController extends Controller
         $case->update(['locked' => 1,'actual_delivery_date' => null,'contains_modification' =>1, 'initial_delivery_date' => $request->delivery_date,'delivered_to_client' => 0,'voucher_recieved_by'=> null]);
         DB::commit();
         return redirect()->route( 'cases-index' )->with('success', 'Modification jobs have has been created successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', "Failed to create modification: " . $e->getMessage());
+        }
 
     }
     public function redoCase(Request $request){
@@ -349,6 +349,8 @@ class FailuresController extends Controller
                 if (isset($job["units". $jobId])) {
 
                     $originalJob = job::findOrFail($jobId);
+
+
                     $redoJob = new job(['unit_num' => $job["units" . $jobId], 'type' => $job["jobType" . $jobId],
                         'color' => $job["color" . $jobId] ?? 'None', 'style' => $job["style" . $jobId] ?? 'None',
                         'abutment' => $job["abutment" . $jobId] ?? 0, 'implant' => $job["implant" . $jobId] ?? 0,

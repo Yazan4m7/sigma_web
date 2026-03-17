@@ -39,7 +39,7 @@ class OperationsUpgrade extends Controller
                         return $this->finish3DBuilds($request);
                     }
                     break;
-                
+
                 case 'milling':
                 case 'sintering':
                 case 'pressing':
@@ -51,7 +51,7 @@ class OperationsUpgrade extends Controller
                         return $this->finishMultipleCases($request);
                     }
                     break;
-                
+
                 case 'delivery':
                     return $this->assignCasesToDelivery($request);
                     break;
@@ -114,7 +114,7 @@ class OperationsUpgrade extends Controller
             'set_action' => 'placed',
             'start_action' => 'pressing',
             'complete_action' => 'pressing',
-            'requires_build_name' => true,
+            'requires_build_name' => false,
             'device_type' => 'press',
             'multiple-waiting' => false,
             'multiple-active' => false
@@ -143,12 +143,12 @@ class OperationsUpgrade extends Controller
         'PRINTING_START' => 3.2,
         'PRINTING_COMPLETE' => 3.3,
         // Sintering
-        'SINTERING_SET' => 4.1,
-        'SINTERING_START' => 4.2,
-        'SINTERING_COMPLETE' => 4.3,
+        'SINTERING_START' => 4.1,
+        'SINTERING_COMPLETE' => 4.2,
         // Pressing
-        'PRESSING_START' => 5.1,
-        'PRESSING_COMPLETE' => 5.2,
+        'PRESSING_SET' => 5.1,
+        'PRESSING_START' => 5.2,
+        'PRESSING_COMPLETE' => 5.3,
         // Delivery
         'DELIVERY_ASSIGN' => 8.1,
         'DELIVERY_ACCEPT' => 8.2,
@@ -217,7 +217,7 @@ class OperationsUpgrade extends Controller
 
             $build->set_at = now();
             $build->name = "";
-            $build->printer_id = $deviceId;
+            $build->device_used = $deviceId;
             $build->save();
             if ($type == 'sintering') {
                 $build->name = 'Sintering-' . $build->id;
@@ -385,24 +385,14 @@ class OperationsUpgrade extends Controller
             // Start the jobs
             $this->startJobs($jobs, $deviceId, self::STAGE_CONFIG[$type]['number'], $type);
 
-            // Update build status and create logs
+            // Update build status
             foreach ($buildIds as $buildId) {
                 $build = Build::findOrFail($buildId);
                 if ($build) {
                     // Always set started_at when activating a build
                     $build->started_at = now();
                     $build->save();
-
-                    // Create log entry for build start
-                    caseLog::create([
-                        'user_id' => Auth::id(),
-                        'case_id' => $jobs->first()->case_id ?? $request->input('items'),
-                        'stage' => self::STAGE_CONFIG[$type]['number'],
-                        'device_id' => $deviceId,
-                        'action_type' => 2, // 2 = start
-                        'action' => 'started_build',
-                        'notes' => "Started build: {$build->name}"
-                    ]);
+                    // Note: Case log is already created by startJobs() function with correct decimal stage
                 }
             }
 
@@ -557,8 +547,8 @@ class OperationsUpgrade extends Controller
                 $builds = Build::whereIn('id', explode(',', $request->input('buildsIdsHiddenInput' . $deviceId)))->get();
             } else {
 
-                $builds = Build::where('printer_id', $deviceId)
-                    ->whereNull('finished_at')->where('printer_id', $deviceId)
+                $builds = Build::where('device_used', $deviceId)
+                    ->whereNull('finished_at')->where('device_used', $deviceId)
                     ->get();
 //                }
             }
@@ -577,15 +567,15 @@ class OperationsUpgrade extends Controller
 
             $type = str_replace('3d', '', $type);
             $buildIdField = $type . '_build_id';
-            
+
             // Get device name for message outside the loop
             $device = device::find($deviceId);
             $deviceName = $device ? $device->name : 'unknown device';
-            
+
                 // Process build completion
             foreach ($builds as $buildId) {
 
-                    $jobs = job::where($buildIdField, $buildId)
+                    $jobs = job::with('material')->where($buildIdField, $buildId)
                         ->where('is_active', 1)
                         ->get();
                 //////////////////////////// START ///////////////////////////
@@ -596,7 +586,7 @@ class OperationsUpgrade extends Controller
                     if ($jobs->isEmpty()) {
                         continue; // Skip this build if no jobs found
                     }
-                    
+
                     // Get stage from first job
                     $stage = $jobs->first()->stage;
                     // Complete each case's jobs
@@ -612,50 +602,6 @@ class OperationsUpgrade extends Controller
                     // Mark build as finished
                     $build->finished_at = now();
                     $build->save();
-
-
-                //////////////////////////// START ///////////////////////////
-                ////////////////////////  LOGGING  ////////////////////////
-                ///////////////////////////////////////////////////////
-
-                if ($jobs->isEmpty()) {
-                    return $this->errorResponse('No jobs found to complete');
-                }
-                $stage = $jobs->first()->stage;
-                if (empty($type)) {
-                    $type = $this->getTypeFromStage($stage);
-                }
-
-                if (!$type ) {
-                    return $this->errorResponse("No stage type: {$type}");
-                }
-                Log::alert("type: " . $type);
-
-                // Group jobs by case
-                $jobsByCase = $jobs->groupBy('case_id');
-                Log::alert("jobsByCase size : " . count($jobsByCase));
-                // Complete each case's jobs
-                foreach ($jobsByCase as $caseId => $caseJobs) {
-                    Log::alert("caseId: " . $caseId);
-
-                    if ($type == 'milling') {
-                        Log::info('Completing milling job for case:', [
-                            'case_id' => $caseId,
-                            'job_count' => $caseJobs->count(),
-                            'job_ids' => $caseJobs->pluck('id')->toArray(),
-                        ]);
-                    }
-
-                    Log::alert("finishing case  : " . $caseId . 'stage  ' . $stage . 'caseJobs  ');
-                    $this->caseController->finishCaseStage($caseId, $stage, false, $caseJobs);
-                }
-                // Get device name for message
-                // $device = device::find($deviceId)->get();
-
-
-//////////////////////////// END ///////////////////////////
-                //////////////////////// LOGGING  ////////////////////////
-                ///////////////////////////////////////////////////////
             }
 
             return $this->successResponse(
@@ -710,7 +656,7 @@ class OperationsUpgrade extends Controller
             $build = $builds->first();
 
             // GET BUILD'S CASES'JOBS
-            $jobs = job::where('printing_build_id', $build->id)
+            $jobs = job::with('material')->where('printing_build_id', $build->id)
                 ->where(function ($query) {
                     $query->where('is_active', 1)
                         ->orWhere('is_set', 1);
@@ -750,6 +696,87 @@ class OperationsUpgrade extends Controller
             return $this->successResponse("Completed {$jobCount} jobs from builds", [
                 'jobCount' => $jobCount,
                 'buildCount' => 1
+            ]);
+        }, $this->getRedirectRoute($request));
+    }
+
+    /**
+     * Remove builds and return their cases/jobs back to waiting state
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeBuilds(Request $request, ?string $redirectRoute = null)
+    {
+        return $this->executeTransaction(function () use ($request) {
+            $type = $request->input('type');
+            $deviceId = $request->input('deviceId');
+
+            $buildIdsInput = $request->input('buildIds') ?? $request->input('buildId');
+            if (empty($buildIdsInput) && !empty($deviceId)) {
+                $buildIdsInput = $request->input('buildsIdsHiddenInput' . $deviceId);
+            }
+
+            $buildIds = $this->parseIdList($buildIdsInput);
+            if (empty($buildIds)) {
+                return $this->errorResponse('No builds selected');
+            }
+
+            $buildIdField = $this->getBuildIdFieldFromType($type);
+            if (empty($buildIdField)) {
+                return $this->errorResponse('Invalid build type');
+            }
+
+            $builds = Build::whereIn('id', $buildIds)
+                ->whereNull('finished_at')
+                ->get();
+            if ($builds->isEmpty()) {
+                return $this->errorResponse('Builds not found');
+            }
+
+            $buildIds = $builds->pluck('id')->values()->all();
+            $jobs = job::whereIn($buildIdField, $buildIds)->get();
+            $caseIds = $jobs->pluck('case_id')->unique()->values()->all();
+
+            foreach ($jobs as $job) {
+                $job->is_active = null;
+                $job->is_set = null;
+                $job->assignee = null;
+                $job->device_id = null;
+                $job->type_id = null;
+                $job->{$buildIdField} = null;
+                $job->save();
+            }
+
+            foreach ($builds as $build) {
+                $build->delete();
+            }
+
+            if (!empty($caseIds) && isset(self::STAGE_CONFIG[$type])) {
+                $stageNumber = self::STAGE_CONFIG[$type]['number'];
+                $buildNames = $builds->pluck('name')->filter()->implode(', ');
+                $notes = $buildNames !== ''
+                    ? "Build removed: {$buildNames}. Cases returned to waiting."
+                    : 'Build removed. Cases returned to waiting.';
+
+                foreach ($caseIds as $caseId) {
+                    $logData = [
+                        'user_id' => Auth::id(),
+                        'case_id' => $caseId,
+                        'stage' => $stageNumber,
+                        'is_completion' => 0,
+                        'notes' => $notes
+                    ];
+                    if (!empty($deviceId)) {
+                        $logData['device_id'] = $deviceId;
+                    }
+                    caseLog::create($logData);
+                }
+            }
+
+            return $this->successResponse('Build removed and cases returned to waiting', [
+                'buildCount' => $builds->count(),
+                'jobCount' => $jobs->count()
             ]);
         }, $this->getRedirectRoute($request));
     }
@@ -874,6 +901,7 @@ class OperationsUpgrade extends Controller
         $jobCount = 0;
         $notesSuffix = $options['notes_suffix'] ?? '';
         $stageConfig = self::STAGE_CONFIG[$type];
+        $loggedCases = []; // Track cases that have already been logged
 
         foreach ($jobs as $job) {
             // Update job
@@ -897,34 +925,39 @@ class OperationsUpgrade extends Controller
             $job->save();
             $jobCount++;
 
-            // Subst age logic for main manufacturing stages
-            $logStage = $stage;
-            $isCompletion = 0;
-            if ($stage == 2) {
-                $logStage = $this->stageActions['MILLING_SET'];
+            // Only create one log entry per case (not per job)
+            if (!in_array($job->case_id, $loggedCases)) {
+                $loggedCases[] = $job->case_id;
+
+                // Subst age logic for main manufacturing stages
+                $logStage = $stage;
+                $isCompletion = 0;
+                if ($stage == 2) {
+                    $logStage = $this->stageActions['MILLING_SET'];
+                }
+                if ($stage == 3) {
+                    $logStage = $this->stageActions['PRINTING_SET'];
+                }
+                if ($stage == 4) {
+                    $logStage = $this->stageActions['SINTERING_START'];
+                }
+                if ($stage == 5) {
+                    $logStage = $this->stageActions['PRESSING_SET'];
+                }
+                if ($stage == 8) {
+                    $logStage = $this->stageActions['DELIVERY_ASSIGN'];
+                }
+                $logData = [
+                    'user_id' => Auth::id(),
+                    'case_id' => $job->case_id,
+                    'stage' => $logStage,
+                    'is_completion' => $isCompletion
+                ];
+                if (!empty($notesSuffix)) {
+                    $logData['notes'] = "Job {$stageConfig['set_action']} on {$stageConfig['device_type']}: {$deviceId}{$notesSuffix}";
+                }
+                caseLog::create($logData);
             }
-            if ($stage == 3) {
-                $logStage = $this->stageActions['PRINTING_SET'];
-            }
-            if ($stage == 4) {
-                $logStage = $this->stageActions['SINTERING_SET'];
-            }
-            if ($stage == 5) {
-                $logStage = $this->stageActions['PRESSING_START'];
-            }
-            if ($stage == 8) {
-                $logStage = $this->stageActions['DELIVERY_ASSIGN'];
-            }
-            $logData = [
-                'user_id' => Auth::id(),
-                'case_id' => $job->case_id,
-                'stage' => $logStage,
-                'is_completion' => $isCompletion
-            ];
-            if (!empty($notesSuffix)) {
-                $logData['notes'] = "Job {$stageConfig['set_action']} on {$stageConfig['device_type']}: {$deviceId}{$notesSuffix}";
-            }
-            caseLog::create($logData);
         }
 
         return $jobCount;
@@ -943,6 +976,7 @@ class OperationsUpgrade extends Controller
     {
         $jobCount = 0;
         $stageConfig = self::STAGE_CONFIG[$type];
+        $loggedCases = []; // Track cases that have already been logged
 
         foreach ($jobs as $job) {
             // Ensure job is at the right stage
@@ -956,25 +990,25 @@ class OperationsUpgrade extends Controller
             // Ensure the job has the appropriate build ID for its stage
             if ($stage == 2 && empty($job->milling_build_id)) { // Milling
                 // Find a build for this device
-                $build = Build::where('printer_id', $deviceId)->whereNotNull('set_at')->first();
+                $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
                     $job->milling_build_id = $build->id;
                 }
             } elseif ($stage == 3 && empty($job->printing_build_id)) { // 3D Printing
                 // Find a build for this device
-                $build = Build::where('printer_id', $deviceId)->whereNotNull('set_at')->first();
+                $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
                     $job->printing_build_id = $build->id;
                 }
             } elseif ($stage == 3 && empty($job->sintering_build_id)) { // pressing
                 // Find a build for this device
-                $build = Build::where('printer_id', $deviceId)->whereNotNull('set_at')->first();
+                $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
                     $job->sintering_build_id = $build->id;
                 }
             } elseif ($stage == 4 && empty($job->pressing_build_id)) { // pressing
                 // Find a build for this device
-                $build = Build::where('printer_id', $deviceId)->whereNotNull('set_at')->first();
+                $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
                     $job->pressing_build_id = $build->id;
                 }
@@ -985,31 +1019,36 @@ class OperationsUpgrade extends Controller
             $job->save();
             $jobCount++;
 
-            // Sub-stage logic for main manufacturing stages
-            $logStage = $stage;
-            $isCompletion = 0;
-            if ($stage == 2) {
-                $logStage = $this->stageActions['MILLING_START'];
+            // Only create one log entry per case (not per job)
+            if (!in_array($job->case_id, $loggedCases)) {
+                $loggedCases[] = $job->case_id;
+
+                // Sub-stage logic for main manufacturing stages
+                $logStage = $stage;
+                $isCompletion = 0;
+                if ($stage == 2) {
+                    $logStage = $this->stageActions['MILLING_START'];
+                }
+                if ($stage == 3) {
+                    $logStage = $this->stageActions['PRINTING_START'];
+                }
+                if ($stage == 4) {
+                    $logStage = $this->stageActions['SINTERING_START'];
+                }
+                if ($stage == 5) {
+                    $logStage = $this->stageActions['PRESSING_START'];
+                }
+                if ($stage == 8) {
+                    $logStage = $this->stageActions['DELIVERY_ACCEPT'];
+                }
+                $logData = [
+                    'user_id' => Auth::id(),
+                    'case_id' => $job->case_id,
+                    'stage' => $logStage,
+                    'is_completion' => $isCompletion
+                ];
+                caseLog::create($logData);
             }
-            if ($stage == 3) {
-                $logStage = $this->stageActions['PRINTING_START'];
-            }
-            if ($stage == 4) {
-                $logStage = $this->stageActions['SINTERING_START'];
-            }
-            if ($stage == 5) {
-                $logStage = $this->stageActions['PRESSING_START'];
-            }
-            if ($stage == 8) {
-                $logStage = $this->stageActions['DELIVERY_ACCEPT'];
-            }
-            $logData = [
-                'user_id' => Auth::id(),
-                'case_id' => $job->case_id,
-                'stage' => $logStage,
-                'is_completion' => $isCompletion
-            ];
-            caseLog::create($logData);
         }
 
         return $jobCount;
@@ -1128,6 +1167,52 @@ class OperationsUpgrade extends Controller
 
         // Remove empty values
         return array_filter($ids);
+    }
+
+    /**
+     * Parse a comma-separated list of IDs from request input
+     *
+     * @param mixed $input
+     * @return array
+     */
+    private function parseIdList($input): array
+    {
+        if (empty($input)) {
+            return [];
+        }
+
+        if (is_array($input)) {
+            $input = implode(',', $input);
+        }
+
+        $ids = array_filter(array_map('trim', explode(',', (string) $input)));
+        return array_values($ids);
+    }
+
+    /**
+     * Resolve the build ID column name for a given stage type
+     *
+     * @param string|null $type
+     * @return string|null
+     */
+    private function getBuildIdFieldFromType(?string $type): ?string
+    {
+        $type = strtolower((string) $type);
+
+        if ($type === 'milling') {
+            return 'milling_build_id';
+        }
+        if ($type === '3dprinting') {
+            return 'printing_build_id';
+        }
+        if ($type === 'pressing') {
+            return 'pressing_build_id';
+        }
+        if ($type === 'sintering') {
+            return 'sintering_build_id';
+        }
+
+        return null;
     }
 
     /**
@@ -1258,13 +1343,23 @@ class OperationsUpgrade extends Controller
         if ($redirectTo === 'devices') {
             return 'devices-page';
         }
-        
-        // Check if request came from devices page
-        $referer = $request->header('referer');
-        if ($referer && str_contains($referer, '/devices')) {
-            return 'devices-page';
+        if ($redirectTo === 'operations-dashboard') {
+            return 'admin-dashboard-v2';
         }
-        
+
+        // Automatic redirect detection based on HTTP referer
+        $referer = $request->header('referer');
+        if ($referer) {
+            // Check if request came from devices page
+            if (str_contains($referer, '/devices')) {
+                return 'devices-page';
+            }
+            // Check if request came from operations dashboard
+            if (str_contains($referer, '/operations-dashboard')) {
+                return 'admin-dashboard-v2';
+            }
+        }
+
         // Default to operations dashboard for existing functionality
         return 'admin-dashboard-v2';
     }
