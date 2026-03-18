@@ -696,6 +696,360 @@
             color: #ffffff !important;
             border-color: #0ea5e9 !important;
         }
+
+        /* Delivery schedule restyle to match cases filters and report cards */
+        .delivery-page-wrapper .delivery-filter-form {
+            margin-bottom: 24px;
+        }
+
+        .delivery-page-wrapper .cases-filter-card.delivery-filter-card {
+            background: #ffffff !important;
+            border: 1px solid rgba(188, 206, 216, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            margin: 0 !important;
+            padding: 20px 20px 16px !important;
+            position: sticky;
+            top: 70px;
+            z-index: 5;
+            overflow: visible;
+            backdrop-filter: blur(10px);
+        }
+
+        .delivery-page-wrapper .cases-filter-card.delivery-filter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .delivery-page-wrapper .cases-filter-row {
+            --cases-filter-height: 38px;
+            --cases-filter-font-size: 14px;
+            --cases-filter-color: #243746;
+            --cases-filter-gap: 12px;
+            --cases-filter-radius: 10px;
+            --cases-filter-border: 1px solid rgba(188, 206, 216, 0.4);
+            --cases-filter-padding: 8px 14px;
+            padding: 0 !important;
+            margin: 0 -8px !important;
+            align-items: flex-end;
+            font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+            gap: 0 !important;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .mb-2 {
+            margin-bottom: 12px !important;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #243746;
+            letter-spacing: 0.01em;
+            text-transform: none;
+            font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .filter-label i {
+            color: #2b7b7d;
+            font-size: 13px;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .dtp-input,
+        .delivery-page-wrapper .cases-filter-row .ios-dtp-trigger,
+        .delivery-page-wrapper .cases-filter-row .form-control {
+            min-height: var(--cases-filter-height) !important;
+            height: var(--cases-filter-height) !important;
+            font-size: var(--cases-filter-font-size) !important;
+            padding: var(--cases-filter-padding) !important;
+            border-radius: var(--cases-filter-radius);
+            border: var(--cases-filter-border) !important;
+            color: var(--cases-filter-color) !important;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: none !important;
+            font-weight: 500;
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .ios-dtp-display {
+            font-size: var(--cases-filter-font-size) !important;
+            color: var(--cases-filter-color) !important;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        .delivery-page-wrapper .cases-filter-row .dtp-input:focus,
+        .delivery-page-wrapper .cases-filter-row .ios-dtp-trigger:focus,
+        .delivery-page-wrapper .cases-filter-row .form-control:focus {
+            border-color: #408385 !important;
+            box-shadow: 0 0 0 3px rgba(64, 131, 133, 0.15) !important;
+            outline: 0;
+        }
+
+        .delivery-actions-group {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        .delivery-page-wrapper .cases-filter-btn {
+            width: 100%;
+            min-height: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 16px !important;
+            border-radius: 12px !important;
+            font-size: 14px !important;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-actions-group .cases-filter-btn {
+            flex: 1 1 0;
+        }
+
+        .delivery-page-wrapper .cases-filter-btn--search {
+            min-width: 136px;
+            background: linear-gradient(135deg, #5f7688 0%, #8faab8 100%) !important;
+            background-color: #7790a0 !important;
+            border: 1px solid #5f7688 !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 16px rgba(95, 118, 136, 0.28);
+        }
+
+        .delivery-page-wrapper .cases-filter-btn--search:hover,
+        .delivery-page-wrapper .cases-filter-btn--search:focus {
+            background: linear-gradient(135deg, #516879 0%, #7f9dab 100%) !important;
+            background-color: #688392 !important;
+            border-color: #516879 !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(81, 104, 121, 0.26);
+        }
+
+        .delivery-page-wrapper .delivery-print-btn {
+            min-width: 120px;
+            border: 1px solid rgba(188, 206, 216, 0.85) !important;
+            background: #ffffff !important;
+            color: #337374 !important;
+            box-shadow: 0 6px 16px rgba(44, 87, 102, 0.12);
+        }
+
+        .delivery-page-wrapper .delivery-print-btn:hover,
+        .delivery-page-wrapper .delivery-print-btn:focus {
+            background: #eef6f6 !important;
+            border-color: #408385 !important;
+            color: #2b6e70 !important;
+        }
+
+        .delivery-page-wrapper .delivery-summary-grid.delivery-counters {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 16px !important;
+            justify-content: flex-start !important;
+            align-items: stretch !important;
+            overflow: visible !important;
+            padding: 0 !important;
+            margin: 0 0 24px !important;
+        }
+
+        .delivery-page-wrapper .delivery-summary-grid.delivery-counters > .delivery-summary-item {
+            flex: 0 1 250px !important;
+            max-width: 280px;
+            min-width: 220px;
+            padding: 0 !important;
+            margin-bottom: 0 !important;
+            display: block;
+        }
+
+        .delivery-page-wrapper .materials-total-card.report-total-card.delivery-counter-card {
+            background: #ffffff !important;
+            border: 1px solid rgba(188, 206, 216, 0.65) !important;
+            border-radius: 14px !important;
+            padding: 18px 20px 18px 24px !important;
+            box-shadow: 0 6px 18px rgba(44, 87, 102, 0.08) !important;
+            min-height: 112px;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: flex-start !important;
+            position: relative !important;
+            overflow: hidden !important;
+        }
+
+        .delivery-page-wrapper .materials-total-card.report-total-card.delivery-counter-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 6px;
+            background: #d6ecee;
+        }
+
+        .delivery-page-wrapper .delivery-counter-copy {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .delivery-page-wrapper .materials-total-label {
+            font-size: 12px !important;
+            font-weight: 600 !important;
+            letter-spacing: 0.6px !important;
+            text-transform: uppercase !important;
+            color: #6b7280 !important;
+            margin-bottom: 0 !important;
+        }
+
+        .delivery-page-wrapper .materials-total-value {
+            display: flex !important;
+            align-items: baseline !important;
+            gap: 8px !important;
+        }
+
+        .delivery-page-wrapper .materials-total-amount {
+            font-size: 30px !important;
+            font-weight: 700 !important;
+            line-height: 1.05 !important;
+            letter-spacing: -0.03em !important;
+            color: #1f2937 !important;
+        }
+
+        .delivery-page-wrapper .delivery-counter-card--total .materials-total-amount,
+        .delivery-page-wrapper .delivery-counter-card--units .materials-total-amount {
+            color: #3b8b45 !important;
+        }
+
+        .delivery-page-wrapper .delivery-counter-card--overdue .materials-total-amount {
+            color: #dc2626 !important;
+        }
+
+        .delivery-page-wrapper #datatable_wrapper {
+            padding: 0 !important;
+            margin: 0 !important;
+            background: transparent !important;
+        }
+
+        .delivery-page-wrapper #datatable_wrapper > .row {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        .delivery-page-wrapper #datatable.table-odd {
+            width: 100% !important;
+            margin: 0 !important;
+            background: #ffffff;
+            border-collapse: separate !important;
+            border-spacing: 0;
+        }
+
+        .delivery-page-wrapper #datatable.table-odd tbody > tr:nth-of-type(odd) {
+            background-color: #ffffff !important;
+        }
+
+        .delivery-page-wrapper #datatable.table-odd tbody > tr:nth-of-type(even) {
+            background-color: #f0f3f6 !important;
+        }
+
+        .delivery-page-wrapper #datatable thead th {
+            background: #d6ecee !important;
+            color: #337374 !important;
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+            padding: 10px 12px !important;
+            border-color: rgba(188, 206, 216, 0.65) !important;
+        }
+
+        .delivery-page-wrapper #datatable thead th:first-child,
+        .delivery-page-wrapper #datatable thead th:last-child {
+            background: #408385 !important;
+            color: #ffffff !important;
+        }
+
+        .delivery-page-wrapper #datatable thead th:first-child {
+            border-top-left-radius: 12px;
+        }
+
+        .delivery-page-wrapper #datatable thead th:last-child {
+            border-top-right-radius: 12px;
+        }
+
+        @media screen and (max-width: 991px) {
+            .delivery-page-wrapper .delivery-summary-grid.delivery-counters > .delivery-summary-item {
+                flex: 1 1 calc(50% - 8px) !important;
+                max-width: none;
+                min-width: 0;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .delivery-page-wrapper {
+                padding: 8px !important;
+            }
+
+            .delivery-page-wrapper .delivery-filter-form {
+                margin-bottom: 16px;
+            }
+
+            .delivery-page-wrapper .cases-filter-card.delivery-filter-card {
+                padding: 16px 14px 12px !important;
+                margin-bottom: 0 !important;
+                top: 60px;
+            }
+
+            .delivery-page-wrapper .cases-filter-row {
+                display: flex !important;
+                flex-wrap: wrap !important;
+                margin: 0 -6px !important;
+            }
+
+            .delivery-page-wrapper .cases-filter-row > [class*="col-"] {
+                flex: 0 0 100% !important;
+                max-width: 100% !important;
+            }
+
+            .delivery-page-wrapper .cases-filter-row .mb-2 {
+                margin-bottom: 10px !important;
+            }
+
+            .delivery-page-wrapper .cases-filter-row .filter-label {
+                font-size: 12px !important;
+                margin-bottom: 6px !important;
+            }
+
+            .delivery-page-wrapper .delivery-actions-group {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .delivery-page-wrapper .delivery-actions-group .cases-filter-btn {
+                flex: 1 1 calc(50% - 5px);
+            }
+
+            .delivery-page-wrapper .delivery-summary-grid.delivery-counters > .delivery-summary-item {
+                flex: 1 1 100% !important;
+                max-width: none;
+                min-width: 0;
+            }
+        }
     </style>
     @php
         $permissions = safe_permissions();
@@ -706,60 +1060,63 @@
         $numOfUnits = $numOfUnits ?? 0;
     @endphp
     <div class="delivery-page-wrapper">
-        <div class="delivery-section-card">
-            <form class="kt-form" method="GET" action="{{ route('delivery-schedule') }}">
-                @csrf
-                <div class="kt-portlet__body delivery-controls">
-                    <div class="form-group">
-                        <div class="d-flex align-items-end">
-                            <div class="row cases-filter-row">
-                                <!-- From Date -->
-                                <div class="col-4 col-sm-3 col-md-2 mb-2">
-                                    <label for="delivery_from" class="filter-label">From Date:</label>
-                                    <x-ios-dtp
-                                            name="from"
-                                            id="delivery_from"
-                                            :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, Y') : '' "
-                                            mode="date"
-                                            :required="true"
-                                    />
-                                    @if ($errors->has('from'))
-                                        <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
-                                    @endif
-                                </div>
-                                <!-- To Date -->
-                                <div class="col-4 col-sm-3 col-md-2 mb-2">
-                                    <label for="delivery_to" class="filter-label">To Date:</label>
-                                    <x-ios-dtp
-                                            name="to"
-                                            id="delivery_to"
-                                            :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, Y') : '' "
-                                            mode="date"
-                                            :required="true"
-                                    />
-                                    @if ($errors->has('to'))
-                                        <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
-                                    @endif
-                                </div>
+        <form class="kt-form delivery-filter-form" method="GET" action="{{ route('delivery-schedule') }}">
+            @csrf
+            <div class="container full-width cases-filter-card delivery-filter-card">
+                <div class="row cases-filter-row">
+                    <div class="col-12 col-sm-6 col-md-3 mb-2">
+                        <label for="delivery_from" class="form-label filter-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>From Date</span>
+                        </label>
+                        <x-ios-dtp
+                                name="from"
+                                id="delivery_from"
+                                :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, Y') : '' "
+                                mode="date"
+                                :required="true"
+                        />
+                        @if ($errors->has('from'))
+                            <span class="help-block" style="color: red">{{ $errors->first('from') }}</span>
+                        @endif
+                    </div>
 
-                                <!-- Filter Button -->
-                                <div class="col-2 col-sm-1 col-md-1 mb-2 d-flex align-items-end">
-                                    <button type="submit" class="btn btn-primary cases-filter-btn">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- Print Button (Far Right) -->
-                            <div class="mb-2 ml-auto">
-                                <button type="button" onclick="printResult()" class="btn btn-secondary cases-filter-btn" title="Print">
-                                    <i class="fa fa-print"></i>
-                                </button>
-                            </div>
+                    <div class="col-12 col-sm-6 col-md-3 mb-2">
+                        <label for="delivery_to" class="form-label filter-label">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>To Date</span>
+                        </label>
+                        <x-ios-dtp
+                                name="to"
+                                id="delivery_to"
+                                :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, Y') : '' "
+                                mode="date"
+                                :required="true"
+                        />
+                        @if ($errors->has('to'))
+                            <span class="help-block" style="color: red">{{ $errors->first('to') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="col-12 col-md-6 mb-2">
+                        <label class="form-label filter-label">
+                            <i class="fas fa-filter"></i>
+                            <span>Actions</span>
+                        </label>
+                        <div class="delivery-actions-group" id="delivery_filters_actions">
+                            <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search">
+                                <i class="fas fa-search"></i>
+                                <span>Apply</span>
+                            </button>
+                            <button type="button" onclick="printResult()" class="btn btn-secondary cases-filter-btn delivery-print-btn" title="Print">
+                                <i class="fa fa-print"></i>
+                                <span>Print</span>
+                            </button>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     @php
 
         $date = new DateTime();
@@ -780,37 +1137,40 @@
         }
     @endphp
 
-        <div class="delivery-section-card">
-            <div class=" table-responsive row">
-        <div class="col-lg-12 col-sm-12  row delivery-counters" style="flex-direction: row;padding-bottom:0px">
-            <div class="col-lg-4 col-md-4 col-4 mb-3">
-
-                <div class="vertical delivery-counter-card">
-                    <span class="value" style="color:#3b8b45">{{ count($cases) }}</span>
-                    <span class="label">Total</span>
+        <div class="delivery-summary-grid delivery-counters">
+            <div class="delivery-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--total">
+                    <div class="delivery-counter-copy">
+                        <span class="materials-total-label">Total Cases</span>
+                        <div class="materials-total-value">
+                            <span class="materials-total-amount">{{ count($cases) }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-4 mb-3">
-                <div class="vertical delivery-counter-card">
-                    <span class="value" style="color:red">{{ $overdue }}</span>
-                    <span class="label">Overdue</span>
+            <div class="delivery-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--overdue">
+                    <div class="delivery-counter-copy">
+                        <span class="materials-total-label">Overdue</span>
+                        <div class="materials-total-value">
+                            <span class="materials-total-amount">{{ $overdue }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-4 mb-3">
-                <div class="vertical delivery-counter-card">
-                    <span class="value" style="color:#3b8b45">{{ $numOfUnits }}</span>
-                    <span class="label"># of Units</span>
+            <div class="delivery-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--units">
+                    <div class="delivery-counter-copy">
+                        <span class="materials-total-label"># of Units</span>
+                        <div class="materials-total-value">
+                            <span class="materials-total-amount">{{ $numOfUnits }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <p class="text-muted"></p>
-        <div class="table-odd" style="width: 100%;">
-            <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer"
-                style="padding:0;margin:0;">
-                <div class="row">
-                    <div class="col-sm-12" style="padding:0;margin:0;">
 
-                        <table id="datatable" class="table table-bordered dataTable no-footer sunriseTable" role="grid"
+        <table id="datatable" class="table table-bordered dataTable no-footer sunriseTable table-odd" role="grid"
                             aria-describedby="datatable_info">
                             <thead>
                                 <tr class="" style="left: 0px;  !important;">
@@ -1143,12 +1503,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-    </div>
     </div>
 
     <script>

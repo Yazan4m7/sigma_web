@@ -19,6 +19,7 @@
     <title>{{ $pageSlug ?? config('site_vars.projectNameShort') }}</title>
     @php
         $isReportRoute = request()->is('reports*');
+        $preserveNativeTableHeaders = request()->routeIs('admin-dashboard-v2') || request()->is('operations-dashboard');
     @endphp
 
 <!-- CSS -->
@@ -324,7 +325,7 @@
 
 
             {{--<div id="loader"></div>--}}
-            <div class="content{{ $isReportRoute ? '' : ' sigma-standard-theme' }}" {{--style="display:none;"  id="myDiv"--}}>
+            <div class="content{{ $isReportRoute ? '' : ' sigma-standard-theme' }}{{ !$isReportRoute && $preserveNativeTableHeaders ? ' sigma-preserve-table-headers' : '' }}" {{--style="display:none;"  id="myDiv"--}}>
                 @if (session()->has('error'))
                     <div class="alert alert-danger" role="alert">
                         {{ session()->get('error') }}
@@ -354,7 +355,7 @@
         {{-- Overlay removed --}}
         <div class="full-page {{ $contentClass ?? '' }}">
 
-            <div class="content{{ $isReportRoute ? '' : ' sigma-standard-theme' }}">
+            <div class="content{{ $isReportRoute ? '' : ' sigma-standard-theme' }}{{ !$isReportRoute && $preserveNativeTableHeaders ? ' sigma-preserve-table-headers' : '' }}">
 
                 <div class="container">
 

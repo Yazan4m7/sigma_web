@@ -15,8 +15,8 @@
                 </button>
 
                 <a href="{{ route('home') }}" class="simple-text logo-normal">
-                    <img src="{{ asset('assets') }}/images/logo_horiz.svg" alt="SIGMA Logo" class="logo-expanded" />
-                    <img src="{{ asset('assets') }}/images/green.png" alt="SIGMA Logo Compact" class="logo-collapsed" />
+                    <img src="{{ asset('assets/images/logo_horiz.svg') }}" alt="SIGMA Logo" class="logo-expanded" />
+                    <img src="{{ asset('assets/images/green.png') }}" alt="SIGMA Logo Compact" class="logo-collapsed" />
                 </a>
             </div>
         </div>

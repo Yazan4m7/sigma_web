@@ -606,116 +606,169 @@
             color: white;
         }
 
-        /* Compact filter section */
+        /* Report-standard filter section */
+        .cases-filter-card.container.full-width {
+    background: #ffffff !important;
+    border: 1px solid rgba(188, 206, 216, 0.3);
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 16px;
+    margin-bottom: 24px;
+    padding: 20px 20px 16px !important;
+    position: relative;
+    overflow: visible;
+    backdrop-filter: blur(10px);
+        }
+
+        .cases-filter-card.container.full-width::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
         .cases-filter-row {
-            --cases-filter-height: 36px;
-            --cases-filter-font-size: 13px;
-            --cases-filter-color: #495057;
-            --cases-filter-gap: 6px;
-            --cases-filter-gap-half: 3px;
-            --cases-filter-radius: 4px;
-            --cases-filter-border: 1px solid #ced4da;
-            --cases-filter-padding: 4px 10px;
-            padding: 11px 8px !important;
+            --cases-filter-height: 48px;
+            --cases-filter-font-size: 14px;
+            --cases-filter-color: #243746;
+            --cases-filter-gap: 12px;
+            --cases-filter-radius: 10px;
+            --cases-filter-border: 1px solid rgba(188, 206, 216, 0.4);
+            --cases-filter-padding: 12px 14px;
+            padding: 0 !important;
+            margin: 0 -8px !important;
+            align-items: flex-end;
+            font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .cases-filter-row .mb-2 {
+            margin-bottom: 12px !important;
+        }
+
+        .cases-filter-row .filter-label {
+            display: flex;
             align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #243746;
+            letter-spacing: 0.01em;
+            font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .cases-filter-row .filter-label i {
+            color: #2b7b7d;
+            font-size: 13px;
         }
 
         .cases-search-group {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             gap: var(--cases-filter-gap);
+        }
+
+        .cases-search-group #tableSearch {
+            flex: 1 1 auto;
         }
 
         .cases-search-group .cases-filter-btn {
             margin-left: 0 !important;
         }
 
-        @media (min-width: 768px) {
-            .cases-filter-row .cases-search-group #tableSearch {
-                flex: 0 0 calc(50% - var(--cases-filter-gap-half));
-                max-width: calc(50% - var(--cases-filter-gap-half));
-            }
-        }
-
         .cases-filter-row .form-control,
         .cases-filter-row .dtp-input,
-        .cases-filter-row .bootstrap-select > .dropdown-toggle {
+        .cases-filter-row .bootstrap-select > .dropdown-toggle,
+        .cases-filter-row .ios-dtp-trigger {
+            min-height: var(--cases-filter-height) !important;
             height: var(--cases-filter-height) !important;
             font-size: var(--cases-filter-font-size) !important;
             padding: var(--cases-filter-padding) !important;
             border-radius: var(--cases-filter-radius);
-            border: var(--cases-filter-border);
+            border: var(--cases-filter-border) !important;
             color: var(--cases-filter-color) !important;
             text-align: left;
-            background-color: #fff;
-            font-family: inherit;
-            font-weight: 400;
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: none !important;
+            font-weight: 500;
             line-height: 1.5;
+            transition: all 0.3s ease;
         }
 
         .cases-filter-row .bootstrap-select .filter-option-inner-inner,
-        .cases-filter-row .ios-dtp-trigger {
+        .cases-filter-row .ios-dtp-display {
             font-size: var(--cases-filter-font-size) !important;
             color: var(--cases-filter-color) !important;
             text-align: left;
+            font-weight: 500;
         }
 
-        .cases-filter-row .form-control::placeholder {
-            color: var(--cases-filter-color) !important;
-            opacity: 1;
-            text-align: left;
-        }
-
+        .cases-filter-row .form-control::placeholder,
         .cases-filter-row .bootstrap-select > .dropdown-toggle.bs-placeholder .filter-option-inner-inner {
-            color: var(--cases-filter-color) !important;
+            color: #6b7280 !important;
+            opacity: 1;
         }
 
         .cases-filter-row .bootstrap-select > .dropdown-toggle {
             display: flex;
             align-items: center;
+            justify-content: space-between;
         }
 
-        .cases-filter-row .dtp-input {
-            cursor: pointer;
-        }
-
-        .cases-filter-row .dtp-input:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+        .cases-filter-row .form-control:focus,
+        .cases-filter-row .dtp-input:focus,
+        .cases-filter-row .bootstrap-select > .dropdown-toggle:focus,
+        .cases-filter-row .ios-dtp-trigger:focus {
+            border-color: #408385 !important;
+            box-shadow: 0 0 0 3px rgba(64, 131, 133, 0.15) !important;
+            outline: 0;
         }
 
         .cases-filter-btn {
             width: 100%;
+            min-height: var(--cases-filter-height);
             height: var(--cases-filter-height);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0 !important;
+            gap: 8px;
+            padding: 0 18px !important;
+            border-radius: 12px !important;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            transition: all 0.3s ease;
         }
 
         .cases-filter-btn--search {
-            width: auto;
-            min-width: 120px;
+            min-width: 136px;
+            background: linear-gradient(135deg, #5f7688 0%, #8faab8 100%) !important;
+            background-color: #7790a0 !important;
+            border: 1px solid #5f7688 !important;
+            color: #ffffff !important;
+            box-shadow: 0 6px 16px rgba(95, 118, 136, 0.28);
+        }
+
+        .cases-filter-btn--search:hover,
+        .cases-filter-btn--search:focus {
+            background: linear-gradient(135deg, #516879 0%, #7f9dab 100%) !important;
+            background-color: #688392 !important;
+            border-color: #516879 !important;
+            color: #ffffff !important;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(81, 104, 121, 0.26);
         }
 
         .cases-filter-btn--trash {
-            width: auto;
-            min-width: 40px;
-        }
-
-        .cases-filter-row .mb-2 {
-            margin-bottom: 6px !important;
-        }
-
-        /* Filter container with subtle shadow and border */
-        .container.full-width {
-            background-color: #f8f9fa;
-            border-radius: 5px;
-
-            box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
-            margin-bottom: 20px;
-            border: 1px solid #e9ecef;
-            position: relative;
+            min-width: 48px;
+            width: 48px;
+            padding: 0 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 6px 16px rgba(220, 53, 69, 0.16);
         }
 
         .sunriseTable tbody tr td {
@@ -932,10 +985,14 @@
             @if(!isset($trashedCases) && !isset($clients))
                 <input type="hidden" class="form-control" name="id" value="{{$id}}">
             @endif
-            <div class="container full-width">
+            <div class="container full-width cases-filter-card">
                 <div class="row cases-filter-row">
                     <!-- Date filtering section -->
-                    <div class="col-4 col-sm-3 col-md-2 mb-2">
+                    <div class="col-6 col-sm-4 col-md-2 mb-2">
+                        <label class="form-label filter-label" for="cases_from">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>From Date</span>
+                        </label>
                         <x-ios-dtp
                                 name="from"
                                 id="cases_from"
@@ -943,7 +1000,11 @@
                                 mode="date"
                         />
                     </div>
-                    <div class="col-4 col-sm-3 col-md-2 mb-2">
+                    <div class="col-6 col-sm-4 col-md-2 mb-2">
+                        <label class="form-label filter-label" for="cases_to">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>To Date</span>
+                        </label>
                         <x-ios-dtp
                                 name="to"
                                 id="cases_to"
@@ -953,13 +1014,17 @@
                     </div>
 
                     <!-- Doctor selection -->
-                    <div class="col-4 col-sm-3 col-md-2 mb-2">
+                    <div class="col-6 col-sm-4 col-md-2 mb-2">
                         @if(isset($clients))
+                            <label class="form-label filter-label" for="doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Doctor</span>
+                            </label>
                             <select style="width:100%" class="selectpicker clearOnAll greyBG"
                                     multiple
                                     name="doctor[]" id="doctor"
                                     data-live-search="true"
-                                    title="Doctor">
+                                    title="All Doctors">
                                 <option value="all" {{(isset($selectedClients) && in_array("all" ,$selectedClients)) ? 'selected' : ''}}>
                                     All
                                 </option>
@@ -972,16 +1037,22 @@
 
                     <!-- Search and Apply -->
                     <div class="col-12 col-md-4 mb-2">
+                        <label class="form-label filter-label" for="tableSearch">
+                            <i class="fas fa-search"></i>
+                            <span>Search Cases</span>
+                        </label>
                         <div class="cases-search-group">
                             <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
                             <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search">
                                 <i class="fas fa-search"></i>
+                                <span>Apply</span>
                             </button>
                         </div>
                     </div>
 
                     <!-- Trash button -->
-                    <div class="col-12 col-md-2 mb-2 d-flex justify-content-end">
+                    <div class="col-12 col-md-2 mb-2 d-flex flex-column align-items-md-end">
+                      
                         <a href="{{route('deleted-cases')}}" class="btn btn-danger cases-filter-btn cases-filter-btn--trash"
                            title="View Deleted Cases">
                             <i class="fa-regular fa-trash-can"></i>

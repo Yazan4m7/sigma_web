@@ -1673,7 +1673,7 @@
 
 /* Responsive styles */
 @media (max-width: 768px){
-   
+
 .sigma-modal--abutments-delivery-actions .sigma-workflow-dialog {
        /* width: 60vw; */
        max-height: 80vh;
@@ -2244,7 +2244,7 @@
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > * {
    border: none;
-   border-bottom: 1px solid var(--tab-border-color);
+    border-bottom: 1px solid #ffffff36;
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > *:last-child {
@@ -2900,9 +2900,7 @@ img {
     position: sticky;
     top: var(--sigma-ops-sticky-top);
     z-index: 80;
-    background: var(--tab-bg-color);
-    box-shadow: var(--sigma-ops-sidebar-shadow);
-    border-right: 1px solid var(--sigma-ops-divider);
+    background:#4b8688;
     transition: all 0.3s ease;
     align-self: flex-start;
 }
@@ -2914,7 +2912,7 @@ img {
     z-index: 70;
     /* background: #ffffff; */
     /* box-shadow: var(--sigma-ops-sticky-shadow); */
-    border-bottom: 1px solid var(--sigma-ops-divider);
+    /* border-bottom: 1px solid var(--sigma-ops-divider); */
     transition: all 0.3s ease;
 }
 
@@ -2934,7 +2932,7 @@ img {
 .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
     position: relative;
     z-index: auto;
-    background-color: var(--sigma-ops-table-header-bg);
+    background-color: #2b7b7d;
     color: #f7fbfb;
     font-weight: 600;
     padding: 16px 12px;
@@ -3130,7 +3128,7 @@ img {
     .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
         box-shadow: var(--sigma-ops-sticky-shadow);
         border-right: none;
-        border-bottom: 1px solid var(--sigma-ops-divider);
+        border-bottom:1px solid #ffffff36;
     }
 
     .site-wrapper .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th, .site-wrapper .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
@@ -3862,11 +3860,9 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
 .stageSidebar {
    /*border-top: 1px solid #2b7b7d;*/
    border-bottom: 1px solid #2b7b7d;
-   margin-top: 67px;
+   margin-top: 69px;
 }
 
-waitingtabText.active {
-}
 
 .innerActiveBtn, .innerWaitingBtn {
    border: 1px solid rgba(0, 0, 0, 0.08);

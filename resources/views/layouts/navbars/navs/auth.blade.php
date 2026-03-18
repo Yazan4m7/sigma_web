@@ -74,10 +74,18 @@
         flex-wrap: nowrap;
     }
 
+    .logo-col,
+    .mobile-brand-group {
+        min-width: 0;
+        overflow: hidden;
+    }
+
     .mobile-brand-group {
         display: flex;
         align-items: center;
         gap: 10px;
+        max-width: 100%;
+        flex-wrap: nowrap;
     }
 
     #sidebar-hamburger {
@@ -664,8 +672,33 @@
         }
 
         .logo-col {
-            flex: 0 0 auto !important;
-            max-width: none !important;
+            flex: 0 1 auto !important;
+            width: auto !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            overflow: hidden;
+        }
+
+        .mobile-brand-group {
+            max-width: 100%;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        .logo-navbar {
+            display: inline-flex !important;
+            align-items: center;
+            min-width: 0;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .logo-navbar .logo {
+            display: block;
+            width: clamp(120px, 26vw, 190px);
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
         }
 
         .left-toggler-container {
@@ -768,6 +801,10 @@
         #sidebar-hamburger {
             height: 34px;
             padding: 0 6px;
+        }
+
+        .logo-navbar .logo {
+            width: clamp(110px, 34vw, 165px);
         }
 
         .header-actions .header-search {
@@ -988,7 +1025,7 @@ if ($user) {
                                 </button>
                             </div>
                             <a class="navbar-brand logo-navbar d-lg-none" href="{{ route('home') }}" style="margin: 0; position: relative; z-index: 1051;">
-                                <img class ="logo" src="{{ asset('assets') }}/images/logo_horiz.svg" />
+                                <img class="logo" src="{{ asset('assets/images/logo_horiz.svg') }}" alt="SIGMA Logo" />
                             </a>
                         </div>
                     </div>

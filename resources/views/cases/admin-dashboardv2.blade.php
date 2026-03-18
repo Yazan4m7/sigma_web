@@ -2948,7 +2948,7 @@
 
         @media (min-width: 992px){
             .stageSidebar {
-                margin-top: 68px;
+                margin-top: 71px;
             }
         }
 
