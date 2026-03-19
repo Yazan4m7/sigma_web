@@ -147,6 +147,7 @@ class ReportsController extends Controller
         $allFailureCauses = failureCause::all();
         $allCausesSelected = true;
         $typesSelected = array();
+        $validFailureTypes = [0, 1, 2, 3];
         $selectedCauses = $request->causesInput ?? ["all"];
 
         $from = $request->from ?? now()->subMonth()->format('Y-m-d');
@@ -167,12 +168,27 @@ class ReportsController extends Controller
 
         // get failure logs
         $failureLogs = array();
-        $query = failureLog::query()->with(['case.client']);
+        $selectedFailureTypes = collect((array) $request->failureTypeInput)
+            ->filter(function ($value) {
+                return $value !== null && $value !== '' && $value !== 'all';
+            })
+            ->map(function ($value) {
+                return is_numeric($value) ? (int) $value : $value;
+            })
+            ->filter(function ($value) use ($validFailureTypes) {
+                return in_array($value, $validFailureTypes, true);
+            })
+            ->values()
+            ->all();
+
+        $query = failureLog::query()
+            ->with(['case.client'])
+            ->whereIn('failure_type', $validFailureTypes);
 
         // Filter the logs by user inputs
-        if(isset($request->failureTypeInput) && !in_array('all', (array)$request->failureTypeInput)) {
-            $query->whereIn('failure_type', (array)$request->failureTypeInput);
-            $typesSelected = (array)$request->failureTypeInput;
+        if ($selectedFailureTypes !== []) {
+            $query->whereIn('failure_type', $selectedFailureTypes);
+            $typesSelected = $selectedFailureTypes;
 
             }
         if (isset($request->causesInput) && !in_array('all', (array)$request->causesInput)) {

@@ -2,7 +2,141 @@
 @section('content')
 
     <style>
-        
+        .rejected-cases-page .sigma-list-filter-card {
+            border-radius: 16px !important;
+            padding: 20px 20px 16px !important;
+            overflow: hidden !important;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .rejected-cases-page .sigma-list-filter-card::before {
+            height: 4px !important;
+            border-radius: 16px 16px 0 0 !important;
+        }
+
+        .rejected-cases-page .sigma-list-filter-row {
+            margin: 0 -8px !important;
+        }
+
+        .rejected-cases-page .sigma-list-filter-row > [class*="col-"] {
+            min-width: 0;
+        }
+
+        .rejected-cases-page .sigma-list-filter-row .bootstrap-select,
+        .rejected-cases-page .sigma-list-filter-row .bootstrap-select > .dropdown-toggle {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
+        .rejected-cases-page .sigma-list-filter-row .bootstrap-select > .dropdown-toggle {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+        }
+
+        .rejected-cases-page .sigma-columns-toolbar {
+            width: 100%;
+            min-height: 38px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-end;
+        }
+
+        .rejected-cases-page .rejected-columns-btn::after {
+            display: none !important;
+        }
+
+        .rejected-cases-page .sigma-columns-menu {
+            min-width: 220px;
+            padding: 8px 0 !important;
+            border-radius: 12px !important;
+        }
+
+        .rejected-cases-page .sigma-columns-menu .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            color: #243746;
+        }
+
+        .rejected-cases-page .sigma-columns-menu .dropdown-item .form-check-input {
+            position: static;
+            margin: 0;
+            flex: 0 0 auto;
+        }
+
+        .rejected-cases-page .rejected-table-shell,
+        .rejected-cases-page .rejected-table-shell > .row,
+        .rejected-cases-page .rejected-table-shell > .row > .col-12,
+        .rejected-cases-page #datatable_wrapper,
+        .rejected-cases-page #datatable_wrapper > .row {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+
+        .rejected-cases-page #datatable {
+            width: 100% !important;
+            margin: 0 !important;
+            background: transparent !important;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .rejected-cases-page #datatable.table-bordered,
+        .rejected-cases-page #datatable.table-bordered th,
+        .rejected-cases-page #datatable.table-bordered td,
+        .rejected-cases-page #datatable.dataTable.no-footer {
+            border: 0 !important;
+        }
+
+        .rejected-cases-page #datatable thead th {
+            background: #d6ecee !important;
+            color: #337374 !important;
+            padding: 12px 10px !important;
+            border-bottom: 0 !important;
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        .rejected-cases-page #datatable thead th.sigma-visible-start {
+            background: #408385 !important;
+            color: #ffffff !important;
+            border-top-left-radius: 12px !important;
+        }
+
+        .rejected-cases-page #datatable thead th.sigma-visible-end {
+            background: #408385 !important;
+            color: #ffffff !important;
+            border-top-right-radius: 12px !important;
+        }
+
+        .rejected-cases-page #datatable tbody td {
+            padding: 14px 10px !important;
+            border-top: 0 !important;
+            border-bottom: 0 !important;
+            background: transparent !important;
+            vertical-align: middle !important;
+        }
+
+        .rejected-cases-page #datatable.table-striped tbody tr:nth-of-type(odd) {
+            background-color: transparent !important;
+        }
+
+        .rejected-cases-page #datatable tbody tr:hover {
+            background-color: #f8fafc !important;
+        }
+
+        .rejected-cases-page .sigma-status-width {
+            min-width: 120px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
 .sigma-modal--cases-rejected-actions .modal-footer {
             flex-wrap: wrap;
             justify-content: flex-start;
@@ -15,19 +149,23 @@
             display: none;
         }
     </style>
+    <div class="rejected-cases-page sigma-list-page">
     @if(!isset($isSearchResults))
     @if(!isset($trashedCases))
         @if(isset($clients))
-            <form class="kt-form" method="GET" action="{{route('rejected-cases')}}">
+            <form class="kt-form sigma-list-page" method="GET" action="{{route('rejected-cases')}}">
                 @else
-                    <form class="kt-form" method="GET" action="{{route('dentist-cases',['id' =>$id])}}">
+                    <form class="kt-form sigma-list-page" method="GET" action="{{route('dentist-cases',['id' =>$id])}}">
                         <input type="hidden" class="form-control" name="id" value="{{$id}}">
                         @endif
-                        <div class="container full-width">
-                            <div class="row " style="padding-bottom:0">
-                                <div class="col-12 col-sm-6 col-md-3 mb-3">
-                                    <div class="kt-subheader__search" style="">
-                                        <label for="rejected_from">From (Start of):</label>
+                        <div class="container full-width sigma-list-filter-card">
+                            <div class="row sigma-list-filter-row">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                                    <div class="kt-subheader__search">
+                                        <label class="filter-label" for="rejected_from">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>From Date</span>
+                                        </label>
                                         <x-ios-dtp name="from" id="rejected_from" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
 {{--                                        <input class="form-control SDTP"--}}
 {{--                                               id="rejected_from"--}}
@@ -40,9 +178,12 @@
 {{--                                    --}}
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6 col-md-3 mb-3">
-                                    <div class="kt-subheader__search" style="">
-                                        <label for="rejected_to">To (End of):</label>
+                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                                    <div class="kt-subheader__search">
+                                        <label class="filter-label" for="rejected_to">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <span>To Date</span>
+                                        </label>
                                         <x-ios-dtp name="to" id="rejected_to" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
 {{--                                        <input class="form-control SDTP"--}}
 {{--                                               id="rejected_to"--}}
@@ -55,16 +196,20 @@
 
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6 col-md-3 mb-3">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
 
                                     @if(isset($clients))
                                         <div class="dropdown" style="text-align: left;">
-                                            <label>Doctor:</label>
-                                            <br>
+                                            <label class="filter-label" for="doctor">
+                                                <i class="fas fa-user-md"></i>
+                                                <span>Doctor</span>
+                                            </label>
 
                                             <select style="width:100%" class="selectpicker clearOnAll" multiple
                                                     name="doctor[]" id="doctor"
-                                                    data-live-search="true">
+                                                    data-live-search="true"
+                                                    data-container="body"
+                                                    title="All Doctors">
 
                                                     <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>
                                                         All
@@ -79,35 +224,35 @@
                                     @endif
 
                                 </div>
-                                <div class="col-12 col-sm-6 col-md-2 mb-3">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
 
                                     @if(isset($clients))
                                         <div class="kt-subheader__search">
-                                            <label>Patient Name:</label>
-                                            <br>
+                                            <label class="filter-label" for="patient_name">
+                                                <i class="fas fa-search"></i>
+                                                <span>Patient</span>
+                                            </label>
                                             <input type="text" name="patient_name" value="{{$patientName ?? ''}}"
-                                                   class="form-control">
+                                                   class="form-control" id="patient_name" placeholder="Search patient">
                                         </div>
                                     @endif
 
                                 </div>
+                                <div class="col-12 col-sm-6 col-lg-2 mb-3 sigma-filter-action-col">
+                                    <button type="submit" class="btn btn-primary sigma-apply-btn">
+                                        <i class="fas fa-search"></i>
+                                        <span>Apply</span>
+                                    </button>
+                                </div>
 
-                            </div>
-                        </div>
-                            <div class="container full-width">
-                                <div class="row justify-content-between">
-                                    <div class="col-6 col-sm-6 col-md-3  mb-3">
-                                        <button type="submit" class="btn btn-primary ">Submit</button>
-                                    </div>
-
-                                    <div  class="col-6 col-sm-6 col-md-3  mb-3">
-                                        <div class="dropdown">
-                                            <button class="btn btn-secondary dropdown-toggle" type="button"
+                                    <div class="col-12 col-sm-6 col-lg-2 mb-3 d-flex align-items-end justify-content-lg-end">
+                                        <div class="dropdown sigma-columns-toolbar">
+                                            <button class="btn sigma-toolbar-icon-btn rejected-columns-btn" type="button"
                                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                Show / Hide
+                                                    aria-expanded="false" title="Show or hide columns" aria-label="Show or hide columns">
+                                                <i class="fas fa-table-columns"></i>
                                             </button>
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="padding-left:10px">
+                                            <div class="dropdown-menu dropdown-menu-right sigma-columns-menu" aria-labelledby="dropdownMenuButton">
                                                 <a class="toggle-vis dropdown-item" data-column="0" href="#"
                                                    onclick="toggleCheckBox(this)"><input type="checkbox"
                                                                                          class="form-check-input"/>
@@ -145,27 +290,19 @@
                                                    onclick="toggleCheckBox(this)"><input type="checkbox"
                                                                                          class="form-check-input"/> Date
                                                     Created </a>
-                                                <a class="toggle-vis dropdown-item" data-column="8" href="#"
-                                                   onclick="toggleCheckBox(this)"><input type="checkbox"
-                                                                                         class="form-check-input"
-                                                                                         checked/> Actions</a>
-
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-
-                            </div>
                     </form>
                 @endif
                     @endif
-                            <div class="container full-width">
+                            <div class="container full-width sigma-table-free rejected-table-shell">
                                 <div class="row">
                                     <div class="col-12">
                                         <br>
                                         <table id="datatable"
-                                               class="table-striped table-bordered compact sunriseTable"
+                                               class="table-striped compact sunriseTable sigma-list-table"
                                                role="grid" aria-describedby="datatable_info"
                                                style="width:100%">
                                             <thead>
@@ -181,7 +318,7 @@
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="">Case ID
                                                 </th>
-                                                <th class="sorting hiddenByDefault" tabindex="0"
+                                                <th class="sorting" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
                                                     style="">Doctor
@@ -383,6 +520,24 @@
                     <!-- Responsive and datable js -->
                     <script type="text/javascript">
                         $(document).ready(function () {
+                            function applyRejectedHeaderCaps() {
+                                var $headers = $('#datatable thead th:visible');
+                                $('#datatable thead th').removeClass('sigma-visible-start sigma-visible-end');
+
+                                if ($headers.length) {
+                                    $headers.first().addClass('sigma-visible-start');
+                                    $headers.last().addClass('sigma-visible-end');
+                                }
+                            }
+
+                            function syncRejectedColumnMenu() {
+                                $('a.toggle-vis').each(function () {
+                                    var columnIndex = $(this).attr('data-column');
+                                    var isVisible = table.column(columnIndex).visible();
+                                    $(this).find('input:checkbox:first').prop('checked', isVisible);
+                                });
+                            }
+
                             var table =
                                 $('#datatable').DataTable({
                                     "pageLength": 25,
@@ -396,6 +551,14 @@
                                     //stateSave: true,
                                 });
 
+                            applyRejectedHeaderCaps();
+                            syncRejectedColumnMenu();
+
+                            table.on('column-visibility.dt draw.dt responsive-resize.dt', function () {
+                                applyRejectedHeaderCaps();
+                                syncRejectedColumnMenu();
+                            });
+
                             $('a.toggle-vis').on('click', function (e) {
                                 e.preventDefault();
 
@@ -405,13 +568,58 @@
                                 // Toggle the visibility
                                 column.visible(!column.visible());
                             });
+
+                            $(document).on('shown.bs.select', '#doctor', function () {
+                                if (!window.matchMedia('(max-width: 991px)').matches) {
+                                    return;
+                                }
+
+                                var $select = $(this);
+                                var picker = $select.data('selectpicker');
+                                if (!picker || !picker.$bsContainer || !picker.$bsContainer.length) {
+                                    return;
+                                }
+
+                                var $container = picker.$bsContainer;
+                                var $menu = picker.$menu && picker.$menu.length
+                                    ? picker.$menu
+                                    : $container.find('> .dropdown-menu');
+
+                                if (!$menu.length) {
+                                    return;
+                                }
+
+                                var viewportPadding = 12;
+                                var viewportWidth = window.innerWidth || $(window).width();
+                                var buttonWidth = picker.$button && picker.$button.length
+                                    ? picker.$button.outerWidth()
+                                    : $select.closest('.bootstrap-select').outerWidth();
+                                var menuWidth = Math.min(
+                                    Math.max(buttonWidth || 0, $menu.outerWidth() || 0),
+                                    Math.max(viewportWidth - (viewportPadding * 2), 0)
+                                );
+                                var containerLeft = parseFloat($container.css('left')) || 0;
+                                var maxLeft = viewportWidth - viewportPadding - menuWidth;
+                                containerLeft = Math.max(viewportPadding, Math.min(containerLeft, maxLeft));
+
+                                $container.css({
+                                    left: containerLeft,
+                                    width: menuWidth
+                                });
+
+                                $menu.css({
+                                    minWidth: menuWidth,
+                                    maxWidth: menuWidth,
+                                    right: 'auto',
+                                    left: 0,
+                                    transform: 'none'
+                                });
+                            });
                         });
 
                         function toggleCheckBox(ele) {
-                            var $tc = $(ele).find('input:checkbox:first'),
-                                tv = $tc.attr('checked');
-
-                            $tc.attr('checked', !tv);
+                            var $tc = $(ele).find('input:checkbox:first');
+                            $tc.prop('checked', !$tc.prop('checked'));
                         }
                         function caseDelConfirmation(ev) {
                             ev.preventDefault();

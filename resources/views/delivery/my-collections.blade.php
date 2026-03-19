@@ -1,48 +1,78 @@
 @extends('layouts.app' ,[ 'pageSlug' =>'My Collections'])
 
 @section('content')
-                     <div class="row" style="padding-left: 10px;padding-top: 10px">
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="m-b-30">
-                                <div class="table-responsive">
-                                    <h5 class="header-title">Payments Total</h5>
-                                    <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($payments->sum('amount'))}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
-                                    <p class="text-muted"></p>
-                                    <div class="table-odd">
-                                        <div id="datatable_wrapper" class=""><div class="row"><div class="col-sm-12">
-                                                    <table id="datatable" class="table sunriseTable order-column  display nowrap compact cell-border dataTable no-footer" role="grid" aria-describedby="datatable_info">
-                                                        <thead>
-                                                        <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">ID</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 240px;">Doctor</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 148.32px;">Amount</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending" style="width: 160.664px;">Paid on</th>
-                                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending" style="width: 126.035px;">Type</th>
-                                                        </tr>
-                                                        </thead>
+    <style>
+        #datatable thead th:first-child,
+        #datatable thead th:last-child {
+            background-color: #408385 !important;
+            color: #ffffff !important;
+        }
 
-                                                        <tbody>
+        #datatable thead th:first-child {
+            border-top-left-radius: 12px !important;
+        }
 
-                                                        @foreach($payments as $payment)
-                                                            <tr role="row">
-                                                                <td class="sorting_1">{{$payment->id}}</td>
-                                                                <td>{{$payment->client->name}}</td>
-                                                                <td>{{$payment->amount}} JOD</td>
-                                                                <td>{{substr($payment->created_at,0,16) }}</td>
-                                                                <td>{{$payment->from_bank ? $payment->notes : "Cash"}}</td>
+        #datatable thead th:last-child {
+            border-top-right-radius: 12px !important;
+        }
 
-                                                            </tr>
-                                                        @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+        @media (max-width: 767px) {
+            .sigma-list-page {
+                display: flex;
+                flex-direction: column;
+            }
 
-                        @endsection
+            .sigma-list-page > .sigma-summary-grid {
+                order: 2;
+            }
+
+            .sigma-list-page > .sigma-table-free {
+                order: 1;
+            }
+        }
+    </style>
+    <div class="sigma-list-page">
+        <div class="sigma-summary-grid">
+            <div class="sigma-summary-item">
+                <div class="materials-total-card report-total-card sigma-compact-summary-card">
+                    <div>
+                        <span class="materials-total-label">Payments Total</span>
+                        <div class="materials-total-value">
+                            <span class="materials-total-amount sigma-summary-value--danger">{{ number_format($payments->sum('amount')) }}</span>
+                            <span class="materials-total-currency">JOD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sigma-table-free">
+            <table id="datatable" class="table sunriseTable order-column display nowrap compact cell-border dataTable no-footer sigma-list-table" role="grid" aria-describedby="datatable_info">
+                <thead>
+                <tr role="row">
+                    <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">Doctor</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending">Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Paid on</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Type</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach($payments as $payment)
+                    <tr role="row">
+                        <td class="sorting_1">{{ $payment->id }}</td>
+                        <td>{{ $payment->client->name }}</td>
+                        <td>{{ $payment->amount }} JOD</td>
+                        <td>{{ substr($payment->created_at,0,16) }}</td>
+                        <td>{{ $payment->from_bank ? $payment->notes : "Cash" }}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+@endsection
 
 @push('js')
 

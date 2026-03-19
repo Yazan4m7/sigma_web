@@ -7,7 +7,8 @@
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
         /* Customizations */
         .sigma-sticky-toolbar {
-            top: 55px !important; /* Adjust if header height changes */
+            top: var(--sigma-app-header-offset) !important;
+            z-index: 110 !important;
         }
 
         #casesTable {
@@ -186,7 +187,7 @@
 
         /* Ensure table wrapper allows horizontal scroll without clipping */
         .dataTables_wrapper {
-            overflow-x: auto;
+            overflow: visible;
             width: 100%;
             margin: 0;
             padding: 0;
@@ -194,8 +195,11 @@
 
         .cases-table-scroll {
             overflow-x: auto;
+            overflow-y: visible;
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
         .dataTables_scrollBody {
@@ -253,7 +257,7 @@
 
         /* Ensure parent container doesn't clip */
         #casesTable_wrapper {
-            overflow-x: hidden;
+            overflow: visible;
             max-width: 100%;
         }
 
@@ -632,13 +636,13 @@
         }
 
         .cases-filter-row {
-            --cases-filter-height: 48px;
+            --cases-filter-height: 38px;
             --cases-filter-font-size: 14px;
             --cases-filter-color: #243746;
             --cases-filter-gap: 12px;
             --cases-filter-radius: 10px;
             --cases-filter-border: 1px solid rgba(188, 206, 216, 0.4);
-            --cases-filter-padding: 12px 14px;
+            --cases-filter-padding: 8px 14px;
             padding: 0 !important;
             margin: 0 -8px !important;
             align-items: flex-end;
@@ -664,20 +668,6 @@
         .cases-filter-row .filter-label i {
             color: #2b7b7d;
             font-size: 13px;
-        }
-
-        .cases-search-group {
-            display: flex;
-            align-items: stretch;
-            gap: var(--cases-filter-gap);
-        }
-
-        .cases-search-group #tableSearch {
-            flex: 1 1 auto;
-        }
-
-        .cases-search-group .cases-filter-btn {
-            margin-left: 0 !important;
         }
 
         .cases-filter-row .form-control,
@@ -764,11 +754,46 @@
         }
 
         .cases-filter-btn--trash {
-            min-width: 48px;
-            width: 48px;
+            min-width: auto;
+            width: auto;
+            height: var(--cases-filter-height) !important;
             padding: 0 !important;
-            border-radius: 12px !important;
-            box-shadow: 0 6px 16px rgba(220, 53, 69, 0.16);
+            border: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            color: #dc3545 !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-decoration: none !important;
+        }
+
+        .cases-filter-btn--trash:hover,
+        .cases-filter-btn--trash:focus {
+            background: transparent !important;
+            box-shadow: none !important;
+            color: #bb2d3b !important;
+            transform: none !important;
+        }
+
+        .cases-filter-btn--trash i {
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .cases-table-shell {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cases-table-shell .row,
+        .cases-table-shell .col-12,
+        .cases-table-scroll {
+            background: transparent !important;
         }
 
         .sunriseTable tbody tr td {
@@ -881,12 +906,13 @@
 
             /* Allow horizontal scroll on small screens */
             .dataTables_wrapper {
-                overflow-x: auto !important;
-                width: 100% ;
+                overflow: visible !important;
+                width: 100%;
             }
 
             .cases-table-scroll {
                 overflow-x: auto;
+                overflow-y: visible;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
             }
@@ -901,9 +927,13 @@
                
             }
 
-            /* Fix filter layout on mobile */
-            .justify-content-end {
-                justify-content: space-between !important;
+            .cases-filter-row .cases-filter-actions-col {
+                display: flex;
+                align-items: flex-end;
+            }
+
+            .cases-filter-row .cases-filter-actions-col--trash {
+                justify-content: flex-end;
             }
 
             /* Make action buttons more visible on mobile */
@@ -916,18 +946,7 @@
                 display: none;
             }
 
-            /* Keep doctor picker menu inside viewport on mobile */
-            .cases-filter-row .bootstrap-select #doctor ~ .dropdown-menu {
-                left: auto !important;
-                right: 0 !important;
-                min-width: 100% !important;
-                max-width: min(92vw, 320px) !important;
-                transform: none !important;
-            }
-
-            .cases-filter-row .bootstrap-select #doctor ~ .dropdown-menu .inner {
-                max-width: 100% !important;
-            }
+            /* Doctor picker uses `container: body`; mobile viewport fitting is handled in JS. */
 
             .dataTables_wrapper .dataTables_filter {
                 text-align: center;
@@ -956,14 +975,6 @@
                 font-size: 11px !important;
                 line-height: 1.2 !important;
             }
-        }
-
-        .sigma-sticky-table-header thead th:first-child {
-            border-top-left-radius: 5px;
-        }
-
-        .sigma-sticky-table-header thead th:last-child {
-            border-top-right-radius: 5px;
         }
 
     </style>
@@ -996,6 +1007,7 @@
                         <x-ios-dtp
                                 name="from"
                                 id="cases_from"
+                                class="filter-input-global"
                                 :value="$from"
                                 mode="date"
                         />
@@ -1008,22 +1020,24 @@
                         <x-ios-dtp
                                 name="to"
                                 id="cases_to"
+                                class="filter-input-global"
                                 :value="$to"
                                 mode="date"
                         />
                     </div>
 
                     <!-- Doctor selection -->
-                    <div class="col-6 col-sm-4 col-md-2 mb-2">
-                        @if(isset($clients))
+                    @if(isset($clients))
+                        <div class="col-6 col-sm-6 col-md-2 mb-2">
                             <label class="form-label filter-label" for="doctor">
                                 <i class="fas fa-user-md"></i>
                                 <span>Doctor</span>
                             </label>
-                            <select style="width:100%" class="selectpicker clearOnAll greyBG"
+                            <select class="selectpicker clearOnAll greyBG filter-input-global"
                                     multiple
                                     name="doctor[]" id="doctor"
                                     data-live-search="true"
+                                    data-container="body"
                                     title="All Doctors">
                                 <option value="all" {{(isset($selectedClients) && in_array("all" ,$selectedClients)) ? 'selected' : ''}}>
                                     All
@@ -1032,28 +1046,28 @@
                                     <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
                                 @endforeach
                             </select>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
 
                     <!-- Search and Apply -->
-                    <div class="col-12 col-md-4 mb-2">
+                    <div class="col-6 col-sm-6 col-md-3 mb-2">
                         <label class="form-label filter-label" for="tableSearch">
                             <i class="fas fa-search"></i>
                             <span>Search Cases</span>
                         </label>
-                        <div class="cases-search-group">
-                            <input type="text" class="form-control" id="tableSearch" placeholder="Search...">
-                            <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search">
-                                <i class="fas fa-search"></i>
-                                <span>Apply</span>
-                            </button>
-                        </div>
+                        <input type="text" class="form-control filter-input-global" id="tableSearch" placeholder="Search...">
+                    </div>
+
+                    <div class="col-6 col-sm-6 col-md-2 mb-2 cases-filter-actions-col">
+                        <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search filter-apply-btn-global">
+                            <i class="fas fa-search"></i>
+                            <span>Apply</span>
+                        </button>
                     </div>
 
                     <!-- Trash button -->
-                    <div class="col-12 col-md-2 mb-2 d-flex flex-column align-items-md-end">
-                      
-                        <a href="{{route('deleted-cases')}}" class="btn btn-danger cases-filter-btn cases-filter-btn--trash"
+                    <div class="col-6 col-sm-6 col-md-1 mb-2 cases-filter-actions-col cases-filter-actions-col--trash">
+                        <a href="{{route('deleted-cases')}}" class="cases-filter-btn--trash"
                            title="View Deleted Cases">
                             <i class="fa-regular fa-trash-can"></i>
                         </a>
@@ -1064,13 +1078,13 @@
             <div class="filter-section"></div>
         </form>
     @endif
-    <div class="container full-width">
+    <div class="container full-width cases-table-shell">
         <div class="row" >
             <div class="col-12" style="padding:0">
                 <br>
                 <div class="cases-table-scroll">
                     <table id="casesTable"
-                           class="table-striped compact sunriseTable sigma-sticky-table-header"
+                           class="table-striped compact sunriseTable sigma-sticky-table-header sigma-no-header-radius"
                            role="grid"
                            style="width:100%">
                     <thead>
@@ -1849,24 +1863,52 @@
                     table.search( this.value ).draw();
                 } );
 
-                // Keep Doctor filter dropdown within viewport on mobile.
+                // Keep the body-mounted Doctor filter dropdown within viewport on mobile.
                 $( document ).on( 'shown.bs.select' , '#doctor' , function () {
                     if (!window.matchMedia( '(max-width: 991px)' ).matches) {
                         return;
                     }
 
-                    var $wrapper = $( this ).closest( '.bootstrap-select' );
-                    var $menu = $wrapper.find( '> .dropdown-menu' );
-
-                    if ($menu.length) {
-                        $menu.css( {
-                                       left: 'auto' ,
-                                       right: '0' ,
-                                       minWidth: '100%' ,
-                                       maxWidth: 'calc(100vw - 24px)' ,
-                                       transform: 'none'
-                                   } );
+                    var $select = $( this );
+                    var picker = $select.data( 'selectpicker' );
+                    if (!picker || !picker.$bsContainer || !picker.$bsContainer.length) {
+                        return;
                     }
+
+                    var $container = picker.$bsContainer;
+                    var $menu = picker.$menu && picker.$menu.length
+                        ? picker.$menu
+                        : $container.find( '> .dropdown-menu' );
+
+                    if (!$menu.length) {
+                        return;
+                    }
+
+                    var viewportPadding = 12;
+                    var viewportWidth = window.innerWidth || $( window ).width();
+                    var buttonWidth = picker.$button && picker.$button.length
+                        ? picker.$button.outerWidth()
+                        : $select.closest( '.bootstrap-select' ).outerWidth();
+                    var menuWidth = Math.min(
+                        Math.max(buttonWidth || 0, $menu.outerWidth() || 0),
+                        Math.max(viewportWidth - (viewportPadding * 2), 0)
+                    );
+                    var containerLeft = parseFloat( $container.css( 'left' ) ) || 0;
+                    var maxLeft = viewportWidth - viewportPadding - menuWidth;
+                    containerLeft = Math.max( viewportPadding, Math.min( containerLeft, maxLeft ) );
+
+                    $container.css( {
+                        left: containerLeft,
+                        width: menuWidth
+                    } );
+
+                    $menu.css( {
+                        minWidth: menuWidth,
+                        maxWidth: menuWidth,
+                        right: 'auto',
+                        left: 0,
+                        transform: 'none'
+                    } );
                 } );
 
                 // Fix aria-hidden conflict on modals

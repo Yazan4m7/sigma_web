@@ -141,14 +141,19 @@
                                     }
 
                                     $clientName = $caseClient->name ?? 'Unknown';
-                                    $failureType = $failLog->failure_type;
-                                    $units = $case ? $case->failedUnitsAmount($failLog->failure_type) : 0;
+                                    $failureType = is_numeric($failLog->failure_type) ? (int) $failLog->failure_type : null;
+                                    $failureLabel = $failureType !== null ? ($failuresDesc[$failureType] ?? null) : null;
+                                    if ($failureLabel === null) {
+                                        continue;
+                                    }
+
+                                    $units = $case ? $case->failedUnitsAmount($failureType) : 0;
 
                                     if (!isset($mainTotals[$clientName])) {
                                         $mainTotals[$clientName] = ['Rejection' => 0, 'Repeat' => 0, 'Modification' => 0, 'Redo' => 0, 'total' => 0];
                                     }
 
-                                    $mainTotals[$clientName][$failuresDesc[$failureType]] += $units;
+                                    $mainTotals[$clientName][$failureLabel] += $units;
                                     $mainTotals[$clientName]['total'] += $units;
                                     $totalUnits += $units;
                                 }

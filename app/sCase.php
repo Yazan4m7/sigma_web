@@ -405,9 +405,16 @@ class sCase extends Model
 
     public function failedUnitsAmount($typeOfFailure){
         $failuresDesc = [0 => "is_rejection",1 => "is_repeat", 2 => "is_modification" , 3=> "is_redo"];
+        $typeOfFailure = is_numeric($typeOfFailure) ? (int) $typeOfFailure : null;
+        $failureColumn = $typeOfFailure !== null ? ($failuresDesc[$typeOfFailure] ?? null) : null;
+
+        if ($failureColumn === null) {
+            return 0;
+        }
+
         $amountOfUnits= 0;
-        foreach ($this->jobs->where($failuresDesc[$typeOfFailure],1) as $job)
-            if($job->material->count_as_unit == 1)
+        foreach ($this->jobs->where($failureColumn,1) as $job)
+            if($job->material && $job->material->count_as_unit == 1)
             $amountOfUnits += count(explode(',',$job->unit_num));
 
         return $amountOfUnits;

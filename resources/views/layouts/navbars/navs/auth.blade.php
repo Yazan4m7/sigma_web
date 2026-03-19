@@ -984,6 +984,10 @@
     }
 
     @media (max-width: 767px) {
+        .logo-navbar {
+            display: none !important;
+        }
+
         .profile-toggle-btn .photo {
             width: 30px;
             height: 30px;
@@ -996,15 +1000,17 @@
 $permissions = safe_permissions();
 $user = Auth::user();
 $defaultAvatar = asset('assets/images/avatars/default.png');
-$profileImage = $defaultAvatar;
-if ($user) {
+$resolvedProfileImage = $defaultAvatar;
+if ($user && !empty($user->avatar_path)) {
     $avatarPath = $user->avatar_path;
     if (preg_match('~^https?://~i', $avatarPath)) {
-        $profileImage = $avatarPath;
+        $resolvedProfileImage = $avatarPath;
     } else {
-        $profileImage = asset(str_replace('\\', '/', ltrim($avatarPath, '/')));
+        $resolvedProfileImage = asset(str_replace('\\', '/', ltrim($avatarPath, '/')));
     }
 }
+$deferredProfileImage = $resolvedProfileImage !== $defaultAvatar ? $resolvedProfileImage : null;
+$initialProfileImage = $deferredProfileImage ? $defaultAvatar : $resolvedProfileImage;
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
     <div class="container-fluid">
@@ -1061,14 +1067,29 @@ if ($user) {
                         <li class="dropdown nav-item">
                             <a href="#" class="dropdown-toggle nav-link profile-toggle-btn" data-toggle="dropdown">
                                 <div class="photo">
-                                    <img src="{{ $profileImage }}" onerror="this.onerror=null;this.src='{{ $defaultAvatar }}';" alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
+                                    <img src="{{ $initialProfileImage }}"
+                                         @if($deferredProfileImage) data-avatar-src="{{ $deferredProfileImage }}" @endif
+                                         width="34"
+                                         height="34"
+                                         loading="lazy"
+                                         decoding="async"
+                                         fetchpriority="low"
+                                         onerror="this.onerror=null;this.removeAttribute('data-avatar-src');this.src='{{ $defaultAvatar }}';"
+                                         alt="{{ $user ? ($user->first_name . ' ' . $user->last_name) : __('Profile Photo') }}">
                                 </div>
                             </a>
                             <ul class="dropdown-menu dropdown-navbar user-dropdown-menu">
                                 <li class="nav-link user-info-header">
                                     <div class="user-info-content">
                                         <div class="user-avatar-dropdown">
-                                            <img src="{{ $profileImage }}" onerror="this.onerror=null;this.src='{{ $defaultAvatar }}';" alt="">
+                                            <img src="{{ $initialProfileImage }}"
+                                                 @if($deferredProfileImage) data-avatar-src="{{ $deferredProfileImage }}" @endif
+                                                 width="56"
+                                                 height="56"
+                                                 loading="lazy"
+                                                 decoding="async"
+                                                 fetchpriority="low"
+                                                 onerror="this.onerror=null;this.removeAttribute('data-avatar-src');this.src='{{ $defaultAvatar }}';" alt="">
                                         </div>
                                         <div class="user-details">
                                             <span class="user-name">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
@@ -1167,6 +1188,65 @@ if ($user) {
 
         if (dropdownToggle) {
             dropdownToggle.setAttribute('data-toggle', 'dropdown');
+        }
+
+        var deferredAvatarImages = Array.prototype.slice.call(document.querySelectorAll('img[data-avatar-src]'));
+        var loadDeferredAvatarGroup = function(actualSrc, images) {
+            if (!actualSrc || !images.length) {
+                return;
+            }
+
+            var preloader = new Image();
+            preloader.decoding = 'async';
+            preloader.loading = 'lazy';
+            try {
+                preloader.fetchPriority = 'low';
+            } catch (error) {
+                // Older browsers do not support fetchPriority.
+            }
+
+            preloader.onload = function() {
+                images.forEach(function(img) {
+                    img.src = actualSrc;
+                    img.removeAttribute('data-avatar-src');
+                });
+            };
+
+            preloader.onerror = function() {
+                images.forEach(function(img) {
+                    img.removeAttribute('data-avatar-src');
+                });
+            };
+
+            preloader.src = actualSrc;
+        };
+
+        if (deferredAvatarImages.length) {
+            var triggerDeferredAvatarLoad = function() {
+                var avatarGroups = deferredAvatarImages.reduce(function(groups, img) {
+                    var actualSrc = img.getAttribute('data-avatar-src');
+                    if (!actualSrc) {
+                        return groups;
+                    }
+
+                    if (!groups[actualSrc]) {
+                        groups[actualSrc] = [];
+                    }
+
+                    groups[actualSrc].push(img);
+                    return groups;
+                }, {});
+
+                Object.keys(avatarGroups).forEach(function(actualSrc) {
+                    loadDeferredAvatarGroup(actualSrc, avatarGroups[actualSrc]);
+                });
+            };
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(triggerDeferredAvatarLoad, { timeout: 1200 });
+            } else {
+                window.setTimeout(triggerDeferredAvatarLoad, 250);
+            }
         }
     });
 </script>

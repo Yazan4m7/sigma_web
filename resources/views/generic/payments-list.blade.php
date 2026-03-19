@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+    <div class="sigma-list-page">
 
         @if(isset($tag))
         <form  class="kt-form" method="GET" action="{{route('receivable-payments-index')}}">
@@ -13,28 +13,32 @@
        <form  class="kt-form" method="GET" action="{{route('payments-index')}}">
       @endif
 
-
-
-                <div class="row" style="padding-left: 10px;padding-top: 10px">
-
-                    <div class="col-lg-3 col-md-3 mb-3">
-                        <div class="kt-subheader__search" style="">
-                            <label>From:</label>
+                <div class="container full-width sigma-list-filter-card">
+                    <div class="row sigma-list-filter-row">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+                        <div class="kt-subheader__search">
+                            <label class="filter-label" for="payments_from">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>From</span>
+                            </label>
                             <x-ios-dtp
                                 name="from"
-                                id="from"
+                                id="payments_from"
                                 :value="$from ?? ''"
                                 mode="date"
                                 :required="true"
                             />
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-3 mb-3">
-                        <div class="kt-subheader__search" style="">
-                            <label>To:</label>
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+                        <div class="kt-subheader__search">
+                            <label class="filter-label" for="payments_to">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>To</span>
+                            </label>
                             <x-ios-dtp
                                 name="to"
-                                id="to"
+                                id="payments_to"
                                 :value="$to ?? ''"
                                 mode="date"
                                 :required="true"
@@ -42,11 +46,14 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-3 mb-3">
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
 
                         @if(isset($clients))
                         <div class="kt-subheader__search" style="width:100%">
-                            <label>Doctor:</label>
+                            <label class="filter-label" for="doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Doctor</span>
+                            </label>
                             <select style="width:100%"  class="selectpicker form-control clearOnAll" multiple name="doctor[]" id="doctor"  data-live-search="true" title="All" data-hide-disabled="true">
 
                                 <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
@@ -58,30 +65,32 @@
 
                         @endif
                     </div>
-                    <div class="col-lg-3 col-md-3 mb-3">
-
-                        <div class="kt-subheader__search" style="width:100%">
-                            <label>&nbsp; &nbsp; </label>
-
-                            <div class="kt-form__actions">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-
-                            </div>
-                        </div>
-
+                    <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3 sigma-filter-action-col">
+                        <button type="submit" class="btn btn-primary sigma-apply-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Apply</span>
+                        </button>
                     </div>
-
-
+                    </div>
+                </div>
         </form>
-        <div class="col-lg-12 col-sm-12">
-            <div class=" m-b-30">
-                <div class=" table-responsive">
-                    <h5 class="header-title">Payments list</h5>
-                    <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($payments->sum('amount'))}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
-                    <p class="text-muted"></p>
-                    <div class="table-odd">
-                        <div id="datatable_wrapper" class=""><div class="row"><div class="col-sm-12">
- <table id="datatable" class="table sunriseTable order-column  display nowrap compact cell-border dataTable no-footer" role="grid" aria-describedby="datatable_info">
+
+        <div class="sigma-summary-grid">
+            <div class="sigma-summary-item">
+                <div class="materials-total-card report-total-card sigma-compact-summary-card">
+                    <div>
+                        <span class="materials-total-label">Payments Total</span>
+                        <div class="materials-total-value">
+                            <span class="materials-total-amount sigma-summary-value--neutral">{{ number_format($payments->sum('amount')) }}</span>
+                            <span class="materials-total-currency">JOD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sigma-table-free">
+ <table id="datatable" class="table sunriseTable order-column display nowrap compact cell-border dataTable no-footer sigma-list-table" role="grid" aria-describedby="datatable_info">
                                         <thead>
                                         <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">ID</th>
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 240px;">Doctor</th>
@@ -188,11 +197,6 @@
                                         @endforeach
                                         </tbody>
                                     </table>
-                                </div>
-
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 

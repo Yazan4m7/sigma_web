@@ -36,8 +36,21 @@
 }
 .bootstrap-select>select {
     position: absolute !important;
-    bottom: 0;
-    left: 0;
+    top: 0 !important;
+    left: 0 !important;
+    display: block !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    clip-path: inset(50%) !important;
+    opacity: 0 !important;
+    border: none !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
 }
 @media screen and (max-width: 991px){
     .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
@@ -154,11 +167,79 @@
     text-align: left;
 }
 
+#my-table tbody td.balance-col {
+    text-align: center;
+    vertical-align: middle;
+}
+
 
 .filters-card {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     border-radius: 12px;
     border: 1px solid #e9ecef;
+}
+
+.doctor-filters-shell.sigma-list-filter-card {
+    background: #ffffff !important;
+    border: 1px solid rgba(188, 206, 216, 0.3) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
+    padding: 20px 20px 16px !important;
+    margin-bottom: 0 !important;
+    position: relative !important;
+    overflow: hidden !important;
+    backdrop-filter: blur(10px);
+}
+
+.doctor-filters-shell.sigma-list-filter-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%) !important;
+    border-radius: 16px 16px 0 0 !important;
+}
+
+.doctor-filters-shell .doctor-card-body {
+    padding: 0 !important;
+}
+
+.doctor-filters-shell .bootstrap-select,
+.doctor-filters-shell .bootstrap-select > .dropdown-toggle {
+    width: 100% !important;
+    min-height: 38px !important;
+    height: 38px !important;
+}
+
+.doctor-filters-shell .bootstrap-select > .dropdown-toggle {
+    display: flex !important;
+    align-items: center !important;
+    padding: 8px 38px 8px 12px !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    border-radius: 12px !important;
+}
+
+.doctor-filters-shell .bootstrap-select .filter-option {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+}
+
+.doctor-filters-shell .bootstrap-select .filter-option-inner {
+    width: 100% !important;
+}
+
+.doctor-filters-shell .bootstrap-select .filter-option-inner-inner {
+    display: block !important;
+    line-height: 1.35 !important;
+    font-size: 14px !important;
+}
+
+.doctor-filters-shell .bootstrap-select > .dropdown-toggle::after {
+    margin-top: 0 !important;
 }
 
 .filter-label {
@@ -213,6 +294,57 @@
 
 .table-head {
     font-weight: 700;
+}
+
+#my-table thead th,
+#my-table_wrapper .dataTables_scrollHead th {
+    background: #408385 !important;
+    color: #ffffff !important;
+}
+
+#my-table thead th:first-child,
+#my-table_wrapper .dataTables_scrollHead th:first-child {
+    border-top-left-radius: 12px !important;
+}
+
+#my-table thead th:last-child,
+#my-table_wrapper .dataTables_scrollHead th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+.doctor-balance-card::before {
+    background: #d6ecee !important;
+}
+
+.doctor-balance-card .materials-total-label {
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.6px !important;
+    text-transform: uppercase !important;
+    color: #6b7280 !important;
+    margin-bottom: 0 !important;
+    line-height: 1.05 !important;
+}
+
+.doctor-balance-card .materials-total-value {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+}
+
+.doctor-balance-card .materials-total-amount {
+    font-size: 23px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.02em !important;
+    color: #3b8b45 !important;
+}
+
+.doctor-balance-card .materials-total-currency {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    color: #6b7280 !important;
+    font-weight: 600 !important;
 }
 
 .client-row--inactive {
@@ -357,18 +489,32 @@
     border-color: #28a745;
     color: #ffffff;
 }
+.bootstrap-select.open:not(.bs-container),
+.bootstrap-select.show:not(.bs-container) {
+    z-index: 9999 !important;
+    position: relative !important;
+}
 
+.bs-container.bootstrap-select.open,
+.bs-container.bootstrap-select.show {
+    z-index: 9999 !important;
+    position: absolute !important;
+}
+
+.bootstrap-select .dropdown-menu {
+    z-index: 9999 !important;
+}
 
 </style>
 @php
     $permissions = Cache::get('user' . Auth()->user()->id);
 @endphp
 
-<form class="kt-form" method="GET" action="{{ route('clients-index') }}">
-    <div class="row mb-3">
-        <div class="col-lg-12">
-            <div class="card filters-card">
-                <div class="card-body doctor-card-body py-3">
+<form class="kt-form sigma-list-page" method="GET" action="{{ route('clients-index') }}">
+
+        <div class="col-lg-12 mb-3">
+            <div class="sigma-list-filter-card doctor-filters-shell">
+                <div class="doctor-card-body py-3">
                     {{-- Top row: Status toggle + Action buttons --}}
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="status-tab">
@@ -395,63 +541,64 @@
                     </div>
 
                     {{-- Filter controls row --}}
-                    <div class="row align-items-end filters-row">
+                    <div class="row align-items-end filters-row sigma-list-filter-row">
                         {{-- Date Filter --}}
                         @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                            <label for="from" class="filter-label">Until</label>
-                            <x-ios-dtp name="from" id="from" :value="old('from', $from ?? '')" :required="true" mode="month" />
+                            <label for="from" class="filter-label">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Until</span>
+                            </label>
+                            <x-ios-dtp name="from" id="from" class="filter-input-global" :value="old('from', $from ?? '')" :required="true" mode="month" />
                         </div>
                         @endif
 
                         {{-- Doctor Filter with Apply Button --}}
                         <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                            <label for="doctor" class="filter-label">Doctor</label>
-                            <div class="d-flex align-items-end">
-                                <div style="flex: 1;">
-                                    <select class="selectpicker form-control clearOnAll" multiple
-                                            name="doctor[]" id="doctor" data-live-search="true"
-                                            title="All Doctors" data-hide-disabled="true">
-                                        <option value="all"
-                                            {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
-                                            All Doctors
-                                        </option>
-                                        @foreach($allClients as $d)
-                                            <option value="{{ $d->id }}"
-                                                {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
-                                                {{ $d->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary ml-2" style="width: 38px; height: 38px; padding: 0; display: flex; align-items: center; justify-content: center;">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                            <label for="doctor" class="filter-label">
+                                <i class="fas fa-user-md"></i>
+                                <span>Doctor</span>
+                            </label>
+                            <select class="selectpicker clearOnAll filter-input-global" multiple data-container="body"
+                                    name="doctor[]" id="doctor" data-live-search="true"
+                                    title="All Doctors" data-hide-disabled="true">
+                                <option value="all"
+                                    {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
+                                    All Doctors
+                                </option>
+                                @foreach($allClients as $d)
+                                    <option value="{{ $d->id }}"
+                                        {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
+                                        {{ $d->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2 sigma-filter-action-col">
+                            <button type="submit" class="btn btn-primary sigma-apply-btn filter-apply-btn-global">
+                                <i class="fas fa-search"></i>
+                                <span>Apply</span>
+                            </button>
                         </div>
                     </div>
 
                 </div>
             </div>
         </div>
-    </div>
+
 </form>
 
 {{-- Total Balance Card (Moved Outside Filter Form) --}}
 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-<div class="row my-4"> {{-- Added my-4 for vertical spacing --}}
-    <div class="col-lg-3 col-md-4 col-sm-6"> {{-- Adjusted column sizing for left alignment and more compact size --}}
-        <div class="card" style="b/* background: #e6ebe0; */background: 201e1f;background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%);background: color: white;/* background: linear-gradient(
-327deg, #007bff 0%, #ffffff 100%) !important; */border: none;border-radius: 12px;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);border: none;border-radius: 12px;box-shadow: 1px 0px 8px 2px rgba(0, 0, 0, 0.1);/* background: linear-gradient(135deg, #7DD3FC 0%, #14B8A6 100%); */
- ">
-            <div class="card-body" style="padding: 0.9rem;">
-                <div class="d-flex align-items-center justify-content-between mb-1">
-                    <span style="color: #333; font-size: 0.875rem; font-weight: 500;">Total Balance</span>
-                    <i class="fa fa-wallet" style="color: #666; font-size: 1.5rem;"></i>
-                </div>
-                <div class="d-flex align-items-baseline">
-                    <h3 class="mb-0" style="font-weight: 700; color: #333; font-size: 1.8rem;">{{ number_format($totalBalance) }}</h3>
-                    <span class="ml-2" style="color: #666; font-size: 0.875rem; font-weight: 500;">JOD</span>
+<div class="sigma-summary-grid col">
+    <div class="sigma-summary-item">
+        <div class="materials-total-card report-total-card sigma-compact-summary-card doctor-balance-card">
+            <div>
+                <span class="materials-total-label">Total Balance</span>
+                <div class="materials-total-value">
+                    <span class="materials-total-amount sigma-summary-value--positive">{{ number_format($totalBalance) }}</span>
+                    <span class="materials-total-currency">JOD</span>
                 </div>
             </div>
         </div>
@@ -460,9 +607,9 @@
 @endif
 
 
-            <hr>
+
                     <div class="">
-                        <table class="globalTable nowrap compact stripe sunriseTable " id="my-table">
+                        <table class="globalTable nowrap compact stripe sunriseTable sigma-list-table" id="my-table">
                             <thead>
                             <tr >
                                 <th class="table-head">ID</th>
@@ -718,13 +865,6 @@
 
 @endsection
 @push('js')
-    <script>
-        $(document).ready(function () {
-            $('.selectpicker').selectpicker();
-          $('.selectpicker').selectpicker('refresh');
-        });
-
-    </script>
     <script>
         function paymentTypeChange(id) {
             const cheque = document.getElementById('cheque' + id);

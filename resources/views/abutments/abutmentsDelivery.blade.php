@@ -30,13 +30,17 @@
         $permissions = safe_permissions();
 
     @endphp
+    <div class="sigma-list-page">
     <form class="kt-form" method="GET" action="{{route('abutments-delivery-index')}}">
-        <div class="container full-width">
-            <div class="row " style="padding-bottom:0">
-                <div class=" col-sm-6 col-md-3 mb-3">
-                    <div class="kt-subheader__search" style="">
-                        <label for="abutments_from">From (Start of):</label>
-                        <x-ios-dtp name="from" id="abutments_from" :value=" \Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+        <div class="container full-width sigma-list-filter-card">
+            <div class="row sigma-list-filter-row">
+                <div class="col-sm-6 col-md-3 col-12 mb-3">
+                    <div class="kt-subheader__search">
+                        <label class="filter-label" for="abutments_from">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>From Date</span>
+                        </label>
+                        <x-ios-dtp name="from" id="abutments_from" class="filter-input-global" :value=" \Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
 {{--                        <input class="form-control SDTP"--}}
 {{--                               id="abutments_from"--}}
 {{--                               name="from"--}}
@@ -48,9 +52,12 @@
   </div>
                 </div>
                 <div class="col-12 col-sm-6 col-md-3 mb-3">
-                    <div class="kt-subheader__search" style="">
-                        <label for="abutments_to">To (End of):</label>
-                        <x-ios-dtp name="to" id="abutments_to" :value="\Carbon\Carbon::parse($to)->format('d M, YYYY') "  mode="date" :required="true" />
+                    <div class="kt-subheader__search">
+                        <label class="filter-label" for="abutments_to">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>To Date</span>
+                        </label>
+                        <x-ios-dtp name="to" id="abutments_to" class="filter-input-global" :value="\Carbon\Carbon::parse($to)->format('d M, YYYY') "  mode="date" :required="true" />
 {{--                        <input class="form-control SDTP"--}}
 {{--                               id="abutments_to"--}}
 {{--                               name="to"--}}
@@ -62,27 +69,22 @@
 
                     </div>
                 </div>
-
-
-            </div>
-        </div>
-        <div class="container full-width">
-            <div class="row justify-content-between">
-                <div class="col-6 col-sm-6 col-md-3  mb-3">
-                    <button type="submit" class="btn btn-primary ">Submit</button>
+                <div class="col-12 col-sm-6 col-md-3 mb-3 sigma-filter-action-col">
+                    <button type="submit" class="btn btn-primary sigma-apply-btn filter-apply-btn-global">
+                        <i class="fas fa-search"></i>
+                        <span>Apply</span>
+                    </button>
                 </div>
             </div>
-
-
         </div>
     </form>
 
-    <div class="container full-width">
+    <div class="container full-width sigma-table-free">
         <div class="row" style=" border-radius: 4px;">
             <div class="col-12">
                 <br>
                 <table id="datatable"
-                       class="table-striped compact sunriseTable"
+                       class="table-striped compact sunriseTable sigma-list-table"
                        role="grid"
                        style="width:100%">
                     <thead>
@@ -453,6 +455,7 @@
     </script>
     @endpush
 
+    </div>
 
 @endsection
 

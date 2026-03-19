@@ -9329,8 +9329,8 @@ table.sigma-sticky-table-header {
 table.sigma-sticky-table-header thead th {
     /* color: white; */
     position: sticky;
-    /* top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height)); */
-    /* z-index: 98; */
+    top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height));
+    z-index: 98;
     background-color: inherit;
 }
 
@@ -9365,6 +9365,14 @@ table.sunriseTable.sigma-sticky-table-header thead th:first-child {
 table.sunriseTable.sigma-sticky-table-header thead th:last-child {
     border-top-right-radius: 10px;
     text-align: center;
+}
+
+table.sigma-sticky-table-header.sigma-no-header-radius thead th:first-child,
+table.sigma-sticky-table-header.sigma-no-header-radius thead th:last-child,
+table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:first-child,
+table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:last-child {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
 /* sunriseTable last column (status) - prevent clipping on mobile */

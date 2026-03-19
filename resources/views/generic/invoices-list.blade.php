@@ -25,7 +25,7 @@
     tr { cursor: pointer; }
     td {border : 0 !important;}
 </style>
-<div class="bg-white">
+<div class="bg-white sigma-list-page">
     @if(isset($clients))
         <form  class="kt-form" method="GET" action="{{route('invoices-index')}}">
             @else
@@ -34,28 +34,34 @@
      <input type="hidden" class="form-control" name="id" value="{{$id}}">
      @endif
 
-    <div class="col-lg-12 col-sm-12 ">
+    <div class="container full-width sigma-list-filter-card">
 
-        <div class="row" style="">
+        <div class="row sigma-list-filter-row">
 
-            <div class="col-lg-2 col-md-3 ">
-                <div class="kt-subheader__search" style="">
-                    <label>From:</label>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+                <div class="kt-subheader__search">
+                    <label class="filter-label" for="invoice_from">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>From</span>
+                    </label>
                     <x-ios-dtp
                         name="from"
-                        id="from"
+                        id="invoice_from"
                         :value="$from"
                         mode="date"
                         :required="true"
                     />
                 </div>
             </div>
-            <div class="col-lg-2 col-md-3 ">
-                <div class="kt-subheader__search" style="">
-                    <label>To:</label>
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
+                <div class="kt-subheader__search">
+                    <label class="filter-label" for="invoice_to">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>To</span>
+                    </label>
                     <x-ios-dtp
                         name="to"
-                        id="to"
+                        id="invoice_to"
                         :value="$to"
                         mode="date"
                         :required="true"
@@ -63,10 +69,13 @@
                 </div>
             </div>
 
-            <div class="col-lg-3 col-md-3 ">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3">
                 @if(isset($clients))
                     <div class="dropdown">
-                        <label>Doctor:</label>
+                        <label class="filter-label" for="doctor">
+                            <i class="fas fa-user-md"></i>
+                            <span>Doctor</span>
+                        </label>
                         <select style="width:100%"  class="selectpicker clearOnAll" multiple name="doctor[]" id="doctor" data-live-search="true" title="All" data-hide-disabled="true">
 
                             <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>All</option>
@@ -88,32 +97,32 @@
                            {{--class="form-control">--}}
                 {{--</div>--}}
             {{--</div>--}}
-            <div class="col-lg-3 col-md-3 ">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-12 mb-3 sigma-filter-action-col">
+                <button type="submit" class="btn btn-primary sigma-apply-btn">
+                    <i class="fas fa-search"></i>
+                    <span>Apply</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    </form>
 
-                  <div class="kt-subheader__search" style="width:100%">
-                      <label>&nbsp; &nbsp; </label>
-
-                    <div class="kt-form__actions">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-
+    <div class="sigma-summary-grid">
+        <div class="sigma-summary-item">
+            <div class="materials-total-card report-total-card sigma-compact-summary-card">
+                <div>
+                    <span class="materials-total-label">Invoices Total</span>
+                    <div class="materials-total-value">
+                        <span class="materials-total-amount sigma-summary-value--neutral">{{ number_format($invoices->sum('amount')) }}</span>
+                        <span class="materials-total-currency">JOD</span>
                     </div>
-                  </div>
-
+                </div>
+            </div>
         </div>
+    </div>
 
-
-</form>
-
-        </div>
-<hr>
-            <div class="card-body table-responsive">
-                <h5 class="header-title">Total Amount:</h5>
-                <h2 style=""><span style="font-weight: bold;color:#a13030">{{number_format($invoices->sum('amount'))}}</span> <span style="font-weight: bold;font-size:18px;">JOD</span></h2>
-                <p class="text-muted"></p>
-                <div class="table-odd">
-                    <div id="datatable_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer"><div class="row"><div class="col-sm-12" style="padding:5px">
-
-                                <table id="datatable" class="dataTable no-footer  order-column  display nowrap compact cell-border sunriseTable" role="grid" aria-describedby="datatable_info">
+            <div class="sigma-table-free">
+                                <table id="datatable" class="dataTable no-footer order-column display nowrap compact cell-border sunriseTable sigma-list-table" role="grid" aria-describedby="datatable_info">
                                     <thead>
                                     <tr role="row">
                                         <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">ID</th>
@@ -152,8 +161,7 @@
                                         @endif
                                     @endforeach
                                     </tbody>
-                                </table></div></div></div>
-                </div>
+                                </table>
             </div>
 
     </div>

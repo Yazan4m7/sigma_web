@@ -97,9 +97,9 @@
             /*transform: translateY(-1px);*/
         }
 
-        /* Keep iOS date-time popup visible inside Create Case card */
+        /* Keep section clipping enabled; body-mounted selects and the fixed iOS picker render outside safely. */
         .form-section-card--with-dtp {
-            overflow: visible;
+            overflow: hidden;
         }
 
         .form-section-card--with-dtp:hover {
@@ -813,7 +813,7 @@
                         <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
                             <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Tags:</label></div>
                             <div class="col-md-12 col-xs-12">
-                                <select class="select selectpicker greyBG" name="tags[]" multiple
+                                <select class="select selectpicker greyBG" name="tags[]" multiple data-container="body"
                                     data-mdb-placeholder="Tags">
                                     @foreach ($tags as $tag)
                                         <option style="color:{{ $tag->color }}" value="{{ $tag->id }}">
@@ -834,7 +834,7 @@
             </div>
             <!--REPEATER -->
 
-            <div class="form-section-card " style="margin-top: 2rem;">
+            <div class="form-section-card form-section-card--with-dtp " style="margin-top: 2rem;">
 
                 <div class="section-header">
                     <h5 class=" ">Jobs Information</h5>
@@ -976,7 +976,7 @@
                                                                     Units:</label>
                                                                 <select
                                                                     class="select abutmentsUnitsPicker greyBG purpleBorder"
-                                                                    name="abutmentUnits[]" multiple
+                                                                    name="abutmentUnits[]" multiple data-container="body"
                                                                     data-mdb-placeholder="Tags">
 
                                                                 </select>
@@ -1663,7 +1663,9 @@
                 });
 
                 // Initialize selectpicker fresh
-                abutmentUnitsBox.selectpicker();
+                abutmentUnitsBox.selectpicker({
+                    container: 'body'
+                });
 
                 $(jobTypeDD).attr("readonly", "true");
                 $(openDialogBtn).attr("disabled", "true");
@@ -1698,7 +1700,9 @@
                 });
 
                 // Initialize selectpicker fresh
-                lastAbutmentUnitsBox.selectpicker();
+                lastAbutmentUnitsBox.selectpicker({
+                    container: 'body'
+                });
             }, 500);
 
         }

@@ -7874,27 +7874,70 @@
             }
         }
 
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary.btn-simple,
         .barsBtns,
         .performanceBtns {
-            background-color: #2b7b7d !important;
-            border-color: #2b7b7d !important;
+            background: rgba(64, 131, 133, 0.08) !important;
+            background-color: rgba(64, 131, 133, 0.08) !important;
+            border: 1px solid rgba(64, 131, 133, 0.42) !important;
+            border-color: rgba(64, 131, 133, 0.42) !important;
+            color: #2b6e70 !important;
+            opacity: 1 !important;
+            box-shadow: none !important;
+            border-radius: 12px !important;
         }
 
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.active,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.active,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary.active,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary.btn-simple.active,
         .barsBtns.active,
         .performanceBtns.active {
-            background-color: #1e5253 !important;
-            border-color: #1e5253 !important;
+            background: #2b6e70 !important;
+            background-color: #2b6e70 !important;
+            border-color: #2b6e70 !important;
+            color: #ffffff !important;
+            box-shadow: 0 8px 18px rgba(43, 110, 112, 0.2) !important;
         }
 
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn:hover,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn:focus,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn:hover,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn:focus,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary:hover,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary:focus,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary.btn-simple:hover,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.btn.btn-primary.btn-simple:focus,
         .barsBtns:hover,
-        .performanceBtns:hover {
-            background-color: #4daeb0 !important;
-            border-color: #4daeb0 !important;
+        .barsBtns:focus,
+        .performanceBtns:hover,
+        .performanceBtns:focus {
+            background: rgba(64, 131, 133, 0.14) !important;
+            background-color: rgba(64, 131, 133, 0.14) !important;
+            border-color: rgba(64, 131, 133, 0.65) !important;
+            color: #235f60 !important;
+            box-shadow: none !important;
         }
 
-        .barsBtns:focus,
-        .performanceBtns:focus {
-            /*box-shadow: 0 0 0 .2, shadow: rgba(89 141 142);*/
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn span,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn i,
+        .barsBtns span,
+        .barsBtns i,
+        .performanceBtns span,
+        .performanceBtns i {
+            color: inherit !important;
+        }
+
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.active span,
+        .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.active i,
+        .barsBtns.active span,
+        .barsBtns.active i,
+        .performanceBtns.active span,
+        .performanceBtns.active i {
+            color: #ffffff !important;
         }
 
         /* Device image container styles */
@@ -7939,6 +7982,69 @@
 
         .summary-table-responsive table {
             margin-bottom: 0;
+        }
+
+        .sigma-standard-theme .summary-table-responsive table.main-dashboard-summary-table thead tr,
+        .summary-table-responsive table.main-dashboard-summary-table thead tr {
+            background: #408385 !important;
+            color: #ffffff !important;
+        }
+
+        .sigma-standard-theme .summary-table-responsive table.main-dashboard-summary-table thead th,
+        .sigma-standard-theme:not(.sigma-preserve-table-headers) .summary-table-responsive table.main-dashboard-summary-table.sunriseTable.dataTable thead th,
+        .summary-table-responsive table.main-dashboard-summary-table thead th {
+            background: #408385 !important;
+            background-color: #408385 !important;
+            color: #ffffff !important;
+            border-color: #408385 !important;
+            vertical-align: middle !important;
+            line-height: 1.25 !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+        }
+
+        .sigma-standard-theme .summary-table-responsive table.main-dashboard-summary-table thead th:first-child,
+        .summary-table-responsive table.main-dashboard-summary-table thead th:first-child {
+            border-top-left-radius: 10px !important;
+        }
+
+        .sigma-standard-theme .summary-table-responsive table.main-dashboard-summary-table thead th:last-child,
+        .summary-table-responsive table.main-dashboard-summary-table thead th:last-child {
+            border-top-right-radius: 10px !important;
+        }
+
+        .sigma-standard-theme .summary-table-responsive table.main-dashboard-summary-table thead th .summary-table-heading,
+        .summary-table-responsive table.main-dashboard-summary-table thead th .summary-table-heading {
+            display: block;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            line-height: 1.25 !important;
+        }
+
+        .dashboard-summary-panel {
+            height: 100%;
+        }
+
+        .dashboard-summary-panel.card,
+        .dashboard-summary-panel.card.card-chart {
+            background: #ffffff !important;
+            border-radius: 14px !important;
+        }
+
+        .dashboard-summary-panel .card-header {
+            padding-bottom: 0 !important;
+        }
+
+        .dashboard-summary-panel .card-body {
+            padding-top: 12px !important;
+            padding-bottom: 16px !important;
+        }
+
+        .dashboard-inwork-card-body {
+            height: stretch;
         }
 
         .sigma-modal--abutments-delivery-actions .delivery-popup .dialog-popup-body .container {
@@ -8723,7 +8829,7 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                <label class="btn btn-sm btn-primary btn-simple bar active barsBtns"
+                                <label class="btn btn-sm btn-primary btn-simple bar active barsBtns main-dashboard-toggle-btn"
                                     id="completedChartCases">
                                     <input type="radio" name="options" checked>
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Units</span>
@@ -8731,7 +8837,8 @@
                                         <i class="fa-solid fa-boxes-stacked"></i>
                                     </span>
                                 </label>
-                                <label class="btn btn-sm btn-primary btn-simple bar barsBtns" id="completedChartUnits">
+                                <label class="btn btn-sm btn-primary btn-simple bar barsBtns main-dashboard-toggle-btn"
+                                    id="completedChartUnits">
                                     <input type="radio" class="d-none d-sm-none" name="options">
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Cases</span>
                                     <span class="d-block d-sm-none">
@@ -8760,7 +8867,7 @@
                     </div>
 
                 </div>
-                <div class="card-body">
+                <div class="card-body dashboard-inwork-card-body">
                     <div class="chart-area">
                         <div id="chartContainer" style="height: 100%; width: 100%;"></div>
 
@@ -8780,28 +8887,32 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                <label class="btn btn-sm btn-primary btn-simple active performanceBtns" id="0">
+                                <label class="btn btn-sm btn-primary btn-simple active performanceBtns main-dashboard-toggle-btn"
+                                    id="0">
                                     <input type="radio" name="options" checked>
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Units</span>
                                     <span class="d-block d-sm-none">
                                         <i class="fa-solid fa-boxes-stacked"></i>
                                     </span>
                                 </label>
-                                <label class="btn btn-sm btn-primary btn-simple performanceBtns" id="1">
+                                <label class="btn btn-sm btn-primary btn-simple performanceBtns main-dashboard-toggle-btn"
+                                    id="1">
                                     <input type="radio" class="d-none d-sm-none" name="options">
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Cases</span>
                                     <span class="d-block d-sm-none">
                                         <i class="fa-solid fa-box"></i>
                                     </span>
                                 </label>
-                                <label class="btn btn-sm btn-primary btn-simple performanceBtns" id="3">
+                                <label class="btn btn-sm btn-primary btn-simple performanceBtns main-dashboard-toggle-btn"
+                                    id="3">
                                     <input type="radio" class="d-none" name="options">
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Sales</span>
                                     <span class="d-block d-sm-none">
                                         <i class="fa-solid fa-money-bill-trend-up"></i>
                                     </span>
                                 </label>
-                                <label class="btn btn-sm btn-primary btn-simple performanceBtns" id="2">
+                                <label class="btn btn-sm btn-primary btn-simple performanceBtns main-dashboard-toggle-btn"
+                                    id="2">
                                     <input type="radio" class="d-none" name="options">
                                     <span class="d-none d-sm-block d-md-block d-lg-block d-xl-block">Payments</span>
                                     <span class="d-block d-sm-none">
@@ -8822,13 +8933,13 @@
     </div>
     <div class="row">
         <div class="col-lg-6 col-md-12 noLeftPadding" style="background-color: transparent">
-            <div class="card ">
+            <div class="card card-chart dashboard-summary-panel">
                 <div class="card-header">
                     <h4 class="card-title">Payments Collected Today</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive summary-table-responsive">
-                        <table id="datatable" class="datatable hover compact stripe sunriseTable" style="width:100%">
+                        <table id="datatable" class="datatable hover compact stripe sunriseTable main-dashboard-summary-table" style="width:100%">
                             <colgroup>
                                 <col style="width:30%">
                                 <col style="width:15%">
@@ -8839,20 +8950,20 @@
                             <thead>
                                 <tr>
 
-                                    <th>
-                                        Doctor
+                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Doctor</span>
                                     </th>
-                                    <th>
-                                        Payment
+                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Payment</span>
                                     </th>
-                                    <th class="text-center">
-                                        Collector
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Collector</span>
                                     </th>
-                                    <th class="text-center">
-                                        Time Collected
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Time Collected</span>
                                     </th>
-                                    <th>
-                                        Received by
+                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Received by</span>
                                     </th>
                                 </tr>
                             </thead>
@@ -8968,13 +9079,13 @@
             </div>
         </div>
         <div class="col-lg-6 col-md-12">
-            <div class="card ">
+            <div class="card card-chart dashboard-summary-panel">
                 <div class="card-header">
                     <h4 class="card-title">Deliveries Today</h4>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive summary-table-responsive">
-                        <table class="datatable compact hover stripe sunriseTable" id="datatable2">
+                        <table class="datatable compact hover stripe sunriseTable main-dashboard-summary-table" id="datatable2">
                             <colgroup>
                                 <col style="width:28%">
                                 <col style="width:32%">
@@ -8984,17 +9095,17 @@
                             <thead>
                                 <tr>
 
-                                    <th>
-                                        Doctor
+                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Doctor</span>
                                     </th>
-                                    <th>
-                                        Patient name
+                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Patient name</span>
                                     </th>
-                                    <th class="text-center">
-                                        Delivery time
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Delivery time</span>
                                     </th>
-                                    <th class="text-center">
-                                        Status
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                        <span class="summary-table-heading">Status</span>
                                     </th>
                                 </tr>
                             </thead>

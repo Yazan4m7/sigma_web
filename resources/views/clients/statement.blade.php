@@ -9,11 +9,10 @@
         hr { display: block; height: 1px;
             background-color:black;
             margin:0; padding: 0; border-color:black;}
-        th {  padding: 0;  color:white !important;
-
-
+        .statement-table thead th {
+            padding: 5px;
         }
-         th:nth-child(1){
+         .statement-table thead th:nth-child(1){
 
             /* Safari 3-4, iOS 1-3.2, Android 1.6- */
             -webkit-border-radius: 3px 0px 0px 3px;
@@ -22,10 +21,10 @@
             -moz-border-radius: 3px 0px 0px 3px;
 
             /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
-            border-radius: 3px 0px 0px 3px;
+            border-radius: 12px 0px 0px 0px;
         }
 
-       th:nth-last-child(1){
+       .statement-table thead th:nth-last-child(1){
             /* Safari 3-4, iOS 1-3.2, Android 1.6- */
             -webkit-border-radius: 0px 3px 3px 0px;
 
@@ -33,7 +32,7 @@
             -moz-border-radius: 0px 3px 3px 0px;
 
             /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
-            border-radius: 0px 3px 3px 0px;
+            border-radius: 0px 12px 0px 0px;
         }
         .row:not(.headerRow) {
             width: auto;
@@ -84,30 +83,39 @@
                     }
                 }
         </style>
-            <form  class="kt-form" method="GET" action="{{route('client-statement-admin',$client->id)}}">
-                <div class="col-lg-12 col-sm-12 card">
+            <form  class="kt-form sigma-list-page" method="GET" action="{{route('client-statement-admin',$client->id)}}">
+                <div class="col-lg-12 col-sm-12 card sigma-list-filter-card">
             <input type="hidden" name="id" value="{{$client->id}}" >
-            <div class="row d-flex align-items-end mb-3">
-                <div class="col-lg-2 col-md-2 col-6">
-                    <label class="filter-label">From:</label>
+            <div class="row d-flex align-items-end mb-3 sigma-list-filter-row">
+                <div class="col-lg-3 col-md-3 col-12 mb-3">
+                    <label class="filter-label" for="from">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>From</span>
+                    </label>
                     <x-ios-dtp name="from" id="from" :value="$from" mode="month" />
                 </div>
-                <div class="col-lg-2 col-md-2 col-6">
-                    <label class="filter-label">To:</label>
+                <div class="col-lg-3 col-md-3 col-12 mb-3">
+                    <label class="filter-label" for="to">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>To</span>
+                    </label>
                     <x-ios-dtp name="to" id="to" :value="$to" mode="month" />
                 </div>
-                <div class="col-lg-auto col-md-auto col-auto">
-                    <button type="submit" class="btn btn-primary cases-filter-btn" title="Filter">
+                <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-action-col">
+                    <button type="submit" class="btn btn-primary sigma-apply-btn" title="Filter">
                         <i class="fas fa-search"></i>
+                        <span>Apply</span>
                     </button>
                 </div>
-                <div class="col-lg-auto col-md-auto col-auto ml-auto d-flex align-items-end">
-                    <button type="button" class="btn btn-secondary cases-filter-btn mr-2" title="All-time" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">
+                <div class="col-lg-3 col-md-3 col-12 mb-3">
+                    <div class="sigma-filter-toolbar-end">
+                    <button type="button" class="btn sigma-toolbar-icon-btn" title="All-time" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">
                         <i class="fas fa-clock"></i>
                     </button>
-                    <button type="button" class="btn btn-success cases-filter-btn" title="Print" onclick="PrintStatement()">
-                        <i class="fa-solid fa-print"></i>
+                    <button type="button" class="btn sigma-toolbar-icon-btn" title="Print" onclick="PrintStatement()">
+                        <i class="fas fa-print me-1"></i>
                     </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,7 +171,7 @@
 
 <br>
                     <div class="">
-                        <table class="table table-hover">
+                        <table class="table table-hover sunriseTable sigma-list-table statement-table">
                             <thead>
                             <tr style="background-color: #1b1b1b;">
                                 <th scope="col" style="padding:5px;">Date</th>

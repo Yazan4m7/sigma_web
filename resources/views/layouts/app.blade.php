@@ -163,7 +163,7 @@
           href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
 
     <!-- Bootstrap Select Fixes -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-select-fix.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-select-fix.css') }}?v={{ filemtime(public_path('assets/css/bootstrap-select-fix.css')) }}">
 
     <!-- Third-party/Plugin CSS -->
     <link href="{{asset('assets/css/jquery.datetimepicker.min.css')}}" rel="stylesheet">
@@ -487,6 +487,100 @@
 <script>
     // Robust Bootstrap Select (selectpicker) initialization
     // Ensures initialization happens once and correctly, including for dynamically added elements.
+    const sigmaBodyMountedSelectPickerSelector = '.selectpicker, select[data-container="body"]';
+
+    function repositionBodyMountedSelectPicker(selectElement) {
+        const $select = jQuery(selectElement);
+        const picker = $select.data('selectpicker');
+
+        if (!picker || !picker.options || picker.options.container !== 'body' || !picker.$bsContainer || !picker.$bsContainer.length) {
+            return;
+        }
+
+        const $container = picker.$bsContainer;
+        const $button = picker.$button && picker.$button.length
+            ? picker.$button
+            : picker.$newElement.find('> button');
+        const $menu = picker.$menu && picker.$menu.length
+            ? picker.$menu
+            : $container.find('.dropdown-menu').first();
+
+        if (!$button.length || !$menu.length || !$button.is(':visible')) {
+            return;
+        }
+
+        const offset = $button.offset();
+        if (!offset) {
+            return;
+        }
+
+        const buttonHeight = $button.outerHeight();
+        const buttonWidth = $button.outerWidth();
+        const menuHeight = $menu.outerHeight();
+        const viewportTop = jQuery(window).scrollTop();
+        const viewportBottom = viewportTop + jQuery(window).height();
+        const spaceBelow = viewportBottom - (offset.top + buttonHeight);
+        const spaceAbove = offset.top - viewportTop;
+        const openAbove = menuHeight > 0 && spaceBelow < menuHeight && spaceAbove > spaceBelow;
+        const top = openAbove ? Math.max(viewportTop, offset.top - menuHeight) : offset.top + buttonHeight;
+
+        $container.css({
+            position: 'absolute',
+            top: top,
+            left: offset.left,
+            width: buttonWidth,
+            zIndex: 1060
+        });
+
+        $menu.css({
+            minWidth: buttonWidth
+        });
+
+        $container.toggleClass('dropup', openAbove);
+        $container.toggleClass('dropdown', !openAbove);
+    }
+
+    function scheduleBodyMountedSelectPickerReposition(selectElement) {
+        const run = function () {
+            repositionBodyMountedSelectPicker(selectElement);
+        };
+
+        if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(run);
+            return;
+        }
+
+        setTimeout(run, 0);
+    }
+
+    function bindSelectPickerBodyPositioning() {
+        if (window.__sigmaSelectPickerBodyPositioningBound) {
+            return;
+        }
+
+        window.__sigmaSelectPickerBodyPositioningBound = true;
+
+        jQuery(document)
+            .on('loaded.bs.select shown.bs.select rendered.bs.select refreshed.bs.select', sigmaBodyMountedSelectPickerSelector, function() {
+                scheduleBodyMountedSelectPickerReposition(this);
+            })
+            .on('hide.bs.select hidden.bs.select', sigmaBodyMountedSelectPickerSelector, function() {
+                const picker = jQuery(this).data('selectpicker');
+                if (picker && picker.$bsContainer) {
+                    picker.$bsContainer.removeClass('dropup');
+                }
+            });
+
+        jQuery(window).on('resize.sigmaSelectPickerBodyPosition scroll.sigmaSelectPickerBodyPosition', function() {
+            jQuery(sigmaBodyMountedSelectPickerSelector).each(function() {
+                const picker = jQuery(this).data('selectpicker');
+                if (picker && picker.$bsContainer && picker.$bsContainer.hasClass('show')) {
+                    scheduleBodyMountedSelectPickerReposition(this);
+                }
+            });
+        });
+    }
+
     function initializeSelectPicker() {
         // console.log('Attempting to initialize selectpickers...');
 
@@ -503,16 +597,20 @@
             jQuery.fn.selectpicker.Constructor.BootstrapVersion = '4'; // Adjust if using Bootstrap 5
         }
 
+        bindSelectPickerBodyPositioning();
+
         jQuery('.selectpicker').each(function() {
             const $select = jQuery(this);
 
             // Skip if already initialized - don't destroy existing instances
             if ($select.data('selectpicker')) {
+                scheduleBodyMountedSelectPickerReposition(this);
                 return; // Already initialized, skip
             }
 
             try {
                 $select.selectpicker();
+                scheduleBodyMountedSelectPickerReposition(this);
             } catch (e) {
                 console.error('Failed to initialize selectpicker:', this.name || this.id || this, e);
                 $select.addClass('form-control');

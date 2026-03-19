@@ -247,7 +247,7 @@
         #datatable thead th,
         #datatable tbody td {
             padding: 4px 6px !important;
-           
+
                 overflow: hidden !important;
                 text-overflow: ellipsis !important;
                 /*white-space: nowrap !important;*/
@@ -797,12 +797,6 @@
             outline: 0;
         }
 
-        .delivery-actions-group {
-            display: flex;
-            align-items: stretch;
-            gap: 12px;
-        }
-
         .delivery-page-wrapper .cases-filter-btn {
             width: 100%;
             min-height: 38px;
@@ -819,12 +813,7 @@
             transition: all 0.3s ease;
         }
 
-        .delivery-actions-group .cases-filter-btn {
-            flex: 1 1 0;
-        }
-
         .delivery-page-wrapper .cases-filter-btn--search {
-            min-width: 136px;
             background: linear-gradient(135deg, #5f7688 0%, #8faab8 100%) !important;
             background-color: #7790a0 !important;
             border: 1px solid #5f7688 !important;
@@ -843,35 +832,35 @@
         }
 
         .delivery-page-wrapper .delivery-print-btn {
-            min-width: 120px;
-            border: 1px solid rgba(188, 206, 216, 0.85) !important;
-            background: #ffffff !important;
+            min-width: auto !important;
+            border: none !important;
+            background: transparent !important;
             color: #337374 !important;
-            box-shadow: 0 6px 16px rgba(44, 87, 102, 0.12);
+            box-shadow: none !important;
+            padding: 0 !important;
         }
 
         .delivery-page-wrapper .delivery-print-btn:hover,
         .delivery-page-wrapper .delivery-print-btn:focus {
-            background: #eef6f6 !important;
-            border-color: #408385 !important;
             color: #2b6e70 !important;
+            background: transparent !important;
         }
 
         .delivery-page-wrapper .delivery-summary-grid.delivery-counters {
             display: flex !important;
-            flex-wrap: wrap !important;
+            flex-wrap: nowrap !important;
             gap: 16px !important;
             justify-content: flex-start !important;
             align-items: stretch !important;
             overflow: visible !important;
             padding: 0 !important;
-            margin: 0 0 24px !important;
+            margin: 0 0 15px !important;
         }
 
         .delivery-page-wrapper .delivery-summary-grid.delivery-counters > .delivery-summary-item {
-            flex: 0 1 250px !important;
+            flex: 0 1 200px !important;
             max-width: 280px;
-            min-width: 220px;
+            min-width: 200px;
             padding: 0 !important;
             margin-bottom: 0 !important;
             display: block;
@@ -881,9 +870,8 @@
             background: #ffffff !important;
             border: 1px solid rgba(188, 206, 216, 0.65) !important;
             border-radius: 14px !important;
-            padding: 18px 20px 18px 24px !important;
+            padding: 12px 14px 12px 18px !important;
             box-shadow: 0 6px 18px rgba(44, 87, 102, 0.08) !important;
-            min-height: 112px;
             display: flex !important;
             align-items: center !important;
             justify-content: flex-start !important;
@@ -897,24 +885,25 @@
             top: 0;
             bottom: 0;
             left: 0;
-            width: 6px;
+            width: 5px;
             background: #d6ecee;
         }
 
         .delivery-page-wrapper .delivery-counter-copy {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 4px;
             width: 100%;
         }
 
         .delivery-page-wrapper .materials-total-label {
-            font-size: 12px !important;
+            font-size: 11px !important;
             font-weight: 600 !important;
             letter-spacing: 0.6px !important;
             text-transform: uppercase !important;
             color: #6b7280 !important;
             margin-bottom: 0 !important;
+            line-height: 1.05 !important;
         }
 
         .delivery-page-wrapper .materials-total-value {
@@ -924,10 +913,10 @@
         }
 
         .delivery-page-wrapper .materials-total-amount {
-            font-size: 30px !important;
+            font-size: 23px !important;
             font-weight: 700 !important;
-            line-height: 1.05 !important;
-            letter-spacing: -0.03em !important;
+            line-height: 1 !important;
+            letter-spacing: -0.02em !important;
             color: #1f2937 !important;
         }
 
@@ -1035,15 +1024,6 @@
                 margin-bottom: 6px !important;
             }
 
-            .delivery-page-wrapper .delivery-actions-group {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .delivery-page-wrapper .delivery-actions-group .cases-filter-btn {
-                flex: 1 1 calc(50% - 5px);
-            }
-
             .delivery-page-wrapper .delivery-summary-grid.delivery-counters > .delivery-summary-item {
                 flex: 1 1 100% !important;
                 max-width: none;
@@ -1059,12 +1039,12 @@
         $overdue = $overdue ?? 0;
         $numOfUnits = $numOfUnits ?? 0;
     @endphp
-    <div class="delivery-page-wrapper">
+    <div class="delivery-page-wrapper sigma-list-page">
         <form class="kt-form delivery-filter-form" method="GET" action="{{ route('delivery-schedule') }}">
             @csrf
-            <div class="container full-width cases-filter-card delivery-filter-card">
-                <div class="row cases-filter-row">
-                    <div class="col-12 col-sm-6 col-md-3 mb-2">
+            <div class="container full-width cases-filter-card delivery-filter-card sigma-list-filter-card">
+                <div class="row cases-filter-row sigma-list-filter-row">
+                    <div class="col-6 col-md-3 mb-2">
                         <label for="delivery_from" class="form-label filter-label">
                             <i class="fas fa-calendar-alt"></i>
                             <span>From Date</span>
@@ -1072,6 +1052,7 @@
                         <x-ios-dtp
                                 name="from"
                                 id="delivery_from"
+                                class="filter-input-global"
                                 :value=" isset($data['from']) && !empty($data['from']) ? \Carbon\Carbon::parse($data['from'])->format('d M, Y') : '' "
                                 mode="date"
                                 :required="true"
@@ -1081,7 +1062,7 @@
                         @endif
                     </div>
 
-                    <div class="col-12 col-sm-6 col-md-3 mb-2">
+                    <div class="col-6 col-md-3 mb-2">
                         <label for="delivery_to" class="form-label filter-label">
                             <i class="fas fa-calendar-alt"></i>
                             <span>To Date</span>
@@ -1089,6 +1070,7 @@
                         <x-ios-dtp
                                 name="to"
                                 id="delivery_to"
+                                class="filter-input-global"
                                 :value=" isset($data['to']) && !empty($data['to']) ? \Carbon\Carbon::parse($data['to'])->format('d M, Y') : '' "
                                 mode="date"
                                 :required="true"
@@ -1098,21 +1080,17 @@
                         @endif
                     </div>
 
-                    <div class="col-12 col-md-6 mb-2">
-                        <label class="form-label filter-label">
-                            <i class="fas fa-filter"></i>
-                            <span>Actions</span>
-                        </label>
-                        <div class="delivery-actions-group" id="delivery_filters_actions">
-                            <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search">
-                                <i class="fas fa-search"></i>
-                                <span>Apply</span>
-                            </button>
-                            <button type="button" onclick="printResult()" class="btn btn-secondary cases-filter-btn delivery-print-btn" title="Print">
-                                <i class="fa fa-print"></i>
-                                <span>Print</span>
-                            </button>
-                        </div>
+                    <div class="col-6 col-md-3 mb-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search sigma-apply-btn filter-apply-btn-global">
+                            <i class="fas fa-search"></i>
+                            <span>Apply</span>
+                        </button>
+                    </div>
+
+                    <div class="col-6 col-md-3 mb-2 d-flex align-items-end justify-content-end">
+                        <button type="button" onclick="printResult()" class="btn delivery-print-btn sigma-toolbar-icon-btn" title="Print">
+                            <i class="fas fa-print me-1"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -1137,40 +1115,40 @@
         }
     @endphp
 
-        <div class="delivery-summary-grid delivery-counters">
-            <div class="delivery-summary-item">
-                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--total">
+        <div class="delivery-summary-grid delivery-counters sigma-summary-grid">
+            <div class="delivery-summary-item sigma-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--total sigma-compact-summary-card">
                     <div class="delivery-counter-copy">
                         <span class="materials-total-label">Total Cases</span>
                         <div class="materials-total-value">
-                            <span class="materials-total-amount">{{ count($cases) }}</span>
+                            <span class="materials-total-amount sigma-summary-value--positive">{{ count($cases) }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="delivery-summary-item">
-                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--overdue">
+            <div class="delivery-summary-item sigma-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--overdue sigma-compact-summary-card">
                     <div class="delivery-counter-copy">
                         <span class="materials-total-label">Overdue</span>
                         <div class="materials-total-value">
-                            <span class="materials-total-amount">{{ $overdue }}</span>
+                            <span class="materials-total-amount sigma-summary-value--danger">{{ $overdue }}</span>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="delivery-summary-item">
-                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--units">
+            <div class="delivery-summary-item sigma-summary-item">
+                <div class="materials-total-card report-total-card delivery-counter-card delivery-counter-card--units sigma-compact-summary-card">
                     <div class="delivery-counter-copy">
                         <span class="materials-total-label"># of Units</span>
                         <div class="materials-total-value">
-                            <span class="materials-total-amount">{{ $numOfUnits }}</span>
+                            <span class="materials-total-amount sigma-summary-value--positive">{{ $numOfUnits }}</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <table id="datatable" class="table table-bordered dataTable no-footer sunriseTable table-odd" role="grid"
+        <table id="datatable" class="table table-bordered dataTable no-footer sunriseTable table-odd sigma-list-table" role="grid"
                             aria-describedby="datatable_info">
                             <thead>
                                 <tr class="" style="left: 0px;  !important;">
