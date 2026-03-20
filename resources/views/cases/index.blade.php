@@ -5,6 +5,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+
         /* Customizations */
         .sigma-sticky-toolbar {
             top: var(--sigma-app-header-offset) !important;
@@ -377,29 +378,33 @@
             left: 0 !important;
             width: 100vw !important;
             height: 100vh !important;
+            padding: 0 !important;
+            box-sizing: border-box !important;
             transform: none !important;
             -webkit-transform: none !important;
             will-change: auto !important;
             display: none;
             overflow-x: hidden;
-            overflow-y: auto;
-            z-index: 1050;
-            background: transparent;
+            overflow-y: hidden;
+            z-index: 9998;
+            background: rgba(15, 23, 42, 0.28);
         }
 
         .sigma-modal--cases-index-actions.show {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: center !important;
+            display: block !important;
         }
 
         .sigma-modal--cases-index-actions .modal-dialog {
-            position: relative !important;
-            width: auto !important;
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            z-index: 9999 !important;
+            width: min(500px, calc(100vw - 32px)) !important;
             max-width: 500px !important;
-            margin: 1.75rem !important;
-            transform: none !important;
-            -webkit-transform: none !important;
+            max-height: calc(100vh - 32px) !important;
+            margin: 0 !important;
+            transform: translate(-50%, -50%) !important;
+            -webkit-transform: translate(-50%, -50%) !important;
             will-change: auto !important;
             pointer-events: none !important;
         }
@@ -410,6 +415,16 @@
             -webkit-transform: none !important;
             will-change: auto !important;
             pointer-events: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            max-height: calc(100vh - 32px) !important;
+            overflow: hidden !important;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body {
+            flex: 1 1 auto;
+            min-height: 0;
+            overflow-y: auto;
         }
 
         /* Reset transforms on wrapper when modal is open */
@@ -924,7 +939,7 @@
             /* Better button display on mobile */
             .btn-primary {
                 width: 100%;
-               
+
             }
 
             .cases-filter-row .cases-filter-actions-col {
@@ -1252,7 +1267,7 @@
 
                 @foreach($cases  as $case)
                     <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
-                         id="actionsDialog{{$case->id}}" data-backdrop="true" data-keyboard="true">
+                         id="actionsDialog{{$case->id}}" data-backdrop="false" data-keyboard="true">
 
                         <input type="hidden" name="case_id" value="{{$case->id}}">
                         <div class="modal-dialog modal-dialog-centered   " role="document">
@@ -1911,10 +1926,58 @@
                     } );
                 } );
 
-                // Fix aria-hidden conflict on modals
-                $( '.sigma-modal--cases-index-actions' ).on( 'show.bs.modal', function () {
-                    $( this ).removeAttr( 'aria-hidden' );
-                } );
+                function cleanupCasesIndexModalArtifacts() {
+                    if (document.querySelector( '.modal.show' )) {
+                        return;
+                    }
+
+                    $( '.modal-backdrop' ).remove();
+                    $( 'body' )
+                        .removeClass( 'modal-open' )
+                        .css( {
+                            'padding-right': ''
+                        } );
+                }
+
+                function mountCasesIndexModals() {
+                    document.querySelectorAll( '.sigma-modal--cases-index-actions' ).forEach( function (modal) {
+                        if (modal.parentNode !== document.body) {
+                            document.body.appendChild( modal );
+                        }
+                    } );
+                }
+
+                mountCasesIndexModals();
+
+                $( document )
+                    .off( 'show.bs.modal.casesIndexActions' )
+                    .on( 'show.bs.modal.casesIndexActions' , '.sigma-modal--cases-index-actions' , function () {
+                        if (!document.querySelector( '.modal.show' )) {
+                            $( '.modal-backdrop' ).remove();
+                        }
+                        mountCasesIndexModals();
+                        $( 'body' ).addClass( 'modal-open' );
+                        $( this ).removeAttr( 'aria-hidden' );
+                    } );
+
+                $( document )
+                    .off( 'click.casesIndexActionsBackdrop' )
+                    .on( 'click.casesIndexActionsBackdrop' , '.sigma-modal--cases-index-actions' , function (e) {
+                        if (e.target === this) {
+                            $( this ).modal( 'hide' );
+                        }
+                    } );
+
+                $( document )
+                    .off( 'hidden.bs.modal.casesIndexActions' )
+                    .on( 'hidden.bs.modal.casesIndexActions' , '.sigma-modal--cases-index-actions' , function () {
+                        $( this )
+                            .removeClass( 'show' )
+                            .css( 'display' , 'none' )
+                            .attr( 'aria-hidden' , 'true' )
+                            .removeAttr( 'aria-modal' );
+                        setTimeout( cleanupCasesIndexModalArtifacts , 0 );
+                    } );
 
                 function saveColumnWidths(tableId) {
                     const widths = [];

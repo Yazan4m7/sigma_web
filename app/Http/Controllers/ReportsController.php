@@ -779,116 +779,160 @@ class ReportsController extends Controller
         // Employee filters (filter by case logs based on stage)
         $employeeFilters = $request->input('employee_filters', $request->input('employees', []));
         if (!empty($employeeFilters)) {
-            foreach ($employeeFilters as $filter) {
-                $stage = $filter['stage'] ?? null;
-                $employeeId = $filter['employee_id'] ?? $filter['employee'] ?? null;
-                if ($stage && $employeeId) {
+            $stageMap = [
+                'design' => 1,
+                'milling' => 2,
+                'printing' => 3,
+                'sintering' => 4,
+                'pressing' => 5,
+                'finishing' => 6,
+                'qc' => 7,
+                'delivery' => 8
+            ];
 
-                    // Map stage names to stage numbers
-                    $stageMap = [
-                        'design' => 1,
-                        'milling' => 2,
-                        'printing' => 3,
-                        'sintering' => 4,
-                        'pressing' => 5,
-                        'finishing' => 6,
-                        'qc' => 7,
-                        'delivery' => 8
-                    ];
+            $normalizedEmployeeFilters = collect($employeeFilters)
+                ->map(function($filter) use ($stageMap) {
+                    $stage = $filter['stage'] ?? null;
+                    $employeeId = $filter['employee_id'] ?? $filter['employee'] ?? null;
 
-                    if (isset($stageMap[$stage])) {
-                        $stageNumber = $stageMap[$stage];
-                        // Filter by case logs where employee worked on this stage
-                        $query->whereHas('caseLogs', function($q) use ($employeeId, $stageNumber) {
-                            $q->where('user_id', $employeeId)
-                              ->where('stage', $stageNumber);
-                        });
+                    if (!$stage || !$employeeId || !isset($stageMap[$stage])) {
+                        return null;
                     }
+
+                    return [
+                        'stage' => $stageMap[$stage],
+                        'employee_id' => (int) $employeeId,
+                    ];
+                })
+                ->filter()
+                ->groupBy('stage');
+
+            foreach ($normalizedEmployeeFilters as $stageNumber => $filtersAtStage) {
+                $employeeIds = $filtersAtStage->pluck('employee_id')->filter()->unique()->values()->all();
+
+                if (empty($employeeIds)) {
+                    continue;
                 }
+
+                // Same-stage employee filters should behave as OR; different stages remain AND.
+                $query->whereHas('caseLogs', function($q) use ($employeeIds, $stageNumber) {
+                    $q->where('stage', $stageNumber)
+                      ->whereIn('user_id', $employeeIds);
+                });
             }
         }
 
         // Device filters (devices are linked through builds, not directly on jobs)
         $deviceFilters = $request->input('device_filters', $request->input('devices', []));
         if (!empty($deviceFilters)) {
-            foreach ($deviceFilters as $filter) {
-                $stage = $filter['stage'] ?? $filter['type'] ?? null;
-                $deviceId = $filter['device_id'] ?? $filter['device'] ?? null;
-                if ($stage && $deviceId) {
+            $stageMap = [
+                'design' => 'design',
+                'milling' => 'mill',
+                'printing' => 'print',
+                'sintering' => 'sinter',
+                'pressing' => 'press',
+                'finishing' => 'finishing',
+                'qc' => 'qc',
+                'delivery' => 'delivery'
+            ];
 
-                    // Stage mapping to device type
-                    $stageMap = [
-                        'design' => 'design',
-                        'milling' => 'mill',
-                        'printing' => 'print',
-                        'sintering' => 'sinter',
-                        'pressing' => 'press',
-                        'finishing' => 'finishing',
-                        'qc' => 'qc',
-                        'delivery' => 'delivery'
+            $normalizedDeviceFilters = collect($deviceFilters)
+                ->map(function($filter) use ($stageMap) {
+                    $stage = $filter['stage'] ?? $filter['type'] ?? null;
+                    $deviceId = $filter['device_id'] ?? $filter['device'] ?? null;
+
+                    if (!$stage || !$deviceId) {
+                        return null;
+                    }
+
+                    return [
+                        'type' => $stageMap[$stage] ?? $stage,
+                        'device_id' => (int) $deviceId,
                     ];
+                })
+                ->filter()
+                ->groupBy('type');
 
-                    $deviceType = isset($stageMap[$stage]) ? $stageMap[$stage] : $stage;
+            foreach ($normalizedDeviceFilters as $deviceType => $filtersAtStage) {
+                $deviceIds = $filtersAtStage->pluck('device_id')->filter()->unique()->values()->all();
 
-                    // Apply device filter based on device type
-                    // Devices are associated via builds: milling_build, printing_build, pressing_build
-                    // Each build has device_id or device_used
-                    $query->whereHas('jobs', function($q) use ($deviceId, $deviceType) {
-                        switch ($deviceType) {
-                            case 'mill': // Type 2 - Milling
-                                $q->where(function($jobQ) use ($deviceId) {
-                                    $jobQ->where('device_id', $deviceId)
-                                         ->orWhereHas('millingBuild', function($buildQ) use ($deviceId) {
-                                             $buildQ->where(function($q) use ($deviceId) {
-                                                 $q->where('device_id', $deviceId)
-                                                   ->orWhere('device_used', $deviceId);
-                                             });
-                                         });
-                                });
-                                break;
-                            case 'print': // Type 3 - 3D Printing
-                                $q->where(function($jobQ) use ($deviceId) {
-                                    $jobQ->where('device_id', $deviceId)
-                                         ->orWhereHas('printingBuild', function($buildQ) use ($deviceId) {
-                                             $buildQ->where(function($q) use ($deviceId) {
-                                                 $q->where('device_id', $deviceId)
-                                                   ->orWhere('device_used', $deviceId);
-                                             });
-                                         });
-                                });
-                                break;
-                            case 'sinter': // Type 4 - Sintering (uses device_id directly, no build)
-                                $q->where('device_id', $deviceId);
-                                break;
-                            case 'press': // Type 5 - Pressing
-                                $q->where(function($jobQ) use ($deviceId) {
-                                    $jobQ->where('device_id', $deviceId)
-                                         ->orWhereHas('pressingBuild', function($buildQ) use ($deviceId) {
-                                             $buildQ->where(function($q) use ($deviceId) {
-                                                 $q->where('device_id', $deviceId)
-                                                   ->orWhere('device_used', $deviceId);
-                                             });
-                                         });
-                                });
-                                break;
-                            default:
-                                // For 'other' devices, check all build types + device_id
-                                $q->where(function($jobQ) use ($deviceId) {
-                                    $jobQ->where('device_id', $deviceId) // Direct device_id (for sintering, etc.)
-                                    ->orWhereHas('millingBuild', function($buildQ) use ($deviceId) {
-                                        $buildQ->where('device_id', $deviceId)->orWhere('device_used', $deviceId);
-                                    })
-                                    ->orWhereHas('printingBuild', function($buildQ) use ($deviceId) {
-                                        $buildQ->where('device_id', $deviceId)->orWhere('device_used', $deviceId);
-                                    })
-                                    ->orWhereHas('pressingBuild', function($buildQ) use ($deviceId) {
-                                        $buildQ->where('device_id', $deviceId)->orWhere('device_used', $deviceId);
-                                    });
-                                });
-                                break;
-                        }
-                    });
+                if (empty($deviceIds)) {
+                    continue;
                 }
+
+                // Same-stage device filters should behave as OR; different stages remain AND.
+                $query->whereHas('jobs', function($q) use ($deviceIds, $deviceType) {
+                    switch ($deviceType) {
+                        case 'mill': // Type 2 - Milling
+                            $q->where(function($jobQ) use ($deviceIds) {
+                                $jobQ->whereIn('device_id', $deviceIds)
+                                     ->orWhereHas('millingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     });
+                            });
+                            break;
+                        case 'print': // Type 3 - 3D Printing
+                            $q->where(function($jobQ) use ($deviceIds) {
+                                $jobQ->whereIn('device_id', $deviceIds)
+                                     ->orWhereHas('printingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     });
+                            });
+                            break;
+                        case 'sinter': // Type 4 - Sintering
+                            $q->where(function($jobQ) use ($deviceIds) {
+                                $jobQ->whereIn('device_id', $deviceIds)
+                                     ->orWhereHas('sinteringBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->whereIn('device_used', $deviceIds);
+                                     });
+                            });
+                            break;
+                        case 'press': // Type 5 - Pressing
+                            $q->where(function($jobQ) use ($deviceIds) {
+                                $jobQ->whereIn('device_id', $deviceIds)
+                                     ->orWhereHas('pressingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     });
+                            });
+                            break;
+                        default:
+                            // For 'other' devices, check all build types + device_id.
+                            $q->where(function($jobQ) use ($deviceIds) {
+                                $jobQ->whereIn('device_id', $deviceIds)
+                                     ->orWhereHas('millingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     })
+                                     ->orWhereHas('printingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     })
+                                     ->orWhereHas('sinteringBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->whereIn('device_used', $deviceIds);
+                                     })
+                                     ->orWhereHas('pressingBuild', function($buildQ) use ($deviceIds) {
+                                         $buildQ->where(function($q) use ($deviceIds) {
+                                             $q->whereIn('device_id', $deviceIds)
+                                               ->orWhereIn('device_used', $deviceIds);
+                                         });
+                                     });
+                            });
+                            break;
+                    }
+                });
             }
         }
 

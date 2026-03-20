@@ -7887,7 +7887,7 @@
             color: #2b6e70 !important;
             opacity: 1 !important;
             box-shadow: none !important;
-            border-radius: 12px !important;
+
         }
 
         .card.card-chart .card-header .btn-group-toggle .main-dashboard-toggle-btn.active,
@@ -8808,6 +8808,18 @@
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
             }
+
+            .card.card-chart{
+                   height: stretch;
+            }
+
+
+        }
+
+
+        .card.card-chart{
+            height: stretch;
+
         }
     </style>
     {{-- <div class="row"  style="background-color: transparent"> --}}
@@ -8931,7 +8943,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+<div class="row" style="background-color: transparent">
         <div class="col-lg-6 col-md-12 noLeftPadding" style="background-color: transparent">
             <div class="card card-chart dashboard-summary-panel">
                 <div class="card-header">
@@ -9165,7 +9177,7 @@
                 </div>
             </div>
         </div>
-    </div>
+</div>
     {{-- Bootstrap Modals for Deliveries --}}
     @foreach ($DeliveriesToday as $case)
         @php

@@ -9329,7 +9329,7 @@ table.sigma-sticky-table-header {
 table.sigma-sticky-table-header thead th {
     /* color: white; */
     position: sticky;
-    top: calc(var(--sigma-app-header-offset) + var(--sigma-sticky-toolbar-height));
+    /*top: calc(var(--sigma-app-header-offset) - var(--sigma-sticky-toolbar-height));*/
     z-index: 98;
     background-color: inherit;
 }
@@ -9498,7 +9498,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
     #datatable_wrapper {
         overflow: auto;
     }
-    
+
 .sigma-modal--abutments-delivery-actions .modal-footer:not(.teethSelection) {
         display: flex !important;
         align-items: center !important;
