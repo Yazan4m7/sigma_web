@@ -13,6 +13,7 @@
 .aider*
 .claude/
 .gemini-clipboard/
+/MDs/
 *.log
 *.md
 .phpunit.result.cache

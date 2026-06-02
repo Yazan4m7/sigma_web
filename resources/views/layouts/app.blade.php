@@ -167,6 +167,102 @@
 
     <!-- Third-party/Plugin CSS -->
     <link href="{{asset('assets/css/jquery.datetimepicker.min.css')}}" rel="stylesheet">
+    <link href="{{ asset('assets/css/intel-dashboard-css/miscellaneous/lightgallery/lightgallery.bundle.css') }}" rel="stylesheet">
+    <style>
+        .lg-icon {
+            font-family: "Segoe UI Symbol", "Segoe UI", Arial, sans-serif !important;
+        }
+
+        .lg-actions .lg-prev:after,
+        .lg-actions .lg-next:before,
+        .lg-toolbar .lg-close:after,
+        .lg-toolbar .lg-download:after,
+        .lg-toolbar .lg-fullscreen:after,
+        .lg-autoplay-button:after,
+        .lg-show-autoplay .lg-autoplay-button:after,
+        #lg-zoom-in:after,
+        #lg-zoom-out:after,
+        #lg-actual-size:after,
+        .lg-outer #lg-share:after {
+            font-family: "Segoe UI Symbol", "Segoe UI", Arial, sans-serif !important;
+            font-weight: 400 !important;
+        }
+
+        .lg-actions .lg-prev:after {
+            content: "\2039" !important;
+        }
+
+        .lg-actions .lg-next:before {
+            content: "\203A" !important;
+        }
+
+        .lg-toolbar .lg-close:after {
+            content: "\00D7" !important;
+            font-size: 1.7rem !important;
+        }
+
+        .lg-toolbar .lg-download:after {
+            content: "\2193" !important;
+        }
+
+        .lg-toolbar .lg-fullscreen:after {
+            content: "\26F6" !important;
+        }
+
+        .lg-autoplay-button:after {
+            content: "\25B6" !important;
+        }
+
+        .lg-show-autoplay .lg-autoplay-button:after {
+            content: "\23F8" !important;
+        }
+
+        #lg-zoom-in:after {
+            content: "\002B" !important;
+        }
+
+        #lg-zoom-out:after {
+            content: "\2212" !important;
+        }
+
+        #lg-actual-size:after {
+            content: "\25A1" !important;
+        }
+
+        .lg-outer #lg-share:after {
+            content: "\2197" !important;
+        }
+
+        .lg-outer .lg-item {
+            background: none !important;
+        }
+
+        .lg-outer .lg-item::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 34px;
+            height: 34px;
+            margin-top: -17px;
+            margin-left: -17px;
+            border: 3px solid rgba(255, 255, 255, 0.26);
+            border-top-color: rgba(255, 255, 255, 0.92);
+            border-radius: 50%;
+            animation: sigma-lg-spin 0.8s linear infinite;
+            pointer-events: none;
+        }
+
+        .lg-outer .lg-item.lg-complete::after {
+            display: none;
+        }
+
+        @keyframes sigma-lg-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     <link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
     <link href="//cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet"
           type="text/css"/>
@@ -183,12 +279,19 @@
     <link href="{{ asset('assets') }}/css/nucleo-icons.css" rel="stylesheet"/>
 
     <!-- Custom CSS -->
+    @php
+        $customStylingCssPath = public_path('assets/css/custom-styling.css');
+        $customStylingCssUrl = asset('assets/css/custom-styling.css');
+        if (file_exists($customStylingCssPath)) {
+            $customStylingCssUrl .= '?v=' . filemtime($customStylingCssPath);
+        }
+    @endphp
     <link href="{{ asset('css/responsive-images.css') }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/callouts.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
     <noscript><link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/></noscript>
-    <link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet"/>
-    <noscript><link href="{{ asset('assets') }}/css/custom-styling.css" rel="stylesheet"/></noscript>
+    <link href="{{ $customStylingCssUrl }}" rel="stylesheet"/>
+    <noscript><link href="{{ $customStylingCssUrl }}" rel="stylesheet"/></noscript>
     <link href="{{ asset('assets') }}/css/sidebar-fix.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/sidebar-fullwidth-fix.css" rel="stylesheet"/>
     <link href="{{ asset('css/sidebar-collapse.css') }}" rel="stylesheet"/>
@@ -196,8 +299,6 @@
 
     <link href="{{ asset('css') }}/georgia-font.css" rel="stylesheet"/>
     <link href="{{ asset('css/ysh-custom-css/machine-images.css') }}" rel="stylesheet"/>
-    <link href="{{ asset('css/processing-overlay.css') }}" rel="stylesheet"/>
-
     <link rel="icon" type="image/png" href="{{asset('assets/sigma_favico.png')}}"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
@@ -257,26 +358,14 @@
             pointer-events: none !important;
         }
 
-        #loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
     </style>
     @if (!$isReportRoute)
         <link href="{{ asset('assets/css/sigma-standard-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-standard-theme.css')) }}" rel="stylesheet"/>
     @endif
 </head>
 <div class="sigma-loading-screen" id="sigma-loading-screen" aria-hidden="true">
-    <div class="sigma-loading-screen__content" role="status" aria-live="polite">
-        <span class="sigma-loading-screen__text">Loading..</span>
+    <div class="sigma-loading-screen__content" role="status" aria-live="polite" aria-label="Loading">
+        <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
     </div>
 </div>
 {{--<div class="overlay" id="overlay"></div>--}}@auth()
@@ -379,10 +468,6 @@
     }
 
     window.addEventListener('load', function() {
-        const loadingOverlay = document.getElementById('loading-overlay');
-        if (loadingOverlay) {
-            loadingOverlay.style.display = 'none';
-        }
         if (typeof window.hideLoadingScreen === 'function') {
             window.hideLoadingScreen();
         }
@@ -390,18 +475,14 @@
 
     (function() {
         const screen = document.getElementById('sigma-loading-screen');
-        if (!screen) {
-            return;
-        }
-        const textEl = screen.querySelector('.sigma-loading-screen__text');
 
-        function showLoadingScreen(message) {
-            const nextMessage = (typeof message === 'string' && message.trim() !== '')
-                ? message
-                : 'Processing...';
-            if (textEl) {
-                textEl.textContent = nextMessage;
-                textEl.setAttribute('data-text', nextMessage);
+        function showLoadingScreen() {
+            if (typeof window.showLoadingIndicator === 'function') {
+                window.showLoadingIndicator();
+                return;
+            }
+            if (!screen) {
+                return;
             }
             screen.classList.add('is-active');
             screen.setAttribute('aria-hidden', 'false');
@@ -409,6 +490,13 @@
         }
 
         function hideLoadingScreen() {
+            if (typeof window.hideLoadingIndicator === 'function') {
+                window.hideLoadingIndicator();
+                return;
+            }
+            if (!screen) {
+                return;
+            }
             screen.classList.remove('is-active');
             screen.setAttribute('aria-hidden', 'true');
             document.body.classList.remove('sigma-loading-active');
@@ -425,9 +513,8 @@
             if (event.defaultPrevented) {
                 return;
             }
-            const message = form.getAttribute('data-loading-screen-text');
-            showLoadingScreen(message);
-        }, false);
+            showLoadingScreen();
+        }, true);
     })();
 
     window.addEventListener('pageshow', function() {
@@ -631,21 +718,15 @@
 <script src="{{ asset('js/responsive-images.js') }}"></script>
 <script>
     function showProcessingOverlay() {
-        return; // overlays disabled
+        if (typeof window.showLoadingScreen === 'function') {
+            window.showLoadingScreen();
+        }
     }
 
     function showDoneAndReload() {
-        return; // overlays disabled
+        if (typeof window.hideLoadingScreen === 'function') {
+            window.hideLoadingScreen();
+        }
     }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const forms = document.querySelectorAll('form');
-        forms.forEach(form => {
-            form.addEventListener('submit', function () {
-                showProcessingOverlay();
-            });
-        });
-
-    });
 </script>
 </html>

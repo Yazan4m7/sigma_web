@@ -1,0 +1,9 @@
+#Permission {
+    background-color: #f0f8ff; /* AliceBlue */
+    border: 1px solid #add8e6; /* LightBlue */
+}
+
+#Permission option:checked {
+    background: #e0ffff; /* LightCyan */
+    color: #000000;
+}

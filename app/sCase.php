@@ -270,7 +270,13 @@ class sCase extends Model
 
         $activeColor = config('site_vars.activeColor');
         $waitingColor = config('site_vars.waitingColor');
-        foreach($this->jobs()->get() as $job) {
+        $jobs = $this->relationLoaded('jobs') ? $this->jobs : $this->jobs()->with('assignedTo:id,first_name')->get();
+
+        if ($jobs instanceof \Illuminate\Database\Eloquent\Collection) {
+            $jobs->loadMissing('assignedTo:id,first_name');
+        }
+
+        foreach($jobs as $job) {
 
             if ($job->assignee == null) {
                 $newLine =  "<span style= 'color:" . $waitingColor . "'> Waiting in " . $this->stageToText($job->stage) . "</span>". "<br/>";

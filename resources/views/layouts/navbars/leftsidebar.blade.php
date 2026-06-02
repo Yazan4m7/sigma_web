@@ -78,6 +78,36 @@
             @if(($permissions && ($permissions->contains('permission_id', 107))) || Auth()->user()->is_admin)
                 <li class="{{Route::currentRouteName() == 'clients-index' ? 'active' : ''}}" ><a href="{{route('clients-index')}}"><i class="fa fa-user-md" style="color: white !important;"></i> <span>Doctors</span></a>
             @endif
+            @if(($permissions && ($permissions->contains('permission_id', 107))) || Auth()->user()->is_admin)
+                @php
+                    $salesExpanded = in_array(Route::currentRouteName(), ['sales-index', 'sales-by-month-index']) ? 'true' : 'false';
+                @endphp
+                <li>
+                    <a data-sigma-toggle="submenu" data-target="#salesList"
+                       aria-expanded="{{ $salesExpanded }}">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span class="nav-link-text">Sales</span>
+                        <b class="caret mt-1"></b>
+                    </a>
+
+                    <div class="sigma-submenu{{ $salesExpanded == 'true' ? ' sigma-submenu-open' : '' }}" id="salesList">
+                        <ul class="nav pl-4">
+                            <li class="{{ Route::currentRouteName() == 'sales-index' ? 'active' : '' }}">
+                                <a href="{{ route('sales-index') }}">
+                                    <i class="fa-solid fa-file-invoice-dollar"></i>
+                                    <p>Invoices Total</p>
+                                </a>
+                            </li>
+                            <li class="{{ Route::currentRouteName() == 'sales-by-month-index' ? 'active' : '' }}">
+                                <a href="{{ route('sales-by-month-index') }}">
+                                    <i class="fa-solid fa-table-columns"></i>
+                                    <p>Sales by Month</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endif
                     @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
                         <li class="{{Route::currentRouteName() == 'my-collections' ? 'active' : ''}}"><a href="{{route('my-collections')}}"> <i class="fa-solid fa-circle-dollar-to-slot"></i> <span>My Collections</span></a>
                     @endif

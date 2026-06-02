@@ -10,6 +10,22 @@
         .sigma-sticky-toolbar {
             top: var(--sigma-app-header-offset) !important;
             z-index: 110 !important;
+            position: sticky !important;
+            background: #f4f6fb !important;
+            padding-top: 16px !important;
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+            isolation: isolate;
+            transition: padding-top 0.22s ease;
+            will-change: padding-top;
+        }
+
+        .sigma-sticky-toolbar.sigma-sticky-toolbar--stuck {
+            padding-top: 0 !important;
+        }
+
+        .sigma-sticky-toolbar::before {
+            display: none !important;
         }
 
         #casesTable {
@@ -18,9 +34,18 @@
 
         .dropdown-toggle .filter-option{ height: auto !important;}
 
-        #casesTable thead th:first-child,
         #casesTable tbody td:first-child {
             padding-left: 10px !important; /* Add more left padding */
+        }
+
+        #casesTable thead th {
+            padding: 8px 16px !important;
+        }
+
+        #casesTable thead th:nth-child(1),
+        #casesTable thead th:nth-child(2),
+        #casesTable thead th:nth-child(7) {
+            text-align: left !important;
         }
 
         /* Move sorting icons closer */
@@ -147,14 +172,14 @@
         }
 
         .sigma-case-status-badge {
-            width: 7.5em;
+            width: 8.5em;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             margin: 0 auto;
             line-height: 1 !important;
-            padding: 0.3rem 0.45rem !important;
+
             vertical-align: middle;
         }
 
@@ -182,8 +207,10 @@
         }
 
         #casesTable {
-            table-layout: auto;
+            table-layout: fixed;
             width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box;
         }
 
         /* Ensure table wrapper allows horizontal scroll without clipping */
@@ -195,10 +222,11 @@
         }
 
         .cases-table-scroll {
-            overflow-x: auto;
+            overflow-x: hidden;
             overflow-y: visible;
             -webkit-overflow-scrolling: touch;
             width: 100%;
+            max-width: 100%;
             position: relative;
             z-index: 1;
         }
@@ -207,8 +235,29 @@
             overflow-x: auto !important;
         }
 
+        #casesTable_wrapper .dataTables_scrollHead table thead th {
+            background-color: #408385 !important;
+            color: #ffffff !important;
+            border-bottom: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        #casesTable_wrapper .dataTables_scrollBody thead th {
+            height: 0 !important;
+            line-height: 0 !important;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            border-top: 0 !important;
+            border-bottom: 0 !important;
+        }
+
         .dataTables_wrapper .dataTables_info {
             display: none;
+        }
+
+        .dataTables_wrapper .dataTables_paginate {
+            overflow-x: visible !important;
+            width: 100%;
         }
 
         .dataTables_wrapper .dataTables_paginate .paginate_button {
@@ -259,6 +308,7 @@
         /* Ensure parent container doesn't clip */
         #casesTable_wrapper {
             overflow: visible;
+            width: 100%;
             max-width: 100%;
         }
 
@@ -287,7 +337,18 @@
             overflow: hidden;
             text-overflow: ellipsis;
             vertical-align: bottom;
-            font-weight: 600;
+            font-weight: 400;
+        }
+
+        .cases-header-icon {
+            margin-left: 6px;
+            font-size: 0.92em;
+            vertical-align: baseline;
+        }
+
+        #casesTable tbody td:first-child,
+        #casesTable tbody td:first-child .cases-cell-truncate {
+            /*font-weight: 600 !important;*/
         }
 
 
@@ -421,6 +482,31 @@
             overflow: hidden !important;
         }
 
+        .sigma-modal--cases-index-actions .modal-content,
+        .sigma-modal--cases-index-actions .modal-content h1,
+        .sigma-modal--cases-index-actions .modal-content h2,
+        .sigma-modal--cases-index-actions .modal-content h3,
+        .sigma-modal--cases-index-actions .modal-content h4,
+        .sigma-modal--cases-index-actions .modal-content h5,
+        .sigma-modal--cases-index-actions .modal-content h6,
+        .sigma-modal--cases-index-actions .modal-content p,
+        .sigma-modal--cases-index-actions .modal-content span,
+        .sigma-modal--cases-index-actions .modal-content label,
+        .sigma-modal--cases-index-actions .modal-content small,
+        .sigma-modal--cases-index-actions .modal-content strong,
+        .sigma-modal--cases-index-actions .modal-content b,
+        .sigma-modal--cases-index-actions .modal-content div,
+        .sigma-modal--cases-index-actions .modal-content a,
+        .sigma-modal--cases-index-actions .modal-content li,
+        .sigma-modal--cases-index-actions .modal-content td,
+        .sigma-modal--cases-index-actions .modal-content th,
+        .sigma-modal--cases-index-actions .modal-content input,
+        .sigma-modal--cases-index-actions .modal-content textarea,
+        .sigma-modal--cases-index-actions .modal-content select,
+        .sigma-modal--cases-index-actions .modal-content button {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
         .sigma-modal--cases-index-actions .modal-body {
             flex: 1 1 auto;
             min-height: 0;
@@ -476,23 +562,46 @@
             display: block;
         }
 
+        .cases-patient-name {
+            font-weight: 700 !important;
+        }
+
+        .sigma-modal--cases-index-actions .case-summary-block {
+            margin-bottom: 14px;
+        }
+
+        .sigma-modal--cases-index-actions .case-summary-row {
+            margin-bottom: 0 !important;
+        }
+
+        .sigma-modal--cases-index-actions .case-summary-divider {
+            margin: 10px 0 0;
+        }
+
+        #casesTable tbody td {
+            font-size: 17px !important;
+        }
+
         /* Scrollable section for jobs and notes */
         .scrollable-content {
             max-height: 40vh;
             overflow-y: auto;
             overflow-x: hidden;
+            padding-right: 2px;
         }
 
         /* Notes container styling */
-        .form-control.note-container {
-            background-color: #e8f0f2;
-            border: 1px solid #b8d4db;
-            color: #212529;
+        .sigma-modal--cases-index-actions .modal-body .form-control.note-container {
+
+            border: 1px solid #b9d8e0 !important;
+            color: #212529 !important;
+            border-radius: 10px !important;
+            box-shadow: none !important;
         }
 
         /* Modal footer rounded bottom corners */
         .sigma-modal--cases-index-actions .modal-footer {
-            padding: 12px 16px;
+            padding: 0 16px 14px 14px;
             border-bottom-left-radius: 25px !important;
             border-bottom-right-radius: 25px !important;
         }
@@ -532,7 +641,7 @@
             grid-template-columns: 1fr;
         }
 
-        .sigma-modal--cases-index-actions .modal-footer .btn {
+        .sigma-modal--cases-index-actions .modal-footer .sigma-action-btn {
             width: 100%;
             min-width: 0;
             margin: 0;
@@ -540,23 +649,154 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            padding: 6px 0 !important;
+            line-height: 1.5 !important;
         }
 
         @media (max-width: 575.98px) {
-            .sigma-modal--cases-index-actions .modal-footer .btn .btn-icon {
+            .sigma-modal--cases-index-actions .modal-footer .sigma-action-btn .btn-icon {
                 display: none !important;
             }
         }
 
-        .sigma-modal--cases-index-actions .modal-footer .btn .btn-icon {
+        .sigma-modal--cases-index-actions .modal-footer .sigma-action-btn .btn-icon {
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .sigma-modal--cases-index-actions .modal-footer .btn .btn-text {
+        .sigma-modal--cases-index-actions .modal-footer .sigma-action-btn .btn-text {
             white-space: nowrap;
             text-align: left;
+        }
+
+        .sigma-modal--cases-index-actions .case-jobs-section {
+            margin-bottom: 8px !important;
+            margin-top: 8px !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+            width: 100%;
+        }
+
+        .sigma-modal--cases-index-actions .case-jobs-section > .col-12 {
+            padding: 0 0;
+        }
+        .case-jobs-section  {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+        .form-group.case-summary-row{
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+        .case-jobs-section > .form-group.col-6{
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        .sigma-modal--cases-index-actions .case-jobs-label {
+            display: block;
+            margin-bottom: 8px !important;
+            padding: 0;
+            border-radius: 0;
+            background: transparent;
+            color: #4d626d;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-jobs-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 7px !important;
+            width: 100%;
+            margin: 0 !important;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row {
+
+            background: linear-gradient(180deg, #e6f4f7 0%, #f2fbfd 100%) !important;
+            background-color: #e6f4f7 !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            width: 100%;
+            min-width: 0;
+            padding: 8px 11px !important;
+            margin: 0 !important;
+            border: 1px solid #d7e1e6;
+            border-radius: 10px;
+
+            color: #294450;
+            font-size: 13px;
+            line-height: 1.45 !important;
+            overflow: hidden !important;
+            white-space: normal !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            box-shadow: 0 2px 5px rgba(41, 68, 80, 0.07) !important;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-primary {
+            align-items: baseline;
+            display: flex;
+            gap: 5px;
+            width: 100%;
+            color: #294450;
+            font-size: 15px !important;
+            font-weight: 600;
+            line-height: 1.45 !important;
+            min-width: 0;
+            white-space: normal !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-units {
+            flex: 0 0 auto;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-separator {
+            flex: 0 0 auto;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-details {
+            flex: 1 1 auto;
+            min-width: 0;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
+
+        .sigma-modal--cases-index-actions .case-notes-section {
+            margin-top: 10px;
+            padding: 0;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+        }
+
+        .sigma-modal--cases-index-actions .case-notes-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5c6f7a;
+            font-size: 11px !important;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .sigma-modal--cases-index-actions .modal-body .sigma-case-job-extra {
+            display: block;
+            margin-top: 2px !important;
         }
 
         .content {
@@ -571,7 +811,10 @@
             border: 1px solid #e0e0e0;
             padding: 12px; /* Increased padding a bit for a less cramped feel */
             z-index: 1000;
-            width: 340px; /* Adjusted width */
+            width: max-content;
+            min-width: 340px;
+            max-width: calc(100vw - 32px);
+            overflow-x: auto;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1); /* Softer, more pronounced shadow */
             border-radius: 10px; /* Smoother radius */
             font-size: 14px; /* A more readable base font size */
@@ -581,7 +824,8 @@
         }
 
         .case-jobs-tooltip table {
-            width: 100%;
+            width: max-content;
+            min-width: 100%;
             border-collapse: collapse;
             margin: 0;
         }
@@ -591,13 +835,14 @@
             padding: 10px 12px; /* More generous padding */
             text-align: left;
             border-bottom: 1px solid #ecf0f1; /* Light row separator */
+            white-space: nowrap;
         }
 
         .case-jobs-tooltip th {
-            background-color: transparent; /* No header background color */
+            background-color: #408385;
             font-weight: 600;
             font-size: 13px;
-            color: #34495e; /* Darker, more professional header text */
+            color: #ffffff !important;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -626,17 +871,17 @@
         }
 
         /* Report-standard filter section */
-        .cases-filter-card.container.full-width {
+.cases-filter-card.container.full-width {
     background: #ffffff !important;
     border: 1px solid rgba(188, 206, 216, 0.3);
     border-radius: 16px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    margin-top: 16px;
+    box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 6%) !important;
+    margin-top: 0;
     margin-bottom: 24px;
     padding: 20px 20px 16px !important;
     position: relative;
-    overflow: visible;
-    backdrop-filter: blur(10px);
+    overflow: hidden !important;
+    backdrop-filter: none !important;
         }
 
         .cases-filter-card.container.full-width::before {
@@ -655,6 +900,9 @@
             --cases-filter-font-size: 14px;
             --cases-filter-color: #243746;
             --cases-filter-gap: 12px;
+            --cases-filter-control-width: 220px;
+            --cases-filter-button-pad-y: 8px;
+            --cases-filter-button-pad-x: calc(var(--cases-filter-button-pad-y) * 3.625);
             --cases-filter-radius: 10px;
             --cases-filter-border: 1px solid rgba(188, 206, 216, 0.4);
             --cases-filter-padding: 8px 14px;
@@ -662,6 +910,15 @@
             margin: 0 -8px !important;
             align-items: flex-end;
             font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .cases-filter-row > [class*="col-"] {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
         }
 
         .cases-filter-row .mb-2 {
@@ -704,6 +961,18 @@
             transition: all 0.3s ease;
         }
 
+        .cases-filter-row .bootstrap-select,
+        .cases-filter-row .ios-dtp-container,
+        .cases-filter-row .filter-input-global,
+        .cases-filter-row input.filter-input-global,
+        .cases-filter-row select.filter-input-global,
+        .cases-filter-row .filter-input-global .ios-dtp-trigger,
+        .cases-filter-row select.filter-input-global + .bootstrap-select,
+        .cases-filter-row select.filter-input-global + .bootstrap-select > .dropdown-toggle {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
         .cases-filter-row .bootstrap-select .filter-option-inner-inner,
         .cases-filter-row .ios-dtp-display {
             font-size: var(--cases-filter-font-size) !important;
@@ -734,38 +1003,50 @@
         }
 
         .cases-filter-btn {
-            width: 100%;
+            width: auto;
+            max-width: none;
             min-height: var(--cases-filter-height);
-            height: var(--cases-filter-height);
+            height: auto;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 0 18px !important;
+            padding: var(--cases-filter-button-pad-y) var(--cases-filter-button-pad-x) !important;
             border-radius: 12px !important;
             font-size: 14px;
             font-weight: 600;
             letter-spacing: 0.2px;
+            line-height: 1.2;
             transition: all 0.3s ease;
         }
 
         .cases-filter-btn--search {
             min-width: 136px;
-            background: linear-gradient(135deg, #5f7688 0%, #8faab8 100%) !important;
-            background-color: #7790a0 !important;
-            border: 1px solid #5f7688 !important;
+            background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+            background-color: #4d9597 !important;
+            border: 1px solid #408385 !important;
             color: #ffffff !important;
-            box-shadow: 0 6px 16px rgba(95, 118, 136, 0.28);
+            box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24);
         }
 
         .cases-filter-btn--search:hover,
         .cases-filter-btn--search:focus {
-            background: linear-gradient(135deg, #516879 0%, #7f9dab 100%) !important;
-            background-color: #688392 !important;
-            border-color: #516879 !important;
+            background: linear-gradient(135deg, #336f71 0%, #5ca0a2 100%) !important;
+            background-color: #4a8d90 !important;
+            border-color: #336f71 !important;
             color: #ffffff !important;
             transform: translateY(-1px);
-            box-shadow: 0 10px 22px rgba(81, 104, 121, 0.26);
+            box-shadow: 0 10px 22px rgba(51, 111, 113, 0.24);
+        }
+
+        .cases-filter-btn--search:active,
+        .cases-filter-btn--search:not(:disabled):not(.disabled):active {
+            background: linear-gradient(135deg, #285f61 0%, #4c8587 100%) !important;
+            background-color: #3d7678 !important;
+            border-color: #285f61 !important;
+            color: #ffffff !important;
+            transform: translateY(0);
+            box-shadow: 0 4px 12px rgba(40, 95, 97, 0.2);
         }
 
         .cases-filter-btn--trash {
@@ -796,6 +1077,104 @@
             line-height: 1;
         }
 
+        .cases-filter-row .cases-filter-actions-col {
+            display: flex;
+            align-items: flex-end;
+            justify-content: flex-start;
+            padding-left: 8px !important;
+        }
+
+        .cases-filter-row .sigma-filter-secondary-col {
+            justify-content: flex-end;
+            padding-right: 0 !important;
+        }
+
+        @media screen and (min-width: 768px) {
+            .cases-filter-row > [class*="col-"] {
+                flex: 0 0 var(--cases-filter-control-width) !important;
+                width: var(--cases-filter-control-width) !important;
+                max-width: var(--cases-filter-control-width) !important;
+            }
+
+            .cases-filter-row .cases-filter-actions-col:not(.sigma-filter-secondary-col) {
+                margin-left: 0 !important;
+                flex: 0 0 auto !important;
+                width: auto !important;
+                max-width: none !important;
+            }
+
+            .cases-filter-row .cases-filter-actions-col--trash {
+                margin-left: auto !important;
+                flex: 0 0 64px !important;
+                width: 64px !important;
+                max-width: 64px !important;
+            }
+        }
+
+        @media screen and (min-width: 576px) and (max-width: 767px) {
+            .cases-filter-row > .col-sm-4 {
+                flex: 0 0 33.333333% !important;
+                width: 33.333333% !important;
+                max-width: 33.333333% !important;
+            }
+
+            .cases-filter-row > .col-sm-6 {
+                flex: 0 0 50% !important;
+                width: 50% !important;
+                max-width: 50% !important;
+            }
+        }
+
+        @media screen and (max-width: 575px) {
+            .cases-filter-row > .col-6.col-sm-4.col-md-2 {
+                flex: 0 0 33.333333% !important;
+                width: 33.333333% !important;
+                max-width: 33.333333% !important;
+            }
+
+            .cases-filter-row > .col-6.col-sm-6.col-md-3,
+            .cases-filter-row > .col-6.col-sm-6.col-md-2.cases-filter-actions-col,
+            .cases-filter-row > .col-6.col-sm-6.col-md-1.cases-filter-actions-col--trash {
+                flex: 0 0 50% !important;
+                width: 50% !important;
+                max-width: 50% !important;
+            }
+        }
+
+        @media screen and (max-width: 599px) {
+            .cases-filter-search-col .filter-label {
+                display: none !important;
+            }
+
+            .cases-filter-search-col .form-control {
+                margin-top: 0 !important;
+            }
+
+            .cases-filter-search-col {
+                flex: 0 0 50% !important;
+                width: 50% !important;
+                max-width: 50% !important;
+            }
+
+            .cases-filter-apply-col {
+                flex: 0 0 33.333333% !important;
+                width: 33.333333% !important;
+                max-width: 33.333333% !important;
+            }
+
+            .cases-filter-trash-col {
+                flex: 0 0 16.666667% !important;
+                width: 16.666667% !important;
+                max-width: 16.666667% !important;
+                padding-left: 4px !important;
+            }
+
+            .cases-filter-row .cases-filter-trash-col {
+                justify-content: flex-start !important;
+                align-items: flex-end !important;
+            }
+        }
+
         .cases-table-shell {
             background: transparent !important;
             border: 0 !important;
@@ -819,7 +1198,9 @@
 
         /* Better spacing */
         .filter-section {
-            margin-bottom: 1.5rem;
+            margin-bottom: 0;
+            height: 12px;
+            background: #f4f6fb;
         }
 
         /* Button groups styling */
@@ -828,7 +1209,7 @@
         }
 
         div.modal-content {
-            padding: 16px 3px;
+            padding: 16px 14px;
         }
 
         /* Table actions styling */
@@ -852,7 +1233,7 @@
             /* Match header and body font size on mobile */
             #casesTable thead th,
             #casesTable tbody td {
-                font-size: 12px !important;
+                font-size: 17px !important;
                 padding: 6px 4px !important;
                 white-space: nowrap;
                 overflow: hidden;
@@ -926,10 +1307,11 @@
             }
 
             .cases-table-scroll {
-                overflow-x: auto;
+                overflow-x: visible;
                 overflow-y: visible;
                 -webkit-overflow-scrolling: touch;
                 width: 100%;
+                max-width: 100%;
             }
 
             .pagination {
@@ -962,6 +1344,35 @@
             }
 
             /* Doctor picker uses `container: body`; mobile viewport fitting is handled in JS. */
+            .bs-container.bootstrap-select.clearOnAll.filter-input-global > .dropdown-menu {
+                min-width: 260px !important;
+            }
+
+            .bs-container.bootstrap-select.clearOnAll.filter-input-global .dropdown-menu.inner li a {
+                display: flex !important;
+                justify-content: flex-end !important;
+                padding: 6px 60px 6px 16px !important;
+                position: relative;
+                text-align: right !important;
+                direction: rtl !important;
+            }
+
+            .bs-container.bootstrap-select.clearOnAll.filter-input-global .dropdown-menu.inner li a .check-mark {
+                left: auto !important;
+                right: 16px !important;
+            }
+
+            .bs-container.bootstrap-select.clearOnAll.filter-input-global .dropdown-menu.inner li a .text {
+                flex: 1 1 auto;
+                min-width: 0;
+                width: auto;
+                max-width: 100%;
+                margin-right: 0 !important;
+                padding-right: 8px;
+                overflow: visible !important;
+                text-align: right !important;
+                white-space: nowrap;
+            }
 
             .dataTables_wrapper .dataTables_filter {
                 text-align: center;
@@ -986,9 +1397,78 @@
 
             /* Smaller status badges on mobile */
             .sigma-case-status-badge {
-                padding: 2px 6px !important;
+
                 font-size: 11px !important;
                 line-height: 1.2 !important;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .cases-filter-card.container.full-width {
+
+                margin-bottom: 10px !important;
+                padding: 10px 10px 8px !important;
+            }
+
+            .cases-filter-row {
+                margin: 0 -4px !important;
+                row-gap: 6px !important;
+            }
+
+            .cases-filter-row > [class*="col-"] {
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+            }
+
+            .cases-filter-row .mb-2 {
+                margin-bottom: 6px !important;
+            }
+
+            .cases-filter-row .filter-label {
+                margin-bottom: 4px !important;
+                font-size: 11px !important;
+            }
+
+            .cases-filter-row .form-control,
+            .cases-filter-row .dtp-input,
+            .cases-filter-row .bootstrap-select > .dropdown-toggle,
+            .cases-filter-row .ios-dtp-trigger {
+                min-height: 34px !important;
+                height: 34px !important;
+                padding: 6px 10px !important;
+                font-size: 12px !important;
+            }
+
+            @supports (-webkit-touch-callout: none) {
+                .cases-filter-row .form-control,
+                .cases-filter-row .dtp-input,
+                .cases-filter-row .bootstrap-select > .dropdown-toggle,
+                .cases-filter-row .ios-dtp-trigger {
+                    font-size: 16px !important;
+                }
+            }
+
+            .cases-filter-btn {
+                min-height: 34px !important;
+                height: 34px !important;
+                padding: 0 16px !important;
+            }
+
+            .cases-filter-row .cases-filter-actions-col .cases-filter-btn {
+                width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            .cases-filter-btn--trash {
+                height: 34px !important;
+            }
+
+            .cases-filter-trash-col {
+                display: none !important;
+            }
+
+            .filter-section {
+                display: none !important;
             }
         }
 
@@ -1016,7 +1496,7 @@
                     <!-- Date filtering section -->
                     <div class="col-6 col-sm-4 col-md-2 mb-2">
                         <label class="form-label filter-label" for="cases_from">
-                            <i class="fas fa-calendar-alt"></i>
+                            <i class="fa-regular fa-calendar"></i>
                             <span>From Date</span>
                         </label>
                         <x-ios-dtp
@@ -1029,7 +1509,7 @@
                     </div>
                     <div class="col-6 col-sm-4 col-md-2 mb-2">
                         <label class="form-label filter-label" for="cases_to">
-                            <i class="fas fa-calendar-alt"></i>
+                            <i class="fa-regular fa-calendar"></i>
                             <span>To Date</span>
                         </label>
                         <x-ios-dtp
@@ -1043,7 +1523,7 @@
 
                     <!-- Doctor selection -->
                     @if(isset($clients))
-                        <div class="col-6 col-sm-6 col-md-2 mb-2">
+                        <div class="col-6 col-sm-4 col-md-2 mb-2">
                             <label class="form-label filter-label" for="doctor">
                                 <i class="fas fa-user-md"></i>
                                 <span>Doctor</span>
@@ -1065,7 +1545,7 @@
                     @endif
 
                     <!-- Search and Apply -->
-                    <div class="col-6 col-sm-6 col-md-3 mb-2">
+                    <div class="col-6 col-sm-6 col-md-3 mb-2 cases-filter-search-col">
                         <label class="form-label filter-label" for="tableSearch">
                             <i class="fas fa-search"></i>
                             <span>Search Cases</span>
@@ -1073,7 +1553,7 @@
                         <input type="text" class="form-control filter-input-global" id="tableSearch" placeholder="Search...">
                     </div>
 
-                    <div class="col-6 col-sm-6 col-md-2 mb-2 cases-filter-actions-col">
+                    <div class="col-6 col-sm-6 col-md-2 mb-2 cases-filter-actions-col cases-filter-apply-col">
                         <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search filter-apply-btn-global">
                             <i class="fas fa-search"></i>
                             <span>Apply</span>
@@ -1081,7 +1561,7 @@
                     </div>
 
                     <!-- Trash button -->
-                    <div class="col-6 col-sm-6 col-md-1 mb-2 cases-filter-actions-col cases-filter-actions-col--trash">
+                    <div class="col-2 col-sm-2 col-md-1 mb-2 cases-filter-actions-col cases-filter-actions-col--trash cases-filter-trash-col sigma-filter-secondary-col">
                         <a href="{{route('deleted-cases')}}" class="cases-filter-btn--trash"
                            title="View Deleted Cases">
                             <i class="fa-regular fa-trash-can"></i>
@@ -1089,8 +1569,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Added better spacing between filters and table -->
-            <div class="filter-section"></div>
         </form>
     @endif
     <div class="container full-width cases-table-shell">
@@ -1099,16 +1577,16 @@
                 <br>
                 <div class="cases-table-scroll">
                     <table id="casesTable"
-                           class="table-striped compact sunriseTable sigma-sticky-table-header sigma-no-header-radius"
+                           class="table-striped compact sunriseTable sigma-no-header-radius"
                            role="grid"
                            style="width:100%">
                     <thead>
                     <tr role="row">
-                        <th class="sigma-sticky-container">Doctor
+                        <th class="sigma-sticky-container sigma-col-shaded" style="text-align:left !important;padding-left:16px !important;">Doctor
                         </th>
-                        <th class="sigma-sticky-container">Patient</th>
-                        <th class="initDeliDateHeader sigma-sticky-container">Initial Deli. Date</th>
-                        <th class="sigma-sticky-container">Date Delivered</th>
+                        <th class="sigma-sticky-container sigma-head-left">Patient</th>
+                        <th class="initDeliDateHeader sigma-sticky-container">Initial Delivery <i class="fa-regular fa-calendar cases-header-icon" aria-hidden="true"></i></th>
+                        <th class="sigma-sticky-container sigma-col-shaded">Actual Delivery <i class="fa-regular fa-calendar cases-header-icon" aria-hidden="true"></i></th>
                         <th class="sigma-sticky-container">Units</th>
                         <th class="sigma-sticky-container">Status</th>
                         <th class="tagsHeader sigma-sticky-container">Tags</th>
@@ -1128,19 +1606,19 @@
                                 $deliveryDate = \Carbon\Carbon::parse($case->initial_delivery_date);
                                 $isOverdue = $deliveryDate->lt($now);
                             }
-                            $rowStyle = $isOverdue ? 'color: #dc3545; font-weight: 600;' : 'font-weight: 400';
+                            $rowStyle = $isOverdue ? 'color: #dc3545; font-weight: 400;' : 'font-weight: 400;';
                         @endphp
 
                         <tr role="row" class="odd clickable case-row" data-toggle="modal"
-                            data-target="#actionsDialog{{$case->id ?? "x"}}" style="{{$rowStyle}}"
+                            data-target="#actionsDialog" style="{{$rowStyle}}"
                             data-case-id="{{$case->id}}">
-                            <td><span class="cases-cell-truncate">{{$case->client->name ?? "x"}}</span></td>
-                            <td><span class="cases-cell-truncate">{{$case->patient_name ?? "x"}}</span></td>
-                            <td class="initDeliDateTD">{{$case->initDeliveryDate() ?? "x" }}
+                            <td class="sigma-col-shaded sigma-body-left"><span class="cases-cell-truncate">{{$case->client->name ?? "x"}}</span></td>
+                            <td class="sigma-body-left"><span class="cases-cell-truncate cases-patient-name">{{$case->patient_name ?? "x"}}</span></td>
+                            <td class="initDeliDateTD sigma-body-center">{{$case->initDeliveryDate() ?? "x" }}
                                 &nbsp;&nbsp; {{$case->initDeliveryTime() ?? "Unavailable"}}</td>
-                            <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
+                            <td class="sigma-col-shaded sigma-body-center">{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                 &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
-                            <td>
+                            <td class="sigma-body-center">
                                 @php
                                     $totalUnits = 0;
                                     foreach($case->jobs as $job) {
@@ -1157,7 +1635,7 @@
                                 @endphp
                                 <span class="cases-cell-truncate">{{ $totalUnits }}</span>
                             </td>
-                            <td>
+                            <td class="sigma-body-center">
                                 @if(str_contains($caseStatus, "Completed") )
                                     <span class="badge badge-success sigma-case-status-badge sigma-status-width">
                                                         <span class="sigma-badge-label">{{ $caseStatus }}</span>
@@ -1245,7 +1723,7 @@
                                 @endif
 
                             </td>
-                            <td class="tagsTD">
+                            <td class="tagsTD sigma-body-left">
 
                                 @foreach($case->tags as $tag)
                                     @if(isset($tag->originalTagRecord))
@@ -1265,169 +1743,37 @@
                     </table>
                 </div>
 
-                @foreach($cases  as $case)
-                    <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
-                         id="actionsDialog{{$case->id}}" data-backdrop="false" data-keyboard="true">
+                @php
+                    $caseTooltipJobs = $cases->mapWithKeys(function ($case) {
+                        $currentStage = optional($case->jobs->first())->stage;
 
-                        <input type="hidden" name="case_id" value="{{$case->id}}">
-                        <div class="modal-dialog modal-dialog-centered   " role="document">
-                            <div class="modal-content  ">
+                        $jobs = $case->jobs->filter(function ($job) use ($currentStage) {
+                            return $job->goesThroughStage($currentStage);
+                        })->map(function ($job) {
+                            return [
+                                'type' => $job->jobType->name ?? 'No Job Type',
+                                'material' => $job->material->name ?? 'no material',
+                                'units' => $job->unit_num,
+                            ];
+                        })->values();
 
-                                <div class="modal-body ">
-                                    <!-- Sticky Doctor/Patient section -->
-                                    <div class="form-group row" style="margin-bottom: 0px">
-                                        <div class="form-group col-6 " style="margin-bottom: 0px">
-                                            <label for="doctor" class="patient-doctor-label">Doctor:</label>
-                                            <h5 id="doctor"
-                                                class="patient-doctor-names">{{$case->client->name ?? "-"}}</h5>
-                                        </div>
-                                        <div class="form-group col-6 " style="margin-bottom: 0px">
-                                            <label for="pat" class="patient-doctor-label">patient:</label>
-                                            <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
-                                        </div>
-                                    </div>
-                                    <hr>
+                        return [$case->id => $jobs];
+                    });
+                @endphp
 
-                                    <!-- Scrollable Jobs and Notes section -->
-                                    <div class="scrollable-content">
-                                        <div class="form-group row">
-                                            <div class=" col-12 ">
-                                                <label><b>Jobs:</b></label><br>
+                <script id="cases-tooltip-data" type="application/json">@json($caseTooltipJobs)</script>
 
-
-                                                @php
-                                                    // Determine case's current stage (first job's stage)
-                                                    $currentStage = $case->jobs->first()->stage ?? null;
-                                                @endphp
-
-                                                @foreach( $case->jobs as $job)
-                                                    @php
-                                                        $unit = explode(', ',$job->unit_num);
-                                                        // Only show jobs that go through the current stage
-                                                        $showJob = $job->goesThroughStage($currentStage);
-                                                    @endphp
-
-                                                    @if($showJob)
-                                                        <div class="job-info-for-tooltip" style="display: none;">
-                                                            <span class="job-type">{{ $job->jobType->name ?? "No Job Type" }}</span>
-                                                            <span class="job-material">{{ $job->material->name ?? "no material" }}</span>
-                                                            <span class="job-units">{{ $job->unit_num }}</span>
-                                                        </div>
-                                                        <span>{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
-                                                            {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
-                                                                                    {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        @if(count($case->notes)>0)
-                                            <hr>
-                                            <label><b>Notes:</b></label><br>
-                                            @foreach($case->notes as $note)
-                                                <div class="form-control note-container"
-                                                     style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
-                                                     disabled>
-
-                                                    <span class="noteHeader" style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><span
-                                                            class="noteText">{{$note->note}}</span>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    @if(!isset($trashedCases))
-                                        <div class="sigma-modal-actions">
-                                            <div class="sigma-actions-row sigma-actions-row--top">
-                                                <a href="{{route('view-voucher',$case->id)}}"
-                                                   class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
-                                                                class="fas fa-print"></i></span><span class="btn-text">Print Voucher</span></a>
-                                                <a href="{{route('view-case',['id' =>$case->id ,'stage' =>-2 ])}}"
-                                                   class="btn btn-info sigma-action-btn"><span class="btn-icon"><i
-                                                                class="far fa-file-alt"></i></span><span
-                                                            class="btn-text">View</span></a>
-                                            </div>
-
-                                            <div class="sigma-actions-grid">
-                                                @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 130))
-                                                    @if(!$case->locked)
-                                                        <a href="{{route('lock-case',$case->id)}}"
-                                                           class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
-                                                                        class="fas fa-lock"></i></span><span
-                                                                    class="btn-text">Lock</span></a>
-                                                    @else
-                                                        <a href="{{route('unlock-case',$case->id)}}"
-                                                           class="btn btn-dark sigma-action-btn"><span class="btn-icon"><i
-                                                                        class="fas fa-lock-open"></i></span><span
-                                                                    class="btn-text">Unlock</span></a>
-                                                    @endif
-                                                @endif
-                                                @if(Auth()->user()->is_admin && !$case->locked)
-                                                    <a data-clientName="{{ $case->client->name ?? "-" }}"
-                                                       data-patientName="{{ $case->patient_name }}"
-                                                       onclick="caseDelConfirmation(event)"
-                                                       href="{{route('delete-case',$case->id)}}"
-                                                       class="btn btn-danger sigma-action-btn"><span class="btn-icon"><i
-                                                                    class="fas fa-trash"></i></span><span
-                                                                class="btn-text">Delete</span></a>
-                                                @endif
-
-                                                @if (isset($case->actual_delivery_date))
-                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 116)) && !$case->locked)
-                                                        <a href="{{route('reject-case-view',$case->id )}}"
-                                                           class="btn btn-outline-danger sigma-action-btn"><span
-                                                                    class="btn-icon"><i class="fas fa-times"></i></span><span
-                                                                    class="btn-text">Reject case</span></a>
-                                                    @endif
-                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 117))&&!$case->locked)
-                                                        <a href="{{route('repeat-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning sigma-action-btn"><span
-                                                                    class="btn-icon"><i
-                                                                        class="fas fa-undo"></i></span><span
-                                                                    class="btn-text">Repeat case</span></a>
-                                                    @endif
-                                                    @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 118)) && !$case->locked)
-                                                        <a href="{{route('modify-case-view',$case->id)}}"
-                                                           class="btn btn-outline-warning sigma-action-btn"><span
-                                                                    class="btn-icon"><i
-                                                                        class="fa fa-broom"></i></span><span
-                                                                    class="btn-text">Modify case</span></a>
-                                                    @endif
-                                                @endif
-
-                                                @if ((Auth()->user()->is_admin  || $permissions->contains('permission_id', 119)) && !$case->locked && !isset($case->actual_delivery_date))
-                                                    <a href="{{route('redo-case-view',$case->id)}}"
-                                                       class="btn btn-outline-warning sigma-action-btn"><span
-                                                                class="btn-icon"><i class="fa fa-broom"></i></span><span
-                                                                class="btn-text">Redo case</span></a>
-                                                @endif
-                                                @if((Auth()->user()->is_admin || ($permissions && ($permissions->contains('permission_id', 102))) || ($permissions && ((!isset($case->actual_delivery_date)&& $permissions->contains('permission_id', 115))) || (optional($case->jobs->first())->stage == 1 && $permissions->contains('permission_id', 1)))) && !$case->locked)
-                                                    <a href="{{route('edit-case-view',$case->id)}}"
-                                                       class="btn btn-warning sigma-action-btn"><span
-                                                                class="btn-icon"><i
-                                                                    class="fa-solid fa-pen-to-square"></i></span><span
-                                                                class="btn-text">Edit</span></a>
-                                                @endif
-                                            </div>
-
-                                            <div class="sigma-actions-row sigma-actions-row--cancel">
-                                                <button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">
-                                                    Cancel
-                                                </button>
-                                            </div>
-                                        </div>
-                                    @else
-                                        <a href="{{route('restore-case',$case->id)}}"
-                                           class="btn btn-danger">Restore case</a>
-                                    @endif
-                                </div>
-
-
+                <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
+                     id="actionsDialog" data-backdrop="false" data-keyboard="true">
+                    <input type="hidden" name="case_id" value="">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="text-center py-4">Loading case details...</div>
                             </div>
                         </div>
-
                     </div>
-                @endforeach
+                </div>
 
             </div>
             <div style="text-align:right">
@@ -1438,6 +1784,99 @@
 
     </div>
     @push('js')
+        @if(request()->boolean('__benchmark'))
+            <script>
+                window.sigmaPageBenchmark = ( function () {
+                    var startedAt = (window.performance && typeof performance.now === 'function')
+                        ? performance.now()
+                        : Date.now();
+                    var marks = [];
+                    var flushed = false;
+
+                    function now() {
+                        return (window.performance && typeof performance.now === 'function')
+                            ? performance.now()
+                            : Date.now();
+                    }
+
+                    function mark(label, extra) {
+                        var current = now();
+                        marks.push( Object.assign( {
+                                                      label: label,
+                                                      elapsedMs: Number( current - startedAt ).toFixed( 2 )
+                                                  }, extra || {} ) );
+                    }
+
+                    function navigation() {
+                        if (!window.performance || typeof performance.getEntriesByType !== 'function') {
+                            return null;
+                        }
+
+                        var nav = performance.getEntriesByType( 'navigation' )[0];
+                        if (!nav) {
+                            return null;
+                        }
+
+                        return {
+                            requestMs: Number( nav.responseStart - nav.requestStart ).toFixed( 2 ),
+                            responseMs: Number( nav.responseEnd - nav.responseStart ).toFixed( 2 ),
+                            domInteractiveMs: Number( nav.domInteractive ).toFixed( 2 ),
+                            domContentLoadedMs: Number( nav.domContentLoadedEventEnd ).toFixed( 2 ),
+                            loadEventMs: Number( nav.loadEventEnd ).toFixed( 2 ),
+                            decodedBodySize: nav.decodedBodySize || 0,
+                            transferSize: nav.transferSize || 0
+                        };
+                    }
+
+                    function domCounts() {
+                        return {
+                            nodes: document.getElementsByTagName( '*' ).length,
+                            caseRows: document.querySelectorAll( '#casesTable tbody tr' ).length,
+                            modals: document.querySelectorAll( '.sigma-modal--cases-index-actions' ).length,
+                            scripts: document.querySelectorAll( 'script[src]' ).length,
+                            stylesheets: document.querySelectorAll( 'link[rel=\"stylesheet\"]' ).length
+                        };
+                    }
+
+                    function flush(reason) {
+                        if (flushed) {
+                            return;
+                        }
+
+                        flushed = true;
+
+                        console.log(
+                            '[page-benchmark] cases client',
+                            JSON.stringify( {
+                                                reason: reason,
+                                                marks: marks,
+                                                navigation: navigation(),
+                                                dom: domCounts()
+                                            } )
+                        );
+                    }
+
+                    mark( 'client.bootstrap' );
+
+                    document.addEventListener( 'DOMContentLoaded' , function () {
+                        mark( 'client.dom-content-loaded' );
+                    } );
+
+                    window.addEventListener( 'load' , function () {
+                        mark( 'client.window-load' );
+                        window.requestAnimationFrame( function () {
+                            mark( 'client.window-load.next-frame' );
+                            flush( 'window.load' );
+                        } );
+                    } );
+
+                    return {
+                        mark: mark,
+                        flush: flush
+                    };
+                } )();
+            </script>
+        @endif
         <style>
             .case-jobs-tooltip {
                 display: none;
@@ -1446,7 +1885,10 @@
                 border: 1px solid #e3e3e3; /* Light border */
                 padding: 8px; /* Reduced padding */
                 z-index: 1000;
-                width: 320px; /* More compact width */
+                width: max-content;
+                min-width: 320px;
+                max-width: calc(100vw - 32px);
+                overflow-x: auto;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Softer, larger shadow */
                 border-radius: 8px; /* Increased corner radius */
                 font-size: 13px; /* Smaller font for compactness */
@@ -1454,7 +1896,8 @@
             }
 
             .case-jobs-tooltip table {
-                width: 100%;
+                width: max-content;
+                min-width: 100%;
                 border-collapse: collapse;
                 margin-top: 0; /* Remove extra space */
                 margin-bottom: 0; /* Remove extra space */
@@ -1464,12 +1907,13 @@
                 border: 1px solid #eee; /* Light borders for cells */
                 padding: 6px 8px; /* Compact padding */
                 text-align: left;
+                white-space: nowrap;
             }
 
             .case-jobs-tooltip th {
-                background-color: #f0f0f0; /* Slightly darker light header background */
+                background-color: #408385;
                 font-weight: 700; /* Bolder header */
-                color: #333; /* Darker text for header */
+                color: #ffffff !important;
                 text-transform: uppercase;
             }
 
@@ -1784,6 +2228,38 @@
                 var isMobileLayout = window.matchMedia( '(max-width: 991px)' ).matches;
                 var widthStore = window.sigmaTableWidthStore || null;
                 var casesWidthScope = 'casesTable_widths';
+                var lastCasesViewportWidth = null;
+                var stickyToolbar = document.querySelector( '.sigma-sticky-toolbar' );
+                var stickyToolbarTicking = false;
+
+                function getCasesHeaderOffset() {
+                    var rootStyles = window.getComputedStyle( document.documentElement );
+                    var rawOffset = rootStyles.getPropertyValue( '--sigma-app-header-offset' ) || '0';
+                    var parsedOffset = parseFloat( rawOffset );
+                    return Number.isFinite( parsedOffset ) ? parsedOffset : 0;
+                }
+
+                function syncStickyToolbarState() {
+                    if (!stickyToolbar) {
+                        return;
+                    }
+
+                    var headerOffset = getCasesHeaderOffset();
+                    var toolbarTop = stickyToolbar.getBoundingClientRect().top;
+                    stickyToolbar.classList.toggle( 'sigma-sticky-toolbar--stuck', toolbarTop <= (headerOffset + 1) );
+                }
+
+                function requestStickyToolbarSync() {
+                    if (stickyToolbarTicking) {
+                        return;
+                    }
+
+                    stickyToolbarTicking = true;
+                    window.requestAnimationFrame( function () {
+                        syncStickyToolbarState();
+                        stickyToolbarTicking = false;
+                    } );
+                }
 
                 function applyCasesWidths(widths) {
                     if (!widths) {
@@ -1799,6 +2275,36 @@
                             $( this ).width( widths[i] );
                         }
                     } );
+                }
+
+                function syncCasesTableViewport() {
+                    var scrollEl = document.querySelector( '.cases-table-scroll' );
+                    var tableEl = document.getElementById( 'casesTable' );
+
+                    if (!scrollEl || !tableEl) {
+                        return;
+                    }
+
+                    if (window.matchMedia( '(max-width: 991px)' ).matches) {
+                        scrollEl.style.overflowX = 'visible';
+                        tableEl.style.width = '';
+                        tableEl.style.maxWidth = '';
+                        return;
+                    }
+
+                    scrollEl.style.overflowX = 'hidden';
+
+                    var availableWidth = scrollEl.clientWidth;
+                    if (availableWidth > 0) {
+                        tableEl.style.width = availableWidth + 'px';
+                        tableEl.style.maxWidth = availableWidth + 'px';
+                    }
+
+                    if ($.fn.DataTable.isDataTable( tableEl ) && lastCasesViewportWidth !== availableWidth) {
+                        $( tableEl ).DataTable().columns.adjust();
+                    }
+
+                    lastCasesViewportWidth = availableWidth;
                 }
 
                 if (!isMobileLayout && widthStore && typeof widthStore.get === 'function') {
@@ -1820,12 +2326,13 @@
                                                               "info": false ,
                                                               "bProcessing": true ,
                                                               "searching": true ,  // Enable searching for real-time filter
-                                                              "scrollX": false ,  // Disable horizontal scroll - let CSS handle it
+                                                              "scrollX": isMobileLayout ,
                                                               "autoWidth": false ,
                                                               "initComplete": function () {
                                                                   var settings = this;
                                                                   if (isMobileLayout) {
                                                                       $( '#casesTable th' ).css( 'width' , '' );
+                                                                      syncCasesTableViewport();
                                                                       return;
                                                                   }
 
@@ -1837,13 +2344,14 @@
                                                                               applyCasesWidths(widths);
                                                                               // Recalc resize handle positions after width restore
                                                                               setTimeout(function() {
-                                                                                  if (settings.colResize && settings.colResize._recalcPositions) {
-                                                                                      settings.colResize._recalcPositions();
-                                                                                  }
-                                                                              }, 50);
-                                                                          }
-                                                                      });
-                                                                  }
+                                                                              if (settings.colResize && settings.colResize._recalcPositions) {
+                                                                                  settings.colResize._recalcPositions();
+                                                                              }
+                                                                              syncCasesTableViewport();
+                                                                          }, 50);
+                                                                      }
+                                                                  });
+                                                              }
 
                                                                   // Save widths on column resize (only on resize handles)
                                                                   $( document ).on( 'mouseup', '.dt-colresizable-col', function (e) {
@@ -1856,22 +2364,39 @@
                                                                           if (widthStore && typeof widthStore.set === 'function') {
                                                                               widthStore.set( casesWidthScope, newWidths );
                                                                           }
+                                                                          syncCasesTableViewport();
                                                                       }, 100 );
                                                                   } );
+
+                                                                  setTimeout( syncCasesTableViewport, 0 );
                                                               },
                                                               "columnDefs": isMobileLayout ? [
                                                                   {"orderable": false , "targets": [0 , 1 , 4 , 6]}
                                                               ] : [
                                                                   {"orderable": false , "targets": [0 , 1 , 4 , 6]} ,  // Disable sorting on Doctor, Patient, Units, and Tags columns
-                                                                  {"width": "17%" , "targets": 0} ,  // Doctor column width
-                                                                  {"width": "17%" , "targets": 1} ,  // Patient column width
+                                                                  {"width": "16.5%" , "targets": 0} ,  // Doctor column width
+                                                                  {"width": "16.5%" , "targets": 1} ,  // Patient column width
                                                                   {"width": "18%" , "targets": 2} ,  // Initial Delivery Date
-                                                                  {"width": "14.4%" , "targets": 3} ,  // Date Delivered
+                                                                  {"width": "14.5%" , "targets": 3} ,  // Date Delivered
                                                                   {"width": "7%" , "targets": 4} ,   // Units (NEW)
-                                                                  {"width": "14.4%" , "targets": 5} ,  // Status
-                                                                  {"width": "12.2%" , "targets": 6}   // Tags
+                                                                  {"width": "14.5%" , "targets": 5} ,  // Status
+                                                                  {"width": "10.5%" , "targets": 6}   // Tags
                                                               ]
                                                           } );
+
+                table.on( 'draw', function () {
+                    syncCasesTableViewport();
+                } );
+
+                $( window ).on( 'resize.casesTableViewport', function () {
+                    syncCasesTableViewport();
+                    requestStickyToolbarSync();
+                } );
+
+                syncCasesTableViewport();
+                syncStickyToolbarState();
+
+                window.addEventListener( 'scroll', requestStickyToolbarSync, {passive: true} );
 
                 // Connect custom search field to DataTable for real-time search
                 $( '#tableSearch' ).on( 'keyup' , function () {
@@ -1879,19 +2404,22 @@
                 } );
 
                 // Keep the body-mounted Doctor filter dropdown within viewport on mobile.
-                $( document ).on( 'shown.bs.select' , '#doctor' , function () {
+                function fitCasesDoctorDropdown() {
                     if (!window.matchMedia( '(max-width: 991px)' ).matches) {
                         return;
                     }
 
-                    var $select = $( this );
+                    var $select = $( '#doctor' );
                     var picker = $select.data( 'selectpicker' );
-                    if (!picker || !picker.$bsContainer || !picker.$bsContainer.length) {
+                    var $container = picker && picker.$bsContainer && picker.$bsContainer.length
+                        ? picker.$bsContainer
+                        : $( '.bs-container.bootstrap-select.show' ).first();
+
+                    if (!$container.length) {
                         return;
                     }
 
-                    var $container = picker.$bsContainer;
-                    var $menu = picker.$menu && picker.$menu.length
+                    var $menu = picker && picker.$menu && picker.$menu.length
                         ? picker.$menu
                         : $container.find( '> .dropdown-menu' );
 
@@ -1900,21 +2428,41 @@
                     }
 
                     var viewportPadding = 12;
-                    var viewportWidth = window.innerWidth || $( window ).width();
-                    var buttonWidth = picker.$button && picker.$button.length
-                        ? picker.$button.outerWidth()
-                        : $select.closest( '.bootstrap-select' ).outerWidth();
+                    var viewportWidth = document.documentElement.clientWidth || window.innerWidth || $( window ).width();
+                    var $button = picker && picker.$button && picker.$button.length
+                        ? picker.$button
+                        : $( 'button[data-id="doctor"]' );
+                    var fallbackButton = $select.closest( '.bootstrap-select' )[0];
+                    var buttonRect = $button.length
+                        ? $button[0].getBoundingClientRect()
+                        : fallbackButton
+                            ? fallbackButton.getBoundingClientRect()
+                            : null;
+
+                    if (!buttonRect) {
+                        return;
+                    }
+
+                    var buttonWidth = buttonRect.width || $button.outerWidth();
+                    var preferredMenuWidth = Math.max(buttonWidth || 0, 260);
                     var menuWidth = Math.min(
-                        Math.max(buttonWidth || 0, $menu.outerWidth() || 0),
+                        Math.max(preferredMenuWidth, $menu.outerWidth() || 0),
                         Math.max(viewportWidth - (viewportPadding * 2), 0)
                     );
-                    var containerLeft = parseFloat( $container.css( 'left' ) ) || 0;
-                    var maxLeft = viewportWidth - viewportPadding - menuWidth;
-                    containerLeft = Math.max( viewportPadding, Math.min( containerLeft, maxLeft ) );
+                    var viewportLeft = window.pageXOffset || 0;
+                    var viewportRight = viewportLeft + viewportWidth;
+                    var containerLeft = buttonRect.right + viewportLeft - menuWidth;
+                    var maxLeft = viewportRight - viewportPadding - menuWidth;
+                    containerLeft = Math.max( viewportLeft + viewportPadding, Math.min( containerLeft, maxLeft ) );
 
                     $container.css( {
+                        position: 'absolute',
+                        top: buttonRect.bottom + window.pageYOffset,
                         left: containerLeft,
-                        width: menuWidth
+                        right: 'auto',
+                        width: menuWidth,
+                        maxWidth: menuWidth,
+                        transform: 'none'
                     } );
 
                     $menu.css( {
@@ -1924,7 +2472,53 @@
                         left: 0,
                         transform: 'none'
                     } );
+                }
+
+                function isCasesDoctorDropdownOpen() {
+                    var $select = $( '#doctor' );
+                    var picker = $select.data( 'selectpicker' );
+
+                    if (picker && picker.$bsContainer && picker.$bsContainer.hasClass( 'show' )) {
+                        return true;
+                    }
+
+                    if ($( '.bs-container.bootstrap-select.clearOnAll.filter-input-global.show' ).length) {
+                        return true;
+                    }
+
+                    return $select.closest( '.bootstrap-select' ).hasClass( 'show' )
+                        || $( 'button[data-id="doctor"]' ).attr( 'aria-expanded' ) === 'true';
+                }
+
+                function scheduleCasesDoctorDropdownFit() {
+                    fitCasesDoctorDropdown();
+                    window.requestAnimationFrame( fitCasesDoctorDropdown );
+                    setTimeout( fitCasesDoctorDropdown, 50 );
+                    setTimeout( fitCasesDoctorDropdown, 150 );
+                }
+
+                $( document ).on( 'click' , 'button[data-id="doctor"]' , scheduleCasesDoctorDropdownFit );
+                $( document ).on( 'show.bs.select shown.bs.select rendered.bs.select' , '#doctor' , scheduleCasesDoctorDropdownFit );
+                $( window ).on( 'resize.casesDoctorDropdown orientationchange.casesDoctorDropdown' , function () {
+                    if (isCasesDoctorDropdownOpen()) {
+                        scheduleCasesDoctorDropdownFit();
+                    }
                 } );
+                $( '.main-panel, .content, .cases-table-scroll' ).on( 'scroll.casesDoctorDropdown' , function () {
+                    if (isCasesDoctorDropdownOpen()) {
+                        scheduleCasesDoctorDropdownFit();
+                    }
+                } );
+                window.addEventListener( 'scroll', function () {
+                    if (isCasesDoctorDropdownOpen()) {
+                        scheduleCasesDoctorDropdownFit();
+                    }
+                }, {passive: true} );
+                document.addEventListener( 'scroll', function () {
+                    if (isCasesDoctorDropdownOpen()) {
+                        scheduleCasesDoctorDropdownFit();
+                    }
+                }, {passive: true, capture: true} );
 
                 function cleanupCasesIndexModalArtifacts() {
                     if (document.querySelector( '.modal.show' )) {
@@ -1939,25 +2533,83 @@
                         } );
                 }
 
+                var casesActionsModalCache = {};
+                var casesActionsModalUrlTemplate = @json(route('cases-actions-modal', ['id' => '__CASE_ID__']));
+
+                function getCasesActionsModalUrl(caseId) {
+                    return casesActionsModalUrlTemplate.replace('__CASE_ID__', caseId);
+                }
+
+                function setCasesActionsModalLoading($modal) {
+                    $modal.find('.modal-content').html(
+                        '<div class="modal-body"><div class="text-center py-4">Loading case details...</div></div>'
+                    );
+                }
+
+                function setCasesActionsModalError($modal) {
+                    $modal.find('.modal-content').html(
+                        '<div class="modal-body"><div class="text-center py-4 text-danger">Unable to load case details.</div></div>' +
+                        '<div class="modal-footer"><button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">Close</button></div>'
+                    );
+                }
+
+                function loadCasesActionsModal(caseId, $modal) {
+                    if (!caseId) {
+                        setCasesActionsModalError($modal);
+                        return;
+                    }
+
+                    $modal.data('currentCaseId', caseId);
+                    $modal.find('input[name=\"case_id\"]').val(caseId);
+
+                    if (casesActionsModalCache[caseId]) {
+                        $modal.find('.modal-content').html(casesActionsModalCache[caseId]);
+                        return;
+                    }
+
+                    setCasesActionsModalLoading($modal);
+
+                    $.get(getCasesActionsModalUrl(caseId))
+                        .done(function (html) {
+                            casesActionsModalCache[caseId] = html;
+
+                            if (String($modal.data('currentCaseId')) === String(caseId)) {
+                                $modal.find('.modal-content').html(html);
+                            }
+                        })
+                        .fail(function () {
+                            if (String($modal.data('currentCaseId')) === String(caseId)) {
+                                setCasesActionsModalError($modal);
+                            }
+                        });
+                }
+
                 function mountCasesIndexModals() {
-                    document.querySelectorAll( '.sigma-modal--cases-index-actions' ).forEach( function (modal) {
-                        if (modal.parentNode !== document.body) {
-                            document.body.appendChild( modal );
-                        }
-                    } );
+                    var modal = document.getElementById('actionsDialog');
+                    if (modal && modal.parentNode !== document.body) {
+                        document.body.appendChild(modal);
+                    }
                 }
 
                 mountCasesIndexModals();
 
                 $( document )
                     .off( 'show.bs.modal.casesIndexActions' )
-                    .on( 'show.bs.modal.casesIndexActions' , '.sigma-modal--cases-index-actions' , function () {
+                    .on( 'show.bs.modal.casesIndexActions' , '.sigma-modal--cases-index-actions' , function (event) {
+                        var $modal = $( this );
+                        var caseId = $( event.relatedTarget ).data( 'case-id' ) || $modal.data( 'currentCaseId' );
+
+                        if (!caseId) {
+                            return false;
+                        }
+
                         if (!document.querySelector( '.modal.show' )) {
                             $( '.modal-backdrop' ).remove();
                         }
                         mountCasesIndexModals();
                         $( 'body' ).addClass( 'modal-open' );
-                        $( this ).removeAttr( 'aria-hidden' );
+                        $modal.removeAttr( 'aria-hidden' );
+                        loadCasesActionsModal( caseId, $modal );
                     } );
 
                 $( document )
@@ -1975,7 +2627,8 @@
                             .removeClass( 'show' )
                             .css( 'display' , 'none' )
                             .attr( 'aria-hidden' , 'true' )
-                            .removeAttr( 'aria-modal' );
+                            .removeAttr( 'aria-modal' )
+                            .removeData( 'currentCaseId' );
                         setTimeout( cleanupCasesIndexModalArtifacts , 0 );
                     } );
 
@@ -2039,6 +2692,17 @@
             $( document ).ready( function () {
                 var tooltip = $( '<div class="case-jobs-tooltip"></div>' ).appendTo( 'body' );
                 var hoverTimeout;
+                var tooltipDataNode = document.getElementById( 'cases-tooltip-data' );
+                var casesTooltipJobs = {};
+
+                if (tooltipDataNode) {
+                    try {
+                        casesTooltipJobs = JSON.parse( tooltipDataNode.textContent || '{}' );
+                    } catch (error) {
+                        casesTooltipJobs = {};
+                    }
+                }
+
                 // Default to true if not set, and handle the string 'false'
                 var tooltipEnabled = localStorage.getItem( 'tooltipEnabled' ) !== 'false';
                 var shouldDisableTooltips = function () {
@@ -2048,6 +2712,32 @@
                 if (mobileTooltipDisabled) {
                     tooltipEnabled = false;
                     tooltip.hide();
+                }
+
+                function positionCaseJobsTooltip(event) {
+                    var offset = 15;
+                    var viewportPadding = 12;
+                    var viewportLeft = $( window ).scrollLeft();
+                    var viewportTop = $( window ).scrollTop();
+                    var viewportRight = viewportLeft + $( window ).width();
+                    var viewportBottom = viewportTop + $( window ).height();
+                    var tooltipWidth = tooltip.outerWidth();
+                    var tooltipHeight = tooltip.outerHeight();
+                    var left = event.pageX + offset;
+                    var top = event.pageY + offset;
+
+                    if (left + tooltipWidth > viewportRight - viewportPadding) {
+                        left = event.pageX - tooltipWidth - offset;
+                    }
+
+                    if (top + tooltipHeight > viewportBottom - viewportPadding) {
+                        top = event.pageY - tooltipHeight - offset;
+                    }
+
+                    tooltip.css( {
+                        top: Math.max( viewportTop + viewportPadding, top ),
+                        left: Math.max( viewportLeft + viewportPadding, left )
+                    } );
                 }
 
                 // Set initial state of the toggle
@@ -2069,19 +2759,11 @@
                 $( 'body' ).on( 'mouseenter' , '.case-row' , function (e) {
                     if (!tooltipEnabled || shouldDisableTooltips()) return;
                     var caseId = $( this ).data( 'case-id' );
-                    var modal = $( '#actionsDialog' + caseId );
 
                     clearTimeout( hoverTimeout );
 
                     hoverTimeout = setTimeout( function () {
-                        var jobs = [];
-                        modal.find( '.job-info-for-tooltip' ).each( function () {
-                            jobs.push( {
-                                           type: $( this ).find( '.job-type' ).text() ,
-                                           material: $( this ).find( '.job-material' ).text() ,
-                                           units: $( this ).find( '.job-units' ).text()
-                                       } );
-                        } );
+                        var jobs = casesTooltipJobs[String( caseId )] || [];
 
                         if (jobs.length > 0) {
                             var table = '<table><thead><tr><th>Job Type</th><th>Material</th><th>Units</th></tr></thead><tbody>';
@@ -2099,9 +2781,11 @@
                         }
 
                         tooltip.css( {
-                                         top: e.pageY + 15 ,
-                                         left: e.pageX + 15
-                                     } ).show();
+                                         display: 'block',
+                                         visibility: 'hidden'
+                                     } );
+                        positionCaseJobsTooltip( e );
+                        tooltip.css( 'visibility', 'visible' );
                     } , 250 ); // Reduced delay
                 } );
 
@@ -2112,10 +2796,7 @@
 
                 $( 'body' ).on( 'mousemove' , '.case-row' , function (e) {
                     if (!tooltipEnabled || shouldDisableTooltips()) return;
-                    tooltip.css( {
-                                     top: e.pageY + 15 ,
-                                     left: e.pageX + 15
-                                 } );
+                    positionCaseJobsTooltip( e );
                 } );
 
                 $( window ).on( 'resize orientationchange' , function () {
@@ -2123,6 +2804,10 @@
                         tooltip.hide();
                     }
                 } );
+
+                if (window.sigmaPageBenchmark) {
+                    window.sigmaPageBenchmark.mark( 'cases.tooltips.ready' );
+                }
             } );
         </script>
 

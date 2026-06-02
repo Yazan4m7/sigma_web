@@ -1,10 +1,8 @@
 @extends('layouts.app' ,[ 'pageSlug' =>  $repeat . ' Case' ])
 
 @section('content')
-    <link rel="stylesheet" href="{{asset('assets/css/lightgallery.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/css/jquery.imagesloader.css')}}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
 

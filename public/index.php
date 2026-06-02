@@ -3,6 +3,9 @@
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
 
+$opsDashboardProfilePath = trim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
+$shouldProfileOpsDashboard = $opsDashboardProfilePath === 'operations-dashboard';
+$opsDashboardRequestStart = microtime(true);
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +35,8 @@ if (file_exists(__DIR__.'/../storage/framework/maintenance.php')) {
 
 require __DIR__.'/../vendor/autoload.php';
 
+$opsDashboardAfterAutoload = microtime(true);
+
 /*
 |--------------------------------------------------------------------------
 | Run The Application
@@ -46,9 +51,36 @@ require __DIR__.'/../vendor/autoload.php';
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Kernel::class);
+$opsDashboardAfterBootstrap = microtime(true);
 
- $response = tap($kernel->handle(
-     $request = Request::capture()
- ))->send();
+$request = Request::capture();
+$opsDashboardAfterCapture = microtime(true);
+
+$response = $kernel->handle($request);
+$opsDashboardAfterHandle = microtime(true);
+
+$response->send();
+$opsDashboardAfterSend = microtime(true);
 
 $kernel->terminate($request, $response);
+$opsDashboardAfterTerminate = microtime(true);
+
+if ($shouldProfileOpsDashboard) {
+    $responseBytes = null;
+    if (method_exists($response, 'getContent')) {
+        $content = $response->getContent();
+        $responseBytes = is_string($content) ? strlen($content) : null;
+    }
+
+    $app->make('log')->info('[ops-dashboard] Bootstrap pipeline completed', [
+        'path' => $opsDashboardProfilePath,
+        'autoload_ms' => round(($opsDashboardAfterAutoload - $opsDashboardRequestStart) * 1000, 2),
+        'bootstrap_ms' => round(($opsDashboardAfterBootstrap - $opsDashboardAfterAutoload) * 1000, 2),
+        'request_capture_ms' => round(($opsDashboardAfterCapture - $opsDashboardAfterBootstrap) * 1000, 2),
+        'kernel_handle_ms' => round(($opsDashboardAfterHandle - $opsDashboardAfterCapture) * 1000, 2),
+        'response_send_ms' => round(($opsDashboardAfterSend - $opsDashboardAfterHandle) * 1000, 2),
+        'terminate_ms' => round(($opsDashboardAfterTerminate - $opsDashboardAfterSend) * 1000, 2),
+        'total_ms' => round(($opsDashboardAfterTerminate - $opsDashboardRequestStart) * 1000, 2),
+        'response_bytes' => $responseBytes,
+    ]);
+}

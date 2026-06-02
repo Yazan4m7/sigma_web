@@ -1,0 +1,102 @@
+/* select2-teal-theme.css */
+
+/* Define some teal color variables for consistency */
+:root {
+  --teal-primary: #008080; /* A standard teal */
+  --teal-light: #48c9b0;  /* Lighter teal for highlights */
+  --teal-dark: #005f5f;   /* Darker teal for borders/focus */
+  --teal-text: #ffffff;  /* White text for contrast */
+  --teal-text-dark: #333333; /* Darker text for non-highlighted items */
+}
+
+/* Main container styling */
+.select2-container--teal .select2-selection--single {
+  height: 38px; /* Adjust height as needed */
+  border: 1px solid var(--teal-dark);
+  border-radius: 4px;
+  background-color: var(--teal-primary);
+}
+
+.select2-container--teal .select2-selection--multiple {
+  border: 1px solid var(--teal-dark);
+  border-radius: 4px;
+  background-color: var(--teal-primary);
+}
+
+/* Placeholder text */
+.select2-container--teal .select2-selection__placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Selected item in single select */
+.select2-container--teal .select2-selection__rendered {
+  color: var(--teal-text);
+  line-height: 36px; /* Match height minus border */
+}
+
+/* Arrow icon */
+.select2-container--teal .select2-selection__arrow b {
+  border-color: var(--teal-text) transparent transparent transparent !important;
+}
+
+/* Dropdown menu */
+.select2-container--teal .select2-dropdown {
+  border: 1px solid var(--teal-dark);
+  border-radius: 4px;
+  background-color: #ffffff; /* White background for dropdown options */
+}
+
+/* Search input within dropdown */
+.select2-container--teal .select2-search--dropdown .select2-search__field {
+  border: 1px solid var(--teal-light);
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.select2-container--teal .select2-search--dropdown .select2-search__field:focus {
+  outline: 2px solid var(--teal-primary);
+}
+
+/* Option results */
+.select2-container--teal .select2-results__option {
+  padding: 8px 12px;
+  color: var(--teal-text-dark);
+}
+
+/* Highlighted option on hover/focus */
+.select2-container--teal .select2-results__option--highlighted[aria-selected] {
+  background-color: var(--teal-light) !important;
+  color: var(--teal-text);
+}
+
+/* Selected option in dropdown (for multi-select) */
+.select2-container--teal .select2-results__option[aria-selected="true"] {
+  background-color: var(--teal-primary);
+  color: var(--teal-text);
+}
+
+/* Tags in multi-select */
+.select2-container--teal .select2-selection__choice {
+  background-color: var(--teal-light);
+  color: var(--teal-text);
+  border: 1px solid var(--teal-dark);
+  border-radius: 4px;
+  padding: 3px 8px;
+  margin-top: 5px;
+}
+
+.select2-container--teal .select2-selection__choice__remove {
+  color: var(--teal-text);
+  margin-right: 5px;
+}
+
+.select2-container--teal .select2-selection__choice__remove:hover {
+  color: #ffdddd; /* Lighter red on hover for remove button */
+}
+
+/* Focus state for the main container */
+.select2-container--teal.select2-container--focus .select2-selection--single,
+.select2-container--teal.select2-container--focus .select2-selection--multiple {
+  border-color: var(--teal-primary);
+  box-shadow: 0 0 0 0.2rem rgba(0, 128, 128, 0.25); /* Teal shadow */
+}

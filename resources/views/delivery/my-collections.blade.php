@@ -31,7 +31,7 @@
             }
         }
     </style>
-    <div class="sigma-list-page">
+    <div class="sigma-list-page my-collections-page">
         <div class="sigma-summary-grid">
             <div class="sigma-summary-item">
                 <div class="materials-total-card report-total-card sigma-compact-summary-card">
@@ -51,9 +51,9 @@
                 <thead>
                 <tr role="row">
                     <th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending">ID</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">Doctor</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending">Amount</th>
-                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Paid on</th>
+                    <th class="sorting sigma-col-shaded" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">Doctor</th>
+                    <th class="sorting sigma-col-shaded" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending">Amount</th>
+                    <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Start date: activate to sort column ascending">Paid On</th>
                     <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">Type</th>
                 </tr>
                 </thead>
@@ -61,10 +61,10 @@
                 @foreach($payments as $payment)
                     <tr role="row">
                         <td class="sorting_1">{{ $payment->id }}</td>
-                        <td>{{ $payment->client->name }}</td>
-                        <td>{{ $payment->amount }} JOD</td>
-                        <td>{{ substr($payment->created_at,0,16) }}</td>
-                        <td>{{ $payment->from_bank ? $payment->notes : "Cash" }}</td>
+                        <td class="sigma-col-shaded sigma-body-right">{{ $payment->client->name }}</td>
+                        <td class="sigma-col-shaded sigma-body-center">{{ $payment->amount }} JOD</td>
+                        <td class="sigma-body-center">{{ substr($payment->created_at,0,16) }}</td>
+                        <td class="sigma-body-center">{{ $payment->from_bank ? $payment->notes : "Cash" }}</td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -1,89 +1,58 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'EXTERNAL LABS'])
 
 @section('content')
-    <form  class="kt-form" method="GET" action="{{route('labs-index')}}">
-    <div class="col-lg-12 col-sm-12">
-
-        <div class="row" style="padding-left: 10px;padding-top: 10px;padding-bottom: 0px">
-
-            <div class="col-lg-3 col-md-3 ">
-                <div class="kt-subheader__search" style="">
-                    <label>From:</label>
-                    <input type="date" class="form-control" name="from" value="{{$from ?? ''}}">
+    <div class="sigma-config-page sigma-list-page labs-config-page">
+        <div class="sigma-config-toolbar">
+            <form class="sigma-config-toolbar-row sigma-config-toolbar-form" method="GET" action="{{route('labs-index')}}">
+                <div class="sigma-config-field sigma-config-field--grow">
+                    <label for="labs_from">From</label>
+                    <input type="date" id="labs_from" class="form-control sigma-config-control" name="from" value="{{$from ?? ''}}">
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 ">
-                <div class="kt-subheader__search" style="">
-                    <label>To:</label>
-                    <input type="date" class="form-control" name="to" value="{{$to ?? ''}}">
+                <div class="sigma-config-field sigma-config-field--grow">
+                    <label for="labs_to">To</label>
+                    <input type="date" id="labs_to" class="form-control sigma-config-control" name="to" value="{{$to ?? ''}}">
                 </div>
-            </div>
-            <div class="col-lg-3 col-md-3 ">
-
                 @if(isset($labs))
-                    <div class="kt-subheader__search" style="width:100%">
-                        <label>Lab:</label>
-                        <select style="width:100%"  class="selectpicker form-control clearOnAll" multiple name="labs[]" id="doctor" data-container="body" data-live-search="true" title="All" data-hide-disabled="true">
-
+                    <div class="sigma-config-field sigma-config-field--grow">
+                        <label for="doctor">Lab</label>
+                        <select style="width:100%" class="selectpicker form-control clearOnAll sigma-config-control" multiple name="labs[]" id="doctor" data-container="body" data-live-search="true" title="All" data-hide-disabled="true">
                             <option value="all">All</option>
                             @foreach($labs as $lab)
                                 <option value="{{$lab->id}}" {{(isset($selectedLabsIds) && in_array($lab->id ,$selectedLabsIds)) ? 'selected' : ''}}>{{$lab->name}}</option>
                             @endforeach
                         </select>
                     </div>
-
                 @endif
-
-            </div>
-
-            <div class="col-lg-3 col-md-3 ">
-
-                <div class="kt-subheader__search" style="width:100%">
-                    <label>&nbsp; &nbsp; </label>
-
-                    <div class="kt-form__actions">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-
-                    </div>
+                <div class="sigma-config-toolbar-actions">
+                    <button type="submit" class="btn btn-primary sigma-config-submit-btn">Apply</button>
+                    <a href="{{route('new-lab-view')}}" class="btn sigma-config-add-btn">
+                        <i class="fa fa-plus-circle"></i> Add Lab
+                    </a>
                 </div>
-
-            </div>
-
-
             </form>
-    </div>
+        </div>
 
-    <div class="row" style="padding:0px;">
-        <div class="col-lg-12 col-sm-12">
-            <div class=" ">
-                <div class="">
-                    <div class="row">
-                        <div class="col-md-6">     </div>
-                        <div class="col-md-6" style="text-align: right">  <a href="{{route('new-lab-view')}}" ><button type="button"  class="btn btn-secondary"><i class="fa fa-plus-circle"></i> </button></a>   </div>
-                    </div>
-
-                    <p class="text-muted"></p>
-                    <div class="">
-                        <table class="table-striped table-bordered compact sunriseTable"
-                               role="grid" aria-describedby="datatable_info"
-                               style="width:100%">
+        <div class="sigma-config-table-shell sigma-table-free">
+            <table class="table-striped table-bordered compact sunriseTable sigma-list-table sigma-config-table"
+                   role="grid" aria-describedby="datatable_info"
+                   style="width:100%">
                             <thead>
                             <tr>
-                                <th>ID</th>
+                                <th class="sigma-cell-center">ID</th>
                                 <th>Name</th>
-                                <th>Phone</th>
+                                <th class="sigma-cell-center">Phone</th>
                                 <th>Address</th>
-                                <th>Units Milled</th>
+                                <th class="sigma-cell-center">Units Milled</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($selectedLabs as $lab)
                             <tr id="{{$lab->id}}" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$lab->id}}">
-                                <td><span class="tabledit-span tabledit-identifier">{{$lab->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
+                                <td class="sigma-cell-center"><span class="tabledit-span tabledit-identifier">{{$lab->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
                                 <td class="tabledit-view-mode"><span class="tabledit-span">{{$lab->name}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$lab->phone ?? "N/A"}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$lab->phone ?? "N/A"}}</span></td>
                                 <td class="tabledit-view-mode"><span class="tabledit-span">{{$lab->address ?? "N/A"}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$lab->unitsMilled($from ?? -1,$to ?? -1)}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$lab->unitsMilled($from ?? -1,$to ?? -1)}}</span></td>
 
 
                                </tr>
@@ -152,10 +121,7 @@
                             @endforeach
 
                             </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            </table>
         </div>
     </div>
 @endsection

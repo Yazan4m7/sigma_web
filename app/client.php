@@ -264,8 +264,22 @@ class client extends Model
             //REDO
             case 3:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where("is_redo",1)->get();break;}
 
-            //Successfull
-            case 4:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where(["is_rejection"=>0,"is_redo"=>0,"is_modification"=>0,"is_repeat"=>0])->get();break;}
+            //Successful
+            case 4:{
+                $jobs = job::whereIn('case_id',$idsOfClientCases)
+                    ->where([
+                        "is_rejection" => 0,
+                        "is_redo" => 0,
+                        "is_modification" => 0,
+                        "is_repeat" => 0,
+                        "has_been_rejected" => 0,
+                    ])
+                    ->whereNull("repeated_job_id")
+                    ->whereNull("modified_job_id")
+                    ->whereNull("redone_job_id")
+                    ->get();
+                break;
+            }
         }
 
         $numOfUnits = 0;
@@ -300,7 +314,21 @@ class client extends Model
             //REDO
             case 3:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where("is_redo",1)->get();break;}
             //Successful
-            case 4:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where(["is_rejection"=>0,"is_redo"=>0,"is_modification"=>0,"is_repeat"=>0])->get();break;}
+            case 4:{
+                $jobs = job::whereIn('case_id',$idsOfClientCases)
+                    ->where([
+                        "is_rejection" => 0,
+                        "is_redo" => 0,
+                        "is_modification" => 0,
+                        "is_repeat" => 0,
+                        "has_been_rejected" => 0,
+                    ])
+                    ->whereNull("repeated_job_id")
+                    ->whereNull("modified_job_id")
+                    ->whereNull("redone_job_id")
+                    ->get();
+                break;
+            }
         }
 
 
@@ -324,7 +352,21 @@ class client extends Model
             //REDO
             case 3:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where("is_redo",1)->get();break;}
             //Successful
-            case 4:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where(["is_rejection"=>0,"is_redo"=>0,"is_modification"=>0,"is_repeat"=>0])->get();break;}
+            case 4:{
+                $jobs = job::whereIn('case_id',$idsOfClientCases)
+                    ->where([
+                        "is_rejection" => 0,
+                        "is_redo" => 0,
+                        "is_modification" => 0,
+                        "is_repeat" => 0,
+                        "has_been_rejected" => 0,
+                    ])
+                    ->whereNull("repeated_job_id")
+                    ->whereNull("modified_job_id")
+                    ->whereNull("redone_job_id")
+                    ->get();
+                break;
+            }
         }
 
         $allJobs = job::whereIn('case_id',$idsOfClientCases)->get();
@@ -354,7 +396,21 @@ class client extends Model
             //REDO
             case 3:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where("is_redo",1)->get();break;}
             //Successful
-            case 4:{$jobs = job::whereIn('case_id',$idsOfClientCases)->where(["is_rejection"=>0,"is_redo"=>0,"is_modification"=>0,"is_repeat"=>0])->get();break;}
+            case 4:{
+                $jobs = job::whereIn('case_id',$idsOfClientCases)
+                    ->where([
+                        "is_rejection" => 0,
+                        "is_redo" => 0,
+                        "is_modification" => 0,
+                        "is_repeat" => 0,
+                        "has_been_rejected" => 0,
+                    ])
+                    ->whereNull("repeated_job_id")
+                    ->whereNull("modified_job_id")
+                    ->whereNull("redone_job_id")
+                    ->get();
+                break;
+            }
         }
 
         // might be successful cases depends on failure type

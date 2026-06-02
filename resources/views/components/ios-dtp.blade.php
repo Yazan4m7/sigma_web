@@ -1,0 +1,1673 @@
+@props([
+    'name' => 'datetime',
+    'id' => null,
+    'value' => '',
+    'required' => false,
+    'class' => '',
+    'mode' => 'datetime',
+    'disablePast' => false,
+    'dataDefault' => null,
+    'mutedYearDisplay' => false
+])
+
+@php
+    $inputId = $id ?? $name;
+    $isMonthMode = $mode === 'month';
+    // Sanitize ID for use in JavaScript function names (replace non-alphanumeric with underscore)
+    $jsId = preg_replace('/[^a-zA-Z0-9_]/', '_', $inputId);
+    // Parse initial value if provided (format: Y-m-d H:i:s or Y-m-d)
+    $initialDate = null;
+    if ($value) {
+        try {
+            $initialDate = \Carbon\Carbon::parse($value);
+        } catch (\Exception $e) {
+            $initialDate = null;
+        }
+    }
+@endphp
+
+@once
+<style>
+    /* iOS Date Time Picker Scoped Styles */
+    :root,
+    .ios-dtp-container {
+        /* Prevent font scaling from phone accessibility settings */
+        /*-webkit-text-size-adjust: 100%;*/
+        /*-moz-text-size-adjust: 100%;*/
+        /*text-size-adjust: 100%;*/
+        --ios-primary: #007AFF;
+        --ios-primary-hover: #0056b3;
+        --ios-primary-light: rgba(0, 122, 255, 0.12);
+        --ios-today-bg: rgba(0, 122, 255, 0.15);
+        --ios-text-dark: #000000;
+        --ios-text-medium: #3c3c43;
+        --ios-text-light: rgba(60, 60, 67, 0.6);
+        --ios-text-faded: rgba(60, 60, 67, 0.3);
+        --ios-bg-white: #ffffff;
+        --ios-bg-gray: #f2f2f7;
+        --ios-bg-overlay: rgba(0, 0, 0, 0.4);
+        --ios-border-color: rgba(60, 60, 67, 0.12);
+        --ios-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        --ios-radius: 14px;
+        --ios-radius-sm: 10px;
+        --ios-item-height: 36px;
+        --ios-time-hour-width: 1;
+        --ios-time-minute-width: 1;
+        --ios-time-ampm-width: 1;
+    }
+
+    .ios-dtp-container {
+        position: relative;
+        font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+    }
+
+    .ios-dtp-trigger {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 8px 12px;
+        background: var(--ios-bg-white);
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        text-align: left;
+        height: 38px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ios-dtp-trigger:hover {
+        border-color: var(--ios-primary);
+    }
+
+    .ios-dtp-trigger:focus {
+        outline: none;
+        border-color: var(--ios-primary);
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.15);
+    }
+
+    .ios-dtp-trigger-value {
+        display: inline-flex;
+        align-items: center;
+        min-width: 0;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ios-dtp-trigger-muted-year {
+        color: var(--ios-text-light);
+    }
+
+    .ios-dtp-backdrop {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: var(--ios-bg-overlay);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 2147483646 !important;
+    }
+
+    .ios-dtp-backdrop.visible {
+        opacity: 1;
+        visibility: visible;
+        display: flex !important;
+        pointer-events: auto;
+    }
+
+    .ios-dtp-modal {
+        position: relative !important;
+        transform: scale(0.95) !important;
+        background: var(--ios-bg-white);
+        border-radius: var(--ios-radius);
+        box-shadow: var(--ios-shadow);
+        z-index: 2147483647 !important;
+        overflow: hidden;
+        width: min(520px, calc(100vw - 32px));
+        max-height: calc(100vh - 32px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ios-dtp-modal.visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: scale(1) !important;
+        display: block !important;
+    }
+
+    .ios-dtp-header {
+        background: var(--ios-bg-gray);
+        padding: 16px 20px;
+        text-align: center;
+        border-bottom: 1px solid var(--ios-border-color);
+    }
+
+    .ios-dtp-header-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 15%;
+        color: var(--ios-text-dark);
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.4px;
+    }
+
+    .ios-dtp-header-date,
+    .ios-dtp-header-time {
+        white-space: nowrap;
+    }
+
+    .ios-dtp-body {
+        padding: 12px;
+        background: var(--ios-bg-white);
+    }
+
+    .ios-dtp-month-year-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding: 0 4px;
+    }
+
+    .ios-dtp-month-year-btn {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: none;
+        border: none;
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--ios-primary);
+        cursor: pointer;
+        padding: 8px 12px;
+        margin: -8px -12px;
+        border-radius: var(--ios-radius-sm);
+        transition: background 0.2s ease;
+        letter-spacing: -0.4px;
+    }
+
+    .ios-dtp-month-year-btn:hover {
+        background: var(--ios-primary-light);
+    }
+
+    .ios-dtp-month-year-btn svg {
+        width: 12px;
+        height: 12px;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ios-dtp-month-year-btn.open svg {
+        transform: rotate(180deg);
+    }
+
+    .ios-dtp-nav-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .ios-dtp-time-selection-bar {
+        left: -5px;
+        right: -5px;
+    }
+
+    .ios-dtp-nav-buttons.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .ios-dtp-time-wheels-container {
+        padding: 0 17px 0 6px;
+        display: flex;
+        flex: 1;
+        min-height: 219px;
+        border-radius: var(--ios-radius-sm);
+        overflow: hidden;
+        background: var(--ios-bg-gray);
+        position: relative;
+    }
+
+    .ios-dtp-nav-btn {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        color: var(--ios-primary);
+    }
+
+    .ios-dtp-nav-btn:hover {
+        background: var(--ios-primary-light);
+    }
+
+    .ios-dtp-nav-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .ios-dtp-main-content {
+        display: flex;
+        gap: 0;
+        overflow: visible;
+    }
+
+    div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3)
+    {
+        /* AM */
+        width: 34px !important;
+    }
+    div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(2){
+        /* PM */
+        width: 34px !important;
+    }
+
+    .ios-dtp-day-btn {
+        padding: clamp(0px, 0.5vw, 16px);
+    }
+
+
+
+
+
+
+
+    @media (max-width: 560px) {
+        div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3) {
+            width: 36px !important;
+        }
+
+        .ios-dtp-time-wheel:nth-child(3) {
+            flex: 1.1;
+        }
+
+        .ios-dtp-time-wheels-container {
+            padding: 0 10px 0 6px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .ios-dtp-modal {
+            width: calc(100vw - 24px);
+        }
+
+        .ios-dtp-main-content {
+            gap: 0;
+            align-items: stretch;
+        }
+
+        .ios-dtp-left-panel {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ios-dtp-right-panel {
+            width: 125px !important;
+            padding-left: 8px !important;
+        }
+
+        .ios-dtp-calendar-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ios-dtp-days-grid {
+            /*flex: 1;*/
+            gap: 1px;
+        }
+
+        .ios-dtp-day-btn {
+            font-size: 14px;
+        }
+
+        .ios-dtp-day-labels {
+            gap: 0;
+            margin-bottom: 2px;
+        }
+
+        .ios-dtp-day-label {
+            font-size: 8px;
+            padding: 2px 0;
+            letter-spacing: 0;
+        }
+
+        .ios-dtp-time-wheel:nth-child(3) {
+            flex: 1.1;
+        }
+    }
+
+    @media (max-width: 460px) {
+        div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3) {
+            width: 34px !important;
+        }
+
+        .ios-dtp-time-wheels-container {
+            padding: 0 13px 0 6px;
+        }
+
+        .ios-dtp-time-wheel:nth-child(3) {
+            flex: 1.2;
+        }
+
+    }
+    @media (max-width: 420px) {
+        .ios-dtp-day-btn {
+
+        }
+
+        .ios-dtp-left-panel {
+            padding-right: 4px;
+        }
+
+        .ios-dtp-time-wheel:nth-child(3) {
+            flex: 1.1;
+        }
+
+        /*font of wheel text*/
+        .ios-dtp-time-item {
+        }
+    }
+
+    @media (max-width: 380px) {
+        .ios-dtp-day-btn {
+
+
+        }
+    }
+
+    @media (max-width: 360px) {
+        div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3) {
+            width: 35px !important;
+        }
+
+        .ios-dtp-time-wheel + .ios-dtp-time-wheel {
+            padding-left: 8px;
+        }
+
+        .ios-dtp-time-wheels-container {
+            padding: 0 9px 0 6px;
+        }
+
+        div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3) {
+            width: 42px;
+            display: flex;
+            overflow: visible;
+            padding-left: 2px;
+            justify-content: center;
+            border: 0;
+        }
+
+        .ios-dtp-time-wheel:nth-child(3) {
+            flex: 0.9;
+        }
+    }
+
+
+    .ios-dtp-left-panel {
+        padding-right: 8px;
+        flex: 1;
+        min-width: 0;
+        position: relative;
+        z-index: 2;
+        overflow: hidden;
+        /*-webkit-text-size-adjust: 100%;*/
+        /*text-size-adjust: 100%;*/
+    }
+
+    .ios-dtp-calendar-section {
+        display: flex;
+        flex-direction: column;
+        animation: iosDtpFadeIn 0.2s ease;
+        min-height: 250px; /* Add this line */
+    }
+
+    .ios-dtp-calendar-section.hidden {
+        display: none;
+    }
+
+    @keyframes iosDtpFadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .ios-dtp-day-labels {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        margin-bottom: 4px;
+    }
+
+    .ios-dtp-day-label {
+        text-align: center;
+        font-size: 10px;
+        font-weight: 600;
+        color: var(--ios-text-light);
+        padding: 6px 0;
+        text-transform: uppercase;
+        letter-spacing: 0;
+    }
+
+    .ios-dtp-days-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 2px;
+        justify-items: center;
+        position: relative;
+        z-index: 3;
+        /*-webkit-text-size-adjust: 100%;*/
+        /*text-size-adjust: 100%;*/
+    }
+
+    .ios-dtp-time-wheel:nth-child(3) {
+        /*flex: 0.7;*/
+    }
+
+    .ios-dtp-day-btn {
+        /*aspect-ratio: 1;*/
+        max-width: 36px;
+        max-height: 36px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 50%;
+        font-size: 16px;
+        font-weight: 400;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        background: transparent;
+        color: var(--ios-text-dark);
+        position: relative;
+    }
+
+    .ios-dtp-day-btn:hover:not(.selected) {
+        background: var(--ios-bg-gray);
+    }
+
+    .ios-dtp-day-btn.other-month {
+        color: var(--ios-text-faded);
+    }
+
+    .ios-dtp-day-btn.today {
+        background: var(--ios-today-bg);
+        color: var(--ios-primary);
+        font-weight: 600;
+    }
+
+    .ios-dtp-day-btn.selected {
+        background: var(--ios-primary) !important;
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .ios-dtp-day-btn.today.selected {
+
+        color: white !important;
+    }
+
+    .ios-dtp-day-btn.disabled {
+        color: var(--ios-text-faded) !important;
+        background: transparent !important;
+        cursor: not-allowed !important;
+        text-decoration: line-through;
+        opacity: 0.4;
+    }
+
+    .ios-dtp-day-btn.disabled:hover {
+        background: transparent !important;
+    }
+
+    .ios-dtp-wheel-section {
+        display: none;
+        animation: iosDtpFadeIn 0.2s ease;
+    }
+
+    .ios-dtp-wheel-section.visible {
+        display: block;
+    }
+
+    .ios-dtp-wheels-container {
+        display: flex;
+        border-radius: var(--ios-radius-sm);
+        overflow: hidden;
+        background: var(--ios-bg-gray);
+        height: 250px;
+        position: relative;
+    }
+
+    .ios-dtp-wheel {
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+
+    }
+
+    .ios-dtp-wheel:active {
+        cursor: grabbing;
+    }
+
+    .ios-dtp-wheel + .ios-dtp-wheel {
+        border-left: 1px solid var(--ios-border-color);
+    }
+
+    .ios-dtp-wheel-cylinder {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: var(--ios-item-height);
+        transform-style: preserve-3d;
+        transition: transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ios-dtp-wheel-cylinder.spinning {
+        transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .ios-dtp-wheel-item {
+        position: absolute;
+        width: 100%;
+        height: var(--ios-item-height);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        font-size: 20px;
+        font-weight: 400;
+        cursor: pointer;
+        letter-spacing: -0.4px;
+        backface-visibility: hidden;
+        color: var(--ios-text-dark);
+        pointer-events: none;
+    }
+
+    .ios-dtp-selection-bar {
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        right: 6px;
+        height: 38px;
+        transform: translateY(-50%);
+        background: rgba(0, 122, 255, 0.12);
+        border-radius: 8px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .ios-dtp-wheel::before,
+    .ios-dtp-wheel::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 90px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .ios-dtp-wheel::before {
+        top: 0;
+        background: linear-gradient(to bottom, rgba(242, 242, 247, 1) 0%, rgba(242, 242, 247, 0) 100%);
+    }
+
+    .ios-dtp-wheel::after {
+        bottom: 0;
+        background: linear-gradient(to top, rgba(242, 242, 247, 1) 0%, rgba(242, 242, 247, 0) 100%);
+    }
+
+    .ios-dtp-right-panel {
+        width: 150px;
+        border-left: 1px solid var(--ios-border-color);
+        padding-left: 8px;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    .ios-dtp-time-wheel {
+        flex: 1;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+
+
+    }
+
+    /* All time wheels use flex: 1 from .ios-dtp-time-wheel */
+
+    .ios-dtp-time-wheel:active {
+        cursor: grabbing;
+    }
+
+    .ios-dtp-time-wheel + .ios-dtp-time-wheel {
+        border-left: 1px solid var(--ios-border-color);
+    }
+
+    .ios-dtp-time-selection-bar {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 6px;
+        right: 6px;
+        height: 38px;
+        transform: translateY(-50%);
+        background: rgba(0, 122, 255, 0.12);
+        border-radius: 8px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .ios-dtp-time-wheels-container::before,
+    .ios-dtp-time-wheels-container::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 90px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .ios-dtp-time-wheels-container::before {
+        top: 0;
+        background: linear-gradient(to bottom, rgba(242, 242, 247, 1) 0%, rgba(242, 242, 247, 0) 100%);
+    }
+
+    .ios-dtp-time-wheels-container::after {
+        bottom: 0;
+        background: linear-gradient(to top, rgba(242, 242, 247, 1) 0%, rgba(242, 242, 247, 0) 100%);
+    }
+
+    .ios-dtp-time-cylinder {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: var(--ios-item-height);
+        transform-style: preserve-3d;
+        transition: transform 0.12s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .ios-dtp-time-cylinder.spinning {
+        transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+
+    .ios-dtp-time-item {
+        position: absolute;
+        width: 100%;
+        height: var(--ios-item-height);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+        font-size: 18px;
+        font-weight: 400;
+        cursor: pointer;
+        letter-spacing: -0.2px;
+        backface-visibility: hidden;
+        color: var(--ios-text-dark);
+        pointer-events: none;
+    }
+
+    /*div.ios-dtp-right-panel > div > div:nth-child(4) > div > div:nth-child(3){*/
+    /*    width:50px !important;*/
+    /*}*/
+
+
+    .ios-dtp-footer {
+        padding: 10px 12px 14px;
+        background: var(--ios-bg-white);
+        display: flex;
+        justify-content: center;
+    }
+
+    .ios-dtp-set-btn {
+        padding: 10px 36px;
+        border: none;
+        border-radius: var(--ios-radius-sm);
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        letter-spacing: -0.2px;
+        background: var(--ios-primary);
+        color: white;
+    }
+
+    .ios-dtp-set-btn:hover {
+        background: var(--ios-primary-hover);
+    }
+
+    .ios-dtp-set-btn:active {
+        transform: scale(0.98);
+    }
+
+    .ios-dtp-wheel--month .ios-dtp-wheel-item {
+        font-size: 17px !important;
+    }
+    .ios-dtp-left-panel.date-only {
+        padding-right: 0;
+    }
+</style>
+@endonce
+
+<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }}, {{ $mutedYearDisplay ? 'true' : 'false' }})" x-init="init()">
+    <!-- Hidden input for form submission -->
+    <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }} @if($dataDefault !== null && $dataDefault !== '') data-default="{{ $dataDefault }}" @endif>
+
+    <!-- Trigger Button styled as form input -->
+    <button type="button" class="ios-dtp-trigger" @click="openPicker()">
+        <span class="ios-dtp-trigger-value" x-html="formatDisplayDateHtml()"></span>
+    </button>
+
+    <template x-teleport="body">
+        <!-- Backdrop + Picker Modal -->
+        <div class="ios-dtp-backdrop" :class="{ 'visible': open }" @click.self="closePicker()">
+        <div class="ios-dtp-modal" :class="{ 'visible': open }" @click.stop>
+        <!-- Header -->
+        <div class="ios-dtp-header">
+            <div class="ios-dtp-header-text">
+                @if ($isMonthMode)
+                <span class="ios-dtp-header-date" x-text="months[selectedMonth] + ' ' + selectedYear"></span>
+                @else
+                <span class="ios-dtp-header-date" x-text="formatHeaderDatePart()"></span>
+                @if ($mode === 'datetime')
+                <span class="ios-dtp-header-time" x-text="getFormattedTime()"></span>
+                @endif
+                @endif
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="ios-dtp-body">
+            <!-- Month/Year Toggle Header -->
+            <div class="ios-dtp-month-year-header">
+                <button
+                        type="button"
+                        class="ios-dtp-month-year-btn"
+                        :class="{ 'open': view === 'wheel' }"
+                        @click="{{ $isMonthMode ? 'return false' : 'toggleView()' }}"
+                >
+                    <span x-text="months[selectedMonth] + ' ' + selectedYear"></span>
+                    @unless ($isMonthMode)
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                    @endunless
+                </button>
+                @unless ($isMonthMode)
+                <div class="ios-dtp-nav-buttons" :class="{ 'hidden': view === 'wheel' }">
+                    <button type="button" class="ios-dtp-nav-btn" @click="prevMonth()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                  d="M15 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="ios-dtp-nav-btn" @click="nextMonth()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                @endunless
+            </div>
+
+            <!-- Main Content -->
+            <div class="ios-dtp-main-content">
+                <!-- Left Panel -->
+                <div class="ios-dtp-left-panel {{ $mode !== 'datetime' ? 'date-only' : '' }}">
+                    @unless ($isMonthMode)
+                    <!-- Calendar View -->
+                    <div class="ios-dtp-calendar-section" :class="{ 'hidden': view === 'wheel' }">
+                        <div class="ios-dtp-day-labels">
+                            <template x-for="day in dayLabels" :key="day">
+                                <div class="ios-dtp-day-label" x-text="day"></div>
+                            </template>
+                        </div>
+                        <div class="ios-dtp-days-grid">
+                            <template x-for="(day, index) in calendarDays" :key="'day-' + index">
+                                <button
+                                        type="button"
+                                        class="ios-dtp-day-btn"
+                                        :class="{
+                                        'other-month': !day.currentMonth,
+                                        'today': day.isToday,
+                                        'selected': day.date === selectedDay && day.month === selectedMonth && day.year === selectedYear,
+                                        'disabled': day.isPast
+                                    }"
+                                        @click="day.currentMonth && !day.isPast && selectCalendarDay(day)"
+                                        :disabled="!day.currentMonth || day.isPast"
+                                        x-text="day.date"
+                                ></button>
+                            </template>
+                        </div>
+                    </div>
+                    @endunless
+
+                    <!-- Wheel View -->
+                    <div class="ios-dtp-wheel-section" :class="{ 'visible': {{ $isMonthMode ? 'true' : 'view === \'wheel\'' }} }">
+                        <div class="ios-dtp-wheels-container">
+                            <div class="ios-dtp-selection-bar"></div>
+                            <!-- Year Wheel -->
+                            <div class="ios-dtp-wheel"
+                                 @wheel.prevent="scrollWheel('year', $event)"
+                                 @mousedown.prevent.capture="startDrag('year', $event)"
+                                 @touchstart.prevent.capture="startDrag('year', $event)">
+                                <div class="ios-dtp-wheel-cylinder" :class="{ 'spinning': spinning.year }"
+                                     :style="'transform: translateY(-50%) rotateX(' + yearRotation + 'deg)'">
+                                    <template x-for="(year, index) in yearOptions" :key="'year-' + year">
+                                        <div class="ios-dtp-wheel-item"
+                                             :style="getItemStyle(index, yearOptions.length, 'year')"
+                                             @click="!dragState.hasMoved && selectYearDirect(year)"
+                                             x-text="year"></div>
+                                    </template>
+                                </div>
+                            </div>
+                            <!-- Month Wheel -->
+                            <div class="ios-dtp-wheel ios-dtp-wheel--month"
+                                 @wheel.prevent="scrollWheel('month', $event)"
+                                 @mousedown.prevent.capture="startDrag('month', $event)"
+                                 @touchstart.prevent.capture="startDrag('month', $event)">
+                                <div class="ios-dtp-wheel-cylinder" :class="{ 'spinning': spinning.month }"
+                                     :style="'transform: translateY(-50%) rotateX(' + monthRotation + 'deg)'">
+                                    <template x-for="(item, index) in virtualMonths" :key="'month-' + index">
+                                        <div class="ios-dtp-wheel-item"
+                                             :style="getItemStyle(index, virtualMonths.length, 'month')"
+                                             @click="!dragState.hasMoved && selectMonthDirect(item.realIndex)"
+                                             x-text="item.name"></div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if ($mode === 'datetime')
+                <!-- Right Panel - Time Wheels -->
+                <div class="ios-dtp-right-panel">
+                    <div class="ios-dtp-time-wheels-container">
+                        <div class="ios-dtp-time-selection-bar"></div>
+                        <!-- Hour -->
+                        <div class="ios-dtp-time-wheel"
+                             @wheel.prevent="scrollWheel('hour', $event)"
+                             @mousedown.prevent.capture="startDrag('hour', $event)"
+                             @touchstart.prevent.capture="startDrag('hour', $event)">
+                            <div class="ios-dtp-time-cylinder" :class="{ 'spinning': spinning.hour }"
+                                 :style="'transform: translateY(-50%) rotateX(' + hourRotation + 'deg)'">
+                                <template x-for="(item, index) in virtualHours" :key="'hour-' + index">
+                                    <div class="ios-dtp-time-item"
+                                         :style="getItemStyle(index, virtualHours.length, 'hour')"
+                                         @click="!dragState.hasMoved && selectHourDirect(item.realIndex)"
+                                         x-text="item.name"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <!-- Minute -->
+                        <div class="ios-dtp-time-wheel"
+                             @wheel.prevent="scrollWheel('minute', $event)"
+                             @mousedown.prevent.capture="startDrag('minute', $event)"
+                             @touchstart.prevent.capture="startDrag('minute', $event)">
+                            <div class="ios-dtp-time-cylinder" :class="{ 'spinning': spinning.minute }"
+                                 :style="'transform: translateY(-50%) rotateX(' + minuteRotation + 'deg)'">
+                                <template x-for="(minute, index) in minuteOptions" :key="'minute-' + index">
+                                    <div class="ios-dtp-time-item"
+                                         :style="getItemStyle(index, minuteOptions.length, 'minute')"
+                                         @click="!dragState.hasMoved && selectMinuteDirect(index)"
+                                         x-text="minute"></div>
+                                </template>
+                            </div>
+                        </div>
+                        <!-- AM/PM -->
+                        <div class="ios-dtp-time-wheel"
+                             @wheel.prevent="scrollWheel('ampm', $event)"
+                             @mousedown.prevent.capture="startDrag('ampm', $event)"
+                             @touchstart.prevent.capture="startDrag('ampm', $event)">
+                            <div class="ios-dtp-time-cylinder" :class="{ 'spinning': spinning.ampm }"
+                                 :style="'transform: translateY(-50%) rotateX(' + ampmRotation + 'deg)'">
+                                <template x-for="(ampm, index) in ampmOptions" :key="'ampm-' + index">
+                                    <div class="ios-dtp-time-item"
+                                         :style="getItemStyle(index, ampmOptions.length, 'ampm')"
+                                         @click="!dragState.hasMoved && selectAmpmDirect(index)"
+                                         x-text="ampm"></div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="ios-dtp-footer">
+            <button type="button" class="ios-dtp-set-btn" @click="confirmSelection()">SET</button>
+        </div>
+        </div>
+    </template>
+</div>
+
+<script>
+    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false, mutedYearDisplay = false) {
+        const now = new Date();
+        const todayYear = now.getFullYear();
+        const todayMonth = now.getMonth();
+        const todayDate = now.getDate();
+
+        // Parse initial value
+        @if($initialDate)
+        const initYear = {{ $initialDate->year }};
+        const initMonth = {{ $initialDate->month - 1 }};
+        const initDay = {{ $initialDate->day }};
+        const initHour = {{ $initialDate->hour }};
+        const initMinute = {{ $initialDate->minute }};
+        @else
+        // Default to tomorrow at 1 PM
+        const tomorrow = new Date(now);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const initYear = tomorrow.getFullYear();
+        const initMonth = tomorrow.getMonth();
+        const initDay = tomorrow.getDate();
+        const initHour = 13;
+        const initMinute = 0;
+        @endif
+
+        // Convert 24h to 12h format
+        let hour12 = initHour % 12;
+        if (hour12 === 0) hour12 = 12;
+        const hourIndex = hour12 - 1;
+        const ampmIndex = initHour >= 12 ? 1 : 0;
+        const minuteIndex = initMinute >= 30 ? 1 : 0;
+
+        const itemHeight = 36;
+        const anglePerItem = 15;
+        const radius = (itemHeight / 2) / Math.tan((anglePerItem / 2) * Math.PI / 180);
+        const dragSensitivity = 0.4;
+
+        const hours = [];
+        for (let h = 1; h <= 12; h++) {
+            hours.push(h.toString());
+        }
+
+        const minutes = ['00', '30'];
+        const ampm = ['AM', 'PM'];
+
+        const years = [];
+        for (let y = todayYear - 10; y <= todayYear + 10; y++) {
+            years.push(y);
+        }
+
+        const virtualCopies = 5;
+
+        const baseMonths = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+        const virtualMonths = [];
+        for (let copy = -virtualCopies; copy <= virtualCopies; copy++) {
+            baseMonths.forEach((m, i) => {
+                virtualMonths.push({name: m, realIndex: i, copy});
+            });
+        }
+
+        const baseHours = hours.slice();
+        const virtualHours = [];
+        for (let copy = -virtualCopies; copy <= virtualCopies; copy++) {
+            baseHours.forEach((h, i) => {
+                virtualHours.push({name: h, realIndex: i, copy});
+            });
+        }
+
+        return {
+            open: false,
+            mode: mode,
+            disablePast: disablePast,
+            mutedYearDisplay: mutedYearDisplay,
+            view: @json($isMonthMode ? 'wheel' : 'calendar'),
+            formValue: @json($value ?? ''),
+            originalFormValue: @json($value ?? ''),
+
+            todayYear,
+            todayMonth,
+            todayDate,
+
+            selectedYear: initYear,
+            selectedMonth: initMonth,
+            selectedDay: initDay,
+            selectedHourIndex: hourIndex,
+            selectedMinuteIndex: minuteIndex,
+            selectedAmpmIndex: ampmIndex,
+
+            months: baseMonths,
+            virtualMonths: virtualMonths,
+            dayLabels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            hourOptions: baseHours,
+            virtualHours: virtualHours,
+            minuteOptions: minutes,
+            ampmOptions: ampm,
+            yearOptions: years,
+
+            monthVirtualOffset: virtualCopies * 12,
+            hourVirtualOffset: virtualCopies * 12,
+
+            yearRotation: 0,
+            monthRotation: 0,
+            hourRotation: 0,
+            minuteRotation: 0,
+            ampmRotation: 0,
+
+            spinning: {
+                year: false,
+                month: false,
+                hour: false,
+                minute: false,
+                ampm: false
+            },
+
+            dragState: {
+                active: false,
+                type: null,
+                startY: 0,
+                startRotation: 0,
+                lastY: 0,
+                lastTime: 0,
+                velocity: 0,
+                hasMoved: false
+            },
+
+            boundMouseMove: null,
+            boundMouseUp: null,
+            boundTouchMove: null,
+            boundTouchEnd: null,
+
+            init() {
+                this.updateRotations();
+                this.updateFormValue();
+                this.originalFormValue = this.formValue; // Store original value
+
+                this.boundMouseMove = (e) => this.onGlobalDrag(e);
+                this.boundMouseUp = (e) => this.onGlobalDragEnd(e);
+                this.boundTouchMove = (e) => this.onGlobalDrag(e);
+                this.boundTouchEnd = (e) => this.onGlobalDragEnd(e);
+            },
+
+            syncStateFromValue(value) {
+                if (!value) {
+                    const now = new Date();
+                    this.selectedYear = now.getFullYear();
+                    this.selectedMonth = now.getMonth();
+                    this.selectedDay = now.getDate();
+                    let hour12 = now.getHours() % 12;
+                    if (hour12 === 0) hour12 = 12;
+                    this.selectedHourIndex = hour12 - 1;
+                    this.selectedAmpmIndex = now.getHours() >= 12 ? 1 : 0;
+                    this.selectedMinuteIndex = now.getMinutes() >= 30 ? 1 : 0;
+                    return;
+                }
+
+                try {
+                    const date = new Date(value.replace(' ', 'T'));
+                    if (isNaN(date)) return;
+
+                    this.selectedYear = date.getFullYear();
+                    this.selectedMonth = date.getMonth();
+                    this.selectedDay = date.getDate();
+
+                    const hour24 = date.getHours();
+                    let hour12 = hour24 % 12;
+                    if (hour12 === 0) hour12 = 12;
+
+                    this.selectedHourIndex = hour12 - 1;
+                    this.selectedAmpmIndex = hour24 >= 12 ? 1 : 0;
+                    this.selectedMinuteIndex = date.getMinutes() >= 30 ? 1 : 0;
+                } catch (e) {
+                    console.error("Error parsing date for picker state sync:", e);
+                }
+            },
+
+            getItemStyle(index, total, type) {
+                const angle = index * anglePerItem;
+                const currentRotation = this[this.getRotationProp(type)];
+                const selectedIndex = Math.round(currentRotation / anglePerItem);
+                const distance = Math.abs(index - selectedIndex);
+
+                let opacity = 1;
+                if (distance === 1) opacity = 0.65;
+                else if (distance === 2) opacity = 0.45;
+                else if (distance === 3) opacity = 0.25;
+                else if (distance === 4) opacity = 0.15;
+                else if (distance >= 5) opacity = 0;
+
+                return `transform: rotateX(${-angle}deg) translateZ(${radius}px); opacity: ${opacity};`;
+            },
+
+            updateRotations() {
+                const yearIndex = this.yearOptions.indexOf(this.selectedYear);
+                this.yearRotation = yearIndex * anglePerItem;
+                this.monthRotation = (this.monthVirtualOffset + this.selectedMonth) * anglePerItem;
+                this.hourRotation = (this.hourVirtualOffset + this.selectedHourIndex) * anglePerItem;
+                this.minuteRotation = this.selectedMinuteIndex * anglePerItem;
+                this.ampmRotation = this.selectedAmpmIndex * anglePerItem;
+            },
+
+            updateFormValue() {
+                const month = String(this.selectedMonth + 1).padStart(2, '0');
+                const day = String(this.selectedDay).padStart(2, '0');
+
+                if (this.mode === 'datetime') {
+                    // Convert to 24h format for backend
+                    let hour24 = this.selectedHourIndex + 1;
+                    if (this.selectedAmpmIndex === 1 && hour24 !== 12) {
+                        hour24 += 12;
+                    } else if (this.selectedAmpmIndex === 0 && hour24 === 12) {
+                        hour24 = 0;
+                    }
+                    const hourStr = String(hour24).padStart(2, '0');
+                    const minuteStr = this.minuteOptions[this.selectedMinuteIndex];
+                    this.formValue = `${this.selectedYear}-${month}-${day} ${hourStr}:${minuteStr}:00`;
+                } else {
+                    this.formValue = `${this.selectedYear}-${month}-${day}`;
+                }
+            },
+
+            syncBoundInput() {
+                const boundInput = document.getElementById('{{ $inputId }}');
+                if (boundInput) {
+                    boundInput.value = this.formValue;
+                    boundInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    boundInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            },
+
+            applySelection(emit = true) {
+                this.updateFormValue();
+                if (emit) {
+                    this.syncBoundInput();
+                }
+            },
+
+            openPicker() {
+                this.originalFormValue = this.formValue; // Save current value when opening
+                this.syncStateFromValue(this.formValue); // Sync internal state from value
+                this.updateRotations(); // Update wheel rotations based on new state
+                this.open = true;
+                document.body.style.overflow = 'hidden';
+            },
+
+            closePicker() {
+                this.formValue = this.originalFormValue; // Restore original value
+                this.syncStateFromValue(this.formValue); // Sync internal state to the restored value
+                this.updateRotations(); // Update wheel rotations
+                this.open = false;
+                document.body.style.overflow = '';
+            },
+
+            toggleView() {
+                this.view = this.view === 'calendar' ? 'wheel' : 'calendar';
+            },
+
+            get calendarDays() {
+                const days = [];
+                const firstDay = new Date(this.selectedYear, this.selectedMonth, 1);
+                const lastDay = new Date(this.selectedYear, this.selectedMonth + 1, 0);
+                const startDay = firstDay.getDay();
+
+                // Get today's date at midnight for comparison (only if disablePast is true)
+                const todayAtMidnight = this.disablePast ? new Date(this.todayYear, this.todayMonth, this.todayDate) : null;
+
+                const prevMonth = this.selectedMonth === 0 ? 11 : this.selectedMonth - 1;
+                const prevYear = this.selectedMonth === 0 ? this.selectedYear - 1 : this.selectedYear;
+                const prevMonthLastDay = new Date(this.selectedYear, this.selectedMonth, 0).getDate();
+
+                for (let i = startDay - 1; i >= 0; i--) {
+                    const date = prevMonthLastDay - i;
+                    const isToday = (prevYear === this.todayYear && prevMonth === this.todayMonth && date === this.todayDate);
+                    const dayDate = new Date(prevYear, prevMonth, date);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
+                    days.push({
+                        date,
+                        currentMonth: false,
+                        isToday,
+                        isPast,
+                        month: prevMonth,
+                        year: prevYear
+                    });
+                }
+
+                for (let i = 1; i <= lastDay.getDate(); i++) {
+                    const isToday = (this.selectedYear === this.todayYear &&
+                        this.selectedMonth === this.todayMonth &&
+                        i === this.todayDate);
+                    const dayDate = new Date(this.selectedYear, this.selectedMonth, i);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
+                    days.push({
+                        date: i,
+                        currentMonth: true,
+                        isToday,
+                        isPast,
+                        month: this.selectedMonth,
+                        year: this.selectedYear
+                    });
+                }
+
+                const nextMonth = this.selectedMonth === 11 ? 0 : this.selectedMonth + 1;
+                const nextYear = this.selectedMonth === 11 ? this.selectedYear + 1 : this.selectedYear;
+                const remaining = 42 - days.length;
+
+                for (let i = 1; i <= remaining; i++) {
+                    const isToday = (nextYear === this.todayYear && nextMonth === this.todayMonth && i === this.todayDate);
+                    const dayDate = new Date(nextYear, nextMonth, i);
+                    const isPast = this.disablePast ? (dayDate < todayAtMidnight) : false;
+                    days.push({
+                        date: i,
+                        currentMonth: false,
+                        isToday,
+                        isPast,
+                        month: nextMonth,
+                        year: nextYear
+                    });
+                }
+
+                return days;
+            },
+
+            selectCalendarDay(day) {
+                this.selectedDay = day.date;
+                this.selectedMonth = day.month;
+                this.selectedYear = day.year;
+                this.updateRotations();
+                this.applySelection();
+            },
+
+            prevMonth() {
+                if (this.selectedMonth === 0) {
+                    this.selectedMonth = 11;
+                    this.selectedYear--;
+                } else {
+                    this.selectedMonth--;
+                }
+                this.adjustSelectedDay();
+                this.updateRotations();
+            },
+
+            nextMonth() {
+                if (this.selectedMonth === 11) {
+                    this.selectedMonth = 0;
+                    this.selectedYear++;
+                } else {
+                    this.selectedMonth++;
+                }
+                this.adjustSelectedDay();
+                this.updateRotations();
+            },
+
+            adjustSelectedDay() {
+                const lastDay = new Date(this.selectedYear, this.selectedMonth + 1, 0).getDate();
+                if (this.selectedDay > lastDay) {
+                    this.selectedDay = lastDay;
+                }
+            },
+
+            selectYearDirect(year) {
+                this.selectedYear = year;
+                this.updateRotations();
+                this.adjustSelectedDay();
+                this.applySelection();
+            },
+
+            selectMonthDirect(realIndex) {
+                this.selectedMonth = realIndex;
+                this.monthVirtualOffset = virtualCopies * 12;
+                this.updateRotations();
+                this.adjustSelectedDay();
+                this.applySelection();
+            },
+
+            selectHourDirect(realIndex) {
+                this.selectedHourIndex = realIndex;
+                this.hourVirtualOffset = virtualCopies * 12;
+                this.updateRotations();
+                this.applySelection();
+            },
+
+            selectMinuteDirect(index) {
+                this.selectedMinuteIndex = index;
+                this.updateRotations();
+                this.applySelection();
+            },
+
+            selectAmpmDirect(index) {
+                this.selectedAmpmIndex = index;
+                this.updateRotations();
+                this.applySelection();
+            },
+
+            getRotationProp(type) {
+                const map = {
+                    year: 'yearRotation',
+                    month: 'monthRotation',
+                    hour: 'hourRotation',
+                    minute: 'minuteRotation',
+                    ampm: 'ampmRotation'
+                };
+                return map[type];
+            },
+
+            scrollWheel(type, e) {
+                const direction = e.deltaY > 0 ? 1 : -1;
+                const prop = this.getRotationProp(type);
+
+                const currentIndex = Math.round(this[prop] / anglePerItem);
+                let newIndex = currentIndex + direction;
+
+                if (type === 'year') {
+                    newIndex = Math.max(0, Math.min(this.yearOptions.length - 1, newIndex));
+                } else if (type === 'minute') {
+                    newIndex = Math.max(0, Math.min(this.minuteOptions.length - 1, newIndex));
+                } else if (type === 'ampm') {
+                    newIndex = Math.max(0, Math.min(this.ampmOptions.length - 1, newIndex));
+                }
+
+                this[prop] = newIndex * anglePerItem;
+                this.updateSelectionFromRotation(type);
+            },
+
+            startDrag(type, e) {
+                e.preventDefault();
+                this.spinning[type] = false;
+                this.dragState.active = true;
+                this.dragState.type = type;
+                this.dragState.startY = e.clientY || (e.touches && e.touches[0].clientY);
+                this.dragState.startRotation = this[this.getRotationProp(type)];
+                this.dragState.lastY = this.dragState.startY;
+                this.dragState.lastTime = Date.now();
+                this.dragState.velocity = 0;
+                this.dragState.hasMoved = false;
+
+                document.addEventListener('mousemove', this.boundMouseMove);
+                document.addEventListener('mouseup', this.boundMouseUp);
+                document.addEventListener('touchmove', this.boundTouchMove, {passive: false});
+                document.addEventListener('touchend', this.boundTouchEnd);
+            },
+
+            onGlobalDrag(e) {
+                if (!this.dragState.active) return;
+                e.preventDefault();
+
+                const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+                const delta = this.dragState.startY - clientY;
+
+                if (Math.abs(delta) > 3) {
+                    this.dragState.hasMoved = true;
+                }
+
+                const prop = this.getRotationProp(this.dragState.type);
+
+                const now = Date.now();
+                const dt = now - this.dragState.lastTime;
+                if (dt > 0) {
+                    this.dragState.velocity = (this.dragState.lastY - clientY) / dt;
+                }
+                this.dragState.lastY = clientY;
+                this.dragState.lastTime = now;
+
+                this[prop] = this.dragState.startRotation + (delta * dragSensitivity);
+            },
+
+            onGlobalDragEnd(e) {
+                if (!this.dragState.active) return;
+
+                document.removeEventListener('mousemove', this.boundMouseMove);
+                document.removeEventListener('mouseup', this.boundMouseUp);
+                document.removeEventListener('touchmove', this.boundTouchMove);
+                document.removeEventListener('touchend', this.boundTouchEnd);
+
+                const type = this.dragState.type;
+                this.dragState.active = false;
+
+                const prop = this.getRotationProp(type);
+                const velocity = this.dragState.velocity;
+
+                if (Math.abs(velocity) > 0.4) {
+                    this.spinning[type] = true;
+
+                    const momentum = velocity * 100;
+                    let targetRotation = this[prop] + momentum;
+
+                    let targetIndex = Math.round(targetRotation / anglePerItem);
+
+                    if (type === 'year') {
+                        targetIndex = Math.max(0, Math.min(this.yearOptions.length - 1, targetIndex));
+                    } else if (type === 'minute') {
+                        targetIndex = Math.max(0, Math.min(this.minuteOptions.length - 1, targetIndex));
+                    } else if (type === 'ampm') {
+                        targetIndex = Math.max(0, Math.min(this.ampmOptions.length - 1, targetIndex));
+                    }
+
+                    this[prop] = targetIndex * anglePerItem;
+
+                    setTimeout(() => {
+                        this.spinning[type] = false;
+                        this.updateSelectionFromRotation(type);
+                    }, 500);
+                } else {
+                    let index = Math.round(this[prop] / anglePerItem);
+
+                    if (type === 'year') {
+                        index = Math.max(0, Math.min(this.yearOptions.length - 1, index));
+                    } else if (type === 'minute') {
+                        index = Math.max(0, Math.min(this.minuteOptions.length - 1, index));
+                    } else if (type === 'ampm') {
+                        index = Math.max(0, Math.min(this.ampmOptions.length - 1, index));
+                    }
+
+                    this[prop] = index * anglePerItem;
+                    this.updateSelectionFromRotation(type);
+                }
+            },
+
+            updateSelectionFromRotation(type) {
+                const prop = this.getRotationProp(type);
+                const index = Math.round(this[prop] / anglePerItem);
+
+                if (type === 'year') {
+                    const clampedIndex = Math.max(0, Math.min(this.yearOptions.length - 1, index));
+                    this.selectedYear = this.yearOptions[clampedIndex];
+                    this.adjustSelectedDay();
+                } else if (type === 'month') {
+                    const realMonth = ((index % 12) + 12) % 12;
+                    this.selectedMonth = realMonth;
+                    this.adjustSelectedDay();
+                } else if (type === 'hour') {
+                    const realHour = ((index % 12) + 12) % 12;
+                    this.selectedHourIndex = realHour;
+                } else if (type === 'minute') {
+                    this.selectedMinuteIndex = index;
+                } else if (type === 'ampm') {
+                    this.selectedAmpmIndex = index;
+                }
+                this.applySelection();
+            },
+
+            getFormattedTime() {
+                return `${this.hourOptions[this.selectedHourIndex]}:${this.minuteOptions[this.selectedMinuteIndex]} ${this.ampmOptions[this.selectedAmpmIndex]}`;
+            },
+
+            escapeHtml(value) {
+                return String(value)
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            },
+
+            formatDisplayDateHtml() {
+                if (!this.formValue) {
+                    const placeholder = this.mode === 'datetime'
+                        ? 'Select date & time'
+                        : (this.mode === 'month' ? 'Select month' : 'Select date');
+                    return this.escapeHtml(placeholder);
+                }
+
+                try {
+                    const date = new Date(this.formValue.replace(' ', 'T'));
+                    if (isNaN(date)) return this.escapeHtml('Invalid Date');
+
+                    const day = date.getDate();
+                    const month = this.months[date.getMonth()].substring(0, 3);
+                    const year = date.getFullYear();
+
+                    if (this.mode === 'month') {
+                        return `${month}<span class="ios-dtp-trigger-muted-year">, ${year}</span>`;
+                    }
+
+                    if (!this.mutedYearDisplay) {
+                        return this.escapeHtml(this.formatDisplayDate());
+                    }
+
+                    let timeSuffix = '';
+                    if (this.mode === 'datetime') {
+                        let hour12 = date.getHours() % 12;
+                        if (hour12 === 0) hour12 = 12;
+                        const minute = String(date.getMinutes()).padStart(2, '0');
+                        const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+                        timeSuffix = ` · ${hour12}:${minute} ${ampm}`;
+                    }
+
+                    return `${day} ${month}<span class="ios-dtp-trigger-muted-year">, ${year}</span>${this.escapeHtml(timeSuffix)}`;
+                } catch (e) {
+                    return this.escapeHtml(this.formValue);
+                }
+            },
+
+            formatDisplayDate() {
+                if (!this.formValue) {
+                    return this.mode === 'datetime'
+                        ? 'Select date & time'
+                        : (this.mode === 'month' ? 'Select month' : 'Select date');
+                }
+                try {
+                    // Handle both 'YYYY-MM-DD HH:mm:ss' and 'YYYY-MM-DD'
+                    const date = new Date(this.formValue.replace(' ', 'T'));
+                    if (isNaN(date)) return 'Invalid Date';
+
+                    const day = date.getDate();
+                    const month = this.months[date.getMonth()].substring(0, 3);
+                    const year = date.getFullYear();
+
+                    if (this.mode === 'month') {
+                        return `${month}, ${year}`;
+                    }
+
+                    if (this.mode === 'datetime') {
+                        let hour12 = date.getHours() % 12;
+                        if (hour12 === 0) hour12 = 12; // Handle midnight
+                        const minute = String(date.getMinutes()).padStart(2, '0');
+                        const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+
+                        return `${day} ${month}, ${year} · ${hour12}:${minute} ${ampm}`;
+                    } else {
+                        return `${day} ${month}, ${year}`;
+                    }
+                } catch (e) {
+                    // Fallback for any parsing errors
+                    return this.formValue;
+                }
+            },
+
+            formatHeaderDatePart() {
+                if (this.mode === 'month') {
+                    return `${this.months[this.selectedMonth]} ${this.selectedYear}`;
+                }
+
+                const day = this.selectedDay;
+                const month = this.months[this.selectedMonth];
+                return `${month} ${day}, ${this.selectedYear}`;
+            },
+
+            confirmSelection() {
+                // Check if selected date/time is in the past (only if disablePast is true)
+                if (this.disablePast) {
+                    const now = new Date();
+
+                    if (this.mode === 'datetime') {
+                        // Convert selected time to 24h format
+                        let hour24 = this.selectedHourIndex + 1;
+                        if (this.selectedAmpmIndex === 1 && hour24 !== 12) {
+                            hour24 += 12;
+                        } else if (this.selectedAmpmIndex === 0 && hour24 === 12) {
+                            hour24 = 0;
+                        }
+                        const selectedMinute = parseInt(this.minuteOptions[this.selectedMinuteIndex]);
+
+                        const selectedDateTime = new Date(this.selectedYear, this.selectedMonth, this.selectedDay, hour24, selectedMinute);
+
+                        if (selectedDateTime < now) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Invalid Date/Time',
+                                    text: 'Cannot select a past date or time. Please choose a future date and time.',
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                alert('Cannot select a past date or time. Please choose a future date and time.');
+                            }
+                            return;
+                        }
+                    } else {
+                        // Date only mode
+                        const selectedDate = new Date(this.selectedYear, this.selectedMonth, this.selectedDay);
+                        const todayAtMidnight = new Date(this.todayYear, this.todayMonth, this.todayDate);
+
+                        if (selectedDate < todayAtMidnight) {
+                            if (typeof Swal !== 'undefined') {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Invalid Date',
+                                    text: 'Cannot select a past date. Please choose today or a future date.',
+                                    confirmButtonText: 'OK'
+                                });
+                            } else {
+                                alert('Cannot select a past date. Please choose today or a future date.');
+                            }
+                            return;
+                        }
+                    }
+                }
+
+                this.applySelection();
+                this.open = false;
+                document.body.style.overflow = '';
+            }
+        };
+    }
+</script>

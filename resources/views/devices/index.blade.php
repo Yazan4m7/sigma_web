@@ -1,37 +1,31 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Devices List' ])
 @section('content')
+    <div class="sigma-config-page sigma-list-page">
+        <div class="sigma-config-page-actions">
+            <a href="{{route('new-device-view')}}" class="btn btn-secondary sigma-config-add-btn"><i class="fa fa-plus-circle"></i> New Machine</a>
+        </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class=" m-b-30">
-                <div class="">
-                    <div class="row">
-                        <div class="col-md-6"> </div>
-                        <div class="col-md-6" style="text-align: right">  <a href="{{route('new-device-view')}}" ><button type="button"  class="btn btn-secondary"><i class="fa fa-plus-circle"></i> NEW MACHINE</button></a>   </div>
-                    </div>
-
-                    <p class="text-muted"></p>
-                    <div class="">
-                        <table class="table-striped table-bordered compact sunriseTable"
+        <div class="sigma-config-table-shell sigma-table-free">
+            <table class="table-striped table-bordered compact sunriseTable sigma-list-table sigma-config-table"
                                role="grid" aria-describedby="datatable_info"
                                style="width:100%">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Enabled</th>
-                                <th>Units Manufactured</th>
-                                <th>Date Created</th>
+                                <th class="sigma-cell-center">ID</th>
+                                <th class="sigma-cell-left">Name</th>
+                                <th class="sigma-cell-center">Enabled</th>
+                                <th class="sigma-cell-center">Units Manufactured</th>
+                                <th class="sigma-cell-center">Date Created</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($devices as $device)
                             <tr id="{{$device->id}}" style="{{$device->hidden == '1' ? "color:#c3c3c3 !important" : "" }}" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$device->id}}">
-                                <td><span class="tabledit-span tabledit-identifier">{{$device->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$device->name}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$device->hidden == '0' ? "YES" : "NO"}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$device->units}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$device->created_at }}</span></td>
+                                <td class="sigma-cell-center"><span class="tabledit-span tabledit-identifier">{{$device->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
+                                <td class="tabledit-view-mode sigma-cell-left"><span class="tabledit-span">{{$device->name}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$device->hidden == '0' ? "YES" : "NO"}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$device->units}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$device->created_at }}</span></td>
 
 
                             </tr>
@@ -112,9 +106,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection

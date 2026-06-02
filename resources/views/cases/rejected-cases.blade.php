@@ -2,24 +2,64 @@
 @section('content')
 
     <style>
-        .rejected-cases-page .sigma-list-filter-card {
-            border-radius: 16px !important;
-            padding: 20px 20px 16px !important;
-            overflow: hidden !important;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+        .rejected-cases-page .sigma-list-filter-card,
+        .rejected-cases-page .container.full-width.sigma-list-filter-card.cases-filter-card.delivery-filter-card {
+            background: transparent !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            margin-top: 16px !important;
+            margin-bottom: 24px !important;
+            padding: 0 !important;
+            position: relative;
+            overflow: visible !important;
+            box-shadow: none !important;
+            backdrop-filter: none !important;
+            isolation: auto;
         }
 
-        .rejected-cases-page .sigma-list-filter-card::before {
+        .rejected-cases-page .row.sigma-list-filter-row.cases-filter-row {
+            background: #ffffffa8 !important;
+            border: 1px solid rgba(188, 206, 216, 0.3) !important;
+            border-radius: 16px !important;
+            box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 6%) !important;
+            padding: 20px 12px 16px !important;
+            position: relative;
+            overflow: hidden !important;
+            backdrop-filter: blur(10px);
+            isolation: isolate;
+            margin: 0 !important;
+        }
+
+        .rejected-cases-page .row.sigma-list-filter-row.cases-filter-row::after {
+            content: "" !important;
+            display: block !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
             height: 4px !important;
+            background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%) !important;
             border-radius: 16px 16px 0 0 !important;
+            pointer-events: none;
+            z-index: 2;
         }
 
         .rejected-cases-page .sigma-list-filter-row {
-            margin: 0 -8px !important;
+            margin: 0 !important;
         }
 
         .rejected-cases-page .sigma-list-filter-row > [class*="col-"] {
             min-width: 0;
+        }
+
+        @media screen and (min-width: 768px) {
+            .rejected-cases-page .sigma-list-filter-row > [class*="col-"].sigma-filter-action-col {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                max-width: none !important;
+                padding-left: 8px !important;
+                margin-left: 0 !important;
+            }
         }
 
         .rejected-cases-page .sigma-list-filter-row .bootstrap-select,
@@ -158,15 +198,15 @@
                     <form class="kt-form sigma-list-page" method="GET" action="{{route('dentist-cases',['id' =>$id])}}">
                         <input type="hidden" class="form-control" name="id" value="{{$id}}">
                         @endif
-                        <div class="container full-width sigma-list-filter-card">
-                            <div class="row sigma-list-filter-row">
-                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                        <div class="container full-width sigma-list-filter-card cases-filter-card delivery-filter-card">
+                            <div class="row sigma-list-filter-row cases-filter-row">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-2">
                                     <div class="kt-subheader__search">
                                         <label class="filter-label" for="rejected_from">
                                             <i class="fas fa-calendar-alt"></i>
                                             <span>From Date</span>
                                         </label>
-                                        <x-ios-dtp name="from" id="rejected_from" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+                                        <x-ios-dtp name="from" id="rejected_from" class="filter-input-global" :value="$from" mode="date" :required="true" />
 {{--                                        <input class="form-control SDTP"--}}
 {{--                                               id="rejected_from"--}}
 {{--                                               name="from"--}}
@@ -178,13 +218,13 @@
 {{--                                    --}}
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-2">
                                     <div class="kt-subheader__search">
                                         <label class="filter-label" for="rejected_to">
                                             <i class="fas fa-calendar-alt"></i>
                                             <span>To Date</span>
                                         </label>
-                                        <x-ios-dtp name="to" id="rejected_to" :value="\Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
+                                        <x-ios-dtp name="to" id="rejected_to" class="filter-input-global" :value="$to" mode="date" :required="true" />
 {{--                                        <input class="form-control SDTP"--}}
 {{--                                               id="rejected_to"--}}
 {{--                                               name="to"--}}
@@ -196,7 +236,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-2">
 
                                     @if(isset($clients))
                                         <div class="dropdown" style="text-align: left;">
@@ -205,17 +245,17 @@
                                                 <span>Doctor</span>
                                             </label>
 
-                                            <select style="width:100%" class="selectpicker clearOnAll" multiple
+                                            <select style="width:100%" class="selectpicker clearOnAll filter-input-global" multiple
                                                     name="doctor[]" id="doctor"
                                                     data-live-search="true"
                                                     data-container="body"
                                                     title="All Doctors">
 
-                                                    <option value="all" {{(isset($selectedClients) && $selectedClients== 'all') ? 'selected' : ''}}>
+                                                    <option value="all" {{(isset($selectedClients) && in_array('all', $selectedClients ?? [], true)) ? 'selected' : ''}}>
                                                         All
                                                     </option>
                                                     @foreach($clients as $d)
-                                                        <option value="{{$d->id}}" {{(isset($selectedClients) && in_array($d->id ,$selectedClients)) ? 'selected' : ''}}>{{$d->name}}</option>
+                                                        <option value="{{$d->id}}" {{(isset($selectedClients) && in_array((string) $d->id, array_map('strval', $selectedClients ?? []), true)) ? 'selected' : ''}}>{{$d->name}}</option>
                                                     @endforeach
 
                                             </select>
@@ -224,7 +264,7 @@
                                     @endif
 
                                 </div>
-                                <div class="col-12 col-sm-6 col-lg-2 mb-3">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-2">
 
                                     @if(isset($clients))
                                         <div class="kt-subheader__search">
@@ -233,19 +273,19 @@
                                                 <span>Patient</span>
                                             </label>
                                             <input type="text" name="patient_name" value="{{$patientName ?? ''}}"
-                                                   class="form-control" id="patient_name" placeholder="Search patient">
+                                                   class="form-control filter-input-global" id="patient_name" placeholder="Search patient">
                                         </div>
                                     @endif
 
                                 </div>
-                                <div class="col-12 col-sm-6 col-lg-2 mb-3 sigma-filter-action-col">
-                                    <button type="submit" class="btn btn-primary sigma-apply-btn">
+                                <div class="col-12 col-sm-6 col-lg-2 mb-2 d-flex align-items-end sigma-filter-action-col">
+                                    <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search sigma-apply-btn filter-apply-btn-global">
                                         <i class="fas fa-search"></i>
                                         <span>Apply</span>
                                     </button>
                                 </div>
 
-                                    <div class="col-12 col-sm-6 col-lg-2 mb-3 d-flex align-items-end justify-content-lg-end">
+                                    <div class="col-12 col-sm-6 col-lg-2 mb-2 d-flex align-items-end justify-content-lg-end sigma-filter-secondary-col">
                                         <div class="dropdown sigma-columns-toolbar">
                                             <button class="btn sigma-toolbar-icon-btn rejected-columns-btn" type="button"
                                                     id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
@@ -318,25 +358,25 @@
                                                     aria-label="Position: activate to sort column ascending"
                                                     style="">Case ID
                                                 </th>
-                                                <th class="sorting" tabindex="0"
+                                                <th class="sorting sigma-col-shaded" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     aria-label="Office: activate to sort column ascending"
                                                     style="">Doctor
                                                 </th>
-                                                <th class="sorting" tabindex="0"
+                                                <th class="sorting sigma-head-right" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     aria-label="Age: activate to sort column ascending"
-                                                    style="">Patient name
+                                                    style="">Patient Name
                                                 </th>
                                                 <th class="sorting" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     aria-label="Start date: activate to sort column ascending"
-                                                    style="">Initial Deli. Date
+                                                    style="">Initial Delivery <i class="fa fa-calendar" aria-hidden="true"></i>
                                                 </th>
-                                                <th class="sorting" tabindex="0"
+                                                <th class="sorting sigma-col-shaded" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
                                                     aria-label="Salary: activate to sort column ascending"
-                                                    style="">Date Delivered
+                                                    style="">Actual Delivery <i class="fa fa-calendar" aria-hidden="true"></i>
                                                 </th>
                                                 <th class="sorting statusCol" tabindex="0"
                                                     aria-controls="datatable" rowspan="1" colspan="1"
@@ -363,13 +403,13 @@
                                                 <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$case->id}}">
                                                     <td class="sorting_1 ">{{$case->id}}</td>
                                                     <td>{{$case->case_id}}</td>
-                                                    <td>{{$case->client->name}}</td>
-                                                    <td>{{$case->patient_name}}</td>
-                                                    <td>{{$case->initDeliveryDate() }}
+                                                    <td class="sigma-col-shaded sigma-body-right">{{$case->client->name}}</td>
+                                                    <td class="sigma-body-right">{{$case->patient_name}}</td>
+                                                    <td class="sigma-body-center">{{$case->initDeliveryDate() }}
                                                         &nbsp;&nbsp; {{$case->initDeliveryTime()}}</td>
-                                                    <td>{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
+                                                    <td class="sigma-col-shaded sigma-body-center">{{$case->actualDeliveryDate()=="" ? "Not yet" : $case->actualDeliveryDate()}}
                                                         &nbsp;&nbsp; {{$case->actualDeliveryTime() ?? ""}}</td>
-                                                    <td>
+                                                    <td class="sigma-body-center">
                                                         @if(str_contains($case->status(), "Completed") )
                                                             <span class="badge badge-success sigma-status-width">
                                                                            {{$case->status()}} </span>
@@ -393,7 +433,7 @@
                                                         @endif
 
                                                     </td>
-                                                    <td>
+                                                    <td class="sigma-body-left">
 
                                                         @foreach($case->tags as $tag)
                                                             @if(isset($tag->originalTagRecord))
@@ -403,7 +443,7 @@
                                                             @endif
                                                         @endforeach
                                                     </td>
-                                                    <td>{{$case->createdAtDate()}}
+                                                    <td class="sigma-body-center">{{$case->createdAtDate()}}
                                                         &nbsp;&nbsp; {{$case->createdAtTime() }}</td>
 
 
@@ -435,7 +475,8 @@
                                                                 <hr>
                                                                 <div class="form-group row">
                                                                     <div class=" col-12 ">
-                                                                        <label ><b>Jobs:</b></label><br>
+                                                                        <label class="case-completion-dialog-label"><b>Jobs:</b></label><br>
+                                                                        <div class="sigma-case-jobs-list">
 
 
 
@@ -443,16 +484,39 @@
 
                                                                             @php
                                                                                 $unit = explode(', ',$job->unit_num);
+                                                                                $jobTypeName = $job->jobType->name ?? "No Job Type";
+                                                                                $materialName = $job->material->name ?? "no material";
+                                                                                $colorLabel = $job->color =='0' ? "" : $job->color;
+                                                                                $styleLabel = $job->style == 'None' ? "" : $job->style;
+                                                                                $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? "Implant Type: " . $job->implantR->name : "";
+                                                                                $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? "Abutment Type: " . $job->abutmentR->name : "";
                                                                             @endphp
 
-                                                                            <span >{{$job->unit_num}} - {{$job->jobType->name ?? "No Job Type"}} - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
-                                                                                {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
-                                                                                {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
+                                                                            <div class="sigma-case-job-row">
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{$job->unit_num}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{$jobTypeName}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{$materialName}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{$colorLabel}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                    {{$styleLabel}}
+                                                                                    @if($implantLabel || $abutmentLabel)
+                                                                                        <span class="sigma-case-job-extra">
+                                                                                            @if($implantLabel)
+                                                                                                <span>{{$implantLabel}}</span>
+                                                                                            @endif
+                                                                                            @if($abutmentLabel)
+                                                                                                <span>{{$abutmentLabel}}</span>
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    @endif
+                                                                                </span>
+                                                                            </div>
                                                                         @endforeach
+                                                                        </div>
                                                                     </div></div>
                                                                 @if(count($case->notes)>0)
                                                                     <hr>
-                                                                    <label ><b>Notes:</b></label><br>
+                                                                    <label class="case-completion-dialog-label"><b>Notes:</b></label><br>
                                                                     @foreach($case->notes as $note)
                                                                         <div class="form-control" style="height:fit-content;width:80%;background-color: #dcecfd59;margin-bottom: 5px; color:black;font-size:12px" disabled>
 

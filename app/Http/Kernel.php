@@ -31,17 +31,31 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'web' => [
+            'PageBenchmarkProbe:before-encrypt-cookies',
             \App\Http\Middleware\EncryptCookies::class,
+            'PageBenchmarkProbe:before-add-queued-cookies',
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            'PageBenchmarkProbe:before-start-session',
             \Illuminate\Session\Middleware\StartSession::class,
-             \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \App\Http\Middleware\PrimeAuthenticatedUserFromCache::class,
+            'PageBenchmarkProbe:before-authenticate-session',
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \App\Http\Middleware\RedirectGuestWebRequests::class,
+            'PageBenchmarkProbe:before-page-load-test-token',
             \App\Http\Middleware\PageLoadTestToken::class,
+            'PageBenchmarkProbe:before-share-errors',
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            'PageBenchmarkProbe:before-verify-csrf',
             \App\Http\Middleware\VerifyCsrfToken::class,
+            'PageBenchmarkProbe:before-prevent-duplicate-submissions',
             \App\Http\Middleware\PreventDuplicateSubmissions::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'PageBenchmarkProbe:before-substitute-bindings',
+            \App\Http\Middleware\TimedSubstituteBindings::class,
+            'PageBenchmarkProbe:before-ensure-user-permissions-cached',
             \App\Http\Middleware\EnsureUserPermissionsCached::class,
+            'PageBenchmarkProbe:before-inspector-web-request-monitoring',
             \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
+            'PageBenchmarkProbe:after-web-group',
         ],
 
         'api' => [
@@ -103,6 +117,8 @@ class Kernel extends HttpKernel
         'ViewVouchers'=>\App\Http\Middleware\ViewVouchersMiddleware::class,
         'LockUnlockCases'=>\App\Http\Middleware\LockUnlockCasesMiddleware::class,
         'ViewDevicesMonitor'=>\App\Http\Middleware\ViewDevicesMonitorMiddleware::class,
+        'PageLoadBenchmark' => \App\Http\Middleware\PageLoadBenchmark::class,
+        'PageBenchmarkProbe' => \App\Http\Middleware\PageBenchmarkProbe::class,
 
 
     ];

@@ -4,7 +4,7 @@
 @section('content')
     <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
     <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
-    
+
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -49,6 +49,7 @@
                                 label="Doctor:"
                                 :options="$doctorOptions"
                                 :selected="$selectedClients ?? null"
+                                :allSelected="in_array('all', (array) ($selectedClients ?? []), true)"
                                 title="All Doctors"
                             />
                         @endif
@@ -72,10 +73,10 @@
     </div>
 
     <!-- Total Amount Card -->
-    <div class="container-fluid mt-3 mb-3">
+    <div class="container-fluid " style="padding-left: 0; padding-top: 0">
         <div class="row" style="background-color: transparent">
-            <div class="col-lg-3 col-md-4 col-12">
-                <div class="materials-total-card">
+            <div class="col-lg-2 col-md-2 col-12">
+                <div class="materials-total-card sigma-compact-summary-card">
                     <div>
                         <div class="materials-total-label">Total Amount</div>
                         <div class="materials-total-value">
@@ -89,7 +90,7 @@
     </div>
 
     <!-- Table Section -->
-    <div class="container-fluid report-table-section">
+    <div class="container-fluid report-table-section" style="padding-top: 0">
         <div class="row">
             <div class="col-12">
                 <table id="datatable" class="sigma-report-table table-plain" role="grid">
@@ -177,7 +178,7 @@
 
         // Show export button when table is ready
         $('#exportExcelBtn').removeClass('d-none');
-        
+
         // Trigger DataTable export on custom button click
         $('#exportExcelBtn').on('click', function() {
             table.button('.buttons-excel').trigger();

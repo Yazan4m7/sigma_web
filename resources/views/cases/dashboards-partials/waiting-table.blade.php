@@ -1,5 +1,10 @@
 
 <style>
+    .waiting-dialog.sigma-modal--dashboard-waiting-actions,
+    .waiting-dialog.sigma-modal--dashboard-waiting-actions :not(i):not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab) {
+        font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+    }
+
     /* Compact, breakpoint-driven waiting dialog */
     
 .waiting-dialog.sigma-modal--dashboard-waiting-actions .modal-content { border-radius: 20px; }
@@ -252,11 +257,11 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                             <!-- Sticky Doctor/Patient section -->
                             <div class="form-group row" style="margin-bottom: 0px">
                                 <div class="form-group col-6 " style="margin-bottom: 0px">
-                                    <label for="doctor">Doctor: </label>
+                                    <label for="doctor" class="patient-doctor-label case-completion-dialog-label">Doctor: </label>
                                     <h5 id="doctor" class="patient-doctor-names">{{$case->client->name}}</h5>
                                 </div>
                                 <div class="form-group col-6 " style="margin-bottom: 0px">
-                                    <label for="pat">Patient: </label>
+                                    <label for="pat" class="patient-doctor-label case-completion-dialog-label">Patient: </label>
                                     <h5 id="pat" class="patient-doctor-names">{{$case->patient_name}}</h5>
                                 </div>
                             </div>
@@ -266,40 +271,81 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                             <div class="scrollable-content">
                                 <div class="form-group row">
                                     <div class=" col-12 ">
-                                        <label><b>Jobs:</b></label><br>
-
-
+                                        <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
+                                        <div class="sigma-case-jobs-list">
                                         @foreach( $case->jobs->where('stage',$stage["numericStage"]) as $job)
 
                                         @php
                                         $unit = explode(', ',$job->unit_num);
                                         // Check if this job goes through the current stage based on material
                                         $showJob = $job->goesThroughStage($stage["numericStage"]);
+                                        $jobTypeName = $job->jobType->name ?? "No Job Type";
+                                        $materialName = $job->material->name ?? "no material";
+                                        $colorLabel = $job->color =='0' ? "" : $job->color;
+                                        $styleLabel = $job->style == 'None' ? "" : $job->style;
+                                            $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? "Implant Type: " . $job->implantR->name : "";
+                                            $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? "Abutment Type: " . $job->abutmentR->name : "";
+                                            $stageLabel = $stage['name'] ?? $key ?? 'Stage';
                                         @endphp
 
                                         @if($showJob)
-                                        <span>{{$job->unit_num}}
-                                            - {{$job->jobType->name ?? "No Job Type"}}
-                                            - {{$job->material->name ?? "no material"}} {{$job->color =='0' ? "":" - " .$job->color}}
-                                            {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}
-                                            <br>
-                                            {{isset($job->abutmentR) && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
+                                        @php
+                                            $jobTitleParts = array_values(array_filter([
+                                                trim((string) $job->unit_num),
+                                                trim((string) $jobTypeName),
+                                                trim((string) $materialName),
+                                                trim((string) $colorLabel),
+                                                trim((string) $implantLabel),
+                                                trim((string) $abutmentLabel),
+                                            ], function ($value) {
+                                                return $value !== '';
+                                            }));
+                                            $jobUnits = trim((string) $job->unit_num);
+                                            $normalizedStyle = strtolower(trim((string) $styleLabel));
+                                            $jobTag = in_array($normalizedStyle, ['single', 'bridge'], true)
+                                                ? ucfirst($normalizedStyle)
+                                                : (strpos($jobUnits, ',') !== false ? 'Bridge' : 'Single');
+                                            $isModelJob = stripos($jobTypeName, 'model') !== false || stripos($materialName, 'model') !== false;
+                                        @endphp
+                                        <div class="sigma-case-job-row">
+                                            @if($isModelJob)
+                                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.5C5.1 14 7.8 18 12 18s6.9-4 7.5-10.5"></path><path d="M7.5 7.5c.5 4.1 2 6.4 4.5 6.4s4-2.3 4.5-6.4"></path><path d="M8.4 8v2.2"></path><path d="M12 8v3.2"></path><path d="M15.6 8v2.2"></path></svg>
+                                            @else
+                                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5l1 5c.3 1.2 1 2 2 2h2c1 0 1.7-.8 2-2l1-5c.5-1.5 1-3 1-5 0-3-2-5-5-5z"></path><path d="M9 10c0 0 1 1 3 1s3-1 3-1"></path></svg>
+                                            @endif
+                                            <span class="sigma-case-job-info">
+                                                <span class="sigma-case-job-primary">{{ implode(' - ', $jobTitleParts) }}</span>
+                                            </span>
+                                            <span class="sigma-case-job-tag">{{ $jobTag }}</span>
+                                        </div>
                                         @endif
                                         @endforeach
+                                        </div>
                                     </div>
                                 </div>
                                 @if(count($case->notes)>0)
                                 <hr>
-                                <label><b>Notes:</b></label><br>
+                                <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
+                                <div class="sigma-case-notes-list">
                                 @foreach($case->notes as $note)
-                                <div class="form-control note-container"
-                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
-                                    disabled>
-
-                                    <span class="noteHeader" style="font-weight:600">{{'['. substr( $note->created_at,0,16) . '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
-                                    <span class="noteText">{{$note->note}}</span>
+                                <div class="note-container">
+                                    <div class="sigma-case-note-left">
+                                        <i class="far fa-comment-alt sigma-case-note-icon" aria-hidden="true"></i>
+                                        @unless($loop->last)
+                                            <div class="sigma-case-note-line"></div>
+                                        @endunless
+                                    </div>
+                                    <div class="sigma-case-note-content">
+                                        <div class="sigma-case-note-meta">
+                                            <span class="noteHeader sigma-case-note-author">{{ $note->writtenBy->name_initials }}</span>
+                                            <span class="sigma-case-note-separator">&middot;</span>
+                                            <span class="sigma-case-note-time">{{ substr($note->created_at, 0, 16) }}</span>
+                                        </div>
+                                        <span class="noteText sigma-case-note-text">{{$note->note}}</span>
+                                    </div>
                                 </div>
                                 @endforeach
+                                </div>
                                 @endif
                             </div>
                         </div>

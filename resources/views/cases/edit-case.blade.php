@@ -1,10 +1,8 @@
 @extends('layouts.app', ['pageSlug' => 'Edit Case'])
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/css/lightgallery.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.imagesloader.css') }}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         /* Unified styling from create case */
@@ -18,7 +16,8 @@
             --accent-soft: rgba(27, 110, 243, 0.15);
         }
 
-        .edit-case-page {
+        .edit-case-page,
+        .create-case-page.edit-case-page {
             border-radius: 18px;
             padding: 1rem 2rem 2rem 2rem;
         }
@@ -59,7 +58,46 @@
             width: 100%;
             height: 0px;
             background: var(--border-muted);
-            margin: 1.5rem 0;
+            margin: 0.5rem 0 !important;;
+        }
+
+        .form-section-card--with-dtp {
+            position: relative;
+        }
+
+        .order-information-card .section-header {
+            margin-bottom: 1rem;
+        }
+
+        .order-information-card label {
+            font-size: 0.9rem;
+        }
+
+        .order-information-card .mandatorySmallTag {
+            display: inline-block;
+            margin-top: 0.35rem;
+        }
+
+        .case-id-group {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .case-id-prefix,
+        .case-id-sep {
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .case-id-part {
+            width: 80px;
+            text-align: center;
+        }
+
+        .case-id-part--xs {
+            width: 58px;
         }
 
         .form-section-card label {
@@ -155,20 +193,63 @@
         }
 
         .submit-row .btn {
-            padding: 0.75rem 2rem;
-            border-radius: 10px;
+            min-height: 46px;
+            padding: 0.9rem 2.4rem;
+            border-radius: 12px;
             font-weight: 600;
+            font-size: 0.96rem;
+            line-height: 1;
+        }
+
+        .submit-row .btn.btn-primary {
+            background: linear-gradient(135deg, #2b7b7d 0%, #237577 100%);
+            border-color: #237577;
+            box-shadow: 0 10px 18px rgba(43, 123, 125, 0.18);
+        }
+
+        .submit-row .btn.btn-primary:hover,
+        .submit-row .btn.btn-primary:focus {
+            background: linear-gradient(135deg, #246d6f 0%, #1e6466 100%);
+            border-color: #1e6466;
         }
 
         label {
             font-size: 0.9rem;
             font-weight: 600;
         }
-        img {
+        .sigma-modal--case-edit-teeth img,
+        .sigma-modal--case-edit-teeth-secondary img,
+        .sigma-modal--case-edit-files img {
             max-height: 100%;
             max-width: unset !important;
         }
-        
+
+        .demo-gallery#case-edit-lightgallery,
+        #case-edit-lightgallery {
+            margin: 0;
+        }
+
+        #case-edit-lightgallery li {
+            margin-bottom: 12px !important;
+        }
+
+        #case-edit-lightgallery a {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-muted);
+            background: #f8fafc;
+        }
+
+        #case-edit-lightgallery img {
+            display: block;
+            width: 100%;
+            height: 140px;
+            max-width: 100% !important;
+            object-fit: cover;
+            cursor: zoom-in;
+        }
+
 .sigma-modal--case-edit-teeth .dialog_width_Padding {
 
             margin-bottom: 5px;
@@ -241,7 +322,7 @@
 
 
 
-        
+
 .sigma-modal--case-edit-teeth .teethJawsDialog {
             max-width: 421px;
             width: 175%;
@@ -266,7 +347,7 @@
 
 
         }
-        
+
 .sigma-modal--case-edit-teeth .modal-positioning-enabled .modal-pos-center-x.modal-pos-center-y {
             transform: translate(-100%, -49%) !important;
         }
@@ -778,7 +859,7 @@
         }
 
         @media screen and (max-width: 991px){
-            
+
 .sigma-modal--case-edit-teeth .modal-content .modal-footer button {
                 margin: 0;
                 width: auto;
@@ -797,7 +878,7 @@
         }
 
         @media (min-width: 576px){
-            
+
 .sigma-modal--case-edit-teeth .modal-dialog {
                 max-width: 400px;
                 margin: 1.75rem auto;
@@ -812,7 +893,7 @@
             }
         }
 
-        
+
 .sigma-modal--case-edit-teeth #unitsDialog .modal-dialog, .sigma-modal--case-edit-teeth #unitsDialog2 .modal-dialog {
             max-width: 460px;
         }
@@ -932,15 +1013,15 @@
         $permissions = Cache::get('user' . Auth()->user()->id);
     @endphp
 
-    <div class="edit-case-page">
-    <form class="kt-form" method="POST" enctype="multipart/form-data"
+    <div class="create-case-page edit-case-page">
+    <form class="kt-form case-form" method="POST" enctype="multipart/form-data"
         action="{{ route('edit-case') }}">
         @csrf
 
         <input name="id" type="hidden" value="{{ $case->id }}" />
 
         <!-- ORDER INFORMATION CARD -->
-        <div class="form-section-card">
+        <div class="form-section-card form-section-card--with-dtp order-information-card">
             <div class="section-header">
                 <div>
                     <div class="section-subtitle">Case</div>
@@ -950,53 +1031,56 @@
 
             <div class="row">
                 <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Doctor:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-
-                    <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
-                        title="Select a doctor" data-tap-disabled="true">
-
-
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}" {{ $case->client->id == $client->id ? 'selected' : '' }}>
-                                {{ $client->name }}</option>
-                        @endforeach
-
-                    </select>
-
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Doctor:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <select class="selectpicker greyBG" name="doctor" data-live-search="true" required
+                            title="Select a doctor" data-tap-disabled="true">
+                            @foreach ($clients as $client)
+                                <option value="{{ $client->id }}" {{ $case->client->id == $client->id ? 'selected' : '' }}>
+                                    {{ $client->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5 col-xs-6 col-l-5 col-xl-4">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient name:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <input class="form-control blueTBBorder" type="text" name="patient_name" value="{{ $case->patient_name }}" />
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-6 col-l-4 col-xl-3">
+                    <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case ID:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <div class="case-id-group">
+                            <span class="case-id-prefix">{{ substr($case->case_id, 0, 7) }}</span>
+                            <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
+                            <input name="caseId2" placeholder="MM" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ substr($case->case_id, 7, 2) }}" inputmode="numeric" />
+                            <input name="caseId3" placeholder="DD" class="form-control case-id-part case-id-part--xs"
+                                type="text" value="{{ substr($case->case_id, 9, 2) }}" inputmode="numeric" />
+                            <span class="case-id-sep">_</span>
+                            <input name="caseId4" placeholder="0000" class="form-control case-id-part"
+                                type="text" value="{{ substr($case->case_id, 12, 4) }}" inputmode="numeric" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-12 col-xs-12"><label>Patient name:</label></div>
-                <div class="col-md-12 col-xs-12"><input class="form-control" type="text" name="patient_name"
-                        value="{{ $case->patient_name }}" /></div>
-            </div>
 
-
-            <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
-                <div class="col-md-6 col-xs-12"><label>Case ID:</label></div>
-                <div class="col-md-12 col-xs-12">
-
-                    <label>{{ substr($case->case_id, 0, 7) }}</label>
-                    <input name="caseId1" type="hidden" value="{{ substr($case->case_id, 0, 7) }}" />
-                    <input name="caseId2" placeholder="Time" style="width:3.45rem; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 7, 2) }}" />
-                    <input name="caseId3" placeholder="Time" style="width:3.45rem; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 9, 2) }}" />
-                    <label>_</label>
-                    <input name="caseId4" placeholder="0000"
-                        style="width:50px;border-top-right-radius:5px;border-bottom-right-radius:5px; border:1px solid #ced4da;height:30px"
-                        type="text" value="{{ substr($case->case_id, 12, 4) }}" />
-                </div>
-
-            </div>
-
-        </div>
-
-        <br />
-     
             <div class="row">
+                <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
+                    <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Impression Type:</label></div>
+                    <div class="col-md-12 col-xs-12">
+                        <select class="form-control" name="impression_type" type="text" data-container="body"
+                            data-live-search="true" title="Select impression" data-hide-disabled="true">
+                            @foreach ($impressionTypes as $impression)
+                                <option value="{{ $impression->id }}"
+                                    {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
+                                    {{ $impression->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
                     <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
                             Date:</label></div>
@@ -1014,7 +1098,7 @@
                         <small class="mandatorySmallTag">* Mandatory</small>
                     </div>
                 </div>
-                <div class="col-md-4  col-xs-6 col-l-2  col-xl-3">
+                <div class="col-md-4 col-xs-6 col-l-4 col-xl-3">
                     <div class="col-md-12 col-xs-12"><label>Tags:</label></div>
                     <div class="col-md-12 col-xs-12">
 
@@ -1028,31 +1112,17 @@
 
                     </div>
                 </div>
-                <div class="col-md-4 col-xs-6 col-l-2 col-xl-3">
-                    <div class="col-md-12 col-xs-12"><label>Impression Type:</label></div>
-                    <div class="col-md-12 col-xs-12"> <select class="form-control" name="impression_type" type="text"
-                            data-container="body" data-live-search="true" title="Select impression" data-hide-disabled="true">
-
-                            @foreach ($impressionTypes as $impression)
-                                <option value="{{ $impression->id }}"
-                                    {{ $impression->id == $case->impression_type ? 'selected' : '' }}>
-                                    {{ $impression->name }}
-                                </option>
-                            @endforeach
-                        </select></div>
-                </div>
             </div>
+
+            <div class="section-divider" style="margin: 0.5rem 0 !important;"></div>
 
         </div><!-- End Order Information Card -->
 
 
         <!-- JOB INFORMATION CARD -->
-        <div class="form-section-card">
+        <div class="form-section-card form-section-card--with-dtp">
             <div class="section-header">
-                <div>
-                    <div class="section-subtitle">Jobs</div>
-                    <h5>Job Information</h5>
-                </div>
+                <h5>Jobs Information</h5>
             </div>
 
             <!-- EXISTING JOBS -->
@@ -1649,11 +1719,11 @@
 
                 @if($case->photos->count() > 0)
                 <div class="demo-gallery" style="margin-bottom: 1.5rem;">
-                    <ul id="lightgallery" class="list-unstyled row">
+                    <ul id="case-edit-lightgallery" class="list-unstyled row">
                         @foreach ($case->photos as $photo)
                             <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2" style="margin-bottom: 1rem;"
                                 data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
-                                <a href="">
+                                <a href="{{ asset($photo->path) }}">
                                     <img class="img-responsive" src="{{ asset($photo->path) }}" style="border-radius: 10px; border: 1px solid var(--border-muted);">
                                 </a>
                             </li>
@@ -2059,7 +2129,14 @@
                     $btn.prop('disabled', true).text('Saving...');
                 });
 
-                $('#lightgallery').lightGallery();
+                $('#case-edit-lightgallery').lightGallery({
+                    selector: 'li',
+                    download: false,
+                    fullScreen: false,
+                    actualSize: false,
+                    thumbnail: false,
+                    share: false
+                });
                 $('.repeater').repeater({
                     // (Required if there is a nested repeater)
                     // Specify the configuration of the nested repeaters.

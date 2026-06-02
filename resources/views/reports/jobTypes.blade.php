@@ -63,6 +63,7 @@
                                 label="Doctors:"
                                 :options="$doctorOptions"
                                 :selected="$selectedClients ?? null"
+                                :allSelected="in_array('all', (array) ($selectedClients ?? []), true)"
                                 title="All"
                             />
                         @endif
@@ -101,7 +102,7 @@
 
 
 
-    <div class="sigmaPanel" style="">
+    <div class="sigmaPanel container-fluid report-table-section" style="">
         <div class="col-lg-12 col-sm-12">
             <div class=" ">
                     <div class="">
@@ -113,7 +114,7 @@
                                     <tr>
                                         <th class="header-dark" style="color:white !important;">Doctor</th>
                                         @foreach($selectedJobTypes as $jobType)
-                                            <th class="text-center header-light" style="color:#408385 !important;">{{$jobType->name}}</th>
+                                            <th class="text-center header-light" style="">{{$jobType->name}}</th>
                                         @endforeach
                                         <th class="text-center header-dark" style="color:white !important; border-radius: 2px 14px 3px 3px;">Total</th>
                                     </tr>
@@ -248,7 +249,13 @@
             const form = $('.kt-form')[0];
             if (form) {
                 console.log('Submitting form with perToggle:', isUnits ? '1' : '0');
-                form.submit();
+                window.requestAnimationFrame(function() {
+                    if (typeof form.requestSubmit === 'function') {
+                        form.requestSubmit();
+                    } else {
+                        form.submit();
+                    }
+                });
             }
         });
 
@@ -276,17 +283,36 @@
     function printData()
     {
         var tables = $('.printable');
+        if (tables.length === 0) {
+            return;
+        }
 
-        var styling=document.getElementById("style");
-        newWin= window.open("");
-        newWin.document.write(styling.innerHTML);
-        newWin.document.write('<h3 style="float:left">Clients Consumptions Report <span style="color:#2b2b2b"> - by Job Type, per '+'{{$perUnitTrigger ? "Unit" : "Case"}}'+'</span></h3> ' +
-            ' <h4 style="float:right"> Date Printed :{!! date("d") !!} - {!! date("M") !!} - {!! date("Y") !!} </h4>');
+        var headContent = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+            .map(function(node) { return node.outerHTML; })
+            .join('');
+
+        var newWin = window.open("", "_blank", "width=1200,height=800");
+        if (!newWin) {
+            return;
+        }
+
+        newWin.document.write('<!DOCTYPE html><html><head><title>Job Types Report</title>');
+        newWin.document.write(headContent);
+        newWin.document.write('</head><body>');
+        newWin.document.write('<div style="margin-bottom: 30px;">' +
+            '<h3 style="float:left">Clients Consumptions Report <span style="color:#2b2b2b"> - by Job Type, per {{ $perUnitTrigger ? "Unit" : "Case" }}</span></h3>' +
+            '<h4 style="float:right"> Date Printed :{!! date("d") !!} - {!! date("M") !!} - {!! date("Y") !!} </h4>' +
+            '<div style="clear: both;"></div>' +
+            '</div>');
         $.each(tables, function(key, value) {
             newWin.document.write(value.outerHTML);
         });
-        newWin.print();
-        newWin.close();
+        newWin.document.write('</body></html>');
+        newWin.document.close();
+        setTimeout(function() {
+            newWin.print();
+            newWin.close();
+        }, 250);
     }
     $('.printBtn').on('click',function(){
         printData();

@@ -1,0 +1,372 @@
+/* Implants Report Enhanced Styling */
+/* Keeping existing teal color scheme and adding professional improvements */
+
+/* Report Filters Card - Using master definition from sigma-reports-master.css */
+
+.report-filters-card:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Enhanced form styling with proper margins and alignment */
+.report-filters-card .row {
+    margin: 0;
+    align-items: end !important;
+    gap: 16px;
+}
+
+.report-filters-card .col-lg-2,
+.report-filters-card .col-md-3,
+.report-filters-card .col-6 {
+    padding: 8px 0;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.report-filters-card label {
+    font-weight: 500;
+    color: #344767;
+    margin-bottom: 8px;
+    font-size: 13px;
+    display: block;
+    height: 20px;
+    line-height: 20px;
+}
+
+/* Special styling for empty labels */
+.report-filters-card label:empty::after {
+    content: "\00a0"; /* Non-breaking space to maintain height */
+    visibility: hidden;
+}
+
+/* Ensure consistent form control heights */
+.report-filters-card .form-control,
+.report-filters-card .bootstrap-select,
+.report-filters-card .selectpicker {
+    height: 38px;
+}
+
+/* Toggle section specific styling */
+.report-filters-card .toggle-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 80px;
+    justify-content: flex-end;
+}
+
+.report-filters-card .toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 38px;
+}
+
+/* Button container styling */
+.report-filters-card .button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 80px;
+    justify-content: flex-end;
+}
+
+.report-filters-card .form-control,
+.report-filters-card .selectpicker {
+    border: 1.5px solid #d2d6da;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.report-filters-card .form-control:focus,
+.report-filters-card .selectpicker:focus {
+    border-color: #4fd1c7;
+    box-shadow: 0 0 0 0.2rem rgba(79, 209, 199, 0.15);
+    outline: none;
+}
+
+/* Button styling improvements */
+.report-filters-card .btn {
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 10px 20px;
+    margin: 4px;
+    transition: all 0.3s ease;
+}
+
+.report-filters-card .btn-primary {
+    background: linear-gradient(135deg, #4fd1c7 0%, #3a9e9a 100%);
+    border: none;
+    color: white;
+}
+
+.report-filters-card .btn-primary:hover {
+    background: linear-gradient(135deg, #3a9e9a 0%, #2d7b77 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(79, 209, 199, 0.3);
+}
+
+.report-filters-card .btn-secondary {
+    background: #8392ab;
+    border: none;
+    color: white;
+}
+
+.report-filters-card .btn-secondary:hover {
+    background: #6c7b95;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(131, 146, 171, 0.3);
+}
+
+/* Toggle styling */
+.report-filters-card .toggle-label {
+    font-size: 13px;
+    color: #344767;
+    font-weight: 500;
+}
+
+/* Color coding system for table values */
+.usage-high {
+    background-color: #ffebee !important;
+    color: #d32f2f !important;
+    font-weight: 600;
+}
+
+.usage-medium {
+    background-color: #e8f5e8 !important;
+    color: #2e7d32 !important;
+    font-weight: 600;
+}
+
+.usage-low {
+    background-color: #fafafa !important;
+    color: #757575 !important;
+    font-weight: 500;
+}
+
+/* Enhanced table styling */
+/*.sigma-report-table-container {*/
+/*    margin-top: 24px;*/
+/*    border-radius: 12px;*/
+/*    overflow: hidden;*/
+/*    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);*/
+/*    border: 1px solid #e8ecef;*/
+/*}*/
+
+.sigma-report-table {
+    margin-bottom: 0;
+}
+
+/* Sticky headers */
+.sigma-report-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #8b9dc3 !important;
+    color: white !important;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 16px 12px;
+    border: none !important;
+    text-align: center;
+}
+
+.sigma-report-table thead th:first-child {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.sigma-report-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.sigma-report-table tbody tr:hover {
+    background-color: #f8f9fa !important;
+    transform: scale(1.001);
+    transition: all 0.2s ease;
+}
+
+.sigma-report-table tbody td {
+    padding: 14px 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #e8ecef;
+    vertical-align: middle;
+}
+
+.sigma-report-table tbody td:first-child {
+    padding-left: 20px;
+    font-weight: 500;
+    color: #344767;
+}
+
+/* Professional animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/*.sigma-report-table-container {*/
+/*    animation: fadeInUp 0.6s ease-out;*/
+/*}*/
+
+/* Enhanced pagination styling */
+.sigma-report-pagination {
+    background: #f8f9fa;
+    border-top: 1px solid #e8ecef;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sigma-rows-per-page,
+.sigma-pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sigma-rows-per-page select {
+    border: 1px solid #d2d6da;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 13px;
+    background: white;
+}
+
+.sigma-pagination-btn {
+    background: white;
+    border: 1px solid #d2d6da;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.sigma-pagination-btn:hover:not(.disabled) {
+    background: #4fd1c7;
+    color: white;
+    border-color: #4fd1c7;
+}
+
+.sigma-pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sigma-pagination-info {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+/* Container spacing improvements */
+.sigma-table-container {
+    margin-top: 20px;
+}
+
+/* Typography improvements */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Additional alignment improvements */
+.report-filters-card .bootstrap-select .dropdown-toggle {
+    height: 38px !important;
+    line-height: 24px;
+    border: 1.5px solid #d2d6da !important;
+    border-radius: 8px !important;
+}
+
+.report-filters-card .bootstrap-select .dropdown-toggle:focus {
+    border-color: #4fd1c7 !important;
+    box-shadow: 0 0 0 0.2rem rgba(79, 209, 199, 0.15) !important;
+}
+
+/* Better grid layout for consistent spacing */
+.report-filters-card .row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.report-filters-card .row > * {
+    flex: 1 1 auto;
+    min-width: 180px;
+    max-width: 220px;
+}
+
+/* Responsive improvements */
+@media (max-width: 1200px) {
+    .report-filters-card .row > * {
+        min-width: 160px;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .report-filters-card .row {
+        gap: 12px;
+    }
+
+    .report-filters-card .row > * {
+        min-width: 140px;
+        max-width: 180px;
+    }
+
+    .report-filters-card .col-lg-2,
+    .report-filters-card .col-md-3 {
+        min-height: 70px;
+    }
+}
+
+@media (max-width: 768px) {
+    .report-filters-card {
+        margin: 15px 0;
+        padding: 20px;
+    }
+
+    .report-filters-card .row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .report-filters-card .row > * {
+        min-width: 100%;
+        max-width: 100%;
+        min-height: 60px;
+    }
+
+    .report-filters-card .col-lg-2,
+    .report-filters-card .col-md-3,
+    .report-filters-card .col-6 {
+        margin-bottom: 0;
+    }
+
+    .sigma-report-table thead th,
+    .sigma-report-table tbody td {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+
+    .report-filters-card .d-flex.gap-2 {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .report-filters-card .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

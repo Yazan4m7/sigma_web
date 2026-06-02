@@ -236,7 +236,7 @@ $(document).ready(function() {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js" defer></script>
+    <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js?v={{ filemtime(public_path('assets/js/ysh-custom-js/v3scripts.js')) }}" defer></script>
     <!-- UI Components & Features -->
     <script src="{{asset('assets/js/sweetalert2.min.js')}}"></script>
     <!-- SweetAlert Global Safety Configuration - Must load after SweetAlert -->

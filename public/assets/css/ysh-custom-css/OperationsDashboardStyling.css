@@ -1363,6 +1363,30 @@
    position: relative;
 }
 
+.sigma-processing-shimmer {
+   display: inline-block;
+   font-weight: 600;
+   color: #37b44a;
+   background-image: linear-gradient(
+       90deg,
+       #37b44a 0%,
+       #37b44a 36%,
+       #ffffff 50%,
+       #f5fff7 56%,
+       #37b44a 68%,
+       #37b44a 100%
+   );
+   background-size: 260% 100%;
+   background-position: 200% 50%;
+   background-repeat: no-repeat;
+   -webkit-background-clip: text;
+   background-clip: text;
+   color: transparent;
+   -webkit-text-fill-color: transparent;
+   animation: sigmaProcessingTextShimmer 1.35s linear infinite;
+   filter: drop-shadow(0 0 8px rgba(55, 180, 74, 0.22));
+}
+
 /* Spinner style */
 .btn-loading::after {
    content: "";
@@ -1387,6 +1411,15 @@
 
    100% {
        transform: translateY(-50%) rotate(360deg);
+   }
+}
+
+@keyframes sigmaProcessingTextShimmer {
+   0% {
+       background-position: 200% 50%;
+   }
+   100% {
+       background-position: -40% 50%;
    }
 }
 
@@ -2658,8 +2691,16 @@
        font-size: 13px;
    }
 
+   .ops-dashboard .macaw-tabs.macaw-silk-tabs > [role="tablist"].stage-inner-tabs {
+       justify-content: center;
+   }
+
+   .ops-dashboard .macaw-tabs.macaw-silk-tabs > [role="tablist"].stage-inner-tabs > [role="tab"] {
+       padding: 1% 13% !important;
+   }
+
    .macaw-tabs.macaw-silk-tabs > [role="tablist"] > [role="tab"] {
-       padding: 0.325rem 0.7rem !important;
+       padding: 1% 13% !important;
    }
 
    /* Remove overflow scroll on mobile - responsive CSS will handle it */
@@ -2739,6 +2780,7 @@
    padding: 0;
    align-items: center;
    gap: .75rem;
+   justify-content: flex-start;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tablist"] > *:not(.innerActiveBtn):not(.innerWaitingBtn) {
@@ -2879,7 +2921,7 @@ img {
 }
 
 .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"], .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-body, .site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .YSH-content {
-    overflow: visible !important;
+    /* overflow: visible !important; */
 }
 
 @media (max-width: 767px){
@@ -2941,6 +2983,14 @@ img {
     vertical-align: middle;
     transition: all 0.3s ease;
     background-clip: padding-box;
+}
+
+/* Ops dashboard: force header text left */
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th,
+.ops-dashboard .macaw-tabs.macaw-aurora-tabs table.dataTable thead th,
+#admin-dashboardv2 .macaw-tabs.macaw-aurora-tabs table.sunriseTable thead th,
+#admin-dashboardv2 .macaw-tabs.macaw-aurora-tabs table.dataTable thead th {
+    text-align: left !important;
 }
 
 /* Cover gap above sticky table header */
@@ -3294,7 +3344,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
 
 .macaw-tabs.macaw-silk-tabs > [role="tabpanel"]:focus {
    outline: 0;
-   border-bottom: 6px solid var(--tab-focus-border-color);
+
 }
 
 /*
@@ -3464,6 +3514,7 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
 
 .main-panel > .content {
    padding: 0px;
+   background: white;
 }
 
 .white-content .table > thead > tr > th, .white-content .table > tbody > tr > th, .white-content .table > tfoot > tr > th, .white-content .table > thead > tr > td, .white-content .table > tbody > tr > td, .white-content .table > tfoot > tr > td {
@@ -3890,6 +3941,16 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    border-bottom-color: #c65858 !important;
    box-shadow: inset 0 -2px 0 #c65858;
    font-weight: 600;
+}
+
+.ops-dashboard #active-3dprintinglabel,
+.ops-dashboard #active-millinglabel,
+.ops-dashboard #active-sinteringlabel,
+.ops-dashboard #active-pressinglabel {
+   min-height: var(--sigma-ops-sidebar-tab-height, auto);
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
 }
 
 svg {

@@ -229,7 +229,8 @@ $permissions = safe_permissions();
                                                                 <hr>
                                                                 <div class="form-group row">
                                                                 <div class=" col-12 ">
-                                                                <label ><b>Jobs:</b></label><br>
+                                                                <label class="case-completion-dialog-label"><b>Jobs:</b></label><br>
+                                                                <div class="sigma-case-jobs-list">
                                                                 @php
                                                                     if($stage == -2 || $stage >5)
                                                                      $jobs = $case->jobs;
@@ -241,16 +242,39 @@ $permissions = safe_permissions();
 
                                                                         @php
                                                                             $unit = explode(', ',$job->unit_num);
+                                                                            $jobTypeName = $job->jobType->name ?? "No Job Type";
+                                                                            $materialName = $job->material->name ?? "no material";
+                                                                            $colorLabel = $job->color =='0' ? "" : $job->color;
+                                                                            $styleLabel = $job->style == 'None' ? "" : $job->style;
+                                                                            $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? "Implant Type: " . $job->implantR->name : "";
+                                                                            $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? "Abutment Type: " . $job->abutmentR->name : "";
                                                                         @endphp
 
-                                                                            <span >{{$job->unit_num}} - {{$job->jobType->name}} - {{$job->material->name}} {{$job->color =='0' ? "":" - " .$job->color}}
-                                                                           {{$job->style == 'None' ? "":" - " .$job->style}} {{isset($job->implantR) && $job->jobType->id ==6  ?( " - Implant Type: " . $job->implantR->name): "" }}<br>
-                                                                                {{isset($job->abutmentR)  && $job->jobType->id ==6  ?( " Abutment Type: " . $job->abutmentR->name): "" }} </span>
+                                                                            <div class="sigma-case-job-row">
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{$job->unit_num}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{$jobTypeName}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{$materialName}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{$colorLabel}}</span>
+                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--unit">
+                                                                                    {{$styleLabel}}
+                                                                                    @if($implantLabel || $abutmentLabel)
+                                                                                        <span class="sigma-case-job-extra">
+                                                                                            @if($implantLabel)
+                                                                                                <span>{{$implantLabel}}</span>
+                                                                                            @endif
+                                                                                            @if($abutmentLabel)
+                                                                                                <span>{{$abutmentLabel}}</span>
+                                                                                            @endif
+                                                                                        </span>
+                                                                                    @endif
+                                                                                </span>
+                                                                            </div>
                                                                     @endforeach
+                                                                </div>
                                                                 </div></div>
                                                                 @if(count($case->notes)>0)
                                                                 <hr>
-                                                                <label ><b>Notes:</b></label><br>
+                                                                <label class="case-completion-dialog-label"><b>Notes:</b></label><br>
 
                                                                 @foreach($case->notes as $note)
 

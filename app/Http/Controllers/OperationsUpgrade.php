@@ -8,6 +8,7 @@ use App\device;
 use App\job;
 use App\sCase;
 use App\User;
+use App\Services\AuditLogger;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -235,6 +236,9 @@ class OperationsUpgrade extends Controller
                 'printing_build_id' => $type == "3dprinting" ? $build->id : null,
                 'sintering_build_id' => $type == "sintering" ? $build->id : null,
                 'pressing_build_id' => $type == "pressing" ? $build->id : null,
+                'build_id' => $build->id,
+                'build_name' => $build->name,
+                'device_name' => $deviceName,
                 'notes_suffix' => ", Build: {$buildName}",
                 'is_active' => $type == "sintering" ? 1 : 0,
                 'type_id' => $materialTypeId
@@ -902,6 +906,12 @@ class OperationsUpgrade extends Controller
         $notesSuffix = $options['notes_suffix'] ?? '';
         $stageConfig = self::STAGE_CONFIG[$type];
         $loggedCases = []; // Track cases that have already been logged
+        $stageBuildIdField = $this->getBuildIdFieldFromType($type);
+        $casesById = sCase::query()
+            ->select('id', 'case_id')
+            ->whereIn('id', $jobs->pluck('case_id')->unique())
+            ->get()
+            ->keyBy('id');
 
         foreach ($jobs as $job) {
             // Update job
@@ -909,12 +919,12 @@ class OperationsUpgrade extends Controller
             $job->is_active = $options['is_active'] ?? 0;
             $job->device_id = $deviceId;
 
-            // Set build ID based on stage
-
-            $job->milling_build_id = $options['milling_build_id'] ?? null;
-            $job->printing_build_id = $options['printing_build_id'] ?? null;
-            $job->sintering_build_id = $options['sintering_build_id'] ?? null;
-            $job->pressing_build_id = $options['pressing_build_id'] ?? null;
+            // Preserve prior stage build links; only assign the build ID for the stage being set now.
+            foreach (['milling_build_id', 'printing_build_id', 'sintering_build_id', 'pressing_build_id'] as $jobBuildIdField) {
+                if (array_key_exists($jobBuildIdField, $options) && !empty($options[$jobBuildIdField])) {
+                    $job->{$jobBuildIdField} = $options[$jobBuildIdField];
+                }
+            }
 
             // Set material type ID if provided
             if (isset($options['type_id']) && !empty($options['type_id'])) {
@@ -957,6 +967,17 @@ class OperationsUpgrade extends Controller
                     $logData['notes'] = "Job {$stageConfig['set_action']} on {$stageConfig['device_type']}: {$deviceId}{$notesSuffix}";
                 }
                 caseLog::create($logData);
+
+                $this->logStageBuildAssignmentAudit(
+                    $casesById->get($job->case_id),
+                    $stageConfig,
+                    $stage,
+                    $deviceId,
+                    $options['device_name'] ?? null,
+                    $stageBuildIdField,
+                    $options['build_id'] ?? ($stageBuildIdField ? $job->{$stageBuildIdField} : null),
+                    $options['build_name'] ?? null
+                );
             }
         }
 
@@ -1000,13 +1021,13 @@ class OperationsUpgrade extends Controller
                 if ($build) {
                     $job->printing_build_id = $build->id;
                 }
-            } elseif ($stage == 3 && empty($job->sintering_build_id)) { // pressing
+            } elseif ($stage == 4 && empty($job->sintering_build_id)) { // Sintering
                 // Find a build for this device
                 $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
                     $job->sintering_build_id = $build->id;
                 }
-            } elseif ($stage == 4 && empty($job->pressing_build_id)) { // pressing
+            } elseif ($stage == 5 && empty($job->pressing_build_id)) { // Pressing
                 // Find a build for this device
                 $build = Build::where('device_used', $deviceId)->whereNotNull('set_at')->first();
                 if ($build) {
@@ -1213,6 +1234,42 @@ class OperationsUpgrade extends Controller
         }
 
         return null;
+    }
+
+    private function logStageBuildAssignmentAudit(?sCase $case, array $stageConfig, int $stage, int $deviceId, ?string $deviceName, ?string $buildIdField, $buildId, ?string $buildName = null): void
+    {
+        if (!$case || empty($buildIdField) || empty($buildId)) {
+            return;
+        }
+
+        $caseNumber = $case->case_id ?? $case->id;
+        $description = sprintf(
+            'Case %s set on %s (%s: %s, device_id: %s%s%s)',
+            $caseNumber,
+            $stageConfig['name'],
+            $buildIdField,
+            $buildId,
+            $deviceId,
+            $deviceName ? ', device: ' . $deviceName : '',
+            $buildName ? ', build: ' . $buildName : ''
+        );
+
+        AuditLogger::log(
+            'case_stage_build_set',
+            $case,
+            [
+                'case_id' => $case->id,
+                'case_number' => $caseNumber,
+                'stage' => $stage,
+                'stage_name' => $stageConfig['name'],
+                'build_id_field' => $buildIdField,
+                'build_id' => (int) $buildId,
+                'build_name' => $buildName,
+                'device_id' => $deviceId,
+                'device_name' => $deviceName,
+            ],
+            $description
+        );
     }
 
     /**

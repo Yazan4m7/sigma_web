@@ -441,7 +441,6 @@ function submitDeviceDialog(deviceId, type, itemType, actionType) {
     form.submit();
     // document.getElementById(`.#process-form-${deviceId}`).submit();
 // Submit the form
-    hideLoadingIndicator();
 }
 
 function requestBuildRemoval(deviceId, type, buildId, isActive) {
@@ -1135,46 +1134,70 @@ function showLoadingIndicator() {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgb(0 0 0 / 88%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(1px);
         `;
         loadingIndicator.innerHTML = `
-            <div style="
-                background: white;
-                padding: 20px;
-                border-radius: 10px;
-                text-align: center;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            ">
-                <div style="
-                    border: 4px solid #f3f3f3;
-                    border-top: 4px solid #3498db;
-                    border-radius: 50%;
-                    width: 40px;
-                    height: 40px;
-                    animation: spin 2s linear infinite;
-                    margin: 0 auto 15px;
-                "></div>
-                <div style="color: #333; font-size: 16px; font-weight: 500;">Processing...</div>
-            </div>
+            <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
         `;
 
-        // Add spinner animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        `;
-        document.head.appendChild(style);
+        if (!document.getElementById('sigma-processing-indicator-style')) {
+            const style = document.createElement('style');
+            style.id = 'sigma-processing-indicator-style';
+            style.textContent = `
+                .sigma-processing-indicator__text {
+                    position: relative;
+                    display: inline-block;
+                    font-size: 31px;
+                    font-weight: 700;
+                    font-family: "Poppins", sans-serif;
+                    color: #37b44a;
+                    text-shadow: 0 0 14px rgba(55, 180, 74, 0.35);
+                }
+
+                .sigma-processing-indicator__text::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    inset: 0;
+                    color: transparent;
+                    background-image: linear-gradient(
+                        90deg,
+                        rgba(55, 180, 74, 0) 0%,
+                        rgba(55, 180, 74, 0) 30%,
+                        #ffffff 50%,
+                        #f5fff7 56%,
+                        rgba(55, 180, 74, 0) 70%,
+                        rgba(55, 180, 74, 0) 100%
+                    );
+                    background-size: 200% 100%;
+                    background-position: 200% 50%;
+                    background-repeat: no-repeat;
+                    -webkit-background-clip: text;
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    animation: sigmaProcessingShimmer 1.2s linear infinite;
+                    pointer-events: none;
+                }
+
+                @keyframes sigmaProcessingShimmer {
+                    0% { background-position: 200% 50%; }
+                    100% { background-position: -50% 50%; }
+                }
+            `;
+            document.head.appendChild(style);
+        }
 
         document.body.appendChild(loadingIndicator);
     }
 
+    loadingIndicator.style.background = 'rgb(0 0 0 / 88%)';
+    loadingIndicator.style.backdropFilter = 'blur(1px)';
+    loadingIndicator.style.webkitBackdropFilter = 'blur(1px)';
     loadingIndicator.style.display = 'flex';
     console.log('Loading indicator shown');
 }

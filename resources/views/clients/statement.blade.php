@@ -107,7 +107,7 @@
                         <span>Apply</span>
                     </button>
                 </div>
-                <div class="col-lg-3 col-md-3 col-12 mb-3">
+                <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-secondary-col">
                     <div class="sigma-filter-toolbar-end">
                     <button type="button" class="btn sigma-toolbar-icon-btn" title="All-time" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">
                         <i class="fas fa-clock"></i>

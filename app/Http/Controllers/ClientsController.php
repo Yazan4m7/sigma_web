@@ -20,6 +20,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class ClientsController extends Controller
 {
@@ -57,13 +58,10 @@ class ClientsController extends Controller
         $from = $request->from ?? now()->toDateString() . ' 23:59';
         $status = $request->has('active') ? (int) $request->active : 1;
 
-// Start query
         $query = Client::query();
 
-// Filter by active status only (no soft deletes)
         $query->where('active', $status);
 
-// Filter by doctors
         if ($request->doctor && !in_array('all', $request->doctor)) {
             $query->whereIn('id', $request->doctor);
             $selectedClients = $request->doctor;
@@ -71,15 +69,12 @@ class ClientsController extends Controller
             $selectedClients = null;
         }
 
-        $clients = $query->get();
+        $clients = $query->get(['id', 'name', 'active', 'balance']);
 
-// Balance logic
-        $from = $request->from ?? now()->toDateString() . ' 23:59';
-        $totalBalance = $clients->sum(fn($client) => $client->balanceAt($from));
+        $totalBalance = $this->attachClientBalances($clients, $from);
 
-// Supporting data
-        $allClients = Client::all();
-        $banks = Bank::all();
+        $allClients = Client::query()->select(['id', 'name'])->orderBy('name')->get();
+        $banks = Bank::query()->select(['id', 'bank_name'])->get();
 
         return view('clients.index', compact(
             'allClients',
@@ -90,6 +85,40 @@ class ClientsController extends Controller
             'totalBalance'
         ))->with('status', $status);
 
+    }
+
+    private function attachClientBalances($clients, string $from): float
+    {
+        if ($clients->isEmpty()) {
+            return 0;
+        }
+
+        $clientIds = $clients->pluck('id');
+
+        $invoiceTotals = invoice::query()
+            ->selectRaw('doctor_id, SUM(amount) as total_amount')
+            ->where('status', 1)
+            ->whereIn('doctor_id', $clientIds)
+            ->where('date_applied', '<=', $from)
+            ->groupBy('doctor_id')
+            ->pluck('total_amount', 'doctor_id');
+
+        $paymentTotals = payment::query()
+            ->selectRaw('doctor_id, SUM(amount) as total_amount')
+            ->whereIn('doctor_id', $clientIds)
+            ->where('created_at', '<=', $from)
+            ->groupBy('doctor_id')
+            ->pluck('total_amount', 'doctor_id');
+
+        $totalBalance = 0;
+
+        foreach ($clients as $client) {
+            $balance = (float) ($invoiceTotals[$client->id] ?? 0) - (float) ($paymentTotals[$client->id] ?? 0);
+            $client->setAttribute('display_balance', $balance);
+            $totalBalance += $balance;
+        }
+
+        return $totalBalance;
     }
 
     public function returnCreate()
@@ -279,20 +308,24 @@ class ClientsController extends Controller
     }
     public function newPayment(Request $request){
         $this->validate($request, [
-            'id'     => 'required',
-            'amount' => 'required|numeric',
+            'id' => 'required',
+            'amount' => 'required|integer|min:0',
+            'payment_type' => 'required|in:cash,cheque,transfer',
+            'bank_id' => 'nullable|required_if:payment_type,cheque|exists:banks,id',
+            'chequeNumber' => 'nullable|required_if:payment_type,cheque|string|max:255',
         ]);
+        $amount = (int) $request->amount;
         $doctor = client::where('id', $request->id)->first();
 
         if(!$doctor){
             return back()->with('error', "Doctor not found");
         }
 
-        $doctor->balance = $doctor->balance - $request->amount;
+        $doctor->balance = $doctor->balance - $amount;
         $doctor->save();
 
         $payment = new payment();
-        $payment->amount = $request->amount;
+        $payment->amount = $amount;
         $payment->collector = Auth()->user()->id;
         if($request->payment_type == 'cash'){
             $payment->notes = "دفعة نقدية";
@@ -338,7 +371,207 @@ class ClientsController extends Controller
         return view('generic.payments-list',compact('payments','to','from','clients','selectedClients'));
     }
 
+    public function sales(Request $request)
+    {
+        $from = $request->from ?: date('Y-m-d', strtotime('first day of this month'));
+        $to = $request->to ?: now()->toDateString();
+
+        $selectedClients = null;
+        $selectedDoctorIds = [];
+
+        if (is_array($request->doctor) && !in_array('all', $request->doctor)) {
+            $selectedDoctorIds = array_values($request->doctor);
+            $selectedClients = $selectedDoctorIds;
+        }
+
+        $invoiceTotals = invoice::query()
+            ->selectRaw('doctor_id, SUM(amount) as total_invoice_amount')
+            ->where('status', 1)
+            ->whereNotNull('date_applied')
+            ->whereBetween('date_applied', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('doctor_id', $selectedDoctorIds);
+            })
+            ->groupBy('doctor_id');
+
+        $lastInvoiceDates = invoice::query()
+            ->selectRaw('doctor_id, MAX(date_applied) as last_invoice_date')
+            ->where('status', 1)
+            ->whereNotNull('date_applied')
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('doctor_id', $selectedDoctorIds);
+            })
+            ->groupBy('doctor_id');
+
+        $sales = client::query()
+            ->select([
+                'clients.id',
+                'clients.name',
+                'clients.balance',
+                DB::raw('COALESCE(invoice_totals.total_invoice_amount, 0) as total_invoice_amount'),
+                'last_invoice_dates.last_invoice_date',
+            ])
+            ->leftJoinSub($invoiceTotals, 'invoice_totals', function ($join) {
+                $join->on('invoice_totals.doctor_id', '=', 'clients.id');
+            })
+            ->leftJoinSub($lastInvoiceDates, 'last_invoice_dates', function ($join) {
+                $join->on('last_invoice_dates.doctor_id', '=', 'clients.id');
+            })
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('clients.id', $selectedDoctorIds);
+            })
+            ->where('clients.active', 1)
+            ->orderBy('clients.name')
+            ->get();
+
+        $this->attachClientBalances($sales, now()->toDateString() . ' 23:59:59');
+
+        $latestInvoices = invoice::query()
+            ->select(['id', 'doctor_id', 'date_applied', 'discount_title', 'case_id'])
+            ->where('status', 1)
+            ->whereNotNull('date_applied')
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('doctor_id', $selectedDoctorIds);
+            })
+            ->orderBy('doctor_id')
+            ->orderByDesc('date_applied')
+            ->orderByDesc('id')
+            ->get()
+            ->unique('doctor_id')
+            ->keyBy('doctor_id');
+
+        foreach ($sales as $doctor) {
+            $latestInvoice = $latestInvoices->get($doctor->id);
+            $doctor->setAttribute('last_invoice_id', optional($latestInvoice)->id);
+            $doctor->setAttribute('last_invoice_case_id', optional($latestInvoice)->case_id);
+            $doctor->setAttribute(
+                'last_invoice_is_discount',
+                (bool) ($latestInvoice && (!empty($latestInvoice->discount_title) || (int) $latestInvoice->case_id === -1))
+            );
+        }
+
+        $allClients = client::query()
+            ->select(['id', 'name'])
+            ->where('active', 1)
+            ->orderBy('name')
+            ->get();
+
+        return view('clients.sales', compact(
+            'sales',
+            'allClients',
+            'selectedClients',
+            'from',
+            'to'
+        ));
+    }
+
+    public function salesByMonth(Request $request)
+    {
+        $now = now();
+        $fromDate = $request->filled('from')
+            ? \Carbon\Carbon::parse($request->from)->startOfMonth()
+            : $now->copy()->startOfYear();
+
+        $requestedTo = $request->filled('to')
+            ? \Carbon\Carbon::parse($request->to)
+            : $now->copy();
+
+        $toDate = $requestedTo->isSameMonth($now)
+            ? $now->copy()
+            : $requestedTo->copy()->endOfMonth();
+
+        if ($fromDate->gt($toDate)) {
+            [$fromDate, $toDate] = [$toDate->copy()->startOfMonth(), $fromDate->copy()->endOfMonth()];
+        }
+
+        $from = $fromDate->toDateString();
+        $to = $toDate->toDateString();
+
+        $selectedClients = null;
+        $selectedDoctorIds = [];
+
+        if (is_array($request->doctor) && !in_array('all', $request->doctor)) {
+            $selectedDoctorIds = array_values($request->doctor);
+            $selectedClients = $selectedDoctorIds;
+        }
+
+        $startMonth = $fromDate->copy()->startOfMonth();
+        $endMonth = $toDate->copy()->startOfMonth();
+
+        $months = [];
+        $monthCursor = $startMonth->copy();
+
+        while ($monthCursor->lte($endMonth)) {
+            $months[] = [
+                'key' => $monthCursor->format('Y-m'),
+                'label' => $monthCursor->format('n/Y'),
+            ];
+            $monthCursor->addMonth();
+        }
+
+        $monthlyInvoiceTotals = invoice::query()
+            ->selectRaw("DATE_FORMAT(date_applied, '%Y-%m') as sales_month, SUM(amount) as total_invoice_amount")
+            ->where('status', 1)
+            ->whereNotNull('date_applied')
+            ->whereBetween('date_applied', [$from . ' 00:00:00', $to . ' 23:59:59'])
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('doctor_id', $selectedDoctorIds);
+            })
+            ->groupBy('sales_month')
+            ->get()
+            ->keyBy('sales_month');
+
+        $selectedDoctors = client::query()
+            ->select(['id', 'name'])
+            ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
+                $query->whereIn('id', $selectedDoctorIds);
+            })
+            ->where('active', 1)
+            ->orderBy('name')
+            ->get();
+
+        $chartLabels = [];
+        $chartValues = [];
+        $grandTotal = 0;
+
+        foreach ($months as &$month) {
+            $amount = (float) optional($monthlyInvoiceTotals->get($month['key']))->total_invoice_amount;
+            $month['value'] = $amount;
+            $chartLabels[] = $month['label'];
+            $chartValues[] = $amount;
+            $grandTotal += $amount;
+        }
+        unset($month);
+
+        $selectedDoctorsCount = $selectedDoctors->count();
+        $monthsCount = count($months);
+
+        $allClients = client::query()
+            ->select(['id', 'name'])
+            ->where('active', 1)
+            ->orderBy('name')
+            ->get();
+
+        return view('clients.sales-by-month', compact(
+            'months',
+            'chartLabels',
+            'chartValues',
+            'grandTotal',
+            'selectedDoctorsCount',
+            'monthsCount',
+            'allClients',
+            'selectedClients',
+            'from',
+            'to'
+        ));
+    }
+
     public function accountDiscount(Request $request){
+        $this->validate($request, [
+            'id' => 'required',
+            'discountAmount' => 'required|integer|min:0',
+        ]);
+        $discountAmount = (int) $request->discountAmount;
         $doctor = client::where('id', $request->id)->first();
         if(!$doctor){
             return back()->with('error', "Doctor not found");
@@ -348,8 +581,8 @@ class ClientsController extends Controller
             $invoice->date_applied = $request->discount_date;;
             $invoice->created_at = $request->discount_date;
             $invoice->updated_at = $request->discount_date;
-            $invoice->amount =$request->discountAmount*-1;
-            $invoice->amount_before_discount =$request->discountAmount*-1;
+            $invoice->amount = $discountAmount * -1;
+            $invoice->amount_before_discount = $discountAmount * -1;
             $invoice->case_id =-1;
             $invoice->doctor_id =$doctor->id;
             $invoice->discount_title =$request->discount_title;

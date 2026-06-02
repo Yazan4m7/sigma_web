@@ -24,7 +24,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" />
     {{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/> --}}
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css?v={{ filemtime(public_path('assets/css/ysh-custom-css/OperationsDashboardStyling.css')) }}" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/operations-dashboard-table-fix.css" rel="stylesheet" />
@@ -55,194 +55,44 @@
         }
 
         @media (max-width: 480px){
-            
-.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
-            {
+            .sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog,
+            .sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog,
+            .sigma-modal--cases-dashboard-loading .sigma-workflow-dialog,
+            .sigma-modal--active-cases-preview .sigma-workflow-dialog,
+            .sigma-modal--waiting-3d-printing .sigma-workflow-dialog,
+            .sigma-modal--waiting-delivery .sigma-workflow-dialog,
+            .sigma-modal--waiting-generic .sigma-workflow-dialog {
                 max-width: none !important;
                 width: auto !important;
                 min-width: -webkit-fill-available;
                 margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--active-cases-preview .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--waiting-delivery .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
-            }
-.sigma-modal--waiting-generic .sigma-workflow-dialog {
-            {
-                max-width: none !important;
-                width: auto !important;
-                min-width: -webkit-fill-available;
-                margin: 0 15px;
-                /* Minimum width for proper machine display */
-            }
             }
 
-            
-.sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--cases-dashboard-loading .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--active-cases-preview .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--waiting-3d-printing .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--waiting-delivery .modal-footer .col-12 {
-                padding-left: 0 !important;
-            }
-.sigma-modal--waiting-generic .modal-footer .col-12 {
+            .sigma-modal--cases-dashboard-case-completion .modal-footer .col-12,
+            .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .col-12,
+            .sigma-modal--cases-dashboard-loading .modal-footer .col-12,
+            .sigma-modal--active-cases-preview .modal-footer .col-12,
+            .sigma-modal--waiting-3d-printing .modal-footer .col-12,
+            .sigma-modal--waiting-delivery .modal-footer .col-12,
+            .sigma-modal--waiting-generic .modal-footer .col-12 {
                 padding-left: 0 !important;
             }
 
             @media (max-width: 700px){
-                
-.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
-                {
+                .sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog,
+                .sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog,
+                .sigma-modal--cases-dashboard-loading .sigma-workflow-dialog,
+                .sigma-modal--active-cases-preview .sigma-workflow-dialog,
+                .sigma-modal--waiting-3d-printing .sigma-workflow-dialog,
+                .sigma-modal--waiting-delivery .sigma-workflow-dialog,
+                .sigma-modal--waiting-generic .sigma-workflow-dialog {
                     max-width: none !important;
                     width: 90% !important;
-
-                    /* Minimum width for proper machine display */
                 }
-                }
-.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-.sigma-modal--active-cases-preview .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-.sigma-modal--waiting-delivery .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-.sigma-modal--waiting-generic .sigma-workflow-dialog {
-                {
-                    max-width: none !important;
-                    width: 90% !important;
-
-                    /* Minimum width for proper machine display */
-                }
-                }
-
-                @media (min-width: 700px){
-                    
-.sigma-modal--cases-dashboard-case-completion .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--cases-dashboard-case-completion-alt .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--cases-dashboard-loading .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--active-cases-preview .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--waiting-3d-printing .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--waiting-delivery .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-.sigma-modal--waiting-generic .sigma-workflow-dialog {
-                        max-width: none !important;
-
-                        /* Minimum width for proper machine display */
-                    }
-                }
+            }
 
                 /* Use Animate.css for Case Completion modal */
-                
+
 .modal.fade.sigma-modal--cases-dashboard-case-completion .modal-dialog {
                   /*  width: 90%; */
                     /* Will be animated by Animate.css classes */
@@ -272,7 +122,7 @@
                     /* Will be animated by Animate.css classes */
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-content {
                     border-radius: 25px !important;
                     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -310,7 +160,7 @@
                 }
 
                 /* Modal footer rounded bottom corners */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer {
                     border-bottom-left-radius: 25px !important;
                     border-bottom-right-radius: 25px !important;
@@ -341,7 +191,7 @@
                 }
 
                 /* Modal header styling with divider */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-header {
                     display: none !important;
                     border-bottom: 1px solid #dee2e6 !important;
@@ -379,7 +229,7 @@
                 }
 
                 /* Modal title styling */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-title {
                     color: #2d5f6d;
                     font-weight: 600;
@@ -435,7 +285,7 @@
                 }
 
                 /* Close button styling - more visible */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-header button.close {
                     font-size: 32px;
                     font-weight: 300;
@@ -486,7 +336,7 @@
                     text-shadow: none;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-header button.close:hover {
                     opacity: 1;
                     color: #000;
@@ -531,6 +381,24 @@
                     display: block;
                 }
 
+                .sigma-modal--cases-dashboard-case-completion .patient-doctor-label,
+                .sigma-modal--cases-dashboard-case-completion .case-completion-dialog-label,
+                .sigma-modal--cases-dashboard-case-completion-alt .patient-doctor-label,
+                .sigma-modal--cases-dashboard-case-completion-alt .case-completion-dialog-label {
+                    font-size: 12px;
+                    text-transform: uppercase;
+                    color: #6c757d;
+                    margin-bottom: 2px;
+                    display: block;
+                    font-weight: 400 !important;
+                    letter-spacing: normal !important;
+                }
+
+                .sigma-modal--cases-dashboard-case-completion .case-completion-dialog-label b,
+                .sigma-modal--cases-dashboard-case-completion-alt .case-completion-dialog-label b {
+                    font-weight: 400 !important;
+                }
+
                 /* Scrollable section for jobs and notes only */
                 .scrollable-content {
                     max-height: 40vh;
@@ -545,7 +413,7 @@
                     color: #212529;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer {
                     display: block;
                     padding: 1rem;
@@ -582,7 +450,7 @@
                     border-top: 1px solid #dee2e6;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .row {
                     margin: 0;
                 }
@@ -605,7 +473,7 @@
                     margin: 0;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .col-6, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-4, .sigma-modal--cases-dashboard-case-completion .modal-footer .col-12 {
                     padding-left: 0 !important;
                 }
@@ -628,7 +496,7 @@
                     padding-left: 0 !important;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn {
                     width: 100%;
                     margin: 3px;
@@ -694,7 +562,7 @@
                 }
 
                 /* Button color improvements with proper contrast */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info {
                     background-color: #17a2b8;
                     color: #ffffff !important;
@@ -731,7 +599,7 @@
                     box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-info:hover {
                     background-color: #138496;
                     box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
@@ -761,7 +629,7 @@
                     box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success {
                     background-color: #28a745;
                     color: #ffffff !important;
@@ -798,7 +666,7 @@
                     box-shadow: 0 2px 4px rgba(40, 167, 69, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:hover {
                     background-color: #218838;
                     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
@@ -828,7 +696,9 @@
                     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
                 }
 
-                
+          .main-panel {
+              width: calc(100% - 79px) !important;
+            }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:disabled {
                     background-color: #6c757d;
                     color: #ffffff !important;
@@ -865,7 +735,7 @@
                     opacity: 0.6;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning {
                     background-color: #ffc107;
                     color: #ffffff !important;
@@ -902,7 +772,7 @@
                     box-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning:hover {
                     background-color: #e0a800;
                     color: #ffffff !important;
@@ -939,7 +809,7 @@
                     box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark {
                     background-color: #343a40;
                     color: #ffffff !important;
@@ -976,7 +846,7 @@
                     box-shadow: 0 2px 4px rgba(52, 58, 64, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-dark:hover {
                     background-color: #23272b;
                     box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
@@ -1006,7 +876,7 @@
                     box-shadow: 0 4px 8px rgba(52, 58, 64, 0.4);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info {
                     border: 2px solid #17a2b8;
                     background-color: transparent;
@@ -1043,7 +913,7 @@
                     color: #17a2b8 !important;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-info:hover {
                     background-color: #17a2b8;
                     color: #ffffff !important;
@@ -1080,7 +950,7 @@
                     box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger {
                     border: 2px solid #dc3545;
                     background-color: transparent;
@@ -1117,7 +987,7 @@
                     color: #dc3545 !important;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger:hover {
                     background-color: #dc3545;
                     color: #ffffff !important;
@@ -1154,7 +1024,7 @@
                     box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary {
                     border: 2px solid #6c757d;
                     background-color: transparent;
@@ -1191,7 +1061,7 @@
                     color: #6c757d !important;
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-secondary:hover {
                     background-color: #6c757d;
                     color: #ffffff !important;
@@ -1228,7 +1098,7 @@
                     box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary {
                     background-color: #6c757d;
                     color: #ffffff !important;
@@ -1265,7 +1135,7 @@
                     box-shadow: 0 2px 4px rgba(108, 117, 125, 0.3);
                 }
 
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-secondary:hover {
                     background-color: #5a6268;
                     box-shadow: 0 4px 8px rgba(108, 117, 125, 0.4);
@@ -1296,7 +1166,7 @@
                 }
 
                 /* Icon spacing */
-                
+
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn i {
                     margin-right: 6px;
                 }
@@ -1377,68 +1247,107 @@
                 }
             }
         }
-        
+
 
     </style>
     <style>
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-jobs-list,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-jobs-list {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .sigma-modal--cases-dashboard-case-completion .case-jobs-label,
+        .sigma-modal--cases-dashboard-case-completion-alt .case-jobs-label,
+        .sigma-modal--dashboard-waiting-actions .case-jobs-label,
+        .sigma-modal--dashboard-active-case-actions .case-jobs-label,
+        .ysh-case-slide-modal .case-jobs-label {
+            display: block;
+            margin-bottom: 8px !important;
+            color: #4d626d;
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
         }
+
+        .sigma-modal--cases-dashboard-case-completion .case-notes-label,
+        .sigma-modal--cases-dashboard-case-completion-alt .case-notes-label,
+        .sigma-modal--dashboard-waiting-actions .case-notes-label,
+        .sigma-modal--dashboard-active-case-actions .case-notes-label,
+        .ysh-case-slide-modal .case-notes-label {
+            display: block;
+            margin-bottom: 8px !important;
+            color: #5c6f7a;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-jobs-list,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-jobs-list,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-jobs-list,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-jobs-list,
+        .ysh-case-slide-modal .sigma-case-jobs-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 7px !important;
+            width: 100%;
+            margin: 0 !important;
+        }
+
 
         .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-row,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-row,
+        .ysh-case-slide-modal .sigma-case-job-row {
+            background: #eef6fa !important;
+            background-color: #eef6fa !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            width: 100%;
+            min-width: 0;
+            padding: 9px 12px !important;
+            margin: 0 !important;
+            border: 1px solid #d7e5ec;
+            border-radius: 9px;
+            color: #294450;
+            font-size: 1rem;
+            line-height: 1.45 !important;
+            overflow: hidden !important;
+            white-space: normal !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            box-shadow: 0 1px 3px rgba(41, 68, 80, 0.07) !important;
         }
 
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--teeth,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--teeth {
-            width: 85px;
-            flex: 0 0 85px;
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-primary,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-primary,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-primary,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-primary,
+        .ysh-case-slide-modal .sigma-case-job-primary {
+            display: block;
+            width: 100%;
+            color: #294450;
+            font-weight: 600;
+            line-height: 1.45 !important;
+            white-space: normal !important;
+            overflow-wrap: anywhere;
+            word-break: break-word;
         }
 
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type {
-            width: 100px;
-            flex: 0 0 100px;
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row::-webkit-scrollbar,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row::-webkit-scrollbar,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-row::-webkit-scrollbar,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-row::-webkit-scrollbar,
+        .ysh-case-slide-modal .sigma-case-job-row::-webkit-scrollbar {
+            display: none;
         }
 
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--mat,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--mat {
-            width: 100px;
-            flex: 0 0 100px;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--shade,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--shade {
-            width: 25px;
-            flex: 0 0 25px;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--unit,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--unit {
-            width: 70px;
-            flex: 0 0 70px;
-        }
-
-        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row .sigma-case-job-cell,
-        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row .sigma-case-job-cell,
-        /* Apply ellipsis to job-grid-cell within any relevant modal context */
-        .sigma-modal--active-cases-preview .job-grid-cell,
-        .sigma-modal--cases-dashboard-case-completion .job-grid-cell,
-        .sigma-modal--cases-dashboard-case-completion-alt .job-grid-cell,
-        .sigma-modal--waiting-3d-printing .job-grid-cell,
-        .sigma-modal--waiting-delivery .job-grid-cell,
-        .sigma-modal--waiting-generic .job-grid-cell
-        {
-            text-align: left;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        @media (max-width: 767.98px) {
+            .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row,
+            .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row,
+            .sigma-modal--dashboard-waiting-actions .sigma-case-job-row,
+            .sigma-modal--dashboard-active-case-actions .sigma-case-job-row,
+            .ysh-case-slide-modal .sigma-case-job-row {
+                font-size: 0.9rem;
+                padding: 8px 10px !important;
+            }
         }
 
 
@@ -1851,16 +1760,6 @@
         <!-- Begin Main -->
         <main style="background-color: white">
             <!-- Begin .macaw-tabs -->
-<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
-<div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
-    <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</div>
 <div class="macaw-tabs macaw-aurora-tabs notransition" style="position: relative;">
 
                 <div role="tablist" class="stageSidebar" aria-orientation="vertical">
@@ -1956,142 +1855,145 @@
                                     @break
                                 @endswitch
                                 <div class="stage-panel-scroll">
-                                <table class="{{ $key }}  waitingTable sunriseTable no-auto-colresize" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
-                                            @if ($key != 'delivery' || $isDeliveryAndAssignable)
-                                                @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                                    {{-- Checkbox column header --}}
-
-                                                    @if (count($stage['waitingCases']) != 0)
-                                                        <th class="no-sort text-center ops-col ops-col--select" style="width: 50px;">
-                                                            <input type="checkbox"
-                                                                class="selectAllCases {{ $key }}" value="0"
-                                                                name="selectAllCases"
-                                                                onchange="selectAll(this, '{{ $key }}')" />
-                                                        </th>
-                                                    @endif
-                                                @endif
-                                            @endif
-                                            <th class="ops-col ops-col--doctor">Doctor</th>
-                                            <th class="ops-col ops-col--patient">Patient</th>
-                                            <th class="deliveryDateHeader ops-col ops-col--delivery"><span
-                                                    class="innerSpan4Mobile">D.Date</span><span
-                                                    class="innerSpan4DeskTop">Delivery Date</span></th>
-                                            @if ($key == 'delivery')
-                                                <th class="ops-col ops-col--assigned"> Assigned To</th>
-                                            @endif
-                                            <th class="ops-col ops-col--count">#</th>
-
-                                            <th class="ops-col ops-col--tags">Tags</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        @foreach ($stage['waitingCases'] as $case)
-                                            <tr style="color:{{ $color }}">
-                                                @php
-                                                    // Normalize key case
-                                                    $key = strtolower($key);
-
-                                                @endphp
-
-
-
-                                                @if ($key == 'finishing')
-                                                    @php
-                                                        $notReadyA = false;
-                                                        $abutmentsReceived = $case->abutmentsReceived();
-                                                        if (!$case->allUnitsAtFinishing()) {
-                                                            $notReadyA = true;
-                                                        }
-
-                                                    @endphp
-                                                @endif
-                                                {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
-                                                @if ($key != 'delivery' || $isDeliveryAndAssignable)
-                                                    @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
-                                                        <td class="no-sort ops-col ops-col--select">
-                                                            <input type="checkbox" data-type="{{ $key }}"
-                                                                data-group-id="{{ $key }}"
-                                                                class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
-                                                                value="{{ $case->id }}"
-                                                                name="CheckBoxes{{ $key }}[]"
-                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
-
-                                                        </td>
-                                                    @endif
-                                                @endif
-                                                <td class="clickable ops-col ops-col--doctor" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
-                                                </td>
-                                                <td class="clickable ops-col ops-col--patient" data-toggle="modal" dir="auto"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">{{ $case->patient_name }}
-                                                        @if ($key == 'finishing')
-                                                            @if ($notReadyA)
-                                                                <span
-                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
-                                                                    Not <br>
-                                                                    Ready
-                                                                </span>
-                                                            @endif
-                                                            @if (!$abutmentsReceived)
-                                                                <span
-                                                                    style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
-                                                                    Abutment <br>
-                                                                    Missing
-                                                                </span>
+                                    @if (($key != 'delivery' || $isDeliveryAndAssignable) && ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery') && count($stage['waitingCases']) != 0)
+                                        <div class="ops-case-list__bulk d-md-none">
+                                            <label class="ops-case-list__bulk-toggle">
+                                                <input type="checkbox"
+                                                    class="selectAllCases {{ $key }}" value="0"
+                                                    name="selectAllCases"
+                                                    onchange="selectAll(this, '{{ $key }}')" />
+                                                <span>Select all</span>
+                                            </label>
+                                        </div>
+                                    @endif
+                                    <div class="d-none d-md-block">
+                                        <table class="waitingTable sunriseTable no-auto-colresize" style="width:100%;">
+                                            <thead>
+                                                <tr>
+                                                    {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                                    @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                        @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                            {{-- Checkbox column header --}}
+                                                            @if (count($stage['waitingCases']) != 0)
+                                                                <th class="no-sort text-center ops-col ops-col--select" style="width: 50px;">
+                                                                    <input type="checkbox"
+                                                                        class="selectAllCases {{ $key }}" value="0"
+                                                                        name="selectAllCases"
+                                                                        onchange="selectAll(this, '{{ $key }}')" />
+                                                                </th>
                                                             @endif
                                                         @endif
-                                                    </p>
-                                                </td>
-                                                <td class="clickable ops-col ops-col--delivery" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">
-                                                        {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
-                                                    </p>
-                                                </td>
-                                                <!-- Assigned to for delivery stage -->
-                                                @if ($key == 'delivery')
-                                                    <td class="clickable ops-col ops-col--assigned" data-toggle="modal"
-                                                        data-target="#waitingDialog{{ $key . $case->id }}">
-                                                        <p class="">
-                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
-                                                                ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
-                                                                : 'None' }}
-                                                        </p>
-                                                    </td>
-                                                @endif
-                                                <td class="clickable ops-col ops-col--count" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
-                                                </td>
+                                                    @endif
+                                                    <th class="ops-col ops-col--doctor">Doctor</th>
+                                                    <th class="ops-col ops-col--patient">Patient</th>
+                                                    <th class="deliveryDateHeader ops-col ops-col--delivery"><span
+                                                            class="innerSpan4Mobile">D.Date</span><span
+                                                            class="innerSpan4DeskTop">Delivery Date</span></th>
+                                                    @if ($key == 'delivery')
+                                                        <th class="ops-col ops-col--assigned"> Assigned To</th>
+                                                    @endif
+                                                    <th class="ops-col ops-col--count">#</th>
+                                                    <th class="ops-col ops-col--tags">Tags</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($stage['waitingCases'] as $case)
+                                                    <tr style="color:{{ $color }}">
+                                                        @php
+                                                            // Normalize key case
+                                                            $key = strtolower($key);
+                                                        @endphp
 
-                                                <td class="clickable ops-col ops-col--tags" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
-                                                    <div>
-                                                        @foreach ($case->tags as $tag)
-                                                            <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
-                                                                style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
-                                                                class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
-                                                        @endforeach
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            {{--                                        {{dd("key  is  " . $key)}} --}}
-                                            {{-- BEGIN WAITING DIALOG --}}
-                                            <div class="modal fade sigma-modal--cases-dashboard-case-completion{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
-                                                id="waitingDialog{{ $key . $case->id }}">
-                                                <form
-                                                    action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-                                                    method="GET">
-                                                    @csrf
-                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
-                                                    <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
-                                                        <div class="modal-content">
+                                                        @if ($key == 'finishing')
+                                                            @php
+                                                                $notReadyA = false;
+                                                                $abutmentsReceived = $case->abutmentsReceived();
+                                                                if (!$case->allUnitsAtFinishing()) {
+                                                                    $notReadyA = true;
+                                                                }
+                                                            @endphp
+                                                        @endif
+                                                        {{-- Show checkboxes for all stages EXCEPT delivery without permission --}}
+                                                        @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                            @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                                <td class="no-sort ops-col ops-col--select">
+                                                                    <input type="checkbox" data-type="{{ $key }}"
+                                                                        data-group-id="{{ $key }}"
+                                                                        class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
+                                                                        value="{{ $case->id }}"
+                                                                        name="CheckBoxes{{ $key }}[]"
+                                                                        onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
+                                                                </td>
+                                                            @endif
+                                                        @endif
+                                                        <td class="clickable ops-col ops-col--doctor" data-toggle="modal"
+                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
+                                                        </td>
+                                                        <td class="clickable ops-col ops-col--patient" data-toggle="modal" dir="auto"
+                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            <p class="">{{ $case->patient_name }}
+                                                                @if ($key == 'finishing')
+                                                                    @if ($notReadyA)
+                                                                        <span
+                                                                            style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                                            Not <br>
+                                                                            Ready
+                                                                        </span>
+                                                                    @endif
+                                                                    @if (!$abutmentsReceived)
+                                                                        <span
+                                                                            style="margin: 4px 16px 1px 1px;float:right; line-height: 1;color:#ffa400;font-size: 10px;">
+                                                                            Abutment <br>
+                                                                            Missing
+                                                                        </span>
+                                                                    @endif
+                                                                @endif
+                                                            </p>
+                                                        </td>
+                                                        <td class="clickable ops-col ops-col--delivery" data-toggle="modal"
+                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            <p class="">
+                                                                {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                            </p>
+                                                        </td>
+                                                        <!-- Assigned to for delivery stage -->
+                                                        @if ($key == 'delivery')
+                                                            <td class="clickable ops-col ops-col--assigned" data-toggle="modal"
+                                                                data-target="#waitingDialog{{ $key . $case->id }}">
+                                                                <p class="">
+                                                                    {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
+                                                                        ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
+                                                                        : 'None' }}
+                                                                </p>
+                                                            </td>
+                                                        @endif
+                                                        <td class="clickable ops-col ops-col--count" data-toggle="modal"
+                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
+                                                        </td>
+
+                                                        <td class="clickable ops-col ops-col--tags" data-toggle="modal"
+                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            <div>
+                                                                @foreach ($case->tags as $tag)
+                                                                    <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                        style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                        class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                                @endforeach
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {{-- BEGIN WAITING DIALOG --}}
+                                                    <div class="modal fade sigma-modal--cases-dashboard-case-completion{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
+                                                        id="waitingDialog{{ $key . $case->id }}">
+                                                        <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
+                                                            <div class="modal-content">
+                                                                <form
+                                                                    action="{{ $key == 'delivery' ? route('delivery-accept', $case->id) : route('assign-to-me', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                    method="GET">
+                                                                    @csrf
+                                                                    <input type="hidden" name="case_id" value="{{ $case->id }}">
                                                             <div class="modal-header">
                                                                 <h5 class="modal-title">Case Completion</h5>
                                                                 @if (Auth()->user()->is_admin)
@@ -2133,7 +2035,7 @@
                                                                 <div class="scrollable-content">
                                                                     <div class="form-group row">
                                                                         <div class=" col-12 ">
-                                                                            <label><b>Jobs:</b></label>
+                                                                            <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
                                                                             <div class="sigma-case-jobs-list">
                                                                                 @foreach ($case->jobs as $job)
                                                                                     @php
@@ -2151,27 +2053,24 @@
                                                                                             $materialName = $job->material->name ?? 'no material';
                                                                                             $colorLabel = $job->color == '0' ? '' : $job->color;
                                                                                             $styleLabel = $job->style == 'None' ? '' : $job->style;
-                                                                                            $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
-                                                                                            $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                            $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                            $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                        @endphp
+                                                                                        @php
+                                                                                            $fullJobParts = array_values(array_filter([
+                                                                                                trim((string) $job->unit_num),
+                                                                                                trim((string) $jobTypeName),
+                                                                                                trim((string) $materialName),
+                                                                                                trim((string) $colorLabel),
+                                                                                                trim((string) $styleLabel),
+                                                                                                trim((string) $implantLabel),
+                                                                                                trim((string) $abutmentLabel),
+                                                                                            ], function ($value) {
+                                                                                                return $value !== '';
+                                                                                            }));
                                                                                         @endphp
                                                                                         <div class="sigma-case-job-row">
-                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
-                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
-                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
-                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
-                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--unit">
-                                                                                                {{ $styleLabel }}
-                                                                                                @if ($implantLabel || $abutmentLabel)
-                                                                                                    <span class="sigma-case-job-extra">
-                                                                                                        @if ($implantLabel)
-                                                                                                            <span>{{ $implantLabel }}</span>
-                                                                                                        @endif
-                                                                                                        @if ($abutmentLabel)
-                                                                                                            <span>{{ $abutmentLabel }}</span>
-                                                                                                        @endif
-                                                                                                    </span>
-                                                                                                @endif
-                                                                                            </span>
+                                                                                            <span class="sigma-case-job-primary">{{ implode(' - ', $fullJobParts) }}</span>
                                                                                         </div>
                                                                                     @endif
                                                                                 @endforeach
@@ -2180,7 +2079,7 @@
                                                                     </div>
                                                                     @if (count($case->notes) > 0)
                                                                         <hr>
-                                                                        <label><b>Notes:</b></label><br>
+                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
                                                                         @foreach ($case->notes as $note)
                                                                             <div class="form-control note-container"
                                                                                 style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
@@ -2285,17 +2184,79 @@
                                                                             style="width:100%">Cancel</button>
                                                                     </div>
                                                                 </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </form>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @if (count($stage['waitingCases']) === 0)
+                                        <div class="ops-empty-state d-md-none">No cases</div>
+                                    @else
+                                        <div class="ops-case-list ops-case-list--waiting d-md-none">
+                                            @foreach ($stage['waitingCases'] as $case)
+                                            @php
+                                                $key = strtolower($key);
+                                            @endphp
+                                            @if ($key == 'finishing')
+                                                @php
+                                                    $notReadyA = false;
+                                                    $abutmentsReceived = $case->abutmentsReceived();
+                                                    if (!$case->allUnitsAtFinishing()) {
+                                                        $notReadyA = true;
+                                                    }
+                                                @endphp
+                                            @endif
+                                            <div class="ops-case-card ops-case-card--waiting {{ ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery') && ($key != 'delivery' || $isDeliveryAndAssignable) ? 'ops-case-card--selectable' : '' }}">
+                                                @if ($key != 'delivery' || $isDeliveryAndAssignable)
+                                                    @if ($key == 'milling' || $key == '3dprinting' || $key == 'sintering' || $key == 'pressing' || $key == 'delivery')
+                                                        <div class="ops-case-card__select">
+                                                            <input type="checkbox" data-type="{{ $key }}"
+                                                                data-group-id="{{ $key }}"
+                                                                class="custom-control-input multipleCB {{ $key }} checkboxes-group-{{ $key }}"
+                                                                value="{{ $case->id }}"
+                                                                name="CheckBoxes{{ $key }}[]"
+                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')"
+                                                                onclick="event.stopPropagation()">
+                                                        </div>
+                                                    @endif
+                                                @endif
+                                                <div class="ops-case-card__content clickable" data-toggle="modal"
+                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    <div class="ops-case-card__row ops-case-card__row--primary">
+                                                        <div class="ops-case-card__doctor" dir="auto">{{ $case->client?->name ?? 'Err404-1' }}</div>
+                                                        <div class="ops-case-card__patient" dir="auto">{{ $case->patient_name }}</div>
+                                                        <div class="ops-case-card__units">
+                                                            <span class="ops-case-card__units-pill">{{ $case->unitsAmount($stage['numericStage']) }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="ops-case-card__row ops-case-card__row--secondary">
+                                                        <div class="ops-case-card__badges">
+                                                            @if ($key == 'finishing' && $notReadyA)
+                                                                <span class="ops-case-card__badge">Not Ready</span>
+                                                            @endif
+                                                            @if ($key == 'finishing' && !$abutmentsReceived)
+                                                                <span class="ops-case-card__badge">Abutment Missing</span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="ops-case-card__date">
+                                                            {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                        </div>
+                                                        <div class="ops-case-card__tags">
+                                                            @foreach ($case->tags as $tag)
+                                                                <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                    style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                    class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }} fa-lg"></i>
+                                                            @endforeach
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        @endforeach
-
-
-                                        <!-- Begin Active tab -->
-                                    </tbody>
-                                </table>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -2338,92 +2299,92 @@
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <!-- ACTIVE DELIVERY TABLES -->
                                     <div class="stage-panel-scroll">
-                                    <table class=" activeTable sunriseTable no-auto-colresize" style="width:100%;">
-                                        <thead>
-                                            <tr>
-                                                <th class="ops-col ops-col--doctor">Doctor</th>
-                                                <th class="ops-col ops-col--patient">Patient</th>
-                                                <th class="deliveryToHeader ops-col ops-col--delivery">Delivery Date</th>
-                                                <th class="assignedToHeader ops-col ops-col--assigned">Assigned To</th>
-                                                <th class="ops-col ops-col--count">#</th>
-                                                <th class="ops-col ops-col--tags">Tags</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            @foreach ($stage['activeCases'] as $case)
-                                                <tr class="clickable" style="color:{{ $color }}"
-                                                    data-toggle="modal"
-                                                    data-target="#confirmCompletion{{ $key . $case->id }}">
-                                                    @if ($key == 'finishing')
-                                                        @php
-                                                            $notReadyA = false;
-                                                            $abutmentsReceived = $case->abutmentsReceived();
-                                                            if (!$case->allUnitsAtFinishing()) {
-                                                                $notReadyA = true;
-                                                            }
-                                                        @endphp
-                                                    @endif
-                                                    <td class="ops-col ops-col--doctor">
-                                                        <p class="">
-                                                            {{ $case->client ? $case->client->name : 'No Client' }}</p>
-                                                    </td>
-                                                    <td class="ops-col ops-col--patient" dir="auto">
-                                                        <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
-                                                                @if ($notReadyA)
-                                                                    <span
-                                                                        style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
-                                                                        Not <br>
-                                                                        Ready
-                                                                    </span>
-                                                                @endif
-
-                                                                @if (!$abutmentsReceived)
-                                                                    <span
-                                                                        style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
-                                                                        Abutment <br>
-                                                                        Missing
-                                                                    </span>
-                                                                @endif
+                                        <div class="d-none d-md-block">
+                                            <table class="activeTable sunriseTable no-auto-colresize" style="width:100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="ops-col ops-col--doctor">Doctor</th>
+                                                        <th class="ops-col ops-col--patient">Patient</th>
+                                                        <th class="deliveryToHeader ops-col ops-col--delivery">Delivery Date</th>
+                                                        <th class="assignedToHeader ops-col ops-col--assigned">Assigned To</th>
+                                                        <th class="ops-col ops-col--count">#</th>
+                                                        <th class="ops-col ops-col--tags">Tags</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($stage['activeCases'] as $case)
+                                                        <tr class="clickable" style="color:{{ $color }}"
+                                                            data-toggle="modal"
+                                                            data-target="#confirmCompletion{{ $key . $case->id }}">
+                                                            @if ($key == 'finishing')
+                                                                @php
+                                                                    $notReadyA = false;
+                                                                    $abutmentsReceived = $case->abutmentsReceived();
+                                                                    if (!$case->allUnitsAtFinishing()) {
+                                                                        $notReadyA = true;
+                                                                    }
+                                                                @endphp
                                                             @endif
+                                                            <td class="ops-col ops-col--doctor">
+                                                                <p class="">
+                                                                    {{ $case->client ? $case->client->name : 'No Client' }}</p>
+                                                            </td>
+                                                            <td class="ops-col ops-col--patient" dir="auto">
+                                                                <p class="">{{ $case->patient_name }} @if ($key == 'finishing')
+                                                                        @if ($notReadyA)
+                                                                            <span
+                                                                                style="float:right;margin-left: 5px; line-height: 1;color:#ffa400;font-size: 9px;">
+                                                                                Not <br>
+                                                                                Ready
+                                                                            </span>
+                                                                        @endif
 
-                                                        </p>
-                                                    </td>
-                                                    <td class="ops-col ops-col--delivery">
-                                                        <p class="">
-                                                            {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="ops-col ops-col--assigned">
-                                                        <p class="">
-                                                            {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="ops-col ops-col--count">
-                                                        <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
-                                                        </p>
-                                                    </td>
-                                                    <td class="ops-col ops-col--tags">
-                                                        <div>
-                                                            @foreach ($case->tags as $tag)
-                                                                <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
-                                                                    style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
-                                                                    class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
-                                                            @endforeach
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <!-- Active case actions Dialog -->
-                                                <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
-                                                    id="confirmCompletion{{ $key . $case->id }}">
-                                                    <form
-                                                        action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
-                                                        method="GET">
-                                                        @csrf
-                                                        <input type="hidden" name="case_id"
-                                                            value="{{ $case->id }}">
-                                                        <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
-                                                            <div class="modal-content">
+                                                                        @if (!$abutmentsReceived)
+                                                                            <span
+                                                                                style="float:right; line-height: 1;color:#ffa400;font-size: 9px;">
+                                                                                Abutment <br>
+                                                                                Missing
+                                                                            </span>
+                                                                        @endif
+                                                                    @endif
+
+                                                                </p>
+                                                            </td>
+                                                            <td class="ops-col ops-col--delivery">
+                                                                <p class="">
+                                                                    {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="ops-col ops-col--assigned">
+                                                                <p class="">
+                                                                    {{ $case->jobs->where('stage', $stage['numericStage'])->first() ? ($case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials : 'None') : 'None' }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="ops-col ops-col--count">
+                                                                <p class="">{{ $case->unitsAmount($stage['numericStage']) }}
+                                                                </p>
+                                                            </td>
+                                                            <td class="ops-col ops-col--tags">
+                                                                <div>
+                                                                    @foreach ($case->tags as $tag)
+                                                                        <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                            style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                            class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }}  fa-lg"></i>
+                                                                    @endforeach
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <!-- Active case actions Dialog -->
+                                                        <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
+                                                            id="confirmCompletion{{ $key . $case->id }}">
+                                                            <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
+                                                                <div class="modal-content">
+                                                                    <form
+                                                                        action="{{ $key == 'delivery' ? route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) : route('finish-case', ['caseId' => $case->id, 'stage' => $stage['numericStage']]) }}"
+                                                                        method="GET">
+                                                                        @csrf
+                                                                        <input type="hidden" name="case_id"
+                                                                            value="{{ $case->id }}">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Case Completion</h5>
 
@@ -2457,7 +2418,7 @@
                                                                     <div class="scrollable-content">
                                                                         <div class="form-group row">
                                                                             <div class=" col-12 ">
-                                                                                <label><b>Jobs:</b></label>
+                                                                                <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
                                                                                 <div class="sigma-case-jobs-list">
                                                                                     @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
                                                                                         @php
@@ -2477,27 +2438,24 @@
                                                                                                 $materialName = $job->material->name ?? 'no material';
                                                                                                 $colorLabel = $job->color == '0' ? '' : $job->color;
                                                                                                 $styleLabel = $job->style == 'None' ? '' : $job->style;
-                                                                                                $implantLabel = isset($job->implantR) && $job->jobType->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
-                                                                                                $abutmentLabel = isset($job->abutmentR) && $job->jobType->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                                $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                                                                                $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                                                                            @endphp
+                                                                                            @php
+                                                                                                $fullJobParts = array_values(array_filter([
+                                                                                                    trim((string) $job->unit_num),
+                                                                                                    trim((string) $jobTypeName),
+                                                                                                    trim((string) $materialName),
+                                                                                                    trim((string) $colorLabel),
+                                                                                                    trim((string) $styleLabel),
+                                                                                                    trim((string) $implantLabel),
+                                                                                                    trim((string) $abutmentLabel),
+                                                                                                ], function ($value) {
+                                                                                                    return $value !== '';
+                                                                                                }));
                                                                                             @endphp
                                                                                             <div class="sigma-case-job-row">
-                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--teeth">{{ $job->unit_num }}</span>
-                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeName }}</span>
-                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--mat">{{ $materialName }}</span>
-                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--shade">{{ $colorLabel }}</span>
-                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--unit">
-                                                                                                    {{ $styleLabel }}
-                                                                                                    @if ($implantLabel || $abutmentLabel)
-                                                                                                        <span class="sigma-case-job-extra">
-                                                                                                            @if ($implantLabel)
-                                                                                                                <span>{{ $implantLabel }}</span>
-                                                                                                            @endif
-                                                                                                            @if ($abutmentLabel)
-                                                                                                                <span>{{ $abutmentLabel }}</span>
-                                                                                                            @endif
-                                                                                                        </span>
-                                                                                                    @endif
-                                                                                                </span>
+                                                                                                <span class="sigma-case-job-primary">{{ implode(' - ', $fullJobParts) }}</span>
                                                                                             </div>
                                                                                         @endif
                                                                                     @endforeach
@@ -2506,7 +2464,7 @@
                                                                         </div>
                                                                         @if (count($case->notes) > 0)
                                                                             <hr>
-                                                                            <label><b>Notes:</b></label><br>
+                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
                                                                             @foreach ($case->notes as $note)
                                                                                 <div class="form-control note-container"
                                                                                     style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
@@ -2641,16 +2599,70 @@
                                                                                 style="width:100%">Cancel</button>
                                                                         </div>
                                                                     </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
 
                                                         </div>
-                                                    </form>
+                                                        {{--                                            /////////// v2 DIALOG --}}
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        @if (count($stage['activeCases']) === 0)
+                                            <div class="ops-empty-state d-md-none">No cases</div>
+                                        @else
+                                            <div class="ops-case-list ops-case-list--active d-md-none">
+                                                @foreach ($stage['activeCases'] as $case)
+                                                @if ($key == 'finishing')
+                                                    @php
+                                                        $notReadyA = false;
+                                                        $abutmentsReceived = $case->abutmentsReceived();
+                                                        if (!$case->allUnitsAtFinishing()) {
+                                                            $notReadyA = true;
+                                                        }
+                                                    @endphp
+                                                @endif
+                                                <div class="ops-case-card ops-case-card--active clickable"
+                                                    data-toggle="modal"
+                                                    data-target="#confirmCompletion{{ $key . $case->id }}">
+                                                    <div class="ops-case-card__content">
+                                                        <div class="ops-case-card__row ops-case-card__row--primary">
+                                                            <div class="ops-case-card__doctor" dir="auto">
+                                                                {{ $case->client ? $case->client->name : 'No Client' }}
+                                                            </div>
+                                                            <div class="ops-case-card__patient" dir="auto">
+                                                                {{ $case->patient_name }}
+                                                            </div>
+                                                            <div class="ops-case-card__units">
+                                                                <span class="ops-case-card__units-pill">{{ $case->unitsAmount($stage['numericStage']) }}</span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ops-case-card__row ops-case-card__row--secondary">
+                                                            <div class="ops-case-card__badges">
+                                                                @if ($key == 'finishing' && $notReadyA)
+                                                                    <span class="ops-case-card__badge">Not Ready</span>
+                                                                @endif
+                                                                @if ($key == 'finishing' && !$abutmentsReceived)
+                                                                    <span class="ops-case-card__badge">Abutment Missing</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="ops-case-card__date">
+                                                                {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
+                                                            </div>
+                                                            <div class="ops-case-card__tags">
+                                                                @foreach ($case->tags as $tag)
+                                                                    <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
+                                                                        style="color:{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->color : '' }}"
+                                                                        class="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->icon : '' }} fa-lg"></i>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                {{--                                            /////////// v2 DIALOG --}}
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                @endforeach
+                                            </div>
+                                        @endif
                                     </div>
                                 @endif
                             </div>
@@ -2720,7 +2732,7 @@
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
                         <div class="spinner-border text-primary mb-3" role="status"></div>
-                        <p class="mb-0 mt-2">Processing your request...</p>
+                        <p class="mb-0 mt-2 sigma-processing-shimmer">Processing your request...</p>
                     </div>
                 </div>
             </div>
@@ -2733,7 +2745,7 @@
     {{--    @endphp --}}
 
     <!-- Column Width Config Panel -->
-    <div class="config-panel" id="columnConfigPanel">
+    <div class="config-panel" id="columnConfigPanel" hidden aria-hidden="true">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
             <div>
                 <h4 style="margin: 0; color: #1e293b; font-weight: 700;">Table Column Widths</h4>
@@ -2743,7 +2755,7 @@
             </div>
             <div style="display: flex; gap: 8px;">
                 <button id="resetToAutoBtn" class="btn btn-sm btn-warning">Reset to Auto</button>
-                <button onclick="$('#columnConfigPanel').removeClass('active')" class="btn btn-sm btn-outline-secondary">Close</button>
+                <button type="button" id="columnConfigCloseBtn" class="btn btn-sm btn-outline-secondary">Close</button>
             </div>
         </div>
         <div id="columnWidthInputs"></div>
@@ -2965,6 +2977,753 @@
             }
         }
 
+        .ops-mobile-badges {
+            display: none;
+        }
+
+        .ops-mobile-inline-status {
+            display: inline-block;
+        }
+
+        @media (max-width: 768px){
+            .ops-dashboard .waitingTable.sunriseTable,
+            .ops-dashboard .activeTable.sunriseTable {
+                width: 100% !important;
+                border: none !important;
+                background: transparent !important;
+                box-shadow: none !important;
+                border-spacing: 0 !important;
+            }
+
+            .ops-dashboard .waitingTable thead,
+            .ops-dashboard .activeTable thead {
+                display: none;
+            }
+
+            .ops-dashboard .waitingTable tbody,
+            .ops-dashboard .activeTable tbody {
+                display: block;
+            }
+
+            .ops-dashboard .waitingTable tbody tr,
+            .ops-dashboard .activeTable tbody tr {
+                position: relative;
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+                grid-template-areas:
+                    "doctor patient units"
+                    "badges delivery tags";
+                align-items: center;
+                gap: 0.36rem 0.55rem;
+                margin: 0 0 4px;
+                padding: 0.62rem 0.8rem;
+                border: 1px solid #e7eef2 !important;
+                border-radius: 10px;
+                background: #ffffff !important;
+                box-shadow: 0 1px 8px rgba(18, 47, 70, 0.04);
+                overflow: hidden;
+            }
+
+            .ops-dashboard .waitingTable tbody tr.ops-case-row--selectable {
+                padding-left: 2.15rem;
+            }
+
+            .ops-dashboard .waitingTable tbody td,
+            .ops-dashboard .activeTable tbody td {
+                width: auto !important;
+                min-width: 0 !important;
+                max-width: none !important;
+                padding: 0 !important;
+                border: none !important;
+                background: transparent !important;
+                white-space: normal !important;
+                overflow: visible !important;
+            }
+
+            .ops-dashboard .waitingTable tbody td > p,
+            .ops-dashboard .activeTable tbody td > p {
+                margin: 0 !important;
+                white-space: nowrap !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--doctor {
+                grid-area: doctor;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--patient {
+                grid-area: patient;
+                justify-self: center;
+                width: 100%;
+                text-align: center;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--delivery {
+                grid-area: delivery;
+                justify-self: center;
+                text-align: center;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--count {
+                grid-area: units;
+                display: flex !important;
+                align-items: center;
+                justify-self: end;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--tags {
+                display: contents;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--assigned,
+            .ops-dashboard .ops-case-row th.ops-col--assigned {
+                display: none !important;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--select {
+                position: absolute;
+                top: 0.78rem;
+                left: 0.7rem;
+                z-index: 3;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: auto !important;
+            }
+
+            .ops-dashboard .ops-case-row td.ops-col--select input {
+                position: static !important;
+                width: 1rem;
+                height: 1rem;
+                margin: 0;
+            }
+
+            .ops-dashboard .ops-mobile-doctor {
+                font-weight: 700 !important;
+                font-size: 0.98rem;
+                color: #111827;
+                text-align: left;
+            }
+
+            .ops-dashboard .ops-mobile-patient {
+                font-weight: 500 !important;
+                font-size: 0.92rem;
+                color: #2f3947;
+                text-align: center;
+            }
+
+            .ops-dashboard .ops-mobile-delivery-date {
+                font-size: 0.92rem;
+                color: #2f3947;
+                text-align: center;
+            }
+
+            .ops-dashboard .ops-mobile-inline-status {
+                display: none !important;
+            }
+
+            .ops-dashboard .ops-mobile-badges {
+                display: flex;
+                grid-area: badges;
+                align-items: center;
+                justify-self: start;
+                gap: 0.28rem;
+                flex-wrap: wrap;
+                min-width: 0;
+            }
+
+            .ops-dashboard .ops-mobile-badges:empty {
+                display: none;
+            }
+
+            .ops-dashboard .ops-mobile-status {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 1.35rem;
+                padding: 0.08rem 0.42rem;
+                border: 1px solid rgba(255, 164, 0, 0.45);
+                border-radius: 999px;
+                background: rgba(255, 164, 0, 0.08);
+                color: #ef9700;
+                font-size: 0.64rem;
+                font-weight: 700;
+                line-height: 1.1;
+                white-space: nowrap;
+            }
+
+            .ops-dashboard .ops-units-pill {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 1.95rem;
+                height: 1.65rem;
+                padding: 0 0.55rem !important;
+                border-radius: 10px;
+                background: #f1f4f6;
+                color: #1e2934;
+                font-weight: 700;
+                font-size: 0.82rem;
+                font-variant-numeric: tabular-nums;
+                box-shadow: inset 0 0 0 1px rgba(44, 62, 80, 0.05);
+            }
+
+            .ops-dashboard .ops-tags-wrap {
+                grid-area: tags;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: flex-end;
+                justify-self: end;
+                gap: 0.38rem !important;
+                min-width: 0;
+                width: auto;
+            }
+
+            .ops-dashboard .ops-tags-wrap i {
+                margin-right: 0 !important;
+                font-size: 1rem;
+                line-height: 1;
+            }
+
+            .ops-dashboard .ops-tags-wrap i:nth-of-type(n + 3) {
+                display: none;
+            }
+        }
+
+        .ops-case-list {
+            width: 100%;
+            max-width: 980px;
+            margin: 0 auto;
+            font-family: 'Cairo', sans-serif !important;
+        }
+
+        .ops-empty-state {
+            margin: 1.1rem 0.65rem 1.4rem;
+            padding: 1rem 1.1rem;
+            border-radius: 16px;
+            text-align: center;
+            color: rgba(35, 68, 83, 0.78);
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            background:
+                radial-gradient(circle closest-side at 20% 30%, rgba(53, 183, 194, 0.12), transparent 76%),
+                linear-gradient(180deg, rgba(244, 250, 251, 0.98), rgba(255, 255, 255, 0.96));
+            border: 1px dashed rgba(30, 112, 122, 0.25);
+        }
+
+        .ops-case-list__bulk {
+            display: flex;
+            justify-content: flex-start;
+            margin: 0.08rem 0 0.92rem;
+            padding-left: 0.08rem;
+        }
+
+        .ops-case-list__bulk-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.58rem 0.88rem;
+            border: 1px solid transparent;
+            border-radius: 16px;
+            background:
+                linear-gradient(180deg, rgba(236, 245, 248, 0.96), rgba(249, 252, 253, 0.98)) padding-box,
+                linear-gradient(135deg, rgba(76, 133, 145, 0.28), rgba(255, 255, 255, 0.94) 42%, rgba(76, 133, 145, 0.12) 100%) border-box;
+            color: #234453;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 0.01em;
+        }
+
+        .ops-case-list__bulk-toggle input {
+            width: 1rem;
+            height: 1rem;
+            margin: 0;
+        }
+
+        .ops-case-card {
+            --ops-card-side-width: 38%;
+            --ops-card-action-width: 4.35rem;
+            --ops-card-accent: #1c8a91;
+            --ops-card-accent-bright: #35b7c2;
+            --ops-card-accent-deep: #0f6670;
+            position: relative;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(30, 112, 122, 0.26);
+            border-radius: 17px;
+            background:
+                radial-gradient(circle closest-side at 17% 27%, rgba(53, 183, 194, 0.22), transparent 82%),
+                radial-gradient(circle closest-side at 92% 35%, rgba(28, 138, 145, 0.16), transparent 78%),
+                linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(232, 247, 249, 0.94));
+            box-shadow:
+                0 13px 28px rgba(15, 64, 76, 0.12),
+                0 4px 11px rgba(15, 64, 76, 0.07),
+                inset 0 1px 0 rgba(255, 255, 255, 0.92);
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .ops-case-card::before {
+            content: "";
+            position: absolute;
+            inset: 0.0625rem;
+            border-radius: 16px;
+            pointer-events: none;
+            background:
+                linear-gradient(90deg, transparent calc(var(--ops-card-side-width) - 1px), rgba(30, 112, 122, 0.16) var(--ops-card-side-width), transparent calc(var(--ops-card-side-width) + 1px)),
+                linear-gradient(270deg, rgba(232, 240, 244, 0.86) 0 var(--ops-card-action-width), transparent var(--ops-card-action-width)),
+                linear-gradient(90deg, rgba(226, 246, 248, 0.68) 0 var(--ops-card-side-width), rgba(255, 255, 255, 0.9) var(--ops-card-side-width)),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 252, 253, 0.94));
+            z-index: 0;
+        }
+
+        .ops-case-card::after {
+            content: "";
+            position: absolute;
+            width: 0.24rem;
+            inset: 0.64rem auto 0.64rem 0.32rem;
+            border-radius: 999px;
+            transform: translateX(0.12rem);
+            pointer-events: none;
+            background: linear-gradient(to bottom, var(--ops-card-accent-bright), var(--ops-card-accent), var(--ops-card-accent-deep));
+            box-shadow:
+                0 0 16px rgba(53, 183, 194, 0.55),
+                0 0 28px rgba(28, 138, 145, 0.26);
+            z-index: 2;
+        }
+
+        .ops-case-card.clickable,
+        .ops-case-card__content.clickable {
+            cursor: pointer;
+        }
+
+        .ops-case-card__content {
+            position: relative;
+            z-index: 3;
+            display: block;
+            padding: 0.78rem 0.88rem;
+        }
+
+        .ops-case-card--selectable .ops-case-card__content {
+            padding-left: 2.2rem;
+        }
+
+        .ops-case-card__select {
+            position: absolute;
+            /* Center against the primary row text height (feels more aligned than the full units pill). */
+            top: calc(0.78rem + 0.68rem);
+            transform: translateY(-50%);
+            left: 0.72rem;
+            z-index: 4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ops-case-card__select input[type="checkbox"] {
+            appearance: auto;
+            -webkit-appearance: checkbox;
+            opacity: 1 !important;
+            position: static !important;
+            width: 1rem;
+            height: 1rem;
+            margin: 0;
+        }
+
+        .ops-case-card__row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 3.35rem;
+            align-items: center;
+            gap: 0.36rem 0.6rem;
+        }
+
+        .ops-case-card__row--secondary {
+            margin-top: 0.32rem;
+        }
+
+        .ops-case-card__doctor,
+        .ops-case-card__patient,
+        .ops-case-card__date {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+            display: block;
+            width: 100%;
+        }
+
+        .ops-case-card__doctor {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #0b2d37;
+            text-align: left;
+            line-height: 1.35;
+        }
+
+        .ops-case-card__patient {
+            font-size: 1.04rem;
+            font-weight: 700;
+            color: #284457;
+            text-align: center;
+            justify-self: center;
+            line-height: 1.35;
+        }
+
+        .ops-case-card__units {
+            display: flex;
+            justify-content: flex-end;
+            justify-self: end;
+            width: 3.35rem;
+        }
+
+        .ops-case-card__units-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 1.95rem;
+            height: 1.7rem;
+            padding: 0 0.58rem;
+            border: 1px solid rgba(28, 102, 112, 0.1);
+            border-radius: 11px;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0) 54%),
+                linear-gradient(180deg, #edf6f8 0%, #dce9ee 100%);
+            color: #112f3b;
+            font-size: 0.82rem;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.98),
+                0 3px 8px rgba(31, 76, 88, 0.13);
+        }
+
+        .ops-case-card__badges {
+            display: flex;
+            align-items: center;
+            gap: 0.28rem;
+            flex-wrap: wrap;
+            min-width: 0;
+            align-self: start;
+        }
+
+        .ops-case-card__badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 1.35rem;
+            padding: 0.08rem 0.42rem;
+            border: 1px solid rgba(255, 164, 0, 0.45);
+            border-radius: 999px;
+            background: rgba(255, 164, 0, 0.08);
+            color: #ef9700;
+            font-size: 0.64rem;
+            font-weight: 700;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .ops-case-card__date {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #506a7b;
+            text-align: center;
+            justify-self: center;
+            line-height: 1.3;
+        }
+
+        .ops-case-card__tags {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            justify-self: end;
+            gap: 0.38rem;
+            min-width: 0;
+            width: 3.35rem;
+        }
+
+        .ops-case-card__tags i {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 0.95rem;
+            margin-right: 0 !important;
+            font-size: 1rem;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .ops-case-card__tags i:nth-of-type(n + 4) {
+            display: none;
+        }
+
+        .ops-case-card--waiting {
+            --ops-card-side-width: 38%;
+            --ops-card-action-width: 4.35rem;
+            --ops-card-accent: #2d9ca3;
+            --ops-card-accent-bright: #51bcc3;
+            --ops-card-accent-deep: #20757c;
+            margin-bottom: 0.62rem;
+            border: 1px solid rgba(45, 132, 143, 0.22);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow:
+                0 10px 22px rgba(24, 68, 82, 0.09),
+                0 2px 6px rgba(24, 68, 82, 0.05);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+        }
+
+        .ops-case-card--waiting:hover {
+            transform: translateY(-1px);
+            border-color: rgba(45, 132, 143, 0.34);
+            box-shadow:
+                0 14px 28px rgba(24, 68, 82, 0.12),
+                0 4px 10px rgba(24, 68, 82, 0.06);
+        }
+
+        .ops-case-card--waiting::before {
+            inset: 0;
+            border-radius: 13px;
+            background:
+                linear-gradient(90deg, rgba(231, 248, 250, 0.82) 0 var(--ops-card-side-width), rgba(255, 255, 255, 0.96) var(--ops-card-side-width) calc(100% - var(--ops-card-action-width)), rgba(239, 247, 249, 0.9) calc(100% - var(--ops-card-action-width)) 100%),
+                linear-gradient(90deg, transparent calc(var(--ops-card-side-width) - 1px), rgba(45, 132, 143, 0.12) var(--ops-card-side-width), transparent calc(var(--ops-card-side-width) + 1px));
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
+        }
+
+        .ops-case-card--waiting::after {
+            width: 0.22rem;
+            inset: 0.72rem auto 0.72rem 0.58rem;
+            border-radius: 999px;
+            transform: none;
+            background: linear-gradient(180deg, var(--ops-card-accent-bright), var(--ops-card-accent-deep));
+            box-shadow: none;
+        }
+
+        .ops-case-card--waiting .ops-case-card__content {
+            padding: 0.74rem 0.86rem 0.72rem 1.12rem;
+        }
+
+        .ops-case-card--waiting.ops-case-card--selectable .ops-case-card__content {
+            padding-left: 2.35rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__select {
+            top: 50%;
+            left: 0.82rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__select input[type="checkbox"] {
+            width: 1.05rem;
+            height: 1.05rem;
+            accent-color: #2d9ca3;
+        }
+
+        .ops-case-card--waiting .ops-case-card__row {
+            grid-template-columns: minmax(0, 38%) minmax(0, 1fr) 3.8rem;
+            column-gap: 0.62rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__row--secondary {
+            margin-top: 0.24rem;
+            align-items: end;
+        }
+
+        .ops-case-card--waiting .ops-case-card__doctor {
+            color: #163744;
+            font-size: 0.98rem;
+            font-weight: 800;
+            letter-spacing: 0;
+            line-height: 1.35;
+            padding-left: 0.18rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__patient {
+            color: #28485a;
+            font-size: 1.02rem;
+            font-weight: 800;
+            line-height: 1.35;
+            text-align: center;
+        }
+
+        .ops-case-card--waiting .ops-case-card__date {
+            color: #587083;
+            font-size: 0.86rem;
+            font-weight: 700;
+            letter-spacing: 0;
+        }
+
+        .ops-case-card--waiting .ops-case-card__units {
+            width: 3.8rem;
+            align-self: start;
+        }
+
+        .ops-case-card--waiting .ops-case-card__units-pill {
+            min-width: 2rem;
+            height: 1.64rem;
+            padding: 0 0.56rem;
+            border: 1px solid rgba(80, 139, 153, 0.2);
+            border-radius: 10px;
+            background: #f5fbfc;
+            color: #1b3f4d;
+            font-size: 0.78rem;
+            font-weight: 800;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, 0.9),
+                0 4px 10px rgba(24, 68, 82, 0.1);
+        }
+
+        .ops-case-card--waiting .ops-case-card__badges {
+            padding-left: 0.18rem;
+            gap: 0.34rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__badge {
+            min-height: 1.2rem;
+            padding: 0.1rem 0.42rem;
+            border-color: rgba(241, 152, 28, 0.32);
+            background: #fff7e8;
+            color: #d98200;
+            font-size: 0.58rem;
+            font-weight: 800;
+            letter-spacing: 0;
+        }
+
+        .ops-case-card--waiting .ops-case-card__tags {
+            width: 3.8rem;
+            min-height: 1.35rem;
+            gap: 0.28rem;
+        }
+
+        .ops-case-card--waiting .ops-case-card__tags i {
+            width: 1.05rem;
+            font-size: 0.98rem;
+            filter: drop-shadow(0 1px 1px rgba(24, 68, 82, 0.12));
+        }
+
+        @media (max-width: 767.98px) {
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs {
+                position: relative;
+                display: flex;
+                align-items: flex-end;
+                gap: 0.72rem;
+                padding: 0 0.18rem;
+                margin: 0 0 -0.18rem;
+                z-index: 3;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs::after {
+                content: "";
+                position: absolute;
+                left: 0.18rem;
+                right: 0.18rem;
+                bottom: -0.28rem;
+                height: 1.08rem;
+                border-radius: 18px 18px 0 0;
+                background: linear-gradient(180deg, rgba(220, 232, 237, 0.96), rgba(246, 250, 252, 0.4));
+                z-index: -1;
+                pointer-events: none;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn,
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn {
+                position: relative;
+                border: 1px solid transparent !important;
+                border-radius: 18px 18px 0 0 !important;
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(247, 251, 253, 0.98)) padding-box,
+                    linear-gradient(135deg, rgba(120, 152, 164, 0.24), rgba(255, 255, 255, 0.96) 38%, rgba(120, 152, 164, 0.12) 100%) border-box !important;
+                padding: 0.72rem 1rem 0.88rem !important;
+                min-height: 4.2rem;
+                box-shadow: none !important;
+                overflow: hidden;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn[aria-selected="true"] {
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(240, 247, 255, 0.98)) padding-box,
+                    linear-gradient(135deg, rgba(47, 111, 179, 0.34), rgba(255, 255, 255, 0.98) 36%, rgba(47, 111, 179, 0.14) 100%) border-box !important;
+                color: #2f6fb3;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn[aria-selected="true"] {
+                background:
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(255, 244, 244, 0.98)) padding-box,
+                    linear-gradient(135deg, rgba(198, 88, 88, 0.34), rgba(255, 255, 255, 0.98) 36%, rgba(198, 88, 88, 0.14) 100%) border-box !important;
+                color: #c65858;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn[aria-selected="true"]::after,
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn[aria-selected="true"]::after {
+                content: "";
+                position: absolute;
+                left: 14px;
+                right: 14px;
+                bottom: 0;
+                height: 3px;
+                border-radius: 999px 999px 0 0;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn[aria-selected="true"]::after {
+                background: linear-gradient(90deg, rgba(47, 111, 179, 0.7), rgba(97, 152, 214, 0.98), rgba(47, 111, 179, 0.7));
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn[aria-selected="true"]::after {
+                background: linear-gradient(90deg, rgba(198, 88, 88, 0.7), rgba(224, 102, 102, 0.98), rgba(198, 88, 88, 0.7));
+            }
+
+            .ops-dashboard .stage-panel-pane .stage-panel-scroll:not(.stage-panel-scroll--devices) {
+                position: relative;
+                margin-top: -0.16rem;
+                padding: 0.96rem 0.46rem 0.46rem;
+                border-radius: 0 20px 20px 20px;
+                background:
+                    radial-gradient(120% 100% at 0% 0%, rgba(61, 123, 136, 0.09) 0%, rgba(61, 123, 136, 0) 44%),
+                    linear-gradient(180deg, rgba(245, 249, 251, 0.98), rgba(255, 255, 255, 0.96));
+                overflow: hidden;
+            }
+
+            .ops-dashboard .stage-panel-pane .stage-panel-scroll:not(.stage-panel-scroll--devices)::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                background:
+                    linear-gradient(135deg, rgba(124, 156, 168, 0.16), rgba(255, 255, 255, 0) 24%, rgba(124, 156, 168, 0.08) 100%);
+            }
+
+            .ops-dashboard .stage-panel-pane .stage-panel-scroll:not(.stage-panel-scroll--devices) > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .ops-case-list {
+                max-width: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .ops-case-list {
+                max-width: 1120px;
+            }
+
+            .ops-case-card__content {
+                padding: 0.85rem 1rem;
+            }
+
+            .ops-case-card__row {
+                grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) 74px;
+            }
+
+            .ops-case-card__doctor {
+                font-size: 1.03rem;
+            }
+
+            .ops-case-card__patient,
+            .ops-case-card__date {
+                font-size: 0.95rem;
+            }
+        }
+
 
 
         /* Force equal column widths and prevent expansion of empty columns */
@@ -3073,8 +3832,8 @@
     </script>
 
     <!-- Then load your custom scripts -->
-    <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js"></script>
-    <script src="{{ asset('assets') }}/js/ysh-custom-js/operationsDashboardJS.js"></script>
+    <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js?v={{ filemtime(public_path('assets/js/ysh-custom-js/v3scripts.js')) }}"></script>
+    <script src="{{ asset('assets') }}/js/ysh-custom-js/operationsDashboardJS.js?v={{ filemtime(public_path('assets/js/ysh-custom-js/operationsDashboardJS.js')) }}"></script>
     <script>
         // Load scripts sequentially to ensure proper dependency order
         function loadScript(src) {
@@ -3191,11 +3950,30 @@
 
         // Apply device image configuration when document is ready
         document.addEventListener('DOMContentLoaded', function() {
+            function syncManufacturingActiveTabHeights() {
+                const dashboardTabs = document.querySelector('.ops-dashboard .macaw-tabs.macaw-aurora-tabs');
+                const sidebarTab =
+                    document.querySelector('.ops-dashboard .stageSidebar button[role="tab"][aria-selected="true"]') ||
+                    document.querySelector('.ops-dashboard .stageSidebar button[role="tab"]');
+
+                if (!dashboardTabs || !sidebarTab) {
+                    return;
+                }
+
+                const sidebarTabHeight = Math.ceil(sidebarTab.getBoundingClientRect().height);
+                if (sidebarTabHeight > 0) {
+                    dashboardTabs.style.setProperty('--sigma-ops-sidebar-tab-height', `${sidebarTabHeight}px`);
+                }
+            }
+
             // Initialize Macaw Tabs if available
             if (typeof MacawTabs !== 'undefined') {
                 MacawTabs.init();
             }
 
+            syncManufacturingActiveTabHeights();
+            window.addEventListener('load', syncManufacturingActiveTabHeights);
+            window.addEventListener('resize', syncManufacturingActiveTabHeights);
 
             // Apply device image styling from configuration
             if (typeof jQuery !== 'undefined') {
@@ -3252,6 +4030,13 @@
             // Store original states when a modal is opened
             jQuery('.modal').on('show.bs.modal', function() {
                 var $modal = jQuery(this);
+
+                // Some modals are rendered inside desktop-only wrappers (e.g. `.d-none d-md-block`).
+                // On mobile, that makes the modal "open" (backdrop + body lock) but stay invisible because an ancestor is `display:none`.
+                // Moving the modal to <body> ensures it can render and the backdrop click-to-dismiss works again.
+                if (!$modal.parent().is('body')) {
+                    $modal.appendTo(document.body);
+                }
 
                 // Store original button states
                 $modal.find('button').each(function() {
@@ -3461,6 +4246,10 @@
             backdrop-filter: blur(12px);
         }
 
+        .config-panel[hidden] {
+            display: none !important;
+        }
+
         .config-panel.active {
             bottom: 20px;
             opacity: 1;
@@ -3594,6 +4383,7 @@
         var $inputsContainer = $('#columnWidthInputs');
         var storageKey = 'dashboard_master_widths';
         var widthStore = window.sigmaTableWidthStore || null;
+        var panelHideTimer = null;
         var defaultColumnWidths = {
             '[Checkbox]': 5,
             '#': 40,
@@ -3721,19 +4511,40 @@
             }
         }
 
+        // Lightweight perf helpers for dashboard load timing
+        var __sigmaPerf = {
+            marks: {},
+            mark: function(label) {
+                this.marks[label] = (window.performance && performance.now)
+                    ? performance.now()
+                    : Date.now();
+            },
+            measure: function(label, start, end) {
+                return;
+            }
+        };
+
         function applyDefaultWidthsToAllTables() {
+            __sigmaPerf.mark('default-widths-start');
             $('.waitingTable.sunriseTable, .activeTable.sunriseTable').each(function() {
                 applyDefaultWidthsToTable($(this));
             });
+            __sigmaPerf.mark('default-widths-end');
+            __sigmaPerf.measure('applyDefaultWidthsToAllTables()', 'default-widths-start', 'default-widths-end');
         }
 
         function runManagedWidthsPass() {
+            __sigmaPerf.mark('managed-widths-start');
             var savedWidths = getSavedWidths();
             if (Object.keys(savedWidths).length > 0) {
                 applyWidths();
+                __sigmaPerf.mark('managed-widths-end');
+                __sigmaPerf.measure('runManagedWidthsPass()', 'managed-widths-start', 'managed-widths-end');
                 return;
             }
             applyDefaultWidthsToAllTables();
+            __sigmaPerf.mark('managed-widths-end');
+            __sigmaPerf.measure('runManagedWidthsPass()', 'managed-widths-start', 'managed-widths-end');
         }
 
         window.sigmaRunManagedTableWidths = runManagedWidthsPass;
@@ -3797,6 +4608,7 @@
 
         // Apply widths to all tables
         function applyWidths() {
+            __sigmaPerf.mark('apply-widths-start');
             var widths = {};
             $inputsContainer.find('input').each(function() {
                 var colName = $(this).data('col-name');
@@ -3851,6 +4663,8 @@
                 });
                 $table.attr('data-sigma-width-mode', 'custom');
             });
+            __sigmaPerf.mark('apply-widths-end');
+            __sigmaPerf.measure('applyWidths()', 'apply-widths-start', 'apply-widths-end');
         }
 
         // Reset to auto widths
@@ -3881,10 +4695,42 @@
 
         // Initialize panel on first load
         function initPanel() {
+            __sigmaPerf.mark('panel-init-start');
             populatePanel();
 
             // Reset to Auto button
             $('#resetToAutoBtn').on('click', resetToAuto);
+            $('#columnConfigCloseBtn').on('click', hideColumnConfigPanel);
+            __sigmaPerf.mark('panel-init-end');
+            __sigmaPerf.measure('initPanel()', 'panel-init-start', 'panel-init-end');
+        }
+
+        function showColumnConfigPanel() {
+            clearTimeout(panelHideTimer);
+            $panel.prop('hidden', false).attr('aria-hidden', 'false');
+
+            requestAnimationFrame(function() {
+                $panel.addClass('active');
+            });
+        }
+
+        function hideColumnConfigPanel() {
+            clearTimeout(panelHideTimer);
+            $panel.removeClass('active').attr('aria-hidden', 'true');
+            panelHideTimer = setTimeout(function() {
+                if (!$panel.hasClass('active')) {
+                    $panel.prop('hidden', true);
+                }
+            }, 450);
+        }
+
+        function toggleColumnConfigPanel() {
+            if ($panel.hasClass('active')) {
+                hideColumnConfigPanel();
+                return;
+            }
+
+            showColumnConfigPanel();
         }
 
         if (widthStore && typeof widthStore.whenReady === 'function') {
@@ -3898,7 +4744,7 @@
         $(document).on('keydown', function(e) {
             if (e.key === 'F2') {
                 e.preventDefault();
-                $panel.toggleClass('active');
+                toggleColumnConfigPanel();
             } else if (e.key === 'F3') {
                 e.preventDefault();
                 clearSavedWidths();
@@ -3940,6 +4786,7 @@
 
         // Re-apply once each time a DataTable is initialized (prevents reload flicker).
         $(document).on('init.dt', function(e, settings) {
+            __sigmaPerf.mark('datatable-init-start');
             var table = settings && settings.nTable ? settings.nTable : null;
             if (!table) return;
             var $table = $(table);
@@ -3960,6 +4807,8 @@
             } else {
                 applyForTable();
             }
+            __sigmaPerf.mark('datatable-init-end');
+            __sigmaPerf.measure('DataTable init.dt apply widths', 'datatable-init-start', 'datatable-init-end');
         });
 
         // Hidden tabs/tables should still get normalized widths once shown.
@@ -3973,6 +4822,12 @@
                     runManagedWidthsPass();
                 }
             }, 50);
+        });
+
+        $(document).on('click', '.sigma-modal--cases-dashboard-case-completion, .sigma-modal--cases-dashboard-case-completion-alt', function(e) {
+            if (e.target === this) {
+                $(this).modal('hide');
+            }
         });
 
         // Reset triggered from user settings page.

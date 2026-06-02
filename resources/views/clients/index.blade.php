@@ -1,585 +1,98 @@
 @extends('layouts.app' ,[ 'pageSlug' => $clientTitle .'s List' ])
 
-@section('content')
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets') }}/css/pages/doctors-index.css?v={{ filemtime(public_path('assets/css/pages/doctors-index.css')) }}" />
 <style>
-/* Modal dialog border radius - all corners uniform */
-
-.sigma-modal--clients-actions .modal-content {
-    border-radius: 25px !important;
-}
-.sigma-modal--clients-add .modal-content {
-    border-radius: 25px !important;
-}
-.sigma-modal--clients-delete .modal-content {
-    border-radius: 25px !important;
-}
-
-/* Modal footer rounded bottom corners */
-
-.sigma-modal--clients-actions .modal-footer {
-    border-bottom-left-radius: 25px !important;
-    border-bottom-right-radius: 25px !important;
-}
-.sigma-modal--clients-add .modal-footer {
-    border-bottom-left-radius: 25px !important;
-    border-bottom-right-radius: 25px !important;
-}
-.sigma-modal--clients-delete .modal-footer {
-    border-bottom-left-radius: 25px !important;
-    border-bottom-right-radius: 25px !important;
-}
-
-#my-table_wrapper {
-    padding: 0 16px;
-    box-sizing: border-box;
-    max-width: 100%;
-}
-.bootstrap-select>select {
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    display: block !important;
-    width: 1px !important;
-    height: 1px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    clip-path: inset(50%) !important;
-    opacity: 0 !important;
-    border: none !important;
-    white-space: nowrap !important;
-    pointer-events: none !important;
-    z-index: 0 !important;
-}
-@media screen and (max-width: 991px){
-    .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto {
-         padding: 0;
+    #my-table_wrapper {
+        padding: 0 !important;
     }
-}
-.dataTables_wrapper .row {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-.sigma-modal--clients-actions .modal-footer .btn {
-    margin: 3px;
-}
-.sigma-modal--clients-add .modal-footer .btn {
-    margin: 3px;
-}
-.sigma-modal--clients-delete .modal-footer .btn {
-    margin: 3px;
-}
-
-.dropdown-toggle::after {
-    display: inline-block !important;
-}
-    .dropdown-menu {
-        color:inherit;
+    .btn-secondary{
+        padding: 0.375rem 1.8rem !important;
     }
-
-.sigma-modal--clients-actions .modal-footer {
-    padding: 0 !important;
-}
-.sigma-modal--clients-add .modal-footer {
-    padding: 0 !important;
-}
-.sigma-modal--clients-delete .modal-footer {
-    padding: 0 !important;
-}
-@media screen and (max-width: 768px){
-    table {
-        table-layout: fixed;
+    #doctor-actions-name{
+        margin-top: 10px !important;
     }
-    .filters-row > div {
-        margin-bottom: 10px !important;
-    }
-    .filters-row .btn-block, .filters-row .form-control, .filters-row .selectpicker {
-        width: 100% !important;
-    }
-}
-.client-actions-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    width: 100%;
-}
-.client-actions-row > [class*="col-"] {
-    padding: 0;
-    max-width: 100%;
-}
-.client-actions-row .btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-.client-actions-row .btn {
-    width: 100%;
-    font-size: 13px;
-    padding: 8px 4px;
-}
-.client-actions-row > .col-12 {
-    grid-column: span 2;
-}
-
-.filters-row > [class*="col-"] {
-    min-width: 0;
-}
-
-.filters-row .selectpicker, .filters-row .form-control, .filters-row .btn {
-    width: 100%;
-}
-
-.filters-row .bootstrap-select {
-    width: 100% !important;
-    max-width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-}
-
-.filters-row .bootstrap-select > .dropdown-toggle {
-    width: 100%;
-}
-
-.balance-summary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.balance-summary span {
-    white-space: nowrap;
-}
-
-.globalTable {
-    width: 100% !important;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-.balance-col {
-    text-align: left;
-}
-
-#my-table tbody td.balance-col {
-    text-align: center;
-    vertical-align: middle;
-}
-
-
-.filters-card {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-radius: 12px;
-    border: 1px solid #e9ecef;
-}
-
-.doctor-filters-shell.sigma-list-filter-card {
-    background: #ffffff !important;
-    border: 1px solid rgba(188, 206, 216, 0.3) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1) !important;
-    padding: 20px 20px 16px !important;
-    margin-bottom: 0 !important;
-    position: relative !important;
-    overflow: hidden !important;
-    backdrop-filter: blur(10px);
-}
-
-.doctor-filters-shell.sigma-list-filter-card::before {
-    content: '' !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    height: 4px !important;
-    background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%) !important;
-    border-radius: 16px 16px 0 0 !important;
-}
-
-.doctor-filters-shell .doctor-card-body {
-    padding: 0 !important;
-}
-
-.doctor-filters-shell .bootstrap-select,
-.doctor-filters-shell .bootstrap-select > .dropdown-toggle {
-    width: 100% !important;
-    min-height: 38px !important;
-    height: 38px !important;
-}
-
-.doctor-filters-shell .bootstrap-select > .dropdown-toggle {
-    display: flex !important;
-    align-items: center !important;
-    padding: 8px 38px 8px 12px !important;
-    font-size: 14px !important;
-    line-height: 1.2 !important;
-    border-radius: 12px !important;
-}
-
-.doctor-filters-shell .bootstrap-select .filter-option {
-    display: flex !important;
-    align-items: center !important;
-    height: 100% !important;
-}
-
-.doctor-filters-shell .bootstrap-select .filter-option-inner {
-    width: 100% !important;
-}
-
-.doctor-filters-shell .bootstrap-select .filter-option-inner-inner {
-    display: block !important;
-    line-height: 1.35 !important;
-    font-size: 14px !important;
-}
-
-.doctor-filters-shell .bootstrap-select > .dropdown-toggle::after {
-    margin-top: 0 !important;
-}
-
-.filter-label {
-    font-weight: 600;
-    font-size: 12px;
-    color: #6c757d;
-    margin-bottom: 6px;
-    display: block;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-
-.filter-input {
-    height: 38px;
-}
-
-.filter-apply-btn {
-    height: 38px;
-    font-weight: 600;
-    padding: 0 20px;
-    border-radius: 6px;
-}
-
-.filters-row {
-    gap: 12px;
-}
-
-.balance-summary-box {
-    background: linear-gradient(135deg, #f8fafc 0%, #e9f0f5 100%);
-    border: 1px solid #d7e0e7;
-    border-radius: 6px;
-    padding: 8px 14px;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.balance-summary__value {
-    color: #2d5f6d;
-    font-size: 16px;
-    font-weight: 700;
-}
-
-.balance-summary__currency {
-    color: #6c757d;
-    font-size: 13px;
-    font-weight: 600;
-    margin-left: 4px;
-}
-
-.table-head {
-    font-weight: 700;
-}
-
-#my-table thead th,
-#my-table_wrapper .dataTables_scrollHead th {
-    background: #408385 !important;
-    color: #ffffff !important;
-}
-
-#my-table thead th:first-child,
-#my-table_wrapper .dataTables_scrollHead th:first-child {
-    border-top-left-radius: 12px !important;
-}
-
-#my-table thead th:last-child,
-#my-table_wrapper .dataTables_scrollHead th:last-child {
-    border-top-right-radius: 12px !important;
-}
-
-.doctor-balance-card::before {
-    background: #d6ecee !important;
-}
-
-.doctor-balance-card .materials-total-label {
-    font-size: 11px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.6px !important;
-    text-transform: uppercase !important;
-    color: #6b7280 !important;
-    margin-bottom: 0 !important;
-    line-height: 1.05 !important;
-}
-
-.doctor-balance-card .materials-total-value {
-    display: flex !important;
-    align-items: baseline !important;
-    gap: 8px !important;
-}
-
-.doctor-balance-card .materials-total-amount {
-    font-size: 23px !important;
-    font-weight: 700 !important;
-    line-height: 1 !important;
-    letter-spacing: -0.02em !important;
-    color: #3b8b45 !important;
-}
-
-.doctor-balance-card .materials-total-currency {
-    font-size: 12px !important;
-    line-height: 1 !important;
-    color: #6b7280 !important;
-    font-weight: 600 !important;
-}
-
-.client-row--inactive {
-    opacity: 0.6;
-}
-
-.client-name-highlight {
-    color: #dc3545;
-}
-
-.doctor-actions {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.status-tab {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.35rem 0.6rem;
-    border: 1px solid #d7e0e7;
-    border-radius: 12px;
-    background: #f8fbfd;
-    box-shadow: 0 2px 8px rgba(45, 95, 109, 0.08);
-}
-
-.status-label {
-    font-weight: 600;
-    font-size: 12px;
-    color: #3f5a6d;
-    margin: 0;
-}
-
-.status-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin: 0;
-}
-
-.status-toggle input[type="checkbox"] {
-    appearance: none;
-    width: 38px;
-    height: 20px;
-    border: 1px solid #b9c7d3;
-    border-radius: 999px;
-    background: #e6eef3;
-    position: relative;
-    cursor: pointer;
-    box-shadow: inset 0 0 0 1px rgba(45, 95, 109, 0.1);
-}
-
-.status-toggle input[type="checkbox"]::after {
-    content: "";
-    position: absolute;
-    top: 1px;
-    left: 1px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: #2d5f6d;
-    transition: transform 0.2s ease, background 0.2s ease;
-}
-
-.status-toggle input[type="checkbox"]:checked {
-    border-color: #28a745;
-    background: #28a745;
-}
-
-.status-toggle input[type="checkbox"]:checked::after {
-    transform: translateX(18px);
-    background: #fff;
-}
-
-.status-toggle input[type="checkbox"]:focus-visible {
-    outline: 2px solid #2d5f6d;
-    outline-offset: 2px;
-}
-
-.toggle-text {
-    font-weight: 600;
-    font-size: 12px;
-    color: #3f5a6d;
-}
-
-.status-toggle input[type="checkbox"]:checked ~ .toggle-text--on {
-    display: inline;
-}
-
-.status-toggle input[type="checkbox"]:checked ~ .toggle-text--off {
-    display: none;
-}
-
-.status-toggle input[type="checkbox"]:not(:checked) ~ .toggle-text--on {
-    display: none;
-}
-
-.status-toggle input[type="checkbox"]:not(:checked) ~ .toggle-text--off {
-    display: inline;
-}
-
-.icon-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    border: 1px solid #d7e0e7;
-    border-radius: 10px;
-    background: #ffffff;
-    color: #2d5f6d;
-    text-decoration: none;
-    box-shadow: 0 2px 8px rgba(45, 95, 109, 0.08);
-    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
-}
-
-.icon-action i {
-    font-size: 15px;
-    line-height: 1;
-}
-
-.icon-action:hover {
-    background: #2d5f6d;
-    border-color: #2d5f6d;
-    color: #ffffff;
-    transform: translateY(-1px);
-}
-
-.icon-action:focus-visible {
-    outline: 2px solid #2d5f6d;
-    outline-offset: 2px;
-}
-
-.icon-action--success {
-    border-color: #28a745;
-    color: #28a745;
-}
-
-.icon-action--success:hover {
-    background: #28a745;
-    border-color: #28a745;
-    color: #ffffff;
-}
-.bootstrap-select.open:not(.bs-container),
-.bootstrap-select.show:not(.bs-container) {
-    z-index: 9999 !important;
-    position: relative !important;
-}
-
-.bs-container.bootstrap-select.open,
-.bs-container.bootstrap-select.show {
-    z-index: 9999 !important;
-    position: absolute !important;
-}
-
-.bootstrap-select .dropdown-menu {
-    z-index: 9999 !important;
-}
-
 </style>
+@endpush
+
+@section('content')
+
 @php
     $permissions = Cache::get('user' . Auth()->user()->id);
+    $isTakePaymentsPage = request()->routeIs('clients-index4payment');
+    $showUntilFilter = ($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin;
 @endphp
 
-<form class="kt-form sigma-list-page" method="GET" action="{{ route('clients-index') }}">
+<div class="doctor-page-wrapper sigma-list-page{{ $isTakePaymentsPage ? ' take-payments-page' : '' }}">
+<form class="kt-form doctor-filter-form" method="GET" action="{{ route('clients-index') }}">
 
-        <div class="col-lg-12 mb-3">
-            <div class="sigma-list-filter-card doctor-filters-shell">
+        <div class="col-lg-12 mb-3 doctor-filter-shell-col">
+            <div class="sigma-list-filter-card doctor-filters-shell cases-filter-card delivery-filter-card">
                 <div class="doctor-card-body py-3">
-                    {{-- Top row: Status toggle + Action buttons --}}
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <div class="status-tab">
-                            <span class="status-label mb-0">Status:</span>
-                            <label class="status-toggle">
-                                <input type="hidden" name="active" value="0">
-                                <input type="checkbox" id="active" name="active" value="1" {{ (old('active', $status) == 1) ? 'checked' : '' }}>
-                                <span class="toggle-text toggle-text--on">Enabled</span>
-                                <span class="toggle-text toggle-text--off">Disabled</span>
-                            </label>
-                        </div>
-                        <div class="doctor-actions">
-                            @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                <a href="{{ route('new-dentist-view') }}" class="icon-action icon-action--success" aria-label="Add New Doctor">
-                                    <i class="fa fa-plus"></i>
-                                </a>
+                    <div class="doctor-filter-layout">
+                        <div class="row align-items-end filters-row cases-filter-row sigma-list-filter-row doctor-filter-fields">
+                            @if($showUntilFilter)
+                            <div class="col-lg-3 col-md-4 col-sm-5 col-5 mb-2 doctor-filter-col">
+                                <label for="from" class="filter-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span>Until</span>
+                                </label>
+                                <x-ios-dtp name="from" id="from" class="filter-input-global" :value="old('from', $from ?? '')" :required="true" mode="month" />
+                            </div>
                             @endif
-                            @if(Auth()->user()->is_admin)
-                                <a href="{{ route('mobile-stats-configs') }}" class="icon-action" aria-label="Mobile">
-                                    <i class="fa fa-phone"></i>
-                                </a>
-                            @endif
-                        </div>
-                    </div>
 
-                    {{-- Filter controls row --}}
-                    <div class="row align-items-end filters-row sigma-list-filter-row">
-                        {{-- Date Filter --}}
-                        @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                            <label for="from" class="filter-label">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span>Until</span>
-                            </label>
-                            <x-ios-dtp name="from" id="from" class="filter-input-global" :value="old('from', $from ?? '')" :required="true" mode="month" />
-                        </div>
-                        @endif
-
-                        {{-- Doctor Filter with Apply Button --}}
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2">
-                            <label for="doctor" class="filter-label">
-                                <i class="fas fa-user-md"></i>
-                                <span>Doctor</span>
-                            </label>
-                            <select class="selectpicker clearOnAll filter-input-global" multiple data-container="body"
-                                    name="doctor[]" id="doctor" data-live-search="true"
-                                    title="All Doctors" data-hide-disabled="true">
-                                <option value="all"
-                                    {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
-                                    All Doctors
-                                </option>
-                                @foreach($allClients as $d)
-                                    <option value="{{ $d->id }}"
-                                        {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
-                                        {{ $d->name }}
+                            <div class="col-lg-3 col-md-4 col-sm-5 {{ $showUntilFilter ? 'col-6' : 'col-5' }} mb-2 doctor-filter-col">
+                                <label for="doctor" class="filter-label">
+                                    <i class="fas fa-user-md"></i>
+                                    <span>Doctor</span>
+                                </label>
+                                <select class="selectpicker clearOnAll filter-input-global" multiple data-container="body"
+                                        name="doctor[]" id="doctor" data-live-search="true"
+                                        title="All Doctors" data-hide-disabled="true">
+                                    <option value="all"
+                                        {{ (isset($selectedClients) && in_array('all', $selectedClients)) ? 'selected' : '' }}>
+                                        All Doctors
                                     </option>
-                                @endforeach
-                            </select>
+                                    @foreach($allClients as $d)
+                                        <option value="{{ $d->id }}"
+                                            {{ (isset($selectedClients) && in_array($d->id, $selectedClients)) ? 'selected' : '' }}>
+                                            {{ $d->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2 sigma-filter-action-col">
+                                <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search sigma-apply-btn filter-apply-btn-global">
+                                    <i class="fas fa-search"></i>
+                                    <span>Apply</span>
+                                </button>
+                            </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-2 sigma-filter-action-col">
-                            <button type="submit" class="btn btn-primary sigma-apply-btn filter-apply-btn-global">
-                                <i class="fas fa-search"></i>
-                                <span>Apply</span>
-                            </button>
+                        <div class="doctor-filter-side">
+                            <div class="doctor-actions">
+                                @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
+                                    <a href="{{ route('new-dentist-view') }}" class="icon-action icon-action--success" aria-label="Add New Doctor">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                @endif
+                                @if(Auth()->user()->is_admin)
+                                    <a href="{{ route('mobile-stats-configs') }}" class="icon-action" aria-label="Mobile">
+                                        <i class="fa fa-phone"></i>
+                                    </a>
+                                @endif
+                            </div>
+
+                            <div class="status-tab">
+                                <span class="status-label mb-0">Status:</span>
+                                <label class="status-toggle">
+                                    <input type="hidden" name="active" value="0">
+                                    <input type="checkbox" id="active" name="active" value="1" {{ (old('active', $status) == 1) ? 'checked' : '' }}>
+                                    <span class="toggle-text toggle-text--on">Enabled</span>
+                                    <span class="toggle-text toggle-text--off">Disabled</span>
+                                </label>
+                            </div>
                         </div>
                     </div>
 
@@ -591,7 +104,7 @@
 
 {{-- Total Balance Card (Moved Outside Filter Form) --}}
 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-<div class="sigma-summary-grid col">
+<div class="sigma-summary-grid col" >
     <div class="sigma-summary-item">
         <div class="materials-total-card report-total-card sigma-compact-summary-card doctor-balance-card">
             <div>
@@ -608,14 +121,14 @@
 
 
 
-                    <div class="">
-                        <table class="globalTable nowrap compact stripe sunriseTable sigma-list-table" id="my-table">
+                    <div class="container full-width doctor-table-shell">
+                        <table class="table table-bordered dataTable no-footer globalTable nowrap compact sunriseTable table-odd sigma-list-table" id="my-table">
                             <thead>
                             <tr >
                                 <th class="table-head">ID</th>
                                 <th class="table-head">Name</th>
                                 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                <th class="balance-col">Balance</th>
+                                <th class="balance-col sigma-head-left">Balance</th>
 
                                 @endif
 
@@ -624,7 +137,13 @@
                             </thead>
                             <tbody>
                             @foreach($clients as $client)
-                                <tr id="{{$client->id}}" class="odd clickable {{ $client->active ? '' : 'table-secondary client-row--inactive' }}" data-toggle="modal" data-target="#actionsDialog{{$client->id}}">
+                                <tr id="{{$client->id}}" class="odd clickable {{ $client->active ? '' : 'table-secondary client-row--inactive' }}"
+                                    data-toggle="modal"
+                                    data-target="#doctorActionsModal"
+                                    data-client-id="{{ $client->id }}"
+                                    data-client-name="{{ $client->name }}"
+                                    data-client-balance-label="{{ number_format($client->display_balance ?? $client->balance) }}"
+                                    data-client-active="{{ $client->active ? '1' : '0' }}">
                                     <td>
                                         <span class="tabledit-span tabledit-identifier">{{$client->id}}</span>
                                     </td>
@@ -637,221 +156,14 @@
                                                 class="tabledit-input form-control input-sm d-none" type="text" name="col1"
                                                 value="John" disabled=""></td>
                                     @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                    <td class="tabledit-view-mode balance-col"><span
-                                                class="tabledit-span">{{ number_format(isset($from) ? $client->balanceAt($from) : $client->balance) }}</span><input
+                                    <td class="tabledit-view-mode balance-col sigma-body-left"><span
+                                                class="tabledit-span">{{ number_format($client->display_balance ?? $client->balance) }}</span><input
                                                 class="tabledit-input form-control input-sm d-none" type="text" name="col1"
                                                 value="Doe" disabled=""></td>
 
                                         @endif
 
                                 </tr>
-                                @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
-                                <div class="modal sigma-modal--clients-actions" tabindex="-1" role="dialog" id="myModal{{$client->id}}">
-                                    <form action="{{route('new-payment')}}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="id" value="{{$client->id}}">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">New Payment balance</h5>
-                                                    <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <h4 class="client-name-highlight"><b>{{$client->name}}</b></h4>
-                                                    <label>Payment amount</label>
-                                                    <input type="number" class="form-control" name="amount" required>
-                                                    <br/>
-                                                    <label>Payment type:</label> <br/>
-
-                                                    <input type="radio" id="cash{{$client->id}}"
-                                                           onclick="paymentTypeChange({{$client->id}});"
-                                                           name="payment_type" value="cash">
-                                                    <label for="cash{{$client->id}}">دفعة نقدية</label><br>
-                                                    <input type="radio" id="cheque{{$client->id}}"
-                                                           onclick="paymentTypeChange({{$client->id}});"
-                                                           name="payment_type" value="cheque">
-                                                    <label for="cheque{{$client->id}}">شيك بنكي</label><br>
-                                                    <input type="radio" id="transfer{{$client->id}}"
-                                                           onclick="paymentTypeChange({{$client->id}});"
-                                                           name="payment_type" value="transfer">
-                                                    <label for="transfer{{$client->id}}">حوالة بنكية/ كليك</label><br>
-                                                    <br/>
-                                                    <div id="chequeDetailsInputs{{$client->id}}" class="cheque-details d-none">
-                                                        <label>Bank:</label>
-
-                                                        <div class="kt-form__control">
-                                                            <select class="form-control" id="bank" name="bank_id">
-                                                                @foreach($banks as $bank)
-                                                                    <option value="{{$bank->id}}">{{$bank->bank_name}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <br/>
-                                                        <label>Cheque number:</label>
-                                                        <input type="text" class="form-control" name="chequeNumber">
-                                                        <br/>
-                                                    </div>
-                                                    <label>Extra details (Optional):</label>
-                                                    <textarea name="note" class="form-control"></textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                    <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Close
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                                @endif
-                                @if( Auth()->user()->is_admin)
-                                    <div class="modal sigma-modal--clients-add" tabindex="-1" role="dialog" id="accountDiscount{{$client->id}}">
-                                        <form action="{{route('account-discount')}}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="id" value="{{$client->id}}">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">Doctor balance</h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <label>Discount amount</label>
-                                                        <input type="number" class="form-control" name="discountAmount" required>
-                                                        <br/>
-                                                        <label>Date of discount:  :</label>
-                                                        <input type="datetime-local" name="discount_date" class="form-control"></input>
-                                                        <br/>
-
-                                                        <label>Details ( How it appears on account statement) :</label>
-                                                        <input type="text" name="discount_title" class="form-control"></input>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">Save changes</button>
-                                                        <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                @endif
-
-                                <div class="modal sigma-modal--clients-delete" tabindex="-1" role="dialog" id="actionsDialog{{$client->id}}">
-
-                                    <input type="hidden" name="case_id" value="{{$client->id}}">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title">Doctor Account</h5>
-
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body" style="padding: 25px 1rem;">
-                                                                <div class="form-group row mb-0">                                                    <div class="col-12 col-md-6">
-                                                        <label for="doctor">Doctor:</label>
-                                                        <h5 id="doctor" class="mb-0"><b>{{$client->name}}</b></h5>
-                                                    </div>
-                                                    @if(Auth()->user()->is_admin)
-                                                        <div class="col-12 col-md-6">
-                                                            <label for="pat">Balance:</label>
-                                                            <h5 id="pat" class="mb-0">
-                                                                <b>{{ isset($from) ? $client->balanceAt($from) : $client->balance }}</b>
-                                                            </h5>
-                                                        </div>
-                                                    @endif
-                                                </div>
-                                                <hr>
-                                            </div>
-                                            <div class="modal-footer fullBtnsWidth">
-                                                <div class="row client-actions-row">
-                                                    @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
-                                                        <div class="col-6">
-                                                            <a href="{{route('client-statement-admin', $client->id)}}" class="btn btn-primary">
-                                                                <span class="btn-icon"><i class="fas fa-file-invoice-dollar"></i></span>
-                                                                <span class="btn-text">Account Statement</span>
-                                                            </a>
-                                                        </div>
-
-                                                        <div class="col-6">
-                                                            <a href="{{route('client-view-edit',['id' =>$client->id])}}" class="btn btn-danger">
-                                                                <span class="btn-icon"><i class="fa-solid fa-pen-to-square"></i></span>
-                                                                <span class="btn-text">Edit Record</span>
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                    @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
-                                                        <div class="col-6">
-                                                            <a data-toggle="modal" data-target="#myModal{{$client->id}}" class="btn btn-warning" data-dismiss="modal">
-                                                                <span class="btn-icon"><i class="fas fa-plus"></i></span>
-                                                                <span class="btn-text">Add a payment</span>
-                                                            </a>
-                                                        </div>
-                                                    @endif
-                                                    @if( Auth()->user()->is_admin)
-                                                        <div class="col-6">
-                                                            <a href="{{route('dentist-cases',['id' =>$client->id])}}" class="btn btn-info">
-                                                                <span class="btn-icon"><i class="far fa-file-alt"></i></span>
-                                                                <span class="btn-text">View Cases</span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <a href="{{route('dentist-invoices',['id' =>$client->id])}}" class="btn btn-info">
-                                                                <span class="btn-icon"><i class="fas fa-file-invoice"></i></span>
-                                                                <span class="btn-text">View Invoices</span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <a href="{{route('dentist-payments',['id' =>$client->id])}}" class="btn btn-info">
-                                                                <span class="btn-icon"><i class="fas fa-credit-card"></i></span>
-                                                                <span class="btn-text">View Payments</span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <a data-toggle="modal" data-target="#accountDiscount{{$client->id}}" class="btn btn-danger" data-dismiss="modal">
-                                                                <span class="btn-icon"><i class="fas fa-percent"></i></span>
-                                                                <span class="btn-text">Create a discount</span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col-6">
-                                                            <a href="{{route('toggle-client-active', $client->id)}}" onclick="return confirm('Are you sure you want to {{ $client->active ? 'disable' : 'enable' }} this doctor?');" class="btn {{ $client->active ? 'btn-warning' : 'btn-success' }}">
-                                                                <span class="btn-icon"><i class="{{ $client->active ? 'fas fa-times-circle' : 'fas fa-check-circle' }}"></i></span>
-                                                                <span class="btn-text">{{ $client->active ? 'Disable' : 'Enable' }}</span>
-                                                            </a>
-                                                        </div>
-
-                                                    @endif
-
-                                                                                                        <div class="col-12" >
-
-                                                                                                            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">
-
-                                                                                                                <span class="btn-icon"><i class="fas fa-ban"></i></span>
-
-                                                                                                                <span class="btn-text">Cancel</span>
-
-                                                                                                            </button>
-
-                                                                                                        </div>
-                                                </div>
-                                            </div>
-
-
-
-                                        </div>
-                                    </div>
-
-                                </div>
 
                             @endforeach
 
@@ -860,23 +172,387 @@
                         </table>
                     </div>
 
+                    <div class="modal sigma-modal--clients-delete" tabindex="-1" role="dialog" id="doctorActionsModal">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Doctor Account</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="padding: 25px 1rem;">
+                                    <div class="form-group row mb-0">
+                                        <div class="col-6 col-md-6">
+                                            <label for="doctor-actions-name">Doctor:</label>
+                                            <h5 id="doctor-actions-name" class="mb-0"><b>-</b></h5>
+                                        </div>
+                                        @if(Auth()->user()->is_admin)
+                                            <div class="col-6 col-md-6">
+                                                <label for="doctor-actions-balance">Balance:</label>
+                                                <h5 id="doctor-actions-balance" class="mb-0"><b>-</b></h5>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer fullBtnsWidth">
+                                    <div class="row client-actions-row">
+                                        @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
+                                            <div class="col-6">
+                                                <a id="doctor-statement-link" href="#" class="btn btn-info">
+                                                    <span class="btn-icon"><i class="fas fa-file-invoice-dollar"></i></span>
+                                                    <span class="btn-text">Account Statement</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a id="doctor-edit-link" href="#" class="btn btn-danger">
+                                                    <span class="btn-icon"><i class="fa-solid fa-pen-to-square"></i></span>
+                                                    <span class="btn-text">Edit Record</span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                        @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
+                                            <div class="col-6">
+                                                <a id="doctor-payment-link" data-toggle="modal" data-target="#doctorPaymentModal" class="btn btn-warning" data-dismiss="modal">
+                                                    <span class="btn-icon"><i class="fas fa-plus"></i></span>
+                                                    <span class="btn-text">Add a payment</span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                        @if(Auth()->user()->is_admin)
+                                            <div class="col-6">
+                                                <a id="doctor-cases-link" href="#" class="btn btn-info">
+                                                    <span class="btn-icon"><i class="far fa-file-alt"></i></span>
+                                                    <span class="btn-text">View Cases</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a id="doctor-invoices-link" href="#" class="btn btn-info">
+                                                    <span class="btn-icon"><i class="fas fa-file-invoice"></i></span>
+                                                    <span class="btn-text">View Invoices</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a id="doctor-payments-link" href="#" class="btn btn-info">
+                                                    <span class="btn-icon"><i class="fas fa-credit-card"></i></span>
+                                                    <span class="btn-text">View Payments</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a id="doctor-discount-link" data-toggle="modal" data-target="#doctorDiscountModal" class="btn btn-danger" data-dismiss="modal">
+                                                    <span class="btn-icon"><i class="fas fa-percent"></i></span>
+                                                    <span class="btn-text">Create a discount</span>
+                                                </a>
+                                            </div>
+                                            <div class="col-6">
+                                                <a id="doctor-toggle-link" href="#" class="btn btn-warning">
+                                                    <span class="btn-icon"><i id="doctor-toggle-icon" class="fas fa-times-circle"></i></span>
+                                                    <span id="doctor-toggle-label" class="btn-text">Disable</span>
+                                                </a>
+                                            </div>
+                                        @endif
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">
+                                                <span class="btn-icon"><i class="fas fa-ban"></i></span>
+                                                <span class="btn-text">Cancel</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if(($permissions && $permissions->contains('permission_id', 111)) || Auth()->user()->is_admin)
+                        <div class="modal sigma-modal--clients-actions" tabindex="-1" role="dialog" id="doctorPaymentModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="doctor-payment-form" action="{{route('new-payment')}}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="doctor-payment-client-id">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">New Payment</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="client-name-highlight"><b id="doctor-payment-client-name">-</b></h4>
+                                            <div class="doctor-payment-field">
+                                                <label class="doctor-payment-field-label" for="doctor-payment-amount">Payment amount</label>
+                                                <input id="doctor-payment-amount" type="number" class="form-control doctor-payment-amount" name="amount" min="0" step="1" inputmode="numeric" pattern="[0-9]*" required>
+                                            </div>
+                                            <div class="doctor-payment-field">
+                                                <div class="doctor-payment-field-label">Payment type</div>
+                                                <div class="doctor-payment-type-group" role="radiogroup" aria-label="Payment type">
+                                                    <label class="doctor-payment-option" for="doctor-payment-cash">
+                                                        <input class="doctor-payment-option__input" type="radio" id="doctor-payment-cash" onchange="paymentTypeChange();" name="payment_type" value="cash">
+                                                        <span class="doctor-payment-option__body">
+                                                            <span class="doctor-payment-option__value">دفعة نقدية</span>
+                                                        </span>
+                                                    </label>
+                                                    <label class="doctor-payment-option" for="doctor-payment-cheque">
+                                                        <input class="doctor-payment-option__input" type="radio" id="doctor-payment-cheque" onchange="paymentTypeChange();" name="payment_type" value="cheque">
+                                                        <span class="doctor-payment-option__body">
+                                                            <span class="doctor-payment-option__value">شيك بنكي</span>
+                                                        </span>
+                                                    </label>
+                                                    <label class="doctor-payment-option" for="doctor-payment-transfer">
+                                                        <input class="doctor-payment-option__input" type="radio" id="doctor-payment-transfer" onchange="paymentTypeChange();" name="payment_type" value="transfer">
+                                                        <span class="doctor-payment-option__body">
+                                                            <span class="doctor-payment-option__value">حوالة بنكية/ كليك</span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div id="doctorPaymentChequeDetails" class="cheque-details d-none doctor-payment-field">
+                                                <label class="doctor-payment-field-label" for="doctor-payment-bank">Bank</label>
+                                                <div class="kt-form__control">
+                                                    <select class="form-control" id="doctor-payment-bank" name="bank_id">
+                                                        @foreach($banks as $bank)
+                                                            <option value="{{$bank->id}}">{{$bank->bank_name}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div id="doctorPaymentChequeNumberField" class="doctor-payment-field cheque-details d-none">
+                                                <label class="doctor-payment-field-label" for="doctor-payment-cheque-number">Cheque number</label>
+                                                <input id="doctor-payment-cheque-number" type="text" class="form-control" name="chequeNumber">
+                                            </div>
+                                            <div class="doctor-payment-field doctor-payment-field--last">
+                                                <label class="doctor-payment-field-label" for="doctor-payment-note">Extra details (Optional)</label>
+                                                <textarea id="doctor-payment-note" name="note" class="form-control doctor-payment-note-input"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn dialog-submit-btn">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if( Auth()->user()->is_admin)
+                        <div class="modal sigma-modal--clients-add" tabindex="-1" role="dialog" id="doctorDiscountModal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <form id="doctor-discount-form" action="{{route('account-discount')}}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="doctor-discount-client-id">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Doctor Balance Discount</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h4 class="client-name-highlight"><b id="doctor-discount-client-name">-</b></h4>
+                                            <div class="doctor-payment-field">
+                                                <label class="doctor-payment-field-label" for="doctor-discount-amount">Discount amount</label>
+                                                <input id="doctor-discount-amount" type="number" class="form-control doctor-discount-amount" name="discountAmount" min="0" step="1" inputmode="numeric" pattern="[0-9]*" required>
+                                            </div>
+                                            <div class="doctor-payment-field">
+                                                <label class="doctor-payment-field-label" for="doctor-discount-date">Date of discount</label>
+                                                <input id="doctor-discount-date" type="datetime-local" name="discount_date" class="form-control">
+                                            </div>
+                                            <div class="doctor-payment-field doctor-payment-field--last">
+                                                <label class="doctor-payment-field-label" for="doctor-discount-title">Details (How it appears on account statement)</label>
+                                                <input id="doctor-discount-title" type="text" name="discount_title" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn dialog-submit-btn">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
         </div>
     </div>
+</div>
 
 @endsection
 @push('js')
     <script>
-        function paymentTypeChange(id) {
-            const cheque = document.getElementById('cheque' + id);
-            const details = document.getElementById('chequeDetailsInputs' + id);
-            if (!cheque || !details) {
+        const doctorRouteTemplates = {
+            statement: @json(route('client-statement-admin', '__CLIENT__')),
+            edit: @json(route('client-view-edit', ['id' => '__CLIENT__'])),
+            cases: @json(route('dentist-cases', ['id' => '__CLIENT__'])),
+            invoices: @json(route('dentist-invoices', ['id' => '__CLIENT__'])),
+            payments: @json(route('dentist-payments', ['id' => '__CLIENT__'])),
+            toggle: @json(route('toggle-client-active', '__CLIENT__')),
+        };
+
+        function doctorRoute(type, clientId) {
+            const template = doctorRouteTemplates[type] || '#';
+            return template.replace('__CLIENT__', clientId);
+        }
+
+        function enforceNonNegativeWholeAmount(input) {
+            if (!input || input.value === '') {
+                return;
+            }
+
+            const amount = Number(input.value);
+            if (Number.isNaN(amount)) {
+                input.value = '';
+                return;
+            }
+
+            input.value = String(Math.max(0, Math.trunc(amount)));
+        }
+
+        function preventDecimalAmountInput(event) {
+            if (event.key === '.' || event.key === ',' || event.key === 'e' || event.key === 'E' || event.key === '-') {
+                event.preventDefault();
+            }
+        }
+
+        function paymentTypeChange() {
+            const cheque = document.getElementById('doctor-payment-cheque');
+            const detailSections = [
+                document.getElementById('doctorPaymentChequeDetails'),
+                document.getElementById('doctorPaymentChequeNumberField'),
+            ].filter(Boolean);
+            const bankField = document.getElementById('doctor-payment-bank');
+            const chequeNumberField = document.getElementById('doctor-payment-cheque-number');
+
+            if (!cheque || detailSections.length === 0) {
                 return;
             }
             if (cheque.checked) {
-                details.classList.remove('d-none');
+                detailSections.forEach(function(section) {
+                    section.classList.remove('d-none');
+                });
+                if (bankField) {
+                    bankField.required = true;
+                }
+                if (chequeNumberField) {
+                    chequeNumberField.required = true;
+                }
             } else {
-                details.classList.add('d-none');
+                detailSections.forEach(function(section) {
+                    section.classList.add('d-none');
+                });
+                if (bankField) {
+                    bankField.required = false;
+                }
+                if (chequeNumberField) {
+                    chequeNumberField.required = false;
+                }
             }
         }
+
+        function populateDoctorActionsModal(trigger) {
+            if (!trigger) {
+                return;
+            }
+
+            const data = trigger.dataset;
+            const clientId = data.clientId || '';
+            const isActive = data.clientActive === '1';
+            const nameNode = document.getElementById('doctor-actions-name');
+            const balanceNode = document.getElementById('doctor-actions-balance');
+
+            if (nameNode) {
+                nameNode.textContent = data.clientName || '-';
+            }
+            if (balanceNode) {
+                balanceNode.textContent = data.clientBalanceLabel || data.clientBalance || '-';
+            }
+
+            [
+                ['doctor-statement-link', doctorRoute('statement', clientId)],
+                ['doctor-edit-link', doctorRoute('edit', clientId)],
+                ['doctor-cases-link', doctorRoute('cases', clientId)],
+                ['doctor-invoices-link', doctorRoute('invoices', clientId)],
+                ['doctor-payments-link', doctorRoute('payments', clientId)],
+            ].forEach(function(entry) {
+                const id = entry[0];
+                const value = entry[1];
+                const element = document.getElementById(id);
+                if (!element) {
+                    return;
+                }
+
+                element.setAttribute('href', value || '#');
+            });
+
+            const modalTriggerData = {
+                clientId: data.clientId || '',
+                clientName: data.clientName || '-',
+            };
+
+            ['doctor-payment-link', 'doctor-discount-link'].forEach(function(id) {
+                const element = document.getElementById(id);
+                if (!element) {
+                    return;
+                }
+
+                element.dataset.clientId = modalTriggerData.clientId;
+                element.dataset.clientName = modalTriggerData.clientName;
+            });
+
+            const toggleLink = document.getElementById('doctor-toggle-link');
+            const toggleLabel = document.getElementById('doctor-toggle-label');
+            const toggleIcon = document.getElementById('doctor-toggle-icon');
+
+            if (toggleLink) {
+                toggleLink.href = doctorRoute('toggle', clientId);
+                toggleLink.className = 'btn ' + (isActive ? 'btn-warning' : 'btn-success');
+                toggleLink.onclick = function() {
+                    return confirm('Are you sure you want to ' + (isActive ? 'disable' : 'enable') + ' this doctor?');
+                };
+            }
+            if (toggleLabel) {
+                toggleLabel.textContent = isActive ? 'Disable' : 'Enable';
+            }
+            if (toggleIcon) {
+                toggleIcon.className = isActive ? 'fas fa-times-circle' : 'fas fa-check-circle';
+            }
+        }
+
+        $(document).on('show.bs.modal', '#doctorActionsModal', function(event) {
+            populateDoctorActionsModal(event.relatedTarget);
+        });
+
+        $(document).on('show.bs.modal', '#doctorPaymentModal', function(event) {
+            const trigger = event.relatedTarget;
+            const form = document.getElementById('doctor-payment-form');
+
+            if (form) {
+                form.reset();
+            }
+
+            document.getElementById('doctor-payment-client-id').value = trigger?.dataset?.clientId || '';
+            document.getElementById('doctor-payment-client-name').textContent = trigger?.dataset?.clientName || '-';
+            paymentTypeChange();
+        });
+
+        $(document).on('input change', '.doctor-payment-amount, .doctor-discount-amount', function() {
+            enforceNonNegativeWholeAmount(this);
+        });
+
+        $(document).on('keydown', '.doctor-payment-amount, .doctor-discount-amount', function(event) {
+            preventDecimalAmountInput(event);
+        });
+
+        $(document).on('show.bs.modal', '#doctorDiscountModal', function(event) {
+            const trigger = event.relatedTarget;
+            const form = document.getElementById('doctor-discount-form');
+
+            if (form) {
+                form.reset();
+            }
+
+            document.getElementById('doctor-discount-client-id').value = trigger?.dataset?.clientId || '';
+            document.getElementById('doctor-discount-client-name').textContent = trigger?.dataset?.clientName || '-';
+        });
     </script>
 @endpush

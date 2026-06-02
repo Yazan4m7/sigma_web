@@ -48,6 +48,7 @@
                                 label="Material:"
                                 :options="$materialOptions"
                                 :selected="$selectedMaterials ?? null"
+                                :allSelected="$allMaterialsSelected ?? false"
                                 title="All Materials"
                             />
                         @endif
@@ -66,6 +67,7 @@
                                 label="Doctors:"
                                 :options="$doctorOptions"
                                 :selected="$selectedClients ?? null"
+                                :allSelected="in_array('all', (array) ($selectedClients ?? []), true)"
                                 title="All"
                             />
                         @endif
@@ -79,21 +81,15 @@
                             <i class="fas fa-chart-line me-2"></i>   &nbsp;   Generate Report
                         </button>
                     </div>
-                    <div class="col-lg-8 col-md-8 col-12 d-flex justify-content-end gap-2">
-
-                            <i class="fas fa-print"></i>
-
-                        <span style="width: 1vh"></span>
-
-                            <i class="fas fa-eye"></i>
-
+                    <div class="col-lg-8 col-md-8 col-12 report-action-icons">
+                            <i class="fas fa-print printBtn" role="button" tabindex="0" aria-label="Print"></i>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 
-    <div class="sigmaPanel" style="">
+    <div class="sigmaPanel container-fluid report-table-section" style="">
         <div class="col-lg-12 col-sm-12">
             <div class=" ">
                 <div class="">
@@ -282,15 +278,29 @@
 //        $(this).prop("disabled", true);
                     var tables = $('.printable');
 
-                    var styling = document.getElementById("style");
-                    newWin = window.open("");
-                    newWin.document.write(styling.innerHTML);
-                    newWin.document.write('<h3 style="float:left">Doctor Consumptions Report</h3>  <h4 style="float:right"> Date Printed :{!! date("d") !!} - {!! date("M") !!} - {!! date("Y") !!} </h4>');
+                    if (tables.length === 0) {
+                        return;
+                    }
+                    var headContent = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+                        .map(function(node) { return node.outerHTML; })
+                        .join('');
+                    newWin = window.open("", "_blank", "width=1200,height=800");
+                    if (!newWin) {
+                        return;
+                    }
+                    newWin.document.write('<!DOCTYPE html><html><head><title>Number of Units Report</title>');
+                    newWin.document.write(headContent);
+                    newWin.document.write('</head><body>');
+                    newWin.document.write('<div style="margin-bottom: 30px;"><h3 style="float:left">Doctor Consumptions Report</h3><h4 style="float:right"> Date Printed :{!! date("d") !!} - {!! date("M") !!} - {!! date("Y") !!} </h4><div style="clear: both;"></div></div>');
                     $.each(tables, function (key, value) {
                         newWin.document.write(value.outerHTML);
                     });
-                    newWin.print();
-                    newWin.close();
+                    newWin.document.write('</body></html>');
+                    newWin.document.close();
+                    setTimeout(function() {
+                        newWin.print();
+                        newWin.close();
+                    }, 250);
                 }
 
                 $('.printBtn').on('click', function () {

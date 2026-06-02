@@ -1,33 +1,27 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Abutments'])
 @section('content')
+    <div class="sigma-config-page sigma-list-page">
+        <div class="sigma-config-page-actions">
+            <a href="{{route('new-abutment-view')}}" class="btn btn-secondary sigma-config-add-btn"><i class="fa fa-plus-circle"></i> New Abutment</a>
+        </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class=" m-b-30">
-                <div class="">
-                    <div class="row">
-                        <div class="col-md-6">     </div>
-                        <div class="col-md-6" style="text-align: right">  <a href="{{route('new-abutment-view')}}" ><button type="button"  class="btn btn-secondary"><i class="fa fa-plus-circle"></i> NEW ABUTMENT</button></a>   </div>
-                    </div>
-
-                    <p class="text-muted"></p>
-                    <div class="">
-                        <table class="table-striped table-bordered compact sunriseTable"
+        <div class="sigma-config-table-shell sigma-table-free">
+            <table class="table-striped table-bordered compact sunriseTable sigma-list-table sigma-config-table"
                                role="grid" aria-describedby="datatable_info"
                                style="width:100%">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Date Created</th>
+                                <th class="sigma-cell-center">ID</th>
+                                <th class="sigma-cell-left">Name</th>
+                                <th class="sigma-cell-center">Date Created</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach($abutments as $abutment)
                             <tr id="{{$abutment->id}}"  class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$abutment->id}}">
-                                <td><span class="tabledit-span tabledit-identifier">{{$abutment->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$abutment->name}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$abutment->created_at }}</span></td>
+                                <td class="sigma-cell-center"><span class="tabledit-span tabledit-identifier">{{$abutment->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
+                                <td class="tabledit-view-mode sigma-cell-left"><span class="tabledit-span">{{$abutment->name}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$abutment->created_at }}</span></td>
 
                                </tr>
 
@@ -83,9 +77,6 @@
                             @endforeach
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection

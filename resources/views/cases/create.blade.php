@@ -18,10 +18,12 @@
             --card-radius: 16px;
             --card-shadow: 0 12px 28px rgba(17, 24, 39, 0.06);
             --card-shadow-hover: 0 16px 32px rgba(17, 24, 39, 0.1);
+            --field-height-standard: 38px;
         }
 
         .create-case-page {
             border-radius: 20px;
+            padding-top: 18px;
 
             /*background: linear-gradient(180deg, #f8fafd 0%, #f1f5fb 100%);*/
             /*border: 1px solid #e4ebf5;*/
@@ -67,7 +69,7 @@
             background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
             border-radius: var(--card-radius);
             padding: 1.55rem 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 0;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-muted);
             transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
@@ -99,7 +101,38 @@
 
         /* Keep section clipping enabled; body-mounted selects and the fixed iOS picker render outside safely. */
         .form-section-card--with-dtp {
-            overflow: hidden;
+            overflow: visible;
+        }
+
+        .order-information-card {
+            padding: 1.15rem 1.2rem 0.95rem;
+        }
+
+        .order-information-card .section-header {
+            margin-bottom: 0.7rem;
+            padding-bottom: 0.55rem;
+        }
+
+        .order-information-card label {
+            font-size: 0.86rem;
+        }
+
+        .order-information-card .mandatorySmallTag {
+            margin-top: 0.15rem;
+            display: inline-block;
+        }
+
+        .required-asterisk {
+            color: #ef4444;
+            font-weight: 800;
+        }
+
+        .order-information-card .row + .row {
+            margin-top: 0.35rem;
+        }
+
+        .jobs-information-card {
+            margin-top: 2rem;
         }
 
         .form-section-card--with-dtp:hover {
@@ -152,11 +185,79 @@
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg, #e5ecf5 0%, #dde6f2 100%);
-            margin: 1.35rem 0;
+            margin: 0.5rem 0 !important;
         }
 
         .section-block {
             margin-top: 2rem;
+        }
+
+        .form-section-stack {
+            padding: 1rem;
+        }
+
+        .optional-sections-row {
+            margin: 0 -0.55rem;
+        }
+
+        .optional-sections-row > [class*="col-"] {
+            padding: 0 0.55rem;
+            margin-bottom: 1rem;
+        }
+
+        .optional-section-panel {
+            height: 100%;
+            padding: 0.72rem 0.8rem 0.78rem;
+            border: 1px solid var(--border-muted);
+            border-radius: 14px;
+            background: #ffffff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .optional-section-panel .section-header {
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.55rem;
+        }
+
+        .optional-section-panel .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .optional-section-panel textarea.form-control {
+            min-height: 84px;
+            resize: vertical;
+        }
+
+        .optional-section-panel .discountPortion {
+            margin-top: 0.65rem;
+            margin-left: 0;
+            margin-right: 0;
+            padding: 0.75rem;
+        }
+
+        .optional-section-panel .file-input.form-control {
+            min-height: 34px;
+            padding-top: 0.32rem;
+            padding-bottom: 0.32rem;
+        }
+
+        .optional-section-panel .toggle-discount {
+            gap: 0.55rem;
+            font-size: 0.88rem;
+        }
+
+        .optional-section-panel .toggle-switch {
+            width: 44px;
+            height: 24px;
+        }
+
+        .optional-section-panel .switch-slider:before {
+            height: 18px;
+            width: 18px;
+        }
+
+        .optional-section-panel .toggle-switch input:checked + .switch-slider:before {
+            transform: translateX(20px);
         }
 
         .form-section-card label {
@@ -172,10 +273,38 @@
             border-radius: 10px;
             border: 1px solid var(--border-muted);
             box-shadow: none !important;
-            min-height: 44px;
-            padding: 0.65rem 0.75rem;
+            min-height: var(--field-height-standard);
+            height: var(--field-height-standard);
+            padding: 0.45rem 0.75rem;
             font-size: 0.95rem;
             color: var(--text-main);
+        }
+
+        textarea.form-control {
+            height: auto;
+            min-height: calc(var(--field-height-standard) * 2);
+        }
+
+        .form-section-card:not(.form-section-stack) .bootstrap-select .btn,
+        .form-section-card:not(.form-section-stack) .bootstrap-select > .dropdown-toggle {
+            min-height: var(--field-height-standard);
+            height: var(--field-height-standard);
+            padding-top: 0.45rem;
+            padding-bottom: 0.45rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-section-card:not(.form-section-stack) .ios-dtp-trigger {
+            min-height: var(--field-height-standard);
+            height: var(--field-height-standard);
+        }
+
+        .optional-section-panel input.form-control:not(.file-input),
+        .optional-section-panel select.form-control {
+            min-height: 44px;
+            height: 44px;
+            padding: 0.65rem 0.75rem;
         }
 
         .form-control:focus,
@@ -229,10 +358,34 @@
         .repeater .row-item {
             border-radius: 14px;
             border: 1px solid var(--border-muted);
-            padding: 0.9rem 0.95rem;
+            padding: 0.7rem 0.8rem;
             margin-bottom: 1rem;
             background: #ffffff;
             box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        }
+
+        .row-item .kt-form__label,
+        .row-item .kt-label,
+        .row-item label {
+            font-size: 0.8rem;
+            line-height: 1.15;
+            margin-bottom: 0.25rem;
+        }
+
+        .row-item .form-control,
+        .row-item .bootstrap-select .btn,
+        .row-item .slctUnitsBtn {
+            min-height: var(--field-height-standard);
+            height: var(--field-height-standard);
+            padding-top: 0.4rem;
+            padding-bottom: 0.4rem;
+        }
+
+        .row-item .slctUnitsBtn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
         }
 
         .mandatorySmallTag {
@@ -323,6 +476,99 @@
             font-weight: 700;
         }
 
+        .case-id-suffix {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        @media (max-width: 575.98px) {
+            .jobs-information-card {
+                margin-top: 1.15rem;
+            }
+
+            .form-section-card {
+                padding: 0.95rem 0.9rem;
+            }
+
+            .order-information-card {
+                padding: 0.85rem 0.9rem 0.75rem;
+            }
+
+            .order-information-card .section-header {
+                margin-bottom: 0.45rem;
+                padding-bottom: 0.35rem;
+            }
+
+            .section-header {
+                margin-bottom: 0.65rem;
+                padding-bottom: 0.45rem;
+            }
+
+            .create-case-page .form-group {
+                margin-bottom: 0.75rem;
+            }
+
+            .create-case-page label {
+                margin-bottom: 0.3rem;
+            }
+
+            .order-information-card .case-id-group {
+                gap: 0.25rem;
+            }
+
+            .order-information-card .case-id-suffix {
+                flex-basis: 100%;
+                margin-top: 0.35rem;
+            }
+
+            .repeater .row-item {
+                padding: 0.55rem 0.6rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .create-case-page .kt-radio-inline {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.55rem;
+            }
+
+            .create-case-page .kt-radio-inline .kt-radio {
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                padding: 0.3rem 0.7rem;
+                border-radius: 999px;
+                border: 1px solid #e2e8f0;
+                background: #f8fafc;
+                margin: 0;
+            }
+
+            .create-case-page .kt-radio-inline .kt-radio span {
+                transform: scale(1.15);
+            }
+
+            .create-case-page .deleteBtn,
+            .create-case-page .deleteBtn2 {
+                min-width: 44px;
+                min-height: 44px;
+                padding: 0 !important;
+            }
+
+            .create-case-page .deleteBtn i,
+            .create-case-page .deleteBtn2 i {
+                font-size: 1.05rem;
+            }
+
+            .submit-row {
+                margin-top: 1.4rem;
+            }
+
+            .primary-submit {
+                margin: 24px auto 10px;
+            }
+        }
+
         .submit-row {
             display: flex;
             justify-content: center;
@@ -397,8 +643,22 @@
             background: #f9fafc;
         }
 
+        @media (max-width: 991px) {
+            .create-case-page {
+                padding-top: 12px;
+            }
+
+            .form-section-stack {
+                padding: 0.95rem;
+            }
+
+            .optional-sections-row > [class*="col-"] {
+                margin-bottom: 0.85rem;
+            }
+        }
+
         .verticalSpacing {
-            margin-top: 1.5rem;
+            margin-top: 0;
         }
 
         .primary-submit {
@@ -586,9 +846,7 @@
             padding: 0;
         }
 
-        .row {
-            padding: 0
-        }
+
 
 
         .xdsoft_time_box {
@@ -706,7 +964,7 @@
             @endif
             @csrf
 
-            <div class="form-section-card form-section-card--with-dtp">
+            <div class="form-section-card form-section-card--with-dtp order-information-card">
 
 
                 <div class=" ">
@@ -716,6 +974,7 @@
                             <div class="section-subtitle">Case</div>
                             <h5>Order Information</h5>
                         </div>
+                        <div class="section-meta"><span class="required-asterisk" aria-hidden="true">*</span> Required</div>
 
                     </div>
 
@@ -723,7 +982,7 @@
                     <div class="row">
                         <div class="col-md-3 col-xs-6 col-l-3 col-xl-3">
                             <div class="col-md-12 col-xs-12 noBottomPadding"><label
-                                    class="noBottomMargin  bold">Doctor:</label>
+                                    class="noBottomMargin  bold">Doctor:<span class="required-asterisk" aria-hidden="true">*</span></label>
                             </div>
                             <div class="col-md-12 col-xs-12 padding5px">
 
@@ -737,21 +996,19 @@
                                         @endforeach
 
                                     </select>
-                                    <small class="mandatorySmallTag">* Mandatory</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
                             <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Patient
-                                    name:</label></div>
+                                    name:<span class="required-asterisk" aria-hidden="true">*</span></label></div>
                             <div class="col-md-12 col-xs-12 ">
                                 <input class="form-control blueTBBorder" type="text" name="patient_name" required />
-                                <small class="mandatorySmallTag">* Mandatory</small>
                             </div>
                         </div>
                         <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
                             <div class="col-md-12 col-xs-12 noBottomPadding"><label class="noBottomMargin bold">Case
-                                    ID:</label></div>
+                                    ID:<span class="required-asterisk" aria-hidden="true">*</span></label></div>
                             <div class="col-md-12 col-xs-12">
 
                                 <div class="case-id-group">
@@ -764,11 +1021,12 @@
                                     <input name="caseId3" placeholder="DD"
                                         class="form-control case-id-part case-id-part--xs" type="text"
                                         value="{{ now()->format('d') }}" required inputmode="numeric" />
-                                    <span class="case-id-sep">_</span>
-                                    <input name="caseId4" placeholder="0000" class="form-control case-id-part"
-                                        type="text" required inputmode="numeric" />
+                                    <span class="case-id-suffix">
+                                        <span class="case-id-sep">_</span>
+                                        <input name="caseId4" placeholder="0000" class="form-control case-id-part"
+                                            type="text" required inputmode="numeric" />
+                                    </span>
                                 </div>
-                                <small class="mandatorySmallTag">* Mandatory</small>
                             </div>
 
                         </div>
@@ -794,7 +1052,7 @@
                         </div>
                         <div class="col-md-5  col-xs-6 col-l-5  col-xl-4">
                             <div class="col-md-12 col-xs-12"><label class="noBottomMargin bold">Delivery
-                                    Date:</label></div>
+                                    Date:<span class="required-asterisk" aria-hidden="true">*</span></label></div>
                             @php
                                 $time = new DateTime('tomorrow 13:00');
                                 // $time = $time->format("Y-m-d\TH:i");
@@ -807,7 +1065,6 @@
 
                                 {{--                        <input class="form-control SDTP" name="delivery_date" type="text" value="{{ $time }}" --}}
                                 {{--                            required readonly /> --}}
-                                <small class="mandatorySmallTag">* Mandatory</small>
                             </div>
                         </div>
                         <div class="col-md-4  col-xs-6 col-l-4  col-xl-3">
@@ -828,13 +1085,13 @@
 
                 </div>
 
-                <div class="section-divider" style="margin: 2.5rem 0 !important;"></div>
+                <div class="section-divider" style="margin: 0.5rem 0 !important;"></div>
 
 
             </div>
             <!--REPEATER -->
 
-            <div class="form-section-card form-section-card--with-dtp " style="margin-top: 2rem;">
+            <div class="form-section-card form-section-card--with-dtp jobs-information-card">
 
                 <div class="section-header">
                     <h5 class=" ">Jobs Information</h5>
@@ -1064,70 +1321,71 @@
 
             <!-- DISCOUNTS / NOTES / ATTACHMENTS -->
             <div class="form-section-card form-section-stack">
-                @if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114)))
-                    <div>
+                @php
+                    $showDiscountSection = Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 114));
+                    $optionalColumnClass = $showDiscountSection ? 'col-lg-4 col-md-6' : 'col-lg-6 col-md-6';
+                @endphp
 
-                        <div class="section-header">
-                            <div>
-                                <div class="section-subtitle">Optional</div>
-                                <h5>Discount</h5>
+                <div class="row optional-sections-row">
+                    @if ($showDiscountSection)
+                        <div class="{{ $optionalColumnClass }}">
+                            <div class="optional-section-panel">
+                                <div class="section-header">
+                                    <div>
+                                        <div class="section-subtitle">Optional</div>
+                                        <h5>Discount</h5>
+                                    </div>
+                                </div>
+                                <label class="toggle-discount mb-0">
+                                    <span class="toggle-switch mb-2">
+                                        <input type="checkbox" class="discountCB" name="discountCB"
+                                            onclick='toggleDiscountPortion(this)' />
+                                        <span class="switch-slider"></span>
+                                    </span>
+                                    Enable Discount
+                                </label>
+                                <div class="form-group row discountPortion" style="display:none">
+                                    <div class="col-12 mb-2">
+                                        <input class="form-control" type="number" name="discount_amount"
+                                            placeholder="Amount (JOD)" />
+                                    </div>
+                                    <div class="col-12">
+                                        <input class="form-control" type="text" name="discount_reason"
+                                            placeholder="Explanation of discount" />
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                    @endif
 
-                        </div>
-                        <label class="toggle-discount mb-0">
-                            <span class="toggle-switch">
-                                <input type="checkbox" class="discountCB" name="discountCB"
-                                    onclick='toggleDiscountPortion(this)' />
-                                <span class="switch-slider"></span>
-                            </span>
-                            Enable Discount
-                        </label>
-                    </div>
-                    <div class="form-group form-group row discountPortion" style="display:none">
-                        <div class="col-md-3 col-xs-6">
-                            <input class="form-control" type="number" name="discount_amount"
-                                placeholder="Amount (JOD)" />
-                            <small>JOD</small>
-                        </div>
-                        <div class="col-md-6 col-xs-6">
-                            <input class="form-control" type="text" name="discount_reason"
-                                placeholder="Explanation of discount" /></textarea>
+                    <div class="{{ $optionalColumnClass }}">
+                        <div class="optional-section-panel">
+                            <div class="section-header">
+                                <div>
+                                    <div class="section-subtitle">Optional</div>
+                                    <h5>Additional Information</h5>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-last">
+                                <label for="exampleTextarea">Note</label>
+                                <textarea class="form-control" name="note" id="exampleTextarea" rows="2">{{ old('note') }}</textarea>
+                            </div>
                         </div>
                     </div>
-                    <div class="section-divider"></div>
-                @endif
 
-                <div class="section-block">
-
-
-
-                    <div class="section-header">
-                        <div>
-                            <div class="section-subtitle">Optional</div>
-                            <h5>Additional Information</h5>
+                    <div class="{{ $optionalColumnClass }}">
+                        <div class="optional-section-panel">
+                            <div class="section-header">
+                                <div>
+                                    <div class="section-subtitle">Optional</div>
+                                    <h5>Attachments</h5>
+                                </div>
+                            </div>
+                            <div class="form-group form-group-last">
+                                <input type="file" id="images" class="form-control file-input" name="images[]"
+                                    placeholder="address" multiple>
+                            </div>
                         </div>
-
-                    </div>
-                    <div class="form-group form-group-last">
-                        <label for="exampleTextarea">Note</label>
-                        <textarea class="form-control" name="note" id="exampleTextarea" rows="3">{{ old('note') }}</textarea>
-                    </div>
-                </div>
-
-                <div class="section-divider"></div>
-
-                <div class="section-block">
-
-                    <div class="section-header">
-                        <div>
-                            <div class="section-subtitle">Optional</div>
-                            <h5>Attachments</h5>
-                        </div>
-
-                    </div>
-                    <div class="form-group form-group-last">
-                        <input type="file" id="images" class="form-control file-input" name="images[]"
-                            placeholder="address" multiple>
                     </div>
                 </div>
                 <style>

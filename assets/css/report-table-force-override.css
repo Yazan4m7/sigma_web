@@ -1,0 +1,242 @@
+/* SIGMA Report Tables - Force Override CSS */
+/* This file uses maximum specificity to override all old styles */
+
+/* Force new table container styling - Exact Reference Match */
+body div body .sigma-report-table-container {
+    background: #ffffff !important;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid #e1e5e9 !important;
+    /*overflow: hidden !important;*/
+    margin: 2rem 0 !important;
+    max-width: 100% !important;
+}
+
+/* Force table styling - maximum specificity */
+body div.sigma-report-table-container table.sigma-report-table,
+body .sigma-report-table-container table.sigma-report-table,
+body div.sigma-report-table-container table,
+body .sigma-report-table-container table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    background-color: #ffffff !important;
+    border: none !important;
+    border-spacing: 0 !important;
+}
+
+/* Force header styling - Reference Match */
+body div.sigma-report-table-container table thead tr th,
+body .sigma-report-table-container table thead tr th,
+body div.sigma-report-table-container table th,
+body .sigma-report-table-container table th {
+    background: #8b9dc3 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 1.25rem 1.5rem !important;
+    text-align: left !important;
+    border: none !important;
+    position: relative !important;
+    white-space: nowrap !important;
+}
+
+/* Force body row styling */
+body div.sigma-report-table-container table tbody tr,
+body .sigma-report-table-container table tbody tr {
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+/* Force alternating row colors - Subtle Like Reference */
+body div.sigma-report-table-container table tbody tr:nth-child(even),
+body .sigma-report-table-container table tbody tr:nth-child(even) {
+    background-color: #f6f8fa !important;
+}
+
+body div.sigma-report-table-container table tbody tr:nth-child(odd),
+body .sigma-report-table-container table tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+/* Hover effect like reference */
+body div.sigma-report-table-container table tbody tr:hover,
+body .sigma-report-table-container table tbody tr:hover {
+    background-color: #f0f4f8 !important;
+    transition: background-color 0.15s ease !important;
+}
+
+/* Force cell styling - Reference Typography */
+body div.sigma-report-table-container table tbody tr td,
+body .sigma-report-table-container table tbody tr td,
+body div.sigma-report-table-container table td,
+body .sigma-report-table-container table td {
+    padding: 1.25rem 1.5rem !important;
+    color: #1a202c !important;
+    font-weight: 400 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5 !important;
+    border: none !important;
+    vertical-align: middle !important;
+    white-space: nowrap !important;
+}
+
+/* Doctor name styling - bold like reference customer names */
+body div.sigma-report-table-container table .primary-text,
+body .sigma-report-table-container table .primary-text {
+    font-weight: 600 !important;
+    color: #1a202c !important;
+    font-size: 0.875rem !important;
+}
+
+/* Number cell styling - right aligned like reference */
+body div.sigma-report-table-container table .text-center,
+body .sigma-report-table-container table .text-center {
+    text-align: center !important;
+    font-weight: 500 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+body div.sigma-report-table-container table .text-right,
+body .sigma-report-table-container table .text-right {
+    text-align: right !important;
+    font-weight: 600 !important;
+    font-variant-numeric: tabular-nums !important;
+}
+
+/* Force totals row styling */
+body div.sigma-report-table-container table .totals-row,
+body .sigma-report-table-container table .totals-row,
+body div.sigma-report-table-container table .table-totals-row,
+body .sigma-report-table-container table .table-totals-row {
+    background-color: #f8fafc !important;
+    border-top: 2px solid #8b9dc3 !important;
+    font-weight: 600 !important;
+}
+
+body div.sigma-report-table-container table .totals-row td,
+body .sigma-report-table-container table .totals-row td,
+body div.sigma-report-table-container table .table-totals-row td,
+body .sigma-report-table-container table .table-totals-row td {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+}
+
+/* Override any inline styles */
+body div.sigma-report-table-container table[style],
+body .sigma-report-table-container table[style],
+body div.sigma-report-table-container table tr[style],
+body .sigma-report-table-container table tr[style],
+body div.sigma-report-table-container table td[style],
+body .sigma-report-table-container table td[style],
+body div.sigma-report-table-container table th[style],
+body .sigma-report-table-container table th[style] {
+    border: none !important;
+    background: inherit !important;
+}
+
+/* Text alignment utilities */
+body div.sigma-report-table-container .text-center,
+body .sigma-report-table-container .text-center {
+    text-align: center !important;
+}
+
+body div.sigma-report-table-container .text-right,
+body .sigma-report-table-container .text-right {
+    text-align: right !important;
+}
+
+body div.sigma-report-table-container .primary-text,
+body .sigma-report-table-container .primary-text {
+    font-weight: 600 !important;
+    color: #2d3748 !important;
+}
+
+/* Pagination styling - Exact Reference Match */
+.sigma-report-pagination {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 1rem 1.5rem !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid #e1e5e9 !important;
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+}
+
+.sigma-rows-per-page {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+}
+
+.sigma-rows-per-page select {
+    border: 1px solid #d1d5db !important;
+    border-radius: 4px !important;
+    padding: 0.25rem 1.5rem 0.25rem 0.5rem !important;
+    background-color: #ffffff !important;
+    font-size: 0.875rem !important;
+    color: #6b7280 !important;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 0.5rem center !important;
+    background-size: 12px 12px !important;
+    appearance: none !important;
+}
+
+.sigma-pagination-nav {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+}
+
+.sigma-pagination-info {
+    font-weight: 400 !important;
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+    margin: 0 0.75rem !important;
+}
+
+.sigma-pagination-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 4px !important;
+    background-color: #ffffff !important;
+    color: #6b7280 !important;
+    cursor: pointer !important;
+    font-size: 1rem !important;
+    transition: all 0.15s ease !important;
+}
+
+.sigma-pagination-btn:hover:not(.disabled) {
+    background-color: #f9fafb !important;
+    border-color: #9ca3af !important;
+}
+
+.sigma-pagination-btn.disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    color: #d1d5db !important;
+}
+
+/* Month header styling */
+body div.sigma-report-table-container table .month-header-row th,
+body .sigma-report-table-container table .month-header-row th {
+    background-color: #6b7280 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    font-size: 0.875rem !important;
+}

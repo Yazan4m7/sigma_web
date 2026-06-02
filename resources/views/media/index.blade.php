@@ -1,27 +1,50 @@
 @extends('layouts.app' ,[ 'pageSlug' =>'Gallery Media'])
 
 @section('content')
-    <!--suppress ALL -->
-    <div class="row" style="padding-left: 10px;padding-top: 10px">
-        <div class="col-lg-12 col-sm-12">
-            <div class="m-b-30">
-                <div class="table-responsive">
-                    <div class="container"><div class="row">
-                            <div class="col-8"><h5 class="header-title">Gallery Media Items</h5></div>
+    <style>
+        .media-config-page .media-page-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0 0 24px;
+        }
 
-                        <div class="col-3   "><a href="{{route('create-media')}}" style="display:block">
-                            <button type="button" class="btn btn-secondary btn-lg btn-block"><i class="fa fa-plus-circle" style=""></i>  New Media</button>
-                        </a></div>
-                </div>
+        .media-config-page .sigma-config-table.sunriseTable tbody tr:nth-child(odd),
+        .media-config-page .sigma-config-table.sunriseTable tbody tr:nth-child(even) {
+            background-color: #ffffff !important;
+        }
 
-                    <div class="table-odd">
-                        <div id="datatable_wrapper" class=""><div class="row"><div class="col-sm-12">
-                                    <table id="datatable" class="table sunriseTable order-column  display nowrap compact cell-border dataTable no-footer" role="grid" aria-describedby="datatable_info">
+        .media-config-page .sigma-config-table.sunriseTable tbody td {
+            padding: 2px 16px !important;
+        }
+
+        .media-config-page table#datatable.sigma-config-table thead th:first-child,
+        .media-config-page table#datatable.sigma-config-table thead th:last-child {
+            background: #408385 !important;
+            color: #ffffff !important;
+        }
+
+        .media-config-page .sigma-config-table .btn.btn-sm {
+            padding: 0.1rem 0.45rem !important;
+            line-height: 1.1 !important;
+            font-size: 11.5px !important;
+            min-height: auto !important;
+        }
+    </style>
+    <div class="sigma-config-page sigma-list-page media-config-page">
+        <div class="media-page-actions">
+            <a href="{{route('create-media')}}" class="btn sigma-config-add-btn">
+                <i class="fa fa-plus-circle"></i> New Media
+            </a>
+        </div>
+
+        <div class="sigma-config-table-shell sigma-table-free">
+            <table id="datatable" class="table sunriseTable order-column display nowrap compact cell-border dataTable no-footer sigma-list-table sigma-config-table" role="grid" aria-describedby="datatable_info">
                                         <thead>
-                                        <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">ID</th>
+                                        <tr role="row"><th class="sorting_asc sigma-cell-center" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending" style="width: 50.93px;">ID</th>
                                             <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" style="width: 240px;">Title</th>
-                                            <th class="sorting" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 148.32px;">Date Added</th>
-                                            <th class="no-sort" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">Actions</th>
+                                            <th class="sorting sigma-cell-center" tabindex="0" aria-controls="datatable" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending" style="width: 148.32px;">Date Added</th>
+                                            <th class="no-sort sigma-cell-center" rowspan="1" colspan="1" aria-label="Actions" style="width: 100px;">Actions</th>
                                         </tr>
                                         </thead>
 
@@ -29,10 +52,10 @@
 
                                         @foreach($media as $mediaItem)
                                             <tr role="row" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$mediaItem->id}}">
-                                                <td class="sorting_1">{{$mediaItem->id}}</td>
+                                                <td class="sorting_1 sigma-cell-center">{{$mediaItem->id}}</td>
                                                 <td>{{substr($mediaItem->text,0,16) }}</td>
-                                                <td>{{substr($mediaItem->created_at,0,16) }}</td>
-                                                <td onclick="event.stopPropagation();">
+                                                <td class="sigma-cell-center">{{substr($mediaItem->created_at,0,16) }}</td>
+                                                <td class="sigma-cell-center" onclick="event.stopPropagation();">
                                                     <a href="{{route('edit-media',$mediaItem->id)}}" class="btn btn-sm btn-info">Edit</a>
                                                     <form action="{{route('delete-media',$mediaItem->id)}}" method="POST" style="display:inline-block;">
                                                         @csrf
@@ -104,16 +127,9 @@
                                             </div>
                                         @endforeach
                                         </tbody>
-                                    </table>
-                                </div>
-                            </div></div>
-                    </div>
-                </div>
-            </div>
+            </table>
         </div>
-
-
-        </div>
+    </div>
 
 @endsection
 

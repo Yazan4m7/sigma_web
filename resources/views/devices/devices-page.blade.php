@@ -22,7 +22,7 @@
 
     <!-- Include existing stylesheets from operations dashboard -->
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet"/>
-    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css" rel="stylesheet"/>
+    <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css?v={{ filemtime(public_path('assets/css/ysh-custom-css/OperationsDashboardStyling.css')) }}" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/active-cases.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/waiting-dialog.css" rel="stylesheet"/>
     <link href="{{ asset('assets') }}/css/v3styles.css" rel="stylesheet">

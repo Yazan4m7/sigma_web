@@ -13,7 +13,6 @@ use App\failureLog;
 use App\implant;
 use App\MobileNotificationToken;
 use App\permission;
-use App\UserPermission;
 use Illuminate\Http\Request;
 use DB;
 use Illuminate\Support\Facades\Cache;
@@ -32,6 +31,9 @@ use App\tag;
 use App\Type;
 use App\caseLog;
 use App\User;
+use App\Support\OperationsDashboardCache;
+use App\Support\PageBenchmark;
+use App\Support\UserPermissionsCache;
 use App\lab;
 use App\editLog;
 use App\Services\AuditLogger;
@@ -56,7 +58,7 @@ class CaseController extends Controller
     public function devicesPage()
     {
         $this->setUserPermissions();
-        $permissions = Cache::get('user' . Auth::user()->id);
+        $permissions = UserPermissionsCache::get(Auth::user()->id);
         $currentUserId = Auth()->user()->id;
         $isAdmin = Auth()->user()->is_admin == 1 || ($permissions && $permissions->contains('permission_id', 122));
 
@@ -174,6 +176,9 @@ class CaseController extends Controller
      */
     public function index(Request $request)
     {
+        PageBenchmark::bootIfActive($request, 'cases');
+        PageBenchmark::mark($request, 'cases.index.enter');
+
         // Set date range
         if ($request->from && $request->to) {
             $from = $request->from;
@@ -182,11 +187,30 @@ class CaseController extends Controller
             $from = date('Y-m-d', strtotime('first day of this month'));
             $to = now()->toDateString();
         }
+        PageBenchmark::mark($request, 'cases.index.date-range-ready', [
+            'from' => $from,
+            'to' => $to,
+        ]);
+
+        $caseListRelations = [
+            'client:id,name',
+            'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
+            'tags:id,case_id,tag_id',
+            'tags.originalTagRecord:id,text,color,icon',
+            'jobs.assignedTo:id,name_initials,first_name',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name',
+            'jobs.subType:id,name,material_id'
+        ];
 //        dd($from,$to);
 
         // Build query for IN-PROGRESS cases (NO date filter, only doctor filter)
         $inProgressQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
-            ->whereNull('actual_delivery_date');  // In-progress cases (stage != 8)
+            ->whereNull('actual_delivery_date')
+            ->orderBy('initial_delivery_date');  // In-progress cases (stage != 8)
 
         // Apply doctor filter to in-progress cases if specified
         if (isset($request->doctor) && !(isset($request->doctor[0]) && $request->doctor[0] === 'all')) {
@@ -196,61 +220,80 @@ class CaseController extends Controller
         // Build query for COMPLETED cases (filter by actual_delivery_date with date range)
         $completedQuery = sCase::select(['id', 'patient_name', 'initial_delivery_date', 'actual_delivery_date', 'doctor_id', 'created_at', 'locked'])
             ->whereNotNull('actual_delivery_date')  // Completed cases (stage = 8)
-            ->whereBetween('actual_delivery_date', [$from . ' 00:00', $to . ' 23:59']);  // Apply date range to completed cases
+            ->whereBetween('actual_delivery_date', [$from . ' 00:00', $to . ' 23:59'])
+            ->orderByDesc('actual_delivery_date');  // Apply date range to completed cases
 
         // Apply doctor filter to completed cases if specified
         if (isset($request->doctor) && !(isset($request->doctor[0]) && $request->doctor[0] === 'all')) {
             $completedQuery->whereIn('doctor_id', $request->doctor);
         }
+        PageBenchmark::mark($request, 'cases.index.queries-built');
 
         // Get both sets of cases and load relationships immediately
-        $inProgressCases = $inProgressQuery->get();
-        $completedCases = $completedQuery->get();
+        $inProgressCases = $inProgressQuery->limit(500)->get();
+        PageBenchmark::mark($request, 'cases.index.in-progress-fetched', [
+            'case_count' => $inProgressCases->count(),
+        ]);
+
+        $remainingSlots = max(0, 500 - $inProgressCases->count());
+        $completedCases = $remainingSlots > 0
+            ? $completedQuery->limit($remainingSlots)->get()
+            : collect();
+        PageBenchmark::mark($request, 'cases.index.completed-fetched', [
+            'case_count' => $completedCases->count(),
+            'remaining_slots' => $remainingSlots,
+        ]);
 
         // Load relationships using eager loading with specific columns to reduce memory usage
-        $inProgressCases->load([
-            'notes:id,case_id,note,created_at,written_by',
-            'notes.writtenBy:id,name_initials',
-            'tags:id,case_id,tag_id',
-            'tags.originalTagRecord:id,text,color,icon',
-            'jobs.assignedTo:id,name_initials,first_name',
-            'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
-            'jobs.implantR:id,name',
-            'jobs.abutmentR:id,name',
-            'jobs.subType:id,name,material_id'
-        ]);
+        $inProgressCases->load($caseListRelations);
+        PageBenchmark::mark($request, 'cases.index.in-progress-loaded');
 
-        $completedCases->load([
-            'notes:id,case_id,note,created_at,written_by',
-            'notes.writtenBy:id,name_initials',
-            'tags:id,case_id,tag_id',
-            'tags.originalTagRecord:id,text,color,icon',
-            'jobs.assignedTo:id,name_initials,first_name',
-            'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
-            'jobs.implantR:id,name',
-            'jobs.abutmentR:id,name',
-            'jobs.subType:id,name,material_id'
-        ]);
+        if ($completedCases->isNotEmpty()) {
+            $completedCases->load($caseListRelations);
+        }
+        PageBenchmark::mark($request, 'cases.index.completed-loaded');
 
-        // Sort in-progress cases by initial_delivery_date (oldest first)
-        $inProgressCases = $inProgressCases->sortBy('initial_delivery_date')->values();
+        // Queries are already ordered in SQL; keep only value reindexing here.
+        $inProgressCases = $inProgressCases->values();
+        PageBenchmark::mark($request, 'cases.index.in-progress-sorted');
 
-        // Sort completed cases by actual_delivery_date (newest first)
-        $completedCases = $completedCases->sortByDesc('actual_delivery_date')->values();
+        $completedCases = $completedCases->values();
+        PageBenchmark::mark($request, 'cases.index.completed-sorted');
 
         // Merge: in-progress first, then completed
         $cases = $inProgressCases->merge($completedCases);
-
-        // Limit to 500 total cases
-        $cases = $cases->take(500);
+        PageBenchmark::mark($request, 'cases.index.merged', [
+            'merged_count' => $cases->count(),
+        ]);
+        PageBenchmark::mark($request, 'cases.index.limited', [
+            'visible_count' => $cases->count(),
+        ]);
 
         $selectedClients = $request->doctor;
         $clients = client::select(['id', 'name'])->get();
+        PageBenchmark::mark($request, 'cases.index.clients-fetched', [
+            'client_count' => $clients->count(),
+        ]);
 
         // Pass all necessary data to the view
+        PageBenchmark::mark($request, 'cases.index.view-ready');
         return view('cases.index', compact('cases', 'from', 'to', 'selectedClients', 'clients'));
+    }
+
+    public function caseActionsModal($id)
+    {
+        $case = sCase::with([
+            'client:id,name',
+            'notes:id,case_id,note,created_at,written_by',
+            'notes.writtenBy:id,name_initials',
+            'jobs.assignedTo:id,name_initials,first_name',
+            'jobs.jobType:id,name',
+            'jobs.material:id,name,count_as_unit',
+            'jobs.implantR:id,name',
+            'jobs.abutmentR:id,name'
+        ])->findOrFail($id);
+
+        return view('cases.partials.actions-modal-content', compact('case'));
     }
 
     public function view($id, $stage = -2)
@@ -258,7 +301,18 @@ class CaseController extends Controller
         $case = sCase::with([
             'jobs.jobType:id,name',
             'jobs.material:id,name,count_as_unit',
-            'jobs.subType:id,name,material_id'
+            'jobs.subType:id,name,material_id',
+            'jobs.device:id,name,type',
+            'jobs.millingBuild.deviceUsed:id,name,type',
+            'jobs.millingBuild.device:id,name,type',
+            'jobs.printingBuild.deviceUsed:id,name,type',
+            'jobs.printingBuild.device:id,name,type',
+            'jobs.sinteringBuild.deviceUsed:id,name,type',
+            'jobs.sinteringBuild.device:id,name,type',
+            'jobs.pressingBuild.deviceUsed:id,name,type',
+            'jobs.pressingBuild.device:id,name,type',
+            'logs.user:id,first_name,last_name,name_initials',
+            'logs.device:id,name,type'
         ])->findOrFail($id);
         $materials = material::all();
         $clients = client::where('active', '!=', 0)->get();
@@ -801,21 +855,17 @@ class CaseController extends Controller
 
     function setUserPermissions()
     {
-
-        if (!Cache::has('user' . Auth::user()->id)) {
-            $permissions = UserPermission::where('user_id', Auth::user()->id)->get();
-            Cache::forever('user' . Auth::user()->id, $permissions);
-        }
+        UserPermissionsCache::get(Auth::user()->id);
     }
 
-    public function adminDashboard_v2()
+    public function adminDashboard_v2(Request $request)
     {
         /////////////////////////////////////////////
         //////// MAIN ENTRY POINT OF APPLICATION !!!!
         /// /////////////////////////////////////////
 
         $this->setUserPermissions();
-        $permissions = Cache::get('user' . Auth::user()->id);
+        $permissions = UserPermissionsCache::get(Auth::user()->id);
         $currentUserId = Auth()->user()->id;
         $isAdmin = Auth()->user()->is_admin == 1 || ($permissions && $permissions->contains('permission_id', 122));
 
@@ -823,7 +873,9 @@ class CaseController extends Controller
         $startTime = microtime(true);
 
         // Cache key for dashboard data (5-minute cache)
-        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user') . '_v2';
+        $dashboardGeneration = OperationsDashboardCache::currentGeneration();
+        $cacheKey = 'dashboard_data_' . $currentUserId . '_' . ($isAdmin ? 'admin' : 'user') . '_v2_' . $dashboardGeneration;
+        $dashboardCacheGeneratedAt = $dashboardGeneration;
         $devices = collect();
         $deviceUnitsCounts = [];
 
@@ -833,9 +885,8 @@ class CaseController extends Controller
 
             // Extract variables from cached data
             extract($dashboardData);
+            $dashboardCacheGeneratedAt = $dashboardData['dashboardCacheGeneratedAt'] ?? 'legacy';
 
-            // Log cache hit
-            \Log::info("Dashboard loaded from cache in " . (microtime(true) - $startTime) . " seconds");
         } else {
 
             // Optimized: Get all cases with all necessary relationships in one query
@@ -1033,6 +1084,7 @@ class CaseController extends Controller
             })->get();
 
             $labs = lab::all();
+            $dashboardCacheGeneratedAt = $dashboardGeneration;
 
             // Store all the dashboard data in the cache for 5 minutes
             $dashboardData = compact(
@@ -1040,51 +1092,47 @@ class CaseController extends Controller
                 'wMilling', 'aMilling', 'wPrinting', 'aPrinting',
                 'wSintering', 'aSintering', 'wPressing', 'aPressing',
                 'wFinishing', 'aFinishing', 'wQC', 'aQC', 'wDelivery',
-                'aDelivery', 'drivers', 'devices', 'deviceUnitsCounts'
+                'aDelivery', 'drivers', 'devices', 'deviceUnitsCounts', 'dashboardCacheGeneratedAt'
             );
 
             Cache::put($cacheKey, $dashboardData, now()->addMinutes(5));
         }
 
-        $activeOuterTab = $_COOKIE['activeOuterTab'] ?? "";
+        $activeOuterTab = (string) $request->cookie('activeOuterTab', '');
 
         // Get stage configuration for components
         $stageConfig = OperationsUpgrade::STAGE_CONFIG;
 
-        // Get material types for operation dialogs
-        $types = \App\Type::enabled()->get();
-
-        // Group types by material_id using the pivot table (material_types)
-        $typesByMaterial = \DB::table('material_types')
-            ->join('types', 'material_types.type_id', '=', 'types.id')
-            ->join('materials', 'material_types.material_id', '=', 'materials.id')
-            ->where('types.is_enabled', true)
-            ->select('material_types.material_id', 'material_types.type_id', 'types.name as type_name', 'materials.name as material_name')
-            ->get()
-            ->groupBy('material_id')
-            ->map(function ($group) {
-                return $group->map(function ($item) {
-                    return [
-                        'id' => $item->type_id,
-                        'name' => $item->type_name,
-                        'material_id' => $item->material_id,
-                        'material_name' => $item->material_name
-                    ];
-                });
-            });
+        // These props are currently unused by the waiting-dialog component on this page.
+        // Leaving them empty avoids extra metadata queries on every dashboard hit.
+        $types = collect();
+        $typesByMaterial = collect();
     
-        // Log execution time - can be removed in production
-        $executionTime = microtime(true) - $startTime;
-        \Log::info("Dashboard loaded in {$executionTime} seconds");
-
-        return view('cases.admin-dashboardv2', compact(
+        $viewData = compact(
             'labs', 'wDesign', 'aDesign',
             'wMilling', 'aMilling', 'wPrinting', 'aPrinting',
             'wSintering', 'aSintering', 'wPressing', 'aPressing',
             'wFinishing', 'aFinishing', 'wQC', 'aQC', 'wDelivery',
             'aDelivery', 'drivers', 'activeOuterTab', 'devices', 'deviceUnitsCounts',
             'permissions', 'stageConfig', 'types', 'typesByMaterial'
-        ));
+        );
+
+        $htmlCacheKey = 'dashboard_html_v2_' . md5(implode('|', [
+            $request->session()->getId(),
+            $currentUserId,
+            $isAdmin ? 'admin' : 'user',
+            (string) $dashboardCacheGeneratedAt,
+            $activeOuterTab,
+        ]));
+
+        if (Cache::has($htmlCacheKey)) {
+            return response(Cache::get($htmlCacheKey));
+        }
+
+        $html = view('cases.admin-dashboardv2', $viewData)->render();
+        Cache::put($htmlCacheKey, $html, now()->addMinutes(5));
+
+        return response($html);
     }
 
     public function numOfCasesBefore($dayToSubtract, $cases)
@@ -1132,39 +1180,80 @@ class CaseController extends Controller
 
     public function assignToMe($caseId, $stage, $returnMessages = true)
     {
-        $jobs = job::where("case_id", $caseId)->where("stage", $stage)->whereNull('assignee')->get();
-        $assignmentsCount = $jobs->count();
-        if (!$jobs) return $this->getAssignmentRedirect()->with('error', 'Case has no jobs, add jobs first.');
-        foreach ($jobs as $job) {
-            if ($stage != 2 && $stage != 3)
-                $job->is_active = 1;
-            $job->is_set = 1;
-            $job->assignee = Auth()->user()->id;
-            $job->save();
+        $userId = Auth::id();
+        $stage = (int) $stage;
+        $stageJobs = job::where('case_id', $caseId)
+            ->where('stage', $stage)
+            ->get(['id', 'assignee']);
+
+        if ($stageJobs->isEmpty()) {
+            return $this->getAssignmentRedirect()->with('error', 'Case has no jobs, add jobs first.');
         }
-        // Sub-stage logic for main manufacturing stages
-        $logStage = $stage;
-        $isCompletion = 0;
-        if ($stage == 2) {
-            $logStage = $this->stageActions['MILLING_SET'];
+
+        $unassignedJobIds = $stageJobs->whereNull('assignee')->pluck('id');
+
+        if ($unassignedJobIds->isEmpty()) {
+            if ($returnMessages) {
+                $allAssignedToCurrentUser = $stageJobs->every(function ($job) use ($userId) {
+                    return (int) $job->assignee === (int) $userId;
+                });
+
+                return $this->getAssignmentRedirect()->with(
+                    $allAssignedToCurrentUser ? 'success' : 'error',
+                    $allAssignedToCurrentUser ? 'Case is already assigned to you.' : 'Case is already assigned.'
+                );
+            }
+
+            return null;
         }
-        if ($stage == 3) {
-            $logStage = $this->stageActions['PRINTING_SET'];
+
+        $updatePayload = [
+            'is_set' => 1,
+            'assignee' => $userId,
+        ];
+
+        if (!in_array($stage, [2, 3], true)) {
+            $updatePayload['is_active'] = 1;
         }
-        if ($stage == 4) {
-            $logStage = $this->stageActions['SINTERING_START'];
-        }
-        if ($stage == 5) {
-            $logStage = $this->stageActions['PRESSING_START'];
-        }
-        if ($stage == 8) {
-            $logStage = $this->stageActions['DELIVERY_ASSIGN'];
-        }
-        $log = new caseLog(['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $logStage, 'is_completion' => $isCompletion]);
-        $log->save();
+
+        $assignmentsCount = DB::transaction(function () use ($unassignedJobIds, $updatePayload, $caseId, $stage, $userId) {
+            $assignedCount = job::whereIn('id', $unassignedJobIds)->update($updatePayload);
+
+            // Sub-stage logic for main manufacturing stages
+            $logStage = $stage;
+            $isCompletion = 0;
+            if ($stage == 2) {
+                $logStage = $this->stageActions['MILLING_SET'];
+            }
+            if ($stage == 3) {
+                $logStage = $this->stageActions['PRINTING_SET'];
+            }
+            if ($stage == 4) {
+                $logStage = $this->stageActions['SINTERING_START'];
+            }
+            if ($stage == 5) {
+                $logStage = $this->stageActions['PRESSING_START'];
+            }
+            if ($stage == 8) {
+                $logStage = $this->stageActions['DELIVERY_ASSIGN'];
+            }
+
+            DB::table('case_logs')->insert([
+                'user_id' => $userId,
+                'case_id' => $caseId,
+                'stage' => $logStage,
+                'is_completion' => $isCompletion,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return $assignedCount;
+        });
+
+        OperationsDashboardCache::bumpGeneration();
 
         if ($assignmentsCount > 0) {
-            if ($case = sCase::find($caseId)) {
+            if ($case = sCase::query()->select('id', 'case_id')->find($caseId)) {
                 AuditLogger::log(
                     'case_assigned',
                     $case,
@@ -1177,10 +1266,8 @@ class CaseController extends Controller
                     sprintf(
                         'Case %s assigned to %s for stage %s',
                         $case->case_id ?? $case->id,
-
-                        Auth()->user()->id,
+                        $userId,
                         $stage
-
                     )
                 );
             }
@@ -1759,16 +1846,44 @@ class CaseController extends Controller
 
     public function deliverySchedule(Request $request)
     {
-        $query = sCase::with([
-            'client:id,name',
-            'jobs' => function ($query) {
-                $query->with([
-                    'jobType:id,name',
-                    'material:id,name,count_as_unit',
-                    'assignedTo:id,name_initials,first_name',
-                ]);
-            },
-        ])
+        $permissions = UserPermissionsCache::get((int) Auth::id());
+        $isAdmin = Auth::user() && (int) Auth::user()->is_admin === 1;
+        $canEditDelivery = $isAdmin || $permissions->contains('permission_id', 110);
+
+        $query = sCase::query()
+            ->select([
+                'id',
+                'doctor_id',
+                'patient_name',
+                'initial_delivery_date',
+                'delivered_to_client',
+                'actual_delivery_date',
+                'locked',
+            ])
+            ->with([
+                'client:id,name',
+                'jobs' => function ($query) {
+                    $query->select([
+                        'id',
+                        'case_id',
+                        'material_id',
+                        'assignee',
+                        'stage',
+                        'delivery_accepted',
+                        'unit_num',
+                        'type',
+                        'color',
+                    ])->with([
+                        'jobType:id,name',
+                        'material:id,name,count_as_unit',
+                        'assignedTo:id,name_initials,first_name',
+                    ]);
+                },
+                'notes' => function ($query) {
+                    $query->select(['id', 'case_id', 'written_by', 'note', 'created_at'])
+                        ->with('writtenBy:id,name_initials');
+                },
+            ])
             ->where('delivered_to_client', '=', 0)
             ->orderBy('cases.initial_delivery_date', 'ASC');
 
@@ -1794,7 +1909,195 @@ class CaseController extends Controller
 
         $cases = $query->whereBetween('initial_delivery_date', [$fromRange, $toRange])->get();
 
-        return view('delivery.delivery-schedule', compact('cases', 'data'));
+        $deliveryMetrics = [
+            'overdue' => 0,
+            'numOfUnits' => 0,
+        ];
+
+        $scheduleCaseData = [];
+
+        foreach ($cases as $case) {
+            $statusMeta = $this->buildDeliveryScheduleStatusMeta($case);
+            $unitsAmount = $case->unitsAmount();
+
+            $case->setAttribute('schedule_is_overdue', $statusMeta['is_overdue']);
+            $case->setAttribute('schedule_color', $statusMeta['color']);
+            $case->setAttribute('schedule_status_desktop', $statusMeta['desktop_text']);
+            $case->setAttribute('schedule_status_desktop_class', $statusMeta['desktop_class']);
+            $case->setAttribute('schedule_status_mobile', $statusMeta['mobile_text']);
+            $case->setAttribute('schedule_status_mobile_class', $statusMeta['mobile_class']);
+            $case->setAttribute('schedule_units_amount', $unitsAmount);
+            $case->setAttribute('schedule_time_main', $statusMeta['time_main']);
+            $case->setAttribute('schedule_time_meridiem', $statusMeta['time_meridiem']);
+            $case->setAttribute('schedule_date_formatted', $statusMeta['date_formatted']);
+            $case->setAttribute('schedule_delivery_date_iso', $statusMeta['delivery_date_iso']);
+
+            $deliveryMetrics['numOfUnits'] += $unitsAmount;
+            if ($statusMeta['is_overdue']) {
+                $deliveryMetrics['overdue']++;
+            }
+
+            $canEditCase = $isAdmin ||
+                $permissions->contains('permission_id', 102) ||
+                (
+                    (
+                        !isset($case->actual_delivery_date) &&
+                        $permissions->contains('permission_id', 115)
+                    ) ||
+                    (
+                        isset($case->jobs[0]) &&
+                        (int) $case->jobs[0]->stage === 1 &&
+                        $permissions->contains('permission_id', 1)
+                    )
+                );
+
+            $scheduleCaseData[$case->id] = [
+                'id' => (int) $case->id,
+                'doctor_name' => (string) optional($case->client)->name,
+                'patient_name' => (string) $case->patient_name,
+                'delivery_date_iso' => $statusMeta['delivery_date_iso'],
+                'view_voucher_url' => route('view-voucher', $case->id),
+                'view_case_url' => route('view-case', ['id' => $case->id, 'stage' => -2]),
+                'edit_case_url' => route('edit-case-view', $case->id),
+                'can_edit_case' => (bool) ($canEditCase && !$case->locked),
+                'can_edit_delivery' => (bool) $canEditDelivery,
+                'jobs' => $case->jobs->map(function ($job) {
+                    return [
+                        'unit_num' => (string) ($job->unit_num ?? '-'),
+                        'job_type_name' => (string) (optional($job->jobType)->name ?? ($job->type ? 'Type ' . $job->type : '-')),
+                        'material_name' => (string) (optional($job->material)->name ?? '-'),
+                        'color' => trim((string) ($job->color ?? '')) ?: '-',
+                        'style' => trim((string) ($job->style ?? '')) ?: '',
+                        'implant_label' => isset($job->implantR) && optional($job->jobType)->id == 6
+                            ? 'Implant Type: ' . (optional($job->implantR)->name ?? '-')
+                            : '',
+                        'abutment_label' => isset($job->abutmentR) && optional($job->jobType)->id == 6
+                            ? 'Abutment Type: ' . (optional($job->abutmentR)->name ?? '-')
+                            : '',
+                    ];
+                })->values()->all(),
+                'notes' => $case->notes->map(function ($note) {
+                    return [
+                        'header' => '[' . substr((string) $note->created_at, 0, 16) . '] [' . (optional($note->writtenBy)->name_initials ?? '-') . '] : ',
+                        'text' => (string) $note->note,
+                    ];
+                })->values()->all(),
+            ];
+        }
+
+        return view('delivery.delivery-schedule', compact('cases', 'data', 'permissions', 'deliveryMetrics', 'scheduleCaseData'));
+    }
+
+    private function buildDeliveryScheduleStatusMeta(sCase $case): array
+    {
+        $rawStatus = trim((string) $case->status());
+        $isOverdue = strtotime((string) $case->initial_delivery_date) < strtotime('now');
+        $color = $isOverdue ? 'red' : '#595d6e';
+
+        $stageText = $rawStatus;
+        if (str_contains($rawStatus, 'Active in')) {
+            $stageText = trim(substr($rawStatus, strlen('Active in')));
+        } elseif (str_contains($rawStatus, 'In-Progress in')) {
+            $stageText = trim(substr($rawStatus, strlen('In-Progress in')));
+        } elseif (str_contains($rawStatus, 'Active')) {
+            $stageText = trim(substr($rawStatus, strlen('Active')));
+        } elseif (str_contains($rawStatus, 'In-Progress')) {
+            $stageText = trim(substr($rawStatus, strlen('In-Progress')));
+        }
+
+        $jobAtStage = $case->jobs->first(function ($job) use ($case, $stageText) {
+            return $job->assignee !== null && trim($case->stageToText((string) $job->stage)) === $stageText;
+        });
+
+        if (!$jobAtStage) {
+            $jobAtStage = $case->jobs->first(function ($job) {
+                return $job->assignee !== null && (string) $job->stage !== '-1';
+            });
+        }
+
+        $assigneeInitials = '';
+        if ($jobAtStage && $jobAtStage->assignedTo) {
+            $assigneeInitials = trim((string) ($jobAtStage->assignedTo->name_initials ?? $jobAtStage->assignedTo->first_name ?? ''));
+        }
+
+        if (in_array($stageText, ['In-Progress', 'Active', ''], true) && $jobAtStage) {
+            $stageText = trim($case->stageToText((string) $jobAtStage->stage));
+        }
+
+        $formattedActiveStatus = $assigneeInitials !== ''
+            ? (trim($stageText) . '/ ' . $assigneeInitials)
+            : trim($stageText);
+
+        if ($formattedActiveStatus === '') {
+            $formattedActiveStatus = $rawStatus;
+        }
+
+        $stageLabelMobile = trim($stageText);
+        if ($stageLabelMobile === '') {
+            $stageLabelMobile = $rawStatus;
+        }
+        if (strcasecmp($stageLabelMobile, '3D Printing') === 0) {
+            $stageLabelMobile = '3DPrint..';
+        }
+
+        $waitingStage = $rawStatus;
+        if (str_contains($rawStatus, 'Waiting in')) {
+            $waitingStage = trim(substr($rawStatus, strlen('Waiting in')));
+        } elseif (str_contains($rawStatus, 'Waiting')) {
+            $waitingStage = trim(substr($rawStatus, strlen('Waiting')));
+        }
+        $waitingStage = trim($waitingStage);
+        if ($waitingStage === '') {
+            $waitingStage = $rawStatus;
+        }
+
+        $waitingStageMobile = strcasecmp($waitingStage, '3D Printing') === 0 ? '3DPrint..' : $waitingStage;
+
+        $deliveryAssigned = false;
+        $firstJob = $case->jobs->first();
+        if ($firstJob && (int) $firstJob->stage === 8 && $firstJob->assignee !== null && $firstJob->delivery_accepted === null) {
+            $deliveryAssigned = true;
+        }
+
+        $deliveryDate = \Carbon\Carbon::parse($case->initial_delivery_date);
+
+        if (str_contains($rawStatus, 'Completed')) {
+            $desktopText = 'Completed';
+            $desktopClass = 'badge-success';
+        } elseif (str_contains($rawStatus, 'Active') || str_contains($rawStatus, 'In-Progress')) {
+            $desktopText = $formattedActiveStatus;
+            $desktopClass = 'badge-primary';
+        } elseif (str_contains($rawStatus, 'Waiting')) {
+            $desktopText = $waitingStage;
+            $desktopClass = 'badge-danger';
+        } else {
+            $desktopText = $rawStatus;
+            $desktopClass = 'badge-warning';
+        }
+
+        if ($deliveryAssigned) {
+            $mobileText = 'Delivery';
+            $mobileClass = 'status-badge--delivery';
+        } elseif (str_contains($rawStatus, 'Waiting')) {
+            $mobileText = $waitingStageMobile;
+            $mobileClass = 'badge-danger';
+        } else {
+            $mobileText = $stageLabelMobile;
+            $mobileClass = 'badge-primary';
+        }
+
+        return [
+            'is_overdue' => $isOverdue,
+            'color' => $color,
+            'desktop_text' => $desktopText,
+            'desktop_class' => $desktopClass,
+            'mobile_text' => $mobileText,
+            'mobile_class' => $mobileClass,
+            'time_main' => $deliveryDate->format('g:i'),
+            'time_meridiem' => $deliveryDate->format('A'),
+            'date_formatted' => $deliveryDate->format('d M'),
+            'delivery_date_iso' => $deliveryDate->format('Y-m-d\TH:i:s'),
+        ];
     }
 
     public function updateDeliveryDate(Request $request)
@@ -1805,7 +2108,9 @@ class CaseController extends Controller
             if (!$case) {
                 return false;
             }
-            $action = "Updated delivery date from [" . str_replace('T', " ", $case->initial_delivery_date) . "] to  [" . $request->delivery_date . ']';
+            $oldDeliveryDate = $this->formatDeliveryDateForNote($case->initial_delivery_date);
+            $newDeliveryDate = $this->formatDeliveryDateForNote($request->delivery_date);
+            $action = "Updated delivery date from [{$oldDeliveryDate}] to [{$newDeliveryDate}]";
             $case->initial_delivery_date = $request->delivery_date;
             $case->save();
             $editLogRecord = new editLog();
@@ -1826,6 +2131,19 @@ class CaseController extends Controller
             return back()->with('error', 'Something went wrong');
         }
 
+    }
+
+    private function formatDeliveryDateForNote($value)
+    {
+        if (empty($value)) {
+            return 'N/A';
+        }
+
+        try {
+            return \Carbon\Carbon::parse(str_replace('T', ' ', $value))->format('d-M g:i A');
+        } catch (\Throwable $exception) {
+            return str_replace('T', ' ', (string) $value);
+        }
     }
 
     public function viewSingleScreen()
@@ -2013,18 +2331,15 @@ class CaseController extends Controller
 
     public function rejectedCases(Request $request)
     {
-        if ($request->from && $request->to) {
-            $from = $request->from;
-            $to = $request->to;
-        } else {
-            $from = date('Y-m-d', strtotime('-30 days'));
-            $to = now()->toDateString();
-        }
+        $from = $request->input('from', date('Y-m-d', strtotime('-30 days')));
+        $to = $request->input('to', now()->toDateString());
 
-        if ($request->doctor && !in_array("all", $request->doctor))
+        $selectedClients = array_values((array) $request->input('doctor', []));
+
+        if (!empty($selectedClients) && !in_array('all', $selectedClients, true))
             $cases = sCase::whereHas('jobs', function ($q) {
                 $q->where('is_rejection', 1);
-            })->whereBetween('created_at', [$from . ' 00:00', $to . ' 23:59'])->whereIn('doctor_id', $request->doctor);
+            })->whereBetween('created_at', [$from . ' 00:00', $to . ' 23:59'])->whereIn('doctor_id', $selectedClients);
 
         else
             $cases = sCase::whereHas('jobs', function ($q) {
@@ -2036,7 +2351,6 @@ class CaseController extends Controller
         else
             $cases = $cases->get();
 
-        $selectedClients = $request->doctor;
         $clients = client::all();
         return view('cases.rejected-cases', compact('cases', 'from', 'to', 'selectedClients', 'clients'))->with('patientName', $request->patient_name);
     }

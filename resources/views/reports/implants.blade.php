@@ -4,6 +4,14 @@
     <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- All styles now centralized in sigma-reports-master.css -->
+    <style>
+        .sigma-report-standard .sigma-report-table.printable thead th,
+        .sigma-report-standard .sigma-report-table.printable thead th.header-dark,
+        .sigma-report-standard .sigma-report-table.printable thead th.header-light {
+            background-color: #408385 !important;
+            color: #ffffff !important;
+        }
+    </style>
 
     <div class="sigma-report-standard">
     <div class="report-filters-card">
@@ -14,10 +22,10 @@
 
                     <div class="col-lg-2 col-md-3 col-6">
                         <x-report-datetimepicker
-                            name="to"
-                            id="implants_to_primary"
-                            label="To Date:"
-                            :value="request('to', now()->endOfMonth()->format('Y-m-d'))"
+                            name="from"
+                            id="implants_from_primary"
+                            label="From Date:"
+                            :value="request('from', now()->startOfMonth()->format('Y-m-d'))"
                             mode="date"
                             :required="true"
                         />
@@ -82,6 +90,7 @@
                                 label="Doctors:"
                                 :options="$doctorOptions"
                                 :selected="$selectedClients ?? null"
+                                :allSelected="in_array('all', (array) ($selectedClients ?? []), true)"
                                 title="All Doctors"
                             />
                         @else
@@ -108,7 +117,7 @@
                             name="perToggle"
                             label="View Mode:"
                             :options="$viewModeOptions"
-                            :selected="$perUnitTrigger == 'on' ? '1' : '0'"
+                            :selected="$perUnitTrigger ? '1' : '0'"
                         />
                     </div>
                 </div>
@@ -130,7 +139,7 @@
     </div>
 
 
-    <div class="col-lg-12 col-sm-12">
+    <div class="col-lg-12 col-sm-12 container-fluid report-table-section">
             <div class="">
                 <div class="">
                     <!-- Column Visibility Controls (Hidden) -->
@@ -402,7 +411,13 @@
                 const form = $('.kt-form')[0];
                 if (form) {
                     console.log('Submitting form with perToggle:', isUnits ? '1' : '0');
-                    form.submit();
+                    window.requestAnimationFrame(function() {
+                        if (typeof form.requestSubmit === 'function') {
+                            form.requestSubmit();
+                        } else {
+                            form.submit();
+                        }
+                    });
                 }
             });
 

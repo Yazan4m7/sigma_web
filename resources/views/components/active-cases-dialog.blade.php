@@ -601,22 +601,18 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                 @if($type == 'sintering')
                                     {{-- For sintering, show formatted date instead of build name --}}
                                     <div class="sigma-build-title sigma-date-title">{{ $data['build']->created_at ? ui_dialog_date($data['build']->created_at) : 'Recent Build' }}</div>
-                                @else
-                                    {{-- For other stages, show build info --}}
-                                    <div class="sigma-build-title">{{ $data['build']->name }}</div>
-                                @endif
+                                 @else
+                                     {{-- For other stages, show build info --}}
+                                     <div class="sigma-build-title">{{ $data['build']->name }}</div>
+                                 @endif
 
-                                <div class="sigma-build-units">{{ $totalUnits }}</div>
-                                <div class="sigma-build-actions">
-                                    <button type="button"
-                                            class="sigma-build-remove"
-                                            aria-label="Remove build"
-                                            onclick="event.stopPropagation(); requestBuildRemoval('{{ $deviceId }}', '{{ $type }}', '{{ $data['build']->id }}', {{ $caseActive ? 'true' : 'false' }})">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                    <div class="sigma-build-toggle">
-                                        <i class="fas fa-chevron-down"></i>
-                                    </div>
+                                 <div class="sigma-build-units">{{ $totalUnits }}</div>
+                                 <div class="sigma-build-actions">
+                                     <div class="sigma-build-toggle">
+                                         <svg class="sigma-build-toggle-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                             <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+                                         </svg>
+                                     </div>
                                 </div>
                             </div>
 
@@ -639,7 +635,10 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                                     <div class=" ">
                                                         <button class="sigma-case-view-btn"
                                                                 onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
-                                                            <i class="fas fa-eye"></i>
+                                                            <svg class="sigma-inline-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                                                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                                                            </svg>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -647,13 +646,20 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
                                         @endforeach
 
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
+                                     @endif
+                                 </div>
+                                 <div class="sigma-build-details-actions">
+                                     <button type="button"
+                                             class="sigma-build-delete-link"
+                                             onclick="event.stopPropagation(); requestBuildRemoval('{{ $deviceId }}', '{{ $type }}', '{{ $data['build']->id }}', {{ $caseActive ? 'true' : 'false' }})">
+                                         Delete build
+                                     </button>
+                                 </div>
+                             </div>
+                         </div>
+                     @endforeach
+                 </div>
+             </div>
         </div>
         <div class="sigma-workflow-footer">
 
@@ -856,13 +862,54 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         outline-offset: 2px;
     }
 
+    .sigma-build-details-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #e3e9ef;
+    }
+
+    .sigma-build-delete-link {
+        border: none;
+        background: transparent;
+        color: #dc3545;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1.2;
+    }
+
+    .sigma-build-delete-link:hover {
+        color: #bd2130;
+        text-decoration: underline;
+    }
+
+    .sigma-build-delete-link:focus-visible {
+        outline: 2px solid rgba(220, 53, 69, 0.28);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+
     .sigma-build-toggle {
         display: inline-flex;
         align-items: center;
         justify-content: center;
     }
 
-    .sigma-build-toggle i {
+    .sigma-inline-icon {
+        width: 16px;
+        height: 16px;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+
+    .sigma-build-toggle-icon {
+        width: 18px;
+        height: 18px;
+        display: inline-block;
+        flex-shrink: 0;
         color: white;
         transition: transform 0.3s;
     }
@@ -898,7 +945,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
         box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
     }
 
-    .sigma-build-row.expanded .sigma-build-toggle i {
+    .sigma-build-row.expanded .sigma-build-toggle-icon {
         transform: rotate(180deg);
     }
 

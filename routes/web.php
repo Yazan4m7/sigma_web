@@ -63,7 +63,8 @@ Route::get('/reset-case/{id}/{stage}', [App\Http\Controllers\CaseController::cla
 Route::get('/complete-by-admin/{id}/{stage}', [App\Http\Controllers\CaseController::class, 'completeByAdmin'])->name('complete-by-admin');
 Route::get('/QC/send-to-delivery', [App\Http\Controllers\CaseController::class, 'assignToDelivery'])->name('assign-to-delivery-person');
 Route::get('/lab-workflow', [App\Http\Controllers\CaseController::class, 'adminDashboard'])->name('admin-dashboard');
-Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])->name('admin-dashboard-v2');
+Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])
+    ->name('admin-dashboard-v2');
 Route::post('/get-material-types-for-stage', [App\Http\Controllers\CaseController::class, 'getMaterialTypesForStage'])->name('get-material-types');
 
 // Type management routes
@@ -105,7 +106,17 @@ Route::get('/reports/material', [App\Http\Controllers\ReportsController::class, 
 Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class, 'detectNewJobStage'])->name('detect-newJob-stage');
 Route::get('/view/{id}', [App\Http\Controllers\CaseController::class, 'view'])->name('view-case');
 Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
-Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])->name('assign-to-me');
+Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])
+    ->withoutMiddleware([
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\PreventDuplicateSubmissions::class,
+        \App\Http\Middleware\TimedSubstituteBindings::class,
+        \App\Http\Middleware\EnsureUserPermissionsCached::class,
+        \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
+        \App\Http\Middleware\PageLoadTestToken::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    ])->name('assign-to-me');
 Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
 Route::get('/assign-and-finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignAndFinish'])->name('assign-and-finish');
 Route::get('/finish-case/{caseId}', [App\Http\Controllers\CaseController::class, 'deliveredInBox'])->name('delivered-in-box');
@@ -169,7 +180,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     Route::get('/reset-case/{id}/{stage}', [App\Http\Controllers\CaseController::class, 'resetCaseToWaiting'])->name('reset-to-waiting');
     Route::get('/complete-by-admin/{id}/{stage}', [App\Http\Controllers\CaseController::class, 'completeByAdmin'])->name('complete-by-admin');
     Route::get('/lab-workflow', [App\Http\Controllers\CaseController::class, 'adminDashboard'])->name('admin-dashboard');
-    Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])->name('admin-dashboard-v2');
+    Route::get('/operations-dashboard', [App\Http\Controllers\CaseController::class, 'adminDashboard_v2'])
+        ->name('admin-dashboard-v2');
     // Type management routes
     Route::resource('admin/types', App\Http\Controllers\TypeController::class)->names([
         'index' => 'types.index',
@@ -291,6 +303,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::get('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'index'])->name('configuration.index');
         Route::post('/admin/configuration', [App\Http\Controllers\ConfigurationController::class, 'update'])->name('configuration.update');
         Route::get('/admin/configuration/reset', [App\Http\Controllers\ConfigurationController::class, 'reset'])->name('configuration.reset');
+        Route::post('/admin/deploy', [App\Http\Controllers\DeployController::class, 'deploy'])->name('admin.deploy');
+        Route::post('/admin/rollback', [App\Http\Controllers\DeployController::class, 'rollback'])->name('admin.rollback');
 
         Route::get('/tools/invoice-check', [App\Http\Controllers\ToolsController::class, 'invoiceCheck'])->name('tools.invoice-check');
         Route::post('/tools/invoice-check/issue', [App\Http\Controllers\ToolsController::class, 'issueInvoiceForCase'])->name('tools.invoice-check.issue');
@@ -362,7 +376,11 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::get('accountant/receive-payment/{id}', [App\Http\Controllers\AccountantController::class, 'receivePayment'])->name('receive-payment');
     });
     Route::middleware('ViewCasesList')->group(function (): void {
-        Route::get('/cases', [App\Http\Controllers\CaseController::class, 'index'])->name('cases-index');
+        Route::get('/cases', [App\Http\Controllers\CaseController::class, 'index'])
+            ->middleware('PageLoadBenchmark:cases')
+            ->name('cases-index');
+        Route::get('/cases/{id}/actions-modal', [App\Http\Controllers\CaseController::class, 'caseActionsModal'])
+            ->name('cases-actions-modal');
     });
     Route::middleware('LabWorkFlow')->group(function (): void {
 
@@ -373,6 +391,8 @@ Route::middleware(['web', 'auth'])->group(function (): void {
     });
     Route::middleware('ViewDoctors')->group(function (): void {
         Route::get('/doctors/index', [App\Http\Controllers\ClientsController::class, 'index'])->name('clients-index');
+        Route::get('/sales', [App\Http\Controllers\ClientsController::class, 'sales'])->name('sales-index');
+        Route::get('/sales/by-month', [App\Http\Controllers\ClientsController::class, 'salesByMonth'])->name('sales-by-month-index');
         Route::get('/clients/statement/{id?}', [App\Http\Controllers\ClientsController::class, 'statementOfAccount'])->name('client-statement-admin');
 
         Route::post('/doctors/edit', [App\Http\Controllers\ClientsController::class, 'update'])->name('client-update');
@@ -530,7 +550,17 @@ Route::post('/detect-new-job-stage', [App\Http\Controllers\CaseController::class
 Route::get('/case/delete{id}', [App\Http\Controllers\CaseController::class, 'deleteCase'])->name('delete-case');
 
 // CASE FLOW ROUTES
-Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])->name('assign-to-me');
+Route::get('/assign-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignToMe'])
+    ->withoutMiddleware([
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
+        \App\Http\Middleware\VerifyCsrfToken::class,
+        \App\Http\Middleware\PreventDuplicateSubmissions::class,
+        \App\Http\Middleware\TimedSubstituteBindings::class,
+        \App\Http\Middleware\EnsureUserPermissionsCached::class,
+        \Inspector\Laravel\Middleware\WebRequestMonitoring::class,
+        \App\Http\Middleware\PageLoadTestToken::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+    ])->name('assign-to-me');
 Route::get('/finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'finishCaseStage'])->name('finish-case');
 Route::get('/assign-and-finish-case/{caseId}/{stage}', [App\Http\Controllers\CaseController::class, 'assignAndFinish'])->name('assign-and-finish');
 Route::get('/finish-case/{caseId}', [App\Http\Controllers\CaseController::class, 'deliveredInBox'])->name('delivered-in-box');
@@ -571,7 +601,11 @@ Route::get('accountant/receivable-payments', [App\Http\Controllers\AccountantCon
 Route::get('accountant/receive-payment/{id}', [App\Http\Controllers\AccountantController::class, 'receivePayment'])->name('receive-payment');
 
 // Cases List
-Route::get('/cases', [App\Http\Controllers\CaseController::class, 'index'])->name('cases-index');
+Route::get('/cases', [App\Http\Controllers\CaseController::class, 'index'])
+    ->middleware('PageLoadBenchmark:cases')
+    ->name('cases-index');
+Route::get('/cases/{id}/actions-modal', [App\Http\Controllers\CaseController::class, 'caseActionsModal'])
+    ->name('cases-actions-modal');
 
 // Lab Workflow (empty group can be removed)
 

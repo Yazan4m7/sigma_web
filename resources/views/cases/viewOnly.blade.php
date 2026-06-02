@@ -24,7 +24,7 @@
 
         .form-section-card {
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
             border-radius: var(--card-radius);
             padding: 1.55rem 1.5rem;
@@ -34,6 +34,10 @@
             transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
         }
 
+        .case-overview-card {
+            z-index: 4;
+        }
+
         .form-section-card::before {
             content: "";
             position: absolute;
@@ -41,7 +45,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
+            background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%);
             opacity: 0.7;
         }
 
@@ -89,7 +93,7 @@
             width: 100%;
             height: 1px;
             background: linear-gradient(90deg, #e5ecf5 0%, #dde6f2 100%);
-            margin: 1.35rem 0;
+            margin: 0.5rem 0 !important;
         }
 
         .viewcase-card-row + .viewcase-card-row {
@@ -147,10 +151,8 @@
 @endpush
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/css/lightgallery.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.imagesloader.css') }}" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://cdn.jsdelivr.net/lightgallery/1.3.9/css/lightgallery.min.css" rel="stylesheet">
 
     <style>
         #kt_repeater_1 {
@@ -194,6 +196,36 @@
             display: block;
         }
 
+        .timeline-day-with-device {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            min-width: 0;
+            white-space: nowrap;
+        }
+
+        .timeline-stage-heading {
+            flex: 0 1 auto;
+            min-width: 0;
+        }
+
+        .timeline-stage-device {
+            flex: 0 0 auto;
+            display: inline-block;
+            max-width: none;
+            overflow: visible;
+            text-overflow: clip;
+            text-align: right;
+            white-space: nowrap;
+            margin-left: auto;
+            margin-right: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #28a745;
+        }
+
         /* Patient info rows inherit card styling */
         .patient-info-section,
         .info-row-secondary {
@@ -230,6 +262,8 @@
         .delivery-date-help {
             position: relative;
             flex: 0 0 auto;
+            overflow: visible;
+            z-index: 30;
         }
 
         .delivery-date-help-button {
@@ -266,7 +300,7 @@
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
             padding: 12px;
-            z-index: 20;
+            z-index: 1000;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-6px);
@@ -339,6 +373,7 @@
             letter-spacing: 0.5px;
             padding: 14px 12px;
             border: none;
+            text-align: left !important;
         }
 
         .jobsTable tbody tr {
@@ -354,6 +389,7 @@
             padding: 12px;
             border-bottom: 1px solid #e8eef0;
             font-size: 13px;
+            text-align: left !important;
         }
 
         .jobsTable tbody tr:last-child td,
@@ -378,6 +414,48 @@
 
         .print-label-actions .btn {
             white-space: nowrap;
+        }
+
+        .noteform .sigma-apply-btn.filter-apply-btn-global {
+            min-height: 42px;
+            padding: 0.75rem 1.8rem;
+            border-radius: 10px;
+            background: #1b6ef3 !important;
+            border-color: #1b6ef3 !important;
+            color: #ffffff !important;
+            font-weight: 600;
+            box-shadow: 0 10px 20px rgba(27, 110, 243, 0.18);
+        }
+
+        .noteform .sigma-apply-btn.filter-apply-btn-global:hover,
+        .noteform .sigma-apply-btn.filter-apply-btn-global:focus {
+            background: #155ccc !important;
+            border-color: #155ccc !important;
+            color: #ffffff !important;
+        }
+
+        .kt-portlet__foot {
+            margin-top: 1.5rem;
+        }
+
+        .kt-form__actions {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            flex-wrap: wrap;
+        }
+
+        .kt-form__actions .btn {
+            min-height: 44px;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1;
+        }
+
+        .kt-form__actions .btn[disabled] {
+            opacity: 0.65;
         }
 
         .viewcase-timeline-btn {
@@ -405,6 +483,31 @@
         .attachments-section .demo-gallery .row > [class*='col-'] {
             padding-left: 6px;
             padding-right: 6px;
+        }
+
+        .attachments-section #lightgallery {
+            margin: 0;
+        }
+
+        .attachments-section #lightgallery li {
+            margin-bottom: 12px;
+        }
+
+        .attachments-section .attachment-preview-link {
+            display: block;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-muted);
+            background: #f8fafc;
+        }
+
+        .attachments-section .attachment-preview-link img {
+            display: block;
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            max-width: 100%;
+            cursor: zoom-in;
         }
 
         @media screen and (max-width:760px) {
@@ -454,7 +557,7 @@
         @csrf
         <div>
             <!-- CASE INFO -->
-            <div class="form-section-card viewcase-section-card">
+            <div class="form-section-card viewcase-section-card case-overview-card">
                 <div class="section-header">
                     <div>
                         <div class="section-subtitle">Case</div>
@@ -750,93 +853,186 @@
                 <div class="section-header">
                     <div>
                         <div class="section-subtitle">Tracking</div>
-                        <h5>Case History</h5>
+                        <h5>Case History X</h5>
                     </div>
                 </div>
             <!-- HISTORY -->
-            <div class="historyTable table-responsive-wrapper" style="padding:0 30px 0 30px ">
-                <table class="sunriseTable table sunriseTable table-striped ">
-                    <thead>
-                        <tr>
-                            <th>Stage</th>
-                            <th>Employee</th>
-                            <th>Started On</th>
-                            <th>Finished On</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $stageConfig = [
-                                ['name' => 'Design', 'stage' => 1, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
-                                ['name' => 'Milling', 'stage' => 2, 'type' => '3-phase'], // 2.1=nest, 2.2=start, 2.3=complete
-                                ['name' => '3D Printing', 'stage' => 3, 'type' => '3-phase'], // 3.1=set, 3.2=start, 3.3=complete
-                                ['name' => 'Sintering', 'stage' => 4, 'type' => '3-phase'], // 4.1=set, 4.2=start, 4.3=complete
-                                ['name' => 'Pressing', 'stage' => 5, 'type' => '3-phase'], // 5.1=start, 5.2=complete
-                                ['name' => 'Finishing', 'stage' => 6, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
-                                ['name' => 'QC', 'stage' => 7, 'type' => '2-phase'], // is_completion: 0=start, 1=complete
-                            ];
-                        @endphp
-                        @foreach ($stageConfig as $config)
-                            @php
-                                $stage = $config['stage'];
-                                $stageName = $config['name'];
-                                $stageType = $config['type'];
+{{--            <div class="historyTable table-responsive-wrapper" style="padding:0 30px 0 30px ">--}}
+{{--                <table class="sunriseTable table sunriseTable table-striped ">--}}
+{{--                    <thead>--}}
+{{--                        <tr>--}}
+{{--                            <th>Stage</th>--}}
+{{--                            <th>Employee</th>--}}
+{{--                            <th>Started On</th>--}}
+{{--                            <th>Finished On</th>--}}
+{{--                        </tr>--}}
+{{--                    </thead>--}}
+{{--                    <tbody>--}}
+{{--                        @php--}}
+{{--                            $stageConfig = [--}}
+{{--                                ['name' => 'Design', 'stage' => 1, 'type' => '2-phase'], // is_completion: 0=start, 1=complete--}}
+{{--                                ['name' => 'Milling', 'stage' => 2, 'type' => '3-phase'], // 2.1=nest, 2.2=start, 2.3=complete--}}
+{{--                                ['name' => '3D Printing', 'stage' => 3, 'type' => '3-phase'], // 3.1=set, 3.2=start, 3.3=complete--}}
+{{--                                ['name' => 'Sintering', 'stage' => 4, 'type' => '2-decimal-phase'], // 4.1=start, 4.2=complete--}}
+{{--                                ['name' => 'Pressing', 'stage' => 5, 'type' => '3-phase'], // 5.1=start, 5.2=complete--}}
+{{--                                ['name' => 'Finishing', 'stage' => 6, 'type' => '2-phase'], // is_completion: 0=start, 1=complete--}}
+{{--                                ['name' => 'QC', 'stage' => 7, 'type' => '2-phase'], // is_completion: 0=start, 1=complete--}}
+{{--                            ];--}}
+{{--                        @endphp--}}
+{{--                        @foreach ($stageConfig as $config)--}}
+{{--                            @php--}}
+{{--                                $stage = $config['stage'];--}}
+{{--                                $stageName = $config['name'];--}}
+{{--                                $stageType = $config['type'];--}}
 
-                                if ($stageType === '3-phase') {
-                                    // 3-phase: uses decimal stages (e.g., 2.1, 2.2, 2.3)
-                                    $startLog = $case->logs->where('stage', $stage + 0.2)->first();
-                                    $completeLog = $case->logs->where('stage', $stage + 0.3)->first();
-                                    $employee = $startLog ? $startLog->user->fullName() : ($completeLog ? $completeLog->user->fullName() : null);
-                                } else {
-                                    // 2-phase: uses integer stage with is_completion flag (0=start, 1=complete)
-                                    $startLog = $case->logs->where('stage', $stage)->where('is_completion', 0)->first();
-                                    $completeLog = $case->logs->where('stage', $stage)->where('is_completion', 1)->first();
-                                    $employee = $startLog ? $startLog->user->fullName() : ($completeLog ? $completeLog->user->fullName() : null);
-                                }
-                            @endphp
-                            <tr>
-                                <td class="stageName">{{ $stageName }}</td>
-                                @if ($employee)
-                                    <td>{{ $employee }}</td>
-                                    <td>{{ $startLog ? substr($startLog->created_at, 0, 16) : '-' }}</td>
-                                    <td>{{ $completeLog ? substr($completeLog->created_at, 0, 16) : '-' }}</td>
-                                @else
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                @endif
-                            </tr>
-                        @endforeach
-                        <tr>
-                            <td class="stageName">Delivery</td>
-                            @php
-                                // Delivery uses 3 decimal stages: 8.1=assign, 8.2=accept, 8.3=complete
-                                $deliveryStartLog = $case->logs->where('stage', 8.2)->first(); // Accept
-                                $deliveryCompleteLog = $case->logs->where('stage', 8.3)->first(); // Complete
-                                $deliveryEmployee = $deliveryStartLog ? $deliveryStartLog->user->fullName() : ($deliveryCompleteLog ? $deliveryCompleteLog->user->fullName() : null);
-                            @endphp
-                            @if ($deliveryEmployee)
-                                <td>{{ $deliveryEmployee }}</td>
-                                <td>{{ $deliveryStartLog ? ui_view_date($deliveryStartLog->created_at) : '-' }}</td>
-                                <td>{{ $deliveryCompleteLog ? ui_view_date($deliveryCompleteLog->created_at) : '-' }}</td>
-                            @else
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            @endif
-                        </tr>
+{{--                                if ($stageType === '3-phase') {--}}
+{{--                                    // 3-phase: uses decimal stages (e.g., 2.1, 2.2, 2.3)--}}
+{{--                                    $startLog = $case->logs->where('stage', $stage + 0.2)->first();--}}
+{{--                                    $completeLog = $case->logs->where('stage', $stage + 0.3)->first();--}}
+{{--                                    if ($startLog)--}}
+{{--                                    $employee = $startLog ? ($startLog->user->fullName()) : ($completeLog ? $completeLog->user->fullName() : null);--}}
+{{--                                } elseif ($stageType === '2-decimal-phase') {--}}
+{{--                                    $startLog = $case->logs->where('stage', $stage + 0.1)->first();--}}
+{{--                                    $completeLog = $case->logs->where('stage', $stage + 0.2)->first();--}}
+{{--                                    $employee = $startLog ? $startLog->user->fullName() : ($completeLog ? $completeLog->user->fullName() : null);--}}
+{{--                                } else {--}}
+{{--                                    // 2-phase: uses integer stage with is_completion flag (0=start, 1=complete)--}}
+{{--                                    $startLog = $case->logs->where('stage', $stage)->where('is_completion', 0)->first();--}}
+{{--                                    $completeLog = $case->logs->where('stage', $stage)->where('is_completion', 1)->first();--}}
+{{--                                    $employee = $startLog ? $startLog->user->fullName() : ($completeLog ? $completeLog->user->fullName() : null);--}}
+{{--                                }--}}
+{{--                            @endphp--}}
+{{--                            <tr>--}}
+{{--                                <td class="stageName">{{ $stageName }}</td>--}}
+{{--                                @if ($employee)--}}
+{{--                                    <td>{{ $employee }}</td>--}}
+{{--                                    <td>{{ $startLog ? substr($startLog->created_at, 0, 16) : '-' }}</td>--}}
+{{--                                    <td>{{ $completeLog ? substr($completeLog->created_at, 0, 16) : '-' }}</td>--}}
+{{--                                @else--}}
+{{--                                    <td>-</td>--}}
+{{--                                    <td>-</td>--}}
+{{--                                    <td>-</td>--}}
+{{--                                @endif--}}
+{{--                            </tr>--}}
+{{--                        @endforeach--}}
+{{--                        <tr>--}}
+{{--                            <td class="stageName">Delivery</td>--}}
+{{--                            @php--}}
+{{--                                // Delivery uses 3 decimal stages: 8.1=assign, 8.2=accept, 8.3=complete--}}
+{{--                                $deliveryStartLog = $case->logs->where('stage', 8.2)->first(); // Accept--}}
+{{--                                $deliveryCompleteLog = $case->logs->where('stage', 8.3)->first(); // Complete--}}
+{{--                                $deliveryEmployee = $deliveryStartLog ? $deliveryStartLog->user->fullName() : ($deliveryCompleteLog ? $deliveryCompleteLog->user->fullName() : null);--}}
+{{--                            @endphp--}}
+{{--                            @if ($deliveryEmployee)--}}
+{{--                                <td>{{ $deliveryEmployee }}</td>--}}
+{{--                                <td>{{ $deliveryStartLog ? ui_view_date($deliveryStartLog->created_at) : '-' }}</td>--}}
+{{--                                <td>{{ $deliveryCompleteLog ? ui_view_date($deliveryCompleteLog->created_at) : '-' }}</td>--}}
+{{--                            @else--}}
+{{--                                <td>-</td>--}}
+{{--                                <td>-</td>--}}
+{{--                                <td>-</td>--}}
+{{--                            @endif--}}
+{{--                        </tr>--}}
 
 
-                    </tbody>
-                </table>
-            </div>
+{{--                    </tbody>--}}
+{{--                </table>--}}
+{{--            </div>--}}
 
             <div class="Timeline">
 
                 @php
+                    $resolveTimelineStageDeviceName = function ($build, int $stageNumber) {
+                        $deviceUsedName = optional(optional($build)->deviceUsed)->name;
+
+                        if ($stageNumber === 2) {
+                            return $deviceUsedName;
+                        }
+
+                        return $deviceUsedName ?: optional(optional($build)->device)->name;
+                    };
+
+                    $timelineStageDevices = [
+                        2 => collect(),
+                        3 => collect(),
+                        4 => collect(),
+                        5 => collect(),
+                    ];
+
+                    foreach ($case->jobs as $job) {
+                        if ($millingDevice = $resolveTimelineStageDeviceName($job->millingBuild, 2)) {
+                            $timelineStageDevices[2]->push($millingDevice);
+                        }
+
+                        if ($printingDevice = $resolveTimelineStageDeviceName($job->printingBuild, 3)) {
+                            $timelineStageDevices[3]->push($printingDevice);
+                        }
+
+                        if ($sinteringDevice = $resolveTimelineStageDeviceName($job->sinteringBuild, 4)) {
+                            $timelineStageDevices[4]->push($sinteringDevice);
+                        }
+
+                        if ($pressingDevice = $resolveTimelineStageDeviceName($job->pressingBuild, 5)) {
+                            $timelineStageDevices[5]->push($pressingDevice);
+                        }
+                    }
+
+                    foreach ([2, 3, 4, 5] as $stageNumber) {
+                        if ($timelineStageDevices[$stageNumber]->isNotEmpty()) {
+                            continue;
+                        }
+
+                        $logDevice = $case->logs
+                            ->filter(function ($log) use ($stageNumber) {
+                                $stageValue = (float) $log->stage;
+
+                                return $stageValue >= $stageNumber && $stageValue < ($stageNumber + 1);
+                            })
+                            ->sort(function ($left, $right) {
+                                $leftStage = (float) $left->stage;
+                                $rightStage = (float) $right->stage;
+
+                                if ($leftStage !== $rightStage) {
+                                    return $leftStage < $rightStage ? 1 : -1;
+                                }
+
+                                $leftCreatedAt = $left->created_at
+                                    ? \Carbon\Carbon::parse($left->created_at)->getTimestamp()
+                                    : 0;
+                                $rightCreatedAt = $right->created_at
+                                    ? \Carbon\Carbon::parse($right->created_at)->getTimestamp()
+                                    : 0;
+
+                                if ($leftCreatedAt !== $rightCreatedAt) {
+                                    return $leftCreatedAt < $rightCreatedAt ? 1 : -1;
+                                }
+
+                                return (int) $left->id < (int) $right->id ? 1 : -1;
+                            })
+                            ->first(function ($log) use ($stageNumber) {
+                                $deviceType = (int) optional($log->device)->type;
+
+                                return $deviceType === $stageNumber;
+                            });
+
+                        if (!empty(optional($logDevice?->device)->name)) {
+                            $timelineStageDevices[$stageNumber]->push($logDevice->device->name);
+                        }
+                    }
+
+                    $timelineStageDeviceLabels = collect($timelineStageDevices)
+                        ->map(function ($deviceNames) {
+                            return $deviceNames->filter()->unique()->implode(', ');
+                        })
+                        ->all();
+
                     function renderLog($log, $actionText, $actionClass) {
                         if (!$log || !isset($log->user)) return;
                         $formattedDate = \Carbon\Carbon::parse($log->created_at)->format('g:i A') . ' - ' . ui_view_date($log->created_at);
+                        $employeeName = trim((string) (($log->user->first_name ?? '') . ' ' . ($log->user->last_name ?? '')));
+                        if ($employeeName === '') {
+                            $employeeName = $log->user->name_initials ?? '-';
+                        }
                         echo '<div class="history-log-entry">
                                 <span class="employee-initials">' . $log->user->name_initials . '</span>
                                 <div class="action-info">
@@ -844,7 +1040,7 @@
                                     <span class="action-date">' . $formattedDate . '</span>
                                 </div>
                                 <div class="tooltip-content">
-                                    <span class="tooltip-employee">' . $log->user->name . '</span>
+                                    <span class="tooltip-employee">' . e($employeeName) . '</span>
                                     <span class="tooltip-action ' . $actionClass . '">' . $actionText . '</span>
                                     <span class="tooltip-date">' . $formattedDate . '</span>
                                 </div>
@@ -900,8 +1096,11 @@
 
                     <div class="event2Bubble">
                         <div class="eventTime">
-                            <div class="Day">
-                                MILLING
+                            <div class="Day timeline-day-with-device">
+                                <span class="timeline-stage-heading">MILLING</span>
+                                @if(!empty($timelineStageDeviceLabels[2]))
+                                    <span class="timeline-stage-device" title="{{ $timelineStageDeviceLabels[2] }}">{{ $timelineStageDeviceLabels[2] }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="eventTitle"
@@ -941,8 +1140,11 @@
                 <div class="event1">
                     <div class="event1Bubble">
                         <div class="eventTime">
-                            <div class="Day">
-                                3D Printing
+                            <div class="Day timeline-day-with-device">
+                                <span class="timeline-stage-heading">3D Printing</span>
+                                @if(!empty($timelineStageDeviceLabels[3]))
+                                    <span class="timeline-stage-device" title="{{ $timelineStageDeviceLabels[3] }}">{{ $timelineStageDeviceLabels[3] }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="eventTitle"
@@ -984,28 +1186,27 @@
 
                     <div class="event2Bubble">
                         <div class="eventTime">
-                            <div class="Day">
-                                Sintering
+                            <div class="Day timeline-day-with-device">
+                                <span class="timeline-stage-heading">Sintering</span>
+                                @if(!empty($timelineStageDeviceLabels[4]))
+                                    <span class="timeline-stage-device" title="{{ $timelineStageDeviceLabels[4] }}">{{ $timelineStageDeviceLabels[4] }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="eventTitle"
                             style="text-align: left; font-size: 10px; line-height: 1.4; padding: 5px;">
                             @php
                                 $sinteringLogs = $case->logs->where('stage', '>=', 4)->where('stage', '<', 5);
-                                $setLog = $sinteringLogs->where('stage', 4.1)->sortByDesc('created_at')->first();
-                                $startLog = $sinteringLogs->where('stage', 4.2)->sortByDesc('created_at')->first();
-                                $completeLog = $sinteringLogs->where('stage', 4.3)->sortByDesc('created_at')->first();
+                                $startLog = $sinteringLogs->where('stage', 4.1)->sortByDesc('created_at')->first();
+                                $completeLog = $sinteringLogs->where('stage', 4.2)->sortByDesc('created_at')->first();
                             @endphp
-                            @if ($setLog)
-                                {!! renderLog($setLog, 'SET', 'action-set') !!}
-                            @endif
                             @if ($startLog)
                                 {!! renderLog($startLog, 'START', 'action-start') !!}
                             @endif
                             @if ($completeLog)
                                 {!! renderLog($completeLog, 'COMPLETE', 'action-complete') !!}
                             @endif
-                            @if (!$setLog && !$startLog && !$completeLog)
+                            @if (!$startLog && !$completeLog)
                                 -
                             @endif
                         </div>
@@ -1025,8 +1226,11 @@
                 <div class="event1">
                     <div class="event1Bubble">
                         <div class="eventTime">
-                            <div class="Day">
-                                Pressing
+                            <div class="Day timeline-day-with-device">
+                                <span class="timeline-stage-heading">Pressing</span>
+                                @if(!empty($timelineStageDeviceLabels[5]))
+                                    <span class="timeline-stage-device" title="{{ $timelineStageDeviceLabels[5] }}">{{ $timelineStageDeviceLabels[5] }}</span>
+                                @endif
                             </div>
                         </div>
                         <div class="eventTitle"
@@ -1253,7 +1457,7 @@
                             </div>
 
                             <div class="col-md-3 col-xs-3" style="margin: 0px">
-                                <button type="submit" class="btn btn-primary">Add note</button>
+                                <button type="submit" class="btn btn-primary sigma-apply-btn filter-apply-btn-global">Add note</button>
                             </div>
                         </div>
                     </form>
@@ -1270,12 +1474,12 @@
                 <!-- Photos SECTION -->
                 <div class="attachments-grid" style="margin-top:10px;">
                     <div class="demo-gallery">
-                        <ul id="lightgallery" class="list-unstyled row">
+                        <ul id="lightgallery" class="list-unstyled row case-attachments-gallery">
                             @foreach ($case->photos as $photo)
                                 <li class="col-xs-6 col-sm-4 col-md-2 col-lg-2"
                                     data-responsive="{{ asset($photo->path) }}" data-src="{{ asset($photo->path) }}">
-                                    <a href="">
-                                        <img class="img-responsive" src="{{ asset($photo->path) }}">
+                                    <a href="{{ asset($photo->path) }}" class="attachment-preview-link">
+                                        <img class="img-responsive" src="{{ asset($photo->path) }}" alt="Case attachment">
                                     </a>
                                 </li>
                             @endforeach
@@ -1314,7 +1518,16 @@
     <script>
         jQuery(document).ready(function($) {
             // Initialize lightGallery
-            $('#lightgallery').lightGallery();
+            if ($('#lightgallery').length) {
+                $('#lightgallery').lightGallery({
+                    selector: 'li',
+                    download: false,
+                    fullScreen: false,
+                    actualSize: false,
+                    thumbnail: false,
+                    share: false
+                });
+            }
 
             // Parse and format the delivery date for use in print labels
             var deliveryDate = "{{ $case->initial_delivery_date }}";

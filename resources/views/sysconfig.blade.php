@@ -3,23 +3,15 @@
 @section('content')
 <style>
 
-
-    body {
-        font-family: 'Poppins', sans-serif;
-        margin: 0;
-        width: 100%;
-        height: 100vh;
-        background-color: #d1dad3;
-
+    .sigma-sysconfig-page {
+        font-family: 'Poppins', 'Cairo', sans-serif;
         font-size: 12px;
     }
 
-    .container {
-        max-width: 1000px;
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
+    .sigma-sysconfig-page .sigma-config-card {
+        max-width: 780px;
+        margin-left: auto !important;
+        margin-right: auto !important;
     }
 
     .switch-holder {
@@ -103,7 +95,8 @@
     @php
         $permissions = safe_permissions();
     @endphp
-    <div class="row" style="padding:20px;">
+    <div class="sigma-config-page sigma-sysconfig-page">
+        <div class="sigma-config-card">
         <form class="kt-form" method="POST" action="{{route('update-sys-config')}}">
             @csrf
 
@@ -153,8 +146,8 @@
             </table>
                 <div class="kt-portlet__foot">
                     <div class="kt-form__actions">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-danger">Reset</button>
+                        <button type="submit" class="btn sigma-config-submit-btn">Submit</button>
+                        <button type="reset" class="btn sigma-config-secondary-btn">Reset</button>
                     </div>
                 </div>
 
@@ -162,6 +155,7 @@
 
 
         </form>
+        </div>
     </div>
 @endsection
 @push('js')

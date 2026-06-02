@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\PageBenchmark;
 use Closure;
-use Illuminate\Support\Facades\Cache;
 
 class ViewCasesListMiddleware
 {
@@ -16,9 +16,17 @@ class ViewCasesListMiddleware
      */
     public function handle($request, Closure $next)
     {
+        $isBenchmarking = PageBenchmark::bootIfActive($request);
+
         if (Auth()->check()) {
             $permissions = safe_permissions();
             if (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 103))) {
+                if ($isBenchmarking) {
+                    PageBenchmark::mark($request, 'route-permission.view-cases-list.pass', [
+                        'permissions_count' => $permissions ? $permissions->count() : 0,
+                    ]);
+                }
+
                 return $next($request);
             }else{
                 return abort(403, "Insufficient Privileges, You don't have the permission to view cases list, Contact Administrator");

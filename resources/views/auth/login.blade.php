@@ -15,8 +15,8 @@
             justify-content: center;
 
             background-image:
-                linear-gradient(rgba(63, 139, 56, 0.7), rgba(6, 255, 0, 0.1)),  /* gradient overlay */
-                url('assets/bg_.jpg');                                   /* actual image */
+                linear-gradient(rgb(5 90 0 / 26%), rgb(45 125 43 / 10%)), url(assets/bg_.jpg);
+            /* actual image */
             background-size: cover;
             background-position: center;
             position: relative;
@@ -83,8 +83,26 @@ ease-out;
             margin-bottom: 1.8rem;
         }
 
-        .form-input-modern {
+        .login-visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .input-field-wrap {
+            position: relative;
             width: 85%;
+            margin: 0 auto;
+        }
+
+        .form-input-modern {
+            width: 100%;
     padding: 0.5rem 0rem 0.5rem 3rem;
     border: 2px solid #e2e8f0;
     border-radius: 12px;
@@ -94,11 +112,19 @@ ease-out;
     color: #2d3748;
         }
 
+        /* iPhone Safari zooms focused inputs below 16px; keep pinch zoom available. */
+        @supports (-webkit-touch-callout: none) {
+            @media screen and (max-width: 767px) {
+                .form-input-modern {
+                    font-size: 16px !important;
+                }
+            }
+        }
+
         .form-input-modern:focus {
             outline: none;
             border-color: #667eea;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
         }
 
         .form-input-modern::placeholder {
@@ -107,7 +133,7 @@ ease-out;
 
         .input-icon {
             position: absolute;
-    left: 2.5rem;
+    left: 1rem !important;
     top: 50%;
     transform: translateY(-50%);
     color: #a0aec0;
@@ -125,8 +151,44 @@ ease;
             color: #38b44a;
         }
         /* Also highlight when JS toggles the 'focused' class */
-        .form-group-modern.focused .input-icon {
+        .form-group-modern.focused .input-icon,
+        .form-group-modern.has-value .input-icon {
             color: #38b44a;
+        }
+
+        .password-field {
+            padding-right: 2.8rem;
+        }
+
+        /* Hide native browser password reveal/clear buttons (Edge/IE) */
+        .password-field::-ms-reveal,
+        .password-field::-ms-clear {
+            display: none;
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #a0aec0;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            z-index: 3;
+            transition: color 0.3s ease;
+        }
+
+        .password-toggle-btn:focus {
+            outline: none;
+        }
+
+        .form-group-modern:focus-within .password-toggle-btn,
+        .form-group-modern.focused .password-toggle-btn,
+        .form-group-modern.has-value .password-toggle-btn {
+            color: #a0aec0;
         }
 
         .login-button {
@@ -276,14 +338,18 @@ ease;
                 @csrf
 
                 <div class="form-group-modern {{ $errors->has('username') ? 'has-error' : '' }}">
-                    <i class="fas fa-user input-icon"></i>
-                    <input type="text"
-                           name="username"
-                           autocomplete="username"
-                           class="form-input-modern"
-                           placeholder="Enter your username"
-                           value="{{ old('username') }}"
-                           required>
+                    <div class="input-field-wrap">
+                        <label for="login-username" class="login-visually-hidden">Username</label>
+                        <i class="fas fa-user input-icon"></i>
+                        <input id="login-username"
+                               type="text"
+                               name="username"
+                               autocomplete="username"
+                               class="form-input-modern"
+                               placeholder="Enter your username"
+                               value="{{ old('username') }}"
+                               required>
+                    </div>
                     @if ($errors->has('username'))
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle error-icon"></i>
@@ -293,13 +359,20 @@ ease;
                 </div>
 
                 <div class="form-group-modern {{ $errors->has('password') ? 'has-error' : '' }}">
-                    <i class="fas fa-lock input-icon"></i>
-                    <input type="password"
-                           name="password"
-                           autocomplete="current-password"
-                           class="form-input-modern"
-                           placeholder="Enter your password"
-                           required>
+                    <div class="input-field-wrap">
+                        <label for="login-password" class="login-visually-hidden">Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <input id="login-password"
+                               type="password"
+                               name="password"
+                               autocomplete="current-password"
+                               class="form-input-modern password-field"
+                               placeholder="Enter your password"
+                               required>
+                        <button type="button" class="password-toggle-btn" aria-label="Show password">
+                            <i class="fas fa-eye-slash"></i>
+                        </button>
+                    </div>
                     @if ($errors->has('password'))
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle error-icon"></i>
@@ -342,14 +415,44 @@ ease;
         });
 
         $('.form-input-modern').on('blur', function() {
-            $(this).closest('.form-group-modern').removeClass('focused');
+            const group = $(this).closest('.form-group-modern');
+            group.removeClass('focused');
+            group.toggleClass('has-value', $(this).val().trim().length > 0);
+        });
+
+        // Keep value state in sync for autofill/manual edits
+        $('.form-input-modern').on('input', function() {
+            const group = $(this).closest('.form-group-modern');
+            group.toggleClass('has-value', $(this).val().trim().length > 0);
+        });
+
+        // Initialize filled state on page load (including old() values)
+        $('.form-input-modern').each(function() {
+            const group = $(this).closest('.form-group-modern');
+            group.toggleClass('has-value', $(this).val().trim().length > 0);
+        });
+
+        // Password visibility toggle
+        $('.password-toggle-btn').on('click', function() {
+            const button = $(this);
+            const input = button.siblings('input[name="password"]');
+            const icon = button.find('i');
+            const isPassword = input.attr('type') === 'password';
+
+            input.attr('type', isPassword ? 'text' : 'password');
+            icon.toggleClass('fa-eye', isPassword);
+            icon.toggleClass('fa-eye-slash', !isPassword);
+            button.attr('aria-label', isPassword ? 'Hide password' : 'Show password');
+            input.trigger('focus');
         });
 
         // Add loading state to login button
         $('form').on('submit', function(e) {
+            const passwordInput = $('input[name="password"]');
             const button = $('.login-button');
             const originalText = button.html();
 
+            passwordInput.attr('type', 'password');
             button.html('<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Signing In...');
             button.prop('disabled', true);
 

@@ -1,0 +1,71 @@
+function normalize(str) {
+    return str.trim().toLowerCase().replace(/\s+/g, '');
+}
+
+function levenshtein(a, b) {
+    const dp = Array(a.length + 1).fill().map(() => Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + cost
+            );
+        }
+    }
+
+    return dp[a.length][b.length];
+}
+
+<<<<<<<<<<<<<<  ✨ Codeium Command 🌟 >>>>>>>>>>>>>>>>
+/**
+ * Computes the Levenshtein distance between two strings.
+ * The Levenshtein distance is a measure of the minimum number of single-character edits
+ * (i.e., insertions, deletions or substitutions) required to change one word into the other.
+ *
+ * @param {string} a - The first string
+ * @param {string} b - The second string
+ * @returns {number} The Levenshtein distance between a and b
+ */
+function levenshtein(a, b) {
+    const dp = Array(a.length + 1).fill().map(() => Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+    for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + cost
+            );
+        }
+    }
+
+    return dp[a.length][b.length];
+}
+
+/**
+ * Performs a fuzzy match between input and target strings.
+ * The fuzzy match is based on the Levenshtein distance between the two strings,
+ * and also takes into account whether the strings are identical or one string is
+ * a substring of the other.
+ *
+ * @param {string} input - The input string
+ * @param {string} target - The target string
+ * @returns {boolean} Whether the input string is a fuzzy match for the target string
+ */
+function fuzzyMatch(input, target) {
+    const a = normalize(input);
+    const b = normalize(target);
+    if (a === b || a.includes(b) || b.includes(a)) return true;
+
+    const distance = levenshtein(a, b);
+    return distance <= Math.floor(Math.max(a.length, b.length) * 0.3);
+}
+<<<<<<<  c48bbef5-fdc1-4f24-99a6-0ba612c83977  >>>>>>>

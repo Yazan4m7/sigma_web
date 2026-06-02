@@ -7,11 +7,12 @@ use App\Http\Traits\helperTrait;
 use Illuminate\Http\Request;
 use App\User;
 use App\UserPermission;
+use App\Support\AuthenticatedUserCache;
 use App\Permission;
+use App\Support\UserPermissionsCache;
 use DB;
 use Hash;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -351,63 +352,7 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                     }
                 }
 
-                // Destination file (overwrite is fine; no need to unlink first)
-                $relativeAvatarPath = 'assets/images/avatars/user_' . $user->id . '.webp';
-                $dest = public_path($relativeAvatarPath);
-                \Log::info('Destination path: ' . $dest, [
-                    'dest_dir_writable' => is_writable(dirname($dest)),
-                    'dest_exists_before' => file_exists($dest)
-                ]);
-
-                // Check if GD library is available
-                if (!extension_loaded('gd')) {
-                    \Log::error('GD library is not loaded - image processing will fail!');
-                    throw new \RuntimeException('GD library not available for image processing');
-                }
-                \Log::info('GD library loaded', ['gd_info' => gd_info()]);
-
-                // Check available memory
-                $memoryLimit = ini_get('memory_limit');
-                \Log::info('PHP memory limit: ' . $memoryLimit);
-
-                // Convert + compress under 12MB (your helper)
-                try {
-                    \Log::info('Starting image compression', [
-                        'source' => $photo->getPathname(),
-                        'destination' => $dest,
-                        'max_size_bytes' => 12 * 1024 * 1024,
-                        'max_size_mb' => 12
-                    ]);
-
-                    $this->saveImageUnder2MBAsWebp(
-                        $photo->getPathname(),
-                        $dest,
-                        12 * 1024 * 1024
-                    );
-
-                    // Verify the file was created
-                    if (file_exists($dest)) {
-                        $destSize = filesize($dest);
-                        \Log::info('Image compression SUCCESS', [
-                            'destination' => $dest,
-                            'output_size_bytes' => $destSize,
-                            'output_size_mb' => round($destSize / 1024 / 1024, 2),
-                            'file_exists' => true
-                        ]);
-                    } else {
-                        \Log::error('Image compression FAILED - destination file does not exist', [
-                            'destination' => $dest,
-                            'source_existed' => file_exists($photo->getPathname())
-                        ]);
-                        throw new \RuntimeException('Image compression failed - output file not created');
-                    }
-                } catch (\Exception $e) {
-                    \Log::error('Image compression threw exception', [
-                        'error' => $e->getMessage(),
-                        'trace' => $e->getTraceAsString()
-                    ]);
-                    throw $e;
-                }
+                $relativeAvatarPath = $this->storeUserAvatar($photo, (int) $user->id, $path);
 
                 // Update user photo flag
                 $user->has_photo = 1;
@@ -463,9 +408,9 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
                         $perm->save();
                     }
                     $user->is_admin = false;
-                    $permissions =  UserPermission::where('user_id', $request->id)->get();
-                    Cache::forget('user'.$request->id);
-                    Cache::forever('user'.$user->id,$permissions);
+                    AuthenticatedUserCache::forget($user->id);
+                    UserPermissionsCache::prime($user->id);
+                    AuthenticatedUserCache::prime($user->id);
                 }
             }
             $new_password      = $request->get('password_confirmation');
@@ -482,6 +427,7 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
 
             // Save user and verify
             $saveResult = $user->save();
+            AuthenticatedUserCache::prime($user->id);
             \Log::info('User save result', [
                 'user_id' => $user->id,
                 'save_result' => $saveResult,
@@ -511,6 +457,38 @@ return view('users.index')->with('users', $users)->with('status',$status)->with(
             ]);
             return back()->with('error', 'Error updating user: ' . $e->getMessage());
         }
+    }
+
+    private function storeUserAvatar($photo, int $userId, string $directory): string
+    {
+        if (!is_dir($directory) && !mkdir($directory, 0755, true) && !is_dir($directory)) {
+            throw new \RuntimeException('Failed to create user image directory');
+        }
+
+        $webpPath = 'assets/images/avatars/user_' . $userId . '.webp';
+        $webpDest = public_path($webpPath);
+
+        if (extension_loaded('gd')) {
+            $this->saveImageUnder2MBAsWebp($photo->getPathname(), $webpDest, 12 * 1024 * 1024);
+            if (file_exists($webpDest)) {
+                return $webpPath;
+            }
+        }
+
+        \Log::warning('GD unavailable or compression failed; storing original avatar image.', [
+            'user_id' => $userId,
+            'gd_loaded' => extension_loaded('gd')
+        ]);
+
+        $extension = strtolower($photo->getClientOriginalExtension() ?: $photo->guessExtension() ?: 'jpg');
+        if (!in_array($extension, ['jpg', 'jpeg', 'png', 'webp'], true)) {
+            $extension = 'jpg';
+        }
+
+        $relativePath = 'assets/images/avatars/user_' . $userId . '.' . $extension;
+        $photo->move($directory, basename($relativePath));
+
+        return $relativePath;
     }
 
     public function softDelete($id)

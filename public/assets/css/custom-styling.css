@@ -17,6 +17,22 @@
 
 }
 
+/* iPhone Safari zooms focused controls below 16px; keep pinch zoom available. */
+@supports (-webkit-touch-callout: none) {
+    @media screen and (max-width: 767px) {
+        input,
+        select,
+        textarea,
+        .form-control,
+        .dtp-input,
+        .filter-input-global,
+        .select2-search__field,
+        .bootstrap-select .dropdown-toggle {
+            font-size: 16px !important;
+        }
+    }
+}
+
 /* Centralized modal action button styling */
 .sigma-action-btn {
     font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -54,20 +70,699 @@
     border: 1px solid currentColor !important;
 }
 
-/* Global loading screen */
+/* Reusable dialog submit button styled after Bootstrap primary buttons */
+.dialog-submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    color: #ffffff;
+    background-color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 0.25rem;
+    box-shadow: none;
+    text-decoration: none;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    cursor: pointer;
+}
+
+.dialog-submit-btn:hover {
+    color: #ffffff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+    text-decoration: none;
+}
+
+.dialog-submit-btn:focus,
+.dialog-submit-btn.focus {
+    color: #ffffff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.5);
+}
+
+.dialog-submit-btn:not(:disabled):not(.disabled):active,
+.dialog-submit-btn:not(:disabled):not(.disabled).active {
+    color: #ffffff;
+    background-color: #0062cc;
+    border-color: #005cbf;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+
+.dialog-submit-btn:disabled,
+.dialog-submit-btn.disabled {
+    opacity: 0.65;
+    box-shadow: none;
+    cursor: default;
+}
+
+/* Unified main-table DataTables footer and table chrome for active list pages */
+#casesTable_wrapper.dataTables_wrapper .dataTables_info,
+.delivery-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_info,
+.abutments-delivery-page #datatable_wrapper.dataTables_wrapper .dataTables_info,
+.payments-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_info,
+.invoices-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_info,
+.my-collections-page #datatable_wrapper.dataTables_wrapper .dataTables_info,
+.doctor-page-wrapper #my-table_wrapper.dataTables_wrapper .dataTables_info,
+.rejected-cases-page #datatable_wrapper.dataTables_wrapper .dataTables_info {
+    display: block !important;
+    font-size: 12px !important;
+    color: #6b7280 !important;
+    text-align: left !important;
+    padding-top: 8px !important;
+    font-family: 'Cairo', sans-serif !important;
+}
+
+#casesTable_wrapper.dataTables_wrapper .dataTables_paginate,
+.delivery-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate,
+.abutments-delivery-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate,
+.payments-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate,
+.invoices-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate,
+.my-collections-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate,
+.doctor-page-wrapper #my-table_wrapper.dataTables_wrapper .dataTables_paginate,
+.rejected-cases-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate {
+    text-align: right !important;
+    padding-top: 6px !important;
+}
+
+#casesTable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.delivery-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.abutments-delivery-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.payments-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.invoices-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.my-collections-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.doctor-page-wrapper #my-table_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button,
+.rejected-cases-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: 1px solid #e2e8f0 !important;
+    background: #f8fafc !important;
+    color: #334155 !important;
+    border-radius: 8px !important;
+    padding: 4px 10px !important;
+    margin-left: 6px !important;
+    font-size: 12px !important;
+}
+
+#casesTable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+#casesTable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.delivery-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.delivery-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.abutments-delivery-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.abutments-delivery-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.payments-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.payments-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.invoices-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.invoices-page-wrapper #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.my-collections-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.my-collections-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.doctor-page-wrapper #my-table_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.doctor-page-wrapper #my-table_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+.rejected-cases-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.rejected-cases-page #datatable_wrapper.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #3c9aff !important;
+    color: #ffffff !important;
+    border-color: #0ea5e9 !important;
+}
+
+#casesTable.sunriseTable,
+.delivery-page-wrapper table#datatable.dataTable,
+.abutments-delivery-page table#datatable.dataTable,
+.payments-page-wrapper table#datatable.dataTable,
+.invoices-page-wrapper table#datatable.dataTable,
+.doctor-page-wrapper table#my-table.dataTable,
+.rejected-cases-page table#datatable.sigma-list-table {
+    font-family: 'Cairo', sans-serif !important;
+}
+
+
+
+#casesTable.sunriseTable thead th,
+.delivery-page-wrapper table#datatable.dataTable thead th,
+.abutments-delivery-page table#datatable.dataTable thead th,
+.payments-page-wrapper table#datatable.dataTable thead th,
+.invoices-page-wrapper table#datatable.dataTable thead th,
+.my-collections-page table#datatable.dataTable thead th,
+.doctor-page-wrapper table#my-table.dataTable thead th,
+.rejected-cases-page table#datatable.sigma-list-table thead th {
+    background: #408385 !important;
+    color: white !important;
+    font-size: 15px !important;
+    font-weight: 400 !important;
+    letter-spacing: 1px !important;
+    padding: 8px 0px !important;
+    font-family: 'Cairo', sans-serif !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: none !important;
+    border-top: 1px solid #408284 !important;
+    border-bottom: 3px solid #408284 !important;
+    box-shadow: none !important;
+}
+
+#casesTable.sunriseTable thead th:first-child,
+#casesTable.sunriseTable thead th:last-child,
+.delivery-page-wrapper table#datatable.dataTable thead th:first-child,
+.delivery-page-wrapper table#datatable.dataTable thead th:last-child,
+.abutments-delivery-page table#datatable.dataTable thead th:first-child,
+.abutments-delivery-page table#datatable.dataTable thead th:last-child,
+.payments-page-wrapper table#datatable.dataTable thead th:first-child,
+.payments-page-wrapper table#datatable.dataTable thead th:last-child,
+.invoices-page-wrapper table#datatable.dataTable thead th:first-child,
+.invoices-page-wrapper table#datatable.dataTable thead th:last-child,
+.my-collections-page table#datatable.dataTable thead th:first-child,
+.my-collections-page table#datatable.dataTable thead th:last-child,
+.doctor-page-wrapper table#my-table.dataTable thead th:first-child,
+.doctor-page-wrapper table#my-table.dataTable thead th:last-child,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-visible-start,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-visible-end {
+    background: #408385 !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+#casesTable.sunriseTable thead th:first-child,
+.delivery-page-wrapper table#datatable.dataTable thead th:first-child,
+.abutments-delivery-page table#datatable.dataTable thead th:first-child,
+.payments-page-wrapper table#datatable.dataTable thead th:first-child,
+.invoices-page-wrapper table#datatable.dataTable thead th:first-child,
+.my-collections-page table#datatable.dataTable thead th:first-child,
+.doctor-page-wrapper table#my-table.dataTable thead th:first-child,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-visible-start {
+    padding: 0 15px !important;
+    text-align: left !important;
+    border-top-left-radius: 12px !important;
+}
+
+#casesTable.sunriseTable thead th:last-child,
+.delivery-page-wrapper table#datatable.dataTable thead th:last-child,
+.abutments-delivery-page table#datatable.dataTable thead th:last-child,
+.payments-page-wrapper table#datatable.dataTable thead th:last-child,
+.invoices-page-wrapper table#datatable.dataTable thead th:last-child,
+.my-collections-page table#datatable.dataTable thead th:last-child,
+.doctor-page-wrapper table#my-table.dataTable thead th:last-child,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-visible-end {
+    border-top-right-radius: 12px !important;
+}
+
+#casesTable.sunriseTable tbody td,
+.delivery-page-wrapper table#datatable.dataTable tbody td,
+.abutments-delivery-page table#datatable.dataTable tbody td,
+.payments-page-wrapper table#datatable.dataTable tbody td,
+.invoices-page-wrapper table#datatable.dataTable tbody td,
+.my-collections-page table#datatable.dataTable tbody td,
+.doctor-page-wrapper table#my-table.dataTable tbody td,
+.rejected-cases-page table#datatable.sigma-list-table tbody td {
+    font-family: 'Cairo', sans-serif !important;
+    font-weight: 400 !important;
+    text-align: left !important;
+    border: none !important;
+    box-shadow: none !important;
+    vertical-align: middle !important;
+}
+
+#casesTable.sunriseTable tbody tr:nth-child(odd),
+.delivery-page-wrapper table#datatable.dataTable tbody tr:nth-child(odd),
+.abutments-delivery-page table#datatable.dataTable tbody tr:nth-child(odd),
+.payments-page-wrapper table#datatable.dataTable tbody tr:not(.discount-invoice-row):nth-child(odd),
+.invoices-page-wrapper table#datatable.dataTable tbody tr:not(.discount-invoice-row):nth-child(odd),
+.doctor-page-wrapper table#my-table.table-odd tbody > tr:nth-child(odd),
+.rejected-cases-page table#datatable.sigma-list-table tbody tr:nth-child(odd),
+.my-collections-page table#datatable.dataTable tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+#casesTable.sunriseTable tbody tr:nth-child(even),
+.delivery-page-wrapper table#datatable.dataTable tbody tr:nth-child(even),
+.abutments-delivery-page table#datatable.dataTable tbody tr:nth-child(even),
+.payments-page-wrapper table#datatable.dataTable tbody tr:not(.discount-invoice-row):nth-child(even),
+.invoices-page-wrapper table#datatable.dataTable tbody tr:not(.discount-invoice-row):nth-child(even),
+.doctor-page-wrapper table#my-table.table-odd tbody > tr:nth-child(even),
+.rejected-cases-page table#datatable.sigma-list-table tbody tr:nth-child(even),
+.my-collections-page table#datatable.dataTable tbody tr:nth-child(even) {
+    background-color: #f5f8ff !important;
+}
+
+#casesTable.sunriseTable tbody td b,
+#casesTable.sunriseTable tbody td strong,
+#casesTable.sunriseTable tbody td .badge,
+#casesTable.sunriseTable tbody td .badge *,
+.delivery-page-wrapper table#datatable.dataTable tbody td b,
+.delivery-page-wrapper table#datatable.dataTable tbody td strong,
+.delivery-page-wrapper table#datatable.dataTable tbody td .badge,
+.delivery-page-wrapper table#datatable.dataTable tbody td .badge *,
+.abutments-delivery-page table#datatable.dataTable tbody td b,
+.abutments-delivery-page table#datatable.dataTable tbody td strong,
+.payments-page-wrapper table#datatable.dataTable tbody td b,
+.payments-page-wrapper table#datatable.dataTable tbody td strong,
+.invoices-page-wrapper table#datatable.dataTable tbody td b,
+.invoices-page-wrapper table#datatable.dataTable tbody td strong,
+.my-collections-page table#datatable.dataTable tbody td b,
+.my-collections-page table#datatable.dataTable tbody td strong,
+.doctor-page-wrapper table#my-table.dataTable tbody td b,
+.doctor-page-wrapper table#my-table.dataTable tbody td strong,
+.rejected-cases-page table#datatable.sigma-list-table tbody td b,
+.rejected-cases-page table#datatable.sigma-list-table tbody td strong,
+.rejected-cases-page table#datatable.sigma-list-table tbody td .badge,
+.rejected-cases-page table#datatable.sigma-list-table tbody td .badge * {
+    font-weight: 400 !important;
+}
+
+#casesTable.sunriseTable tbody td.sigma-col-shaded,
+.delivery-page-wrapper table#datatable.dataTable tbody td.sigma-col-shaded,
+.abutments-delivery-page table#datatable.dataTable tbody td.sigma-col-shaded,
+.payments-page-wrapper table#datatable.dataTable tbody td.sigma-col-shaded,
+.invoices-page-wrapper table#datatable.dataTable tbody td.sigma-col-shaded,
+.my-collections-page table#datatable.dataTable tbody td.sigma-col-shaded,
+.doctor-page-wrapper table#my-table.dataTable tbody td.sigma-col-shaded,
+.rejected-cases-page table#datatable.sigma-list-table tbody td.sigma-col-shaded {
+    background-color: transparent !important;
+}
+
+#casesTable.sunriseTable thead th.sigma-head-left,
+.delivery-page-wrapper table#datatable.dataTable thead th.sigma-head-left,
+.abutments-delivery-page table#datatable.dataTable thead th.sigma-head-left,
+.payments-page-wrapper table#datatable.dataTable thead th.sigma-head-left,
+.invoices-page-wrapper table#datatable.dataTable thead th.sigma-head-left,
+.my-collections-page table#datatable.dataTable thead th.sigma-head-left,
+.doctor-page-wrapper table#my-table.dataTable thead th.sigma-head-left,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-head-left {
+    text-align: left !important;
+}
+
+#casesTable.sunriseTable thead th.sigma-head-right,
+.delivery-page-wrapper table#datatable.dataTable thead th.sigma-head-right,
+.abutments-delivery-page table#datatable.dataTable thead th.sigma-head-right,
+.payments-page-wrapper table#datatable.dataTable thead th.sigma-head-right,
+.invoices-page-wrapper table#datatable.dataTable thead th.sigma-head-right,
+.my-collections-page table#datatable.dataTable thead th.sigma-head-right,
+.doctor-page-wrapper table#my-table.dataTable thead th.sigma-head-right,
+.rejected-cases-page table#datatable.sigma-list-table thead th.sigma-head-right {
+    text-align: right !important;
+}
+
+#casesTable.sunriseTable tbody td.sigma-body-left,
+#casesTable.sunriseTable tbody td.sigma-body-left .cases-cell-truncate,
+.delivery-page-wrapper table#datatable.dataTable tbody td.sigma-body-left,
+.abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-left,
+.payments-page-wrapper table#datatable.dataTable tbody td.sigma-body-left,
+.invoices-page-wrapper table#datatable.dataTable tbody td.sigma-body-left,
+.my-collections-page table#datatable.dataTable tbody td.sigma-body-left,
+.doctor-page-wrapper table#my-table.dataTable tbody td.sigma-body-left,
+.rejected-cases-page table#datatable.sigma-list-table tbody td.sigma-body-left {
+    text-align: left !important;
+}
+
+#casesTable.sunriseTable tbody td.sigma-body-center,
+#casesTable.sunriseTable tbody td.sigma-body-center .cases-cell-truncate,
+.delivery-page-wrapper table#datatable.dataTable tbody td.sigma-body-center,
+.abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-center,
+.payments-page-wrapper table#datatable.dataTable tbody td.sigma-body-center,
+.invoices-page-wrapper table#datatable.dataTable tbody td.sigma-body-center,
+.my-collections-page table#datatable.dataTable tbody td.sigma-body-center,
+.doctor-page-wrapper table#my-table.dataTable tbody td.sigma-body-center,
+.rejected-cases-page table#datatable.sigma-list-table tbody td.sigma-body-center {
+    text-align: center !important;
+}
+
+#casesTable.sunriseTable tbody td.sigma-body-right,
+#casesTable.sunriseTable tbody td.sigma-body-right .cases-cell-truncate,
+.delivery-page-wrapper table#datatable.dataTable tbody td.sigma-body-right,
+.abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-right,
+.payments-page-wrapper table#datatable.dataTable tbody td.sigma-body-right,
+.invoices-page-wrapper table#datatable.dataTable tbody td.sigma-body-right,
+.my-collections-page table#datatable.dataTable tbody td.sigma-body-right,
+.doctor-page-wrapper table#my-table.dataTable tbody td.sigma-body-right,
+.rejected-cases-page table#datatable.sigma-list-table tbody td.sigma-body-right {
+    text-align: right !important;
+}
+
+#casesTable.sunriseTable tbody td.sigma-body-arabic,
+#casesTable.sunriseTable tbody td.sigma-body-arabic .cases-cell-truncate,
+.delivery-page-wrapper table#datatable.dataTable tbody td.sigma-body-arabic,
+.abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-arabic,
+.payments-page-wrapper table#datatable.dataTable tbody td.sigma-body-arabic,
+.invoices-page-wrapper table#datatable.dataTable tbody td.sigma-body-arabic,
+.my-collections-page table#datatable.dataTable tbody td.sigma-body-arabic,
+.doctor-page-wrapper table#my-table.dataTable tbody td.sigma-body-arabic,
+.rejected-cases-page table#datatable.sigma-list-table tbody td.sigma-body-arabic {
+    direction: rtl !important;
+    text-align: right !important;
+}
+
+.sigma-config-page {
+    background: #f4f6fb;
+    min-height: 100vh;
+    padding: 1rem;
+}
+
+.sigma-config-toolbar,
+.sigma-config-card {
+    background: #ffffffa8 !important;
+    border: 1px solid rgba(188, 206, 216, 0.3) !important;
+    border-radius: 16px !important;
+    box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 6%) !important;
+    margin: 0 0 24px !important;
+    padding: 20px 20px 16px !important;
+    position: relative;
+    overflow: hidden !important;
+    backdrop-filter: blur(10px);
+}
+
+.sigma-config-toolbar::before,
+.sigma-config-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #d6ecee 0%, #e7f4f5 100%);
+    border-radius: 16px 16px 0 0;
+    pointer-events: none;
+}
+
+.sigma-config-toolbar-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.sigma-config-toolbar-spacer {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.sigma-config-toolbar-actions {
+    margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.sigma-config-page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: flex-end;
+    margin: 0 0 24px;
+}
+
+.sigma-config-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.sigma-config-field--grow {
+    flex: 1 1 220px;
+    max-width: 240px;
+}
+
+.sigma-config-field label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #243746;
+    letter-spacing: 0.01em;
+    font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+}
+
+.sigma-config-field .form-control,
+.sigma-config-field .bootstrap-select > .dropdown-toggle,
+.sigma-config-field .ios-dtp-trigger,
+.sigma-config-field .dtp-input {
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 8px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(188, 206, 216, 0.4) !important;
+    color: #243746 !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    box-shadow: none !important;
+    font-size: 14px !important;
+    line-height: 1.5;
+}
+
+.sigma-config-field .bootstrap-select,
+.sigma-config-field .filter-input-global,
+.sigma-config-field input.filter-input-global,
+.sigma-config-field select.filter-input-global,
+.sigma-config-field select + .bootstrap-select {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.sigma-config-field .form-control:focus,
+.sigma-config-field .bootstrap-select > .dropdown-toggle:focus,
+.sigma-config-field .ios-dtp-trigger:focus,
+.sigma-config-field .dtp-input:focus {
+    border-color: #408385 !important;
+    box-shadow: 0 0 0 3px rgba(64, 131, 133, 0.15) !important;
+    outline: 0;
+}
+
+.sigma-config-submit-btn,
+.sigma-config-add-btn,
+.sigma-config-secondary-btn {
+    width: auto;
+    max-width: none;
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 20px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px;
+    line-height: 1.5;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+}
+
+.sigma-config-submit-btn {
+    background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+    border: 1px solid #408385 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.sigma-config-submit-btn:hover,
+.sigma-config-submit-btn:focus {
+    background: linear-gradient(135deg, #336f71 0%, #5ca0a2 100%) !important;
+    border-color: #336f71 !important;
+    color: #ffffff !important;
+    transform: translateY(-1px);
+    box-shadow: none !important;
+}
+
+.sigma-config-submit-btn:active,
+.sigma-config-submit-btn:not(:disabled):not(.disabled):active {
+    background: linear-gradient(135deg, #285f61 0%, #4c8587 100%) !important;
+    border-color: #285f61 !important;
+    color: #ffffff !important;
+    transform: translateY(0);
+    box-shadow: none !important;
+}
+
+.sigma-config-add-btn,
+.sigma-config-secondary-btn {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border: 1px solid rgba(188, 206, 216, 0.55) !important;
+    color: #2d5f6d !important;
+    box-shadow: 0 2px 8px rgba(45, 95, 109, 0.08);
+}
+
+.sigma-config-add-btn:hover,
+.sigma-config-secondary-btn:hover,
+.sigma-config-add-btn:focus,
+.sigma-config-secondary-btn:focus {
+    background: #2d5f6d !important;
+    border-color: #2d5f6d !important;
+    color: #ffffff !important;
+}
+
+.sigma-config-page .sigma-config-table-shell,
+.sigma-config-page .sigma-config-table-shell > .row,
+.sigma-config-page .sigma-config-table-shell > .row > .col-12,
+.sigma-config-page .dataTables_wrapper,
+.sigma-config-page .dataTables_wrapper > .row {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable {
+    width: 100% !important;
+    margin: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    background: transparent !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable thead th {
+    background: #e4edf2 !important;
+    color: #408385 !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    letter-spacing: 2px !important;
+    padding: 8px 16px !important;
+    font-family: 'Cairo', sans-serif !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: none !important;
+    border-top: 1px solid #408284 !important;
+    border-bottom: 3px solid #408284 !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable thead th:first-child,
+.sigma-config-page .sigma-config-table.sunriseTable thead th:last-child {
+    background: #408385 !important;
+    color: #ffffff !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable thead th:first-child {
+    border-top-left-radius: 12px !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable thead th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable tbody tr:nth-child(odd) {
+    background-color: #ffffff !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable tbody tr:nth-child(even) {
+    background-color: #f5f8ff !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable tbody td {
+    padding: 2px 16px !important;
+    font-family: 'Cairo', sans-serif !important;
+    font-weight: 400 !important;
+    border: none !important;
+    vertical-align: middle !important;
+    text-align: left !important;
+    line-height: 1.35 !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable tbody td:first-child,
+.sigma-config-page .sigma-config-table.sunriseTable thead th:first-child {
+    text-align: center !important;
+}
+
+.sigma-config-page .sigma-config-table.sunriseTable tbody td b,
+.sigma-config-page .sigma-config-table.sunriseTable tbody td strong,
+.sigma-config-page .sigma-config-table.sunriseTable tbody td .badge,
+.sigma-config-page .sigma-config-table.sunriseTable tbody td .badge * {
+    font-weight: 400 !important;
+}
+
+.sigma-config-page .sigma-config-table .sigma-cell-center,
+.sigma-config-page .sigma-config-table thead th.sigma-cell-center {
+    text-align: center !important;
+}
+
+.sigma-config-page .sigma-config-table .sigma-cell-right,
+.sigma-config-page .sigma-config-table thead th.sigma-cell-right {
+    text-align: right !important;
+}
+
+.sigma-config-page .sigma-config-table .sigma-cell-left,
+.sigma-config-page .sigma-config-table thead th.sigma-cell-left {
+    text-align: left !important;
+}
+
+.sigma-config-page .dataTables_wrapper .dataTables_info {
+    display: block !important;
+    font-size: 12px;
+    color: #6b7280;
+    text-align: left;
+    padding-top: 8px;
+}
+
+.sigma-config-page .dataTables_wrapper .dataTables_paginate {
+    text-align: right;
+    padding-top: 4px;
+}
+
+.sigma-config-page .dataTables_wrapper .dataTables_paginate .paginate_button {
+    min-width: 34px;
+    margin-left: 4px;
+    padding: 6px 10px !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(188, 206, 216, 0.7) !important;
+    background: #ffffff !important;
+    color: #4b5563 !important;
+}
+
+.sigma-config-page .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.sigma-config-page .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #408385 !important;
+    border-color: #408385 !important;
+    color: #ffffff !important;
+}
+
+@media screen and (max-width: 991px) {
+    .sigma-config-page {
+        padding: 0.75rem;
+    }
+
+    .sigma-config-toolbar,
+    .sigma-config-card {
+        padding: 16px 14px 12px !important;
+    }
+
+    .sigma-config-toolbar-actions {
+        width: 100%;
+        margin-left: 0;
+        justify-content: flex-start;
+    }
+
+    .sigma-config-field--grow {
+        max-width: none;
+        flex-basis: 100%;
+    }
+}
+
+
 .sigma-loading-screen {
     position: fixed;
     inset: 0;
-    z-index: 10050;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(8, 11, 16, 0.78);
-    backdrop-filter: blur(8px);
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.8);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    transition: opacity 0.18s ease, visibility 0.18s ease;
+    z-index: 11000;
+    isolation: isolate;
 }
 
 .sigma-loading-screen.is-active {
@@ -76,68 +771,84 @@
     pointer-events: auto;
 }
 
-.sigma-loading-screen__content {
-    padding: 18px 28px;
-    border-radius: 16px;
-    background: transparent;
-    box-shadow: none;
-}
-
-.sigma-loading-screen__text {
-    /* font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; */
-    font-size: clamp(0.95rem, 1.1vw + 0.6rem, 1.5rem);
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: #272727;
-    position: relative;
-    isolation: isolate;
-    display: inline-block;
-    line-height: 1.2;
-    white-space: nowrap;
-    text-align: left;
-    overflow: hidden;
-    text-transform: uppercase;
-    text-shadow: none;
-}
-
-.sigma-loading-screen__text::after {
-    content: attr(data-text);
-    position: absolute;
-    inset: 0;
-    display: inline-block;
-    line-height: inherit;
-    font: inherit;
-    letter-spacing: inherit;
-    text-align: inherit;
-    color: transparent;
-    background-image: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.95) 50%, transparent 100%);
-    background-size: 60% 100%;
-    background-repeat: no-repeat;
-    background-position: -120% 50%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    animation: sigma-loading-shimmer 2.6s linear infinite;
-    pointer-events: none;
-    text-shadow: none;
-}
-
 body.sigma-loading-active {
     overflow: hidden;
 }
 
-@keyframes sigma-loading-shimmer {
-    0% { background-position: -140% 50%; }
-    100% { background-position: 180% 50%; }
+.sigma-loading-screen__content {
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    text-align: center;
 }
 
+.sigma-loading-screen__content .sigma-processing-indicator__text {
+    position: relative;
+    display: inline-block;
+    font-size: 31px;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+    color: #37b44a;
+    text-shadow: 0 0 14px rgba(55, 180, 74, 0.35);
+}
+
+.sigma-loading-screen__content .sigma-processing-indicator__text::after {
+    content: attr(data-text);
+    position: absolute;
+    inset: 0;
+    color: transparent;
+    background-image: linear-gradient(
+        90deg,
+        rgba(55, 180, 74, 0) 0%,
+        rgba(55, 180, 74, 0) 30%,
+        #ffffff 50%,
+        #f5fff7 56%,
+        rgba(55, 180, 74, 0) 70%,
+        rgba(55, 180, 74, 0) 100%
+    );
+    background-size: 200% 100%;
+    background-position: 200% 50%;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: sigmaProcessingShimmer 1.2s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes sigmaProcessingShimmer {
+    0% { background-position: 200% 50%; }
+    100% { background-position: -50% 50%; }
+}
+
+/* Prevent skeleton squares inside workflow modal action buttons */
+.sigma-workflow-modal .loading * {
+    color: inherit !important;
+}
+
+.sigma-workflow-modal .loading button,
+.sigma-workflow-modal .loading span,
+.sigma-workflow-modal .loading div {
+    background: transparent !important;
+}
+
+.sigma-workflow-modal .loading button::after,
+.sigma-workflow-modal .loading span::after,
+.sigma-workflow-modal .loading div::after {
+    content: none !important;
+}
+
+/* 4. Accessibility */
 @media (prefers-reduced-motion: reduce) {
-    .sigma-loading-screen__text {
+    .sigma-loading-screen {
+        transition: none;
+    }
+
+    .sigma-loading-screen__content .sigma-processing-indicator__text::after {
         animation: none;
-        color: #ffffff;
-        background: none;
     }
 }
-
 .ellipsis-text {
     /* Must have a fixed or max width so the browser knows where to truncate */
     width: 200px;            /* or any suitable width */
@@ -2527,7 +3238,7 @@ border-radius:20px;
 .sunriseTable thead tr td:not(:first-child) {
      padding: 0px 4px !important;
  }
-.sunriseTable thead th:nth-child(1), .sunriseTable tbody td:nth-child(1) {padding: 0 15px !important;}
+.sunriseTable thead th:nth-child(1), .sunriseTable tbody td:nth-child(1) {padding: 0 4px !important;}
 .sunriseTable thead tr {
 height: 40px;
 background: #2b7b7d;
@@ -2727,8 +3438,12 @@ background: #2b7b7d;
     padding: 6px 0px;
     width: -webkit-fill-available;
 }
+.sigma-modal--delivery-schedule-edit .modal-footer .btn {
+    line-height: 1.5 !important;
+}
 .sigma-modal--delivery-schedule-actions .modal-footer.fullBtnsWidth button {
     padding: 6px 0px;
+    line-height: 1.5 !important;
     width: -webkit-fill-available;
 }
 .sigma-modal--delivery-receive-payment .modal-footer.fullBtnsWidth button {
@@ -7472,7 +8187,7 @@ background: #2b7b7d;
     padding-left: 0 !important;
 }
 .padding5px {
-    padding:5px !important;
+    padding: 5px !important;
   }
 
 .sigma-modal--abutments-delivery-actions .modal-title > h5 {
@@ -8072,7 +8787,7 @@ table:not(.sunriseTable) tbody td {
     border-bottom: none;
 }
 thead {
-    /* background-color: #c5c4c4; */
+    background-color: #408385;
     color: black;
     /* height: 6vh; */
 }
@@ -8196,7 +8911,7 @@ table:not(.sunriseTable):not(.sigma-col-total) thead th {
 .sigma-modal--cases-dashboard-case-completion .modal-body {
     position: relative;
     /* flex: 1 1 auto; */
-    padding: 0px 21px 1px 24px;
+    padding: 0px 12px 1px 16px;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-body {
     position: relative;
@@ -8257,7 +8972,7 @@ table:not(.sunriseTable):not(.sigma-col-total) thead th {
 .sigma-modal--cases-index-actions .modal-body {
     position: relative;
     flex: 1 1 auto;
-    padding: 21px 21px 1px 24px;
+    padding: 21px 5px 1px 5px;
 }
 .sigma-modal--cases-rejected-actions .modal-body {
     position: relative;
@@ -8829,17 +9544,27 @@ table {
 .toggle-handle {
     background-color: #265471;
 }
+.pageTitleContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px; /* border thickness */
+  width: 100%;
+  background: linear-gradient(to right, rgba(228,228,228,1), rgba(228,228,228,0));
+}
 .pageTitleContainer {
-    /* border-top: blue solid 57px; */
-    /* border-left: 2px solid; */
-    border-image: linear-gradient(to bottom, #2b7b7d, #019399) 0 1;
-    background: linear-gradient(272deg, #ffffff 0%, #ffffff 50%);
+
+    /* border-top: #e4e4e475 solid 3px; */
+    border-left: #e4e4e4 solid 4px;
+    /* border-image: linear-gradient(to bottom, #2b7b7d, #019399) 0 1; */
+    background: linear-gradient(272deg, #ffffff 0%, #ffffff 50%) !important;
     /* padding-right: 0px; */
-    /* border-bottom-left-radius: 4px; */
-    /* border-top-left-radius: 4px; */
+    border-bottom-left-radius: 13px;
+    /* border-top-right-radius: 10%; */
     max-width:80%;
     flex: 0 0 80%;
-    margin-left: 11px;
+    margin-left: 26px;
     /* temporary until adding breadcrumb*/
     padding-bottom: 10px;
     padding-top: 5px;
@@ -9127,11 +9852,11 @@ body {/* font-family: 'Rubik', sans-serif; *//* font-family: 'Nunito Sans', sans
     /* width: 20px; */
 }
 .pageTitle {
-    font-family: 'SegoeUI';
+    font-family: "Cairo";
     position: initial !important;
-    /* letter-spacing: 2px; */
+    letter-spacing: 1px;
     font-size:20px;
-    /*font-weight: 700 !important;*/
+    font-weight: 700 !important;
     /*position: initial !important;*/
 }
 .card {
@@ -9197,7 +9922,7 @@ blueTBBorder {
     display: flex;
     min-width: 0;
     word-wrap: break-word;
-    background-color: #ffffff;
+    background-color: transparent;
     flex-direction: row;
     align-content: space-around;
 }
@@ -9244,13 +9969,16 @@ blueTBBorder {
     padding-bottom: 4px !important;
 }
 .homePageOptionInSideBar {display:none;}
-
+.card.card-chart{
+    height:-webkit-fill-available !important;
+}
 
 /* Main box margin, for the sidebar and top banner*/
 .main-panel > .content {
-     padding: 30px;
-     margin: var(--sigma-app-header-offset) 0 0 0;
-     min-height: calc(100vh - 70px);
+        border: none !important;
+        padding: 0 10px 30px 10px;
+        margin: var(--sigma-app-header-offset) 0 0 0;
+        min-height: calc(100vh - 70px);
 }
 
 /* -------------------------------------------------------------------------
@@ -9269,7 +9997,7 @@ blueTBBorder {
 
 .navbar.navbar-absolute.sigma-app-header {
     position: fixed;
-    top: 0;
+    top: -0;
     right: 0;
     left: 80px;
     width: auto;
@@ -9297,8 +10025,7 @@ blueTBBorder {
 
 body:not(.white-content) .navbar.navbar-transparent.sigma-app-header {
     background: rgb(255 255 255 / 100%) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
+    border-bottom: 1px solid rgb(4 103 106 / 51%);
     backdrop-filter: saturate(180%) blur(10px);
     -webkit-backdrop-filter: saturate(180%) blur(10px);
 }
@@ -9321,7 +10048,7 @@ body:not(.white-content) .navbar.navbar-transparent.sigma-app-header {
 table.sigma-sticky-table-header {
     /* `overflow: hidden` on `.sunriseTable` breaks `position: sticky` headers */
     overflow: visible;
-    margin-top: -4px;
+    margin-top: 0;
 }
 
 /*margin-bottom:-24px;*/
@@ -9348,22 +10075,15 @@ table.sunriseTable.sigma-sticky-table-header thead th {
 }
 
 table.sunriseTable.sigma-sticky-table-header thead th::before {
-    content: '';
-    position: absolute;
-    top: -50px;
-    left: 0;
-    right: 0;
-    height: 50px;
-    background: #f5f6fa;
-    z-index: -1;
+    content: none;
 }
 
 table.sunriseTable.sigma-sticky-table-header thead th:first-child {
-    border-top-left-radius: 10px;
+    border-top-left-radius: 0;
 }
 
 table.sunriseTable.sigma-sticky-table-header thead th:last-child {
-    border-top-right-radius: 10px;
+    border-top-right-radius: 0;
     text-align: center;
 }
 
@@ -9386,7 +10106,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
     }
 
     .summary-table-responsive {
-        overflow-x: auto !important;
+        overflow-x: hidden !important;
         overflow-y: visible !important;
     }
 }
@@ -9428,7 +10148,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
     color:white;
 }
 .verticalSpacing {
-    margin-bottom: 8vh;
+    margin-bottom: 4vh;
 }
 .deleteBtn:hover i {
     color:red;
@@ -9470,6 +10190,9 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
 
 }
 @media screen and (max-width: 461px){
+    .padding5px {
+        padding: 0px !important;
+    }
     .nav-tabs > li {
         width:auto !important;
     }
@@ -9496,7 +10219,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
         /*padding: 3px 3px 6px 3px !important;*/
     /*}*/
     #datatable_wrapper {
-        overflow: auto;
+        /* overflow: auto; */
     }
 
 .sigma-modal--abutments-delivery-actions .modal-footer:not(.teethSelection) {
@@ -9635,7 +10358,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
         display: flex !important;
         align-items: center !important;
         justify-content: space-around !important;
-        padding: 19px 10px 3px 10px !important;
+        padding: 0px 10px 3px 10px !important;
     }
 .sigma-modal--cases-rejected-actions .modal-footer:not(.teethSelection) {
         display: flex !important;
@@ -12411,7 +13134,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
     transform: none !important;
 }
 .sigma-status-width {
-    /* min-width: 8.5rem; */
+    min-width: 8.5rem;
     max-width: 100%;
     display: inline-flex;
     align-items: center;
@@ -12433,6 +13156,222 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
 
 body.ysh-dialog-open {
     overflow: hidden;
+}
+
+#doctor-actions-balance,
+#doctor-actions-balance *,
+.doctor-actions-balance,
+.doctor-actions-balance *,
+#doctor-actions-name,
+#doctor-actions-name *,
+.doctor-actions-name,
+.doctor-actions-name * {
+    color: #252525  !important;
+}
+
+.modal .modal-body label:not(.custom-control-label):not(.form-check-label):not(.kt-checkbox):not(.kt-radio) {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 2px;
+    display: block;
+}
+
+.case-action-dialog .modal-body label.patient-doctor-label,
+.case-action-dialog .modal-body label.case-completion-dialog-label,
+.modal .modal-body label[for*="doctor"],
+.modal .modal-body label[for*="Doctor"],
+.modal .modal-body label[for*="pat"],
+.modal .modal-body label[for*="patient"],
+.modal .modal-body label[for*="Patient"],
+.modal .modal-body label.sigma-modal-field-label,
+.modal .modal-body label.patient-doctor-label,
+.modal .modal-body label.case-completion-dialog-label,
+.sigma-modal--cases-dashboard-case-completion .modal-body label.patient-doctor-label,
+.sigma-modal--cases-dashboard-case-completion .modal-body label.case-completion-dialog-label,
+.sigma-modal--cases-dashboard-case-completion-alt .modal-body label.patient-doctor-label,
+.sigma-modal--cases-dashboard-case-completion-alt .modal-body label.case-completion-dialog-label,
+.sigma-modal--cases-index-actions .modal-body label.patient-doctor-label,
+.sigma-modal--cases-index-actions .modal-body label.case-completion-dialog-label,
+.sigma-modal--dashboard-waiting-actions .modal-body label.patient-doctor-label,
+.sigma-modal--dashboard-waiting-actions .modal-body label.case-completion-dialog-label,
+.sigma-modal--dashboard-active-case-actions .modal-body label.patient-doctor-label,
+.sigma-modal--dashboard-active-case-actions .modal-body label.case-completion-dialog-label,
+.ysh-case-slide-modal .modal-body label.patient-doctor-label,
+.ysh-case-slide-modal .modal-body label.case-completion-dialog-label {
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    color: #6c757d !important;
+    margin-bottom: 2px !important;
+    display: block !important;
+    font-weight: 400 !important;
+    letter-spacing: normal !important;
+}
+
+.case-action-dialog .modal-body label.case-completion-dialog-label b,
+.modal .modal-body label.sigma-modal-field-label b,
+.modal .modal-body label.case-completion-dialog-label b,
+.sigma-modal--cases-dashboard-case-completion .modal-body label.case-completion-dialog-label b,
+.sigma-modal--cases-dashboard-case-completion-alt .modal-body label.case-completion-dialog-label b,
+.sigma-modal--cases-index-actions .modal-body label.case-completion-dialog-label b,
+.sigma-modal--dashboard-waiting-actions .modal-body label.case-completion-dialog-label b,
+.sigma-modal--dashboard-active-case-actions .modal-body label.case-completion-dialog-label b,
+.ysh-case-slide-modal .modal-body label.case-completion-dialog-label b {
+    color: #6c757d !important;
+    font-weight: 400 !important;
+}
+
+.modal .modal-body .sigma-case-jobs-list,
+.modal .modal-body .job-grid {
+    display: grid !important;
+    gap: 6px !important;
+    width: 100% !important;
+    margin-top: 6px !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+.modal .modal-body .sigma-case-job-row,
+.modal .modal-body .job-grid-row {
+    overflow: hidden;
+    /*display: grid !important;*/
+    /*grid-template-columns: minmax(68px, 0.95fr) minmax(88px, 1.2fr) minmax(82px, 1.1fr) minmax(42px, 0.55fr) minmax(70px, 0.9fr);*/
+    /*align-items: start !important;*/
+    /*column-gap: 12px !important;*/
+    /*width: 100% !important;*/
+}
+
+.modal .modal-body .sigma-case-job-info {
+    flex: 1 1 0% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+}
+
+.modal .modal-body .sigma-case-job-primary,
+.modal .modal-body .sigma-case-job-details,
+.modal .modal-body .sigma-case-job-sub {
+    max-width: 100% !important;
+    overflow: hidden!important;
+    text-overflow: inherit;
+    white-space: wrap !important;
+}
+
+.sigma-action-dialog.sigma-modal--cases-dashboard-case-completion .modal-footer .btn,
+.sigma-action-dialog.sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn,
+.sigma-action-dialog.sigma-modal--dashboard-waiting-actions .modal-footer .btn,
+.sigma-action-dialog.sigma-modal--dashboard-active-case-actions .modal-footer .btn,
+.ysh-case-slide-modal .waiting-actions .btn {
+    align-items: center !important;
+    display: inline-flex !important;
+    height: 40px !important;
+    justify-content: center !important;
+    min-height: 40px !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+.modal .modal-body .sigma-case-notes-list {
+    display: flex !important;
+    flex-direction: column !important;
+    margin-bottom: 1.375rem !important;
+}
+
+.modal .modal-body .note-container {
+    align-items: flex-start !important;
+    background: #fff !important;
+    border: 0.5px solid #eaeae4 !important;
+    border-top: none !important;
+    box-shadow: none !important;
+    color: inherit !important;
+    display: flex !important;
+    gap: 10px !important;
+    padding: 9px 14px !important;
+}
+
+.modal .modal-body .sigma-case-notes-list > .note-container:first-child {
+    border-radius: 9px 9px 0 0 !important;
+    border-top: 0.5px solid #eaeae4 !important;
+}
+
+.modal .modal-body .sigma-case-notes-list > .note-container:last-child {
+    border-radius: 0 0 9px 9px !important;
+}
+
+.modal .modal-body .sigma-case-note-left {
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-shrink: 0 !important;
+    gap: 3px !important;
+    padding-top: 2px !important;
+}
+
+.modal .modal-body .sigma-case-note-icon {
+    color: #85B7EB !important;
+    font-size: 12px !important;
+}
+
+.modal .modal-body .sigma-case-note-line {
+    background: #daeaf7 !important;
+    flex: 1 !important;
+    min-height: 14px !important;
+    width: 1px !important;
+}
+
+.modal .modal-body .sigma-case-note-content {
+    min-width: 0 !important;
+}
+
+.modal .modal-body .sigma-case-note-author {
+    color: #378ADD !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+}
+
+.modal .modal-body .sigma-case-note-separator {
+    color: #daeaf7 !important;
+}
+
+.modal .modal-body .sigma-case-note-time {
+    color: #85B7EB !important;
+    font-size: 10px !important;
+}
+
+.modal .modal-body .sigma-case-note-text {
+    color: #888780 !important;
+    display: block !important;
+    font-size: 12px !important;
+    line-height: 1.45 !important;
+}
+
+.modal .modal-body .job-grid-row {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+.modal .modal-body .sigma-case-job-cell,
+.modal .modal-body .job-grid-cell {
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    color: inherit !important;
+    text-align: left !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+    text-overflow: clip !important;
+    line-height: 1.35 !important;
+}
+
+.modal .modal-body .sigma-case-job-extra {
+    display: block !important;
+    margin-top: 2px !important;
+    font-size: 0.92em !important;
+    line-height: 1.3 !important;
 }
 
 /* Sidebar mini mode - hide caret and sub-menu items */

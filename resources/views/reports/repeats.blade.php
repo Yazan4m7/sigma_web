@@ -1,9 +1,18 @@
-@extends('layouts.app', ['pageSlug' => isset($perUnitTrigger) ? 'Repeats Report (Per Unit)' : 'Repeats Report (Per Case)'])
+@extends('layouts.app', ['pageSlug' => $perUnitTrigger ? 'Repeats Report (Per Unit)' : 'Repeats Report (Per Case)'])
 
 @section('content')
     <link href="{{ asset('assets/css/sigma-reports-master.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-master.css')) }}" rel="stylesheet">
     <link href="{{ asset('assets/css/sigma-reports-theme.css') }}?v={{ filemtime(public_path('assets/css/sigma-reports-theme.css')) }}" rel="stylesheet">
     <!-- styles to carry on while printing -->
+    <style>
+        .repeats-report-table-section,
+        .repeats-report-table-scroll {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+        }
+    </style>
 
     <div class="sigma-report-standard">
     <div class="report-filters-card">
@@ -65,6 +74,7 @@
                                 label="Doctors:"
                                 :options="$doctorOptions"
                                 :selected="$selectedClients ?? null"
+                                :allSelected="in_array('all', (array) ($selectedClients ?? []), true)"
                                 title="All Doctors"
                             />
                     @endif
@@ -111,155 +121,145 @@
                         </button>
                     </div>
                     <div class="col-lg-8 col-md-8 col-12 report-action-icons">
-
-                            <i class="fas fa-print me-1"></i>
-
+                            <i class="fas fa-print printBtn" role="button" tabindex="0" aria-label="Print"></i>
                     </div>
                 </div>
                 </div>
         </form>
     </div>
 
+    <div class="container-fluid report-table-section repeats-report-table-section">
+        <div class="repeats-report-table-scroll" style="overflow-x:auto;">
+            <div id="totalsTableHolder"> </div>
+            @foreach ($selectedMonths as $month)
+                @continue(!$loop->first)
+                @php
+                    $labLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
+                    $clientLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
 
+                @endphp
+                <table class="printable sigma-report-table table-plain">
+                    <thead>
+                        <tr>
+                            <th class="header-dark" style="color:white !important; ">Doctor Name</th>
 
-    <div class="container-fluid report-table-section">
-        <div class="row">
-            <div class="col-12">
-                <div>
-                    <div style="overflow-x:auto;">
-                        <div id="totalsTableHolder"> </div>
-                        @foreach ($selectedMonths as $month)
-                            @continue(!$loop->first)
-                            @php
-                                $labLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
-                                $clientLevelTotal[$month] = array_fill_keys([0, 1, 2, 3, 4], 0);
+                            @if ($allFailureTypesSelected)
+                                <th class="text-center header-light">Reject</th>
+                                <th class="text-center header-light">Repeat</th>
+                                <th class="text-center header-light">Modification</th>
+                                <th class="text-center header-light">Redo</th>
+                                <th class="text-center header-light" style="= border-radius: 2px 14px 3px 3px;">Successful</th>
+                                @if ($countOrPercentage)
+                                    <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;"  >Total</th>
+                                @endif
+                            @else
+                                @if (in_array(0, $selectedFailureTypes))
+                                    <th class="text-center header-light">Reject</th>
+                                @endif
+                                @if (in_array(1, $selectedFailureTypes))
+                                    <th class="text-center header-light">Repeat</th>
+                                @endif
+                                @if (in_array(2, $selectedFailureTypes))
+                                    <th class="text-center header-light">Modification</th>
+                                @endif
+                                @if (in_array(3, $selectedFailureTypes))
+                                    <th class="text-center header-light">Redo</th>
+                                @endif
+                                @if (in_array(4, $selectedFailureTypes))
+                                    <th class="text-center header-dark">Successful</th>
+                                @endif
+                                @if ($countOrPercentage)
+                                    <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Total</th>
+                                @endif
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            if (!in_array('all', $selectedClients)) {
+                                $filteredClients = $clients->filter(function ($value, $key) use (
+                                    $selectedClients,
+                                ) {
+                                    return in_array($key, $selectedClients);
+                                });
+                            } else {
+                                $filteredClients = $clients;
+                            }
 
-                            @endphp
-                            <table class="printable sigma-report-table table-plain">
-                                <thead>
-                                    <tr>
-                                        <th class="header-dark" style="color:white !important; ">Doctor Name</th>
+                        @endphp
+                        <!-- Client ROWS -->
 
-                                        @if ($allFailureTypesSelected)
-                                            <th class="text-center header-light">Reject</th>
-                                            <th class="text-center header-light">Repeat</th>
-                                            <th class="text-center header-light">Modification</th>
-                                            <th class="text-center header-light">Redo</th>
-                                            <th class="text-center header-light" style="= border-radius: 2px 14px 3px 3px;">Successful</th>
-                                            @if ($countOrPercentage)
-                                                <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;"  >Total</th>
-                                            @endif
-                                        @else
-                                            @if (in_array(0, $selectedFailureTypes))
-                                                <th class="text-center header-light">Reject</th>
-                                            @endif
-                                            @if (in_array(1, $selectedFailureTypes))
-                                                <th class="text-center header-light">Repeat</th>
-                                            @endif
-                                            @if (in_array(2, $selectedFailureTypes))
-                                                <th class="text-center header-light">Modification</th>
-                                            @endif
-                                            @if (in_array(3, $selectedFailureTypes))
-                                                <th class="text-center header-light">Redo</th>
-                                            @endif
-                                            @if (in_array(4, $selectedFailureTypes))
-                                                <th class="text-center header-dark">Successful</th>
-                                            @endif
-                                            @if ($countOrPercentage)
-                                                <th class="text-center header-dark" style="color:white !important;    border-radius: 2px 14px 3px 3px;">Total</th>
-                                            @endif
-                                        @endif
-                                    </tr>
-                                </thead>
-                                <tbody>
+                        @foreach ($filteredClients as $client)
+                            <!-- if all is selected, dont check if client is selected or not, otherwise check each one by id -->
+                            {{-- @if (!in_array('all', $selectedClients)) --}}
+                            {{-- @if (isset($selectedClients) && !in_array($client->id, $selectedClients)) --}}
+                            {{-- @continue; --}}
+                            {{-- @endif --}}
+                            {{-- @endif --}}
+
+                            <tr>
+                                <td class="primary-text">{{ $client->name }}</td>
+                                @php
+                                    $docTotalUnits = 0;
+                                    $currentTotal = 0;
+                                @endphp
+
+                                @foreach ($selectedFailureTypes as $failureTypeId)
                                     @php
-                                        if (!in_array('all', $selectedClients)) {
-                                            $filteredClients = $clients->filter(function ($value, $key) use (
-                                                $selectedClients,
-                                            ) {
-                                                return in_array($key, $selectedClients);
-                                            });
-                                        } else {
-                                            $filteredClients = $clients;
+                                        // Count mode - show actual numbers
+                                        if ($countOrPercentage) {
+                                            $currentTotal = $perUnitTrigger
+                                                ? $client->getFailedUnitsCount($month, $failureTypeId)
+                                                : $client->getFailedCasesCount($month, $failureTypeId);
+                                            $clientLevelTotal[$month][$failureTypeId] += $currentTotal;
+                                            $labLevelTotal[$month][$failureTypeId] += $currentTotal;
+                                            $docTotalUnits += $currentTotal;
                                         }
-
+                                        // Percentage mode - show percentages
+                                        else {
+                                            $currentTotal = $perUnitTrigger
+                                                ? $client->getFailedUnitsPercentage(
+                                                        $month,
+                                                        $failureTypeId,
+                                                    ) . '%'
+                                                : $client->getFailedCasesPercentage(
+                                                        $month,
+                                                        $failureTypeId,
+                                                    ) . '%';
+                                        }
                                     @endphp
-                                    <!-- Client ROWS -->
 
-                                    @foreach ($filteredClients as $client)
-                                        <!-- if all is selected, dont check if client is selected or not, otherwise check each one by id -->
-                                        {{-- @if (!in_array('all', $selectedClients)) --}}
-                                        {{-- @if (isset($selectedClients) && !in_array($client->id, $selectedClients)) --}}
-                                        {{-- @continue; --}}
-                                        {{-- @endif --}}
-                                        {{-- @endif --}}
-
-                                        <tr>
-                                            <td class="primary-text">{{ $client->name }}</td>
-                                            @php
-                                                $docTotalUnits = 0;
-                                                $currentTotal = 0;
-                                            @endphp
-
-                                            @foreach ($selectedFailureTypes as $failureTypeId => $failureDescription)
-                                                @php
-                                                    // Count mode - show actual numbers
-                                                    if ($countOrPercentage) {
-                                                        $currentTotal = $perUnitTrigger
-                                                            ? $client->getFailedUnitsCount($month, $failureTypeId)
-                                                            : $client->getFailedCasesCount($month, $failureTypeId);
-                                                        $clientLevelTotal[$month][$failureTypeId] += $currentTotal;
-                                                        $labLevelTotal[$month][$failureTypeId] += $currentTotal;
-                                                        $docTotalUnits += $currentTotal;
-                                                    }
-                                                    // Percentage mode - show percentages
-                                                    else {
-                                                        $currentTotal = $perUnitTrigger
-                                                            ? $client->getFailedUnitsPercentage(
-                                                                    $month,
-                                                                    $failureTypeId,
-                                                                ) . '%'
-                                                            : $client->getFailedCasesPercentage(
-                                                                    $month,
-                                                                    $failureTypeId,
-                                                                ) . '%';
-                                                    }
-                                                @endphp
-
-                                                <td class="text-center">{{ $currentTotal }}</td>
-                                            @endforeach
-                                            @if ($countOrPercentage)
-                                                <td class="text-center"><strong>{{ $docTotalUnits }}</strong></td>
-                                            @endif
-                                        </tr>
-                                    @endforeach
-
-                                    @if ($countOrPercentage)
-                                        <!-- Totals for whole lab Row -->
-                                        <tr class="totals-row">
-                                            <td><strong>Totals</strong></td>
-
-                                            <!-- if Not all types selected, then check if type exists in selected types array if so print it -->
-                                            @foreach ($labLevelTotal[$month] as $key => $total)
-                                                @if (!$allFailureTypesSelected)
-                                                    @if (in_array($key, $selectedFailureTypes))
-                                                        <td class="text-center"><strong>{{ $total }}</strong></td>
-                                                    @endif
-                                                @else
-                                                    <td class="text-center"><strong>{{ $total }}</strong></td>
-                                                @endif
-                                            @endforeach
-                                            <td class="text-center"><strong>{{ array_sum($labLevelTotal[$month]) }}</strong></td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-
-                            </table>
+                                    <td class="text-center">{{ $currentTotal }}</td>
+                                @endforeach
+                                @if ($countOrPercentage)
+                                    <td class="text-center"><strong>{{ $docTotalUnits }}</strong></td>
+                                @endif
+                            </tr>
                         @endforeach
-                        <div id="totalsTableTempHolder"></div>
-                    </div>
-                </div>
-            </div>
+
+                        @if ($countOrPercentage)
+                            <!-- Totals for whole lab Row -->
+                            <tr class="totals-row">
+                                <td><strong>Totals</strong></td>
+
+                                <!-- if Not all types selected, then check if type exists in selected types array if so print it -->
+                                @foreach ($labLevelTotal[$month] as $key => $total)
+                                    @if (!$allFailureTypesSelected)
+                                        @if (in_array($key, $selectedFailureTypes))
+                                            <td class="text-center"><strong>{{ $total }}</strong></td>
+                                        @endif
+                                    @else
+                                        <td class="text-center"><strong>{{ $total }}</strong></td>
+                                    @endif
+                                @endforeach
+                                <td class="text-center"><strong>{{ array_sum($labLevelTotal[$month]) }}</strong></td>
+                            </tr>
+                        @endif
+                    </tbody>
+
+                </table>
+            @endforeach
+            <div id="totalsTableTempHolder"></div>
         </div>
     </div>
 
@@ -310,7 +310,13 @@
                 const form = $('.kt-form')[0];
                 if (form) {
                     console.log('Submitting form with perToggle:', isUnits ? '1' : '0');
-                    form.submit();
+                    window.requestAnimationFrame(function() {
+                        if (typeof form.requestSubmit === 'function') {
+                            form.requestSubmit();
+                        } else {
+                            form.submit();
+                        }
+                    });
                 }
             });
 
@@ -352,7 +358,13 @@
                 if (submitForm && isPageLoaded) {
                     const form = document.querySelector('.kt-form');
                     if (form) {
-                        form.submit();
+                        window.requestAnimationFrame(function() {
+                            if (typeof form.requestSubmit === 'function') {
+                                form.requestSubmit();
+                            } else {
+                                form.submit();
+                            }
+                        });
                     }
                 }
             }
@@ -383,19 +395,35 @@
         function printData() {
             var tables = $('.printable');
 
-            var styling = document.getElementById("style");
-            newWin = window.open("");
-            newWin.document.write(styling.innerHTML);
+            if (tables.length === 0) {
+                return;
+            }
+            var headContent = Array.from(document.querySelectorAll('link[rel="stylesheet"], style'))
+                .map(function(node) { return node.outerHTML; })
+                .join('');
+            newWin = window.open("", "_blank", "width=1200,height=800");
+            if (!newWin) {
+                return;
+            }
+            newWin.document.write('<!DOCTYPE html><html><head><title>Repeats Report</title>');
+            newWin.document.write(headContent);
+            newWin.document.write('</head><body>');
             newWin.document.write(
-                '<h3 style="float:left">Cases Repeat Report <span style="color:#2b2b2b"> - by Repeat, per ' +
-                '{{ $perUnitTrigger ? 'Unit' : 'Case' }}' + '</span></h3> ' +
-                ' <h4 style="float:right"> Date Printed :{!! date('d') !!} - {!! date('M') !!} - {!! date('Y') !!} </h4>'
+                '<div style="margin-bottom: 30px;">' +
+                '<h3 style="float:left">Cases Repeat Report <span style="color:#2b2b2b"> - by Repeat, per {{ $perUnitTrigger ? 'Unit' : 'Case' }}</span></h3>' +
+                '<h4 style="float:right"> Date Printed :{!! date('d') !!} - {!! date('M') !!} - {!! date('Y') !!} </h4>' +
+                '<div style="clear: both;"></div>' +
+                '</div>'
                 );
             $.each(tables, function(key, value) {
                 newWin.document.write(value.outerHTML);
             });
-            newWin.print();
-            newWin.close();
+            newWin.document.write('</body></html>');
+            newWin.document.close();
+            setTimeout(function() {
+                newWin.print();
+                newWin.close();
+            }, 250);
         }
         $('.printBtn').on('click', function() {
             printData();

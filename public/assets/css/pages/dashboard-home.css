@@ -1,0 +1,274 @@
+.btn-group-toggle > .btn.main-dashboard-toggle-btn,
+.btn-group-toggle > .btn.barsBtns,
+.btn-group-toggle > .btn.performanceBtns,
+.btn-group-toggle > label.btn.btn-primary.btn-simple.main-dashboard-toggle-btn {
+    background: #3f8f91 !important;
+    background-color: #3f8f91 !important;
+    border: 1px solid #3f8f91 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+}
+
+.btn-group-toggle > .btn.main-dashboard-toggle-btn.active,
+.btn-group-toggle > .btn.barsBtns.active,
+.btn-group-toggle > .btn.performanceBtns.active,
+.btn-group-toggle > label.btn.btn-primary.btn-simple.main-dashboard-toggle-btn.active {
+    background: #1f6365 !important;
+    background-color: #1f6365 !important;
+    border-color: #1f6365 !important;
+    color: #ffffff !important;
+}
+
+.btn-group-toggle > .btn.main-dashboard-toggle-btn:hover,
+.btn-group-toggle > .btn.barsBtns:hover,
+.btn-group-toggle > .btn.performanceBtns:hover,
+.btn-group-toggle > label.btn.btn-primary.btn-simple.main-dashboard-toggle-btn:hover,
+.btn-group-toggle > .btn.main-dashboard-toggle-btn:focus,
+.btn-group-toggle > .btn.barsBtns:focus,
+.btn-group-toggle > .btn.performanceBtns:focus,
+.btn-group-toggle > label.btn.btn-primary.btn-simple.main-dashboard-toggle-btn:focus {
+    background: #2f7d80 !important;
+    background-color: #2f7d80 !important;
+    border-color: #2f7d80 !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.card.card-chart {
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.dashboard-summary-panel {
+    height: auto;
+}
+
+.dashboard-summary-panel .card-body {
+    height: auto;
+    max-height: none;
+    overflow-x: hidden;
+    overflow-y: visible;
+}
+
+.table-responsive.summary-table-responsive {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.summary-table-responsive .dataTables_wrapper,
+.summary-table-responsive .dataTables_scroll,
+.summary-table-responsive .dataTables_scrollHead,
+.summary-table-responsive .dataTables_scrollBody {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    max-height: none !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.summary-table-responsive .dataTables_scroll,
+.summary-table-responsive .dataTables_scrollHead,
+.summary-table-responsive .dataTables_scrollBody {
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+}
+
+.summary-table-responsive .dataTables_scrollBody {
+    overflow-y: visible !important;
+    max-height: none !important;
+    height: auto !important;
+}
+
+.main-dashboard-summary-table th,
+.main-dashboard-summary-table td {
+    vertical-align: middle;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.main-dashboard-summary-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    table-layout: fixed;
+    margin-bottom: 0 !important;
+}
+
+.main-dashboard-summary-table th {
+    white-space: nowrap !important;
+}
+
+.summary-table-heading {
+    display: block;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+    font-size: 13px;
+
+    letter-spacing: 0.02em;
+}
+
+.main-dashboard-summary-table .main-dashboard-summary-status-cell {
+    padding-right: 10px !important;
+}
+
+.main-dashboard-summary-table .main-dashboard-summary-status-badge,
+.main-dashboard-summary-table .sigma-status-width {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 8.5em;
+    max-width: 100%;
+    min-width: 0;
+    margin: 0 auto;
+    text-align: center;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+    line-height: 1.2;
+}
+
+.main-dashboard-summary-table .sigma-case-status-badge .sigma-badge-label {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.payment-info-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.payment-info-row {
+    display: grid;
+    grid-template-columns: minmax(120px, 180px) 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(64, 131, 133, 0.12);
+}
+
+.payment-info-row:last-child {
+    border-bottom: 0;
+}
+
+.payment-info-label {
+    color: #5c6c79;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.payment-info-value {
+    color: #1e2b37;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+.payment-info-value-input {
+    min-width: 0;
+}
+
+@media screen and (max-width: 991px) {
+    .main-panel > .content {
+        margin-top: 60px;
+        height: fit-content;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .payment-info-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .summary-table-heading {
+        font-size: 13px;
+    }
+
+    .main-panel > .content {
+        padding: 60px 0 12px !important;
+        margin-top: 0 !important;
+    }
+
+    .main-panel > .content > .row {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .main-panel > .content > .row > [class*="col-"],
+    .main-panel > .content .noLeftPadding {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    .card.card-chart {
+        margin-bottom: 10px !important;
+        border-radius: 14px !important;
+    }
+
+    .card-chart .card-header {
+        padding: 12px 12px 8px !important;
+    }
+
+    .card-chart .card-body {
+        padding: 4px 6px 8px !important;
+    }
+
+    .card-chart .chart-area {
+        height: 180px !important;
+    }
+
+    #chartContainer {
+        min-height: 180px !important;
+    }
+
+    .dashboard-inwork-card-body #chartContainer {
+        min-height: 210px !important;
+    }
+
+    .dashboard-summary-panel {
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    .dashboard-summary-panel .card-body,
+    .summary-table-responsive,
+    .main-dashboard-summary-table {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+
+    .main-dashboard-summary-table th {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+    }
+
+    .summary-table-heading {
+        font-size: 13px;
+        line-height: 1.1;
+    }
+}

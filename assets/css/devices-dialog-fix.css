@@ -1,0 +1,310 @@
+/* DEVICES DIALOG HORIZONTAL LAYOUT FIX */
+/* Ensures devices are displayed in horizontal rows with maximum space utilization */
+
+/* Override for waiting dialog machine grids - prioritize horizontal layout */
+.waiting-dialog .sigma-machines-grid,
+.sigma-workflow-modal .sigma-machines-grid {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    /* Keep devices in single row */
+    justify-content: flex-start !important;
+    /* Align to left for better space usage */
+    align-items: center !important;
+    gap: 15px !important;
+    padding: 20px 15px !important;
+    overflow-x: auto !important;
+    /* Allow horizontal scrolling if needed */
+    overflow-y: hidden !important;
+    min-height: auto !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+
+/* Ensure dialog body utilizes full width */
+.waiting-dialog .sigma-workflow-body,
+.sigma-workflow-modal .sigma-workflow-body {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important;
+}
+
+/* Optimize machine card sizing for horizontal layout */
+.waiting-dialog .sigma-machine-card,
+.sigma-workflow-modal .sigma-machine-card {
+    flex: 0 0 auto !important;
+    /* Don't grow or shrink, maintain size */
+    width: 180px !important;
+    /* Fixed width for consistent spacing */
+    min-width: 180px !important;
+    max-width: 180px !important;
+    height: auto !important;
+    min-height: 120px !important;
+    padding: 12px !important;
+    border: 2px solid #e0e0e0 !important;
+    border-radius: 12px !important;
+    background: white !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+/* Hover effects for machine cards */
+.waiting-dialog .sigma-machine-card:hover,
+.sigma-workflow-modal .sigma-machine-card:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
+    border-color: #007bff !important;
+}
+
+/* Selected state styling */
+.waiting-dialog .sigma-machine-card.selected,
+.sigma-workflow-modal .sigma-machine-card.selected {
+    border-color: #28a745 !important;
+    background-color: rgba(40, 167, 69, 0.08) !important;
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2) !important;
+}
+
+/* Machine image container optimization */
+.waiting-dialog .sigma-machine-image-container,
+.sigma-workflow-modal .sigma-machine-image-container {
+    width: 100% !important;
+    height: 70px !important;
+    /* Fixed height for consistency */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-bottom: 8px !important;
+    overflow: hidden !important;
+}
+
+/* Machine image sizing */
+.waiting-dialog .sigma-machine-image,
+.sigma-workflow-modal .sigma-machine-image {
+    max-width: 100% !important;
+    max-height: 70px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    transition: transform 0.3s ease !important;
+}
+
+/* Machine image hover effect */
+.waiting-dialog .sigma-machine-card:hover .sigma-machine-image,
+.sigma-workflow-modal .sigma-machine-card:hover .sigma-machine-image {
+    transform: scale(1.1) !important;
+}
+
+/* Machine name styling */
+.waiting-dialog .sigma-machine-name,
+.sigma-workflow-modal .sigma-machine-name {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: #333 !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    width: 100% !important;
+}
+
+/* Custom scrollbar for horizontal scroll */
+.waiting-dialog .sigma-machines-grid::-webkit-scrollbar {
+    height: 8px !important;
+    width: 8px !important;
+}
+
+.waiting-dialog .sigma-machines-grid::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 4px !important;
+}
+
+.waiting-dialog .sigma-machines-grid::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 4px !important;
+    transition: background 0.3s ease !important;
+}
+
+.waiting-dialog .sigma-machines-grid::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1 !important;
+}
+
+/* Ensure dialog width utilizes available space */
+.sigma-workflow-modal {}
+
+.sigma-workflow-dialog {
+    max-width: none !important;
+    width: auto !important;
+    min-width: 600px !important;
+    /* Minimum width for proper machine display */
+}
+
+/* Responsive behavior - only wrap on very small screens */
+@media (max-width: 768px) {
+
+    .waiting-dialog .sigma-machines-grid,
+    .sigma-workflow-modal .sigma-machines-grid {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        overflow-x: visible !important;
+    }
+
+    .waiting-dialog .sigma-machine-card,
+    .sigma-workflow-modal .sigma-machine-card {
+        width: 140px !important;
+        min-width: 140px !important;
+        max-width: 140px !important;
+        min-height: 100px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image-container,
+    .sigma-workflow-modal .sigma-machine-image-container {
+        height: 60px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image,
+    .sigma-workflow-modal .sigma-machine-image {
+        max-height: 60px !important;
+    }
+
+    .waiting-dialog .sigma-machine-name,
+    .sigma-workflow-modal .sigma-machine-name {
+        font-size: 12px !important;
+    }
+
+    .sigma-workflow-dialog {
+        min-width: 350px !important;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .waiting-dialog .sigma-machines-grid,
+    .sigma-workflow-modal .sigma-machines-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        /* 2 columns on very small screens */
+        gap: 10px !important;
+        flex-wrap: nowrap !important;
+        /* Reset flex-wrap since we're using grid */
+    }
+
+    .waiting-dialog .sigma-machine-card,
+    .sigma-workflow-modal .sigma-machine-card {
+        width: 100% !important;
+        min-width: auto !important;
+        max-width: none !important;
+    }
+
+    .sigma-workflow-dialog {
+        min-width: 300px !important;
+    }
+}
+
+/* Desktop optimization for maximum horizontal space usage */
+@media (min-width: 1200px) {
+
+    .waiting-dialog .sigma-machines-grid,
+    .sigma-workflow-modal .sigma-machines-grid {
+        gap: 20px !important;
+        padding: 25px 20px !important;
+    }
+
+    .waiting-dialog .sigma-machine-card,
+    .sigma-workflow-modal .sigma-machine-card {
+        width: 200px !important;
+        min-width: 200px !important;
+        max-width: 200px !important;
+        min-height: 140px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image-container,
+    .sigma-workflow-modal .sigma-machine-image-container {
+        height: 80px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image,
+    .sigma-workflow-modal .sigma-machine-image {
+        max-height: 80px !important;
+    }
+
+    .waiting-dialog .sigma-machine-name,
+    .sigma-workflow-modal .sigma-machine-name {
+        font-size: 14px !important;
+    }
+}
+
+/* Large screens - utilize even more space */
+@media (min-width: 1600px) {
+
+    .waiting-dialog .sigma-machines-grid,
+    .sigma-workflow-modal .sigma-machines-grid {
+        gap: 25px !important;
+        padding: 30px 25px !important;
+    }
+
+    .waiting-dialog .sigma-machine-card,
+    .sigma-workflow-modal .sigma-machine-card {
+        width: 220px !important;
+        min-width: 220px !important;
+        max-width: 220px !important;
+        min-height: 160px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image-container,
+    .sigma-workflow-modal .sigma-machine-image-container {
+        height: 90px !important;
+    }
+
+    .waiting-dialog .sigma-machine-image,
+    .sigma-workflow-modal .sigma-machine-image {
+        max-height: 90px !important;
+    }
+
+    .waiting-dialog .sigma-machine-name,
+    .sigma-workflow-modal .sigma-machine-name {
+        font-size: 15px !important;
+    }
+}
+
+/* Visual improvements for professional appearance */
+.waiting-dialog .sigma-machine-card {
+    position: relative !important;
+}
+
+.waiting-dialog .sigma-machine-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(45deg, transparent, rgba(0, 123, 255, 0.1), transparent) !important;
+    border-radius: 14px !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    z-index: -1 !important;
+}
+
+.waiting-dialog .sigma-machine-card:hover::before {
+    opacity: 1 !important;
+}
+
+/* Smooth animations for better UX */
+.waiting-dialog .sigma-machines-grid {
+    scroll-behavior: smooth !important;
+}
+
+/* Focus accessibility improvements */
+.waiting-dialog .sigma-machine-card:focus,
+.sigma-workflow-modal .sigma-machine-card:focus {
+    outline: 3px solid rgba(0, 123, 255, 0.5) !important;
+    outline-offset: 2px !important;
+}

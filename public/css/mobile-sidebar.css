@@ -1,0 +1,20 @@
+/* Mobile Sidebar Styles */
+.off-canvas-sidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+    width: 260px;
+    height: 100%;
+    background-color: #1e1e2f;
+    z-index: 1040;
+    transition: left 0.3s ease-in-out;
+}
+
+.off-canvas-sidebar.open {
+    left: 0;
+}
+
+.off-canvas-sidebar .sidebar-wrapper {
+    height: 100%;
+    overflow-y: auto;
+}

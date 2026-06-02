@@ -1,36 +1,35 @@
 @extends('layouts.app' ,[ 'pageSlug' => 'Job Types' ])
 @section('content')
+    <div class="sigma-config-page sigma-list-page">
+        <div class="sigma-config-toolbar sigma-config-card">
+            <div class="sigma-config-toolbar-row">
+                <div class="sigma-config-toolbar-spacer"></div>
+                <div class="sigma-config-toolbar-actions">
+                    <a href="{{route('new-job-type-view')}}" class="btn btn-secondary sigma-config-add-btn"><i class="fa fa-plus-circle"></i> Add Job Type</a>
+                </div>
+            </div>
+        </div>
 
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class=" m-b-30">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6"></div>
-                        <div class="col-md-6" style="text-align: right">  <a href="{{route('new-job-type-view')}}" ><button type="button"  class="btn btn-secondary"><i class="fa fa-plus-circle"></i> Add Job Type</button></a>   </div>
-                    </div>
-
-                    <p class="text-muted"></p>
-                    <div class="">
-                        <table class="table-striped table-bordered compact sunriseTable "
+        <div class="sigma-config-table-shell sigma-table-free">
+            <table class="table-striped table-bordered compact sunriseTable sigma-list-table sigma-config-table"
                                role="grid" aria-describedby="datatable_info"
                                style="width:100%">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Teeth or jaw</th>
-                                <th>Materials #</th>
+                                <th class="sigma-cell-center">ID</th>
+                                <th class="sigma-cell-left">Name</th>
+                                <th class="sigma-cell-center">Teeth or Jaw</th>
+                                <th class="sigma-cell-center">Materials #</th>
 
                                </tr>
                             </thead>
                             <tbody>
                             @foreach($jobTypes as $jobType)
                             <tr id="{{$jobType->id}}" class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$jobType->id}}">
-                                <td><span class="tabledit-span tabledit-identifier">{{$jobType->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$jobType->name}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{$jobType->teeth_or_jaw == 0 ? "TEETH" : "JAW"}}</span></td>
-                                <td class="tabledit-view-mode"><span class="tabledit-span">{{count($jobType->materials)}}</span>
+                                <td class="sigma-cell-center"><span class="tabledit-span tabledit-identifier">{{$jobType->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
+                                <td class="tabledit-view-mode sigma-cell-left"><span class="tabledit-span">{{$jobType->name}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$jobType->teeth_or_jaw == 0 ? "TEETH" : "JAW"}}</span></td>
+                                <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{count($jobType->materials)}}</span>
                                 </td>
                             </tr>
                             <div class="modal sigma-action-dialog sigma-modal--job-types-actions" tabindex="-1" role="dialog" id="actionsDialog{{$jobType->id}}">
@@ -85,9 +84,6 @@
 
                             </tbody>
                         </table>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 @endsection

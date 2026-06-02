@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Panel Test</title>
+    <style>
+        .YSH-slide-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .YSH-slide-panel {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            transition: right 0.3s ease-in-out;
+        }
+
+        .YSH-slide-overlay.YSH-active {
+            display: block;
+        }
+
+        .YSH-slide-overlay.YSH-active .YSH-slide-panel {
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="YSH_openSlidePanel(1)">Open Panel</button>
+
+    <div id="YSH-slide-overlay-1" class="YSH-slide-overlay" onclick="YSH_closeSlidePanel(1)">
+        <div id="YSH-slide-panel-1" class="YSH-slide-panel">
+            <h2>Slide Panel Content</h2>
+            <button onclick="YSH_closeSlidePanel(1)">Close Panel</button>
+        </div>
+    </div>
+
+    <script>
+        function YSH_openSlidePanel(caseId) {
+            const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+            if (overlay) {
+                overlay.classList.add('YSH-active');
+            }
+        }
+
+        function YSH_closeSlidePanel(caseId) {
+            const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+            if (overlay) {
+                overlay.classList.remove('YSH-active');
+            }
+        }
+    </script>
+
+</body>
+</html>

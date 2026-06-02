@@ -11159,6 +11159,7 @@ a.text-darker:focus {
 
 .alert.alert-success {
     background-color: #00bf9a;
+    margin:10px;
 }
 
 .alert i.fa,

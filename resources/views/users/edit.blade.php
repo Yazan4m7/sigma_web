@@ -79,7 +79,7 @@
         .form-actions {
             display: flex;
             gap: 12px;
-            justify-content: flex-end;
+            justify-content: flex-start;
             margin-top: 30px;
             padding-top: 20px;
             border-top: 1px solid #e3e8ee;
@@ -246,8 +246,8 @@
                     </div>
 
                     <div class="form-actions">
-                        <button type="reset" class="btn btn-secondary">Reset</button>
                         <button type="submit" class="btn btn-primary">Update User</button>
+                        <a href="{{ route('users-index') }}" class="btn btn-secondary">Cancel</a>
                     </div>
                 </form>
             </div>

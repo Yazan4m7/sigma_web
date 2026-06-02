@@ -22,6 +22,28 @@
   <style>
     .wrapper { height:auto !important;}
     .full-page>.content {padding-bottom: 50px !important;padding-top: 50px !important;}
+    .login-page .fue {
+      position: relative;
+      min-height: 100vh;
+    }
+    .login-page .fue > .footer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 12px;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      z-index: 3;
+    }
+    .login-page .fue > .footer .container-fluid {
+      padding: 0 16px;
+    }
+    .login-page .fue > .footer .copyright {
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }
     .section-image {
       background: linear-gradient(0deg,rgba(44,44,44,.2),rgba(24,206,15,.4));
     }

@@ -3,25 +3,21 @@
 @section('content')
 <style>
     .config-card {
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        border: 1px solid #e3e6f0;
         margin-bottom: 24px;
-        transition: all 0.3s ease;
+        transition: box-shadow 0.2s ease;
     }
     
     .config-card:hover {
-        box-shadow: 0 4px 15px rgba(0,0,0,0.12);
-        transform: translateY(-2px);
+        transform: none;
     }
     
     .config-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        padding: 20px 30px;
-        border-radius: 12px 12px 0 0;
+        background: transparent;
+        color: #243746;
+        padding: 0 0 16px;
+        border-radius: 0;
         margin-bottom: 0;
+        border-bottom: 1px solid rgba(188, 206, 216, 0.4);
     }
     
     .config-header h4 {
@@ -39,7 +35,7 @@
     }
     
     .config-body {
-        padding: 30px;
+        padding: 20px 0 0;
     }
     
     .config-section {
@@ -161,50 +157,60 @@
     
     /* Action Buttons */
     .btn-primary-custom {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
+        background: linear-gradient(135deg, #408385 0%, #67aeb0 100%);
+        border: 1px solid #408385;
         padding: 12px 30px;
         border-radius: 8px;
         font-weight: 600;
         color: white;
+        box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24);
         transition: all 0.3s ease;
     }
     
-    .btn-primary-custom:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    .btn-primary-custom:hover,
+    .btn-primary-custom:focus {
+        background: linear-gradient(135deg, #336f71 0%, #5ca0a2 100%);
+        border-color: #336f71;
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(51, 111, 113, 0.24);
+        color: white;
+    }
+
+    .btn-primary-custom:active {
+        background: linear-gradient(135deg, #285f61 0%, #4c8587 100%);
+        border-color: #285f61;
+        transform: translateY(0);
+        box-shadow: 0 4px 12px rgba(40, 95, 97, 0.2);
         color: white;
     }
     
     .btn-secondary-custom {
-        background: #e2e8f0;
-        border: none;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(188, 206, 216, 0.55);
         padding: 12px 30px;
         border-radius: 8px;
         font-weight: 600;
-        color: #4a5568;
+        color: #2d5f6d;
         transition: all 0.3s ease;
     }
     
     .btn-secondary-custom:hover {
-        background: #cbd5e0;
-        transform: translateY(-2px);
+        background: #2d5f6d;
+        border-color: #2d5f6d;
+        color: #ffffff;
+        transform: translateY(-1px);
     }
     
     /* Page Header */
     .page-header {
-        background: white;
         padding: 30px;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         margin-bottom: 30px;
-        border: 1px solid #e3e6f0;
     }
     
     .page-title {
         margin: 0;
         color: #2d3748;
-        font-weight: 700;
+        font-weight: 600;
         font-size: 28px;
         display: flex;
         align-items: center;
@@ -245,12 +251,12 @@
     }
 </style>
 
-<div class="content">
+<div class="content sigma-config-page sigma-admin-configuration-page">
     <div class="container-fluid">
         <!-- Page Header -->
-        <div class="page-header">
+        <div class="page-header sigma-config-card">
             <h1 class="page-title">
-                <i class="fas fa-cogs" style="color: #667eea;"></i>
+                <i class="fas fa-cogs" style="color: #408385;"></i>
                 System Configuration
             </h1>
             <p class="page-subtitle">Manage system settings, features, and preferences</p>
@@ -263,14 +269,21 @@
             </div>
         @endif
 
+        @if (session('deploy_status'))
+            <div class="alert alert-info" style="border-radius: 8px; margin-bottom: 20px;">
+                <i class="fas fa-code-branch mr-2"></i>
+                {{ session('deploy_status') }}
+            </div>
+        @endif
+
         <form action="{{ route('configuration.update') }}" method="POST">
             @csrf
             
             <div class="row">
                 <!-- Workflow Settings -->
                 <div class="col-lg-6">
-                    <div class="config-card">
-                        <div class="config-header" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                    <div class="config-card sigma-config-card">
+                        <div class="config-header">
                             <h4>
                                 <i class="fas fa-cogs icon"></i>
                                 Workflow Settings
@@ -362,8 +375,8 @@
 
                 <!-- Quality Control -->
                 <div class="col-lg-6">
-                    <div class="config-card">
-                        <div class="config-header" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
+                    <div class="config-card sigma-config-card">
+                        <div class="config-header">
                             <h4>
                                 <i class="fas fa-check-double icon"></i>
                                 Quality Control
@@ -447,6 +460,48 @@
                 </a>
             </div>
         </form>
+
+        <div class="config-card sigma-config-card">
+            <div class="config-header">
+                <h4>
+                    <i class="fas fa-code-branch icon"></i>
+                    Deployment Controls
+                </h4>
+            </div>
+            <div class="config-body">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h5 class="setting-title">Deploy Latest Version</h5>
+                        <p class="setting-description">Pull the latest code from `main`, then refresh config and compiled views.</p>
+                    </div>
+                    <div class="setting-control">
+                        <form action="{{ route('admin.deploy') }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-primary-custom">
+                                <i class="fas fa-cloud-download-alt mr-2"></i>
+                                Deploy
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <h5 class="setting-title">Rollback Previous Version</h5>
+                        <p class="setting-description">Restore the previous Git revision in `/var/www/sigma`, then refresh config and compiled views.</p>
+                    </div>
+                    <div class="setting-control">
+                        <form action="{{ route('admin.rollback') }}" method="POST" style="display:inline;" onsubmit="return confirm('Rollback to the previous deployed version?');">
+                            @csrf
+                            <button type="submit" class="btn btn-secondary-custom">
+                                <i class="fas fa-history mr-2"></i>
+                                Rollback
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\PageBenchmark;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Closure;
 class Authenticate extends Middleware
@@ -15,13 +16,33 @@ class Authenticate extends Middleware
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        //check here if the user is authenticated
-        if ( ! $this->auth->user() || !Auth()->check() )
-        {
+        $isBenchmarking = PageBenchmark::bootIfActive($request);
+
+        if ($isBenchmarking) {
+            PageBenchmark::mark($request, 'route-auth.enter', [
+                'guards' => $guards,
+            ]);
+        }
+
+        $user = $this->auth->user();
+
+        if (!$user) {
             return redirect("/login");
         }
 
-        return $next($request);
+        if ($isBenchmarking) {
+            PageBenchmark::mark($request, 'route-auth.user-resolved', [
+                'user_id' => $user->id,
+            ]);
+        }
+
+        $response = $next($request);
+
+        if ($isBenchmarking) {
+            PageBenchmark::mark($request, 'route-auth.exit');
+        }
+
+        return $response;
     }
 
 

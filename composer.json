@@ -18,7 +18,6 @@
         "laravel/framework": "^8.54",
         "laravel/octane": "^1.5",
         "laravel/sanctum": "^2.11",
-        "laravel/telescope": "^5.12",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
         "sentry/sentry-laravel": "^4.20",
@@ -68,7 +67,7 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": ["barryvdh/laravel-ide-helper", "laravel/telescope"]
+            "dont-discover": ["barryvdh/laravel-ide-helper"]
         }
 
     },

@@ -1,0 +1,460 @@
+/* SIGMA Standardized Report Tables CSS */
+/* Based on reference customer/financial table design */
+
+:root {
+    /* Report Table Colors - Matching Reference Image */
+    --report-header-bg: #8b9dc3;      /* Blue-gray header background */
+    --report-header-text: #ffffff;     /* White header text */
+    --report-row-even: #f8f9fa;        /* Light gray for alternating rows */
+    --report-row-odd: #ffffff;         /* White for alternating rows */
+    --report-border: #e2e8f0;          /* Light border color */
+    --report-text-primary: #2d3748;    /* Dark gray for primary text */
+    --report-text-secondary: #718096;  /* Medium gray for secondary text */
+    --report-shadow: rgba(0, 0, 0, 0.05); /* Subtle shadow */
+
+    /* Status Badge Colors */
+    --status-paid: #10b981;            /* Green for paid */
+    --status-paid-bg: #d1fae5;         /* Light green background */
+    --status-open: #3b82f6;            /* Blue for open */
+    --status-open-bg: #dbeafe;         /* Light blue background */
+    --status-inactive: #6b7280;        /* Gray for inactive */
+    --status-inactive-bg: #f3f4f6;     /* Light gray background */
+
+    /* Pagination Colors */
+    --pagination-text: #374151;        /* Dark gray text */
+    --pagination-border: #d1d5db;      /* Light gray border */
+    --pagination-hover: #f9fafb;       /* Light hover background */
+}
+
+/* Main Report Table Container */
+.sigma-report-table-container {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px var(--report-shadow), 0 1px 2px var(--report-shadow);
+    border: 1px solid var(--report-border);
+    overflow: hidden;
+    margin: 1.5rem 0;
+}
+
+/* Standardized Report Table - High Specificity to Override Old Styles */
+.sigma-report-table-container .sigma-report-table,
+.sigma-report-table-container table.sigma-report-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 0.875rem !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    background-color: #ffffff !important;
+    border: none !important;
+}
+
+/* Table Header Row - Override Old Styles */
+.sigma-report-table-container .sigma-report-table thead,
+.sigma-report-table-container table.sigma-report-table thead {
+    background: linear-gradient(135deg, var(--report-header-bg) 0%, #7a8bb8 100%) !important;
+}
+
+.sigma-report-table-container .sigma-report-table th,
+.sigma-report-table-container table.sigma-report-table th {
+    background-color: var(--report-header-bg) !important;
+    color: var(--report-header-text) !important;
+    font-weight: 600 !important;
+    font-size: 0.75rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 1rem 1.25rem !important;
+    text-align: left !important;
+    border: none !important;
+    position: relative;
+}
+
+.sigma-report-table th:first-child {
+    padding-left: 1.5rem;
+}
+
+.sigma-report-table th:last-child {
+    padding-right: 1.5rem;
+}
+
+/* Right-align numeric column headers */
+.sigma-report-table th.text-right {
+    text-align: right;
+}
+
+.sigma-report-table th.text-center {
+    text-align: center;
+}
+
+/* Table Body - Override Old Row Styles */
+.sigma-report-table-container .sigma-report-table tbody tr,
+.sigma-report-table-container table.sigma-report-table tbody tr {
+    border-bottom: 1px solid var(--report-border) !important;
+    transition: background-color 0.2s ease;
+    border-top: none !important;
+}
+
+.sigma-report-table-container .sigma-report-table tbody tr:nth-child(even),
+.sigma-report-table-container table.sigma-report-table tbody tr:nth-child(even) {
+    background-color: var(--report-row-even) !important;
+}
+
+.sigma-report-table-container .sigma-report-table tbody tr:nth-child(odd),
+.sigma-report-table-container table.sigma-report-table tbody tr:nth-child(odd) {
+    background-color: var(--report-row-odd) !important;
+}
+
+.sigma-report-table-container .sigma-report-table tbody tr:hover,
+.sigma-report-table-container table.sigma-report-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+    box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.1);
+}
+
+/* Table Data Cells - Override Old Cell Styles */
+.sigma-report-table-container .sigma-report-table td,
+.sigma-report-table-container table.sigma-report-table td {
+    padding: 1rem 1.25rem !important;
+    color: var(--report-text-primary) !important;
+    font-weight: 400 !important;
+    border: none !important;
+    vertical-align: middle !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+}
+
+.sigma-report-table td:first-child {
+    padding-left: 1.5rem;
+}
+
+.sigma-report-table td:last-child {
+    padding-right: 1.5rem;
+}
+
+/* Primary Text (Customer Names, Main Data) */
+.sigma-report-table .primary-text {
+    font-weight: 600;
+    color: var(--report-text-primary);
+    font-size: 0.875rem;
+}
+
+/* Secondary Text (Phone Numbers, Details) */
+.sigma-report-table .secondary-text {
+    font-weight: 400;
+    color: var(--report-text-secondary);
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+}
+
+/* Numeric Data Alignment */
+.sigma-report-table td.text-right {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.sigma-report-table td.text-center {
+    text-align: center;
+}
+
+/* Currency Formatting */
+.sigma-report-table .currency {
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.sigma-report-table .currency.positive {
+    color: #10b981;
+}
+
+.sigma-report-table .currency.negative {
+    color: #ef4444;
+}
+
+.sigma-report-table .currency-symbol {
+    font-size: 0.75rem;
+    color: var(--report-text-secondary);
+}
+
+/* Status Badges */
+.sigma-status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 0.75rem;
+    border-radius: 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+    border: 1px solid transparent;
+    min-width: 60px;
+}
+
+.sigma-status-badge.paid {
+    background-color: var(--status-paid-bg);
+    color: var(--status-paid);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.sigma-status-badge.open {
+    background-color: var(--status-open-bg);
+    color: var(--status-open);
+    border-color: rgba(59, 130, 246, 0.2);
+}
+
+.sigma-status-badge.inactive {
+    background-color: var(--status-inactive-bg);
+    color: var(--status-inactive);
+    border-color: rgba(107, 114, 128, 0.2);
+}
+
+/* Additional Status Variants */
+.sigma-status-badge.pending {
+    background-color: #fef3c7;
+    color: #d97706;
+    border-color: rgba(217, 119, 6, 0.2);
+}
+
+.sigma-status-badge.completed {
+    background-color: #dcfce7;
+    color: #16a34a;
+    border-color: rgba(22, 163, 74, 0.2);
+}
+
+.sigma-status-badge.cancelled {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+/* Total/Summary Rows */
+.sigma-report-table .totals-row {
+    background-color: #f8fafc !important;
+    border-top: 2px solid var(--report-header-bg);
+    font-weight: 600;
+}
+
+.sigma-report-table .totals-row td {
+    padding: 1.25rem 1.25rem;
+    color: var(--report-text-primary);
+    font-weight: 600;
+}
+
+/* Pagination Container */
+.sigma-report-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 1.5rem;
+    background-color: #f8fafc;
+    border-top: 1px solid var(--report-border);
+    font-size: 0.875rem;
+    color: var(--pagination-text);
+}
+
+/* Rows per page selector */
+.sigma-rows-per-page {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sigma-rows-per-page select {
+    border: 1px solid var(--pagination-border);
+    border-radius: 6px;
+    padding: 0.375rem 2rem 0.375rem 0.75rem;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 12px 12px;
+    appearance: none;
+    font-size: 0.875rem;
+    color: var(--pagination-text);
+    cursor: pointer;
+}
+
+.sigma-rows-per-page select:focus {
+    outline: none;
+    border-color: var(--report-header-bg);
+    box-shadow: 0 0 0 2px rgba(139, 157, 195, 0.2);
+}
+
+/* Pagination Navigation */
+.sigma-pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.sigma-pagination-info {
+    font-weight: 500;
+    color: var(--report-text-primary);
+    margin: 0 1rem;
+}
+
+.sigma-pagination-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--pagination-border);
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: var(--pagination-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.sigma-pagination-btn:hover {
+    background-color: var(--pagination-hover);
+    border-color: var(--report-header-bg);
+    color: var(--report-header-bg);
+}
+
+.sigma-pagination-btn:disabled,
+.sigma-pagination-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sigma-report-table-container {
+        margin: 1rem 0;
+        border-radius: 8px;
+    }
+
+    .sigma-report-table th,
+    .sigma-report-table td {
+        padding: 0.75rem 0.5rem;
+        font-size: 0.8125rem;
+    }
+
+    .sigma-report-table th:first-child,
+    .sigma-report-table td:first-child {
+        padding-left: 1rem;
+    }
+
+    .sigma-report-table th:last-child,
+    .sigma-report-table td:last-child {
+        padding-right: 1rem;
+    }
+
+    .sigma-report-pagination {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .sigma-pagination-nav {
+        order: 2;
+    }
+
+    .sigma-rows-per-page {
+        order: 1;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .sigma-report-table-container {
+        box-shadow: none;
+        border: 1px solid #000;
+    }
+
+    .sigma-report-table th {
+        background-color: #e5e7eb !important;
+        color: #000 !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .sigma-report-table tbody tr:nth-child(even) {
+        background-color: #f9fafb !important;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .sigma-report-pagination {
+        display: none;
+    }
+
+    .sigma-status-badge {
+        border: 1px solid #000 !important;
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+/* Override Old Report Table Classes */
+.sigma-report-table-container .tableHeaderRow,
+.sigma-report-table-container .table-header-row,
+.sigma-report-table-container .subHeaderRow {
+    background-color: var(--report-header-bg) !important;
+    color: var(--report-header-text) !important;
+    font-weight: 600 !important;
+}
+
+.sigma-report-table-container .dataRow,
+.sigma-report-table-container .table-data-row {
+    background-color: inherit !important;
+}
+
+.sigma-report-table-container .dataRow:nth-child(even),
+.sigma-report-table-container .table-data-row:nth-child(even) {
+    background-color: var(--report-row-even) !important;
+}
+
+.sigma-report-table-container .totalsRow,
+.sigma-report-table-container .table-totals-row,
+.sigma-report-table-container .totals-row {
+    background-color: #f8fafc !important;
+    border-top: 2px solid var(--report-header-bg) !important;
+    font-weight: 600 !important;
+}
+
+.sigma-report-table-container .totalsCol,
+.sigma-report-table-container .table-totals-col {
+    background-color: #f8fafc !important;
+    font-weight: 600 !important;
+    text-align: right !important;
+}
+
+/* Override inline border styles */
+.sigma-report-table-container table[style*="border"],
+.sigma-report-table-container td[style*="border"],
+.sigma-report-table-container th[style*="border"] {
+    border: none !important;
+}
+
+/* Override inline background styles */
+.sigma-report-table-container tr[style*="background"],
+.sigma-report-table-container td[style*="background"],
+.sigma-report-table-container th[style*="background"] {
+    background: inherit !important;
+}
+
+/* Additional Utility Classes */
+.sigma-table-loading {
+    position: relative;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.sigma-table-empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--report-text-secondary);
+    font-style: italic;
+}
+
+.sigma-table-scroll {
+    overflow-x: auto;
+}
+
+/* Column-specific widths */
+.sigma-col-customer { min-width: 200px; }
+.sigma-col-status { width: 100px; text-align: center; }
+.sigma-col-currency { width: 120px; text-align: right; }
+.sigma-col-date { width: 110px; }
+.sigma-col-actions { width: 80px; text-align: center; }
