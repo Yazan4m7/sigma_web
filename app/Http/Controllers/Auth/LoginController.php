@@ -45,6 +45,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $request->session()->put('expire_on_close', !$request->boolean('remember'));
+
         if ((int) $user->is_admin === 1) {
             return redirect()->route('homeScreen');
         }

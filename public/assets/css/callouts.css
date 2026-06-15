@@ -52,11 +52,11 @@
 }
 
 .bd-callout-primary{
-    border-left-color: #007bff
+    border-left-color: var(--color-accent)
 }
 
 .bd-callout-primaryh4 {
-    color: #007bff
+    color: var(--color-accent)
 }
 
 .bd-callout-success{

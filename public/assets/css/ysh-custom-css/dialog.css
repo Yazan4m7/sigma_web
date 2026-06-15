@@ -10490,7 +10490,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10502,7 +10502,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10514,7 +10514,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10526,7 +10526,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10538,7 +10538,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10550,7 +10550,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10562,7 +10562,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10574,7 +10574,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10586,7 +10586,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10598,7 +10598,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10610,7 +10610,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10622,7 +10622,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10634,7 +10634,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10646,7 +10646,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10658,7 +10658,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10670,7 +10670,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10682,7 +10682,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10694,7 +10694,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10706,7 +10706,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10718,7 +10718,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10730,7 +10730,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10742,7 +10742,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10754,7 +10754,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10766,7 +10766,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10778,7 +10778,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10790,7 +10790,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10802,7 +10802,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10814,7 +10814,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10826,7 +10826,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10838,7 +10838,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10850,7 +10850,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10862,7 +10862,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10874,7 +10874,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10886,7 +10886,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10898,7 +10898,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10910,7 +10910,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10922,7 +10922,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10934,7 +10934,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10946,7 +10946,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10958,7 +10958,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10970,7 +10970,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10982,7 +10982,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -10994,7 +10994,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11006,7 +11006,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11018,7 +11018,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11030,7 +11030,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11042,7 +11042,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11054,7 +11054,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11066,7 +11066,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11078,7 +11078,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11090,7 +11090,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11102,7 +11102,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11114,7 +11114,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11126,7 +11126,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11138,7 +11138,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11150,7 +11150,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11162,7 +11162,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11174,7 +11174,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11186,7 +11186,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11198,7 +11198,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11210,7 +11210,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11222,7 +11222,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11234,7 +11234,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11246,7 +11246,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11258,7 +11258,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11270,7 +11270,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11282,7 +11282,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11294,7 +11294,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11306,7 +11306,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11318,7 +11318,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11330,7 +11330,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11342,7 +11342,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11354,7 +11354,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11366,7 +11366,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11378,7 +11378,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11390,7 +11390,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11402,7 +11402,7 @@ body {
     font-weight: 500;
     font-size: 1.1rem;
     color: #fff;
-    background: linear-gradient(to bottom, #2cbdfe, #2675d2); /* Matches your existing button styles */
+    background: linear-gradient(to bottom, var(--color-accent-light), var(--color-accent)); /* Matches your existing button styles */
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 5px;
@@ -11412,235 +11412,235 @@ body {
 
     
 .sigma-modal--abutments-delivery-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--abutments-delivery-receive .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--abutments-index-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--accountant-delivery-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--accountant-delivery-actions-alt .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--admin-intel-shortcut .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--admin-intel-settings .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--admin-intel2-shortcut .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--admin-intel2-settings .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--admin-mobile-access .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--cases-dashboard-case-completion .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--cases-dashboard-case-completion-alt .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--cases-dashboard-loading .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-create-modern-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-create-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-create-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--dashboard-active-milling .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--dashboard-active-case-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--dashboard-waiting-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-edit-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-edit-teeth-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--case-edit-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--cases-index-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--cases-rejected-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--clients-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--clients-add .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--clients-delete .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--active-cases-preview .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--adminhth-intel-shortcut .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--adminhth-intel-settings .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--adminhth-intel2-shortcut .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--adminhth-intel2-settings .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--adminhth-mobile-access .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--waiting-3d-printing .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--waiting-delivery .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--waiting-generic .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--delivery-schedule-edit .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--delivery-schedule-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--delivery-receive-payment .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--devices-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-causes-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-modify-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-modify-teeth-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-modify-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-redo-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-redo-teeth-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-redo-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-reject-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-reject-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-repeat-teeth .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-repeat-teeth-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--failures-repeat-files .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-primary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-tertiary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-alt-primary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-alt-secondary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-emp-cases-alt-tertiary .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-payments-alt .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--generic-payments .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--implants-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--job-types-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--labs-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-create-add-type .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-create-add-implant .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-create-edit-implant .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-edit-types .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-edit-add-type .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--material-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--media-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--rtl-search .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--report-employees-filter .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--report-devices-filter .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--tags-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--invoice-check .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--invoice-check-new .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 .sigma-modal--users-actions .dialog-button:hover {
-        background: linear-gradient(to bottom, #2675d2, #2cbdfe); /* Hover effect */
+        background: linear-gradient(to bottom, var(--color-accent), var(--color-accent-light)); /* Hover effect */
     }
 
 /* Add class for small screen optimizations */

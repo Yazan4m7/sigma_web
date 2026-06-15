@@ -1,0 +1,318 @@
+{
+    "created_at": "2026-06-13 22:40:59",
+    "user": "yazan",
+    "results": [
+        {
+            "route": "home",
+            "uri": "\/main-dashboard",
+            "status": 200,
+            "state": "ok",
+            "ms": 326,
+            "error": null
+        },
+        {
+            "route": "admin-dashboard-v2",
+            "uri": "\/operations-dashboard",
+            "status": 200,
+            "state": "ok",
+            "ms": 150,
+            "error": null
+        },
+        {
+            "route": "new-case-view",
+            "uri": "\/new-case",
+            "status": 200,
+            "state": "ok",
+            "ms": 53,
+            "error": null
+        },
+        {
+            "route": "cases-index",
+            "uri": "\/cases",
+            "status": 200,
+            "state": "ok",
+            "ms": 64,
+            "error": null
+        },
+        {
+            "route": "receivable-payments-index",
+            "uri": "\/accountant\/receivable-payments",
+            "status": 200,
+            "state": "ok",
+            "ms": 26,
+            "error": null
+        },
+        {
+            "route": "delivery-schedule",
+            "uri": "\/delivery-schedule",
+            "status": 200,
+            "state": "ok",
+            "ms": 129,
+            "error": null
+        },
+        {
+            "route": "abutments-delivery-index",
+            "uri": "\/abutments-delivery\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 61,
+            "error": null
+        },
+        {
+            "route": "view-cases-monitor",
+            "uri": "\/cases-monitor",
+            "status": 200,
+            "state": "ok",
+            "ms": 479,
+            "error": null
+        },
+        {
+            "route": "devices-page",
+            "uri": "\/devices",
+            "status": 200,
+            "state": "ok",
+            "ms": 397,
+            "error": null
+        },
+        {
+            "route": "clients-index",
+            "uri": "\/doctors\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 237,
+            "error": null
+        },
+        {
+            "route": "sales-index",
+            "uri": "\/sales",
+            "status": 200,
+            "state": "ok",
+            "ms": 493,
+            "error": null
+        },
+        {
+            "route": "sales-by-month-index",
+            "uri": "\/sales\/by-month",
+            "status": 200,
+            "state": "ok",
+            "ms": 36,
+            "error": null
+        },
+        {
+            "route": "my-collections",
+            "uri": "\/my-collections",
+            "status": 200,
+            "state": "ok",
+            "ms": 19,
+            "error": null
+        },
+        {
+            "route": "rejected-cases",
+            "uri": "\/cases\/rejected-cases",
+            "status": 200,
+            "state": "ok",
+            "ms": 244,
+            "error": null
+        },
+        {
+            "route": "master-report",
+            "uri": "\/reports\/master",
+            "status": 200,
+            "state": "ok",
+            "ms": 253,
+            "error": null
+        },
+        {
+            "route": "num-of-units-report",
+            "uri": "\/reports\/num-of-units",
+            "status": 200,
+            "state": "ok",
+            "ms": 515,
+            "error": null
+        },
+        {
+            "route": "job-types-report",
+            "uri": "\/reports\/job-types",
+            "status": 200,
+            "state": "ok",
+            "ms": 376,
+            "error": null
+        },
+        {
+            "route": "QC-report",
+            "uri": "\/reports\/QC",
+            "status": 200,
+            "state": "ok",
+            "ms": 30,
+            "error": null
+        },
+        {
+            "route": "repeats-report",
+            "uri": "\/reports\/repeats",
+            "status": 200,
+            "state": "ok",
+            "ms": 427,
+            "error": null
+        },
+        {
+            "route": "implants-report",
+            "uri": "\/reports\/implants",
+            "status": 200,
+            "state": "ok",
+            "ms": 678,
+            "error": null
+        },
+        {
+            "route": "materials-report",
+            "uri": "\/reports\/material",
+            "status": 200,
+            "state": "ok",
+            "ms": 21,
+            "error": null
+        },
+        {
+            "route": "payments-with-collectors",
+            "uri": "\/payments-with-collectors",
+            "status": 200,
+            "state": "ok",
+            "ms": 30,
+            "error": null
+        },
+        {
+            "route": "invoices-index",
+            "uri": "\/invoices",
+            "status": 200,
+            "state": "ok",
+            "ms": 52,
+            "error": null
+        },
+        {
+            "route": "payments-index",
+            "uri": "\/payments\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 21,
+            "error": null
+        },
+        {
+            "route": "clients-index4payment",
+            "uri": "\/delivery\/docs\/take-payments",
+            "status": 200,
+            "state": "ok",
+            "ms": 73,
+            "error": null
+        },
+        {
+            "route": "media-index",
+            "uri": "\/media\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 19,
+            "error": null
+        },
+        {
+            "route": "material-index",
+            "uri": "\/materials",
+            "status": 200,
+            "state": "ok",
+            "ms": 13,
+            "error": null
+        },
+        {
+            "route": "job-type-index",
+            "uri": "\/Job-type\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 28,
+            "error": null
+        },
+        {
+            "route": "users-index",
+            "uri": "\/users\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 19,
+            "error": null
+        },
+        {
+            "route": "labs-index",
+            "uri": "\/external-labs",
+            "status": 200,
+            "state": "ok",
+            "ms": 1566,
+            "error": null
+        },
+        {
+            "route": "implants-index",
+            "uri": "\/implants\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 24,
+            "error": null
+        },
+        {
+            "route": "abutments-index",
+            "uri": "\/abutment\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 18,
+            "error": null
+        },
+        {
+            "route": "tags-index",
+            "uri": "\/tags\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 14,
+            "error": null
+        },
+        {
+            "route": "f-causes-index",
+            "uri": "\/f-cause\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 17,
+            "error": null
+        },
+        {
+            "route": "devices-index",
+            "uri": "\/device\/index",
+            "status": 200,
+            "state": "ok",
+            "ms": 15,
+            "error": null
+        },
+        {
+            "route": "audit-logs.index",
+            "uri": "\/admin\/audit-logs",
+            "status": 200,
+            "state": "ok",
+            "ms": 84,
+            "error": null
+        },
+        {
+            "route": "tools.invoice-check",
+            "uri": "\/tools\/invoice-check",
+            "status": 200,
+            "state": "ok",
+            "ms": 334,
+            "error": null
+        },
+        {
+            "route": "tools.create-case",
+            "uri": "\/tools\/create-case",
+            "status": 200,
+            "state": "ok",
+            "ms": 18,
+            "error": null
+        },
+        {
+            "route": "tools.page-load-tester",
+            "uri": "\/tools\/page-load-tester",
+            "status": 200,
+            "state": "ok",
+            "ms": 18,
+            "error": null
+        }
+    ]
+}

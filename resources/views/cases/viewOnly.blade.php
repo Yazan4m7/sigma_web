@@ -178,10 +178,7 @@
             font-size: 12px;
         }
 
-        .noteText {
-            color: black;
-            font-weight: 500;
-        }
+
 
         .bootstrap-select>.dropdown-toggle.bs-placeholder {
             color: #1a000d !important;

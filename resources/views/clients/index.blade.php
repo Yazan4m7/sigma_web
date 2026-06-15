@@ -306,7 +306,7 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                            <div id="doctorPaymentChequeDetails" class="cheque-details d-none doctor-payment-field">
+                                            <div id="doctorPaymentChequeDetails" class="cheque-details d-none doctor-payment-field doctor-payment-cheque-field">
                                                 <label class="doctor-payment-field-label" for="doctor-payment-bank">Bank</label>
                                                 <div class="kt-form__control">
                                                     <select class="form-control" id="doctor-payment-bank" name="bank_id">
@@ -316,7 +316,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div id="doctorPaymentChequeNumberField" class="doctor-payment-field cheque-details d-none">
+                                            <div id="doctorPaymentChequeNumberField" class="doctor-payment-field cheque-details d-none doctor-payment-cheque-field">
                                                 <label class="doctor-payment-field-label" for="doctor-payment-cheque-number">Cheque number</label>
                                                 <input id="doctor-payment-cheque-number" type="text" class="form-control" name="chequeNumber">
                                             </div>

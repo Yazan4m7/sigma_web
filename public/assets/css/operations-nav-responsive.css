@@ -335,16 +335,16 @@
     }
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: var(--color-surface-raised);
     }
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-thumb {
-        background: #888;
+        background: var(--color-text-muted);
         border-radius: 2px;
     }
 
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"]::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: var(--color-text-secondary);
     }
 }
 

@@ -59,8 +59,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-6 ">
-            <div class="card card-chart">
+        <div class="col-lg-6 noLeftPadding">
+            <div class="card card-chart" style="height: 100% !important;">
                 <div class="card-header ">
                     <div class="row" style="background-color: transparent;padding:0">
                         <div class="col-sm-12 text-left">
@@ -153,10 +153,10 @@
                             <thead>
                                 <tr>
 
-                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Doctor</span>
                                     </th>
-                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Payment</span>
                                     </th>
                                     <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
@@ -165,7 +165,7 @@
                                     <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Time Collected</span>
                                     </th>
-                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Received by</span>
                                     </th>
                                 </tr>
@@ -186,10 +186,10 @@
                                         data-payment-notes="{{ str_replace(["\r", "\n"], ' ', (string) $payment->additional_notes) }}"
                                         data-payment-receive-url="{{ $payment->isCollected() ? '' : route('receive-payment', $payment->id) }}">
 
-                                        <td>
+                                        <td class="text-center">
                                             {{ $payment->client->name }}
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             {{ $payment->amount }} JOD
                                         </td>
                                         <td class="text-center">
@@ -199,7 +199,7 @@
                                             {{ optional($payment->created_at)->format('g:i a') ?? '-' }}
 
                                         </td>
-                                        <td>
+                                        <td class="text-center">
 
                                             @if ($payment->receivedBy)
                                                 <span style="color:green">{{ $payment->receivedBy->name_initials }}</span>
@@ -234,10 +234,10 @@
                             <thead>
                                 <tr>
 
-                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Doctor</span>
                                     </th>
-                                    <th style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
+                                    <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
                                         <span class="summary-table-heading">Patient name</span>
                                     </th>
                                     <th class="text-center" style="background:#408385 !important;color:#ffffff !important;border-color:#408385 !important;">
@@ -255,22 +255,22 @@
                                         data-case-id="{{ $case->id }}"
                                         data-case-doctor="{{ $case->client->name }}"
                                         data-case-patient="{{ $case->patient_name }}"
-                                        data-delivery-date="{{ $case->dashboard_delivery_date_iso }}">
+                                        data-delivery-date="{{ \Carbon\Carbon::parse($case->initial_delivery_date)->format('Y-m-d\TH:i:s') }}">
 
-                                        <td>
+                                        <td class="text-center">
                                             {{ $case->client->name }}
                                         </td>
-                                        <td>
+                                        <td class="text-center">
                                             {{ $case->patient_name }}
                                         </td>
                                         <td class="text-center">
-                                            {{ $case->dashboard_delivery_time }}
+                                            {{ date('g:i a', strtotime(str_replace('T', ' ', $case->initial_delivery_date))) }}
 
                                         </td>
                                         <td class="main-dashboard-summary-status-cell">
                                             <span
-                                                class="badge {{ $case->dashboard_status_class ?? 'badge-warning' }} sigma-case-status-badge sigma-status-width main-dashboard-summary-status-badge">
-                                                <span class="sigma-badge-label">{{ $case->dashboard_status_text ?? $case->status() }}</span>
+                                                class="badge {{ $case->dashboard_status_class ?? 'badge-warning' }} sigma-status-width main-dashboard-summary-status-badge">
+                                                {{ $case->dashboard_status_text ?? $case->status() }}
                                             </span>
                                         </td>
                                     </tr>
@@ -485,31 +485,6 @@
             }
         });
 
-        const dashboardChartPhoneViewport = window.matchMedia('(max-width: 767.98px)');
-
-        function formatDashboardDateAxisLabel(value) {
-            if (!dashboardChartPhoneViewport.matches || typeof value !== 'string') {
-                return value;
-            }
-
-            return value.replace(/\d{4}-/, '');
-        }
-
-        function createDashboardDateAxisTicks() {
-            const rotation = dashboardChartPhoneViewport.matches ? 50 : 35;
-
-            return {
-                padding: 20,
-                minRotation: rotation,
-                maxRotation: rotation,
-                fontColor: "#9e9e9e",
-                fontStyle: 'normal',
-                callback: function(value) {
-                    return formatDashboardDateAxisLabel(value);
-                }
-            };
-        }
-
         function initComp7DaysChart() {
             const completedChartElement = document.getElementById("completedChart");
             if (!completedChartElement || !completedChartElement.getContext) {
@@ -557,7 +532,10 @@
                             color: 'rgba(29,140,248,0.1)',
                             zeroLineColor: "transparent"
                         },
-                        ticks: createDashboardDateAxisTicks()
+                        ticks: {
+                            padding: 20,
+                            fontColor: "#9e9e9e"
+                        }
                     }]
                 }
             };
@@ -713,6 +691,7 @@
             if (!chartBig || !chartBig.getContext || typeof Chart === 'undefined') {
                 return;
             }
+
             gradientChartOptionsConfigurationWithTooltipPurple = {
                 maintainAspectRatio: false,
                 legend: {
@@ -759,7 +738,11 @@
                             color: 'rgba(225,78,202,0.1)',
                             zeroLineColor: "transparent"
                         },
-                        ticks: createDashboardDateAxisTicks()
+                        ticks: {
+                            padding: 20,
+                            fontColor: "#9a9a9a",
+                            fontStyle: 'bold'
+                        }
                     }]
                 }
             };

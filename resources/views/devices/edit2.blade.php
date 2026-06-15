@@ -38,7 +38,7 @@
     .device-card-sortable:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        border-color: #007bff;
+        border-color: var(--color-accent);
     }
 
     .device-card-sortable.sortable-ghost {
@@ -79,7 +79,7 @@
         position: absolute;
         top: 5px;
         left: 5px;
-        background: #007bff;
+        background: var(--color-accent);
         color: white;
         width: 24px;
         height: 24px;
@@ -104,11 +104,11 @@
         align-items: center;
         margin-bottom: 15px;
         padding-bottom: 10px;
-        border-bottom: 2px solid #007bff;
+        border-bottom: 2px solid var(--color-accent);
     }
 
     .sort-section-header i {
-        color: #007bff;
+        color: var(--color-accent);
         margin-right: 10px;
     }
 
@@ -118,7 +118,7 @@
         margin-bottom: 15px;
         padding: 10px;
         background: #f0f7ff;
-        border-left: 3px solid #007bff;
+        border-left: 3px solid var(--color-accent);
         border-radius: 4px;
     }
 </style>

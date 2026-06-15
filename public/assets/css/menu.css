@@ -98,7 +98,7 @@ Author:
     sidebar left
 -----------------------*/
 .sidebar-left {
-  background: #2b7b7d;
+  background: var(--color-accent);
   width: 240px;
   position: absolute;
   overflow-y: auto;
@@ -413,7 +413,7 @@ h5.left-nav-title {
     color: #d4b352;
 }
 .message-center .user-img i.ti-heart{
-    color: #dc3545;
+    color: var(--color-danger);
 }
 .message-center .user-img i.ti-image{
     color: #3485ff;

@@ -290,8 +290,8 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
 
                                         @if($showJob)
                                         @php
-                                            $jobTitleParts = array_values(array_filter([
-                                                trim((string) $job->unit_num),
+                                            $jobUnits = trim((string) $job->unit_num);
+                                            $jobDetailParts = array_values(array_filter([
                                                 trim((string) $jobTypeName),
                                                 trim((string) $materialName),
                                                 trim((string) $colorLabel),
@@ -300,7 +300,6 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                             ], function ($value) {
                                                 return $value !== '';
                                             }));
-                                            $jobUnits = trim((string) $job->unit_num);
                                             $normalizedStyle = strtolower(trim((string) $styleLabel));
                                             $jobTag = in_array($normalizedStyle, ['single', 'bridge'], true)
                                                 ? ucfirst($normalizedStyle)
@@ -314,7 +313,11 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                                 <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5l1 5c.3 1.2 1 2 2 2h2c1 0 1.7-.8 2-2l1-5c.5-1.5 1-3 1-5 0-3-2-5-5-5z"></path><path d="M9 10c0 0 1 1 3 1s3-1 3-1"></path></svg>
                                             @endif
                                             <span class="sigma-case-job-info">
-                                                <span class="sigma-case-job-primary">{{ implode(' - ', $jobTitleParts) }}</span>
+                                                <span class="sigma-case-job-primary">
+                                                    <span class="sigma-case-job-units">{{ $jobUnits }}</span>
+                                                    <span class="sigma-case-job-separator">-</span>
+                                                    <span class="sigma-case-job-details">{{ implode(' - ', $jobDetailParts) }}</span>
+                                                </span>
                                             </span>
                                             <span class="sigma-case-job-tag">{{ $jobTag }}</span>
                                         </div>

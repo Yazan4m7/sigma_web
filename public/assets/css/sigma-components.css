@@ -24,7 +24,7 @@
 }
 
 .sigma-device-card.selected {
-  border-color: #2b7b7d;
+  border-color: var(--color-accent);
   box-shadow: 0 0 0 2px rgba(43, 123, 125, 0.3);
 }
 
@@ -92,7 +92,7 @@
   position: relative;
   display: inline-block;
   padding: 10px 20px;
-  background: #2b7b7d;
+  background: var(--color-accent);
   color: white;
   border: none;
   border-radius: 6px;
@@ -139,7 +139,7 @@
 }
 
 .sigma-button.assign {
-  background: #2b7b7d;
+  background: var(--color-accent);
 }
 
 .sigma-button.complete {
@@ -186,7 +186,7 @@
 
 .sigma-case-row.selected {
   background: rgba(43, 123, 125, 0.05);
-  border-left: 4px solid #2b7b7d;
+  border-left: 4px solid var(--color-accent);
 }
 
 .sigma-case-checkbox {
@@ -230,7 +230,7 @@
 
 .sigma-case-units {
   width: 10%;
-  color: #2b7b7d;
+  color: var(--color-accent);
   font-weight: 600;
   background: rgba(43, 123, 125, 0.1);
   border-radius: 50px;
@@ -362,7 +362,7 @@
 /* Notes in Dialog */
 .sigma-note {
   background: #f8f9fa;
-  border-left: 3px solid #2b7b7d;
+  border-left: 3px solid var(--color-accent);
   padding: 10px 15px;
   border-radius: 4px;
   margin-bottom: 10px;
@@ -416,7 +416,7 @@
 }
 
 .sigma-job-units {
-  color: #2b7b7d;
+  color: var(--color-accent);
   font-weight: 600;
   margin-right: 10px;
   min-width: 30px;

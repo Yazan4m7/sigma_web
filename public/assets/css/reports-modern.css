@@ -1,5 +1,5 @@
 /* SIGMA Reports Modern Professional Styling */
-/* Main color palette: #2b7b7d (SIGMA teal), #f1f7ed (light green), #404040 (dark gray) */
+/* Main color palette: var(--color-accent) (SIGMA teal), #f1f7ed (light green), #404040 (dark gray) */
 
 /* CSS Variables - Using master definitions from sigma-reports-master.css */
 
@@ -375,7 +375,7 @@
     }
 
     .table-month-header {
-        background: #2b7b7d !important;
+        background: var(--color-accent) !important;
         color: white !important;
     }
 
@@ -384,12 +384,12 @@
     }
 
     .table-totals-col {
-        background: #2b7b7d !important;
+        background: var(--color-accent) !important;
         color: white !important;
     }
 
     .table-totals-row-label {
-        background: #2b7b7d !important;
+        background: var(--color-accent) !important;
         color: white !important;
     }
 }

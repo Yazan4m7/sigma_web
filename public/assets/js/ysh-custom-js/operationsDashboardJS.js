@@ -348,6 +348,180 @@ function selectAll(ele, classname) {
 
 
 
+function initializePhoneTileSelection() {
+    const phoneQuery = window.matchMedia('(max-width: 767.98px)');
+    const selectableCardSelector = '.ops-case-list--waiting .ops-case-card--selectable';
+    const longPressDelay = 520;
+    const moveTolerance = 12;
+    let longPressTimer = null;
+    let longPressTriggered = false;
+    let longPressCard = null;
+    let activePointerId = null;
+    let startX = 0;
+    let startY = 0;
+
+    function isPhoneScreen() {
+        return phoneQuery.matches;
+    }
+
+    function getCardFromTarget(target) {
+        return target ? target.closest(selectableCardSelector) : null;
+    }
+
+    function getList(card) {
+        return card ? card.closest('.ops-case-list--waiting') : null;
+    }
+
+    function getCheckbox(card) {
+        return card ? card.querySelector('.ops-case-card__select input.multipleCB') : null;
+    }
+
+    function syncCard(card) {
+        const checkbox = getCheckbox(card);
+        if (!checkbox) return;
+
+        card.classList.toggle('ops-case-card--selected', checkbox.checked);
+    }
+
+    function updatePhoneBulkAction(list) {
+        if (!list) return;
+
+        const button = list.closest('.stage-panel-pane')?.querySelector('.ops-case-list__bulk .ops-case-list__bulk-action.receiveSelectBtn');
+        const hasSelection = !!list.querySelector('.ops-case-card--selectable .ops-case-card__select input.multipleCB:checked');
+
+        if (!button) return;
+
+        button.style.display = hasSelection ? 'flex' : 'none';
+        button.style.opacity = hasSelection ? '1' : '0';
+    }
+
+    function syncAllCards() {
+        document.querySelectorAll(selectableCardSelector).forEach(syncCard);
+        document.querySelectorAll('.ops-case-list--waiting').forEach(function(list) {
+            const selectedCount = list.querySelectorAll('.ops-case-card--selectable .ops-case-card__select input.multipleCB:checked').length;
+            list.classList.toggle('ops-case-list--selection-mode', selectedCount > 0);
+            updatePhoneBulkAction(list);
+        });
+    }
+
+    function setSelectionMode(card, enabled) {
+        const list = getList(card);
+        if (list) {
+            list.classList.toggle('ops-case-list--selection-mode', enabled);
+        }
+    }
+
+    function isSelectionModeActive(card) {
+        const list = getList(card);
+        return !!(list && list.classList.contains('ops-case-list--selection-mode'));
+    }
+
+    function toggleCardSelection(card) {
+        const checkbox = getCheckbox(card);
+        const list = getList(card);
+        if (!checkbox || checkbox.disabled || !list) return;
+
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        if (typeof window.multiCBChanged === 'function') {
+            window.multiCBChanged(checkbox.dataset.type || checkbox.dataset.groupId || '', checkbox, checkbox.value);
+        }
+
+        syncCard(card);
+        setSelectionMode(card, !!list.querySelector('.ops-case-card--selectable .ops-case-card__select input.multipleCB:checked'));
+        updatePhoneBulkAction(list);
+    }
+
+    function clearLongPressTimer() {
+        if (longPressTimer) {
+            clearTimeout(longPressTimer);
+            longPressTimer = null;
+        }
+        activePointerId = null;
+    }
+
+    document.addEventListener('pointerdown', function(event) {
+        if (!isPhoneScreen() || event.pointerType === 'mouse') return;
+
+        const card = getCardFromTarget(event.target);
+        if (!card) return;
+
+        clearLongPressTimer();
+        longPressTriggered = false;
+        longPressCard = null;
+        activePointerId = event.pointerId;
+        startX = event.clientX;
+        startY = event.clientY;
+
+        longPressTimer = setTimeout(function() {
+            longPressTriggered = true;
+            longPressCard = card;
+            setSelectionMode(card, true);
+            if (!card.classList.contains('ops-case-card--selected')) {
+                toggleCardSelection(card);
+            }
+        }, longPressDelay);
+    }, true);
+
+    document.addEventListener('pointermove', function(event) {
+        if (activePointerId !== event.pointerId || !longPressTimer) return;
+
+        const movedX = Math.abs(event.clientX - startX);
+        const movedY = Math.abs(event.clientY - startY);
+        if (movedX > moveTolerance || movedY > moveTolerance) {
+            clearLongPressTimer();
+        }
+    }, true);
+
+    document.addEventListener('pointerup', clearLongPressTimer, true);
+    document.addEventListener('pointercancel', clearLongPressTimer, true);
+
+    document.addEventListener('click', function(event) {
+        if (!isPhoneScreen()) return;
+
+        const card = getCardFromTarget(event.target);
+        if (!card) return;
+
+        const isLongPressClick = longPressTriggered && card === longPressCard;
+
+        if (isLongPressClick || isSelectionModeActive(card)) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            if (!isLongPressClick) {
+                toggleCardSelection(card);
+            }
+
+            longPressTriggered = false;
+            longPressCard = null;
+        }
+    }, true);
+
+    $(document).on('change', '.ops-case-card--selectable .multipleCB', function() {
+        syncCard(this.closest('.ops-case-card--selectable'));
+        syncAllCards();
+    });
+
+    $(document).on('change', '.selectAllCases', function() {
+        setTimeout(syncAllCards, 0);
+    });
+
+    if (typeof phoneQuery.addEventListener === 'function') {
+        phoneQuery.addEventListener('change', syncAllCards);
+    } else if (typeof phoneQuery.addListener === 'function') {
+        phoneQuery.addListener(syncAllCards);
+    }
+
+    syncAllCards();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePhoneTileSelection);
+} else {
+    initializePhoneTileSelection();
+}
+
 function initializeDataTables() {
     if (typeof $ === 'undefined' || typeof $.fn.DataTable === 'undefined') {
         console.warn('jQuery or DataTables not available yet. Skipping initialization.');

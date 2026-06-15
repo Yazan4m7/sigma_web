@@ -26,4 +26,25 @@ class CaseJobRowsLayoutTest extends TestCase
         $this->assertStringContainsString('.sigma-case-job-separator', $index);
         $this->assertStringContainsString('.sigma-case-job-details', $index);
     }
+
+    /** @test */
+    public function dashboard_active_and_waiting_job_rows_use_dash_after_units_without_bold_units(): void
+    {
+        $views = [
+            file_get_contents(__DIR__ . '/../../resources/views/cases/dashboards-partials/active-table.blade.php'),
+            file_get_contents(__DIR__ . '/../../resources/views/cases/dashboards-partials/waiting-table.blade.php'),
+            file_get_contents(__DIR__ . '/../../resources/views/cases/admin-dashboardv2.blade.php'),
+        ];
+
+        foreach ($views as $view) {
+            $this->assertStringContainsString('$jobDetailParts', $view);
+            $this->assertStringContainsString('class="sigma-case-job-units"', $view);
+            $this->assertStringContainsString('class="sigma-case-job-separator">-</span>', $view);
+            $this->assertStringContainsString('class="sigma-case-job-details"', $view);
+        }
+
+        $dashboard = $views[2];
+        $this->assertStringContainsString('.sigma-case-job-separator', $dashboard);
+        $this->assertDoesNotMatchRegularExpression('/\\.sigma-case-job-units\\s*\\{[^}]*font-weight/s', $dashboard);
+    }
 }

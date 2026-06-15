@@ -756,7 +756,9 @@
     align-items: center;
     justify-content: center;
     padding: 24px;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -779,8 +781,28 @@ body.sigma-loading-active {
     padding: 0;
     background: transparent;
     border: 0;
+    border-radius: 0;
     box-shadow: none;
     text-align: center;
+}
+
+.sigma-processing-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.sigma-processing-indicator__spinner {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    border-radius: 50%;
+    border: 3px solid rgba(55, 180, 74, 0.22);
+    border-top-color: #37b44a;
+    border-right-color: rgba(245, 255, 247, 0.85);
+    box-shadow: 0 0 14px rgba(55, 180, 74, 0.28);
+    animation: sigmaProcessingSpin 0.82s linear infinite;
 }
 
 .sigma-loading-screen__content .sigma-processing-indicator__text {
@@ -790,6 +812,7 @@ body.sigma-loading-active {
     font-weight: 700;
     font-family: "Poppins", sans-serif;
     color: #37b44a;
+    -webkit-text-fill-color: #37b44a;
     text-shadow: 0 0 14px rgba(55, 180, 74, 0.35);
 }
 
@@ -800,26 +823,32 @@ body.sigma-loading-active {
     color: transparent;
     background-image: linear-gradient(
         90deg,
-        rgba(55, 180, 74, 0) 0%,
-        rgba(55, 180, 74, 0) 30%,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0) 38%,
+        rgba(201, 255, 213, 0.82) 46%,
         #ffffff 50%,
-        #f5fff7 56%,
-        rgba(55, 180, 74, 0) 70%,
-        rgba(55, 180, 74, 0) 100%
+        rgba(245, 255, 247, 0.9) 54%,
+        rgba(255, 255, 255, 0) 62%,
+        rgba(255, 255, 255, 0) 100%
     );
-    background-size: 200% 100%;
-    background-position: 200% 50%;
+    background-size: 260% 100%;
+    background-position: 150% 50%;
     background-repeat: no-repeat;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: sigmaProcessingShimmer 1.2s linear infinite;
+    animation: sigmaProcessingShimmer 1.15s linear infinite;
     pointer-events: none;
 }
 
 @keyframes sigmaProcessingShimmer {
-    0% { background-position: 200% 50%; }
-    100% { background-position: -50% 50%; }
+    0% { background-position: 150% 50%; }
+    100% { background-position: -150% 50%; }
+}
+
+@keyframes sigmaProcessingSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Prevent skeleton squares inside workflow modal action buttons */
@@ -845,6 +874,7 @@ body.sigma-loading-active {
         transition: none;
     }
 
+    .sigma-processing-indicator__spinner,
     .sigma-loading-screen__content .sigma-processing-indicator__text::after {
         animation: none;
     }
@@ -2557,7 +2587,7 @@ border-radius:20px;
     background-color: transparent;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-body > .row {
-    background-color: transparent;
+    background-color: #f4454500;
 }
 .sigma-modal--cases-dashboard-loading .modal-body > .row {
     background-color: transparent;
@@ -8744,7 +8774,7 @@ font-weight: 600;
     height: 1.25rem;
      opacity: 2;
 }
-.table-responsive {overflow:auto;}
+.table-responsive {overflow:hidden;}
 .dropdown-item:focus, .dropdown-item:hover {
     color:inherit !important;
 }
@@ -8753,6 +8783,7 @@ svg {
 }
 h5, .h5 {
     font-size: 1rem;
+    font-family: "Cairo";
 }
 .completeDDBtn {
     color: green;
@@ -9941,7 +9972,7 @@ blueTBBorder {
     background-clip: border-box;
     border: 0.0625rem solid rgba(34, 42, 66, 0.05);
     border-radius: 0.2857rem;
-    background: #f4f6fb;
+    background: #f8fafc00;
     height: fit-content !important;
 }
 .container {
@@ -9977,7 +10008,7 @@ blueTBBorder {
 .main-panel > .content {
         border: none !important;
         padding: 0 10px 30px 10px;
-        margin: var(--sigma-app-header-offset) 0 0 0;
+        margin: var(--sigma-app-header-offset) 00 0;
         min-height: calc(100vh - 70px);
 }
 
@@ -13237,9 +13268,11 @@ body.ysh-dialog-open {
 .modal .modal-body .job-grid-row {
     overflow: hidden;
     /*display: grid !important;*/
+    border-left: 2px solid #17a2b8;
     /*grid-template-columns: minmax(68px, 0.95fr) minmax(88px, 1.2fr) minmax(82px, 1.1fr) minmax(42px, 0.55fr) minmax(70px, 0.9fr);*/
-    /*align-items: start !important;*/
-    /*column-gap: 12px !important;*/
+    /* align-items: start !important; */
+    /* column-gap: 12px !important; */
+    botder-radius: 0 2 0 0;
     /*width: 100% !important;*/
 }
 
@@ -13282,13 +13315,13 @@ body.ysh-dialog-open {
 .modal .modal-body .note-container {
     align-items: flex-start !important;
     background: #fff !important;
-    border: 0.5px solid #eaeae4 !important;
-    border-top: none !important;
+    border: 0.5px solid #c7c7c7 !important;
+    /* border-top: none !important; */
     box-shadow: none !important;
     color: inherit !important;
     display: flex !important;
-    gap: 10px !important;
-    padding: 9px 14px !important;
+    /* gap: 10px !important; */
+    padding: 2px 13px !important;
 }
 
 .modal .modal-body .sigma-case-notes-list > .note-container:first-child {

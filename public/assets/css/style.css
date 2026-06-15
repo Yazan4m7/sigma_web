@@ -87,7 +87,7 @@ body {
 
 }
 .searchBoxesDiv  a {
-    color: #2b7b7d !important;
+    color: var(--color-accent) !important;
     font-weight: 700;
 
 }
@@ -367,7 +367,7 @@ p {
     font-size: 20px;
     font-weight: 700;
     padding:5px 5px 5px 15px;
-    color: #2b7b7d;
+    color: var(--color-accent);
 }
 
 .page-head .sub-title {
@@ -991,7 +991,7 @@ p {
 
 
 .waitingBadge {
-    background-color: #dc3545 !important;
+    background-color: var(--color-danger) !important;
 }
 .activeBadge {
     background-color: #2e61f2 !important;

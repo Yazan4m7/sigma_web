@@ -1143,13 +1143,46 @@ function showLoadingIndicator() {
             -webkit-backdrop-filter: blur(1px);
         `;
         loadingIndicator.innerHTML = `
-            <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
+            <div class="sigma-loading-screen__content" role="status" aria-live="polite" aria-label="Loading">
+                <div class="sigma-processing-indicator">
+                    <span class="sigma-processing-indicator__spinner" aria-hidden="true"></span>
+                    <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
+                </div>
+            </div>
         `;
 
         if (!document.getElementById('sigma-processing-indicator-style')) {
             const style = document.createElement('style');
             style.id = 'sigma-processing-indicator-style';
             style.textContent = `
+                .sigma-loading-screen__content {
+                    padding: 0;
+                    background: transparent;
+                    border: 0;
+                    border-radius: 0;
+                    box-shadow: none;
+                    text-align: center;
+                }
+
+                .sigma-processing-indicator {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                }
+
+                .sigma-processing-indicator__spinner {
+                    width: 24px;
+                    height: 24px;
+                    flex: 0 0 24px;
+                    border-radius: 50%;
+                    border: 3px solid rgba(55, 180, 74, 0.22);
+                    border-top-color: #37b44a;
+                    border-right-color: rgba(245, 255, 247, 0.85);
+                    box-shadow: 0 0 14px rgba(55, 180, 74, 0.28);
+                    animation: sigmaProcessingSpin 0.82s linear infinite;
+                }
+
                 .sigma-processing-indicator__text {
                     position: relative;
                     display: inline-block;
@@ -1157,6 +1190,7 @@ function showLoadingIndicator() {
                     font-weight: 700;
                     font-family: "Poppins", sans-serif;
                     color: #37b44a;
+                    -webkit-text-fill-color: #37b44a;
                     text-shadow: 0 0 14px rgba(55, 180, 74, 0.35);
                 }
 
@@ -1167,26 +1201,32 @@ function showLoadingIndicator() {
                     color: transparent;
                     background-image: linear-gradient(
                         90deg,
-                        rgba(55, 180, 74, 0) 0%,
-                        rgba(55, 180, 74, 0) 30%,
+                        rgba(255, 255, 255, 0) 0%,
+                        rgba(255, 255, 255, 0) 38%,
+                        rgba(201, 255, 213, 0.82) 46%,
                         #ffffff 50%,
-                        #f5fff7 56%,
-                        rgba(55, 180, 74, 0) 70%,
-                        rgba(55, 180, 74, 0) 100%
+                        rgba(245, 255, 247, 0.9) 54%,
+                        rgba(255, 255, 255, 0) 62%,
+                        rgba(255, 255, 255, 0) 100%
                     );
-                    background-size: 200% 100%;
-                    background-position: 200% 50%;
+                    background-size: 260% 100%;
+                    background-position: 150% 50%;
                     background-repeat: no-repeat;
                     -webkit-background-clip: text;
                     background-clip: text;
                     -webkit-text-fill-color: transparent;
-                    animation: sigmaProcessingShimmer 1.2s linear infinite;
+                    animation: sigmaProcessingShimmer 1.15s linear infinite;
                     pointer-events: none;
                 }
 
                 @keyframes sigmaProcessingShimmer {
-                    0% { background-position: 200% 50%; }
-                    100% { background-position: -50% 50%; }
+                    0% { background-position: 150% 50%; }
+                    100% { background-position: -150% 50%; }
+                }
+
+                @keyframes sigmaProcessingSpin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
                 }
             `;
             document.head.appendChild(style);

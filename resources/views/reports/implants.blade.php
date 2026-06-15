@@ -8,7 +8,7 @@
         .sigma-report-standard .sigma-report-table.printable thead th,
         .sigma-report-standard .sigma-report-table.printable thead th.header-dark,
         .sigma-report-standard .sigma-report-table.printable thead th.header-light {
-            background-color: #408385 !important;
+            background-color: var(--color-accent) !important;
             color: #ffffff !important;
         }
     </style>

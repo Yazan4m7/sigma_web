@@ -3018,387 +3018,387 @@
 .waiting-dialog.sigma-modal--abutments-delivery-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--abutments-delivery-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--abutments-delivery-receive .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--abutments-delivery-receive .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--abutments-index-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--abutments-index-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--accountant-delivery-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--accountant-delivery-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--accountant-delivery-actions-alt .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--accountant-delivery-actions-alt .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--admin-intel-shortcut .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--admin-intel-shortcut .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--admin-intel-settings .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--admin-intel-settings .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--admin-intel2-shortcut .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--admin-intel2-shortcut .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--admin-intel2-settings .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--admin-intel2-settings .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--admin-mobile-access .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--admin-mobile-access .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--cases-dashboard-case-completion .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--cases-dashboard-case-completion .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--cases-dashboard-case-completion-alt .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--cases-dashboard-case-completion-alt .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--cases-dashboard-loading .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--cases-dashboard-loading .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-create-modern-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-create-modern-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-create-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-create-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-create-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-create-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--dashboard-active-milling .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--dashboard-active-milling .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--dashboard-active-case-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--dashboard-active-case-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--dashboard-waiting-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--dashboard-waiting-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-edit-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-edit-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-edit-teeth-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-edit-teeth-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--case-edit-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--case-edit-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--cases-index-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--cases-index-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--cases-rejected-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--cases-rejected-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--clients-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--clients-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--clients-add .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--clients-add .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--clients-delete .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--clients-delete .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--active-cases-preview .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--active-cases-preview .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--adminhth-intel-shortcut .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--adminhth-intel-shortcut .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--adminhth-intel-settings .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--adminhth-intel-settings .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--adminhth-intel2-shortcut .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--adminhth-intel2-shortcut .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--adminhth-intel2-settings .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--adminhth-intel2-settings .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--adminhth-mobile-access .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--adminhth-mobile-access .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--waiting-3d-printing .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--waiting-3d-printing .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--waiting-delivery .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--waiting-delivery .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--waiting-generic .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--waiting-generic .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--delivery-schedule-edit .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--delivery-schedule-edit .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--delivery-schedule-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--delivery-schedule-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--delivery-receive-payment .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--delivery-receive-payment .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--devices-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--devices-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-causes-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-causes-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-modify-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-modify-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-modify-teeth-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-modify-teeth-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-modify-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-modify-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-redo-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-redo-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-redo-teeth-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-redo-teeth-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-redo-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-redo-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-reject-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-reject-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-reject-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-reject-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-repeat-teeth .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-repeat-teeth .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-repeat-teeth-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-repeat-teeth-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--failures-repeat-files .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--failures-repeat-files .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-primary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-primary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-tertiary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-tertiary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-alt-primary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-primary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-alt-secondary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-secondary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-emp-cases-alt-tertiary .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-emp-cases-alt-tertiary .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-payments-alt .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-payments-alt .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--generic-payments .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--generic-payments .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--implants-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--implants-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--job-types-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--job-types-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--labs-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--labs-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-create-add-type .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-create-add-type .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-create-add-implant .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-create-add-implant .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-create-edit-implant .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-create-edit-implant .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-edit-types .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-edit-types .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-edit-add-type .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-edit-add-type .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--material-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--material-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--media-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--media-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--rtl-search .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--rtl-search .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--report-employees-filter .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--report-employees-filter .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--report-devices-filter .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--report-devices-filter .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--tags-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--tags-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--invoice-check .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--invoice-check .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--invoice-check-new .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--invoice-check-new .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 .waiting-dialog.sigma-modal--users-actions .sigma-machine-card:hover, .sigma-workflow-modal.sigma-modal--users-actions .sigma-machine-card:hover {
     transform: translateY(-3px) scale(1.1) !important;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-    border-color: #007bff !important;
+    border-color: var(--color-accent) !important;
 }
 
 /* Selected state styling */

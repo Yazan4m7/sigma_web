@@ -88,6 +88,13 @@
     font-size: 17px !important;
 }
 
+table.waitingTable thead th:first-child,
+table.waitingTable tbody td:first-child,
+table.activeTable thead th:first-child,
+table.activeTable tbody td:first-child {
+    padding-left: 16px !important;
+}
+
 /* Clickable elements in operations dashboard */
 .operations-dashboard .clickable,
 .operations-dashboard td.clickable,

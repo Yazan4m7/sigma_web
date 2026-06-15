@@ -167,7 +167,7 @@
 
 .blackbox-button-inner.enabled.blue {
     background: var(--inner-gradient-blue);
-    /* background: #2975d4; */
+    /* background: var(--color-accent); */
     cursor: pointer;
 }
 
@@ -179,13 +179,13 @@
 
 .blackbox-button-inner {
     background: var(--outer-gradient-disabled);
-    /* background: #2975d4; */
+    /* background: var(--color-accent); */
     cursor: not-allowed;
 }
 
 .blackbox-button-outer {
     background: var(--outer-gradient-disabled);
-    /* background: #2975d4; */
+    /* background: var(--color-accent); */
     cursor: pointer;
 }
 
@@ -201,7 +201,7 @@
 }
 .blackbox-button-inner.enabled.green {
     background: var(--inner-gradient-green);
-    /* background: #2975d4; */
+    /* background: var(--color-accent); */
     cursor: pointer;
 }
 

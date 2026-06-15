@@ -63,9 +63,27 @@
             --font-family-sans-serif: "Nunito", sans-serif;
             --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-            --main-blue: #2CA8FF;
-            --main-orange: #FFA500;
-            --main-green: green;
+            /* Primary accent */
+            --color-accent: #6366f1;
+            --color-accent-light: #818cf8;
+            --color-accent-muted: rgba(99, 102, 241, 0.12);
+
+            /* Semantic */
+            --color-success: #10b981;
+            --color-warning: #f59e0b;
+            --color-danger: #ef4444;
+
+            /* Neutrals */
+            --color-text-primary: #0f172a;
+            --color-text-secondary: #64748b;
+            --color-text-muted: #94a3b8;
+            --color-surface: #ffffff;
+            --color-surface-raised: #f8fafc;
+            --color-border: rgba(0,0,0,0.08);
+
+            --main-blue: var(--color-accent);
+            --main-orange: var(--color-warning);
+            --main-green: var(--color-success);
         }
 
         @font-face {
@@ -87,7 +105,6 @@
             transform: translate3d(0px, 34px, 0px) !important;
         }
         .pageTitleContainer {
-            background: linear-gradient(272deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 50%) !important;
             background: transparent;
         }
 
@@ -105,7 +122,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: color-mix(in srgb, var(--color-text-primary) 50%, transparent);
             display: none;
             z-index: 5;
         }
@@ -126,7 +143,14 @@
 
         .noteText {
             font-weight: 700 !important;
+            white-space: nowrap;
+            text-align: right;
+            font-family: 'Cairo', sans-serif;
+            display: block !important;
+        color:black;
+            font-weight: 500;
         }
+
 
         /* Optional user-controlled font-size locks (disabled by default) */
         body.pref-lock-dialog-fonts .modal,
@@ -246,8 +270,8 @@
             height: 34px;
             margin-top: -17px;
             margin-left: -17px;
-            border: 3px solid rgba(255, 255, 255, 0.26);
-            border-top-color: rgba(255, 255, 255, 0.92);
+            border: 3px solid color-mix(in srgb, var(--color-surface) 26%, transparent);
+            border-top-color: color-mix(in srgb, var(--color-surface) 92%, transparent);
             border-radius: 50%;
             animation: sigma-lg-spin 0.8s linear infinite;
             pointer-events: none;
@@ -333,18 +357,18 @@
             transform: translateX(-50%);
             width: 3px;
             border-radius: 3px;
-            background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
-            box-shadow: 0 0 6px rgba(59, 130, 246, 0.4);
+            background: linear-gradient(180deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
+            box-shadow: 0 0 6px var(--color-accent-muted);
             transition: all 0.15s ease;
         }
         .dt-colresizable-col:hover::before {
             width: 4px;
-            background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 100%);
-            box-shadow: 0 0 10px rgba(96, 165, 250, 0.6);
+            background: linear-gradient(180deg, var(--color-accent-light) 0%, var(--color-accent) 100%);
+            box-shadow: 0 0 10px var(--color-accent-muted);
         }
         .dt-colresizable-col:active::before {
             width: 5px;
-            background: #60a5fa;
+            background: var(--color-accent-light);
         }
         /* Show handles when resize mode is active */
         body.col-resize-active .dt-colresizable-col {
@@ -365,7 +389,10 @@
 </head>
 <div class="sigma-loading-screen" id="sigma-loading-screen" aria-hidden="true">
     <div class="sigma-loading-screen__content" role="status" aria-live="polite" aria-label="Loading">
-        <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
+        <div class="sigma-processing-indicator">
+            <span class="sigma-processing-indicator__spinner" aria-hidden="true"></span>
+            <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
+        </div>
     </div>
 </div>
 {{--<div class="overlay" id="overlay"></div>--}}@auth()

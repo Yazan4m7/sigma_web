@@ -1480,7 +1480,7 @@
                 <form id="delivery-edit-form" action="{{ route('edit-delivery-date') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id" id="delivery-edit-case-id" value="">
-                    <div class="modal-dialog" role="document">
+                    <div class="modal-dialog modal-pos-center-x modal-pos-center-y" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Deli. Date</h5>

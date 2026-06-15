@@ -413,6 +413,18 @@
                     color: #212529;
                 }
 
+                .modal.sigma-modal--cases-dashboard-case-completion .modal-body .form-control.note-container,
+                .modal.sigma-modal--cases-dashboard-case-completion-alt .modal-body .form-control.note-container {
+                    display: block !important;
+                }
+
+                .modal.sigma-modal--cases-dashboard-case-completion .modal-body .noteHeader,
+                .modal.sigma-modal--cases-dashboard-case-completion .modal-body,
+                .modal.sigma-modal--cases-dashboard-case-completion-alt .modal-body .noteHeader,
+                .modal.sigma-modal--cases-dashboard-case-completion-alt .modal-body  {
+                    display: block !important;
+                }
+
 
 .sigma-modal--cases-dashboard-case-completion .modal-footer {
                     display: block;
@@ -696,9 +708,6 @@
                     box-shadow: 0 4px 8px rgba(40, 167, 69, 0.4);
                 }
 
-          .main-panel {
-              width: calc(100% - 79px) !important;
-            }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-success:disabled {
                     background-color: #6c757d;
                     color: #ffffff !important;
@@ -1326,6 +1335,7 @@
             color: #294450;
             font-weight: 600;
             line-height: 1.45 !important;
+            min-width: 0;
             white-space: normal !important;
             overflow-wrap: anywhere;
             word-break: break-word;
@@ -1807,7 +1817,7 @@
                                     @case('milling')
                                         <x-waiting-dialog title="Choose Machine" btnText="NEST" type="milling" :devices="$devices"
                                             :types="$types" :typesByMaterial="$typesByMaterial" stageId="2" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn milling"
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn milling ops-case-list__standalone-action"
                                             style="display:none; margin:5px;" onclick="openModal('milling',true)">SET
                                         </button>
                                     @break
@@ -1816,7 +1826,7 @@
                                         @php $key = "3dprinting"; @endphp
                                         <x-waiting-3dprinting-dialog title="Choose Printer" btnText="SET" type="3dprinting"
                                             :devices="$devices" stageId="3" showBuildName="true" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting"
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting ops-case-list__standalone-action"
                                             style="display:none; margin:5px;" onclick="openModal('3dprinting',true)">SET
                                         </button>
                                     @break
@@ -1824,7 +1834,7 @@
                                     @case('sintering')
                                         <x-waiting-dialog title="Choose Furnace" btnText="SET" type="sintering" :devices="$devices"
                                             :types="$types" :typesByMaterial="$typesByMaterial" stageId="4" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn sintering"
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn sintering ops-case-list__standalone-action"
                                             style="display:none; margin:5px;" onclick="openModal('sintering',true)">SET
                                         </button>
                                     @break
@@ -1832,7 +1842,7 @@
                                     @case('pressing')
                                         <x-waiting-dialog title="Choose Furnace" btnText="SET" type="pressing" :devices="$devices"
                                             :types="$types" :typesByMaterial="$typesByMaterial" stageId="5" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn pressing"
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn pressing ops-case-list__standalone-action"
                                             style="display:none; margin:5px;" onclick="openModal('pressing',true)">SET
                                         </button>
                                     @break
@@ -1848,7 +1858,7 @@
                                         <x-waiting-delivery-dialog title="Assign to"
                                             btnText="{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}" :drivers="$drivers"
                                             stageId="5" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn delivery"
+                                        <button type="submit" class="btn btn-primary receiveSelectBtn delivery ops-case-list__standalone-action"
                                             style="display:none; margin:5px;"
                                             onclick="openModal('DeliveryDialog',false)">{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}
                                         </button>
@@ -1864,6 +1874,20 @@
                                                     onchange="selectAll(this, '{{ $key }}')" />
                                                 <span>Select all</span>
                                             </label>
+                                            @if ($key == 'delivery')
+                                                <button type="submit" class="btn btn-primary receiveSelectBtn delivery ops-case-list__bulk-action"
+                                                    style="display:none;"
+                                                    onclick="openModal('DeliveryDialog',false)">{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}
+                                                </button>
+                                            @elseif ($key == '3dprinting')
+                                                <button type="submit" class="btn btn-primary receiveSelectBtn 3dprinting ops-case-list__bulk-action"
+                                                    style="display:none;" onclick="openModal('3dprinting',true)">SET
+                                                </button>
+                                            @else
+                                                <button type="submit" class="btn btn-primary receiveSelectBtn {{ $key }} ops-case-list__bulk-action"
+                                                    style="display:none;" onclick="openModal('{{ $key }}',true)">SET
+                                                </button>
+                                            @endif
                                         </div>
                                     @endif
                                     <div class="d-none d-md-block">
@@ -2057,8 +2081,8 @@
                                                                                             $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
                                                                                         @endphp
                                                                                         @php
-                                                                                            $fullJobParts = array_values(array_filter([
-                                                                                                trim((string) $job->unit_num),
+                                                                                            $jobUnits = trim((string) $job->unit_num);
+                                                                                            $jobDetailParts = array_values(array_filter([
                                                                                                 trim((string) $jobTypeName),
                                                                                                 trim((string) $materialName),
                                                                                                 trim((string) $colorLabel),
@@ -2066,6 +2090,9 @@
                                                                                                 trim((string) $implantLabel),
                                                                                                 trim((string) $abutmentLabel),
                                                                                             ], function ($value) {
+                                                                                                return $value !== '';
+                                                                                            }));
+                                                                                            $fullJobParts = array_values(array_filter(array_merge([$jobUnits], $jobDetailParts), function ($value) {
                                                                                                 return $value !== '';
                                                                                             }));
                                                                                         @endphp
@@ -2079,17 +2106,20 @@
                                                                     </div>
                                                                     @if (count($case->notes) > 0)
                                                                         <hr>
-                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
+                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label>
                                                                         @foreach ($case->notes as $note)
+                                                                            @php
+                                                                                $noteEmployeeName = $note->writtenBy->first_name ?? $note->writtenBy->name_initials ?? '-';
+                                                                            @endphp
                                                                             <div class="form-control note-container"
-                                                                                style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px;display:block !important"
                                                                                 disabled>
 
                                                                                 <span class="noteHeader"
-                                                                                    style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                                                                    style="font-weight:600;display:block !important">[{{ \Carbon\Carbon::parse($note->created_at)->format('j-M g:i A') }}] [{{ $noteEmployeeName }}] : </span>
 
                                                                                 <span
-                                                                                    class="noteText">{{ $note->note }}</span>
+                                                                                    class="noteText" style="display:block !important">{{ $note->note }}</span>
                                                                             </div>
                                                                         @endforeach
                                                                     @endif
@@ -2227,10 +2257,11 @@
                                                     data-target="#waitingDialog{{ $key . $case->id }}">
                                                     <div class="ops-case-card__row ops-case-card__row--primary">
                                                         <div class="ops-case-card__doctor" dir="auto">{{ $case->client?->name ?? 'Err404-1' }}</div>
-                                                        <div class="ops-case-card__patient" dir="auto">{{ $case->patient_name }}</div>
                                                         <div class="ops-case-card__units">
                                                             <span class="ops-case-card__units-pill">{{ $case->unitsAmount($stage['numericStage']) }}</span>
                                                         </div>
+                                                        <div class="ops-case-card__patient" dir="auto">{{ $case->patient_name }}</div>
+
                                                     </div>
                                                     <div class="ops-case-card__row ops-case-card__row--secondary">
                                                         <div class="ops-case-card__badges">
@@ -2442,8 +2473,8 @@
                                                                                                 $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
                                                                                             @endphp
                                                                                             @php
-                                                                                                $fullJobParts = array_values(array_filter([
-                                                                                                    trim((string) $job->unit_num),
+                                                                                                $jobUnits = trim((string) $job->unit_num);
+                                                                                                $jobDetailParts = array_values(array_filter([
                                                                                                     trim((string) $jobTypeName),
                                                                                                     trim((string) $materialName),
                                                                                                     trim((string) $colorLabel),
@@ -2451,6 +2482,9 @@
                                                                                                     trim((string) $implantLabel),
                                                                                                     trim((string) $abutmentLabel),
                                                                                                 ], function ($value) {
+                                                                                                    return $value !== '';
+                                                                                                }));
+                                                                                                $fullJobParts = array_values(array_filter(array_merge([$jobUnits], $jobDetailParts), function ($value) {
                                                                                                     return $value !== '';
                                                                                                 }));
                                                                                             @endphp
@@ -2463,17 +2497,20 @@
                                                                             </div>
                                                                         </div>
                                                                         @if (count($case->notes) > 0)
-                                                                            <hr>
-                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
+
+                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label>
                                                                             @foreach ($case->notes as $note)
+                                                                                @php
+                                                                                    $noteEmployeeName = $note->writtenBy->first_name ?? $note->writtenBy->name_initials ?? '-';
+                                                                                @endphp
                                                                                 <div class="form-control note-container"
-                                                                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px"
+                                                                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px;display:block !important"
                                                                                     disabled>
 
                                                                                     <span class="noteHeader"
-                                                                                        style="font-weight:600">{{ '[' . \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) . ' ' }}<b>{{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}</b>{{ '] [' . $note->writtenBy->name_initials . '] : ' }}</span><br>
+                                                                                        style="font-weight:600;display:block !important">[{{ \Carbon\Carbon::parse($note->created_at)->format('j-M g:i A') }}] [{{ $noteEmployeeName }}] : </span>
                                                                                     <span
-                                                                                        class="noteText">{{ $note->note }}</span>
+                                                                                        class="noteText" style="display:block !important">{{ $note->note }}</span>
                                                                                 </div>
                                                                             @endforeach
 
@@ -2623,20 +2660,20 @@
                                                         }
                                                     @endphp
                                                 @endif
-                                                <div class="ops-case-card ops-case-card--active clickable"
-                                                    data-toggle="modal"
-                                                    data-target="#confirmCompletion{{ $key . $case->id }}">
-                                                    <div class="ops-case-card__content">
+                                                <div class="ops-case-card ops-case-card--active">
+                                                    <div class="ops-case-card__content clickable" data-toggle="modal"
+                                                        data-target="#confirmCompletion{{ $key . $case->id }}">
                                                         <div class="ops-case-card__row ops-case-card__row--primary">
                                                             <div class="ops-case-card__doctor" dir="auto">
                                                                 {{ $case->client ? $case->client->name : 'No Client' }}
                                                             </div>
-                                                            <div class="ops-case-card__patient" dir="auto">
-                                                                {{ $case->patient_name }}
-                                                            </div>
                                                             <div class="ops-case-card__units">
                                                                 <span class="ops-case-card__units-pill">{{ $case->unitsAmount($stage['numericStage']) }}</span>
                                                             </div>
+                                                            <div class="ops-case-card__patient" dir="auto">
+                                                                {{ $case->patient_name }}
+                                                            </div>
+
                                                         </div>
                                                         <div class="ops-case-card__row ops-case-card__row--secondary">
                                                             <div class="ops-case-card__badges">
@@ -2899,6 +2936,23 @@
             font-family: 'Cairo', sans-serif !important;
         }
 
+        .ops-dashboard .modal-content,
+        .ops-dashboard .modal-title,
+        .ops-dashboard .modal-body,
+        .ops-dashboard .modal-footer,
+        .ops-dashboard .modal-body label,
+        .ops-dashboard .modal-body input,
+        .ops-dashboard .modal-body textarea,
+        .ops-dashboard .modal-body select,
+        .ops-dashboard .modal-body button,
+        .ops-dashboard .modal-body table,
+        .ops-dashboard .modal-body th,
+        .ops-dashboard .modal-body td,
+        .ops-dashboard .sigma-workflow-dialog,
+        .ops-dashboard .sigma-workflow-dialog * {
+            font-family: 'Cairo', sans-serif !important;
+        }
+
         /* Prevent content wrapping in cells */
         .waitingTable tbody td p,
         .activeTable tbody td p {
@@ -3011,7 +3065,7 @@
                 display: grid;
                 grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
                 grid-template-areas:
-                    "doctor patient units"
+                    "doctor units patient"
                     "badges delivery tags";
                 align-items: center;
                 gap: 0.36rem 0.55rem;
@@ -3200,23 +3254,24 @@
 
         .ops-empty-state {
             margin: 1.1rem 0.65rem 1.4rem;
-            padding: 1rem 1.1rem;
+            padding: 6rem 1.1rem;
             border-radius: 16px;
             text-align: center;
             color: rgba(35, 68, 83, 0.78);
             font-weight: 700;
-            letter-spacing: 0.01em;
-            background:
-                radial-gradient(circle closest-side at 20% 30%, rgba(53, 183, 194, 0.12), transparent 76%),
-                linear-gradient(180deg, rgba(244, 250, 251, 0.98), rgba(255, 255, 255, 0.96));
+            letter-spacing: 0.03em;
+            background: #0080800d;
             border: 1px dashed rgba(30, 112, 122, 0.25);
+            font-size: x-large
         }
 
         .ops-case-list__bulk {
             display: flex;
-            justify-content: flex-start;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
             margin: 0.08rem 0 0.92rem;
-            padding-left: 0.08rem;
+            padding: 0 0.08rem;
         }
 
         .ops-case-list__bulk-toggle {
@@ -3225,14 +3280,14 @@
             gap: 0.55rem;
             padding: 0.58rem 0.88rem;
             border: 1px solid transparent;
-            border-radius: 16px;
+            border-radius: 6px;
             background:
                 linear-gradient(180deg, rgba(236, 245, 248, 0.96), rgba(249, 252, 253, 0.98)) padding-box,
                 linear-gradient(135deg, rgba(76, 133, 145, 0.28), rgba(255, 255, 255, 0.94) 42%, rgba(76, 133, 145, 0.12) 100%) border-box;
             color: #234453;
             font-size: 0.9rem;
             font-weight: 700;
-            margin: 0;
+            margin-left: 2%;
             letter-spacing: 0.01em;
         }
 
@@ -3240,6 +3295,25 @@
             width: 1rem;
             height: 1rem;
             margin: 0;
+        }
+
+        .ops-case-list__bulk-action {
+            align-items: center;
+            justify-content: center;
+            min-height: 2.55rem;
+            margin: 0 !important;
+            padding: 0.55rem 1.2rem;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 800;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 767.98px) {
+            .ops-case-list__standalone-action {
+                display: none !important;
+            }
         }
 
         .ops-case-card {
@@ -3331,9 +3405,43 @@
             margin: 0;
         }
 
+        @media (max-width: 767.98px) {
+            .ops-case-list--selection-mode .ops-case-card--selectable,
+            .ops-case-card--selectable.ops-case-card--selected {
+                cursor: pointer;
+                touch-action: pan-y;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+
+            .ops-case-card--selectable .ops-case-card__select {
+                display: none !important;
+            }
+
+            .ops-case-card--waiting.ops-case-card--selectable .ops-case-card__content {
+                padding-left: 1.08rem !important;
+            }
+
+            .ops-case-card--selectable.ops-case-card--selected {
+                border-color: rgba(45, 132, 143, 0.58);
+                background: #dff3f4;
+            }
+
+            .ops-case-card--selectable.ops-case-card--selected::before {
+                background: #dff3f4 !important;
+                box-shadow: inset 0 0 0 1px rgba(45, 132, 143, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.44);
+            }
+
+            .ops-case-card--selectable.ops-case-card--selected .ops-case-card__units-pill {
+                border-color: rgba(45, 132, 143, 0.34);
+                background: rgba(248, 253, 254, 0.82);
+                color: #184652;
+            }
+        }
+
         .ops-case-card__row {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 3.35rem;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 3fr);
             align-items: center;
             gap: 0.36rem 0.6rem;
         }
@@ -3345,7 +3453,9 @@
         .ops-case-card__doctor,
         .ops-case-card__patient,
         .ops-case-card__date {
+            font-size: 0.9rem !important;
             white-space: nowrap;
+            text-align: right;
             overflow: hidden;
             text-overflow: ellipsis;
             min-width: 0;
@@ -3365,7 +3475,7 @@
             font-size: 1.04rem;
             font-weight: 700;
             color: #284457;
-            text-align: center;
+            text-align: right;
             justify-self: center;
             line-height: 1.35;
         }
@@ -3457,50 +3567,47 @@
             display: none;
         }
 
-        .ops-case-card--waiting {
+        .ops-case-card--waiting,
+        .ops-case-card--active {
             --ops-card-side-width: 38%;
             --ops-card-action-width: 4.35rem;
             --ops-card-accent: #2d9ca3;
             --ops-card-accent-bright: #51bcc3;
             --ops-card-accent-deep: #20757c;
             margin-bottom: 0.62rem;
-            border: 1px solid rgba(45, 132, 143, 0.22);
-            border-radius: 14px;
-            background: #ffffff;
-            box-shadow:
-                0 10px 22px rgba(24, 68, 82, 0.09),
-                0 2px 6px rgba(24, 68, 82, 0.05);
+            min-height: 4.7rem;
+            border: 1px solid rgba(216, 221, 229, 0.96);
+            border-radius: 7px;
+            background: #f1f2f6;
+            box-shadow: none;
             transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
         }
 
-        .ops-case-card--waiting:hover {
+        .ops-case-card--waiting:hover,
+        .ops-case-card--active:hover {
             transform: translateY(-1px);
-            border-color: rgba(45, 132, 143, 0.34);
-            box-shadow:
-                0 14px 28px rgba(24, 68, 82, 0.12),
-                0 4px 10px rgba(24, 68, 82, 0.06);
-        }
-
-        .ops-case-card--waiting::before {
-            inset: 0;
-            border-radius: 13px;
-            background:
-                linear-gradient(90deg, rgba(231, 248, 250, 0.82) 0 var(--ops-card-side-width), rgba(255, 255, 255, 0.96) var(--ops-card-side-width) calc(100% - var(--ops-card-action-width)), rgba(239, 247, 249, 0.9) calc(100% - var(--ops-card-action-width)) 100%),
-                linear-gradient(90deg, transparent calc(var(--ops-card-side-width) - 1px), rgba(45, 132, 143, 0.12) var(--ops-card-side-width), transparent calc(var(--ops-card-side-width) + 1px));
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95);
-        }
-
-        .ops-case-card--waiting::after {
-            width: 0.22rem;
-            inset: 0.72rem auto 0.72rem 0.58rem;
-            border-radius: 999px;
-            transform: none;
-            background: linear-gradient(180deg, var(--ops-card-accent-bright), var(--ops-card-accent-deep));
+            border-color: rgba(210, 215, 224, 0.98);
             box-shadow: none;
         }
 
-        .ops-case-card--waiting .ops-case-card__content {
-            padding: 0.74rem 0.86rem 0.72rem 1.12rem;
+        .ops-case-card--waiting::before,
+        .ops-case-card--active::before {
+            inset: 0;
+            border-radius: 13px;
+            background: none !important; ;
+            background-color: #C4C4C4F9;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
+        }
+
+        .ops-case-card--waiting::after,
+        .ops-case-card--active::after {
+            display: none;
+            content: none;
+        }
+
+        .ops-case-card--waiting .ops-case-card__content,
+        .ops-case-card--active .ops-case-card__content {
+            padding: 0.4rem 0.8rem;
         }
 
         .ops-case-card--waiting.ops-case-card--selectable .ops-case-card__content {
@@ -3518,17 +3625,20 @@
             accent-color: #2d9ca3;
         }
 
-        .ops-case-card--waiting .ops-case-card__row {
-            grid-template-columns: minmax(0, 38%) minmax(0, 1fr) 3.8rem;
+        .ops-case-card--waiting .ops-case-card__row,
+        .ops-case-card--active .ops-case-card__row {
+        minmax(0, 38%) minmax(0, 1fr) 7.8rem
             column-gap: 0.62rem;
         }
 
-        .ops-case-card--waiting .ops-case-card__row--secondary {
+        .ops-case-card--waiting .ops-case-card__row--secondary,
+        .ops-case-card--active .ops-case-card__row--secondary {
             margin-top: 0.24rem;
-            align-items: end;
+            align-items: center;
         }
 
-        .ops-case-card--waiting .ops-case-card__doctor {
+        .ops-case-card--waiting .ops-case-card__doctor,
+        .ops-case-card--active .ops-case-card__doctor {
             color: #163744;
             font-size: 0.98rem;
             font-weight: 800;
@@ -3537,27 +3647,30 @@
             padding-left: 0.18rem;
         }
 
-        .ops-case-card--waiting .ops-case-card__patient {
+        .ops-case-card--waiting .ops-case-card__patient,
+        .ops-case-card--active .ops-case-card__patient {
             color: #28485a;
-            font-size: 1.02rem;
-            font-weight: 800;
-            line-height: 1.35;
-            text-align: center;
+            text-align: right;
         }
 
-        .ops-case-card--waiting .ops-case-card__date {
+        .ops-case-card--waiting .ops-case-card__date,
+        .ops-case-card--active .ops-case-card__date {
             color: #587083;
             font-size: 0.86rem;
             font-weight: 700;
+            overflow: visible;
             letter-spacing: 0;
+            font-size: 1.2rem;
         }
 
-        .ops-case-card--waiting .ops-case-card__units {
+        .ops-case-card--waiting .ops-case-card__units,
+        .ops-case-card--active .ops-case-card__units {
             width: 3.8rem;
             align-self: start;
         }
 
-        .ops-case-card--waiting .ops-case-card__units-pill {
+        .ops-case-card--waiting .ops-case-card__units-pill,
+        .ops-case-card--active .ops-case-card__units-pill {
             min-width: 2rem;
             height: 1.64rem;
             padding: 0 0.56rem;
@@ -3572,12 +3685,14 @@
                 0 4px 10px rgba(24, 68, 82, 0.1);
         }
 
-        .ops-case-card--waiting .ops-case-card__badges {
+        .ops-case-card--waiting .ops-case-card__badges,
+        .ops-case-card--active .ops-case-card__badges {
             padding-left: 0.18rem;
             gap: 0.34rem;
         }
 
-        .ops-case-card--waiting .ops-case-card__badge {
+        .ops-case-card--waiting .ops-case-card__badge,
+        .ops-case-card--active .ops-case-card__badge {
             min-height: 1.2rem;
             padding: 0.1rem 0.42rem;
             border-color: rgba(241, 152, 28, 0.32);
@@ -3588,13 +3703,15 @@
             letter-spacing: 0;
         }
 
-        .ops-case-card--waiting .ops-case-card__tags {
+        .ops-case-card--waiting .ops-case-card__tags,
+        .ops-case-card--active .ops-case-card__tags {
             width: 3.8rem;
             min-height: 1.35rem;
             gap: 0.28rem;
         }
 
-        .ops-case-card--waiting .ops-case-card__tags i {
+        .ops-case-card--waiting .ops-case-card__tags i,
+        .ops-case-card--active .ops-case-card__tags i {
             width: 1.05rem;
             font-size: 0.98rem;
             filter: drop-shadow(0 1px 1px rgba(24, 68, 82, 0.12));
@@ -3605,17 +3722,21 @@
                 position: relative;
                 display: flex;
                 align-items: flex-end;
-                gap: 0.72rem;
-                padding: 0 0.18rem;
-                margin: 0 0 -0.18rem;
+                justify-content: center;
+                flex-wrap: nowrap;
+                gap: 0;
+                width: calc(100% - 20px);
+                box-sizing: border-box;
+                padding: 0;
+                margin: 0 10px -0.18rem;
                 z-index: 3;
             }
 
             .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs::after {
                 content: "";
                 position: absolute;
-                left: 0.18rem;
-                right: 0.18rem;
+                left: 0;
+                right: 0;
                 bottom: -0.28rem;
                 height: 1.08rem;
                 border-radius: 18px 18px 0 0;
@@ -3627,6 +3748,10 @@
             .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn,
             .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn {
                 position: relative;
+                flex: 0 0 50% !important;
+                width: 50% !important;
+                max-width: 50% !important;
+                min-width: 0;
                 border: 1px solid transparent !important;
                 border-radius: 18px 18px 0 0 !important;
                 background:
@@ -3636,6 +3761,13 @@
                 min-height: 4.2rem;
                 box-shadow: none !important;
                 overflow: hidden;
+            }
+
+            .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs .innerBtn {
+                flex: 0 0 50% !important;
+                width: 50% !important;
+                max-width: 50% !important;
+                min-width: 0;
             }
 
             .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn[aria-selected="true"] {
@@ -3671,6 +3803,23 @@
                 background: linear-gradient(90deg, rgba(198, 88, 88, 0.7), rgba(224, 102, 102, 0.98), rgba(198, 88, 88, 0.7));
             }
 
+            @media (max-width: 575.98px) {
+                .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs {
+                    justify-content: stretch;
+                    width: calc(100% - 16px) !important;
+                    margin-left: 8px !important;
+                    margin-right: 8px !important;
+                }
+
+                .ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs .innerBtn,
+                .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerActiveBtn,
+                .ops-dashboard .macaw-tabs.macaw-silk-tabs .innerWaitingBtn {
+                    flex: 1 1 0 !important;
+                    width: auto !important;
+                    max-width: none !important;
+                }
+            }
+
             .ops-dashboard .stage-panel-pane .stage-panel-scroll:not(.stage-panel-scroll--devices) {
                 position: relative;
                 margin-top: -0.16rem;
@@ -3679,7 +3828,9 @@
                 background:
                     radial-gradient(120% 100% at 0% 0%, rgba(61, 123, 136, 0.09) 0%, rgba(61, 123, 136, 0) 44%),
                     linear-gradient(180deg, rgba(245, 249, 251, 0.98), rgba(255, 255, 255, 0.96));
-                overflow: hidden;
+                overflow-x: auto;
+                overflow-y: visible;
+                -webkit-overflow-scrolling: touch;
             }
 
             .ops-dashboard .stage-panel-pane .stage-panel-scroll:not(.stage-panel-scroll--devices)::before {
@@ -3698,6 +3849,24 @@
 
             .ops-case-list {
                 max-width: none;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .site-wrapper .macaw-tabs.macaw-silk-tabs .stage-inner-tabs {
+                justify-content: flex-start;
+                width: auto !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+
+            .site-wrapper .macaw-tabs.macaw-silk-tabs .stage-inner-tabs .innerBtn,
+            .site-wrapper .macaw-tabs.macaw-silk-tabs .innerActiveBtn,
+            .site-wrapper .macaw-tabs.macaw-silk-tabs .innerWaitingBtn {
+                flex: 0 0 auto !important;
+                width: auto !important;
+                max-width: none !important;
+                min-width: 150px;
             }
         }
 
@@ -4827,6 +4996,41 @@
         $(document).on('click', '.sigma-modal--cases-dashboard-case-completion, .sigma-modal--cases-dashboard-case-completion-alt', function(e) {
             if (e.target === this) {
                 $(this).modal('hide');
+            }
+        });
+
+        var sigmaCaseModalHistoryActive = false;
+        var sigmaCaseModalClosingFromBack = false;
+        var sigmaCaseModalSelector = '.sigma-modal--cases-dashboard-case-completion, .sigma-modal--cases-dashboard-case-completion-alt';
+
+        $(document).on('show.bs.modal', sigmaCaseModalSelector, function() {
+            if (!sigmaCaseModalHistoryActive && window.history && window.history.pushState) {
+                window.history.pushState({ sigmaCaseModalOpen: true }, document.title, window.location.href);
+                sigmaCaseModalHistoryActive = true;
+            }
+        });
+
+        $(document).on('hidden.bs.modal', sigmaCaseModalSelector, function() {
+            if (sigmaCaseModalHistoryActive && !sigmaCaseModalClosingFromBack && window.history) {
+                sigmaCaseModalHistoryActive = false;
+                window.history.back();
+                return;
+            }
+
+            sigmaCaseModalClosingFromBack = false;
+            sigmaCaseModalHistoryActive = false;
+        });
+
+        window.addEventListener('popstate', function() {
+            if (!sigmaCaseModalHistoryActive) {
+                return;
+            }
+
+            var $openCaseModal = $(sigmaCaseModalSelector + '.show').last();
+
+            if ($openCaseModal.length) {
+                sigmaCaseModalClosingFromBack = true;
+                $openCaseModal.modal('hide');
             }
         });
 

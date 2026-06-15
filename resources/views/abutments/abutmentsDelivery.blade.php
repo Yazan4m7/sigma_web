@@ -87,7 +87,7 @@
         }
 
         .abutments-delivery-page .cases-filter-row .filter-label i {
-            color: #2b7b7d;
+            color: var(--color-accent);
             font-size: 13px;
         }
 
@@ -134,7 +134,7 @@
         .abutments-delivery-page .cases-filter-row .ios-dtp-trigger:focus,
         .abutments-delivery-page .cases-filter-row .form-control:focus,
         .abutments-delivery-page .cases-filter-row .bootstrap-select > .dropdown-toggle:focus {
-            border-color: #408385 !important;
+            border-color: var(--color-accent) !important;
             box-shadow: 0 0 0 3px rgba(64, 131, 133, 0.15) !important;
             outline: 0;
         }
@@ -184,9 +184,9 @@
         }
 
         .abutments-delivery-page .cases-filter-btn--search {
-            background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
             background-color: #4d9597 !important;
-            border: 1px solid #408385 !important;
+            border: 1px solid var(--color-accent) !important;
             color: #ffffff !important;
             box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24);
         }
@@ -248,7 +248,7 @@
 
         .abutments-delivery-page #datatable thead th:first-child,
         .abutments-delivery-page #datatable thead th:last-child {
-            background: #408385 !important;
+            background: var(--color-accent) !important;
             color: #ffffff !important;
         }
 

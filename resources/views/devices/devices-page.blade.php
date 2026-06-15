@@ -99,7 +99,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #007bff;
+            background: var(--color-accent);
             color: white;
             border: none;
             border-radius: 50%;
@@ -161,7 +161,7 @@
             margin-right: 10px;
             width: 16px;
             height: 16px;
-            accent-color: #3b82f6;
+            accent-color: var(--color-accent);
         }
 
         .config-option input[type="number"] {
@@ -175,7 +175,7 @@
 
         .config-option input[type="number"]:focus {
             outline: none;
-            border-color: #3b82f6;
+            border-color: var(--color-accent);
             box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
@@ -207,7 +207,7 @@
         .config-header-icon {
             width: 32px;
             height: 32px;
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, var(--color-accent), #1d4ed8);
             border-radius: 8px;
             display: flex;
             align-items: center;
@@ -228,7 +228,7 @@
         }
 
         .config-panel::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            background: linear-gradient(135deg, var(--color-accent), #1d4ed8);
             border-radius: 3px;
         }
 
@@ -286,7 +286,7 @@
             color: white;
         }
 
-        .category-milling { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+        .category-milling { background: linear-gradient(135deg, var(--color-accent), var(--color-accent)); }
         .category-3dprinting { background: linear-gradient(135deg, #10b981, #059669); }
         .category-sintering { background: linear-gradient(135deg, #f59e0b, #d97706); }
         .category-pressing { background: linear-gradient(135deg, #ef4444, #dc2626); }
@@ -446,7 +446,7 @@
         }
 
         .device-badge-blue {
-            background: linear-gradient(135deg, #3b82f6 60%, #2563eb 100%);
+            background: linear-gradient(135deg, var(--color-accent) 60%, var(--color-accent) 100%);
         }
 
         .device-badge-red {
@@ -523,7 +523,7 @@
             height: 20px;
             margin: -10px 0 0 -10px;
             border: 2px solid #f3f3f3;
-            border-top: 2px solid #007bff;
+            border-top: 2px solid var(--color-accent);
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -1427,7 +1427,7 @@
             }
 
             .device-card:focus {
-                outline: 2px solid #007bff;
+                outline: 2px solid var(--color-accent);
                 outline-offset: 2px;
             }
 

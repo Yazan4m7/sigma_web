@@ -1,0 +1,35 @@
+- generic [ref=e3]:
+  - navigation [ref=e4]:
+    - generic [ref=e5]:
+      - link "Login page" [ref=e7] [cursor=pointer]:
+        - /url: "#pablo"
+      - generic:
+        - list
+  - generic [ref=e8]:
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - img "SIGMA Logo" [ref=e13]
+        - heading "Welcome Back" [level=1] [ref=e14]
+        - paragraph [ref=e15]: Enter your credentials
+      - form [ref=e16]:
+        - generic [ref=e18]:
+          - generic [ref=e19]: Username
+          - generic: 
+          - textbox "Username" [active] [ref=e20]:
+            - /placeholder: Enter your username
+        - generic [ref=e22]:
+          - generic [ref=e23]: Password
+          - generic: 
+          - textbox "Password" [ref=e24]:
+            - /placeholder: Enter your password
+          - button "Show password" [ref=e25] [cursor=pointer]:
+            - generic [ref=e26]: 
+        - button " Sign In" [ref=e27] [cursor=pointer]:
+          - generic [ref=e28]: 
+          - text: Sign In
+    - contentinfo [ref=e29]:
+      - generic [ref=e30]:
+        - text: © 2026
+        - link "SIGMA DENTAL SOLUTIONS" [ref=e31] [cursor=pointer]:
+          - /url: "#"
+        - text: All Rights Reserved

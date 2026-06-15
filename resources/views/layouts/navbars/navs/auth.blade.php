@@ -104,11 +104,11 @@
     :root {
         --tab-color-white: #f9f9f9;
         --tab-color-black: #004345;
-        --tab-color-cadet: #2b7b7d;
+        --tab-color-cadet: var(--color-accent);
         --tab-color-fighter: #315f5f;
         --tab-color-space: #383961;
         --tab-color-gray: #d7d9d7;
-        --tab-color-english: #2b7b7d;
+        --tab-color-english: var(--color-accent);
         /*
          --------
          * CSS Vars
@@ -126,7 +126,7 @@
         --tab-focus-border-color: var(--tab-color-fighter);
         --color-light: white;
         --color-dark: #212121;
-        --color-signal: #37b44a;
+        --color-signal: var(--color-success);
         --color-background:#f5f6fa;
         --color-text: var(--color-dark);
         --color-accent: var(--color-signal);
@@ -179,7 +179,7 @@
         border: 1px solid rgba(43, 123, 125, 0.2);
         border-radius: 6px;
         outline: none;
-        color: #2b7b7d;
+        color: var(--color-accent);
         padding: 8px 12px;
         width: 100%;
         max-width: 100%;
@@ -204,7 +204,7 @@
 
     #wrapp input[type="text"]:focus {
         width: 100%;
-        border-color: #2b7b7d;
+        border-color: var(--color-accent);
         background: #ffffff;
         box-shadow: 0 4px 12px rgba(43, 123, 125, 0.15);
     }
@@ -946,7 +946,7 @@
     }
 
     .profile-toggle-btn:hover .photo {
-        border-color: #2b7b7d;
+        border-color: var(--color-accent);
     }
 
     .profile-toggle-btn .photo img {

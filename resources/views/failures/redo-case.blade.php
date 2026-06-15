@@ -281,7 +281,7 @@
                                                     <label></label>
                                                 </div>
                                                 <div class="kt-form__control">
-                                                    <b style="color:#2b7b7d">{{$job->status()}}</b>
+                                                    <b style="color:var(--color-accent)">{{$job->status()}}</b>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,0 +1,29 @@
+{
+    "created_at": "2026-06-12 15:30:40",
+    "user": "yazan",
+    "base_url": "http:\/\/127.0.0.1:8899",
+    "results": [
+        {
+            "audit": "create-case",
+            "viewport": "desktop",
+            "path": "\/new-case",
+            "status": 200,
+            "state": "ok",
+            "ms": 16299,
+            "checks": 14,
+            "warnings": [],
+            "error": null
+        },
+        {
+            "audit": "create-case",
+            "viewport": "mobile",
+            "path": "\/new-case",
+            "status": 200,
+            "state": "ok",
+            "ms": 14838,
+            "checks": 14,
+            "warnings": [],
+            "error": null
+        }
+    ]
+}

@@ -40,6 +40,17 @@
     min-height: 0 !important;
 }
 
+.main-panel > .content > .row {
+    row-gap: 16px;
+    margin-bottom: 16px;
+}
+
+.main-panel > .content > .row > [class*="col-"],
+.main-panel > .content .noLeftPadding {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+}
+
 .dashboard-summary-panel {
     height: auto;
 }
@@ -74,17 +85,10 @@
     padding-bottom: 0 !important;
 }
 
-.summary-table-responsive .dataTables_scroll,
 .summary-table-responsive .dataTables_scrollHead,
 .summary-table-responsive .dataTables_scrollBody {
     overflow-x: hidden !important;
     overflow-y: visible !important;
-}
-
-.summary-table-responsive .dataTables_scrollBody {
-    overflow-y: visible !important;
-    max-height: none !important;
-    height: auto !important;
 }
 
 .main-dashboard-summary-table th,
@@ -210,7 +214,7 @@
     }
 
     .main-panel > .content {
-        padding: 60px 0 12px !important;
+        padding: 80px 0 12px !important;
         margin-top: 0 !important;
     }
 
@@ -221,8 +225,8 @@
 
     .main-panel > .content > .row > [class*="col-"],
     .main-panel > .content .noLeftPadding {
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
     }
 
     .card.card-chart {

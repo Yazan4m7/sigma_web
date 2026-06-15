@@ -61,8 +61,8 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    border: 2px solid #dc3545;
-    background-color: #dc3545;
+    border: 2px solid var(--color-danger);
+    background-color: var(--color-danger);
     margin-right: 12px;
     position: relative;
     transition: all 0.3s ease;

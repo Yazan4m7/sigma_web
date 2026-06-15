@@ -3773,7 +3773,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .table-responsive {
-    overflow: auto;
+    overflow: hidden;
     padding-bottom: 10px;
 }
 

@@ -13,8 +13,7 @@
 .main-panel {
     /* margin-left: 0px !important; */
     transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
-    background-color: #f2f4f9;
-
+    background-color: var(--surface-bg);
 }
 
 /* Logo styling - Fixed positioning */
@@ -248,7 +247,7 @@
 
 .sidebar-pin-button i {
     font-size: 16px;
-    color: #9ca3af;
+    color: var(--color-text-muted);
     transition: all 0.3s ease;
 }
 
@@ -261,21 +260,21 @@
 
 /* Hover effect on pin button */
 .sidebar-pin-button:hover {
-    background: rgba(0, 0, 0, 0.05);
+    background: var(--color-accent-muted);
 }
 
 .sidebar-pin-button:hover i {
-    color: #6b7280;
+    color: var(--color-text-secondary);
 }
 
 /* Pinned state styling */
 .sidebar-pin-button.pinned i {
     transform: rotate(45deg);
-    color: #10b981 !important;
+    color: var(--color-accent) !important;
 }
 
 .sidebar-pin-button.pinned:hover i {
-    color: #059669 !important;
+    color: var(--color-accent-light) !important;
 }
 
 /* Pinned State - Keep sidebar expanded */
@@ -358,7 +357,7 @@
         transition: transform 0.35s cubic-bezier(0.4, 0.0, 0.2, 1) !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+        box-shadow: 2px 0 8px var(--color-border);
         will-change: transform;
         transform: translateX(-100%) !important;
     }
@@ -420,14 +419,13 @@
         will-change: auto !important;
     }
 
-    /* Main panel takes full width on mobile */
+    /* Main panel stays flush on mobile until the sidebar is opened */
     .main-panel {
-        background-color: #f4f6fb;
-   margin-left: 80px !important;
-   margin-left: 78px !important;
-   transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
-   /* width: calc(100% - 80px) !important; */
-   }
+        background-color: var(--color-surface-raised);
+        margin-left: 0 !important;
+        width: 100% !important;
+        transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out !important;
+    }
 
     /* Don't push content on mobile, keep it in place */
     html.nav-open .main-panel,
@@ -573,16 +571,16 @@
     }
 
     .sidebar::-webkit-scrollbar-track {
-        background: rgba(255, 255, 255, 0.1);
+        background: color-mix(in srgb, var(--color-surface) 10%, transparent);
     }
 
     .sidebar::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.3);
+        background: color-mix(in srgb, var(--color-surface) 30%, transparent);
         border-radius: 3px;
     }
 
     .sidebar::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.5);
+        background: color-mix(in srgb, var(--color-surface) 50%, transparent);
     }
 }
 

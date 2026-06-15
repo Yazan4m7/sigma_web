@@ -8,7 +8,7 @@
     align-items: center;
     gap: 8px;
     font-size: 12px;
-    
+
 }
 .fa-eye.printBtn,
 .fa-print.printBtn {
@@ -43,7 +43,7 @@
 }
 
 .table-responsive {
-    overflow: visible !important;
+    overflow: hidden !important;
 }
 
 .bootstrap-select > .dropdown-toggle {
@@ -147,9 +147,9 @@
     height: 48px !important;
     min-width: 190px;
     width: auto;
-    background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
     background-color: #4d9597 !important;
-    border: 1px solid #408385;
+    border: 1px solid var(--color-accent);
     color: white !important;
     font-weight: 600;
     transition: all 0.3s ease;
@@ -223,7 +223,7 @@
 
 /* Filter Label Icons - Standardized Dark Grey Color */
 .report-filters-card label i {
-    color: #2b7b7d !important;
+    color: var(--color-accent) !important;
 }
 
 .month-title i {
@@ -341,7 +341,7 @@ table:has(th input[type="checkbox"]) {
 /* Print Button Styling */
 .printBtn {
     position: static !important;
-    color: #2b7b7d;
+    color: var(--color-accent);
     transition: all 0.2s ease;
     font-size: inherit;
 }
@@ -518,7 +518,7 @@ table:has(th input[type="checkbox"]) {
 }
 
 .sigma-modal--cases-index-actions .modal-footer .btn-outline-danger {
-    color: #dc3545 !important;
+    color: var(--color-danger) !important;
 }
 
 .sigma-modal--cases-index-actions .modal-footer .btn-outline-warning {

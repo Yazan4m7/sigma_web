@@ -43,7 +43,7 @@
 {{--        border: none;--}}
 {{--    }--}}
 {{--    .card-header {--}}
-{{--        background: linear-gradient(to right, #37b44a, #2a8a38);--}}
+{{--        background: linear-gradient(to right, var(--color-success), var(--color-success));--}}
 {{--        color: white;--}}
 {{--        font-weight: 500;--}}
 {{--        border-radius: 8px 8px 0 0 !important;--}}
@@ -69,7 +69,7 @@
 {{--        align-items: center;--}}
 {{--    }--}}
 {{--    .action-button:hover {--}}
-{{--        background-color: #37b44a;--}}
+{{--        background-color: var(--color-success);--}}
 {{--        color: white;--}}
 {{--        transform: translateY(-2px);--}}
 {{--    }--}}

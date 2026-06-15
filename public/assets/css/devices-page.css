@@ -575,7 +575,7 @@
     height: 20px;
     margin: -10px 0 0 -10px;
     border: 2px solid #f3f3f3;
-    border-top: 2px solid #007bff;
+    border-top: 2px solid var(--color-accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -775,7 +775,7 @@
 .sortable-mode .device-card.sortable-ghost {
     opacity: 0.3 !important;
     background: #f0f9ff !important;
-    border: 2px dashed #3b82f6 !important;
+    border: 2px dashed var(--color-accent) !important;
     transform: scale(1.05) !important;
 }
 
@@ -841,7 +841,7 @@
 
 /* Focus states for accessibility */
 .device-card:focus-visible {
-    outline: 3px solid #007bff;
+    outline: 3px solid var(--color-accent);
     outline-offset: 3px;
     border-radius: 15px;
 }

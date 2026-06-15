@@ -123,7 +123,7 @@ ease-out;
 
         .form-input-modern:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #38b44a63;
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
@@ -191,6 +191,54 @@ ease;
             color: #a0aec0;
         }
 
+        .remember-login-option {
+            width: 85%;
+            margin: -0.4rem auto 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .remember-login-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .remember-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #cbd5e0;
+            border-radius: 6px;
+            background: #ffffff;
+            color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            transition: all 0.2s ease;
+        }
+
+        .remember-login-option input:checked + .remember-box {
+            background: #38b449;
+            border-color: #38b449;
+            box-shadow: 0 0 0 3px rgba(56, 180, 73, 0.16);
+        }
+
+        .remember-login-option:focus-within .remember-box {
+            border-color: #38b449;
+            box-shadow: 0 0 0 3px rgba(56, 180, 73, 0.12);
+        }
+
+        .remember-text {
+            line-height: 1;
+        }
+
         .login-button {
             text-align: center;
     width: 60%;
@@ -216,6 +264,13 @@ ease;
 
         .login-button:active {
             transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            cursor: not-allowed;
+            opacity: 0.75;
+            transform: none;
+            box-shadow: none;
         }
 
         .error-message {
@@ -334,7 +389,7 @@ ease;
 
             @endif
 
-            <form role="form" method="POST" action="{{ route('login') }}" autocomplete="on" style="text-align: center;  ">
+            <form id="login-form" role="form" method="POST" action="{{ route('login') }}" autocomplete="on" style="text-align: center;  ">
                 @csrf
 
                 <div class="form-group-modern {{ $errors->has('username') ? 'has-error' : '' }}">
@@ -381,6 +436,18 @@ ease;
                     @endif
                 </div>
 
+                <label class="remember-login-option" for="login-remember">
+                    <input id="login-remember"
+                           type="checkbox"
+                           name="remember"
+                           value="1"
+                           {{ old('remember', '1') ? 'checked' : '' }}>
+                    <span class="remember-box" aria-hidden="true">
+                        <i class="fas fa-check"></i>
+                    </span>
+                    <span class="remember-text">Remember me</span>
+                </label>
+
                 <button type="submit" class="login-button">
                     <i class="fas fa-sign-in-alt" style="margin-right: 0.5rem;"></i>
                     Sign In
@@ -393,6 +460,8 @@ ease;
 @push('js')
 <script>
     $(document).ready(function() {
+        let isSubmitting = false;
+
         // Refresh CSRF token every 5 minutes to prevent expiry
         setInterval(function() {
             $.get('{{ route("login") }}', function(data) {
@@ -447,26 +516,36 @@ ease;
         });
 
         // Add loading state to login button
-        $('form').on('submit', function(e) {
-            const passwordInput = $('input[name="password"]');
-            const button = $('.login-button');
-            const originalText = button.html();
+        $('#login-form').on('submit', function(e) {
+            const form = $(this);
+            const passwordInput = form.find('input[name="password"]');
+            const button = form.find('.login-button');
 
+            if (isSubmitting) {
+                e.preventDefault();
+                return false;
+            }
+
+            isSubmitting = true;
             passwordInput.attr('type', 'password');
+            button.data('original-html', button.html());
             button.html('<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Signing In...');
             button.prop('disabled', true);
+            button.attr('aria-disabled', 'true');
 
             // Re-enable after 10 seconds to handle failed logins or network issues
             setTimeout(function() {
-                button.html(originalText);
+                isSubmitting = false;
+                button.html(button.data('original-html'));
                 button.prop('disabled', false);
+                button.removeAttr('aria-disabled');
             }, 10000);
         });
 
         // Add enter key support
         $('.form-input-modern').on('keypress', function(e) {
             if (e.which === 13) {
-                $('form').submit();
+                $('#login-form').trigger('submit');
             }
         });
 

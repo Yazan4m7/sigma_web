@@ -170,7 +170,7 @@
         }
 
         .modern-toggle-btn:hover {
-            border-color: #408385;
+            border-color: var(--color-accent);
         }
 
         .toggle-option {
@@ -914,9 +914,9 @@
         }
 
         .generate-btn {
-            background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
             background-color: #4d9597 !important;
-            border-color: #408385 !important;
+            border-color: var(--color-accent) !important;
             color: #ffffff !important;
             box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24) !important;
             min-height: 48px;
@@ -1044,8 +1044,8 @@
         #master-report-table thead th.header-dark,
         table#master-report-table thead th.header-dark,
         .sigma-report-table-container .dataTables_scrollHead th.header-dark {
-            background-color: #408385 !important;
-            background: #408385 !important;
+            background-color: var(--color-accent) !important;
+            background: var(--color-accent) !important;
             color: white !important;
             border: none !important;
         }
@@ -1058,7 +1058,7 @@
         .sigma-report-table-container .dataTables_scrollHead th.header-light {
             background-color: transparent !important;
             background: none !important;
-            color: #408385 !important;
+            color: var(--color-accent) !important;
             border: none !important;
             border-bottom: none !important;
             font-weight: 600;
@@ -1066,13 +1066,13 @@
 
         .header-light {
             font-family: 'Cairo', sans-serif !important;
-            color:  #408385 !important;
+            color:  var(--color-accent) !important;
         }
 
         #master-report-table thead th,
         .sigma-report-table-container .dataTables_scrollHead th {
-            background-color: #408385 !important;
-            background: #408385 !important;
+            background-color: var(--color-accent) !important;
+            background: var(--color-accent) !important;
             color: #ffffff !important;
             border: none !important;
         }
@@ -4569,15 +4569,15 @@
                         ],
                         drawCallback: function() {
                             $('#master-report-table thead th.header-light, .sigma-report-table-container .dataTables_scrollHead th.header-light').css({
-                                'background-color': '#408385',
-                                'background': '#408385',
+                                'background-color': 'var(--color-accent)',
+                                'background': 'var(--color-accent)',
                                 'border': 'none',
                                 'border-bottom': 'none',
                                 'color': '#ffffff'
                             });
                             $('#master-report-table thead th.header-dark, .sigma-report-table-container .dataTables_scrollHead th.header-dark').css({
-                                'background-color': '#408385',
-                                'background': '#408385',
+                                'background-color': 'var(--color-accent)',
+                                'background': 'var(--color-accent)',
                                 'color': '#ffffff',
                                 'border': 'none'
                             });
@@ -4597,15 +4597,15 @@
 
                     setTimeout(() => {
                         $('#master-report-table thead th.header-light, .sigma-report-table-container .dataTables_scrollHead th.header-light').css({
-                            'background-color': '#408385',
-                            'background': '#408385',
+                            'background-color': 'var(--color-accent)',
+                            'background': 'var(--color-accent)',
                             'border': 'none',
                             'border-bottom': 'none',
                             'color': '#ffffff'
                         });
                         $('#master-report-table thead th.header-dark, .sigma-report-table-container .dataTables_scrollHead th.header-dark').css({
-                            'background-color': '#408385',
-                            'background': '#408385',
+                            'background-color': 'var(--color-accent)',
+                            'background': 'var(--color-accent)',
                             'color': '#ffffff',
                             'border': 'none'
                         });

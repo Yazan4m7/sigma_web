@@ -37,6 +37,7 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             'PageBenchmarkProbe:before-start-session',
             \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\ApplySessionClosePreference::class,
             \App\Http\Middleware\PrimeAuthenticatedUserFromCache::class,
             'PageBenchmarkProbe:before-authenticate-session',
             \Illuminate\Session\Middleware\AuthenticateSession::class,

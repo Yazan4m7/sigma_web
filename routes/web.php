@@ -18,6 +18,9 @@ Route::get('/', function () {
 Route::get('/testme', function () {
     return view('enc');
 });
+Route::get('/dev/css-editor', [App\Http\Controllers\DevCssEditorController::class, 'index'])->name('dev.css-editor');
+Route::get('/dev/css-editor/file', [App\Http\Controllers\DevCssEditorController::class, 'show'])->name('dev.css-editor.show');
+Route::post('/dev/css-editor/file', [App\Http\Controllers\DevCssEditorController::class, 'update'])->name('dev.css-editor.update');
 Route::get('/login', function () {
     return redirect('/home');
 })->name('login');

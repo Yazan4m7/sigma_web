@@ -874,7 +874,7 @@
 .cases-filter-card.container.full-width {
     background: #ffffff !important;
     border: 1px solid rgba(188, 206, 216, 0.3);
-    border-radius: 16px;
+    border-radius: 0 16px;
     box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 6%) !important;
     margin-top: 0;
     margin-bottom: 24px;
@@ -2669,22 +2669,38 @@
                 var urlToRedirect = ev.currentTarget.getAttribute( 'href' ); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
                 var clientName = ev.currentTarget.getAttribute( 'data-clientName' );
                 var patientName = ev.currentTarget.getAttribute( 'data-patientName' );
+                var alert = window.Swal || window.swal;
+                var $openCaseActionsModal = $( '.sigma-modal--cases-index-actions.show' );
 
-                //console.log(urlToRedirect); // verify if this is the right URL
-                swal.fire( {
-                               title: "You sure You want to delete.. </br>" + clientName + " - " + patientName ,
-                               text: "This will also delete related info. (invoice, photos .. etc)?" ,
-                               icon: "warning" ,
-                               showDenyButton: true ,
-                               confirmButtonText: 'Delete Case' ,
-                               denyButtonText: 'Cancel'
-                           } ).then( (result) => {
-                    if (result.isConfirmed) {
-                        window.location = urlToRedirect;
-                    } else if (result.isDenied) {
-                        swal.fire( "Case NOT deleted." );
+                function showDeleteCaseAlert() {
+                    if (!alert || typeof alert.fire !== 'function') {
+                        return;
                     }
-                } );
+
+                    alert.fire( {
+                                   title: "You sure You want to delete.. </br>" + clientName + " - " + patientName ,
+                                   text: "This will also delete related info. (invoice, photos .. etc)?" ,
+                                   icon: "warning" ,
+                                   showCancelButton: true ,
+                                   confirmButtonText: 'Delete Case' ,
+                                   cancelButtonText: 'Cancel',
+                                   target: document.body
+                               } ).then( (result) => {
+                        if (result.isConfirmed) {
+                            window.location = urlToRedirect;
+                        }
+                    } );
+                }
+
+                if ($openCaseActionsModal.length) {
+                    $openCaseActionsModal.one( 'hidden.bs.modal', function () {
+                        setTimeout( showDeleteCaseAlert, 0 );
+                    } );
+                    $openCaseActionsModal.modal( 'hide' );
+                    return;
+                }
+
+                showDeleteCaseAlert();
 
             }
         </script>

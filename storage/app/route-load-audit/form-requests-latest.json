@@ -1,0 +1,123 @@
+{
+    "created_at": "2026-06-06 17:05:10",
+    "user": "yazan",
+    "results": [
+        {
+            "audit": "create-case",
+            "page_uri": "\/new-case",
+            "submit_uri": "\/new-case-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 235,
+            "error": null
+        },
+        {
+            "audit": "tools-create-case",
+            "page_uri": "\/tools\/create-case",
+            "submit_uri": "\/tools\/create-case",
+            "status": 302,
+            "state": "ok",
+            "ms": 77,
+            "error": null
+        },
+        {
+            "audit": "create-doctor",
+            "page_uri": "\/dentists\/new",
+            "submit_uri": "\/dentists\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 155,
+            "error": null
+        },
+        {
+            "audit": "create-material",
+            "page_uri": "\/material\/new-view",
+            "submit_uri": "\/material\/new",
+            "status": 302,
+            "state": "ok",
+            "ms": 39,
+            "error": null
+        },
+        {
+            "audit": "create-job-type",
+            "page_uri": "\/Job-type\/new-view",
+            "submit_uri": "\/Job-type\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 29,
+            "error": null
+        },
+        {
+            "audit": "create-lab",
+            "page_uri": "\/lab\/new-view",
+            "submit_uri": "\/lab\/new",
+            "status": 302,
+            "state": "ok",
+            "ms": 30,
+            "error": null
+        },
+        {
+            "audit": "create-implant",
+            "page_uri": "\/implants\/new-view",
+            "submit_uri": "\/implants\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 38,
+            "error": null
+        },
+        {
+            "audit": "create-abutment",
+            "page_uri": "\/abutment\/new-view",
+            "submit_uri": "\/abutment\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 25,
+            "error": null
+        },
+        {
+            "audit": "create-tag",
+            "page_uri": "\/tags\/new-view",
+            "submit_uri": "\/tags\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 29,
+            "error": null
+        },
+        {
+            "audit": "create-failure-cause",
+            "page_uri": "\/f-cause\/new-view",
+            "submit_uri": "\/f-cause\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 51,
+            "error": null
+        },
+        {
+            "audit": "create-device",
+            "page_uri": "\/device\/new-view",
+            "submit_uri": "\/device\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 36,
+            "error": null
+        },
+        {
+            "audit": "create-user",
+            "page_uri": "\/users\/new",
+            "submit_uri": "\/users\/new-post",
+            "status": 302,
+            "state": "ok",
+            "ms": 224,
+            "error": null
+        },
+        {
+            "audit": "create-type",
+            "page_uri": "\/admin\/types\/create",
+            "submit_uri": "\/admin\/types",
+            "status": 302,
+            "state": "ok",
+            "ms": 63,
+            "error": null
+        }
+    ]
+}

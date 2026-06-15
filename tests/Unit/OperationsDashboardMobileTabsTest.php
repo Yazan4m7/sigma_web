@@ -21,6 +21,8 @@ class OperationsDashboardMobileTabsTest extends TestCase
             '.ops-dashboard .macaw-tabs.macaw-silk-tabs .stage-inner-tabs .innerBtn',
             $view
         );
+        $this->assertStringContainsString('width: calc(100% - 20px);', $view);
+        $this->assertStringContainsString('margin: 0 10px -0.18rem;', $view);
         $this->assertStringContainsString('flex-wrap: nowrap;', $view);
         $this->assertStringContainsString('gap: 0;', $view);
         $this->assertStringContainsString('flex: 0 0 50% !important;', $view);
@@ -44,9 +46,15 @@ class OperationsDashboardMobileTabsTest extends TestCase
         $this->assertStringContainsString('align-items: center;', $desktopTablistRule);
         $this->assertStringContainsString('justify-content: flex-start;', $desktopTablistRule);
         $this->assertStringContainsString('justify-content: center;', $mobileTablistRule);
+        $this->assertStringContainsString('width: calc(100% - 20px);', $mobileTablistRule);
+        $this->assertStringContainsString('margin: 0 10px 0.75rem;', $mobileTablistRule);
+        $this->assertStringContainsString('gap: 0;', $mobileTablistRule);
         $this->assertStringNotContainsString('justify-content: space-around;', $mobileTablistRule);
-        $this->assertStringContainsString('padding: 1% 13% !important;', $css);
-        $this->assertStringContainsString('padding: 1% 13% !important;', $mobileButtonRule);
+        $this->assertStringContainsString('flex: 0 0 50% !important;', $mobileButtonRule);
+        $this->assertStringContainsString('width: 50% !important;', $mobileButtonRule);
+        $this->assertStringContainsString('max-width: 50% !important;', $mobileButtonRule);
+        $this->assertStringContainsString('padding-left: 0 !important;', $mobileButtonRule);
+        $this->assertStringContainsString('padding-right: 0 !important;', $mobileButtonRule);
     }
 
     private function cssRule(string $css, string $selector): string

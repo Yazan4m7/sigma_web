@@ -21,6 +21,8 @@ class RedirectGuestWebRequests
     {
         return $request->is('login')
             || $request->is('register')
+            || $request->is('dev/css-editor')
+            || $request->is('dev/css-editor/*')
             || $request->is('password')
             || $request->is('password/*')
             || $request->is('login-attempt');

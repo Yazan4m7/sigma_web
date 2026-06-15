@@ -284,7 +284,7 @@ html, body {
 
 .sigma-report-standard .report-filters-card label i,
 .sigma-report-standard .report-filters-card .form-label i {
-    color: #2b7b7d;
+    color: var(--color-accent);
 }
 
 .sigma-report-standard .report-filters-card label,
@@ -343,7 +343,7 @@ html, body {
 
 .sigma-report-standard .connected-toggle-btn.active {
     background: #b8cdd9;
-    color: #2b7b7d;
+    color: var(--color-accent);
     font-weight: 700;
 }
 
@@ -385,7 +385,7 @@ html, body {
 
 .connected-toggle-btn.active {
     background: #b8cdd9 !important;
-    color: #2b7b7d !important;
+    color: var(--color-accent) !important;
     font-weight: 700 !important;
 }
 
@@ -405,12 +405,12 @@ html, body {
 .sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background: rgba(43, 123, 125, 0.12);
     border-color: rgba(43, 123, 125, 0.35);
-    color: #2b7b7d;
+    color: var(--color-accent);
     border-radius: 12px;
 }
 
 .sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: #2b7b7d;
+    color: var(--color-accent);
 }
 
 .sigma-report-standard .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
@@ -420,12 +420,12 @@ html, body {
 .master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice {
     background: rgba(43, 123, 125, 0.12);
     border-color: rgba(43, 123, 125, 0.35);
-    color: #2b7b7d;
+    color: var(--color-accent);
     border-radius: 12px;
 }
 
 .master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
-    color: #2b7b7d;
+    color: var(--color-accent);
 }
 
 .master-report-container .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
@@ -487,7 +487,7 @@ html, body {
 .sigma-report-standard .sigma-pagination-btn {
     border: 1px solid #c9d7dc;
     background: #e7f2f2;
-    color: #2b7b7d;
+    color: var(--color-accent);
     border-radius: 8px;
     padding: 6px 10px;
     min-width: 32px;
@@ -519,7 +519,7 @@ html, body {
 .sigma-pagination-btn {
     border: 1px solid #c9d7dc !important;
     background: #e7f2f2 !important;
-    color: #2b7b7d !important;
+    color: var(--color-accent) !important;
     border-radius: 8px !important;
     padding: 6px 10px !important;
     min-width: 32px !important;
@@ -726,10 +726,10 @@ html, body {
 
 /* Generate Report Button - Elegant Premium Design */
 .btn-primary-enhanced {
-    background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
     background-color: #4d9597 !important;
     box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24);
-    border: 1px solid #408385;
+    border: 1px solid var(--color-accent);
     position: relative;
     overflow: hidden;
     color: #ffffff;
@@ -833,7 +833,7 @@ html, body {
     padding: 0;
     border-radius: 8px;
     background: transparent;
-    color: #2b7b7d;
+    color: var(--color-accent);
     border: none;
     box-shadow: none;
     transition: all 0.2s ease;
@@ -1161,7 +1161,7 @@ html, body {
 
 /* CRITICAL: Fix dropdown toggle positioning */
 .bootstrap-select .dropdown-toggle {
-    background: #4083851c;
+    background: var(--color-accent-muted);
     z-index: 1001 !important;
     position: relative !important;
 }
@@ -1420,7 +1420,7 @@ html, body {
 }
 
 .btn-generate-report {
-    background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
     border: none !important;
     padding: 16px 32px !important;
     border-radius: 10px !important;
@@ -1660,7 +1660,7 @@ div[id*="table"], div[id*="datatable"],
 
 /* Dark header class - for first and last columns */
 .header-dark {
-    background-color: #408385 !important;
+    background-color: var(--color-accent) !important;
     color: #ffffff !important;
     font-weight: 600 !important;
 }
@@ -1831,7 +1831,7 @@ div[id*="table"], div[id*="datatable"],
 }
 
 .btn-generate-report {
-    background: linear-gradient(135deg, #408385 0%, #67aeb0 100%) !important;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
     border: none !important;
     padding: 16px 32px !important;
     border-radius: 10px !important;

@@ -11145,7 +11145,7 @@ a.text-darker:focus {
     }
 
     .alert.alert-success {
-        background-color: #37b44a;
+        background-color: var(--color-success);
     }
 
     .alert i.fa,
@@ -11265,14 +11265,14 @@ a.text-darker:focus {
 .navbar .navbar-nav > a.btnWD.activeWD:focus,
 .navbar .navbar-nav > a.btnWD.activeWD:hover {
     /*background-color: #263148 !important;*/
-    /*background-image: linear-gradient(to bottom left, #37b44a, #76c382, #44ff61) !important;*/
-    /*background-image: -webkit-linear-gradient(to bottom left, #37b44a, #76c382, #44ff61) !important;*/
-    /*background-image: -o-linear-gradient(to bottom left, #37b44a, #76c382, #44ff61) !important;*/
-    /*background-image: -moz-linear-gradient(to bottom left, #37b44a, #76c382, #44ff61) !important;*/
+    /*background-image: linear-gradient(to bottom left, var(--color-success), var(--color-success), var(--color-success)) !important;*/
+    /*background-image: -webkit-linear-gradient(to bottom left, var(--color-success), var(--color-success), var(--color-success)) !important;*/
+    /*background-image: -o-linear-gradient(to bottom left, var(--color-success), var(--color-success), var(--color-success)) !important;*/
+    /*background-image: -moz-linear-gradient(to bottom left, var(--color-success), var(--color-success), var(--color-success)) !important;*/
     color: #000000;
     ;
     /*box-shadow: none;*/
-    /*border:1px solid #37b44a;*/
+    /*border:1px solid var(--color-success);*/
 }
 
 .btnWD:activeWD,
@@ -11541,14 +11541,14 @@ fieldset[disabled] .navbar .navbar-nav > a.btnWD.activeWD {
     }
 
 .btnWD-primaryWD {
-    background: #37b44a;
-    background-image: -webkit-linear-gradient(to bottom left, #37b44a, #6a6a6a, #84ff96);
-    background-image: -o-linear-gradient(to bottom left, #37b44a, #6a6a6a, #84ff96);
-    background-image: -moz-linear-gradient(to bottom left, #37b44a, #6a6a6a, #84ff96);
-    background-image: linear-gradient(to bottom left, #37b44a, #6a6a6a, #84ff96);
+    background: var(--color-success);
+    background-image: -webkit-linear-gradient(to bottom left, var(--color-success), #6a6a6a, var(--color-success));
+    background-image: -o-linear-gradient(to bottom left, var(--color-success), #6a6a6a, var(--color-success));
+    background-image: -moz-linear-gradient(to bottom left, var(--color-success), #6a6a6a, var(--color-success));
+    background-image: linear-gradient(to bottom left, var(--color-success), #6a6a6a, var(--color-success));
     background-size: 210% 210%;
     background-position: top right;
-    background-color: #37b44a;
+    background-color: var(--color-success);
     transition: all 0.15s ease;
     box-shadow: none;
     color: #ffffff;
@@ -14906,7 +14906,7 @@ input,
 optgroup,
 select,
 textarea {
-    font-family: "Poppins", sans-serif;
+    font-family: "Cairo", sans-serif;
 }
 
 .card h1,
@@ -15252,7 +15252,7 @@ hr {
 }
 
 .table-responsive {
-    overflow: scroll;
+    overflow: hidden;
     padding-bottom: 10px;
 }
 
@@ -17372,7 +17372,7 @@ textarea.form-control {
     padding: 10px 10px 0 0;
     resize: none;
     border: none;
-    border: 1px solid #37b44a;
+    border: 1px solid var(--color-success);
     border-radius: 3px;
     line-height: 2;
 }

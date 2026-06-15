@@ -1860,388 +1860,388 @@
 /* Enhanced button colors and styling while keeping original layout */
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-create-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--case-edit-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--clients-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--clients-add .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--clients-delete .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--waiting-generic .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--devices-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--generic-payments .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--implants-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--job-types-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--labs-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-edit-types .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--material-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--media-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--rtl-search .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--tags-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--invoice-check .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 .sigma-modal--users-actions .modal-footer .btn-primary { 
-    background-color: #007bff; 
-    border-color: #007bff; 
+    background-color: var(--color-accent); 
+    border-color: var(--color-accent); 
     color: #fff;
 }
 
@@ -3948,1084 +3948,1084 @@
 
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-create-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--case-edit-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--clients-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--clients-add .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--clients-delete .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--waiting-generic .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--devices-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--generic-payments .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--implants-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--job-types-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--labs-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-edit-types .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--material-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--media-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--rtl-search .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--tags-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--invoice-check .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 .sigma-modal--users-actions .modal-footer .btn-warning { 
-    background-color: #ffc107; 
-    border-color: #ffc107; 
+    background-color: var(--color-warning); 
+    border-color: var(--color-warning); 
     color: #212529;
 }
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-create-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--case-edit-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--clients-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--clients-add .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--clients-delete .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--waiting-generic .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--devices-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--generic-payments .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--implants-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--job-types-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--labs-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-edit-types .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--material-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--media-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--rtl-search .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--tags-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--invoice-check .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 .sigma-modal--users-actions .modal-footer .btn-warning:hover { 
-    background-color: #e0a800; 
+    background-color: var(--color-warning); 
     border-color: #d39e00; 
 }
 
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-add .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-delete .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-generic .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--devices-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-payments .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--implants-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--job-types-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--labs-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-edit-types .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--media-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--rtl-search .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--tags-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--invoice-check .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--users-actions .modal-footer .btn-danger { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 
@@ -7505,774 +7505,774 @@
 
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-create-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--case-edit-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--clients-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--clients-add .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--clients-delete .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--waiting-generic .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--devices-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--generic-payments .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--implants-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--job-types-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--labs-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-edit-types .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--material-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--media-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--rtl-search .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--tags-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--invoice-check .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 .sigma-modal--users-actions .modal-footer .btn-outline-danger { 
-    color: #dc3545; 
-    border-color: #dc3545; 
+    color: var(--color-danger); 
+    border-color: var(--color-danger); 
     background-color: transparent;
 }
 
 .sigma-modal--abutments-delivery-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--abutments-delivery-receive .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--abutments-index-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--accountant-delivery-actions-alt .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel-shortcut .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel-settings .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-shortcut .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-intel2-settings .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--admin-mobile-access .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-dashboard-loading .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-modern-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-create-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-milling .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-active-case-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--dashboard-waiting-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-teeth-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--case-edit-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-index-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--cases-rejected-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-add .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--clients-delete .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--active-cases-preview .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-shortcut .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel-settings .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-shortcut .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-intel2-settings .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--adminhth-mobile-access .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-3d-printing .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-delivery .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--waiting-generic .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-edit .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-schedule-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--delivery-receive-payment .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--devices-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-causes-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-teeth-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-modify-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-teeth-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-redo-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-reject-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-reject-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-teeth-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--failures-repeat-files .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-primary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-tertiary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-primary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-secondary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-emp-cases-alt-tertiary .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-payments-alt .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--generic-payments .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--implants-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--job-types-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--labs-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-add-type .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-add-implant .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-create-edit-implant .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-edit-types .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-edit-add-type .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--material-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--media-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--rtl-search .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--report-employees-filter .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--report-devices-filter .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--tags-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--invoice-check .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--invoice-check-new .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 .sigma-modal--users-actions .modal-footer .btn-outline-danger:hover { 
-    background-color: #dc3545; 
-    border-color: #dc3545; 
+    background-color: var(--color-danger); 
+    border-color: var(--color-danger); 
     color: #fff;
 }
 

@@ -3,11 +3,11 @@
 
 :root {
     /* Status Colors - Professional Healthcare Palette (Report-specific) */
-    --status-reject: #dc3545;
+    --status-reject: var(--color-danger);
     --status-reject-light: #f8d7da;
     --status-repeat: #fd7e14;
     --status-repeat-light: #ffe8d1;
-    --status-modification: #ffc107;
+    --status-modification: var(--color-warning);
     --status-modification-light: #fff3cd;
     --status-redo: #6f42c1;
     --status-redo-light: #e2d9f3;
@@ -33,7 +33,7 @@
 }
 
 .status-modification {
-    background: linear-gradient(135deg, var(--status-modification) 0%, #e0a800 100%) !important;
+    background: linear-gradient(135deg, var(--status-modification) 0%, var(--color-warning) 100%) !important;
     color: #212529 !important;
     font-weight: 700 !important;
 }

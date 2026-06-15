@@ -903,7 +903,7 @@ class CaseController extends Controller
                 'jobs.abutmentR:id,name',
                 'abutmentsDeliveries:id,case_id,status',
                 'tags.originalTagRecord:id,text,color,icon',
-                'notes.writtenBy:id,name_initials'
+                'notes.writtenBy:id,first_name,last_name,name_initials'
             ])
                 ->whereHas('jobs', function ($q) {
                     $q->whereIn('stage', [1, 2, 3, 4, 5, 6, 7, 8]);
@@ -1321,6 +1321,10 @@ class CaseController extends Controller
 
         Log::info('[finishCaseStage] firstJob case_id: ' . $caseId . ' stage: ' . $stage . '  ', ['$jobs' => count($jobs)]);
         //  if($firstJob) return back()->with("Case's jobs are currently at different stage");
+
+        if ($jobs->isEmpty()) {
+            return back()->with('error', 'This case has no jobs. Please edit the case and add jobs.');
+        }
 
         $assignee = $jobs->first()->assignee;
         Log::info('[finishCaseStage] assignee', ['assignee' => $assignee]);
