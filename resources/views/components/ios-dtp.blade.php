@@ -7,7 +7,8 @@
     'mode' => 'datetime',
     'disablePast' => false,
     'dataDefault' => null,
-    'mutedYearDisplay' => false
+    'mutedYearDisplay' => false,
+    'shortYearDisplay' => false
 ])
 
 @php
@@ -781,7 +782,7 @@
 </style>
 @endonce
 
-<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }}, {{ $mutedYearDisplay ? 'true' : 'false' }})" x-init="init()">
+<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }}, {{ $mutedYearDisplay ? 'true' : 'false' }}, {{ $shortYearDisplay ? 'true' : 'false' }})" x-init="init()">
     <!-- Hidden input for form submission -->
     <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }} @if($dataDefault !== null && $dataDefault !== '') data-default="{{ $dataDefault }}" @endif>
 
@@ -977,7 +978,7 @@
 </div>
 
 <script>
-    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false, mutedYearDisplay = false) {
+    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false, mutedYearDisplay = false, shortYearDisplay = false) {
         const now = new Date();
         const todayYear = now.getFullYear();
         const todayMonth = now.getMonth();
@@ -1050,6 +1051,7 @@
             mode: mode,
             disablePast: disablePast,
             mutedYearDisplay: mutedYearDisplay,
+            shortYearDisplay: shortYearDisplay,
             view: @json($isMonthMode ? 'wheel' : 'calendar'),
             formValue: @json($value ?? ''),
             originalFormValue: @json($value ?? ''),
@@ -1543,7 +1545,9 @@
 
                     const day = date.getDate();
                     const month = this.months[date.getMonth()].substring(0, 3);
-                    const year = date.getFullYear();
+                    const year = this.shortYearDisplay
+                        ? String(date.getFullYear()).slice(-2)
+                        : date.getFullYear();
 
                     if (this.mode === 'month') {
                         return `${month}<span class="ios-dtp-trigger-muted-year">, ${year}</span>`;
@@ -1581,7 +1585,9 @@
 
                     const day = date.getDate();
                     const month = this.months[date.getMonth()].substring(0, 3);
-                    const year = date.getFullYear();
+                    const year = this.shortYearDisplay
+                        ? String(date.getFullYear()).slice(-2)
+                        : date.getFullYear();
 
                     if (this.mode === 'month') {
                         return `${month}, ${year}`;

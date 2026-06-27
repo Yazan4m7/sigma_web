@@ -1,5 +1,5 @@
 {
-    "created_at": "2026-06-12 15:30:40",
+    "created_at": "2026-06-16 17:38:49",
     "user": "yazan",
     "base_url": "http:\/\/127.0.0.1:8899",
     "results": [
@@ -9,7 +9,7 @@
             "path": "\/new-case",
             "status": 200,
             "state": "ok",
-            "ms": 16299,
+            "ms": 16350,
             "checks": 14,
             "warnings": [],
             "error": null
@@ -20,7 +20,7 @@
             "path": "\/new-case",
             "status": 200,
             "state": "ok",
-            "ms": 14838,
+            "ms": 14447,
             "checks": 14,
             "warnings": [],
             "error": null

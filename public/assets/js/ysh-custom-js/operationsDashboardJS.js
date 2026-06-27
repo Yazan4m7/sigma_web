@@ -1417,3 +1417,93 @@ function showNoJobsMessage() {
     console.log("No jobs available for this device.");
     // alert("No jobs available for this device."); // Example
 }
+
+(function installCaseJobTooltips() {
+    function getTooltip() {
+        let tooltip = document.querySelector('.sigma-case-job-floating-tooltip');
+
+        if (!tooltip) {
+            tooltip = document.createElement('div');
+            tooltip.className = 'sigma-case-job-floating-tooltip';
+            tooltip.setAttribute('aria-hidden', 'true');
+            document.body.appendChild(tooltip);
+        }
+
+        return tooltip;
+    }
+
+    function hideTooltip() {
+        const tooltip = document.querySelector('.sigma-case-job-floating-tooltip');
+        if (tooltip) {
+            tooltip.classList.remove('is-visible');
+        }
+    }
+
+    function showTooltip(jobRow) {
+        const content = jobRow.dataset.jobTooltip;
+        if (!content) {
+            return;
+        }
+
+        const tooltip = getTooltip();
+        tooltip.replaceChildren(...content.split(' | ').map(function (lineText) {
+            const line = document.createElement('span');
+            line.textContent = lineText;
+            return line;
+        }));
+        tooltip.classList.remove('is-visible');
+        tooltip.style.left = '0px';
+        tooltip.style.top = '0px';
+
+        const rowRect = jobRow.getBoundingClientRect();
+        const viewportPadding = 12;
+        const tooltipWidth = tooltip.offsetWidth;
+        const tooltipHeight = tooltip.offsetHeight;
+        const left = Math.min(
+            Math.max(rowRect.left + 10, viewportPadding),
+            window.innerWidth - tooltipWidth - viewportPadding
+        );
+        const below = rowRect.bottom + 8;
+        const top = below + tooltipHeight <= window.innerHeight - viewportPadding
+            ? below
+            : Math.max(viewportPadding, rowRect.top - tooltipHeight - 8);
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+        tooltip.classList.add('is-visible');
+    }
+
+    function getJobRow(target) {
+        return target instanceof Element
+            ? target.closest('.sigma-modal--cases-dashboard-case-completion .sigma-case-job-card, .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-card')
+            : null;
+    }
+
+    document.addEventListener('pointerover', function (event) {
+        const jobRow = getJobRow(event.target);
+        if (jobRow && !jobRow.contains(event.relatedTarget)) {
+            showTooltip(jobRow);
+        }
+    });
+
+    document.addEventListener('pointerout', function (event) {
+        const jobRow = getJobRow(event.target);
+        if (jobRow && !jobRow.contains(event.relatedTarget)) {
+            hideTooltip();
+        }
+    });
+
+    document.addEventListener('focusin', function (event) {
+        const jobRow = getJobRow(event.target);
+        if (jobRow) {
+            showTooltip(jobRow);
+        }
+    });
+
+    document.addEventListener('focusout', function (event) {
+        const jobRow = getJobRow(event.target);
+        if (jobRow && !jobRow.contains(event.relatedTarget)) {
+            hideTooltip();
+        }
+    });
+}());

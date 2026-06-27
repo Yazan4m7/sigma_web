@@ -285,7 +285,7 @@ class CaseController extends Controller
         $case = sCase::with([
             'client:id,name',
             'notes:id,case_id,note,created_at,written_by',
-            'notes.writtenBy:id,name_initials',
+            'notes.writtenBy:id,first_name,last_name,name_initials',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
             'jobs.material:id,name,count_as_unit',
@@ -2304,7 +2304,11 @@ class CaseController extends Controller
     {
         $cases = sCase::query();
 
-        $searchText = $request->searchText;
+        $searchText = trim((string) $request->input('searchText', ''));
+
+        if ($searchText === '') {
+            return back()->withInput()->with('error', 'Enter a search value.');
+        }
 
         // split on 1+ whitespace & ignore empty (eg. trailing space)
         $searchValues = preg_split('/\s+/', $searchText, -1, PREG_SPLIT_NO_EMPTY);
@@ -3078,19 +3082,3 @@ class CaseController extends Controller
         return (string) $user->id;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -22,6 +22,7 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="{{ asset('assets') }}/css/ysh-custom-css/dialog.css" rel="stylesheet" />
     {{--    <link href="{{ asset('assets') }}/css/devices-dialog-fix.css" rel="stylesheet"/> --}}
     <link href="{{ asset('assets') }}/css/ysh-custom-css/OperationsDashboardStyling.css?v={{ filemtime(public_path('assets/css/ysh-custom-css/OperationsDashboardStyling.css')) }}" rel="stylesheet" />
@@ -32,10 +33,14 @@
     <!-- Responsive CSS - Mobile-first approach for full device compatibility -->
     <link href="{{ asset('assets') }}/css/responsive.css" rel="stylesheet">
     <!-- Operations Dashboard Navigation - Responsive CSS for mobile stage icons -->
-    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css" rel="stylesheet" />
+    <link href="{{ asset('assets') }}/css/operations-nav-responsive.css?v={{ filemtime(public_path('assets/css/operations-nav-responsive.css')) }}" rel="stylesheet" />
     <link href="{{ asset('assets') }}/css/waiting-dialog-merged.css" rel="stylesheet" />
 
+
     <style>
+
+
+
         .btn-outline-danger:hover{
             color:white !important;
         }
@@ -193,14 +198,16 @@
                 /* Modal header styling with divider */
 
 .sigma-modal--cases-dashboard-case-completion .modal-header {
-                    display: none !important;
+                    display: flex !important;
+                    align-items: center;
                     border-bottom: 1px solid #dee2e6 !important;
-                    padding-bottom: 12px;
+                    padding: 0.75rem 1rem;
                 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-header {
-                    display: none !important;
+                    display: flex !important;
+                    align-items: center;
                     border-bottom: 1px solid #dee2e6 !important;
-                    padding-bottom: 12px;
+                    padding: 0.75rem 1rem;
                 }
 .sigma-modal--cases-dashboard-loading .modal-header {
                     display: none !important;
@@ -287,18 +294,42 @@
                 /* Close button styling - more visible */
 
 .sigma-modal--cases-dashboard-case-completion .modal-header button.close {
-                    font-size: 32px;
-                    font-weight: 300;
-                    color: #000;
-                    opacity: 0.8;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2.25rem;
+                    height: 2.25rem;
+                    margin: -0.2rem -0.25rem -0.2rem auto;
+                    padding: 0;
+                    border: 1px solid #d1d5db;
+                    border-radius: 50%;
+                    background: #f3f4f6;
+                    color: #6b7280;
+                    opacity: 1;
+                    font-size: 1.75rem;
+                    font-weight: 400;
+                    line-height: 1;
                     text-shadow: none;
+                    transform: translate(0.25rem, -0.25rem);
+    align-items: flex-start;
                 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close {
-                    font-size: 32px;
-                    font-weight: 300;
-                    color: #000;
-                    opacity: 0.8;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 2.25rem;
+                    height: 2.25rem;
+                    margin: -0.2rem -0.25rem -0.2rem auto;
+                    padding: 0;
+
+
+                    color: #4d5157;
+                    opacity: 1;
+                    font-size: 1.75rem;
+                    font-weight: 400;
+                    line-height: 1;
                     text-shadow: none;
+                    transform: translate(0.25rem, -0.25rem);
                 }
 .sigma-modal--cases-dashboard-loading .modal-header button.close {
                     font-size: 32px;
@@ -339,11 +370,15 @@
 
 .sigma-modal--cases-dashboard-case-completion .modal-header button.close:hover {
                     opacity: 1;
-                    color: #000;
+                    border-color: #cbd5e1;
+                    background: #e5e7eb;
+                    color: #4b5563;
                 }
 .sigma-modal--cases-dashboard-case-completion-alt .modal-header button.close:hover {
                     opacity: 1;
-                    color: #000;
+                    border-color: #cbd5e1;
+                    background: #e5e7eb;
+                    color: #4b5563;
                 }
 .sigma-modal--cases-dashboard-loading .modal-header button.close:hover {
                     opacity: 1;
@@ -513,7 +548,7 @@
                     width: 100%;
                     margin: 3px;
                     font-weight: 400;
-                    padding: 10px 12px;
+                    padding: 7px 12px;
                     border: none;
                     transition: all 0.3s ease;
                     font-size: 14px;
@@ -522,7 +557,7 @@
                     width: 100%;
                     margin: 3px;
                     font-weight: 400;
-                    padding: 10px 12px;
+
                     border: none;
                     transition: all 0.3s ease;
                     font-size: 14px;
@@ -1310,7 +1345,7 @@
             align-items: flex-start !important;
             width: 100%;
             min-width: 0;
-            padding: 9px 12px !important;
+            padding: 0px 9px !important;
             margin: 0 !important;
             border: 1px solid #d7e5ec;
             border-radius: 9px;
@@ -1349,6 +1384,52 @@
             display: none;
         }
 
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content,
+        .sigma-modal--dashboard-waiting-actions .scrollable-content,
+        .sigma-modal--dashboard-active-case-actions .scrollable-content {
+            scrollbar-width: thin;
+            scrollbar-color: #1e9ba7 #eaf5f7;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content::-webkit-scrollbar,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content::-webkit-scrollbar,
+        .sigma-modal--dashboard-waiting-actions .scrollable-content::-webkit-scrollbar,
+        .sigma-modal--dashboard-active-case-actions .scrollable-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content::-webkit-scrollbar-track,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content::-webkit-scrollbar-track,
+        .sigma-modal--dashboard-waiting-actions .scrollable-content::-webkit-scrollbar-track,
+        .sigma-modal--dashboard-active-case-actions .scrollable-content::-webkit-scrollbar-track {
+            background: #eaf5f7;
+            border-radius: 999px;
+            margin: 4px 0;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content::-webkit-scrollbar-thumb,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content::-webkit-scrollbar-thumb,
+        .sigma-modal--dashboard-waiting-actions .scrollable-content::-webkit-scrollbar-thumb,
+        .sigma-modal--dashboard-active-case-actions .scrollable-content::-webkit-scrollbar-thumb {
+            min-height: 42px;
+            border: 2px solid #eaf5f7;
+            border-radius: 999px;
+            background: linear-gradient(180deg, #2aa8b2, #1e7f8a);
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .scrollable-content::-webkit-scrollbar-thumb:hover,
+        .sigma-modal--cases-dashboard-case-completion-alt .scrollable-content::-webkit-scrollbar-thumb:hover,
+        .sigma-modal--dashboard-waiting-actions .scrollable-content::-webkit-scrollbar-thumb:hover,
+        .sigma-modal--dashboard-active-case-actions .scrollable-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #35b8c2, #176d77);
+        }
+        @media screen and (max-width: 661px) {
+            .main-panel > .content {
+                border: none !important;
+                padding: 21px 10px 0px 10px !important;
+            }
+        }
         @media (max-width: 767.98px) {
             .sigma-modal--cases-dashboard-case-completion .sigma-case-job-row,
             .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-row,
@@ -1356,10 +1437,349 @@
             .sigma-modal--dashboard-active-case-actions .sigma-case-job-row,
             .ysh-case-slide-modal .sigma-case-job-row {
                 font-size: 0.9rem;
-                padding: 8px 10px !important;
+                padding: 1px 5px !important;
+            }
+
+
+
+
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-card,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-card,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-card,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-card {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            display: grid !important;
+            grid-template-columns:minmax(0, 1fr) 80px 100px 48px 62px;
+            align-items: center !important;
+            gap: 0;
+            min-height: 46px;
+            padding: 0 !important;
+            border: 1px solid #cfe4eb;
+            border-left: 4px solid #1e9ba7;
+            border-radius: 8px;
+            overflow: hidden !important;
+            box-shadow: 0 2px 8px rgba(41, 68, 80, 0.08) !important;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell {
+            display: block;
+            box-sizing: border-box;
+            max-width: 100%;
+            min-width: 0;
+            min-height: 46px;
+            padding: 8px 10px;
+            color: #263f4b;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 30px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell + .sigma-case-job-cell,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell + .sigma-case-job-cell,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell + .sigma-case-job-cell,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell + .sigma-case-job-cell {
+            border-left: 1px solid #cfe4eb;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--lead,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--lead,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--lead,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--lead {
+            justify-content: flex-start;
+            text-align: left;
+            padding-left: 15px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--type,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--type,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--type,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--type {
+            justify-content: flex-start;
+            text-align: left;
+            color: #263f4b;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--material,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--material,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--material,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--material {
+            justify-content: flex-start;
+            text-align: left;
+            color: #425d6b;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--color,
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--style,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--color,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--style,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--color,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--style,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--color,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--style {
+            justify-content: center;
+            text-align: center;
+            color: #425d6b;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-identifier,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-identifier,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-identifier,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-identifier {
+            width: 64px;
+            min-width: 0;
+            color: #1f5260;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-main,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-main,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-main,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-main {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            gap: 2px;
+        }
+
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-title,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-title,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-title,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-title {
+            color: #263f4b;
+            font-size: 15px;
+            font-weight: 800;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-secondary,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-secondary,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-secondary,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-secondary {
+            color: #647987;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-badges,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-badges,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-badges,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-badges {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 5px;
+            width: 112px;
+            min-width: 112px;
+            min-height: 22px;
+            overflow: hidden;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-badge,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-badge,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-job-badge,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-job-badge {
+            max-width: 52px;
+            padding: 3px 7px;
+            border: 1px solid #b9d9e2;
+            border-radius: 999px;
+            background: #eef9fb;
+            color: #1f5260;
+            font-size: 11px;
+            font-weight: 800;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-note-text,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-note-text,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-note-text,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-note-text {
+            display: block !important;
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: isolate;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-note-text--mixed,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-note-text--mixed,
+        .sigma-modal--dashboard-waiting-actions .sigma-case-note-text--mixed,
+        .sigma-modal--dashboard-active-case-actions .sigma-case-note-text--mixed {
+            direction: inherit !important;
+            text-align: inherit !important;
+            unicode-bidi: normal;
+        }
+
+        @media (max-width: 767.98px) {
+            .sigma-modal--cases-dashboard-case-completion .sigma-case-job-card,
+            .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-card,
+            .sigma-modal--dashboard-waiting-actions .sigma-case-job-card,
+            .sigma-modal--dashboard-active-case-actions .sigma-case-job-card {
+                grid-template-columns: minmax(0, 1fr) 72px 106px 40px 56px;
+                gap: 0;
+                min-height: 44px;
+                padding: 0 !important;
+            }
+
+            .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell,
+            .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell,
+            .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell,
+            .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell {
+                min-height: 44px;
+                padding: 7px 6px;
+                font-size: 14px;
+            }
+
+            .sigma-modal--cases-dashboard-case-completion .sigma-case-job-cell--lead,
+            .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-cell--lead,
+            .sigma-modal--dashboard-waiting-actions .sigma-case-job-cell--lead,
+            .sigma-modal--dashboard-active-case-actions .sigma-case-job-cell--lead {
+                padding-left: 11px;
             }
         }
 
+    </style>
+
+    <style>
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-card,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-card:focus-visible,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-card:focus-visible {
+            outline: 2px solid rgba(30, 155, 167, 0.35);
+            outline-offset: 2px;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-job-tooltip,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-job-tooltip {
+            display: none !important;
+        }
+
+        .sigma-case-job-floating-tooltip {
+            position: fixed;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            min-width: 240px;
+            max-width: min(430px, calc(100vw - 24px));
+            padding: 8px 10px;
+            border: 1px solid rgba(30, 155, 167, 0.22);
+            border-radius: 8px;
+            background: #213f47;
+            box-shadow: 0 10px 24px rgba(25, 54, 62, 0.24);
+            color: #f4fbfb;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1.35;
+            opacity: 0;
+            pointer-events: none;
+            text-align: left;
+            transform: translateY(-6px) scale(0.98);
+            transform-origin: top left;
+            transition: opacity 180ms ease, transform 180ms ease;
+            visibility: hidden;
+            white-space: normal;
+        }
+
+        .sigma-case-job-floating-tooltip.is-visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            visibility: visible;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-box,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-box {
+            display: block;
+            width: 100%;
+            margin: 0 0 8px;
+            padding: 8px 10px;
+            border: 1px solid #d4e0e0;
+            border-radius: 8px;
+            background: #f6f9f9;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-summary,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-summary::-webkit-details-marker,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-list,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top: 1px solid #dbe7e7;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-note,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-note {
+            color: #516060;
+            font-size: 12px;
+            font-style: italic;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-chevron,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-chevron {
+            flex: 0 0 auto;
+            margin-left: auto;
+            color: #3f777b;
+            font-size: 12px;
+            transition: transform 180ms ease;
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron {
+            transform: rotate(180deg);
+        }
+
+        .sigma-modal--cases-dashboard-case-completion .sigma-case-delivery-note-arrow,
+        .sigma-modal--cases-dashboard-case-completion-alt .sigma-case-delivery-note-arrow {
+            display: inline-block;
+            margin: 0 5px;
+            color: #3f777b;
+            font-style: normal;
+        }
+    </style>
 
     <style>
         .dt-layout-row {
@@ -2081,48 +2501,46 @@
                                                                                             $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
                                                                                         @endphp
                                                                                         @php
-                                                                                            $jobUnits = trim((string) $job->unit_num);
-                                                                                            $jobDetailParts = array_values(array_filter([
-                                                                                                trim((string) $jobTypeName),
-                                                                                                trim((string) $materialName),
-                                                                                                trim((string) $colorLabel),
+                                                                                            $jobLeadLine = trim((string) $job->unit_num);
+                                                                                            $jobTypeLine = trim((string) $jobTypeName);
+                                                                                            $jobMaterialLine = trim((string) $materialName);
+                                                                                            $jobColorLine = trim((string) $colorLabel);
+                                                                                            $jobStyleLine = trim(implode(' / ', array_filter([
                                                                                                 trim((string) $styleLabel),
                                                                                                 trim((string) $implantLabel),
                                                                                                 trim((string) $abutmentLabel),
                                                                                             ], function ($value) {
                                                                                                 return $value !== '';
-                                                                                            }));
-                                                                                            $fullJobParts = array_values(array_filter(array_merge([$jobUnits], $jobDetailParts), function ($value) {
-                                                                                                return $value !== '';
-                                                                                            }));
+                                                                                            })));
+                                                                                            $jobStyleCode = stripos($styleLabel, 'bridge') !== false
+                                                                                                ? 'B'
+                                                                                                : (stripos($styleLabel, 'single') !== false || strpos($jobLeadLine, ',') === false ? 'S' : 'B');
+                                                                                            $jobTooltipParts = array_values(array_filter([
+                                                                                                'Units: ' . ($jobLeadLine !== '' ? $jobLeadLine : '-'),
+                                                                                                $jobTypeLine !== '' ? 'Type: ' . $jobTypeLine : null,
+                                                                                                $jobMaterialLine !== '' ? 'Material: ' . $jobMaterialLine : null,
+                                                                                                $jobColorLine !== '' ? 'Color: ' . $jobColorLine : null,
+                                                                                                $jobStyleLine !== '' ? 'Style: ' . $jobStyleLine : null,
+                                                                                            ]));
                                                                                         @endphp
-                                                                                        <div class="sigma-case-job-row">
-                                                                                            <span class="sigma-case-job-primary">{{ implode(' - ', $fullJobParts) }}</span>
+                                                                                        <div class="sigma-case-job-row sigma-case-job-card" tabindex="0" aria-label="{{ implode(', ', $jobTooltipParts) }}" data-job-tooltip="{{ implode(' | ', $jobTooltipParts) }}">
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--lead">{{ $jobLeadLine }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeLine }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--material">{{ $jobMaterialLine }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--color">{{ $jobColorLine }}</span>
+                                                                                            <span class="sigma-case-job-cell sigma-case-job-cell--style">{{ $jobStyleCode }}</span>
+                                                                                            <span class="sigma-case-job-tooltip" aria-hidden="true">
+                                                                                                @foreach ($jobTooltipParts as $jobTooltipPart)
+                                                                                                    <span>{{ $jobTooltipPart }}</span>
+                                                                                                @endforeach
+                                                                                            </span>
                                                                                         </div>
                                                                                     @endif
                                                                                 @endforeach
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    @if (count($case->notes) > 0)
-                                                                        <hr>
-                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label>
-                                                                        @foreach ($case->notes as $note)
-                                                                            @php
-                                                                                $noteEmployeeName = $note->writtenBy->first_name ?? $note->writtenBy->name_initials ?? '-';
-                                                                            @endphp
-                                                                            <div class="form-control note-container"
-                                                                                style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px;display:block !important"
-                                                                                disabled>
-
-                                                                                <span class="noteHeader"
-                                                                                    style="font-weight:600;display:block !important">[{{ \Carbon\Carbon::parse($note->created_at)->format('j-M g:i A') }}] [{{ $noteEmployeeName }}] : </span>
-
-                                                                                <span
-                                                                                    class="noteText" style="display:block !important">{{ $note->note }}</span>
-                                                                            </div>
-                                                                        @endforeach
-                                                                    @endif
+                                                                    @include('cases.dashboards-partials.case-dialog-notes', ['case' => $case])
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -2473,48 +2891,46 @@
                                                                                                 $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
                                                                                             @endphp
                                                                                             @php
-                                                                                                $jobUnits = trim((string) $job->unit_num);
-                                                                                                $jobDetailParts = array_values(array_filter([
-                                                                                                    trim((string) $jobTypeName),
-                                                                                                    trim((string) $materialName),
-                                                                                                    trim((string) $colorLabel),
+                                                                                                $jobLeadLine = trim((string) $job->unit_num);
+                                                                                                $jobTypeLine = trim((string) $jobTypeName);
+                                                                                                $jobMaterialLine = trim((string) $materialName);
+                                                                                                $jobColorLine = trim((string) $colorLabel);
+                                                                                                $jobStyleLine = trim(implode(' / ', array_filter([
                                                                                                     trim((string) $styleLabel),
                                                                                                     trim((string) $implantLabel),
                                                                                                     trim((string) $abutmentLabel),
                                                                                                 ], function ($value) {
                                                                                                     return $value !== '';
-                                                                                                }));
-                                                                                                $fullJobParts = array_values(array_filter(array_merge([$jobUnits], $jobDetailParts), function ($value) {
-                                                                                                    return $value !== '';
-                                                                                                }));
+                                                                                                })));
+                                                                                                $jobStyleCode = stripos($styleLabel, 'bridge') !== false
+                                                                                                    ? 'B'
+                                                                                                    : (stripos($styleLabel, 'single') !== false || strpos($jobLeadLine, ',') === false ? 'S' : 'B');
+                                                                                                $jobTooltipParts = array_values(array_filter([
+                                                                                                    'Units: ' . ($jobLeadLine !== '' ? $jobLeadLine : '-'),
+                                                                                                    $jobTypeLine !== '' ? 'Type: ' . $jobTypeLine : null,
+                                                                                                    $jobMaterialLine !== '' ? 'Material: ' . $jobMaterialLine : null,
+                                                                                                    $jobColorLine !== '' ? 'Color: ' . $jobColorLine : null,
+                                                                                                    $jobStyleLine !== '' ? 'Style: ' . $jobStyleLine : null,
+                                                                                                ]));
                                                                                             @endphp
-                                                                                            <div class="sigma-case-job-row">
-                                                                                                <span class="sigma-case-job-primary">{{ implode(' - ', $fullJobParts) }}</span>
+                                                                                            <div class="sigma-case-job-row sigma-case-job-card" tabindex="0" aria-label="{{ implode(', ', $jobTooltipParts) }}" data-job-tooltip="{{ implode(' | ', $jobTooltipParts) }}">
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--lead">{{ $jobLeadLine }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeLine }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--material">{{ $jobMaterialLine }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--color">{{ $jobColorLine }}</span>
+                                                                                                <span class="sigma-case-job-cell sigma-case-job-cell--style">{{ $jobStyleCode }}</span>
+                                                                                                <span class="sigma-case-job-tooltip" aria-hidden="true">
+                                                                                                    @foreach ($jobTooltipParts as $jobTooltipPart)
+                                                                                                        <span>{{ $jobTooltipPart }}</span>
+                                                                                                    @endforeach
+                                                                                                </span>
                                                                                             </div>
                                                                                         @endif
                                                                                     @endforeach
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        @if (count($case->notes) > 0)
-
-                                                                        <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label>
-                                                                            @foreach ($case->notes as $note)
-                                                                                @php
-                                                                                    $noteEmployeeName = $note->writtenBy->first_name ?? $note->writtenBy->name_initials ?? '-';
-                                                                                @endphp
-                                                                                <div class="form-control note-container"
-                                                                                    style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px;display:block !important"
-                                                                                    disabled>
-
-                                                                                    <span class="noteHeader"
-                                                                                        style="font-weight:600;display:block !important">[{{ \Carbon\Carbon::parse($note->created_at)->format('j-M g:i A') }}] [{{ $noteEmployeeName }}] : </span>
-                                                                                    <span
-                                                                                        class="noteText" style="display:block !important">{{ $note->note }}</span>
-                                                                                </div>
-                                                                            @endforeach
-
-                                                                        @endif
+                                                                        @include('cases.dashboards-partials.case-dialog-notes', ['case' => $case])
                                                                     </div>
 
                                                                 </div>
@@ -3014,7 +3430,7 @@
 
         @media (min-width: 992px){
             .stageSidebar {
-                margin-top: 71px;
+                margin-top: 0px;
             }
         }
 
@@ -3260,8 +3676,8 @@
             color: rgba(35, 68, 83, 0.78);
             font-weight: 700;
             letter-spacing: 0.03em;
-            background: #0080800d;
-            border: 1px dashed rgba(30, 112, 122, 0.25);
+            background: #00808000;
+            /*border: 1px dashed rgba(30, 112, 122, 0.25);*/
             font-size: x-large
         }
 
@@ -3281,9 +3697,9 @@
             padding: 0.58rem 0.88rem;
             border: 1px solid transparent;
             border-radius: 6px;
-            background:
-                linear-gradient(180deg, rgba(236, 245, 248, 0.96), rgba(249, 252, 253, 0.98)) padding-box,
-                linear-gradient(135deg, rgba(76, 133, 145, 0.28), rgba(255, 255, 255, 0.94) 42%, rgba(76, 133, 145, 0.12) 100%) border-box;
+            /*background:*/
+            /*    linear-gradient(180deg, rgba(236, 245, 248, 0.96), rgba(249, 252, 253, 0.98)) padding-box,*/
+            /*    linear-gradient(135deg, rgba(76, 133, 145, 0.28), rgba(255, 255, 255, 0.94) 42%, rgba(76, 133, 145, 0.12) 100%) border-box;*/
             color: #234453;
             font-size: 0.9rem;
             font-weight: 700;
@@ -3511,7 +3927,8 @@
         .ops-case-card__badges {
             display: flex;
             align-items: center;
-            gap: 0.28rem;
+            flex-wrap: nowrap;
+            gap: 0;
             flex-wrap: wrap;
             min-width: 0;
             align-self: start;
@@ -3633,7 +4050,7 @@
 
         .ops-case-card--waiting .ops-case-card__row--secondary,
         .ops-case-card--active .ops-case-card__row--secondary {
-            margin-top: 0.24rem;
+            margin-top: 0.64rem;
             align-items: center;
         }
 
@@ -3687,8 +4104,8 @@
 
         .ops-case-card--waiting .ops-case-card__badges,
         .ops-case-card--active .ops-case-card__badges {
-            padding-left: 0.18rem;
-            gap: 0.34rem;
+            padding-left: 0.10rem;
+            gap: 0rem;
         }
 
         .ops-case-card--waiting .ops-case-card__badge,
@@ -3715,6 +4132,16 @@
             width: 1.05rem;
             font-size: 0.98rem;
             filter: drop-shadow(0 1px 1px rgba(24, 68, 82, 0.12));
+        }
+
+        @media (max-width: 767.98px) {
+            .ops-case-card--waiting .ops-case-card__units,
+            .ops-case-card--active .ops-case-card__units {
+                justify-content: center;
+                justify-self: center;
+                align-self: center;
+                width: auto;
+            }
         }
 
         @media (max-width: 767.98px) {
@@ -4003,6 +4430,7 @@
     <!-- Then load your custom scripts -->
     <script src="{{ asset('assets') }}/js/ysh-custom-js/v3scripts.js?v={{ filemtime(public_path('assets/js/ysh-custom-js/v3scripts.js')) }}"></script>
     <script src="{{ asset('assets') }}/js/ysh-custom-js/operationsDashboardJS.js?v={{ filemtime(public_path('assets/js/ysh-custom-js/operationsDashboardJS.js')) }}"></script>
+
     <script>
         // Load scripts sequentially to ensure proper dependency order
         function loadScript(src) {
@@ -4118,32 +4546,36 @@
         // setTimeout(stopLoading, 2000); // remove shimmer after 2s
 
         // Apply device image configuration when document is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        function initializeOperationsDashboard() {
             function syncManufacturingActiveTabHeights() {
-                const dashboardTabs = document.querySelector('.ops-dashboard .macaw-tabs.macaw-aurora-tabs');
-                const sidebarTab =
-                    document.querySelector('.ops-dashboard .stageSidebar button[role="tab"][aria-selected="true"]') ||
-                    document.querySelector('.ops-dashboard .stageSidebar button[role="tab"]');
+                const sidebar = document.querySelector('.site-wrapper .stageSidebar');
+                const dashboardTabs = sidebar
+                    ? sidebar.closest('.macaw-tabs.macaw-aurora-tabs')
+                    : document.querySelector('.site-wrapper .macaw-tabs.macaw-aurora-tabs');
 
-                if (!dashboardTabs || !sidebarTab) {
+                if (!dashboardTabs || !sidebar) {
                     return;
                 }
 
-                const sidebarTabHeight = Math.ceil(sidebarTab.getBoundingClientRect().height);
-                if (sidebarTabHeight > 0) {
-                    dashboardTabs.style.setProperty('--sigma-ops-sidebar-tab-height', `${sidebarTabHeight}px`);
+                if (window.matchMedia('(max-width: 767.98px)').matches) {
+                    dashboardTabs.style.removeProperty('--sigma-ops-sidebar-tab-height');
+                    return;
                 }
-            }
 
-            // Initialize Macaw Tabs if available
-            if (typeof MacawTabs !== 'undefined') {
-                MacawTabs.init();
+                const sidebarHeight = Math.ceil(sidebar.getBoundingClientRect().height);
+                if (sidebarHeight > 0) {
+                    dashboardTabs.style.setProperty('--sigma-ops-sidebar-tab-height', `${sidebarHeight}px`);
+                }
             }
 
             syncManufacturingActiveTabHeights();
             window.addEventListener('load', syncManufacturingActiveTabHeights);
             window.addEventListener('resize', syncManufacturingActiveTabHeights);
 
+            // Initialize Macaw Tabs after independent dashboard interactions are ready.
+            if (typeof MacawTabs !== 'undefined') {
+                MacawTabs.init();
+            }
             // Apply device image styling from configuration
             if (typeof jQuery !== 'undefined') {
                 // Apply to all device images
@@ -4190,7 +4622,13 @@
                 // Setup dialog reset functionality
                 setupDialogResetHandlers();
             }
-        });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeOperationsDashboard, { once: true });
+        } else {
+            initializeOperationsDashboard();
+        }
 
         /**
          * Setup handlers to reset dialogs to their original state when closed
@@ -4334,6 +4772,7 @@
 
 
     </script>
+
     <style>
 
         /* Ensure badges are perfect circles on all screen sizes */

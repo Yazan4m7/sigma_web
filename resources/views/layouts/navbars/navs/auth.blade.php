@@ -217,6 +217,87 @@
         min-width: 0;
     }
 
+    /* Shared patient search follows the referenced underline input pattern. */
+    .header-search--patient .SBF2 {
+        height: 40px;
+        background: #ffffff;
+        border-bottom: 2px solid #b7cbcd;
+        transition: border-color 180ms ease;
+    }
+
+    .header-search--patient .SBF2:focus-within {
+        border-bottom-color: #2b7b7d;
+    }
+
+    .header-search--patient #wrapp input[type="text"] {
+        height: 38px;
+        padding: 8px 38px 8px 38px;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #4f5d60;
+        font-size: 14px;
+        box-shadow: none;
+    }
+
+    .header-search--patient #wrapp input[type="text"]::placeholder {
+        color: #838f92;
+    }
+
+    .header-search--patient #wrapp input[type="text"]:hover,
+    .header-search--patient #wrapp input[type="text"]:focus {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .header-patient-search__submit,
+    .header-patient-search__clear {
+        position: absolute;
+        top: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        padding: 0;
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        color: #758487;
+        cursor: pointer;
+        transform: translateY(-50%);
+        z-index: 2;
+        transition: color 180ms ease, opacity 180ms ease;
+    }
+
+    .header-patient-search__submit {
+        left: 2px;
+    }
+
+    .header-patient-search__clear {
+        right: 2px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .header-search--patient #wrapp input[type="text"]:not(:placeholder-shown) ~ .header-patient-search__clear {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .header-patient-search__submit:hover,
+    .header-patient-search__clear:hover,
+    .header-search--patient .SBF2:focus-within .header-patient-search__submit {
+        color: #2b7b7d;
+    }
+
+    .header-patient-search__submit:focus-visible,
+    .header-patient-search__clear:focus-visible {
+        outline: 2px solid #2b7b7d;
+        outline-offset: 1px;
+    }
+
     #wrapp #search_submit {
         display: none;
     }
@@ -563,8 +644,8 @@
     }
 
     .sigma-app-header .dotsDiv #navigation .photo {
-        width: 32px;
-        height: 32px;
+        width: 37px;
+        height: 37px;
         border-radius: 50%;
         overflow: hidden;
         display: inline-flex;
@@ -816,7 +897,21 @@
         .header-actions .header-search #wrapp input[type="text"] {
             height: 34px;
             font-size: 12px;
-            padding: 6px 10px;
+            padding: 6px 38px 6px 10px;
+        }
+
+        .header-patient-search__submit {
+            left: auto;
+            right: 2px;
+        }
+
+        .header-patient-search__clear {
+            left: 2px;
+            right: auto;
+        }
+
+        .header-search--patient #wrapp input[type="text"]:not(:placeholder-shown) {
+            padding-left: 38px;
         }
 
         .dotsDiv {
@@ -935,8 +1030,8 @@
     }
 
     .profile-toggle-btn .photo {
-        width: 36px;
-        height: 36px;
+        width: 41px;
+        height: 41px;
         border-radius: 50%;
         overflow: hidden;
         flex-shrink: 0;
@@ -965,8 +1060,8 @@
 
     @media (max-width: 991px) {
         .profile-toggle-btn .photo {
-            width: 32px;
-            height: 32px;
+            width: 37px;
+            height: 37px;
         }
 
         .dotsDiv,
@@ -989,8 +1084,8 @@
         }
 
         .profile-toggle-btn .photo {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
         }
     }
 
@@ -1001,16 +1096,16 @@ $permissions = safe_permissions();
 $user = Auth::user();
 $defaultAvatar = asset('assets/images/avatars/default.png');
 $resolvedProfileImage = $defaultAvatar;
-if ($user && !empty($user->avatar_path)) {
-    $avatarPath = $user->avatar_path;
+if ($user && !empty($user->img)) {
+    $avatarPath = $user->img;
     if (preg_match('~^https?://~i', $avatarPath)) {
         $resolvedProfileImage = $avatarPath;
     } else {
         $resolvedProfileImage = asset(str_replace('\\', '/', ltrim($avatarPath, '/')));
     }
 }
-$deferredProfileImage = $resolvedProfileImage !== $defaultAvatar ? $resolvedProfileImage : null;
-$initialProfileImage = $deferredProfileImage ? $defaultAvatar : $resolvedProfileImage;
+$deferredProfileImage = null;
+$initialProfileImage = $resolvedProfileImage;
 @endphp
 <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent sigma-app-header">
     <div class="container-fluid">
@@ -1044,15 +1139,54 @@ $initialProfileImage = $deferredProfileImage ? $defaultAvatar : $resolvedProfile
             </div>
             <div class="col-lg-5 col-md-5 col-sm-7 col-9 header-actions">
                 <div class="header-actions-inner">
-                    <form action="{{route('global-search')}}"
-                          method="GET" class="header-search">
+                    <form id="global-search-form" action="{{route('global-search')}}"
+                          method="GET" class="header-search header-search--patient">
                         <div id="wrapp" class="searchBox2" >
                             <div  class="SBF2">
-                                <input id="search" name="searchText" type="text" placeholder="Patient Name?">
-                                <span id="search_submit"  ></span>
+                                <input id="search" name="searchText" type="text" placeholder="Patient Name?" aria-label="Search by patient name">
+                                <button class="header-patient-search__submit" type="submit" aria-label="Search patients" title="Search">
+                                    <i class="fas fa-search" aria-hidden="true"></i>
+                                </button>
+                                <button class="header-patient-search__clear" type="button" onclick="this.form.reset();" aria-label="Clear patient search" title="Clear search">
+                                    <i class="fas fa-times" aria-hidden="true"></i>
+                                </button>
                             </div>
                         </div>
                     </form>
+                    <script>
+                        (function () {
+                            var form = document.getElementById('global-search-form');
+                            var input = document.getElementById('search');
+
+                            if (!form || !input) {
+                                return;
+                            }
+
+                            form.addEventListener('submit', function (event) {
+                                if (input.value.trim() !== '') {
+                                    return;
+                                }
+
+                                event.preventDefault();
+
+                                if (typeof Swal !== 'undefined') {
+                                    Swal.fire({
+                                        toast: true,
+                                        position: 'top-end',
+                                        icon: 'error',
+                                        title: 'Enter a search value.',
+                                        showConfirmButton: false,
+                                        timer: 2200,
+                                        timerProgressBar: true
+                                    });
+                                } else {
+                                    window.alert('Enter a search value.');
+                                }
+
+                                input.focus();
+                            });
+                        })();
+                    </script>
 {{--                    <x-weather-widget></x-weather-widget>--}}
                     <div class="dotsDiv">
                         <span class="navbar-brand pageTitle pageTitleMobile">{{$pageSlug ?? "SIGMA"}}</span>
@@ -1071,7 +1205,7 @@ $initialProfileImage = $deferredProfileImage ? $defaultAvatar : $resolvedProfile
                                          @if($deferredProfileImage) data-avatar-src="{{ $deferredProfileImage }}" @endif
                                          width="34"
                                          height="34"
-                                         loading="lazy"
+                                         loading="eager"
                                          decoding="async"
                                          fetchpriority="low"
                                          onerror="this.onerror=null;this.removeAttribute('data-avatar-src');this.src='{{ $defaultAvatar }}';"
@@ -1086,7 +1220,7 @@ $initialProfileImage = $deferredProfileImage ? $defaultAvatar : $resolvedProfile
                                                  @if($deferredProfileImage) data-avatar-src="{{ $deferredProfileImage }}" @endif
                                                  width="56"
                                                  height="56"
-                                                 loading="lazy"
+                                                 loading="eager"
                                                  decoding="async"
                                                  fetchpriority="low"
                                                  onerror="this.onerror=null;this.removeAttribute('data-avatar-src');this.src='{{ $defaultAvatar }}';" alt="">

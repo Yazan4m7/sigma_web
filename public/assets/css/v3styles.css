@@ -9364,7 +9364,7 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     cursor: pointer;
     transition: all 0.2s ease;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }

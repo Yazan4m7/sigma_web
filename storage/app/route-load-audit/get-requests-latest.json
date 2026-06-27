@@ -1,5 +1,5 @@
 {
-    "created_at": "2026-06-13 22:40:59",
+    "created_at": "2026-06-16 17:37:28",
     "user": "yazan",
     "results": [
         {
@@ -7,7 +7,7 @@
             "uri": "\/main-dashboard",
             "status": 200,
             "state": "ok",
-            "ms": 326,
+            "ms": 1155,
             "error": null
         },
         {
@@ -15,7 +15,7 @@
             "uri": "\/operations-dashboard",
             "status": 200,
             "state": "ok",
-            "ms": 150,
+            "ms": 532,
             "error": null
         },
         {
@@ -23,7 +23,7 @@
             "uri": "\/new-case",
             "status": 200,
             "state": "ok",
-            "ms": 53,
+            "ms": 70,
             "error": null
         },
         {
@@ -31,7 +31,7 @@
             "uri": "\/cases",
             "status": 200,
             "state": "ok",
-            "ms": 64,
+            "ms": 83,
             "error": null
         },
         {
@@ -39,7 +39,7 @@
             "uri": "\/accountant\/receivable-payments",
             "status": 200,
             "state": "ok",
-            "ms": 26,
+            "ms": 31,
             "error": null
         },
         {
@@ -47,7 +47,7 @@
             "uri": "\/delivery-schedule",
             "status": 200,
             "state": "ok",
-            "ms": 129,
+            "ms": 107,
             "error": null
         },
         {
@@ -55,7 +55,7 @@
             "uri": "\/abutments-delivery\/index",
             "status": 200,
             "state": "ok",
-            "ms": 61,
+            "ms": 47,
             "error": null
         },
         {
@@ -63,7 +63,7 @@
             "uri": "\/cases-monitor",
             "status": 200,
             "state": "ok",
-            "ms": 479,
+            "ms": 251,
             "error": null
         },
         {
@@ -71,7 +71,7 @@
             "uri": "\/devices",
             "status": 200,
             "state": "ok",
-            "ms": 397,
+            "ms": 211,
             "error": null
         },
         {
@@ -79,7 +79,7 @@
             "uri": "\/doctors\/index",
             "status": 200,
             "state": "ok",
-            "ms": 237,
+            "ms": 170,
             "error": null
         },
         {
@@ -87,7 +87,7 @@
             "uri": "\/sales",
             "status": 200,
             "state": "ok",
-            "ms": 493,
+            "ms": 556,
             "error": null
         },
         {
@@ -95,7 +95,7 @@
             "uri": "\/sales\/by-month",
             "status": 200,
             "state": "ok",
-            "ms": 36,
+            "ms": 61,
             "error": null
         },
         {
@@ -103,7 +103,7 @@
             "uri": "\/my-collections",
             "status": 200,
             "state": "ok",
-            "ms": 19,
+            "ms": 24,
             "error": null
         },
         {
@@ -111,7 +111,7 @@
             "uri": "\/cases\/rejected-cases",
             "status": 200,
             "state": "ok",
-            "ms": 244,
+            "ms": 305,
             "error": null
         },
         {
@@ -119,7 +119,7 @@
             "uri": "\/reports\/master",
             "status": 200,
             "state": "ok",
-            "ms": 253,
+            "ms": 275,
             "error": null
         },
         {
@@ -127,7 +127,7 @@
             "uri": "\/reports\/num-of-units",
             "status": 200,
             "state": "ok",
-            "ms": 515,
+            "ms": 457,
             "error": null
         },
         {
@@ -135,7 +135,7 @@
             "uri": "\/reports\/job-types",
             "status": 200,
             "state": "ok",
-            "ms": 376,
+            "ms": 208,
             "error": null
         },
         {
@@ -143,7 +143,7 @@
             "uri": "\/reports\/QC",
             "status": 200,
             "state": "ok",
-            "ms": 30,
+            "ms": 38,
             "error": null
         },
         {
@@ -151,7 +151,7 @@
             "uri": "\/reports\/repeats",
             "status": 200,
             "state": "ok",
-            "ms": 427,
+            "ms": 216,
             "error": null
         },
         {
@@ -159,7 +159,7 @@
             "uri": "\/reports\/implants",
             "status": 200,
             "state": "ok",
-            "ms": 678,
+            "ms": 552,
             "error": null
         },
         {
@@ -167,7 +167,7 @@
             "uri": "\/reports\/material",
             "status": 200,
             "state": "ok",
-            "ms": 21,
+            "ms": 19,
             "error": null
         },
         {
@@ -175,7 +175,7 @@
             "uri": "\/payments-with-collectors",
             "status": 200,
             "state": "ok",
-            "ms": 30,
+            "ms": 41,
             "error": null
         },
         {
@@ -183,7 +183,7 @@
             "uri": "\/invoices",
             "status": 200,
             "state": "ok",
-            "ms": 52,
+            "ms": 60,
             "error": null
         },
         {
@@ -191,7 +191,7 @@
             "uri": "\/payments\/index",
             "status": 200,
             "state": "ok",
-            "ms": 21,
+            "ms": 23,
             "error": null
         },
         {
@@ -199,7 +199,7 @@
             "uri": "\/delivery\/docs\/take-payments",
             "status": 200,
             "state": "ok",
-            "ms": 73,
+            "ms": 82,
             "error": null
         },
         {
@@ -207,7 +207,7 @@
             "uri": "\/media\/index",
             "status": 200,
             "state": "ok",
-            "ms": 19,
+            "ms": 40,
             "error": null
         },
         {
@@ -215,7 +215,7 @@
             "uri": "\/materials",
             "status": 200,
             "state": "ok",
-            "ms": 13,
+            "ms": 14,
             "error": null
         },
         {
@@ -223,7 +223,7 @@
             "uri": "\/Job-type\/index",
             "status": 200,
             "state": "ok",
-            "ms": 28,
+            "ms": 30,
             "error": null
         },
         {
@@ -231,7 +231,7 @@
             "uri": "\/users\/index",
             "status": 200,
             "state": "ok",
-            "ms": 19,
+            "ms": 14,
             "error": null
         },
         {
@@ -239,7 +239,7 @@
             "uri": "\/external-labs",
             "status": 200,
             "state": "ok",
-            "ms": 1566,
+            "ms": 1350,
             "error": null
         },
         {
@@ -247,7 +247,7 @@
             "uri": "\/implants\/index",
             "status": 200,
             "state": "ok",
-            "ms": 24,
+            "ms": 20,
             "error": null
         },
         {
@@ -255,7 +255,7 @@
             "uri": "\/abutment\/index",
             "status": 200,
             "state": "ok",
-            "ms": 18,
+            "ms": 16,
             "error": null
         },
         {
@@ -271,7 +271,7 @@
             "uri": "\/f-cause\/index",
             "status": 200,
             "state": "ok",
-            "ms": 17,
+            "ms": 15,
             "error": null
         },
         {
@@ -279,7 +279,7 @@
             "uri": "\/device\/index",
             "status": 200,
             "state": "ok",
-            "ms": 15,
+            "ms": 17,
             "error": null
         },
         {
@@ -295,7 +295,7 @@
             "uri": "\/tools\/invoice-check",
             "status": 200,
             "state": "ok",
-            "ms": 334,
+            "ms": 300,
             "error": null
         },
         {
@@ -311,7 +311,7 @@
             "uri": "\/tools\/page-load-tester",
             "status": 200,
             "state": "ok",
-            "ms": 18,
+            "ms": 57,
             "error": null
         }
     ]

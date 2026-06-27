@@ -505,36 +505,24 @@
 
                                         @if($showJob)
                                         @php
-                                            $jobUnits = trim((string) $job->unit_num);
-                                            $jobDetailParts = array_values(array_filter([
-                                                trim((string) $jobTypeName),
-                                                trim((string) $materialName),
-                                                trim((string) $colorLabel),
+                                            $jobLeadLine = trim((string) $job->unit_num);
+                                            $jobTypeLine = trim((string) $jobTypeName);
+                                            $jobMaterialLine = trim((string) $materialName);
+                                            $jobColorLine = trim((string) $colorLabel);
+                                            $jobStyleLine = trim(implode(' / ', array_filter([
+                                                trim((string) $styleLabel),
                                                 trim((string) $implantLabel),
                                                 trim((string) $abutmentLabel),
                                             ], function ($value) {
                                                 return $value !== '';
-                                            }));
-                                            $normalizedStyle = strtolower(trim((string) $styleLabel));
-                                            $jobTag = in_array($normalizedStyle, ['single', 'bridge'], true)
-                                                ? ucfirst($normalizedStyle)
-                                                : (strpos($jobUnits, ',') !== false ? 'Bridge' : 'Single');
-                                            $isModelJob = stripos($jobTypeName, 'model') !== false || stripos($materialName, 'model') !== false;
+                                            })));
                                         @endphp
-                                        <div class="sigma-case-job-row">
-                                            @if($isModelJob)
-                                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.5C5.1 14 7.8 18 12 18s6.9-4 7.5-10.5"></path><path d="M7.5 7.5c.5 4.1 2 6.4 4.5 6.4s4-2.3 4.5-6.4"></path><path d="M8.4 8v2.2"></path><path d="M12 8v3.2"></path><path d="M15.6 8v2.2"></path></svg>
-                                            @else
-                                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5l1 5c.3 1.2 1 2 2 2h2c1 0 1.7-.8 2-2l1-5c.5-1.5 1-3 1-5 0-3-2-5-5-5z"></path><path d="M9 10c0 0 1 1 3 1s3-1 3-1"></path></svg>
-                                            @endif
-                                            <span class="sigma-case-job-info">
-                                                <span class="sigma-case-job-primary">
-                                                    <span class="sigma-case-job-units">{{ $jobUnits }}</span>
-                                                    <span class="sigma-case-job-separator">-</span>
-                                                    <span class="sigma-case-job-details">{{ implode(' - ', $jobDetailParts) }}</span>
-                                                </span>
-                                            </span>
-                                            <span class="sigma-case-job-tag">{{ $jobTag }}</span>
+                                        <div class="sigma-case-job-row sigma-case-job-card">
+                                            <span class="sigma-case-job-cell sigma-case-job-cell--lead">{{ $jobLeadLine }}</span>
+                                            <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeLine }}</span>
+                                            <span class="sigma-case-job-cell sigma-case-job-cell--material">{{ $jobMaterialLine }}</span>
+                                            <span class="sigma-case-job-cell sigma-case-job-cell--color">{{ $jobColorLine }}</span>
+                                            <span class="sigma-case-job-cell sigma-case-job-cell--style">{{ $jobStyleLine }}</span>
                                         </div>
                                         @endif
                                         @endforeach
@@ -546,6 +534,12 @@
                                 <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
                                 <div class="sigma-case-notes-list">
                                 @foreach($case->notes as $note)
+                                @php
+                                    $noteValue = (string) $note->note;
+                                    $noteHasArabic = preg_match('/[\x{0600}-\x{06FF}\x{0750}-\x{077F}\x{08A0}-\x{08FF}]/u', $noteValue);
+                                    $noteHasLatin = preg_match('/[A-Za-z]/u', $noteValue);
+                                    $noteDirectionClass = $noteHasArabic && $noteHasLatin ? 'sigma-case-note-text--mixed' : 'sigma-case-note-text--ltr';
+                                @endphp
                                 <div class="note-container">
                                     <div class="sigma-case-note-left">
                                         <i class="far fa-comment-alt sigma-case-note-icon" aria-hidden="true"></i>
@@ -562,7 +556,7 @@
                                                 {{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}
                                             </span>
                                         </div>
-                                        <span class="noteText sigma-case-note-text">{{$note->note}}</span>
+                                        <span class="noteText sigma-case-note-text {{ $noteDirectionClass }}">{{$note->note}}</span>
                                     </div>
                                 </div>
                                 @endforeach

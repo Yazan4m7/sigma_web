@@ -630,12 +630,24 @@ class ReportsController extends Controller
         $labelToLookFor = substr($last30DaysLabels[29],0,8) . "01";
         $key = array_search($labelToLookFor, $last30DaysLabels);
         $last30DaysLabels[$key] = "** ".  $last30DaysLabels[$key] . " **";
+        $last7DaysChartLabels = $this->formatDashboardChartDateLabels($last7DaysLabels);
+        $last30DaysChartLabels = $this->formatDashboardChartDateLabels($last30DaysLabels);
 //        dd($labelToLookFor);
         $compCasesCount7Days= array_reverse($compCasesCount7Days);
         return view('dashboard',compact('compUnitsCount7Days','compCasesCount7Days',
             'waitingJobsToday','CompletedJobsToday','ActiveJobsToday','DeliveriesToday',
             'paymentsReceivedToday','last7DaysLabels','compCasesObjectsIn30Days','compUnitsCount30Days',
-            'collectionsInLast30Days','last30DaysLabels','compCasesCount30Days','sales30Days'));
+            'collectionsInLast30Days','last30DaysLabels','last7DaysChartLabels','last30DaysChartLabels',
+            'compCasesCount30Days','sales30Days'));
+    }
+
+    private function formatDashboardChartDateLabels(array $labels): array
+    {
+        return array_map(function ($label) {
+            $date = trim(str_replace('*', '', $label));
+
+            return Carbon::parse($date)->format('j, M');
+        }, $labels);
     }
 
     private function buildDashboardDeliveryStatusMeta(sCase $case): array

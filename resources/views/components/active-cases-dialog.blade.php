@@ -491,43 +491,65 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     /* Dialog Dismissal Enhancements */
 
 .sigma-workflow-modal.sigma-modal--active-cases-preview {
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 
 
 .sigma-workflow-modal.active.sigma-modal--active-cases-preview {
-        animation: fadeIn 0.3s ease-out !important;
+        animation: sigmaActiveCasesOverlayIn 0.16s ease-out both !important;
     }
 
 
 .sigma-workflow-modal.closing.sigma-modal--active-cases-preview {
-        animation: fadeOut 0.3s ease-in;
+        animation: sigmaActiveCasesOverlayOut 0.12s ease-in both !important;
     }
 
-    @keyframes fadeIn {
+    .sigma-workflow-modal.active.sigma-modal--active-cases-preview .sigma-workflow-dialog {
+        animation: sigmaActiveCasesDialogIn 0.16s cubic-bezier(0.2, 0, 0.2, 1) both !important;
+    }
+
+    .sigma-workflow-modal.sigma-modal--active-cases-preview .sigma-workflow-dialog.animate__fadeOut {
+        animation: sigmaActiveCasesDialogOut 0.12s ease-in both !important;
+    }
+
+    @keyframes sigmaActiveCasesOverlayIn {
         from {
             opacity: 0;
-            backdrop-filter: blur(0px);
-            -webkit-backdrop-filter: blur(0px);
         }
         to {
             opacity: 1;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
     }
 
-    @keyframes fadeOut {
+    @keyframes sigmaActiveCasesOverlayOut {
         from {
             opacity: 1;
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
         to {
             opacity: 0;
-            backdrop-filter: blur(0px);
-            -webkit-backdrop-filter: blur(0px);
+        }
+    }
+
+    @keyframes sigmaActiveCasesDialogIn {
+        from {
+            opacity: 0;
+            transform: translate3d(0, -8px, 0) scale(0.99);
+        }
+        to {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+    }
+
+    @keyframes sigmaActiveCasesDialogOut {
+        from {
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: translate3d(0, -4px, 0) scale(0.995);
         }
     }
 

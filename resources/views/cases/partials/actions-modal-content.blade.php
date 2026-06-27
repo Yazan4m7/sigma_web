@@ -4,15 +4,20 @@
 
 <style>
     .sigma-modal--cases-index-actions,
-    .sigma-modal--cases-index-actions :not(i):not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab) {
+    .sigma-modal--cases-index-action,
+    .sigma-modal--cases-index-actions :not(i):not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab),
+    .sigma-modal--cases-index-action :not(i):not([class*="fa-"]):not(.fa):not(.fas):not(.far):not(.fab) {
         font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
     }
-    .sigma-modal--cases-index-actions .case-actions-footer {
+
+    .sigma-modal--cases-index-actions .case-actions-footer,
+    .sigma-modal--cases-index-action .case-actions-footer {
         position: relative;
         border-top: none !important;
     }
 
-    .sigma-modal--cases-index-actions .case-actions-footer::before {
+    .sigma-modal--cases-index-actions .case-actions-footer::before,
+    .sigma-modal--cases-index-action .case-actions-footer::before {
         content: "";
         position: absolute;
         top: 0;
@@ -21,244 +26,256 @@
         border-top: 0px solid #dbeafe;
     }
 
-
-    .case-summary-divider.lower-divider{
-
+    .case-summary-divider.lower-divider {
         width: 97%;
         align-self: center;
     }
-    .sigma-modal--cases-index-actions .sigma-case-notes-list {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 1.375rem;
-    }
-    .sigma-modal--cases-index-actions .note-container {
-        align-items: flex-start;
-        background: #fff !important;
-        border: 0.5px solid #eaeae4 !important;
-        border-top: none !important;
-        box-shadow: none !important;
-        color: inherit !important;
-        display: flex;
-        gap: 10px;
-        padding: 9px 14px !important;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-notes-list > .note-container:first-child {
-        border-radius: 9px 9px 0 0 !important;
-        border-top: 0.5px solid #eaeae4 !important;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-notes-list > .note-container:last-child {
-        border-radius: 0 0 9px 9px !important;
-    }
+
     .sigma-modal--cases-index-actions .case-jobs-label,
-    .sigma-modal--cases-index-actions .case-notes-label {
+    .sigma-modal--cases-index-action .case-jobs-label {
         display: block;
         margin-bottom: 8px !important;
-        font-size: 10px !important;
-        font-weight: 500 !important;
-        letter-spacing: 0.09em !important;
-        line-height: 1.2 !important;
-        text-transform: uppercase !important;
+        color: #4d626d;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
     }
-    .sigma-modal--cases-index-actions .case-jobs-label {
-        color: #444441 !important;
-        font-weight: 700 !important;
+
+    .sigma-modal--cases-index-actions .case-notes-label,
+    .sigma-modal--cases-index-action .case-notes-label {
+        display: block;
+        margin-bottom: 8px !important;
+        color: #5c6f7a;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
     }
-    .sigma-modal--cases-index-actions .case-notes-label {
-        color: #B4B2A9 !important;
-    }
-    .sigma-modal--cases-index-actions .case-jobs-label b,
-    .sigma-modal--cases-index-actions .case-notes-label b {
-        color: inherit !important;
-        font-weight: inherit !important;
-    }
-    .sigma-modal--cases-index-actions .scrollable-content {
-        scrollbar-color: #1f9bad #eef5f6;
-        scrollbar-gutter: stable;
+
+    .sigma-modal--cases-index-actions .scrollable-content,
+    .sigma-modal--cases-index-action .scrollable-content {
         scrollbar-width: thin;
+        scrollbar-color: #1e9ba7 #eaf5f7;
     }
-    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar {
+
+    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar,
+    .sigma-modal--cases-index-action .scrollable-content::-webkit-scrollbar {
         width: 8px;
     }
-    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-track {
-        background: #eef5f6;
+
+    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-track,
+    .sigma-modal--cases-index-action .scrollable-content::-webkit-scrollbar-track {
+        background: #eaf5f7;
         border-radius: 999px;
+        margin: 4px 0;
     }
-    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, #27aabc 0%, #178293 100%);
-        border: 2px solid #f8fbfb;
+
+    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-thumb,
+    .sigma-modal--cases-index-action .scrollable-content::-webkit-scrollbar-thumb {
+        min-height: 42px;
+        border: 2px solid #eaf5f7;
         border-radius: 999px;
+        background: linear-gradient(180deg, #2aa8b2, #1e7f8a);
     }
-    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #1f9bad 0%, #126f7d 100%);
+
+    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-thumb:hover,
+    .sigma-modal--cases-index-action .scrollable-content::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #35b8c2, #176d77);
     }
-    .sigma-modal--cases-index-actions .scrollable-content::-webkit-scrollbar-button {
-        display: none;
-        height: 0;
-        width: 0;
-    }
-    .sigma-modal--cases-index-actions .case-jobs-heading {
-        align-items: center;
-        display: flex;
-        gap: 8px;
-        margin-bottom: 8px;
-    }
-    .sigma-modal--cases-index-actions .case-jobs-heading .case-jobs-label {
-        margin-bottom: 0 !important;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-units-counter {
-        background: #E1F5EE;
-        border-radius: 5px;
-        color: #085041;
-        font-size: 10px;
-        font-weight: 700;
-        letter-spacing: 0.04em;
-        line-height: 1.2;
-        padding: 3px 9px;
-        text-transform: uppercase;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-jobs-list {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 0 !important;
-        margin: 0 0 1.375rem !important;
+
+    .sigma-modal--cases-index-actions .sigma-case-jobs-list,
+    .sigma-modal--cases-index-action .sigma-case-jobs-list,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-jobs-list,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-jobs-list {
+        display: grid !important;
+        gap: 6px !important;
+        width: 100% !important;
+        margin: 6px 0 0 !important;
         padding: 0 !important;
-        width: 100%;
-        background: #fff !important;
-        border: 1px solid #e0e0da !important;
-        border-radius: 10px !important;
-        overflow: hidden !important;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row {
-        align-items: center !important;
-        background: #fff !important;
+        background: transparent !important;
         border: 0 !important;
-        border-bottom: 1px solid #e0e0da !important;
+        border-radius: 0 !important;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card {
+        display: grid !important;
+        grid-template-columns: minmax(68px, 0.95fr) minmax(88px, 1.2fr) minmax(80px, 0.1fr) minmax(22px, 0.35fr) minmax(20px, 0.1fr) !important;
+        align-items: start !important;
+        column-gap: 2px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        min-height: 30px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #eef6fa !important;
+        background-color: #eef6fa !important;
+        border: 0 !important;
+        border-left: 2px solid #17a2b8 !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        color: inherit !important;
-        display: flex !important;
-        gap: 6px !important;
-        margin: 0 !important;
-        min-width: 0;
-        overflow: hidden !important;
-        padding: 10px 7px !important;
-        width: 100%;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row:last-child {
-        border-bottom: 0 !important;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-job-icon {
-        flex-shrink: 0;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-job-info {
-        display: block;
-        flex: 1 1 0%;
-        max-width: 100%;
-        min-width: 0;
-        overflow: hidden;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-primary {
-        color: #1a1a18 !important;
-        align-items: baseline;
-        display: flex;
-        gap: 5px;
+        color: #294450 !important;
         font-size: 15px !important;
-        font-weight: 600 !important;
-        line-height: 1.25 !important;
-        max-width: 100%;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: auto;
+        font-weight: 500 !important;
+        line-height: 1.45 !important;
+        overflow: hidden !important;
+        white-space: normal !important;
+        overflow-wrap: normal !important;
+        word-break: normal !important;
     }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-units {
-        flex: 0 0 auto;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-separator {
-        flex: 0 0 auto;
-    }
-    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-details {
-        flex: 1 1 auto;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-job-sub {
-        color: #888780;
-        display: block;
-        font-size: 11px;
-        line-height: 1.25;
-        margin-top: 2px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-job-tag {
-        background: #f1f0eb;
+
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell {
+        display: block !important;
+        box-sizing: border-box !important;
+        max-width: 100% !important;
+        min-width: 0 !important;
+        min-height: 30px !important;
+
         border: 0 !important;
-        border-radius: 5px;
-        color: #444441;
-        flex-shrink: 0;
-        font-size: 10px;
-        font-weight: 500;
-        line-height: 1.2;
-        max-width: 34%;
-        overflow: hidden;
-        padding: 4px 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        color: inherit !important;
+        font-size: 15px !important;
+        font-weight: 500 !important;
+        line-height: 30px !important;
+        text-align: left !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
-    .sigma-modal--cases-index-actions .sigma-case-note-meta {
-        align-items: center;
+
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell + .sigma-case-job-cell,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell + .sigma-case-job-cell,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell + .sigma-case-job-cell,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell + .sigma-case-job-cell {
+        border-left: 1px solid #cfe4eb47 !important;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--lead,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--lead,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--lead,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--lead {
+        font-weight: 700 !important;
+        overflow: hidden !important;
+        padding-left: 10px !important;
+        text-align: left !important;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--color,
+    .sigma-modal--cases-index-actions .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--style,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--color,
+    .sigma-modal--cases-index-action .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--style,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--color,
+    .sigma-modal--cases-index-actions .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--style,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--color,
+    .sigma-modal--cases-index-action .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--style {
+        text-align: center !important;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-job-tooltip,
+    .sigma-modal--cases-index-action .sigma-case-job-tooltip {
+        display: none !important;
+    }
+    .sigma-modal--cases-index-actions .form-control.note-container,
+    .sigma-modal--cases-index-action .form-control.note-container {
+        background: #fff !important;
+        border: 0.5px solid #c7c7c7 !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        color: #333333 !important;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-note-text,
+    .sigma-modal--cases-index-action .sigma-case-note-text {
+        display: block !important;
+        direction: ltr !important;
+        text-align: left !important;
+        unicode-bidi: isolate;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-note-text--mixed,
+    .sigma-modal--cases-index-action .sigma-case-note-text--mixed {
+        direction: inherit !important;
+        text-align: inherit !important;
+        unicode-bidi: normal;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-box,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-box {
+        display: block;
+        width: 100%;
+        margin: 0 0 8px;
+        padding: 8px 10px;
+        border: 1px solid #d4e0e0;
+        border-radius: 8px;
+        background: #f6f9f9;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-summary,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-summary {
         display: flex;
-        gap: 5px;
-        margin-bottom: 2px;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-left {
         align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-summary::-webkit-details-marker,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-list,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-list {
         display: flex;
         flex-direction: column;
-        flex-shrink: 0;
-        gap: 3px;
-        padding-top: 2px;
+        gap: 5px;
+        margin-top: 7px;
+        padding-top: 7px;
+        border-top: 1px solid #dbe7e7;
     }
-    .sigma-modal--cases-index-actions .sigma-case-note-icon {
-        color: #85B7EB;
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-note,
+    .sigma-modal--cases-index-action .sigma-case-delivery-note {
+        color: #516060;
         font-size: 12px;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-line {
-        background: #daeaf7;
-        flex: 1;
-        min-height: 14px;
-        width: 1px;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-content {
-        min-width: 0;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-author {
-        color: #378ADD !important;
-        font-size: 11px !important;
-        font-weight: 500 !important;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-separator {
-        color: #daeaf7;
-        font-size: 11px;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-time {
-        color: #85B7EB;
-        font-size: 10px;
-    }
-    .sigma-modal--cases-index-actions .sigma-case-note-text {
-        color: #888780;
-        display: block;
-        font-size: 12px;
+        font-style: italic;
+        font-weight: 600;
         line-height: 1.45;
     }
 
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-chevron,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-chevron {
+        flex: 0 0 auto;
+        margin-left: auto;
+        color: #3f777b;
+        font-size: 12px;
+        transition: transform 180ms ease;
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron,
+    .sigma-modal--cases-index-action .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron {
+        transform: rotate(180deg);
+    }
+
+    .sigma-modal--cases-index-actions .sigma-case-delivery-note-arrow,
+    .sigma-modal--cases-index-action .sigma-case-delivery-note-arrow {
+        display: inline-block;
+        margin: 0 5px;
+        color: #3f777b;
+        font-style: normal;
+    }
 </style>
 
+<div class="modal-header">
+    <h5 class="modal-title">Case Preview</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="false">&times;</span>
+    </button>
+</div>
 <div class="modal-body">
     <div class="case-summary-block">
         <div class="form-group row case-summary-row" style="margin-bottom: 0px">
@@ -277,105 +294,64 @@
     <div class="scrollable-content">
         @php
             $currentStage = optional($case->jobs->first())->stage;
-            $visibleJobs = $case->jobs->filter(function ($job) use ($currentStage) {
-                return $job->goesThroughStage($currentStage);
-            });
-            $jobsUnitsCount = $visibleJobs->reduce(function ($carry, $job) {
-                if (!$job->material || $job->material->count_as_unit != 1) {
-                    return $carry;
-                }
-
-                $unitCount = count(array_filter(explode(',', (string) $job->unit_num), function ($value) {
-                    return trim($value) !== '';
-                }));
-
-                return $carry + max(1, $unitCount);
-            }, 0);
         @endphp
-        <div class="form-group row case-jobs-section">
-            <div class="col-12">
-                <div class="case-jobs-heading">
-                    <label class="case-completion-dialog-label case-jobs-label" ><b>JOBS:</b></label>
-                    <span class="sigma-case-units-counter">{{ $jobsUnitsCount }}X {{ $jobsUnitsCount === 1 ? 'UNIT' : 'UNITS' }}</span>
-                </div>
+        <div class="form-group row">
+            <div class="  " style="width: 100%">
+                <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
                 <div class="sigma-case-jobs-list">
+                    @foreach ($case->jobs as $job)
+                        @php
+                            $showJob = $job->goesThroughStage($currentStage);
+                        @endphp
 
-                @foreach($case->jobs as $job)
-                    @php
-                        $showJob = $job->goesThroughStage($currentStage);
-                        $jobTypeName = $job->jobType->name ?? 'No Job Type';
-                        $materialName = $job->material->name ?? 'no material';
-                        $colorLabel = $job->color == '0' ? '' : $job->color;
-                        $styleLabel = $job->style == 'None' ? '' : $job->style;
-                        $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
-                        $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
-                        $jobUnits = trim((string) $job->unit_num);
-                        $jobDetailParts = array_values(array_filter([
-                            $jobTypeName,
-                            $materialName,
-                            $colorLabel,
-                            $implantLabel,
-                            $abutmentLabel,
-                        ], function ($value) {
-                            return filled(trim((string) $value));
-                        }));
-                        $normalizedStyle = strtolower(trim((string) $styleLabel));
-                        $jobTag = in_array($normalizedStyle, ['single', 'bridge'], true)
-                            ? ucfirst($normalizedStyle)
-                            : (strpos($jobUnits, ',') !== false ? 'Bridge' : 'Single');
-                        $isModelJob = stripos($jobTypeName, 'model') !== false || stripos($materialName, 'model') !== false;
-                    @endphp
-
-                    @if($showJob)
-                        <div class="sigma-case-job-row">
-                            @if($isModelJob)
-                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.5C5.1 14 7.8 18 12 18s6.9-4 7.5-10.5"></path><path d="M7.5 7.5c.5 4.1 2 6.4 4.5 6.4s4-2.3 4.5-6.4"></path><path d="M8.4 8v2.2"></path><path d="M12 8v3.2"></path><path d="M15.6 8v2.2"></path></svg>
-                            @else
-                                <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5l1 5c.3 1.2 1 2 2 2h2c1 0 1.7-.8 2-2l1-5c.5-1.5 1-3 1-5 0-3-2-5-5-5z"></path><path d="M9 10c0 0 1 1 3 1s3-1 3-1"></path></svg>
-                            @endif
-                            <span class="sigma-case-job-info">
-                                <span class="sigma-case-job-primary">
-                                    <span class="sigma-case-job-units">{{ $jobUnits }}</span>
-                                    <span class="sigma-case-job-separator">-</span>
-                                    <span class="sigma-case-job-details">{{ implode(' - ', $jobDetailParts) }}</span>
+                        @if ($showJob)
+                            @php
+                                $jobTypeName = $job->jobType->name ?? 'No Job Type';
+                                $materialName = $job->material->name ?? 'no material';
+                                $colorLabel = $job->color == '0' ? '' : $job->color;
+                                $styleLabel = $job->style == 'None' ? '' : $job->style;
+                                $implantLabel = isset($job->implantR) && optional($job->jobType)->id == 6 ? 'Implant Type: ' . $job->implantR->name : '';
+                                $abutmentLabel = isset($job->abutmentR) && optional($job->jobType)->id == 6 ? 'Abutment Type: ' . $job->abutmentR->name : '';
+                                $jobLeadLine = trim((string) $job->unit_num);
+                                $jobTypeLine = trim((string) $jobTypeName);
+                                $jobMaterialLine = trim((string) $materialName);
+                                $jobColorLine = trim((string) $colorLabel);
+                                $jobStyleLine = trim(implode(' / ', array_filter([
+                                    trim((string) $styleLabel),
+                                    trim((string) $implantLabel),
+                                    trim((string) $abutmentLabel),
+                                ], function ($value) {
+                                    return $value !== '';
+                                })));
+                                $jobStyleCode = stripos($styleLabel, 'bridge') !== false
+                                    ? 'B'
+                                    : (stripos($styleLabel, 'single') !== false || strpos($jobLeadLine, ',') === false ? 'S' : 'B');
+                                $jobTooltipParts = array_values(array_filter([
+                                    'Units: ' . ($jobLeadLine !== '' ? $jobLeadLine : '-'),
+                                    $jobTypeLine !== '' ? 'Type: ' . $jobTypeLine : null,
+                                    $jobMaterialLine !== '' ? 'Material: ' . $jobMaterialLine : null,
+                                    $jobColorLine !== '' ? 'Color: ' . $jobColorLine : null,
+                                    $jobStyleLine !== '' ? 'Style: ' . $jobStyleLine : null,
+                                ]));
+                            @endphp
+                            <div class="sigma-case-job-row sigma-case-job-card" tabindex="0" aria-label="{{ implode(', ', $jobTooltipParts) }}" data-job-tooltip="{{ implode(' | ', $jobTooltipParts) }}">
+                                <span class="sigma-case-job-cell sigma-case-job-cell--lead">{{ $jobLeadLine }}</span>
+                                <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeLine }}</span>
+                                <span class="sigma-case-job-cell sigma-case-job-cell--material">{{ $jobMaterialLine }}</span>
+                                <span class="sigma-case-job-cell sigma-case-job-cell--color">{{ $jobColorLine }}</span>
+                                <span class="sigma-case-job-cell sigma-case-job-cell--style">{{ $jobStyleCode }}</span>
+                                <span class="sigma-case-job-tooltip" aria-hidden="true">
+                                    @foreach ($jobTooltipParts as $jobTooltipPart)
+                                        <span>{{ $jobTooltipPart }}</span>
+                                    @endforeach
                                 </span>
-                            </span>
-                            <span class="sigma-case-job-tag">{{ $jobTag }}</span>
-                        </div>
-                    @endif
-                @endforeach
+                            </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
         </div>
-<hr>
-        @if(count($case->notes) > 0)
-            <div class="case-notes-section">
-                <label class="case-completion-dialog-label case-notes-label"><b>NOTES:</b></label>
-                <div class="sigma-case-notes-list">
-                @foreach($case->notes as $note)
-                    <div class="note-container">
-                        <div class="sigma-case-note-left">
-                            <i class="far fa-comment-alt sigma-case-note-icon" aria-hidden="true"></i>
-                            @unless($loop->last)
-                                <div class="sigma-case-note-line"></div>
-                            @endunless
-                        </div>
-                        <div class="sigma-case-note-content">
-                            <div class="sigma-case-note-meta">
-                                <span class="noteHeader sigma-case-note-author">{{ $note->writtenBy->name_initials }}</span>
-                                <span class="sigma-case-note-separator">&middot;</span>
-                                <span class="sigma-case-note-time">
-                                    {{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.date_only')) }}
-                                    {{ \Carbon\Carbon::parse($note->created_at)->format(config('app_config.timestamp_format.time_only')) }}
-                                </span>
-                            </div>
-                            <span class="noteText sigma-case-note-text">{{ $note->note }}</span>
-                        </div>
-                    </div>
-                @endforeach
-                </div>
-            </div>
-        @endif
+        @include('cases.dashboards-partials.case-dialog-notes', ['case' => $case])
     </div>
 </div>
 

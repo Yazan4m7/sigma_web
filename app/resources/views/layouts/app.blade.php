@@ -53,7 +53,7 @@
             --font-family-sans-serif: "Nunito", sans-serif;
             --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-            --main-blue: #2CA8FF;
+            --main-blue: #007bff;
             --main-orange: #FFA500;
             --main-green: green;
         }

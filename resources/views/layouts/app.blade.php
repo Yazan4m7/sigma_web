@@ -81,7 +81,7 @@
             --color-surface-raised: #f8fafc;
             --color-border: rgba(0,0,0,0.08);
 
-            --main-blue: var(--color-accent);
+            --main-blue: #007bff;
             --main-orange: var(--color-warning);
             --main-green: var(--color-success);
         }

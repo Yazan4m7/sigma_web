@@ -555,7 +555,7 @@
                     display: false
                 },
                 data: {
-                    labels: ['{!! implode("','", $last7DaysLabels) !!}'],
+                    labels: @json($last7DaysChartLabels),
                     datasets: [{
                         label: "Completed Units",
                         fill: true,
@@ -577,7 +577,7 @@
                     display: false
                 },
                 data: {
-                    labels: ['{!! implode("','", $last7DaysLabels) !!}'],
+                    labels: @json($last7DaysChartLabels),
                     datasets: [{
                         label: "Completed Cases",
                         fill: true,
@@ -746,7 +746,7 @@
                     }]
                 }
             };
-            var chart_labels = ['{!! implode("', '", $last30DaysLabels) !!}'];
+            var chart_labels = @json($last30DaysChartLabels);
 
             var performanceChartData = {
                 "Cases": ['{!! implode("','", $compCasesCount30Days) !!}'],

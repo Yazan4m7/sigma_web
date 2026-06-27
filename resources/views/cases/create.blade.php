@@ -65,7 +65,7 @@
 
         .form-section-card {
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
             border-radius: var(--card-radius);
             padding: 1.55rem 1.5rem;
@@ -78,14 +78,11 @@
         .form-section-card::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%);
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #1b6ef3 0%, #5aa2ff 100%) top / 100% 3px no-repeat;
             opacity: 0.7;
-            border-top-left-radius: var(--card-radius);
-            border-top-right-radius: var(--card-radius);
+            pointer-events: none;
         }
 
         .form-section-card .bootstrap-select.show,

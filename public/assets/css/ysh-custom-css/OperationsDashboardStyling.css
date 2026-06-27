@@ -2235,7 +2235,7 @@
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] {
-   /* margin: 0; */
+   margin: 0;
    padding: 0;
 }
 
@@ -2291,6 +2291,7 @@
    word-wrap: break-word;
 
 
+   font-family: 'Inter', sans-serif;
    font-weight: normal;
    flex-wrap: wrap;
    display: flex;
@@ -2301,6 +2302,7 @@
    color: var(--tab-text-color);
    fill: var(--tab-text-color);
    padding: 0.8rem 0.5rem;
+   transition: background-color 180ms ease, color 180ms ease, fill 180ms ease;
 }
 .stageSidebar {
     margin: 0;
@@ -2315,6 +2317,51 @@
    padding: 0;
 }
 
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]::after {
+   content: "";
+   position: absolute;
+   right: 0.75rem;
+   bottom: -1px;
+   left: 0.75rem;
+   height: 3px;
+   border-radius: 999px;
+   background: linear-gradient(90deg, rgba(43, 123, 125, 0), var(--tab-active-border-color) 24%, #59b8ba 58%, rgba(43, 123, 125, 0));
+   opacity: 0;
+   pointer-events: none;
+   transform: scaleX(0);
+   transform-origin: left center;
+   transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+}
+
+.stageSidebar button[role="tab"] .stageName {
+   display: inline-block;
+   font-family: 'Inter', sans-serif;
+   transform: translateX(0);
+   transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+   will-change: transform;
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"]::after,
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus-visible::after {
+   opacity: 1;
+   transform: scaleX(1);
+}
+
+.macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus-visible .stageName {
+   transform: translateX(6px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+   .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover::after {
+      opacity: 1;
+      transform: scaleX(1);
+   }
+
+   .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover .stageName {
+      transform: translateX(6px);
+   }
+}
+
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:hover, .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"]:focus {
    outline: 0;
    background-color: var(--tab-focus-bg-color);
@@ -2322,11 +2369,12 @@
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"] {
-   font-family: 'Nunito Sans', sans-serif;
+   font-family: 'Inter', sans-serif;
    background-color: var(--tab-active-bg-color);
    color: var(--tab-active-text-color);
    fill: var(--tab-active-text-color);
    border-left: 5px solid var(--tab-active-border-color);
+
    padding-left: 0.2rem;
 }
 
@@ -2627,8 +2675,8 @@
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"].active > * {
    height: 100%;
    /* opacity: 1; */
-   animation: fadeIn;
-   animation-duration: 0.5s;
+   /*animation: fadeIn;*/
+   /*animation-duration: 0.5s;*/
 }
 
 .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"]:focus {
@@ -2775,7 +2823,7 @@
    padding: 0;
    align-items: center;
    gap: .25rem;
-   justify-content: space-evenly;
+   justify-content: flex-start;
 }
 
 .macaw-tabs.macaw-silk-tabs > [role="tablist"] > *:not(.innerActiveBtn):not(.innerWaitingBtn) {
@@ -2907,6 +2955,7 @@ img {
     --sigma-ops-sticky-top: var(--sigma-app-header-offset);
     --sigma-ops-stagebar-height: 0px;
     --sigma-ops-innerbar-height: 56px;
+    --sigma-ops-sidebar-tab-height: auto;
     --sigma-ops-sticky-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     --sigma-ops-sidebar-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
     --sigma-ops-divider: rgba(0, 0, 0, 0.1);
@@ -3247,6 +3296,21 @@ img {
         min-width: 0;
         justify-content: center;
         gap: 6px;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-silk-tabs > [role="tablist"].stage-inner-tabs {
+        justify-content: center;
+        width: calc(100% - 20px);
+        margin: 0 10px 0.75rem;
+        gap: 0;
+    }
+
+    .ops-dashboard .macaw-tabs.macaw-silk-tabs > [role="tablist"].stage-inner-tabs > [role="tab"] {
+        flex: 0 0 50% !important;
+        width: 50% !important;
+        max-width: 50% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 
     .ops-dashboard .macaw-tabs.macaw-aurora-tabs .ops-col--count,
@@ -3944,16 +4008,6 @@ body.white-content.ops-dashboard::-webkit-scrollbar-thumb:hover {
    border-bottom-color: #c65858 !important;
    box-shadow: inset 0 -2px 0 #c65858;
    font-weight: 600;
-}
-
-.ops-dashboard #active-3dprintinglabel,
-.ops-dashboard #active-millinglabel,
-.ops-dashboard #active-sinteringlabel,
-.ops-dashboard #active-pressinglabel {
-   min-height: var(--sigma-ops-sidebar-tab-height, auto);
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
 }
 
 svg {

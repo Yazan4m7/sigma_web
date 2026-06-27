@@ -242,13 +242,23 @@
             vertical-align: middle !important;
         }
 
-        #casesTable_wrapper .dataTables_scrollBody thead th {
-            height: 0 !important;
-            line-height: 0 !important;
-            padding-top: 0 !important;
-            padding-bottom: 0 !important;
-            border-top: 0 !important;
-            border-bottom: 0 !important;
+        #casesTable_wrapper .dataTables_scrollHeadInner table,
+        #casesTable_wrapper .dataTables_scrollHeadInner table thead,
+        #casesTable_wrapper .dataTables_scrollHeadInner table thead tr {
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        #casesTable_wrapper .dataTables_scrollHeadInner table thead th:first-child {
+            border-bottom-left-radius: 0 !important;
+        }
+
+        #casesTable_wrapper .dataTables_scrollHeadInner table thead th:last-child {
+            border-bottom-right-radius: 0 !important;
+        }
+
+        #casesTable_wrapper .dataTables_scrollBody #casesTable thead {
+            display: none !important;
         }
 
         .dataTables_wrapper .dataTables_info {
@@ -469,8 +479,8 @@
             will-change: auto !important;
             pointer-events: none !important;
         }
-
-        .sigma-modal--cases-index-actions .modal-content {
+        .sigma-modal--cases-index-actions .modal-content,
+        .sigma-modal--cases-index-action .modal-content {
             position: relative !important;
             transform: none !important;
             -webkit-transform: none !important;
@@ -480,6 +490,9 @@
             flex-direction: column !important;
             max-height: calc(100vh - 32px) !important;
             overflow: hidden !important;
+            border: none !important;
+            border-radius: 25px !important;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
         .sigma-modal--cases-index-actions .modal-content,
@@ -519,19 +532,13 @@
             transform: none !important;
             -webkit-transform: none !important;
         }
-
-        /* Modal dialog border radius - all corners uniform */
-
-        .sigma-modal--cases-index-actions .modal-content {
-            border-radius: 25px !important;
-        }
-
         /* Modal title styling */
-
-        .sigma-modal--cases-index-actions .modal-title {
+        .sigma-modal--cases-index-actions .modal-title,
+        .sigma-modal--cases-index-action .modal-title {
             color: #2d5f6d;
             font-weight: 600;
             font-size: 18px;
+            margin-bottom: 0;
         }
 
         .badge .badge-success {
@@ -539,11 +546,42 @@
         }
 
         /* Modal header styling with divider */
+        .sigma-modal--cases-index-actions .modal-header,
+        .sigma-modal--cases-index-action .modal-header {
+            display: flex !important;
+            align-items: center;
+            /*border-bottom: 1px solid #dee2e6 !important;*/
+            padding: 0.75rem 2rem;
+        }
 
-        .sigma-modal--cases-index-actions .modal-header {
-            border-bottom: 0 !important;
-            padding-top: 16px;
-            padding-bottom: 16px;
+        .sigma-modal--cases-index-actions .modal-header button.close,
+        .sigma-modal--cases-index-action .modal-header button.close {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 1.94rem;
+            margin: -0.2rem -0.25rem -0.2rem auto;
+            padding: 0;
+            border: 1px solid #d1d5db;
+            border-radius: 50%;
+            background: #29314969;
+            color: #ffffff;
+            opacity: 1;
+            font-size: 1.5rem;
+            font-weight: 900;
+            line-height: 1;
+            text-shadow: none;
+            /* transform: translate(0.25rem, -0.25rem); */
+            align-items: flex-start;
+        }
+
+        .sigma-modal--cases-index-actions .modal-header button.close:hover,
+        .sigma-modal--cases-index-action .modal-header button.close:hover {
+            opacity: 1;
+            border-color: #cbd5e1;
+            background: #e5e7eb;
+            color: #4b5563;
         }
 
         /* Doctor/Patient names styling */
@@ -690,10 +728,10 @@
             padding-right: 0 !important;
             padding-left: 0 !important;
         }
-        .form-group.case-summary-row{
-            padding-right: 0 !important;
-            padding-left: 0 !important;
-        }
+        /*.form-group.case-summary-row{*/
+        /*    padding-right: 0 !important;*/
+        /*    padding-left: 0 !important;*/
+        /*}*/
         .case-jobs-section > .form-group.col-6{
             padding-right: 0 !important;
             padding-left: 0 !important;
@@ -1223,16 +1261,43 @@
 
         /* Responsive adjustments */
         @media screen and (max-width: 991px) {
+            #casesTable_wrapper {
+                --cases-mobile-table-width: 920px;
+                --cases-col-doctor: 150px;
+                --cases-col-patient: 170px;
+                --cases-col-initial-delivery: 150px;
+                --cases-col-actual-delivery: 140px;
+                --cases-col-units: 70px;
+                --cases-col-status: 140px;
+                --cases-col-tags: 100px;
+            }
+
             #casesTable {
-                min-width: 920px !important;
-                width: 100% !important;
+                min-width: var(--cases-mobile-table-width) !important;
+                width: var(--cases-mobile-table-width) !important;
+                max-width: none !important;
                 table-layout: fixed !important;
                 font-size: 12px !important;
             }
 
+            #casesTable_wrapper .dataTables_scrollHeadInner,
+            #casesTable_wrapper .dataTables_scrollHeadInner table,
+            #casesTable_wrapper .dataTables_scrollBody table {
+                min-width: var(--cases-mobile-table-width) !important;
+                width: var(--cases-mobile-table-width) !important;
+                max-width: none !important;
+                table-layout: fixed !important;
+            }
+
+            #casesTable_wrapper .dataTables_scrollHeadInner {
+                padding-right: 0 !important;
+            }
+
             /* Match header and body font size on mobile */
-            #casesTable thead th,
-            #casesTable tbody td {
+            #casesTable_wrapper .dataTables_scrollHead thead th,
+            #casesTable_wrapper .dataTables_scrollBody thead th,
+            #casesTable_wrapper .dataTables_scrollBody tbody td {
+                box-sizing: border-box;
                 font-size: 17px !important;
                 padding: 6px 4px !important;
                 white-space: nowrap;
@@ -1241,45 +1306,67 @@
             }
 
             /* Column width distribution for mobile */
-            #casesTable thead th:nth-child(1),
-            #casesTable tbody td:nth-child(1) {
-                width: 150px;
-            }
-
             /* Doctor */
-            #casesTable thead th:nth-child(2),
-            #casesTable tbody td:nth-child(2) {
-                width: 170px;
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(1),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(1),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(1) {
+                width: var(--cases-col-doctor) !important;
+                min-width: var(--cases-col-doctor) !important;
+                max-width: var(--cases-col-doctor) !important;
             }
 
             /* Patient */
-            #casesTable thead th:nth-child(3),
-            #casesTable tbody td:nth-child(3) {
-                width: 150px;
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(2),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(2),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(2) {
+                width: var(--cases-col-patient) !important;
+                min-width: var(--cases-col-patient) !important;
+                max-width: var(--cases-col-patient) !important;
             }
 
-            /* Initial Deli Date */
-            #casesTable thead th:nth-child(4),
-            #casesTable tbody td:nth-child(4) {
-                width: 140px;
+            /* Initial Delivery */
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(3),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(3),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(3) {
+                width: var(--cases-col-initial-delivery) !important;
+                min-width: var(--cases-col-initial-delivery) !important;
+                max-width: var(--cases-col-initial-delivery) !important;
             }
 
-            /* Date Delivered */
-            #casesTable thead th:nth-child(5),
-            #casesTable tbody td:nth-child(5) {
-                width: 70px;
+            /* Actual Delivery */
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(4),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(4),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(4) {
+                width: var(--cases-col-actual-delivery) !important;
+                min-width: var(--cases-col-actual-delivery) !important;
+                max-width: var(--cases-col-actual-delivery) !important;
+            }
+
+            /* Units */
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(5),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(5),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(5) {
+                width: var(--cases-col-units) !important;
+                min-width: var(--cases-col-units) !important;
+                max-width: var(--cases-col-units) !important;
             }
 
             /* Status */
-            #casesTable thead th:nth-child(6),
-            #casesTable tbody td:nth-child(6) {
-                width: 140px;
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(6),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(6),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(6) {
+                width: var(--cases-col-status) !important;
+                min-width: var(--cases-col-status) !important;
+                max-width: var(--cases-col-status) !important;
             }
 
             /* Tags */
-            #casesTable thead th:nth-child(7),
-            #casesTable tbody td:nth-child(7) {
-                width: 100px;
+            #casesTable_wrapper .dataTables_scrollHead thead th:nth-child(7),
+            #casesTable_wrapper .dataTables_scrollBody thead th:nth-child(7),
+            #casesTable_wrapper .dataTables_scrollBody tbody td:nth-child(7) {
+                width: var(--cases-col-tags) !important;
+                min-width: var(--cases-col-tags) !important;
+                max-width: var(--cases-col-tags) !important;
             }
 
             .tooltip-toggle-container {
@@ -1723,7 +1810,7 @@
                                 @endif
 
                             </td>
-                            <td class="tagsTD sigma-body-left">
+                            <td class="tagsTD sigma-body-center">
 
                                 @foreach($case->tags as $tag)
                                     @if(isset($tag->originalTagRecord))
@@ -1763,11 +1850,17 @@
 
                 <script id="cases-tooltip-data" type="application/json">@json($caseTooltipJobs)</script>
 
-                <div class="modal sigma-modal--cases-index-actions" tabindex="-1" role="dialog"
+                <div class="modal sigma-modal--cases-index-actions sigma-modal--cases-index-action" tabindex="-1" role="dialog"
                      id="actionsDialog" data-backdrop="false" data-keyboard="true">
                     <input type="hidden" name="case_id" value="">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Case Preview</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="false">&times;</span>
+                                </button>
+                            </div>
                             <div class="modal-body">
                                 <div class="text-center py-4">Loading case details...</div>
                             </div>
@@ -2539,15 +2632,25 @@
                 function getCasesActionsModalUrl(caseId) {
                     return casesActionsModalUrlTemplate.replace('__CASE_ID__', caseId);
                 }
+                function getCasesActionsModalHeader() {
+                    return '<div class="modal-header">' +
+                        '<h5 class="modal-title">Case Preview</h5>' +
+                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+                        '<span aria-hidden="false">&times;</span>' +
+                        '</button>' +
+                        '</div>';
+                }
 
                 function setCasesActionsModalLoading($modal) {
                     $modal.find('.modal-content').html(
+                        getCasesActionsModalHeader() +
                         '<div class="modal-body"><div class="text-center py-4">Loading case details...</div></div>'
                     );
                 }
 
                 function setCasesActionsModalError($modal) {
                     $modal.find('.modal-content').html(
+                        getCasesActionsModalHeader() +
                         '<div class="modal-body"><div class="text-center py-4 text-danger">Unable to load case details.</div></div>' +
                         '<div class="modal-footer"><button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">Close</button></div>'
                     );

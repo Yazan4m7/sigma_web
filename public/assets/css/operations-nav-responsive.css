@@ -63,8 +63,7 @@
     .macaw-tabs.macaw-aurora-tabs > [role="tablist"] > [role="tab"][aria-selected="true"] {
         border-left: none !important;
         /* Remove left border */
-        border-bottom: 4px solid var(--tab-active-border-color) !important;
-        /* Add bottom border */
+        border-bottom: none !important;
         padding-left: 0.3rem !important;
     }
 
@@ -470,5 +469,221 @@
         gap: 1px !important;
         align-items: center !important;
         display: flex !important;
+    }
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"],
+.ops-dashboard .stageSidebar > button[role="tab"] {
+    position: relative;
+    border-bottom: 0 !important;
+    overflow: visible;
+}
+
+@keyframes sigma-stage-label-shift {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+
+    to {
+        transform: translate3d(10px, 0, 0);
+    }
+}
+
+@keyframes sigma-stage-underline-reveal {
+    0% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 1;
+    }
+
+    100% {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+    }
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]::after,
+.ops-dashboard .stageSidebar > button[role="tab"]::after {
+    content: "";
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0;
+    left: 0.75rem;
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(43, 123, 125, 0), #2b7b7d 24%, #59b8ba 58%, rgba(43, 123, 125, 0));
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+    pointer-events: none;
+    transition: none !important;
+    will-change: clip-path, opacity;
+}
+
+@media (min-width: 768px) {
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"][aria-selected="true"],
+    .ops-dashboard .stageSidebar > button[role="tab"][aria-selected="true"] {
+        box-shadow: none !important;
+    }
+
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"][aria-selected="true"]::before,
+    .ops-dashboard .stageSidebar > button[role="tab"][aria-selected="true"]::before {
+        display: none !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .site-wrapper .stageSidebar > button[role="tab"]::after {
+        right: 0 !important;
+        left: 0 !important;
+        border-radius: 0;
+    }
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"] .stageName,
+.ops-dashboard .stageSidebar > button[role="tab"] .stageName {
+    transform: translate3d(0, 0, 0);
+    transition: none !important;
+    will-change: transform;
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"] .iconSpan > i,
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"] .iconSpan > svg,
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"] .iconSpan .millingIcon,
+.ops-dashboard .stageSidebar > button[role="tab"] .iconSpan > i,
+.ops-dashboard .stageSidebar > button[role="tab"] .iconSpan > svg,
+.ops-dashboard .stageSidebar > button[role="tab"] .iconSpan .millingIcon {
+    transform: translate3d(0, 0, 0);
+    transition: none !important;
+    will-change: transform;
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:focus-visible::after,
+.ops-dashboard .stageSidebar > button[role="tab"]:focus-visible::after {
+    animation: sigma-stage-underline-reveal 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:focus-visible .stageName,
+.ops-dashboard .stageSidebar > button[role="tab"]:focus-visible .stageName {
+    animation: sigma-stage-label-shift 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:focus-visible .iconSpan > i,
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:focus-visible .iconSpan > svg,
+body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:focus-visible .iconSpan .millingIcon,
+.ops-dashboard .stageSidebar > button[role="tab"]:focus-visible .iconSpan > i,
+.ops-dashboard .stageSidebar > button[role="tab"]:focus-visible .iconSpan > svg,
+.ops-dashboard .stageSidebar > button[role="tab"]:focus-visible .iconSpan .millingIcon {
+    animation: sigma-stage-label-shift 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:hover::after,
+    .ops-dashboard .stageSidebar > button[role="tab"]:hover::after {
+        animation: sigma-stage-underline-reveal 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    }
+
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:hover .stageName,
+    .ops-dashboard .stageSidebar > button[role="tab"]:hover .stageName {
+        animation: sigma-stage-label-shift 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    }
+
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:hover .iconSpan > i,
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:hover .iconSpan > svg,
+    body.sigma-workflow .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar > button[role="tab"]:hover .iconSpan .millingIcon,
+    .ops-dashboard .stageSidebar > button[role="tab"]:hover .iconSpan > i,
+    .ops-dashboard .stageSidebar > button[role="tab"]:hover .iconSpan > svg,
+    .ops-dashboard .stageSidebar > button[role="tab"]:hover .iconSpan .millingIcon {
+        animation: sigma-stage-label-shift 720ms cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+    }
+}
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .stage-panel-pane,
+.site-wrapper .macaw-tabs.macaw-aurora-tabs > [role="tabpanel"] .stage-panel-scroll {
+    animation: none !important;
+    transition: none !important;
+}
+@property --sigma-ops-phase-line-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: #007bff;
+}
+
+@media (min-width: 768px) {
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs {
+        --sigma-ops-phase-line-color: #007bff;
+        --sigma-ops-phase-line-offset: 73px;
+        --sigma-ops-phase-line-radius: 12px;
+        --sigma-ops-phase-line-thickness: 3.4px;
+        --sigma-ops-phase-line-clip-height: 44px;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar {
+        margin-top: 73px;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs:has(> [role="tabpanel"]:not([hidden]) > .macaw-tabs.macaw-silk-tabs > .stage-inner-tabs .innerWaitingBtn[aria-selected="true"]) {
+        --sigma-ops-phase-line-color: #dc3545;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs::before {
+        content: "";
+        position: absolute;
+        top: var(--sigma-ops-phase-line-offset);
+        right: 0;
+        left: 0;
+        z-index: 1031;
+        height: var(--sigma-ops-phase-line-clip-height);
+        border-top-right-radius: var(--sigma-ops-phase-line-radius);
+        background: linear-gradient(var(--sigma-ops-phase-line-color), var(--sigma-ops-phase-line-color)) top / 100% var(--sigma-ops-phase-line-thickness) no-repeat;
+        transition: --sigma-ops-phase-line-color 280ms ease;
+        pointer-events: none;
+    }
+
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs .YSH-header {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+    @media (min-width: 992px) {
+        .site-wrapper .macaw-tabs.macaw-aurora-tabs {
+            --sigma-ops-phase-line-offset: 71px;
+        }
+
+        .site-wrapper .macaw-tabs.macaw-aurora-tabs > .stageSidebar {
+            margin-top: 71px;
+        }
+    }
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs #active-milling > .stage-panel-scroll--devices,
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs #active-3dprinting > .stage-panel-scroll--devices,
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs #active-sintering > .stage-panel-scroll--devices,
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs #active-pressing > .stage-panel-scroll--devices {
+        display: flex !important;
+        align-items: stretch !important;
+        min-height: var(--sigma-ops-sidebar-tab-height, auto) !important;
+        height: var(--sigma-ops-sidebar-tab-height, auto) !important;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-panel-scroll--devices .YSH-body,
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-panel-scroll--devices .YSH-container {
+        display: flex !important;
+        flex-direction: column !important;
+        width: 100% !important;
+        min-height: 100% !important;
+        height: 100% !important;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-panel-scroll--devices .YSH-body {
+        align-items: stretch !important;
+        justify-content: flex-start !important;
+    }
+
+    .site-wrapper .macaw-tabs.macaw-aurora-tabs .stage-panel-scroll--devices .YSH-content {
+        flex: 1 1 auto !important;
+        min-height: 0 !important;
+        height: auto !important;
+        align-items: center !important;
     }
 }
