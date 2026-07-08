@@ -686,7 +686,7 @@
             }
 
             .delivery-page-wrapper #datatable td .status-badge--mobile {
-                width: auto !important;
+                width: 100% !important;
                 min-width: 0 !important;
                 max-width: 100% !important;
                 padding-left: 0.45rem !important;
@@ -986,12 +986,11 @@
 
         .sigma-modal--delivery-schedule-actions .case-notes-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 8px !important;
             color: #5c6f7a;
             font-size: 11px !important;
             font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
+            letter-spacing: 0.06em;
         }
 
         .sigma-modal--delivery-schedule-actions .modal-body .sigma-case-jobs-list {
@@ -1072,10 +1071,78 @@
             border-radius: 8px !important;
             box-shadow: none !important;
             color: #333333 !important;
-            height: fit-content !important;
-            width: 100% !important;
-            margin-bottom: 5px !important;
-            font-size: 12px !important;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-note-text {
+            display: block !important;
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: isolate;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-note-text--mixed {
+            direction: inherit !important;
+            text-align: inherit !important;
+            unicode-bidi: normal;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-box {
+            display: block;
+            width: 100%;
+            margin: 0 0 8px;
+            padding: 8px 10px;
+            border: 1px solid #d4e0e0;
+            border-radius: 8px;
+            background: #f6f9f9;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top: 1px solid #dbe7e7;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-note {
+            color: #516060;
+            font-size: 12px;
+            font-style: italic;
+            font-weight: 600;
+            line-height: 1.45;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-chevron {
+            flex: 0 0 auto;
+            margin-left: auto;
+            color: #3f777b;
+            font-size: 12px;
+            transition: transform 180ms ease;
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron {
+            transform: rotate(180deg);
+        }
+
+        .sigma-modal--delivery-schedule-actions .sigma-case-delivery-note-arrow {
+            display: inline-block;
+            margin: 0 5px;
+            color: #3f777b;
+            font-style: normal;
         }
 
         .sigma-modal--delivery-schedule-actions .modal-footer {
@@ -1136,19 +1203,68 @@
 
         .sigma-modal--delivery-schedule-edit {
             background: rgba(15, 23, 42, 0.28);
+            z-index: 9998 !important;
+        }
+
+        body.sigma-delivery-modal-replacing::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 9997;
+            pointer-events: none;
+            background: rgba(15, 23, 42, 0.28);
+        }
+
+        body.sigma-delivery-modal-replacing .sigma-modal--delivery-schedule-actions,
+        body.sigma-delivery-modal-replacing .sigma-modal--delivery-schedule-edit {
+            background: transparent;
+        }
+
+        .sigma-modal--delivery-schedule-actions.fade .modal-content {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98) !important;
+            transition: opacity 150ms ease, transform 150ms ease;
+        }
+
+        .sigma-modal--delivery-schedule-edit.fade .modal-dialog,
+        .sigma-modal--delivery-schedule-edit.show .modal-dialog {
+            transform: none !important;
+        }
+
+        .sigma-modal--delivery-schedule-edit.fade .modal-content {
+            opacity: 0;
+            transform: scale(0.98) !important;
+            transition: opacity 150ms ease, transform 150ms ease;
+        }
+
+        .sigma-modal--delivery-schedule-actions.show .modal-content,
+        .sigma-modal--delivery-schedule-edit.show .modal-content {
+            opacity: 1;
+            transform: translateY(0) scale(1) !important;
         }
 
         .sigma-modal--delivery-schedule-edit.show {
             display: block !important;
         }
 
+        .sigma-modal--delivery-schedule-edit .delivery-edit-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-height: 100%;
+            padding: 16px;
+        }
+
         .sigma-modal--delivery-schedule-edit .modal-dialog {
             width: min(420px, calc(100vw - 32px)) !important;
             max-width: 420px !important;
-            margin: 1.75rem auto !important;
+            max-height: calc(100vh - 32px);
+            margin: 0 auto !important;
         }
 
         .sigma-modal--delivery-schedule-edit .modal-content {
+            max-height: calc(100vh - 32px);
             overflow: hidden;
             border: 0 !important;
             border-radius: 22px !important;
@@ -1238,15 +1354,16 @@
         }
 
         .sigma-modal--delivery-schedule-edit .modal-footer {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+            display: flex !important;
+            flex-wrap: nowrap !important;
             gap: 8px;
             padding: 0 18px 18px !important;
             border-top: 0 !important;
         }
 
         .sigma-modal--delivery-schedule-edit .modal-footer .btn {
-            width: 100%;
+            flex: 1 1 0;
+            width: auto;
             min-height: 40px;
             margin: 0 !important;
             border-radius: 10px !important;
@@ -1267,13 +1384,19 @@
         }
 
         @media (max-width: 575.98px) {
+            .sigma-modal--delivery-schedule-edit .delivery-edit-form {
+                padding: 12px;
+            }
+
             .sigma-modal--delivery-schedule-edit .modal-dialog {
                 width: calc(100vw - 24px) !important;
                 max-width: calc(100vw - 24px) !important;
-                margin: 12px auto !important;
+                max-height: calc(100vh - 24px);
+                margin: 0 auto !important;
             }
 
             .sigma-modal--delivery-schedule-edit .modal-content {
+                max-height: calc(100vh - 24px);
                 border-radius: 18px !important;
             }
 
@@ -1983,7 +2106,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-        <div class='modal sigma-modal--delivery-schedule-actions sigma-modal--delivery-schedule-action' tabindex='-1' role='dialog' id='deliveryActionsModal' data-backdrop='false' data-keyboard='true'>
+        <div class='modal fade sigma-modal--delivery-schedule-actions sigma-modal--delivery-schedule-action' tabindex='-1' role='dialog' id='deliveryActionsModal' data-backdrop='false' data-keyboard='true'>
             <input type='hidden' name='case_id' id='delivery-actions-case-id' value=''>
             <div class='modal-dialog modal-dialog-centered' role='document'>
                 <div class='modal-content'>
@@ -2015,7 +2138,7 @@
                         </div>
                         <div id='delivery-actions-notes-block' class='case-notes-section' style='display:none;'>
                             <hr>
-                            <label class='case-completion-dialog-label case-notes-label'><b>Notes:</b></label><br>
+                            <label class='case-completion-dialog-label case-notes-label'><b>Notes:</b></label>
                             <div id='delivery-actions-notes'></div>
                         </div>
                     </div>
@@ -2038,9 +2161,7 @@
                                 </div>
                                 <div class='sigma-action-slot' id='delivery-actions-edit-delivery-wrap' style='display:none;'>
                                     <button type='button' class='btn btn-danger sigma-action-btn'
-                                        id='delivery-actions-edit-delivery'
-                                        data-dismiss='modal' data-toggle='modal'
-                                        data-target='#deliveryEditModal'>
+                                        id='delivery-actions-edit-delivery'>
                                         <span class='btn-icon'><i class='fa-solid fa-pen-to-square'></i></span><span class='btn-text'>Edit Delivery Date</span>
                                     </button>
                                 </div>
@@ -2054,7 +2175,7 @@
             </div>
         </div>
         @if (($permissions && $permissions->contains('permission_id', 110)) || optional(Auth()->user())->is_admin)
-            <div class="modal sigma-modal--delivery-schedule-edit" tabindex="-1" role="dialog" id="deliveryEditModal">
+            <div class="modal fade sigma-modal--delivery-schedule-edit" tabindex="-1" role="dialog" id="deliveryEditModal" data-backdrop="false">
                 <form id="delivery-edit-form" class="delivery-edit-form" action="{{ route('edit-delivery-date') }}" method="POST">
                     @csrf
                     <input type="hidden" name="id" id="delivery-edit-case-id" value="">
@@ -2218,22 +2339,86 @@
             }).join('');
         }
 
+        function getDeliveryNoteDirectionClass(text) {
+            const noteValue = String(text || '');
+            const hasArabic = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/u.test(noteValue);
+            const hasLatin = /[A-Za-z]/u.test(noteValue);
+            return hasArabic && hasLatin ? 'sigma-case-note-text--mixed' : 'sigma-case-note-text--ltr';
+        }
+
+        function getDeliveryNoteEmployee(header) {
+            const matches = String(header || '').match(/\[([^\]]*)\]/g) || [];
+            if (matches.length < 2) {
+                return '-';
+            }
+
+            return matches[1].replace(/^\[/, '').replace(/\]$/, '') || '-';
+        }
+
+        function buildDeliveryDateNoteMarkup(note) {
+            const deliveryDateMatch = String(note.text || '').match(/^Updated delivery date from \[(.*?)\] to \[(.*?)\]$/);
+            const oldDeliveryDate = escapeDeliveryHtml(deliveryDateMatch && deliveryDateMatch[1] ? deliveryDateMatch[1] : '-');
+            const newDeliveryDate = escapeDeliveryHtml(deliveryDateMatch && deliveryDateMatch[2] ? deliveryDateMatch[2] : '-');
+            const deliveryEmployee = escapeDeliveryHtml(getDeliveryNoteEmployee(note.header));
+
+            return `${deliveryEmployee} Updated D.Date [<span>${oldDeliveryDate}</span>] <span class="sigma-case-delivery-note-arrow" aria-hidden="true">&rarr;</span> [<span>${newDeliveryDate}</span>]`;
+        }
+
         function buildDeliveryNotesMarkup(notes) {
             if (!Array.isArray(notes) || notes.length === 0) {
                 return '';
             }
 
-            return notes.map(function(note) {
+            const deliveryDateNotes = [];
+            const regularNotes = [];
+
+            notes.forEach(function(note) {
+                if (/^Updated delivery date from \[(.*?)\] to \[(.*?)\]$/.test(String(note.text || ''))) {
+                    deliveryDateNotes.push(note);
+                    return;
+                }
+
+                regularNotes.push(note);
+            });
+
+            const regularNotesMarkup = regularNotes.map(function(note) {
                 const header = escapeDeliveryHtml(note.header || '');
                 const text = escapeDeliveryHtml(note.text || '');
+                const noteDirectionClass = getDeliveryNoteDirectionClass(note.text);
 
                 return `
-                    <div class="form-control note-container" disabled>
-                        <span class="noteHeader">${header}</span><br>
-                        <span class="noteText">${text}</span>
+                    <div class="form-control note-container"
+                        style="height:fit-content;width:100%;margin-bottom: 8px;font-size:12px;padding:10px;display:block !important"
+                        disabled>
+                        <span class="noteHeader"
+                            style="font-weight:600;display:block !important">${header}</span>
+                        <span class="noteText sigma-case-note-text ${noteDirectionClass}"
+                            style="display:block !important">${text}</span>
                     </div>
                 `;
             }).join('');
+
+            let deliveryDateNotesMarkup = '';
+            if (deliveryDateNotes.length > 0) {
+                const latestDeliveryDateNote = deliveryDateNotes[deliveryDateNotes.length - 1];
+                const deliveryNotesListMarkup = deliveryDateNotes.map(function(note) {
+                    return `<div class="sigma-case-delivery-note">${buildDeliveryDateNoteMarkup(note)}</div>`;
+                }).join('');
+
+                deliveryDateNotesMarkup = `
+                    <details class="sigma-case-delivery-notes-box">
+                        <summary class="sigma-case-delivery-notes-summary">
+                            <span class="sigma-case-delivery-note">${buildDeliveryDateNoteMarkup(latestDeliveryDateNote)}</span>
+                            <i class="fas fa-chevron-down sigma-case-delivery-notes-chevron" aria-hidden="true"></i>
+                        </summary>
+                        <div class="sigma-case-delivery-notes-list">
+                            ${deliveryNotesListMarkup}
+                        </div>
+                    </details>
+                `;
+            }
+
+            return regularNotesMarkup + deliveryDateNotesMarkup;
         }
 
         $(document).ready(function() {
@@ -2327,6 +2512,33 @@
                 input.dispatchEvent(new Event('input', { bubbles: true }));
                 input.dispatchEvent(new Event('change', { bubbles: true }));
             }
+        });
+
+        $(document).on('click', '#deliveryActionsModal, #deliveryEditModal', function(event) {
+            if ($(event.target).closest('.modal-dialog').length === 0) {
+                $(this).modal('hide');
+            }
+        });
+
+        $(document).on('click', '#delivery-actions-edit-delivery', function() {
+            const trigger = this;
+            const actionsModal = $('#deliveryActionsModal');
+            const editModal = $('#deliveryEditModal');
+
+            $('body').addClass('sigma-delivery-modal-replacing');
+
+            actionsModal.one('hidden.bs.modal.deliveryEdit', function() {
+                editModal
+                    .one('shown.bs.modal.deliveryEdit', function() {
+                        $('body').removeClass('sigma-delivery-modal-replacing');
+                    })
+                    .one('hidden.bs.modal.deliveryEdit', function() {
+                        $('body').removeClass('sigma-delivery-modal-replacing');
+                    })
+                    .modal('show', trigger);
+            });
+
+            actionsModal.modal('hide');
         });
     </script>
 @endpush

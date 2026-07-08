@@ -383,12 +383,6 @@ ease;
                 <p class="login-subtitle">Enter your credentials</p>
             </div>
 
-            @if($errors->any() || isset($migrations_check))
-
-                    @include('alerts.migrations_check')
-
-            @endif
-
             <form id="login-form" role="form" method="POST" action="{{ route('login') }}" autocomplete="on" style="text-align: center;  ">
                 @csrf
 

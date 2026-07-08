@@ -1,6 +1,6 @@
 <footer class="footer">
 
-    <script src="{{ asset('assets/js/submit-lock.js') }}" defer></script>
+    <script src="{{ asset('assets/js/submit-lock.js') }}?v={{ filemtime(public_path('assets/js/submit-lock.js')) }}" defer></script>
 
     <script>
         // Show the spinner as soon as the page starts loading
@@ -44,10 +44,10 @@
 
     
 
-<script src="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js')}}" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="{{ asset('white/js/core/bootstrap.min.js') }}?v={{ filemtime(public_path('white/js/core/bootstrap.min.js')) }}"></script>
+<script src="{{ asset('assets/plugins/bootstrap-select/bootstrap-select.min.js') }}?v={{ filemtime(public_path('assets/plugins/bootstrap-select/bootstrap-select.min.js')) }}"></script>
+<script src="{{ asset('assets/js/bootstrap-toggle.min.js') }}?v={{ filemtime(public_path('assets/js/bootstrap-toggle.min.js')) }}"></script>
+<script src="{{ asset('assets/plugins/select2/select2.min.js') }}?v={{ filemtime(public_path('assets/plugins/select2/select2.min.js')) }}"></script>
 
 
 <!-- Bootstrap Select No-Scroll Fix -->
@@ -132,7 +132,7 @@ $(document).ready(function() {
 });
 </script>
     <!-- ALPINE -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="{{ asset('assets/js/alpine-cdn.min.js') }}?v={{ filemtime(public_path('assets/js/alpine-cdn.min.js')) }}"></script>
     <!-- DataTables Core & Extensions (keep together) -->
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
@@ -231,7 +231,7 @@ $(document).ready(function() {
     <script src="{{asset('assets/js/fontawesome-iconpicker.js')}}"></script>
 
     <!-- Third-party Utilities -->
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
+    <script src="{{ asset('assets/js/js.cookie.js') }}?v={{ filemtime(public_path('assets/js/js.cookie.js')) }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js" integrity="sha512-a9NgEEK7tsCvABL7KqtUTQjl69z7091EVPpw5KxPlZ93T141ffe1woLtbXTX+r2/8TtTvRX/v4zTL2UlMUPgwg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.66/vfs_fonts.js"></script>

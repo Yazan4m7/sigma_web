@@ -64,6 +64,7 @@
 </head>
 
 <body class="{{ $class ?? '' }}">
+  @include('components.sigma-toasts')
   <div class="wrapper">
     @auth
       @include('loginLayout.page_template.auth')

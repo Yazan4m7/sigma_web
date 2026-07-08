@@ -15,16 +15,30 @@ use App\payment;
 use App\bank;
 use App\clientDiscount;
 use App\sCase;
+use App\Services\DoctorStatementService;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\HandlerStack;
 use Firebase\JWT\JWT;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
+use Mpdf\Config\ConfigVariables;
+use Mpdf\Config\FontVariables;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
+use Symfony\Component\HttpFoundation\HeaderUtils;
 
 class ClientsController extends Controller
 {
     use helperTrait;
+
+    private DoctorStatementService $doctorStatementService;
+
+    public function __construct(DoctorStatementService $doctorStatementService)
+    {
+        $this->doctorStatementService = $doctorStatementService;
+    }
 //    public function index(Request $request)
 //    {
 //
@@ -74,10 +88,16 @@ class ClientsController extends Controller
         $totalBalance = $this->attachClientBalances($clients, $from);
 
         $allClients = Client::query()->select(['id', 'name'])->orderBy('name')->get();
+        $enabledClients = Client::query()
+            ->where('active', 1)
+            ->select(['id', 'name'])
+            ->orderBy('name')
+            ->get();
         $banks = Bank::query()->select(['id', 'bank_name'])->get();
 
         return view('clients.index', compact(
             'allClients',
+            'enabledClients',
             'clients',
             'banks',
             'selectedClients',
@@ -238,7 +258,7 @@ class ClientsController extends Controller
         $materials = material::all();
         return view('clients.view-edit')->with('user', $user)->with('materials', $materials);
     }
-    public function statementOfAccount($id =-1, Request $request)
+    public function statementOfAccount($id, Request $request)
         {
             if($request->allTime == 1){
                 $from = date('Y-m-d', strtotime('01-01-2021'));
@@ -254,31 +274,99 @@ class ClientsController extends Controller
                 $to = now()->toDateString();
             }
         $client = client::findOrFail($id);
-        $invoices = invoice::where("doctor_id", $id)->where('status',1)->whereBetween('date_applied', [$from . ' 00:00', $to . ' 23:59'])->get();
-        $payments = payment::where("doctor_id", $id)->whereBetween('created_at', [$from . ' 00:00', $to . ' 23:59'])->get();
-        // toBase() to prevent id overwriting.
-        $transactions =  $invoices->toBase()->merge($payments)
-             ->transform( function ($item) {
-                 if(!empty($item->date_applied)) {
-                     $item->created_at = $item->date_applied;
-                 }
-                 else if(!empty($item->case->actual_delivery_date))
-                 {
-                     $item->created_at = $item->case->actual_delivery_date;
-                 }
-//                 if(!empty($item->case->actual_delivery_date)) {
-//                     $item->created_at = $item->case->actual_delivery_date;
-//                 }
-                 return $item;
-             })->sortBy('created_at');
 
-        $amountDuePreDate = invoice::where("doctor_id", $id)->where('date_applied','<',$from . ' 00:00')->where('status',1)->sum('amount');
-        $amountPaidPreDate =  payment::where("doctor_id", $id)->where('created_at','<',$from . ' 00:00')->sum('amount');
-
-        $openingBalance  =$amountDuePreDate - $amountPaidPreDate;
-
-        return view("clients.statement",compact('amountPaidPreDate','amountDuePreDate','invoices','client','payments','transactions','to','from','openingBalance'));
+        return view('clients.statement', $this->doctorStatementService->build($client, $from, $to));
         }
+
+    public function downloadStatementPdf($doctor, Request $request)
+    {
+        $validated = $request->validate([
+            'from' => ['required', 'date_format:Y-m-d'],
+            'to' => ['required', 'date_format:Y-m-d', 'after_or_equal:from'],
+        ]);
+
+        $client = client::query()
+            ->whereKey($doctor)
+            ->where('active', 1)
+            ->firstOrFail();
+
+        $statementData = $this->doctorStatementService->build(
+            $client,
+            $validated['from'],
+            $validated['to']
+        );
+        $tempDirectory = storage_path('framework/cache/mpdf');
+        File::ensureDirectoryExists($tempDirectory);
+
+        $defaultConfig = (new ConfigVariables())->getDefaults();
+        $fontDirs = $defaultConfig['fontDir'];
+        $defaultFontConfig = (new FontVariables())->getDefaults();
+        $fontData = $defaultFontConfig['fontdata'];
+        $cairoFontDirectory = public_path('assets/fonts/cairo');
+        $useCairoFont = File::exists($cairoFontDirectory . '/Cairo-Regular.ttf')
+            && File::exists($cairoFontDirectory . '/Cairo-Bold.ttf');
+
+        $mpdfConfig = [
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'tempDir' => $tempDirectory,
+            'default_font' => $useCairoFont ? 'cairo' : 'dejavusans',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 30,
+            'margin_bottom' => 12,
+        ];
+
+        if ($useCairoFont) {
+            $mpdfConfig['fontDir'] = array_merge($fontDirs, [
+                $cairoFontDirectory,
+            ]);
+            $mpdfConfig['fontdata'] = $fontData + [
+                'cairo' => [
+                    'R' => 'Cairo-Regular.ttf',
+                    'B' => 'Cairo-Bold.ttf',
+                    'useOTL' => 0xFF,
+                    'useKashida' => 75,
+                ],
+            ];
+        }
+
+        $pdf = new Mpdf($mpdfConfig);
+        $pdf->autoScriptToLang = true;
+        $pdf->autoLangToFont = false;
+        $pdf->SetTitle('Statement of Account - ' . $client->name);
+        $logoPath = public_path('assets/img/green-pdf.jpg');
+        $logoMimeType = 'image/jpeg';
+        if (!File::exists($logoPath)) {
+            $logoPath = public_path('assets/img/green.png');
+            $logoMimeType = 'image/png';
+        }
+        $logoSrc = File::exists($logoPath)
+            ? 'data:' . $logoMimeType . ';base64,' . base64_encode(File::get($logoPath))
+            : null;
+
+        $pdf->SetHTMLHeader(view('clients.statement-pdf-header', [
+            'client' => $client,
+            'from' => $validated['from'],
+            'to' => $validated['to'],
+            'logoSrc' => $logoSrc,
+        ])->render());
+        $pdf->WriteHTML(view('clients.statement-pdf', $statementData)->render());
+
+        $fileName = $this->doctorStatementService->fileName(
+            $client,
+            $validated['from'],
+            $validated['to']
+        );
+        $fallbackName = "statement-doctor-{$client->id}-{$validated['from']}-to-{$validated['to']}.pdf";
+
+        return response($pdf->Output('', Destination::STRING_RETURN), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => HeaderUtils::makeDisposition('attachment', $fileName, $fallbackName),
+            'Cache-Control' => 'private, no-store, no-cache, must-revalidate',
+            'Pragma' => 'no-cache',
+        ]);
+    }
 
     public function quickAccessDS(Request $request){
         $doctorQuery = client::query();

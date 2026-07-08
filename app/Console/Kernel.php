@@ -24,7 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('sessions:wipe --force')
+            ->dailyAt('00:00')
+            ->timezone(config('app.timezone'))
+            ->withoutOverlapping();
     }
 
     /**

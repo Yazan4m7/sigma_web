@@ -77,6 +77,17 @@
                                         <i class="fa fa-plus"></i>
                                     </a>
                                 @endif
+                                @if(!$isTakePaymentsPage && $showUntilFilter)
+                                    <button type="button"
+                                            class="icon-action doctor-statements-action"
+                                            data-toggle="modal"
+                                            data-target="#doctorStatementsModal"
+                                            aria-label="Generate Statements"
+                                            title="Generate Statements">
+                                        <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                                        <span>Generate Statements</span>
+                                    </button>
+                                @endif
                                 @if(Auth()->user()->is_admin)
                                     <a href="{{ route('mobile-stats-configs') }}" class="icon-action" aria-label="Mobile">
                                         <i class="fa fa-phone"></i>
@@ -101,6 +112,83 @@
         </div>
 
 </form>
+
+@if(!$isTakePaymentsPage && $showUntilFilter)
+    <div class="modal fade sigma-modal--clients-statements" tabindex="-1" role="dialog" id="doctorStatementsModal" aria-labelledby="doctor-statements-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="doctor-statements-form" data-skip-loading-screen="true" novalidate>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="doctor-statements-title">Generate Statements</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="doctor-statements-date-grid">
+                            <div class="doctor-statements-field">
+                                <label for="doctor-statements-from">From</label>
+                                <x-ios-dtp
+                                    name="statement_from"
+                                    id="doctor-statements-from"
+                                    :value="now()->startOfMonth()->toDateString()"
+                                    mode="date"
+                                    initial-view="wheel"
+                                    :required="true"
+                                />
+                            </div>
+                            <div class="doctor-statements-field">
+                                <label for="doctor-statements-to">To</label>
+                                <x-ios-dtp
+                                    name="statement_to"
+                                    id="doctor-statements-to"
+                                    :value="now()->toDateString()"
+                                    mode="date"
+                                    initial-view="wheel"
+                                    :required="true"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="doctor-statements-field">
+                            <label for="doctor-statements-doctors">Doctors</label>
+                            <select class="selectpicker clearOnAll"
+                                    id="doctor-statements-doctors"
+                                    multiple
+                                    data-container="body"
+                                    data-live-search="true"
+                                    data-hide-disabled="true"
+                                    title="Select enabled doctors">
+                                <option value="all" selected>All</option>
+                                @foreach($enabledClients as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="doctor-statements-progress" id="doctor-statements-progress" hidden aria-live="polite">
+                            <div class="doctor-statements-progress-copy">
+                                <span id="doctor-statements-progress-label">Preparing statements...</span>
+                                <span id="doctor-statements-progress-count">0 / 0</span>
+                            </div>
+                            <div class="doctor-statements-progress-track">
+                                <span id="doctor-statements-progress-bar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <span class="doctor-statements-footer-spacer" aria-hidden="true"></span>
+                        <button type="submit" class="btn btn-primary doctor-statements-generate-btn" id="doctor-statements-generate">
+                            <i class="fas fa-file-download" aria-hidden="true"></i>
+                            <span>Generate</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+@endif
 
 {{-- Total Balance Card (Moved Outside Filter Form) --}}
 @if(($permissions && $permissions->contains('permission_id', 107)) || Auth()->user()->is_admin)
@@ -240,7 +328,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-6">
-                                                <a id="doctor-discount-link" data-toggle="modal" data-target="#doctorDiscountModal" class="btn btn-danger" data-dismiss="modal">
+                                                <a id="doctor-discount-link doctor-edit-link" data-toggle="modal" data-target="#doctorDiscountModal" class="btn btn-danger" data-dismiss="modal">
                                                     <span class="btn-icon"><i class="fas fa-percent"></i></span>
                                                     <span class="btn-text">Create a discount</span>
                                                 </a>
@@ -380,6 +468,13 @@
 @endsection
 @push('js')
     <script>
+        const enabledStatementDoctors = @json($enabledClients->map(function ($doctor) {
+            return ['id' => (string) $doctor->id, 'name' => $doctor->name];
+        })->values());
+        const doctorStatementPdfUrl = @json(route('doctor-statement-pdf', ['doctor' => '__DOCTOR__'], false));
+        const doctorStatementsJsZipUrl = @json(asset('assets/plugins/datatables/jszip.min.js'));
+        let doctorStatementsRunning = false;
+
         const doctorRouteTemplates = {
             statement: @json(route('client-statement-admin', '__CLIENT__')),
             edit: @json(route('client-view-edit', ['id' => '__CLIENT__'])),
@@ -412,6 +507,334 @@
             if (event.key === '.' || event.key === ',' || event.key === 'e' || event.key === 'E' || event.key === '-') {
                 event.preventDefault();
             }
+        }
+
+        function showDoctorStatementsToast(message, type) {
+            if (typeof window.sigmaShowToast === 'function') {
+                window.sigmaShowToast(message, type || 'error');
+                return;
+            }
+
+            window.alert(message);
+        }
+
+        function selectedStatementDoctors() {
+            const select = document.getElementById('doctor-statements-doctors');
+            const selectedIds = select
+                ? Array.from(select.selectedOptions).map(function(option) {
+                    return option.value;
+                })
+                : [];
+
+            if (selectedIds.includes('all')) {
+                return enabledStatementDoctors.slice();
+            }
+
+            return enabledStatementDoctors.filter(function(doctor) {
+                return selectedIds.includes(doctor.id);
+            });
+        }
+
+        function safeStatementFileName(doctor, from, to) {
+            const safeName = String(doctor.name || '')
+                .replace(/[<>:"/\\|?*\u0000-\u001F]/g, '-')
+                .replace(/\s+/g, ' ')
+                .replace(/[. ]+$/g, '')
+                .trim() || ('doctor-' + doctor.id);
+
+            return 'statement-' + safeName + '-' + from + '-to-' + to + '.pdf';
+        }
+
+        function statementZipFileName(from, to) {
+            return 'doctor-statements-' + from + '-to-' + to + '.zip';
+        }
+
+        function formatDoctorStatementsDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            return year + '-' + month + '-' + day;
+        }
+
+        function defaultDoctorStatementsDateRange() {
+            const today = new Date();
+            const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+
+            return {
+                from: formatDoctorStatementsDate(firstDay),
+                to: formatDoctorStatementsDate(today),
+            };
+        }
+
+        function setDoctorStatementsDateValue(inputId, value) {
+            const input = document.getElementById(inputId);
+            if (!input) {
+                return;
+            }
+
+            input.value = value;
+            const pickerContainer = input.closest('.ios-dtp-container');
+            const pickerData = pickerContainer?._x_dataStack?.[0] || pickerContainer?.__x?.$data;
+
+            if (pickerData) {
+                pickerData.formValue = value;
+                pickerData.originalFormValue = value;
+                if (typeof pickerData.syncStateFromValue === 'function') {
+                    pickerData.syncStateFromValue(value);
+                }
+                if (typeof pickerData.updateRotations === 'function') {
+                    pickerData.updateRotations();
+                }
+            }
+
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+
+        function resetDoctorStatementsProgress() {
+            const progress = document.getElementById('doctor-statements-progress');
+            const progressLabel = document.getElementById('doctor-statements-progress-label');
+            const progressCount = document.getElementById('doctor-statements-progress-count');
+            const progressBar = document.getElementById('doctor-statements-progress-bar');
+
+            if (progress) {
+                progress.hidden = true;
+            }
+            if (progressLabel) {
+                progressLabel.textContent = 'Preparing statements...';
+            }
+            if (progressCount) {
+                progressCount.textContent = '0 / 0';
+            }
+            if (progressBar) {
+                progressBar.style.width = '0%';
+            }
+        }
+
+        function resetDoctorStatementsFilters() {
+            const dateRange = defaultDoctorStatementsDateRange();
+            const doctorsSelect = $('#doctor-statements-doctors');
+
+            setDoctorStatementsDateValue('doctor-statements-from', dateRange.from);
+            setDoctorStatementsDateValue('doctor-statements-to', dateRange.to);
+
+            if (doctorsSelect.length && typeof doctorsSelect.selectpicker === 'function') {
+                doctorsSelect.selectpicker('val', ['all']);
+                doctorsSelect.selectpicker('refresh');
+            } else {
+                const select = document.getElementById('doctor-statements-doctors');
+                if (select) {
+                    Array.from(select.options).forEach(function(option) {
+                        option.selected = option.value === 'all';
+                    });
+                }
+            }
+
+            resetDoctorStatementsProgress();
+        }
+
+        function ensureDoctorStatementsJsZip() {
+            if (window.JSZip) {
+                return Promise.resolve(window.JSZip);
+            }
+
+            return new Promise(function(resolve, reject) {
+                const script = document.createElement('script');
+                script.src = doctorStatementsJsZipUrl;
+                script.onload = function() {
+                    window.JSZip ? resolve(window.JSZip) : reject(new Error('ZIP support did not load.'));
+                };
+                script.onerror = function() {
+                    reject(new Error('ZIP support could not be loaded.'));
+                };
+                document.head.appendChild(script);
+            });
+        }
+
+        function doctorStatementsPickerId() {
+            return 'doctor-statements-' + Date.now().toString(36);
+        }
+
+        async function chooseDoctorStatementsDestination(zipFileName) {
+            if (typeof window.showDirectoryPicker === 'function') {
+                try {
+                    return {
+                        directoryHandle: await window.showDirectoryPicker({
+                            id: doctorStatementsPickerId(),
+                            mode: 'readwrite',
+                        }),
+                        zipFileHandle: null,
+                        canceled: false,
+                    };
+                } catch (error) {
+                    if (error && error.name === 'AbortError') {
+                        return { canceled: true };
+                    }
+                }
+            }
+
+            if (typeof window.showSaveFilePicker === 'function') {
+                try {
+                    return {
+                        directoryHandle: null,
+                        zipFileHandle: await window.showSaveFilePicker({
+                            suggestedName: zipFileName,
+                            types: [{
+                                description: 'ZIP archive',
+                                accept: { 'application/zip': ['.zip'] },
+                            }],
+                        }),
+                        canceled: false,
+                    };
+                } catch (error) {
+                    if (error && error.name === 'AbortError') {
+                        return { canceled: true };
+                    }
+                }
+            }
+
+            if (
+                typeof window.File === 'function' &&
+                typeof navigator.share === 'function' &&
+                typeof navigator.canShare === 'function'
+            ) {
+                const shareProbe = new File([''], zipFileName, { type: 'application/zip' });
+
+                if (navigator.canShare({ files: [shareProbe] })) {
+                    return {
+                        directoryHandle: null,
+                        zipFileHandle: null,
+                        shareZip: true,
+                        canceled: false,
+                    };
+                }
+            }
+
+            return {
+                directoryHandle: null,
+                zipFileHandle: null,
+                shareZip: false,
+                browserDownload: true,
+                canceled: false,
+            };
+        }
+
+        async function fetchDoctorStatement(doctor, from, to) {
+            const url = doctorStatementPdfUrl.replace('__DOCTOR__', encodeURIComponent(doctor.id));
+            const response = await fetch(url + '?' + new URLSearchParams({ from: from, to: to }), {
+                credentials: 'same-origin',
+                headers: {
+                    Accept: 'application/pdf, application/json',
+                },
+            });
+
+            if (!response.ok) {
+                let message = 'Statement generation failed (' + response.status + ').';
+                let responseText = '';
+
+                try {
+                    responseText = await response.text();
+                    const errorPayload = JSON.parse(responseText);
+                    message = errorPayload.message || message;
+                } catch (error) {
+                    const snippet = responseText
+                        .replace(/<[^>]*>/g, ' ')
+                        .replace(/\s+/g, ' ')
+                        .trim()
+                        .slice(0, 180);
+
+                    if (snippet) {
+                        message += ' ' + snippet;
+                    }
+                }
+
+                throw new Error(message);
+            }
+
+            const contentType = response.headers.get('content-type') || '';
+            if (!contentType.includes('application/pdf')) {
+                const responseText = await response.text();
+                const snippet = responseText
+                    .replace(/<[^>]*>/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .slice(0, 180);
+                throw new Error(
+                    'The server returned ' + (contentType || 'unknown content') + ' instead of a PDF.'
+                    + (snippet ? ' ' + snippet : '')
+                );
+            }
+
+            return response.arrayBuffer();
+        }
+
+        async function writeStatementToDirectory(directoryHandle, fileName, contents) {
+            const fileHandle = await directoryHandle.getFileHandle(fileName, { create: true });
+            const writable = await fileHandle.createWritable();
+            await writable.write(new Blob([contents], { type: 'application/pdf' }));
+            await writable.close();
+        }
+
+        async function saveStatementsZip(zip, destination, zipFileName) {
+            const blob = await zip.generateAsync({
+                type: 'blob',
+                compression: 'DEFLATE',
+                compressionOptions: { level: 6 },
+            });
+
+            if (destination.zipFileHandle) {
+                const writable = await destination.zipFileHandle.createWritable();
+                await writable.write(blob);
+                await writable.close();
+                return;
+            }
+
+            if (destination.shareZip) {
+                await navigator.share({
+                    files: [new File([blob], zipFileName, { type: 'application/zip' })],
+                    title: 'Doctor statements',
+                });
+                return;
+            }
+
+            if (destination.browserDownload) {
+                const downloadUrl = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = downloadUrl;
+                link.download = zipFileName;
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                window.setTimeout(function() {
+                    URL.revokeObjectURL(downloadUrl);
+                }, 1000);
+                return;
+            }
+
+            throw new Error('A save destination was not selected.');
+        }
+
+        function updateDoctorStatementsProgress(current, total, label) {
+            const progress = document.getElementById('doctor-statements-progress');
+            const progressLabel = document.getElementById('doctor-statements-progress-label');
+            const progressCount = document.getElementById('doctor-statements-progress-count');
+            const progressBar = document.getElementById('doctor-statements-progress-bar');
+
+            progress.hidden = false;
+            progressLabel.textContent = label;
+            progressCount.textContent = current + ' / ' + total;
+            progressBar.style.width = (total > 0 ? Math.round((current / total) * 100) : 0) + '%';
+        }
+
+        function setDoctorStatementsRunning(isRunning) {
+            const form = document.getElementById('doctor-statements-form');
+            const controls = form ? form.querySelectorAll('button, input') : [];
+
+            doctorStatementsRunning = isRunning;
+            controls.forEach(function(control) {
+                control.disabled = isRunning;
+            });
         }
 
         function paymentTypeChange() {
@@ -553,6 +976,123 @@
 
             document.getElementById('doctor-discount-client-id').value = trigger?.dataset?.clientId || '';
             document.getElementById('doctor-discount-client-name').textContent = trigger?.dataset?.clientName || '-';
+        });
+
+        $(document).on('hide.bs.modal', '#doctorStatementsModal', function(event) {
+            if (doctorStatementsRunning) {
+                event.preventDefault();
+            }
+        });
+
+        $(document).on('show.bs.modal', '#doctorStatementsModal', function() {
+            document.body.classList.add('doctor-statements-modal-open');
+            resetDoctorStatementsFilters();
+        });
+
+        $(document).on('hidden.bs.modal', '#doctorStatementsModal', function() {
+            document.body.classList.remove('doctor-statements-modal-open');
+            resetDoctorStatementsFilters();
+        });
+
+        document.getElementById('doctor-statements-form')?.addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const fromInput = document.getElementById('doctor-statements-from');
+            const toInput = document.getElementById('doctor-statements-to');
+            const from = fromInput ? fromInput.value.slice(0, 10) : '';
+            const to = toInput ? toInput.value.slice(0, 10) : '';
+            const doctors = selectedStatementDoctors();
+
+            if (!from || !to) {
+                showDoctorStatementsToast('Select both From and To dates.', 'error');
+                return;
+            }
+            if (from > to) {
+                showDoctorStatementsToast('The From date must be before or equal to the To date.', 'error');
+                return;
+            }
+            if (doctors.length === 0) {
+                showDoctorStatementsToast('Select at least one enabled doctor.', 'error');
+                return;
+            }
+
+            const zipFileName = statementZipFileName(from, to);
+            setDoctorStatementsRunning(true);
+
+            let destination = null;
+            const failedDoctors = [];
+            const failedDoctorMessages = [];
+            let successfulStatements = 0;
+            let zip = null;
+
+            try {
+                destination = await chooseDoctorStatementsDestination(zipFileName);
+                if (destination.canceled) {
+                    showDoctorStatementsToast('Statement generation canceled.', 'info');
+                    return;
+                }
+
+                if (!destination.directoryHandle) {
+                    const JsZip = await ensureDoctorStatementsJsZip();
+                    zip = new JsZip();
+                }
+
+                for (let index = 0; index < doctors.length; index += 1) {
+                    const doctor = doctors[index];
+                    const fileName = safeStatementFileName(doctor, from, to);
+                    updateDoctorStatementsProgress(index, doctors.length, 'Generating ' + doctor.name + '...');
+
+                    try {
+                        const statementContents = await fetchDoctorStatement(doctor, from, to);
+
+                        if (destination.directoryHandle) {
+                            await writeStatementToDirectory(destination.directoryHandle, fileName, statementContents);
+                        } else {
+                            zip.file(fileName, statementContents);
+                        }
+
+                        successfulStatements += 1;
+                    } catch (error) {
+                        const failureMessage = error && error.message
+                            ? error.message
+                            : 'Statement generation failed.';
+                        failedDoctors.push(doctor.name);
+                        failedDoctorMessages.push(doctor.name + ': ' + failureMessage);
+                    }
+
+                    updateDoctorStatementsProgress(index + 1, doctors.length, doctor.name);
+                }
+
+                if (successfulStatements === 0) {
+                    throw new Error(failedDoctorMessages[0] || 'No statements could be generated.');
+                }
+
+                if (zip) {
+                    updateDoctorStatementsProgress(doctors.length, doctors.length, 'Preparing ZIP file...');
+                    await saveStatementsZip(zip, destination, zipFileName);
+                }
+
+                setDoctorStatementsRunning(false);
+                $('#doctorStatementsModal').modal('hide');
+
+                if (failedDoctors.length > 0) {
+                    showDoctorStatementsToast(
+                        successfulStatements + ' statements saved. Failed: ' + failedDoctors.join(', '),
+                        'warning'
+                    );
+                } else {
+                    showDoctorStatementsToast(successfulStatements + ' statements saved successfully.', 'success');
+                }
+            } catch (error) {
+                showDoctorStatementsToast(error.message || 'Statements could not be generated.', 'error');
+            } finally {
+                setDoctorStatementsRunning(false);
+                if (destination) {
+                    destination.directoryHandle = null;
+                    destination.zipFileHandle = null;
+                }
+                destination = null;
+            }
         });
     </script>
 @endpush

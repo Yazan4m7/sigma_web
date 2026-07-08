@@ -14,16 +14,6 @@
                     @csrf
                     @method('PUT')
                     <div class="card-body">
-                        @if($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

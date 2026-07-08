@@ -700,7 +700,7 @@
 @push('js')
 <!-- Include minimal required scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js"></script>
+<script src="{{ asset('assets/js/js.cookie.js') }}?v={{ filemtime(public_path('assets/js/js.cookie.js')) }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 
 <!-- Device page specific JS without operations dashboard dependencies -->

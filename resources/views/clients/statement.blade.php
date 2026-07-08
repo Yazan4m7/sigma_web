@@ -7,7 +7,7 @@
             -webkit-print-color-adjust: exact !important;
         }
         hr { display: block; height: 1px;
-            background-color:black;
+
             margin:0; padding: 0; border-color:black;}
         .statement-table thead th {
             padding: 5px;
@@ -46,7 +46,7 @@
                     margin-bottom: 0.5rem;
                     font-weight: bold;
                 }
-        
+
                 /* Custom filter row styles (matching cases and delivery-schedule) */
                 .filter-label {
                     font-weight: 600;
@@ -65,7 +65,7 @@
                     justify-content: center;
                     padding: 0 !important;
                 }
-        
+
                 /* Responsive adjustments for labels and inputs */
                 @media screen and (max-width: 767px) {
                     .filter-label {
@@ -134,13 +134,6 @@
                                 <h4>Dr. :<b> {{$client->name}}</b></h4></div>
 
                         </div>
-                        @php
-                        if ($transactions != null)
-                        $invoicesAmount = $transactions->whereNotNull("case_id")->whereNull("discount_title")->sum('amount');
-                        $discounts = $transactions->whereNotNull("case_id")->whereNotNull("discount_title")->sum('amount');
-                        $amountPaid = $transactions->whereNull("case_id")->sum('amount');
-                        $balanceDue = $invoicesAmount - $amountPaid + $openingBalance ?? 0;
-                        @endphp
                         <div class="col-md-4">
                             <h4 style="text-align: center;font-weight: bold">Statement of Account</h4>
                             <hr style="margin:0">
@@ -165,7 +158,7 @@
                                 <div class="row"><div class="col-md-6">Discounts :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$discounts ?? '0'}} JOD</b></h5></div></div>
                             @endif
                             <hr style="margin:0">
-                            <div class="row"><div class="col-md-6">Balance Due :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$balanceDue + $discounts ?? '0'}} JOD</b></h5></div></div>
+                            <div class="row"><div class="col-md-6">Balance Due :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h5></div></div>
                         </div>
                     </div>
 
@@ -183,34 +176,20 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php
-
-                            $discountExist = false;
-                            $balance =$openingBalance ?? 0;
-                            @endphp
-                            @foreach($transactions as $trans)
-                                @php
-                                    if(isset($trans->case_id))
-                                    $balance +=$trans->amount;
-                                    else
-                                    $balance -=$trans->amount;
-                                @endphp
+                            @forelse($statementRows as $row)
                             <tr>
-                                <td scope="row">{{ substr($trans->created_at,0,10) }}</td>
-                                <td>{{isset($trans->case_id) ? (isset($trans->case) ? "Invoice" : "Discount") : "Payment"  }}</td>
-                                <td>{{isset($trans->case_id) ? (isset($trans->case) ? ( $trans->rejection_invoice == 1  ? $trans->case->patient_name . " / مرتجع": str_replace('/ تعديل', '', $trans->case->patient_name)) :$trans->discount_title) :$trans->notes }}</td>
-                                <td>{{isset($trans->case_id) ? '-' : $trans->amount}}</td>
-                                <td>{{isset($trans->case_id) ? $trans->amount : '-' }}
-                                @php
-                                    if(isset($trans->discount ))
-                                     {echo '*';
-                                     $discountExist = true;}
-                                @endphp
-
-                                </td>
-                                <td><b>{{$balance }}</b></td>
+                                <td scope="row">{{ $row['date'] }}</td>
+                                <td>{{ $row['transaction'] }}</td>
+                                <td>{{ $row['description'] }}</td>
+                                <td>{{ is_null($row['payment']) ? '-' : $row['payment'] }}</td>
+                                <td>{{ is_null($row['amount']) ? '-' : $row['amount'] }}{{ $row['has_discount'] ? '*' : '' }}</td>
+                                <td><b>{{ $row['balance'] }}</b></td>
                             </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">No transactions in this date range.</td>
+                                </tr>
+                            @endforelse
                             </tbody>
                         </table>
                         <hr>
@@ -222,7 +201,7 @@
                                 @endif
                             </div>
                                 <div class="col-md-2"><h5>Balance Due :</h5></div>
-                            <div class="col-md-2"><h5 style="text-align: right" ><b> {{$balance}} JOD</b></h5></div>
+                            <div class="col-md-2"><h5 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h5></div>
                             </div>
                         </div>
                     </div>
@@ -288,13 +267,6 @@
                                 <h4>Dr. : {{$client->name}}</h4></div>
 
                         </div>
-            @php
-                if ($transactions != null)
-                           $invoicesAmount = $transactions->whereNotNull("case_id")->whereNull("discount_title")->sum('amount');
-                           $discounts = $transactions->whereNotNull("case_id")->whereNotNull("discount_title")->sum('amount');
-                           $amountPaid = $transactions->whereNull("case_id")->sum('amount');
-                           $balanceDue = $invoicesAmount - $amountPaid + $openingBalance ?? 0;
-            @endphp
             <div class="col-md-4" style="float:right;width:48%;">
                 <h5 style="font-weight: bold;">Statement of Account</h5>
                 <hr style="margin:0">
@@ -316,7 +288,7 @@
                             <div class="row"><div style="float:left;width: 50%;">Discounts :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b>  {{$discounts ?? '0'}} JOD</b></h6></div></div>
                             @endif
                             <hr style="margin:0">
-                            <div class="row"><div style="float:left;width: 50%;">Balance Due :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b>{{$balanceDue + $discounts ?? '0'}} JOD</b></h6></div></div>
+                            <div class="row"><div style="float:left;width: 50%;">Balance Due :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b>{{$closingBalance}} JOD</b></h6></div></div>
                         </div>
                     </div>
 
@@ -336,25 +308,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @php
-                                $balance =$openingBalance ?? 0;
-        @endphp
-                @foreach($transactions as $trans)
-                @php
-                    if(isset($trans->case_id))
-                    $balance +=$trans->amount;
-                    else
-                    $balance -=$trans->amount;
-                @endphp
+                @forelse($statementRows as $row)
             <tr>
-            <td scope="row">{{isset($trans->case_id) ? (isset($trans->case->actual_delivery_date) ? substr($trans->case->actual_delivery_date,0,10) : substr($trans->date_applied,0,10)) :  substr($trans->created_at,0,10) }}</td>
-            <td>{{isset($trans->case_id) ? (isset($trans->case) ? "Invoice" : "Discount") : "Payment"  }}</td>
-            <td>{{isset($trans->case_id) ? (isset($trans->case) ? $trans->case->patient_name :$trans->discount_title) :$trans->notes }}</td>
-            <td>{{isset($trans->case_id) ? '-' : $trans->amount}}{{isset($trans->discount )? '*' : ''}}</td>
-            <td>{{isset($trans->case_id) ? $trans->amount : '-' }}</td>
-            <th>{{$balance }}</th>
+            <td scope="row">{{ $row['date'] }}</td>
+            <td>{{ $row['transaction'] }}</td>
+            <td>{{ $row['description'] }}</td>
+            <td>{{ is_null($row['payment']) ? '-' : $row['payment'] }}</td>
+            <td>{{ is_null($row['amount']) ? '-' : $row['amount'] }}{{ $row['has_discount'] ? '*' : '' }}</td>
+            <th>{{ $row['balance'] }}</th>
                             </tr>
-                            @endforeach
+                            @empty
+                                <tr><td colspan="6" style="text-align:center">No transactions in this date range.</td></tr>
+                            @endforelse
             </tbody>
         </table>
         <hr>
@@ -363,7 +328,7 @@
             <div class="col-md-8"></div>
 
             <div style="float:left;width: 50%;">Balance Due :</div>
-            <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b> {{$balance}} JOD</b></h6></div>
+            <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h6></div>
                             </div>
                         </div>
                     </div>

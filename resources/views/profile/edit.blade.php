@@ -12,8 +12,6 @@
                             @csrf
                             @method('put')
 
-                            @include('alerts.success')
-
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                 <label>{{ _('Name') }}</label>
                                 <input type="text" name="name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ _('Name') }}" value="{{ old('name', auth()->user()->name) }}">
@@ -40,8 +38,6 @@
                     <div class="card-body">
                         @csrf
                         @method('put')
-
-                        @include('alerts.success', ['key' => 'password_status'])
 
                         <div class="form-group{{ $errors->has('old_password') ? ' has-danger' : '' }}">
                             <label>{{ __('Current Password') }}</label>

@@ -8,7 +8,7 @@ use App\sCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\abutment;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 
 class AbutmentsController extends Controller
@@ -192,25 +192,44 @@ class AbutmentsController extends Controller
 
 
         public function receiveAbutment(Request $request){
-        $deliveryRecord = abutmentDeliveryRecord::where("id",$request->abutment_id)->first();
-        if($request->qty > $deliveryRecord->qty)
-            return back()->with("error","Quantity Entered too large");
+        $validated = $request->validate([
+            'abutment_id' => ['required', 'integer'],
+            'qty' => ['required', 'integer', 'min:1'],
+        ]);
 
-        $qty = $deliveryRecord->remaining_qty - $request->qty;
-        $deliveryRecord->remaining_qty = $qty;
-        if ($qty == 0)
-        $deliveryRecord->status = 3;
-        else
-            $deliveryRecord->status = 2;
-        $deliveryRecord->save();
+        return DB::transaction(function () use ($validated) {
+            $deliveryRecord = abutmentDeliveryRecord::where('id', $validated['abutment_id'])
+                ->lockForUpdate()
+                ->first();
 
+            if (!$deliveryRecord) {
+                return back()->with('error', 'Abutment delivery record not found');
+            }
 
-        $abutReceiveLog = new abutmentReceiveLogs();
-        $abutReceiveLog->user_id = Auth()->user()->id;
-        $abutReceiveLog->qty = $request->qty;
-        $abutReceiveLog->abut_delivery_id = $request->abutment_id;
-        $abutReceiveLog->save();
-        return back()->with("success","abutments received successfully");
+            $remainingQty = (int) $deliveryRecord->remaining_qty;
+            $receivedQty = (int) $validated['qty'];
+
+            if ($remainingQty <= 0) {
+                return back()->with('error', 'Abutments already received');
+            }
+
+            if ($receivedQty > $remainingQty) {
+                return back()->with('error', 'Quantity Entered too large');
+            }
+
+            $newRemainingQty = $remainingQty - $receivedQty;
+            $deliveryRecord->remaining_qty = $newRemainingQty;
+            $deliveryRecord->status = $newRemainingQty === 0 ? 3 : 2;
+            $deliveryRecord->save();
+
+            $abutReceiveLog = new abutmentReceiveLogs();
+            $abutReceiveLog->user_id = auth()->id();
+            $abutReceiveLog->qty = $receivedQty;
+            $abutReceiveLog->abut_delivery_id = $deliveryRecord->id;
+            $abutReceiveLog->save();
+
+            return back()->with('success', 'abutments received successfully');
+        });
     }
     public function orderAbutment($id){
         $record = abutmentDeliveryRecord::where("id",$id)->first();

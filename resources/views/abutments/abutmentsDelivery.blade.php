@@ -2,37 +2,47 @@
 @section('content')
 
     <style>
-        :root {
-            --surface-bg: #f4f6fb;
-            --card-bg: #ffffff;
-            --border-muted: #e3e8f0;
-            --text-main: #1f2a37;
-            --text-muted: #6b7280;
-        }
-
         .abutments-delivery-page {
-            background: var(--surface-bg);
+            background: #f4f6fb;
             min-height: 100vh;
             padding: 1rem;
         }
 
-        .abutments-delivery-page .delivery-filter-form {
-            margin-bottom: 24px;
+        .abutments-delivery-page .sigma-sticky-toolbar {
+            top: var(--sigma-app-header-offset) !important;
+            z-index: 110 !important;
+            position: sticky !important;
+            background: #f4f6fb !important;
+            padding-top: 16px !important;
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
+            isolation: isolate;
+            transition: padding-top 0.22s ease;
+            will-change: padding-top;
         }
 
-        .abutments-delivery-page .cases-filter-card.delivery-filter-card {
-            background: #ffffffa8 !important;
+        .abutments-delivery-page .sigma-sticky-toolbar.sigma-sticky-toolbar--stuck {
+            padding-top: 0 !important;
+        }
+
+        .abutments-delivery-page .sigma-sticky-toolbar::before {
+            display: none !important;
+        }
+
+        .abutments-delivery-page .cases-filter-card.container.full-width {
+            background: #ffffff !important;
             border: 1px solid rgba(188, 206, 216, 0.3);
-            border-radius: 16px;
+            border-radius: 0 16px;
             box-shadow: 0px 2px 20px 0px rgb(0 0 0 / 6%) !important;
-            margin: 0 !important;
+            margin-top: 0;
+            margin-bottom: 24px;
             padding: 20px 20px 16px !important;
             position: relative;
             overflow: hidden !important;
-            backdrop-filter: blur(10px);
+            backdrop-filter: none !important;
         }
 
-        .abutments-delivery-page .cases-filter-card.delivery-filter-card::before {
+        .abutments-delivery-page .cases-filter-card.container.full-width::before {
             content: '';
             position: absolute;
             top: 0;
@@ -48,6 +58,7 @@
             --cases-filter-font-size: 14px;
             --cases-filter-color: #243746;
             --cases-filter-gap: 12px;
+            --cases-filter-control-width: 220px;
             --cases-filter-button-pad-y: 8px;
             --cases-filter-button-pad-x: calc(var(--cases-filter-button-pad-y) * 3.625);
             --cases-filter-radius: 10px;
@@ -57,19 +68,18 @@
             margin: 0 -8px !important;
             align-items: flex-end;
             font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
-            gap: 0 !important;
         }
 
-        @media screen and (min-width: 768px) {
-            .abutments-delivery-page .cases-filter-row > [class*="col-"].sigma-filter-action-col {
-                flex: 0 0 auto !important;
-                width: auto !important;
-                max-width: none !important;
-            }
+        .abutments-delivery-page .cases-filter-row > [class*="col-"] {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
         }
 
-        .abutments-delivery-page .cases-filter-row .mb-2,
-        .abutments-delivery-page .cases-filter-row .mb-3 {
+        .abutments-delivery-page .cases-filter-row .mb-2 {
             margin-bottom: 12px !important;
         }
 
@@ -82,12 +92,11 @@
             font-weight: 600;
             color: #243746;
             letter-spacing: 0.01em;
-            text-transform: none;
             font-family: "Tajawal", "Cairo", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
         }
 
         .abutments-delivery-page .cases-filter-row .filter-label i {
-            color: var(--color-accent);
+            color: #2b7b7d;
             font-size: 13px;
         }
 
@@ -134,35 +143,13 @@
         .abutments-delivery-page .cases-filter-row .ios-dtp-trigger:focus,
         .abutments-delivery-page .cases-filter-row .form-control:focus,
         .abutments-delivery-page .cases-filter-row .bootstrap-select > .dropdown-toggle:focus {
-            border-color: var(--color-accent) !important;
+            border-color: #2b7b7d !important;
             box-shadow: 0 0 0 3px rgba(64, 131, 133, 0.15) !important;
             outline: 0;
         }
 
         .abutments-delivery-page .sigma-patient-name {
             font-weight: 700 !important;
-        }
-
-        .abutments-delivery-page #datatable tbody td {
-            font-size: 17px !important;
-            text-align: center !important;
-        }
-
-        .abutments-delivery-page table#datatable.dataTable thead th.sigma-head-left,
-        .abutments-delivery-page table#datatable.dataTable thead th.sigma-head-center,
-        .abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-left,
-        .abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-center,
-        .abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-left span,
-        .abutments-delivery-page table#datatable.dataTable tbody td.sigma-body-center span {
-            text-align: center !important;
-        }
-
-        .abutments-delivery-page table#datatable.dataTable thead th:first-child,
-        .abutments-delivery-page table#datatable.dataTable thead th:first-child.sigma-head-left,
-        .abutments-delivery-page table#datatable.dataTable tbody td:first-child,
-        .abutments-delivery-page table#datatable.dataTable tbody td:first-child.sigma-body-left,
-        .abutments-delivery-page table#datatable.dataTable tbody td:first-child span {
-            text-align: left !important;
         }
 
         .abutments-delivery-page .cases-filter-btn {
@@ -184,9 +171,9 @@
         }
 
         .abutments-delivery-page .cases-filter-btn--search {
-            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-light) 100%) !important;
+            background: linear-gradient(135deg, #408385 0%, #5ca0a2 100%) !important;
             background-color: #4d9597 !important;
-            border: 1px solid var(--color-accent) !important;
+            border: 1px solid #408385 !important;
             color: #ffffff !important;
             box-shadow: 0 6px 16px rgba(64, 131, 133, 0.24);
         }
@@ -211,9 +198,31 @@
             box-shadow: 0 4px 12px rgba(40, 95, 97, 0.2);
         }
 
-        .abutments-delivery-page .sigma-table-free,
-        .abutments-delivery-page .sigma-table-free > .row,
-        .abutments-delivery-page .sigma-table-free > .row > .col-12,
+        .abutments-delivery-page .cases-table-shell {
+            background: transparent !important;
+            border: 0 !important;
+            box-shadow: none !important;
+            padding: 0 !important;
+            position: relative;
+            z-index: 1;
+        }
+
+        .abutments-delivery-page .cases-table-shell .row,
+        .abutments-delivery-page .cases-table-shell .col-12,
+        .abutments-delivery-page .cases-table-scroll {
+            background: transparent !important;
+        }
+
+        .abutments-delivery-page .cases-table-scroll {
+            overflow-x: hidden;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+            width: 100%;
+            max-width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
         .abutments-delivery-page #datatable_wrapper,
         .abutments-delivery-page #datatable_wrapper > .row {
             background: transparent !important;
@@ -222,71 +231,235 @@
             padding: 0 !important;
         }
 
-        .abutments-delivery-page #datatable.table-odd {
+        .abutments-delivery-page .dataTables_scrollBody {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .abutments-delivery-page #datatable {
             border-collapse: separate !important;
             border-spacing: 0;
             width: 100% !important;
+            max-width: 100% !important;
             background: transparent !important;
+            table-layout: fixed;
+            box-sizing: border-box;
         }
 
-        .abutments-delivery-page #datatable.table-odd tbody > tr:nth-child(odd) {
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead table thead th,
+        .abutments-delivery-page #datatable thead th {
+            background-color: #408385 !important;
+            color: #ffffff !important;
+            border-bottom: 0 !important;
+            vertical-align: middle !important;
+        }
+
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table,
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table thead,
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table thead tr {
+            border-bottom-left-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table thead th:first-child {
+            border-bottom-left-radius: 0 !important;
+        }
+
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table thead th:last-child {
+            border-bottom-right-radius: 0 !important;
+        }
+
+        .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody #datatable thead {
+            display: none !important;
+        }
+
+        .abutments-delivery-page #datatable tbody td {
+            font-size: 17px !important;
+            padding: 4px 0 !important;
+            color: #2c3e50 !important;
+        }
+
+        .abutments-delivery-page #datatable tbody tr:nth-child(odd) {
             background-color: #ffffff !important;
         }
 
-        .abutments-delivery-page #datatable.table-odd tbody > tr:nth-child(even) {
+        .abutments-delivery-page #datatable tbody tr:nth-child(even) {
             background-color: #f5f8ff !important;
         }
 
-        .abutments-delivery-page #datatable thead th {
-            background: #d6ecee !important;
-            color: #337374 !important;
-            border-bottom: none !important;
-            padding: 12px 14px !important;
-            font-weight: 400 !important;
-            text-align: center !important;
+        .abutments-delivery-page #datatable th,
+        .abutments-delivery-page #datatable td {
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
 
-        .abutments-delivery-page #datatable thead th:first-child,
-        .abutments-delivery-page #datatable thead th:last-child {
-            background: var(--color-accent) !important;
-            color: #ffffff !important;
+        .abutments-delivery-page #datatable tbody tr:hover {
+            background-color: #f8fafc !important;
         }
 
-        .abutments-delivery-page #datatable thead th:first-child {
-            border-top-left-radius: 12px !important;
-        }
-
-        .abutments-delivery-page #datatable thead th:last-child {
-            border-top-right-radius: 12px !important;
-        }
-
-        .tooltiptext {
+        .abutments-delivery-page .dataTables_wrapper .dataTables_info {
             display: none;
         }
-        th{
+
+        .abutments-delivery-page .dataTables_wrapper .dataTables_paginate {
+            overflow-x: visible !important;
+            width: 100%;
+        }
+
+        .abutments-delivery-page .dataTables_wrapper .dataTables_paginate .paginate_button {
+            font-size: 0.85rem;
+            padding: 3px 7px;
+            min-width: 26px;
+            border-radius: 4px;
+            border: 1px solid #cddfe2;
+            background-color: #ffffff;
+            color: #1f6fb2 !important;
+            margin: 0 2px;
+        }
+
+        .abutments-delivery-page .dataTables_wrapper .dataTables_paginate .paginate_button:hover,
+        .abutments-delivery-page .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+        .abutments-delivery-page .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            border-color: #1f6fb2 !important;
+            background-color: #dbe9f6 !important;
+            color: #1f6fb2 !important;
+        }
+
+        .abutments-delivery-page .tooltiptext {
+            display: none;
+        }
+
+        .abutments-delivery-page th {
             white-space: nowrap;
         }
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 991px) {
+            .abutments-delivery-page #datatable_wrapper {
+                --abutments-mobile-table-width: 980px;
+                --abutments-col-doctor: 135px;
+                --abutments-col-patient: 150px;
+                --abutments-col-delivery: 155px;
+                --abutments-col-implant: 140px;
+                --abutments-col-abutment: 130px;
+                --abutments-col-code: 110px;
+                --abutments-col-qty: 75px;
+                --abutments-col-status: 85px;
+            }
+
+            .abutments-delivery-page .cases-table-scroll {
+                overflow-x: auto !important;
+                overflow-y: visible !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .abutments-delivery-page #datatable_wrapper,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scroll,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody {
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            .abutments-delivery-page #datatable,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner table,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody table {
+                min-width: var(--abutments-mobile-table-width) !important;
+                width: var(--abutments-mobile-table-width) !important;
+                max-width: none !important;
+                table-layout: fixed !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHeadInner {
+                padding-right: 0 !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th,
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td {
+                box-sizing: border-box;
+                font-size: 17px !important;
+                padding: 6px 4px !important;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(1),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(1),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(1) {
+                width: var(--abutments-col-doctor) !important;
+                min-width: var(--abutments-col-doctor) !important;
+                max-width: var(--abutments-col-doctor) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(2),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(2),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(2) {
+                width: var(--abutments-col-patient) !important;
+                min-width: var(--abutments-col-patient) !important;
+                max-width: var(--abutments-col-patient) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(3),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(3),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(3) {
+                width: var(--abutments-col-delivery) !important;
+                min-width: var(--abutments-col-delivery) !important;
+                max-width: var(--abutments-col-delivery) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(4),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(4),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(4) {
+                width: var(--abutments-col-implant) !important;
+                min-width: var(--abutments-col-implant) !important;
+                max-width: var(--abutments-col-implant) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(5),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(5),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(5) {
+                width: var(--abutments-col-abutment) !important;
+                min-width: var(--abutments-col-abutment) !important;
+                max-width: var(--abutments-col-abutment) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(6),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(6),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(6) {
+                width: var(--abutments-col-code) !important;
+                min-width: var(--abutments-col-code) !important;
+                max-width: var(--abutments-col-code) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(7),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(7),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(7) {
+                width: var(--abutments-col-qty) !important;
+                min-width: var(--abutments-col-qty) !important;
+                max-width: var(--abutments-col-qty) !important;
+            }
+
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollHead thead th:nth-child(8),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody thead th:nth-child(8),
+            .abutments-delivery-page #datatable_wrapper .dataTables_scrollBody tbody td:nth-child(8) {
+                width: var(--abutments-col-status) !important;
+                min-width: var(--abutments-col-status) !important;
+                max-width: var(--abutments-col-status) !important;
+            }
+
             .content {
                 padding-left: 10px !important;
                 padding-right: 10px !important;
             }
-            .caseDeliTime , .doctor{
-                display:none;
-            }
-
-            .row {
-                padding: 3px;
-            }
-            table{
-                table-layout: fixed;
-            }
         }
 
         @media screen and (max-width: 767px) {
-            .abutments-delivery-page .cases-filter-card.delivery-filter-card {
-                padding: 12px 10px 10px !important;
+            .abutments-delivery-page .cases-filter-card.container.full-width {
+                margin-bottom: 10px !important;
+                padding: 10px 10px 8px !important;
             }
 
             .abutments-delivery-page .cases-filter-row {
@@ -297,21 +470,15 @@
             .abutments-delivery-page .cases-filter-row > [class*="col-"] {
                 padding-left: 4px !important;
                 padding-right: 4px !important;
-                margin-bottom: 0 !important;
             }
 
-            .abutments-delivery-page .cases-filter-row > div:nth-child(1),
-            .abutments-delivery-page .cases-filter-row > div:nth-child(2),
-            .abutments-delivery-page .cases-filter-row > div:nth-child(3),
-            .abutments-delivery-page .cases-filter-row > div:nth-child(4) {
-                flex: 0 0 50% !important;
-                width: 50% !important;
-                max-width: 50% !important;
+            .abutments-delivery-page .cases-filter-row .mb-2 {
+                margin-bottom: 6px !important;
             }
 
             .abutments-delivery-page .cases-filter-row .filter-label {
-                font-size: 11px !important;
                 margin-bottom: 4px !important;
+                font-size: 11px !important;
             }
 
             .abutments-delivery-page .cases-filter-row .dtp-input,
@@ -324,69 +491,35 @@
                 font-size: 12px !important;
             }
 
+            @supports (-webkit-touch-callout: none) {
+                .abutments-delivery-page .cases-filter-row .form-control,
+                .abutments-delivery-page .cases-filter-row .dtp-input,
+                .abutments-delivery-page .cases-filter-row .bootstrap-select > .dropdown-toggle,
+                .abutments-delivery-page .cases-filter-row .ios-dtp-trigger {
+                    font-size: 16px !important;
+                }
+            }
+
             .abutments-delivery-page .cases-filter-btn {
-                width: 100% !important;
                 min-height: 34px !important;
                 height: 34px !important;
+                padding: 0 16px !important;
             }
 
-            .abutments-delivery-page .sigma-table-free {
-                overflow-x: auto !important;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .abutments-delivery-page #datatable {
-                min-width: 720px !important;
-                width: 720px !important;
-                table-layout: auto !important;
-            }
-
-            .abutments-delivery-page #datatable thead th,
-            .abutments-delivery-page #datatable tbody td {
-                white-space: nowrap !important;
-                overflow: visible !important;
-                text-overflow: clip !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(2),
-            .abutments-delivery-page #datatable td:nth-child(2) {
-                min-width: 150px !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(4),
-            .abutments-delivery-page #datatable td:nth-child(4) {
-                min-width: 130px !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(5),
-            .abutments-delivery-page #datatable td:nth-child(5) {
-                min-width: 120px !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(6),
-            .abutments-delivery-page #datatable td:nth-child(6) {
-                min-width: 120px !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(7),
-            .abutments-delivery-page #datatable td:nth-child(7) {
-                min-width: 84px !important;
-            }
-
-            .abutments-delivery-page #datatable th:nth-child(8),
-            .abutments-delivery-page #datatable td:nth-child(8) {
-                min-width: 120px !important;
+            .abutments-delivery-page .cases-filter-row .cases-filter-actions-col .cases-filter-btn {
+                width: 100% !important;
+                min-width: 0 !important;
             }
         }
     </style>
     <div class="abutments-delivery-page sigma-list-page">
-    <form class="kt-form delivery-filter-form" method="GET" action="{{route('abutments-delivery-index')}}">
-        <div class="container full-width cases-filter-card delivery-filter-card sigma-list-filter-card">
-            <div class="row cases-filter-row sigma-list-filter-row">
-                <div class="col-6 col-md-3 mb-2">
+    <form class="kt-form sigma-sticky-toolbar delivery-filter-form" method="GET" action="{{route('abutments-delivery-index')}}">
+        <div class="container full-width cases-filter-card">
+            <div class="row cases-filter-row">
+                <div class="col-6 col-sm-4 col-md-2 mb-2">
                     <div class="kt-subheader__search">
-                        <label class="filter-label" for="abutments_from">
-                            <i class="fas fa-calendar-alt"></i>
+                        <label class="form-label filter-label" for="abutments_from">
+                            <i class="fa-regular fa-calendar"></i>
                             <span>From Date</span>
                         </label>
                         <x-ios-dtp name="from" id="abutments_from" class="filter-input-global" :value=" \Carbon\Carbon::parse($from)->format('d M, YYYY') "  mode="date" :required="true" />
@@ -400,10 +533,10 @@
 {{--                        >    --}}
   </div>
                 </div>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-sm-4 col-md-2 mb-2">
                     <div class="kt-subheader__search">
-                        <label class="filter-label" for="abutments_to">
-                            <i class="fas fa-calendar-alt"></i>
+                        <label class="form-label filter-label" for="abutments_to">
+                            <i class="fa-regular fa-calendar"></i>
                             <span>To Date</span>
                         </label>
                         <x-ios-dtp name="to" id="abutments_to" class="filter-input-global" :value="\Carbon\Carbon::parse($to)->format('d M, YYYY') "  mode="date" :required="true" />
@@ -418,9 +551,9 @@
 
                     </div>
                 </div>
-                <div class="col-6 col-md-3 mb-2">
+                <div class="col-6 col-sm-6 col-md-3 mb-2 cases-filter-search-col">
                     <div class="kt-subheader__search">
-                        <label class="filter-label" for="abutments_table_search">
+                        <label class="form-label filter-label" for="abutments_table_search">
                             <i class="fas fa-search"></i>
                             <span>Search</span>
                         </label>
@@ -431,8 +564,8 @@
                                autocomplete="off">
                     </div>
                 </div>
-                <div class="col-6 col-md-3 mb-2 d-flex align-items-end sigma-filter-action-col">
-                    <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search sigma-apply-btn filter-apply-btn-global">
+                <div class="col-6 col-sm-6 col-md-2 mb-2 cases-filter-actions-col cases-filter-apply-col">
+                    <button type="submit" class="btn btn-primary cases-filter-btn cases-filter-btn--search filter-apply-btn-global">
                         <i class="fas fa-search"></i>
                         <span>Apply</span>
                     </button>
@@ -441,12 +574,13 @@
         </div>
     </form>
 
-    <div class="container full-width sigma-table-free">
-        <div class="row" style=" border-radius: 4px;">
-            <div class="col-12">
+    <div class="container full-width cases-table-shell">
+        <div class="row">
+            <div class="col-12" style="padding:0">
                 <br>
+                <div class="cases-table-scroll">
                 <table id="datatable"
-                       class="table table-bordered dataTable no-footer sunriseTable table-odd sigma-list-table"
+                       class="table-striped compact sunriseTable sigma-no-header-radius sigma-list-table"
                        role="grid"
                        style="width:100%">
                     <thead>
@@ -491,6 +625,7 @@
                     </tbody>
 
                 </table>
+                </div>
 
                 <div class="modal fade sigma-modal--abutments-delivery-actions" tabindex="-1" role="dialog" id="deliveryActionsModal">
                     <input type="hidden" name="case_id" id="delivery-actions-id" value="">
@@ -568,7 +703,7 @@
                 </div>
 
                 <div class="modal fade sigma-modal--abutments-delivery-receive" tabindex="-1" role="dialog" id="receiveAbutmentsModal">
-                    <form action="{{ route('receive-abutments') }}" method="POST">
+                    <form action="{{ route('receive-abutments') }}" method="POST" id="receive-abutments-form">
                         @csrf
                         <input type="hidden" name="abutment_id" id="receive-abutment-id" value="">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -622,7 +757,7 @@
                                             <input type="number" name="qty" id="receive-abutment-qty" class="form-control" style="width:100%;" min="1" required>
                                         </div>
                                         <div class="form-group col-4" style="margin-left: 5px">
-                                            <button type="submit" class="btn btn-primary">
+                                            <button type="submit" class="btn btn-primary" id="receive-abutment-submit">
                                                 <i class="fa-solid fa-clipboard-check"></i> Receive
                                             </button>
                                         </div>
@@ -679,25 +814,48 @@
         }
 
         $(document).ready(function () {
+            var isAbutmentsMobileLayout = window.matchMedia('(max-width: 991px)').matches;
+            var abutmentsTable = $('#datatable').DataTable({
+                "pageLength": 25,
+                "searching": true,
+                "lengthChange": false,
+                "dom": "rtip",
+                "info": false,
+                "ordering": false,
+                "order": [],
+                "responsive": false,
+                "scrollX": isAbutmentsMobileLayout,
+                "autoWidth": false,
+                "columnDefs": isAbutmentsMobileLayout ? [] : [
+                    {"width": "14%", "targets": 0},
+                    {"width": "16%", "targets": 1},
+                    {"width": "16%", "targets": 2},
+                    {"width": "15%", "targets": 3},
+                    {"width": "13%", "targets": 4},
+                    {"width": "11%", "targets": 5},
+                    {"width": "6%", "targets": 6},
+                    {"width": "9%", "targets": 7}
+                ]
+            });
 
+            $('#abutments_table_search').on('input', function () {
+                abutmentsTable.search(this.value).draw();
+            });
 
-                                var abutmentsTable = $('#datatable').DataTable({
-                                    "pageLength": 25,
-                                    "searching": true,
-                                    "lengthChange": false,
-                                    "dom": "rtip",
-                                    "order":  []
-                                    // "scrollX":       true,
-                                    //stateSave: true,
-                                });
+            abutmentsTable.on('draw', function () {
+                abutmentsTable.columns.adjust();
+            });
 
-                                $('#abutments_table_search').on('input', function () {
-                                    abutmentsTable.search(this.value).draw();
-                                });
+            $(window).on('resize.abutmentsDeliveryTable', function () {
+                abutmentsTable.columns.adjust();
+            });
 
-                                $('#deliveryActionsModal').appendTo('body');
-                                $('#receiveAbutmentsModal').appendTo('body');
+            setTimeout(function () {
+                abutmentsTable.columns.adjust();
+            }, 0);
 
+            $('#deliveryActionsModal').appendTo('body');
+            $('#receiveAbutmentsModal').appendTo('body');
         });
 
         $(document).on('show.bs.modal', '#deliveryActionsModal', function(event) {
@@ -776,6 +934,33 @@
 
             qtyInput.max = item.remaining_qty || 1;
             qtyInput.value = '';
+        });
+
+        $(document).on('submit', '#receive-abutments-form', function(event) {
+            const form = this;
+            const submitButton = document.getElementById('receive-abutment-submit');
+
+            if (form.dataset.submitting === '1') {
+                event.preventDefault();
+                return false;
+            }
+
+            form.dataset.submitting = '1';
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+        });
+
+        $(document).on('hidden.bs.modal', '#receiveAbutmentsModal', function() {
+            const form = document.getElementById('receive-abutments-form');
+            const submitButton = document.getElementById('receive-abutment-submit');
+
+            if (form) {
+                delete form.dataset.submitting;
+            }
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
         });
 
         function toggleColumnVisibilty(colNumber) {

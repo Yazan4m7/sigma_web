@@ -67,66 +67,47 @@
                                 @endphp
                                 @if($showJob)
                                 @php
-                                    $jobTitleParts = array_values(array_filter([
-                                        trim((string) $job->unit_num),
-                                        trim((string) $jobTypeName),
-                                        trim((string) $materialName),
-                                        trim((string) $colorLabel),
+                                    $jobLeadLine = trim((string) $job->unit_num);
+                                    $jobTypeLine = trim((string) $jobTypeName);
+                                    $jobMaterialLine = trim((string) $materialName);
+                                    $jobColorLine = trim((string) $colorLabel);
+                                    $jobStyleLine = trim(implode(' / ', array_filter([
+                                        trim((string) $styleLabel),
                                         trim((string) $implantLabel),
                                         trim((string) $abutmentLabel),
                                     ], function ($value) {
                                         return $value !== '';
-                                    }));
-                                    $jobUnits = trim((string) $job->unit_num);
-                                    $normalizedStyle = strtolower(trim((string) $styleLabel));
-                                    $jobTag = in_array($normalizedStyle, ['single', 'bridge'], true)
-                                        ? ucfirst($normalizedStyle)
-                                        : (strpos($jobUnits, ',') !== false ? 'Bridge' : 'Single');
-                                    $isModelJob = stripos($jobTypeName, 'model') !== false || stripos($materialName, 'model') !== false;
+                                    })));
+                                    $jobStyleCode = stripos($styleLabel, 'bridge') !== false
+                                        ? 'B'
+                                        : (stripos($styleLabel, 'single') !== false || strpos($jobLeadLine, ',') === false ? 'S' : 'B');
+                                    $jobTooltipParts = array_values(array_filter([
+                                        'Units: ' . ($jobLeadLine !== '' ? $jobLeadLine : '-'),
+                                        $jobTypeLine !== '' ? 'Type: ' . $jobTypeLine : null,
+                                        $jobMaterialLine !== '' ? 'Material: ' . $jobMaterialLine : null,
+                                        $jobColorLine !== '' ? 'Color: ' . $jobColorLine : null,
+                                        $jobStyleLine !== '' ? 'Style: ' . $jobStyleLine : null,
+                                    ]));
                                 @endphp
-                                <div class="sigma-case-job-row">
-                                    @if($isModelJob)
-                                        <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 7.5C5.1 14 7.8 18 12 18s6.9-4 7.5-10.5"></path><path d="M7.5 7.5c.5 4.1 2 6.4 4.5 6.4s4-2.3 4.5-6.4"></path><path d="M8.4 8v2.2"></path><path d="M12 8v3.2"></path><path d="M15.6 8v2.2"></path></svg>
-                                    @else
-                                        <svg class="sigma-case-job-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1D9E75" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2C9 2 7 4 7 7c0 2 .5 3.5 1 5l1 5c.3 1.2 1 2 2 2h2c1 0 1.7-.8 2-2l1-5c.5-1.5 1-3 1-5 0-3-2-5-5-5z"></path><path d="M9 10c0 0 1 1 3 1s3-1 3-1"></path></svg>
-                                    @endif
-                                    <span class="sigma-case-job-info">
-                                        <span class="sigma-case-job-primary">{{ implode(' - ', $jobTitleParts) }}</span>
-                                    </span>
-                                    <span class="sigma-case-job-tag">{{ $jobTag }}</span>
+                                <div class="sigma-case-job-row sigma-case-job-card" tabindex="0" aria-label="{{ implode(', ', $jobTooltipParts) }}" data-job-tooltip="{{ implode(' | ', $jobTooltipParts) }}">
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--lead">{{ $jobLeadLine !== '' ? $jobLeadLine : '-' }}</span>
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--type">{{ $jobTypeLine !== '' ? $jobTypeLine : '-' }}</span>
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--material">{{ $jobMaterialLine !== '' ? $jobMaterialLine : '-' }}</span>
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--color">{{ $jobColorLine }}</span>
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--style">{{ $jobStyleCode }}</span>
+                                    <span class="sigma-case-job-tooltip" aria-hidden="true">{{ implode(' | ', $jobTooltipParts) }}</span>
                                 </div>
                                 @endif
                             @empty
-                                <span class="text-muted">No jobs for this stage yet.</span>
+                                <div class="sigma-case-job-row sigma-case-job-card">
+                                    <span class="sigma-case-job-cell sigma-case-job-cell--lead">-</span>
+                                </div>
                             @endforelse
                             </div>
                         </div>
                     </div>
 
-                    @if(count($case->notes) > 0)
-                    <hr>
-                    <label class="case-completion-dialog-label case-notes-label"><b>Notes:</b></label><br>
-                    <div class="sigma-case-notes-list">
-                    @foreach($case->notes as $note)
-                    <div class="note-container">
-                        <div class="sigma-case-note-left">
-                            <i class="far fa-comment-alt sigma-case-note-icon" aria-hidden="true"></i>
-                            @unless($loop->last)
-                                <div class="sigma-case-note-line"></div>
-                            @endunless
-                        </div>
-                        <div class="sigma-case-note-content">
-                            <div class="sigma-case-note-meta">
-                                <span class="noteHeader sigma-case-note-author">{{ $note->writtenBy->name_initials }}</span>
-                                <span class="sigma-case-note-separator">&middot;</span>
-                                <span class="sigma-case-note-time">{{ substr($note->created_at, 0, 16) }}</span>
-                            </div>
-                            <span class="noteText sigma-case-note-text">{{$note->note}}</span>
-                        </div>
-                    </div>
-                    @endforeach
-                    </div>
-                    @endif
+                    @include('cases.dashboards-partials.case-dialog-notes', ['case' => $case])
                 </div>
             </div>
 
@@ -315,22 +296,19 @@
             margin-bottom: 1.375rem;
         }
         .ysh-case-slide-modal .note-container {
-            align-items: flex-start;
             background: #fff !important;
-            border: 0.5px solid #eaeae4 !important;
-            border-top: none !important;
+            border: 0.5px solid #c7c7c7 !important;
+            border-radius: 8px !important;
             box-shadow: none !important;
-            color: inherit !important;
-            display: flex;
-            gap: 10px;
-            padding: 9px 14px !important;
+            color: #333333 !important;
         }
-        .ysh-case-slide-modal .sigma-case-notes-list > .note-container:first-child {
-            border-radius: 9px 9px 0 0 !important;
-            border-top: 0.5px solid #eaeae4 !important;
-        }
-        .ysh-case-slide-modal .sigma-case-notes-list > .note-container:last-child {
-            border-radius: 0 0 9px 9px !important;
+        .ysh-case-slide-modal .form-control.note-container {
+            display: block !important;
+            height: fit-content !important;
+            width: 100% !important;
+            margin-bottom: 8px !important;
+            padding: 10px !important;
+            font-size: 12px !important;
         }
         .ysh-case-slide-modal .scrollable-content {
             flex: 1;
@@ -375,10 +353,16 @@
             text-transform: uppercase !important;
         }
         .ysh-case-slide-modal .modal-body label.case-jobs-label {
-            color: #444441 !important;
+            color: #4d626d !important;
+            font-size: 14px !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.08em !important;
         }
         .ysh-case-slide-modal .modal-body label.case-notes-label {
-            color: #B4B2A9 !important;
+            color: #5c6f7a !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.06em !important;
         }
         .ysh-case-slide-modal .modal-body label.case-jobs-label b,
         .ysh-case-slide-modal .modal-body label.case-notes-label b {
@@ -386,122 +370,132 @@
             font-weight: inherit !important;
         }
         .ysh-case-slide-modal .modal-body .sigma-case-jobs-list {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 5px !important;
-            width: 100%;
-            margin: 0 0 1.375rem !important;
+            display: grid !important;
+            gap: 6px !important;
+            width: 100% !important;
+            margin: 6px 0 0 !important;
             padding: 0 !important;
             background: transparent !important;
             border: 0 !important;
+            border-radius: 0 !important;
             box-shadow: none !important;
         }
-        .ysh-case-slide-modal .sigma-case-job-row {
-            background: #fff !important;
-            border: 1px solid #e0e0da !important;
-            border-radius: 10px !important;
-            box-shadow: none !important;
-            color: inherit !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 12px !important;
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card {
+            display: grid !important;
+            grid-template-columns: minmax(68px, 0.95fr) minmax(88px, 1.2fr) minmax(80px, 0.1fr) minmax(22px, 0.35fr) minmax(20px, 0.1fr) !important;
+            align-items: start !important;
+            column-gap: 2px !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 30px !important;
             margin: 0 !important;
-            min-width: 0;
+            padding: 0 !important;
+            background: #eef6fa !important;
+            background-color: #eef6fa !important;
+            border: 0 !important;
+            border-left: 2px solid #17a2b8 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            color: #294450 !important;
+            font-size: 15px !important;
+            font-weight: 500 !important;
+            line-height: 1.45 !important;
             overflow: hidden !important;
-            padding: 11px 14px !important;
-            width: 100%;
+            white-space: normal !important;
+            overflow-wrap: normal !important;
+            word-break: normal !important;
         }
-        .ysh-case-slide-modal .sigma-case-job-icon {
-            flex-shrink: 0;
-        }
-        .ysh-case-slide-modal .sigma-case-job-info {
-            display: block;
-            flex: 1 1 0%;
-            max-width: 100%;
-            min-width: 0;
-            overflow: hidden;
-        }
-        .ysh-case-slide-modal .sigma-case-job-primary {
-            color: #1a1a18 !important;
-            display: block;
-            font-size: 13px !important;
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell {
+            display: block !important;
+            box-sizing: border-box !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            min-height: 30px !important;
+            border: 0 !important;
+            color: inherit !important;
+            font-size: 15px !important;
             font-weight: 500 !important;
-            line-height: 1.25 !important;
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            line-height: 30px !important;
+            text-align: left !important;
+            white-space: nowrap !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
         }
-        .ysh-case-slide-modal .sigma-case-job-sub {
-            color: #888780;
-            display: block;
-            font-size: 11px;
-            line-height: 1.25;
-            margin-top: 2px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell + .sigma-case-job-cell {
+            border-left: 1px solid #cfe4eb47 !important;
         }
-        .ysh-case-slide-modal .sigma-case-job-tag {
-            border: 0.5px solid #9FE1CB;
-            border-radius: 20px;
-            color: #0F6E56;
-            flex-shrink: 0;
-            font-size: 10px;
-            font-weight: 400;
-            line-height: 1.2;
-            max-width: 34%;
-            overflow: hidden;
-            padding: 3px 9px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--lead {
+            font-weight: 700 !important;
+            padding-left: 10px !important;
         }
-        .ysh-case-slide-modal .sigma-case-note-meta {
-            align-items: center;
-            display: flex;
-            gap: 5px;
-            margin-bottom: 2px;
-            min-width: 0;
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--color,
+        .ysh-case-slide-modal .modal-body .sigma-case-job-row.sigma-case-job-card > .sigma-case-job-cell--style {
+            text-align: center !important;
         }
-        .ysh-case-slide-modal .sigma-case-note-left {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            gap: 3px;
-            padding-top: 2px;
-        }
-        .ysh-case-slide-modal .sigma-case-note-icon {
-            color: #85B7EB;
-            font-size: 12px;
-        }
-        .ysh-case-slide-modal .sigma-case-note-line {
-            background: #daeaf7;
-            flex: 1;
-            min-height: 14px;
-            width: 1px;
-        }
-        .ysh-case-slide-modal .sigma-case-note-content {
-            min-width: 0;
-        }
-        .ysh-case-slide-modal .sigma-case-note-author {
-            color: #378ADD !important;
-            font-size: 11px !important;
-            font-weight: 500 !important;
-        }
-        .ysh-case-slide-modal .sigma-case-note-separator {
-            color: #daeaf7;
-            font-size: 11px;
-        }
-        .ysh-case-slide-modal .sigma-case-note-time {
-            color: #85B7EB;
-            font-size: 10px;
+        .ysh-case-slide-modal .sigma-case-job-tooltip {
+            display: none !important;
         }
         .ysh-case-slide-modal .sigma-case-note-text {
-            color: #888780;
+            display: block !important;
+            direction: ltr !important;
+            text-align: left !important;
+            unicode-bidi: isolate;
+        }
+        .ysh-case-slide-modal .sigma-case-note-text--mixed {
+            direction: inherit !important;
+            text-align: inherit !important;
+            unicode-bidi: normal;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-box {
             display: block;
+            width: 100%;
+            margin: 0 0 8px;
+            padding: 8px 10px;
+            border: 1px solid #d4e0e0;
+            border-radius: 8px;
+            background: #f6f9f9;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            cursor: pointer;
+            list-style: none;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-summary::-webkit-details-marker {
+            display: none;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-list {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 7px;
+            padding-top: 7px;
+            border-top: 1px solid #dbe7e7;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-note {
+            color: #516060;
             font-size: 12px;
+            font-style: italic;
+            font-weight: 600;
             line-height: 1.45;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-chevron {
+            flex: 0 0 auto;
+            margin-left: auto;
+            color: #3f777b;
+            font-size: 12px;
+            transition: transform 180ms ease;
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-notes-box[open] .sigma-case-delivery-notes-chevron {
+            transform: rotate(180deg);
+        }
+        .ysh-case-slide-modal .sigma-case-delivery-note-arrow {
+            display: inline-block;
+            margin: 0 5px;
+            color: #3f777b;
+            font-style: normal;
         }
 
         /* Responsive adjustments - maintain slide behavior */

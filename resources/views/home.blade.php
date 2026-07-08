@@ -8,12 +8,6 @@
 {{--                <div class="card-header">{{ __('Dashboard') }}</div>--}}
 
 {{--                <div class="card-body">--}}
-{{--                    @if (session('status'))--}}
-{{--                        <div class="alert alert-success" role="alert">--}}
-{{--                            {{ session('status') }}--}}
-{{--                        </div>--}}
-{{--                    @endif--}}
-
 {{--                    <h3 class="welcome-message">{{ __('Welcome to your workspace') }}</h3>--}}
 {{--                    --}}
 {{--                    <div class="quick-actions">--}}

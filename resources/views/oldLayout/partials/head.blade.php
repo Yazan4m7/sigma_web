@@ -9,9 +9,9 @@
 
 <title>SIGMA LAB</title>
 
-<link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css')}}" media="all" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l')" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}?v={{ filemtime(public_path('assets/css/bootstrap.min.css')) }}" media="all">
 
-<link rel="stylesheet" href="{{asset('https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css')}}">
+<link rel="stylesheet" href="{{ asset('assets/plugins/bootstrap-select/bootstrap-select.min.css') }}?v={{ filemtime(public_path('assets/plugins/bootstrap-select/bootstrap-select.min.css')) }}">
 <link href="{{asset('assets/css/fontawesome-iconpicker.css')}}" rel="stylesheet">
 
 <!-- Theme icon -->

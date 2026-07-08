@@ -8,12 +8,14 @@
     'disablePast' => false,
     'dataDefault' => null,
     'mutedYearDisplay' => false,
-    'shortYearDisplay' => false
+    'shortYearDisplay' => false,
+    'initialView' => 'calendar'
 ])
 
 @php
     $inputId = $id ?? $name;
     $isMonthMode = $mode === 'month';
+    $pickerInitialView = $isMonthMode || $initialView === 'wheel' ? 'wheel' : 'calendar';
     // Sanitize ID for use in JavaScript function names (replace non-alphanumeric with underscore)
     $jsId = preg_replace('/[^a-zA-Z0-9_]/', '_', $inputId);
     // Parse initial value if provided (format: Y-m-d H:i:s or Y-m-d)
@@ -514,6 +516,15 @@
         background: var(--ios-bg-gray);
     }
 
+    .ios-dtp-day-btn:focus {
+        outline: none;
+        box-shadow: none;
+    }
+
+    .ios-dtp-day-btn:focus-visible {
+        box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.2);
+    }
+
     .ios-dtp-day-btn.other-month {
         color: var(--ios-text-faded);
     }
@@ -782,7 +793,7 @@
 </style>
 @endonce
 
-<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }}, {{ $mutedYearDisplay ? 'true' : 'false' }}, {{ $shortYearDisplay ? 'true' : 'false' }})" x-init="init()">
+<div class="ios-dtp-container {{ $class }}" x-data="iosDtp_{{ $jsId }}('{{ $mode }}', {{ $disablePast ? 'true' : 'false' }}, {{ $mutedYearDisplay ? 'true' : 'false' }}, {{ $shortYearDisplay ? 'true' : 'false' }}, '{{ $pickerInitialView }}')" x-init="init()">
     <!-- Hidden input for form submission -->
     <input type="hidden" name="{{ $name }}" id="{{ $inputId }}" x-model="formValue" {{ $required ? 'required' : '' }} @if($dataDefault !== null && $dataDefault !== '') data-default="{{ $dataDefault }}" @endif>
 
@@ -978,7 +989,7 @@
 </div>
 
 <script>
-    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false, mutedYearDisplay = false, shortYearDisplay = false) {
+    function iosDtp_{{ $jsId }}(mode = 'datetime', disablePast = false, mutedYearDisplay = false, shortYearDisplay = false, initialView = 'calendar') {
         const now = new Date();
         const todayYear = now.getFullYear();
         const todayMonth = now.getMonth();
@@ -1052,7 +1063,8 @@
             disablePast: disablePast,
             mutedYearDisplay: mutedYearDisplay,
             shortYearDisplay: shortYearDisplay,
-            view: @json($isMonthMode ? 'wheel' : 'calendar'),
+            view: initialView,
+            initialView: initialView,
             formValue: @json($value ?? ''),
             originalFormValue: @json($value ?? ''),
 
@@ -1219,6 +1231,7 @@
                 this.originalFormValue = this.formValue; // Save current value when opening
                 this.syncStateFromValue(this.formValue); // Sync internal state from value
                 this.updateRotations(); // Update wheel rotations based on new state
+                this.view = this.initialView;
                 this.open = true;
                 document.body.style.overflow = 'hidden';
             },

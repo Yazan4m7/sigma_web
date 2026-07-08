@@ -223,16 +223,6 @@
         font-size: 16px;
     }
     
-    /* Success Alert */
-    .alert-success-custom {
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 16px 20px;
-        margin-bottom: 20px;
-    }
-    
     /* Responsive */
     @media (max-width: 768px) {
         .config-body {
@@ -261,20 +251,6 @@
             </h1>
             <p class="page-subtitle">Manage system settings, features, and preferences</p>
         </div>
-
-        @if (session('success'))
-            <div class="alert alert-success-custom">
-                <i class="fas fa-check-circle mr-2"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('deploy_status'))
-            <div class="alert alert-info" style="border-radius: 8px; margin-bottom: 20px;">
-                <i class="fas fa-code-branch mr-2"></i>
-                {{ session('deploy_status') }}
-            </div>
-        @endif
 
         <form action="{{ route('configuration.update') }}" method="POST">
             @csrf

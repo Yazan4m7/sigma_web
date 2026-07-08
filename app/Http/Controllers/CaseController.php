@@ -1310,7 +1310,6 @@ class CaseController extends Controller
 
     public function finishCaseStage($caseId, $stage, $returnMessages = true, $jobs = [])
     {
-        $returnMessages = true;
         Log::info('[finishCaseStage] called with parameters', [
             'caseId' => $caseId,
             'stage' => $stage,
@@ -1330,9 +1329,28 @@ class CaseController extends Controller
         Log::info('[finishCaseStage] assignee', ['assignee' => $assignee]);
         if (!$assignee) return back()->with('error', "Case Already Completed");
 
+        $case = sCase::findOrFail($caseId);
 //        if (empty($jobs))
         $jobs = job::with('material')->where("case_id", $caseId)->where("stage", $stage)->where("assignee", $assignee ?? Auth()->user()->id)->get();
-        $case = sCase::findOrFail($caseId);
+
+        if ((int) $stage === 6 && $this->allJobsAreIn($case, 6)) {
+            $passiveFinishingJobs = job::with('material')
+                ->where("case_id", $caseId)
+                ->where("stage", 6)
+                ->whereNotIn('id', $jobs->pluck('id'))
+                ->whereHas('material', function ($query) {
+                    $query->where('count_as_unit', 0);
+                })
+                ->get();
+
+            if ($passiveFinishingJobs->isNotEmpty()) {
+                Log::info('[finishCaseStage] including passive finishing jobs', [
+                    'caseId' => $caseId,
+                    'jobIds' => $passiveFinishingJobs->pluck('id')->all(),
+                ]);
+                $jobs = $jobs->merge($passiveFinishingJobs);
+            }
+        }
 
         if (!$jobs) return back()->with('error', 'No Jobs found.');
 

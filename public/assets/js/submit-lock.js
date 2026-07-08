@@ -77,7 +77,12 @@
             return true;
         }
 
+        var skipLoadingScreen = form.hasAttribute('data-skip-loading-screen');
+
         if (form.hasAttribute('data-allow-multiple-submits')) {
+            if (skipLoadingScreen) {
+                return true;
+            }
             if (typeof window.showLoadingScreen === 'function') {
                 window.showLoadingScreen();
             } else if (typeof window.showLoadingIndicator === 'function') {
@@ -90,10 +95,12 @@
             return false;
         }
 
-        if (typeof window.showLoadingScreen === 'function') {
-            window.showLoadingScreen();
-        } else if (typeof window.showLoadingIndicator === 'function') {
-            window.showLoadingIndicator();
+        if (!skipLoadingScreen) {
+            if (typeof window.showLoadingScreen === 'function') {
+                window.showLoadingScreen();
+            } else if (typeof window.showLoadingIndicator === 'function') {
+                window.showLoadingIndicator();
+            }
         }
 
         var requiresToken = submissionTokenRequired(form);
@@ -117,11 +124,15 @@
     document.addEventListener('submit', function (event) {
         var form = event.target;
 
+        if (event.defaultPrevented) {
+            return;
+        }
+
         if (!prepareFormSubmission(form)) {
             event.preventDefault();
             event.stopImmediatePropagation();
         }
-    }, true);
+    });
 
     var nativeSubmit = HTMLFormElement.prototype.submit;
     HTMLFormElement.prototype.submit = function submitOverride() {

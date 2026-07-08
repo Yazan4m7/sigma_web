@@ -9,7 +9,7 @@
 |
 */
 
-use App\Http\Controllers\Usercontroller;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return redirect('/home');
@@ -397,6 +397,9 @@ Route::middleware(['web', 'auth'])->group(function (): void {
         Route::get('/sales', [App\Http\Controllers\ClientsController::class, 'sales'])->name('sales-index');
         Route::get('/sales/by-month', [App\Http\Controllers\ClientsController::class, 'salesByMonth'])->name('sales-by-month-index');
         Route::get('/clients/statement/{id?}', [App\Http\Controllers\ClientsController::class, 'statementOfAccount'])->name('client-statement-admin');
+        Route::get('/doctors/{doctor}/statement.pdf', [App\Http\Controllers\ClientsController::class, 'downloadStatementPdf'])
+            ->where('doctor', '[0-9]+')
+            ->name('doctor-statement-pdf');
 
         Route::post('/doctors/edit', [App\Http\Controllers\ClientsController::class, 'update'])->name('client-update');
         Route::get('/doctors/edit/{id}', [App\Http\Controllers\ClientsController::class, 'view'])->name('client-view-edit');

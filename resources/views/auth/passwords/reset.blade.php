@@ -11,8 +11,6 @@
                     <h1 class="card-title">{{ _('Reset password') }}</h1>
                 </div>
                 <div class="card-body">
-                    @include('alerts.success')
-
                     <input type="hidden" name="token" value="{{ $token }}">
 
                     <div class="input-group{{ $errors->has('email') ? ' has-danger' : '' }}">

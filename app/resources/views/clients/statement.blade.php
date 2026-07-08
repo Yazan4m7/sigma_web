@@ -7,7 +7,7 @@
             -webkit-print-color-adjust: exact !important;
         }
         hr { display: block; height: 1px;
-            background-color:black;
+
             margin:0; padding: 0; border-color:black;}
         th {  padding: 0;  color:white !important;
 
@@ -49,7 +49,7 @@
 
         @media print{
             hr { display: block; height: 1px;
-                background-color:black;
+
                 margin:0; padding: 0; border-color:black;}
             th {  padding: 0; color:white !important;}
             thead{

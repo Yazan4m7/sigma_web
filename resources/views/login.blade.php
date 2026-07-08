@@ -127,6 +127,7 @@ License: You must have a valid license purchased only from themeforest(the above
 <!-- begin::Body -->
 
 <body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed kt-subheader--enabled kt-subheader--fixed kt-subheader--solid kt-aside--enabled kt-aside--fixed kt-page--loading">
+@include('components.sigma-toasts')
 
 <!-- begin:: Page -->
 <div class="kt-grid kt-grid--ver kt-grid--root">
@@ -141,27 +142,6 @@ License: You must have a valid license purchased only from themeforest(the above
                         <div class="kt-login__head">
                             <h3 class="kt-login__title">Employee Portal Access</h3>
                         </div>
-                        @if (count($errors) > 0)
-                            <div class="alert alert-outline-danger fade show">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        @if(session('nouser'))
-                            <div class="alert alert-outline-danger fade show" role="alert">
-                                <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                                <div class="alert-text">Wrong Email or Password</div>
-                            </div>
-                        @endif
-                        @if(session('unauthorized'))
-                            <div class="alert alert-outline-danger fade show" role="alert">
-                                <div class="alert-icon"><i class="flaticon-questions-circular-button"></i></div>
-                                <div class="alert-text">Unauthorized to Enter admin panel</div>
-                            </div>
-                        @endif
                         <form class="kt-form" method="POST" action="{{ route('login') }}" id="loginForm">
                             @csrf
                             <div class="input-group">

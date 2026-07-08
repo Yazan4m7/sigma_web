@@ -9,6 +9,9 @@
 .sigma-modal--clients-delete .modal-content {
     border-radius: 25px !important;
 }
+.sigma-modal--clients-statements .modal-content {
+    border-radius: 22px !important;
+}
 
 /* Modal footer rounded bottom corners */
 
@@ -24,9 +27,14 @@
     border-bottom-left-radius: 25px !important;
     border-bottom-right-radius: 25px !important;
 }
+.sigma-modal--clients-statements .modal-footer {
+    border-bottom-left-radius: 22px !important;
+    border-bottom-right-radius: 22px !important;
+}
 
 #doctorPaymentModal .modal-dialog,
-#doctorDiscountModal .modal-dialog {
+#doctorDiscountModal .modal-dialog,
+#doctorStatementsModal .modal-dialog {
     width: min(520px, calc(100vw - 32px)) !important;
     max-width: 520px !important;
     margin: 1.75rem auto !important;
@@ -34,7 +42,8 @@
 }
 
 #doctorPaymentModal .modal-content,
-#doctorDiscountModal .modal-content {
+#doctorDiscountModal .modal-content,
+#doctorStatementsModal .modal-content {
     pointer-events: auto !important;
 }
 
@@ -521,6 +530,19 @@
     gap: 0.5rem;
 }
 
+.doctor-statements-action {
+    width: auto !important;
+    min-width: 34px;
+    padding: 0 10px;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 12px;
+}
+
+.doctor-statements-action span {
+    white-space: nowrap;
+}
+
 .doctor-filter-layout {
     display: flex;
     align-items: flex-start;
@@ -730,6 +752,162 @@
     font-weight: 900;
 }
 
+#doctorStatementsModal .modal-header {
+    align-items: center;
+    padding: 14px 18px 10px;
+    border-bottom: 0;
+}
+
+#doctorStatementsModal.fade .modal-dialog,
+#doctorStatementsModal.show .modal-dialog {
+    transform: none !important;
+}
+
+#doctorStatementsModal.fade .modal-content {
+    opacity: 0;
+    transform: scale(0.98);
+    transition: opacity 180ms ease, transform 180ms ease;
+}
+
+#doctorStatementsModal.show .modal-content {
+    opacity: 1;
+    transform: scale(1);
+}
+
+#doctorStatementsModal .modal-title {
+    color: #2d5f6d;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+#doctorStatementsModal .modal-body {
+    padding: 8px 18px 16px;
+}
+
+.doctor-statements-date-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.doctor-statements-field {
+    min-width: 0;
+    margin-bottom: 14px;
+}
+
+.doctor-statements-field > label {
+    display: block;
+    margin-bottom: 6px;
+    color: #60717c;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#doctorStatementsModal .ios-dtp-container,
+#doctorStatementsModal .bootstrap-select {
+    width: 100% !important;
+}
+
+#doctorStatementsModal .bootstrap-select > .dropdown-toggle {
+    min-height: 40px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+#doctorStatementsModal .modal-footer {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    padding: 0 18px 18px;
+    border-top: 0;
+}
+
+#doctorStatementsModal .modal-footer .btn {
+    flex: 0 1 112px;
+    min-height: 40px;
+    margin: 0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 800;
+}
+
+#doctorStatementsModal .doctor-statements-footer-spacer {
+    display: block;
+    flex: 0 1 112px;
+    min-height: 40px;
+    pointer-events: none;
+}
+
+#doctorStatementsModal .modal-footer .doctor-statements-generate-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    flex: 1 1 180px;
+    min-height: 44px;
+    background: #2d5f6d;
+    border-color: #2d5f6d;
+    box-shadow: 0 10px 22px rgba(45, 95, 109, 0.24);
+}
+
+#doctorStatementsModal .modal-footer .doctor-statements-generate-btn:hover,
+#doctorStatementsModal .modal-footer .doctor-statements-generate-btn:focus {
+    background: #244f5b;
+    border-color: #244f5b;
+}
+
+body.doctor-statements-modal-open .modal-backdrop.show {
+    opacity: 0.72;
+    background-color: #000000;
+}
+
+.doctor-statements-progress {
+    padding: 10px 12px;
+    border: 1px solid #d7e3e5;
+    border-radius: 10px;
+    background: #f6fafa;
+}
+
+.doctor-statements-progress-copy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 7px;
+    color: #465b64;
+    font-size: 12px;
+}
+
+#doctor-statements-progress-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#doctor-statements-progress-count {
+    flex: 0 0 auto;
+    font-weight: 800;
+}
+
+.doctor-statements-progress-track {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #dce8e9;
+}
+
+.doctor-statements-progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: #408385;
+    transition: width 160ms ease;
+}
+
 .bootstrap-select.open:not(.bs-container),
 .bootstrap-select.show:not(.bs-container) {
     z-index: 9999 !important;
@@ -770,7 +948,8 @@
 
 @media screen and (max-width: 767px) {
     #doctorPaymentModal .modal-dialog,
-    #doctorDiscountModal .modal-dialog {
+    #doctorDiscountModal .modal-dialog,
+    #doctorStatementsModal .modal-dialog {
         width: calc(100vw - 20px) !important;
         max-width: calc(100vw - 20px) !important;
         margin: 0.75rem auto !important;
@@ -899,6 +1078,15 @@
         flex-wrap: nowrap;
     }
 
+    .sigma-standard-theme .doctor-page-wrapper .doctor-statements-action {
+        width: 34px !important;
+        padding: 0;
+    }
+
+    .sigma-standard-theme .doctor-page-wrapper .doctor-statements-action span {
+        display: none;
+    }
+
     .sigma-standard-theme .doctor-page-wrapper .doctor-actions a[aria-label="Add New Doctor"],
     .sigma-standard-theme .doctor-page-wrapper .doctor-actions a[aria-label="Mobile"] {
         padding: 0 8px;
@@ -929,5 +1117,31 @@
 
     .sigma-standard-theme .doctor-page-wrapper .status-toggle .toggle-text {
         font-size: 11px;
+    }
+
+    #doctorStatementsModal .modal-header {
+        padding: 12px 14px 8px;
+    }
+
+    #doctorStatementsModal .modal-body {
+        padding: 6px 14px 12px;
+    }
+
+    #doctorStatementsModal .modal-footer {
+        padding: 0 14px 14px;
+    }
+
+    #doctorStatementsModal .modal-footer .btn {
+        flex-basis: 86px;
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+
+    #doctorStatementsModal .doctor-statements-footer-spacer {
+        flex-basis: 86px;
+    }
+
+    #doctorStatementsModal .modal-footer .doctor-statements-generate-btn {
+        flex-basis: 132px;
     }
 }

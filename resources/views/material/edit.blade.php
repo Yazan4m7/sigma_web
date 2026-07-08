@@ -2191,18 +2191,17 @@ $(document).ready(function() {
     }
 
     function showAlert(type, message) {
-        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-        const icon = type === 'success' ? 'check-circle' : 'exclamation-triangle';
+        const toastType = type === 'success' ? 'success' : 'error';
 
-        const alert = $(`
-            <div class="alert ${alertClass} alert-dismissible fade show" style="position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 350px;">
-                <i class="fas fa-${icon}"></i> ${message}
-                <button type="button" class="btn-close" data-dismiss="alert"></button>
-            </div>
-        `);
+        if (typeof window.sigmaShowToast === 'function') {
+            window.sigmaShowToast({
+                type: toastType,
+                message: message || ''
+            });
+            return;
+        }
 
-        $('body').append(alert);
-        setTimeout(() => alert.fadeOut(() => alert.remove()), 4000);
+        window.alert(message || '');
     }
 
     // Global functions

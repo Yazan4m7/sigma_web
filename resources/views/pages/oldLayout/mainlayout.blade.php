@@ -9,6 +9,7 @@
     </style>
 </head>
 <body class="sticky-header">
+@include('components.sigma-toasts')
 
 <section>
 @include('layout.partials.sigmaSidebar')
@@ -26,29 +27,6 @@
                     </h4>
             </div>
             <div class="rowContainerCustom" style="margin-left: 0px;">
-                <div class="row">
-                    @if(session('success'))
-                        <div class="alert alert-success" role="alert">
-                            <div class="alert-icon"><i class="flaticon-success"></i></div>
-                            <div class="alert-text">{{session("success")}}</div>
-                        </div>
-                    @endif
-                    @if(session('error'))
-                        <div class="alert alert-danger" role="alert">
-                            <div class="alert-icon"><i class="flaticon-danger"></i></div>
-                            <div class="alert-text">{{session("error")}}</div>
-                        </div>
-                    @endif
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                  </div>
             @yield('content')
             </div>
             <!--end Right Slidebar-->
