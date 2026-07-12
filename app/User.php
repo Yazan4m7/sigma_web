@@ -36,7 +36,7 @@ class User extends Authenticatable
     public function getAvatarPathAttribute(): string
     {
         $default = 'assets/images/avatars/default.png';
-        if (!empty($this->img)) {
+        if (!empty($this->img) && ltrim($this->img, '/') !== $default) {
             if (preg_match('~^https?://~i', $this->img)) {
                 return $this->img;
             }
@@ -49,9 +49,11 @@ class User extends Authenticatable
             }
         }
         if ($this->has_photo) {
-            $path = 'assets/images/avatars/user_' . $this->id . '.webp';
-            if (file_exists(public_path($path))) {
-                return $path;
+            foreach (['webp', 'jpg', 'jpeg', 'png'] as $extension) {
+                $path = 'assets/images/avatars/user_' . $this->id . '.' . $extension;
+                if (file_exists(public_path($path))) {
+                    return $path;
+                }
             }
         }
         return $default;

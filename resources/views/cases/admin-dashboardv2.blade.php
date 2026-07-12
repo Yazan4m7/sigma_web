@@ -2276,9 +2276,9 @@
                                         @endphp
 
                                         <x-waiting-delivery-dialog title="Assign to"
-                                            btnText="{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}" :drivers="$drivers"
+                                            btnText="Assign" :drivers="$drivers"
                                             stageId="5" />
-                                        <button type="submit" class="btn btn-primary receiveSelectBtn delivery ops-case-list__standalone-action"
+                                        <button type="button" class="btn btn-primary receiveSelectBtn delivery ops-case-list__standalone-action"
                                             style="display:none; margin:5px;"
                                             onclick="openModal('DeliveryDialog',false)">{{ $isDeliveryAndAssignable ? 'ASSIGN TO' : 'ASSIGN' }}
                                         </button>
@@ -2342,6 +2342,42 @@
                                             </thead>
                                             <tbody>
                                                 @foreach ($stage['waitingCases'] as $case)
+                                                    @php
+                                                        $caseIsDeviceBatch = is_object($case) && method_exists($case, 'isDeviceStageBatch') && $case->isDeviceStageBatch();
+                                                        $caseSelectionValue = $caseIsDeviceBatch ? $case->selectionValue() : $case->id;
+                                                        $caseDialogKey = $caseIsDeviceBatch ? $case->dialogKey() : $case->id;
+                                                        $stageJobsForCompatibility = collect($case->jobs)
+                                                            ->filter(function ($job) use ($stage) {
+                                                                return (int) $job->stage === (int) $stage['numericStage'] && $job->material;
+                                                            });
+                                                        if ($caseIsDeviceBatch) {
+                                                            $stageJobsForCompatibility = $stageJobsForCompatibility->filter(function ($job) use ($case) {
+                                                                return (int) $job->material_id === (int) $case->material_id;
+                                                            });
+                                                        }
+                                                        $stageMaterialsForCompatibility = $stageJobsForCompatibility
+                                                            ->pluck('material')
+                                                            ->unique('id');
+                                                        $caseRequiresDryMilling = $stageMaterialsForCompatibility->contains(function ($material) {
+                                                            return (int) $material->is_dry === 1;
+                                                        });
+                                                        $caseRequiresWetMilling = $stageMaterialsForCompatibility->contains(function ($material) {
+                                                            return (int) $material->is_wet === 1;
+                                                        });
+                                                        $caseStageMaterialIds = $stageMaterialsForCompatibility
+                                                            ->pluck('id')
+                                                            ->filter()
+                                                            ->map(function ($materialId) {
+                                                                return (int) $materialId;
+                                                            })
+                                                            ->unique()
+                                                            ->values();
+                                                        $caseStageMaterialKey = $caseIsDeviceBatch
+                                                            ? (string) $case->material_id
+                                                            : ($caseStageMaterialIds->count() === 1
+                                                                ? (string) $caseStageMaterialIds->first()
+                                                                : 'mixed-' . $caseStageMaterialIds->implode('-'));
+                                                    @endphp
                                                     <tr style="color:{{ $color }}">
                                                         @php
                                                             // Normalize key case
@@ -2363,19 +2399,22 @@
                                                                 <td class="no-sort ops-col ops-col--select">
                                                                     <input type="checkbox" data-type="{{ $key }}"
                                                                         data-group-id="{{ $key }}"
+                                                                        data-material-id="{{ $caseStageMaterialKey }}"
+                                                                        data-material-is-dry="{{ $caseRequiresDryMilling ? 1 : 0 }}"
+                                                                        data-material-is-wet="{{ $caseRequiresWetMilling ? 1 : 0 }}"
                                                                         class="custom-control-input multipleCB {{ $key }}   checkboxes-group-{{ $key }}"
-                                                                        value="{{ $case->id }}"
+                                                                        value="{{ $caseSelectionValue }}"
                                                                         name="CheckBoxes{{ $key }}[]"
-                                                                        onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')">
+                                                                        onchange="multiCBChanged('{{ $key }}',this, '{{ $caseSelectionValue }}')">
                                                                 </td>
                                                             @endif
                                                         @endif
                                                         <td class="clickable ops-col ops-col--doctor" data-toggle="modal"
-                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                             <p class="">{{ $case->client?->name ?? 'Err404-1' }}</p>
                                                         </td>
                                                         <td class="clickable ops-col ops-col--patient" data-toggle="modal" dir="auto"
-                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                             <p class="">{{ $case->patient_name }}
                                                                 @if ($key == 'finishing')
                                                                     @if ($notReadyA)
@@ -2396,7 +2435,7 @@
                                                             </p>
                                                         </td>
                                                         <td class="clickable ops-col ops-col--delivery" data-toggle="modal"
-                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                             <p class="">
                                                                 {{ date_format(date_create($case->initDeliveryDate()), 'd-M') }}
                                                             </p>
@@ -2404,7 +2443,7 @@
                                                         <!-- Assigned to for delivery stage -->
                                                         @if ($key == 'delivery')
                                                             <td class="clickable ops-col ops-col--assigned" data-toggle="modal"
-                                                                data-target="#waitingDialog{{ $key . $case->id }}">
+                                                                data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                                 <p class="">
                                                                     {{ $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo
                                                                         ? $case->jobs->where('stage', $stage['numericStage'])->first()->assignedTo->name_initials
@@ -2413,12 +2452,12 @@
                                                             </td>
                                                         @endif
                                                         <td class="clickable ops-col ops-col--count" data-toggle="modal"
-                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                             <p class="">{{ $case->unitsAmount($stage['numericStage']) }}</p>
                                                         </td>
 
                                                         <td class="clickable ops-col ops-col--tags" data-toggle="modal"
-                                                            data-target="#waitingDialog{{ $key . $case->id }}">
+                                                            data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                             <div>
                                                                 @foreach ($case->tags as $tag)
                                                                     <i title="{{ $tag->originalTagRecord != null ? $tag->originalTagRecord->text : '-' }}"
@@ -2429,8 +2468,8 @@
                                                         </td>
                                                     </tr>
                                                     {{-- BEGIN WAITING DIALOG --}}
-                                                    <div class="modal fade sigma-modal--cases-dashboard-case-completion{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
-                                                        id="waitingDialog{{ $key . $case->id }}">
+                                                    <div class="modal fade sigma-modal--cases-dashboard-case-completion sigma-modal--case-preview-unified sigma-dialog-overlay{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog" data-backdrop="false" data-keyboard="true"
+                                                        id="waitingDialog{{ $key . $caseDialogKey }}">
                                                         <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
                                                             <div class="modal-content">
                                                                 <form
@@ -2451,10 +2490,7 @@
                                                                             Stage</span>
                                                                     </div>
                                                                 @endif
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="false">&times;</span>
-                                                                </button>
+                                                                <x-sigma-close-button />
 
                                                             </div>
                                                             <div class="modal-body">
@@ -2480,15 +2516,21 @@
                                                                     <div class="form-group row">
                                                                         <div class=" col-12 ">
                                                                             <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
+                                                                            @php
+                                                                                $caseCompletionJobs = $key == 'finishing'
+                                                                                    ? $case->jobs
+                                                                                    : $case->jobs->where('stage', $stage['numericStage']);
+                                                                            @endphp
                                                                             <div class="sigma-case-jobs-list">
-                                                                                @foreach ($case->jobs as $job)
+                                                                                @foreach ($caseCompletionJobs as $job)
                                                                                     @php
                                                                                         $unit = explode(
                                                                                             ', ',
                                                                                             $job->unit_num,
                                                                                         );
                                                                                         // Check if this job goes through the current stage based on material
-                                                                                        $showJob = $job->goesThroughStage($stage['numericStage']);
+                                                                                        $showJob = $key == 'finishing'
+                                                                                            || $job->goesThroughStage($stage['numericStage']);
                                                                                     @endphp
 
                                                                                     @if ($showJob)
@@ -2557,22 +2599,27 @@
                                                                         @if ($key == 'milling')
                                                                             <button type="button" class="btn btn-success"
                                                                                 data-dismiss="modal"
-                                                                                onclick="openModal('milling',true,'{{ $case->id }}')"
+                                                                                onclick="openModal('milling',true,'{{ $caseSelectionValue }}')"
                                                                                 style="width:100%; display: flex; align-items: center; justify-content: center;"><i
                                                                                     class="fas fa-user-plus"></i> Assign To
                                                                                 Me</button>
                                                                         @elseif ($key == '3dprinting' || $key == 'sintering' || $key == 'pressing')
                                                                             <button type="button" class="btn btn-success"
                                                                                 data-dismiss="modal"
-                                                                                onclick="openModal('{{ $key }}',true,'{{ $case->id }}')"
+                                                                                onclick="openModal('{{ $key }}',true,'{{ $caseSelectionValue }}')"
                                                                                 style="width:100%; display: flex; align-items: center; justify-content: center;"><i
                                                                                     class="fas fa-user-plus"></i> Assign To
                                                                                 Me</button>
                                                                         @else
+                                                                            @php
+                                                                                $assignStageLabel = $key == 'delivery'
+                                                                                    ? 'Take'
+                                                                                    : 'Assign To Me';
+                                                                            @endphp
                                                                             <button type="submit" class="btn btn-success"
                                                                                 style="width:100%; display: flex; align-items: center; justify-content: center;"><i
                                                                                     class="fas fa-user-plus"></i>
-                                                                                {{ $key == 'delivery' ? 'Take' : 'Assign To Me' }}</button>
+                                                                                {{ $assignStageLabel }}</button>
                                                                         @endif
                                                                     </div>
                                                                     <div class="col-3 padding5px" style="display: flex;">
@@ -2647,6 +2694,40 @@
                                             @foreach ($stage['waitingCases'] as $case)
                                             @php
                                                 $key = strtolower($key);
+                                                $caseIsDeviceBatch = is_object($case) && method_exists($case, 'isDeviceStageBatch') && $case->isDeviceStageBatch();
+                                                $caseSelectionValue = $caseIsDeviceBatch ? $case->selectionValue() : $case->id;
+                                                $caseDialogKey = $caseIsDeviceBatch ? $case->dialogKey() : $case->id;
+                                                $stageJobsForCompatibility = collect($case->jobs)
+                                                    ->filter(function ($job) use ($stage) {
+                                                        return (int) $job->stage === (int) $stage['numericStage'] && $job->material;
+                                                    });
+                                                if ($caseIsDeviceBatch) {
+                                                    $stageJobsForCompatibility = $stageJobsForCompatibility->filter(function ($job) use ($case) {
+                                                        return (int) $job->material_id === (int) $case->material_id;
+                                                    });
+                                                }
+                                                $stageMaterialsForCompatibility = $stageJobsForCompatibility
+                                                    ->pluck('material')
+                                                    ->unique('id');
+                                                $caseRequiresDryMilling = $stageMaterialsForCompatibility->contains(function ($material) {
+                                                    return (int) $material->is_dry === 1;
+                                                });
+                                                $caseRequiresWetMilling = $stageMaterialsForCompatibility->contains(function ($material) {
+                                                    return (int) $material->is_wet === 1;
+                                                });
+                                                $caseStageMaterialIds = $stageMaterialsForCompatibility
+                                                    ->pluck('id')
+                                                    ->filter()
+                                                    ->map(function ($materialId) {
+                                                        return (int) $materialId;
+                                                    })
+                                                    ->unique()
+                                                    ->values();
+                                                $caseStageMaterialKey = $caseIsDeviceBatch
+                                                    ? (string) $case->material_id
+                                                    : ($caseStageMaterialIds->count() === 1
+                                                        ? (string) $caseStageMaterialIds->first()
+                                                        : 'mixed-' . $caseStageMaterialIds->implode('-'));
                                             @endphp
                                             @if ($key == 'finishing')
                                                 @php
@@ -2663,22 +2744,27 @@
                                                         <div class="ops-case-card__select">
                                                             <input type="checkbox" data-type="{{ $key }}"
                                                                 data-group-id="{{ $key }}"
+                                                                data-material-id="{{ $caseStageMaterialKey }}"
+                                                                data-material-is-dry="{{ $caseRequiresDryMilling ? 1 : 0 }}"
+                                                                data-material-is-wet="{{ $caseRequiresWetMilling ? 1 : 0 }}"
                                                                 class="custom-control-input multipleCB {{ $key }} checkboxes-group-{{ $key }}"
-                                                                value="{{ $case->id }}"
+                                                                value="{{ $caseSelectionValue }}"
                                                                 name="CheckBoxes{{ $key }}[]"
-                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $case->id }}')"
+                                                                onchange="multiCBChanged('{{ $key }}',this, '{{ $caseSelectionValue }}')"
                                                                 onclick="event.stopPropagation()">
                                                         </div>
                                                     @endif
                                                 @endif
                                                 <div class="ops-case-card__content clickable" data-toggle="modal"
-                                                    data-target="#waitingDialog{{ $key . $case->id }}">
+                                                    data-target="#waitingDialog{{ $key . $caseDialogKey }}">
                                                     <div class="ops-case-card__row ops-case-card__row--primary">
                                                         <div class="ops-case-card__doctor" dir="auto">{{ $case->client?->name ?? 'Err404-1' }}</div>
                                                         <div class="ops-case-card__units">
                                                             <span class="ops-case-card__units-pill">{{ $case->unitsAmount($stage['numericStage']) }}</span>
                                                         </div>
-                                                        <div class="ops-case-card__patient" dir="auto">{{ $case->patient_name }}</div>
+                                                        <div class="ops-case-card__patient" dir="auto">
+                                                            {{ $case->patient_name }}
+                                                        </div>
 
                                                     </div>
                                                     <div class="ops-case-card__row ops-case-card__row--secondary">
@@ -2824,7 +2910,7 @@
                                                             </td>
                                                         </tr>
                                                         <!-- Active case actions Dialog -->
-                                                        <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog"
+                                                        <div class="modal fade sigma-modal--cases-dashboard-case-completion-alt sigma-modal--case-preview-unified sigma-dialog-overlay{{ $key == 'delivery' ? ' sigma-modal--case-completion-delivery' : '' }}{{ $key == 'qc' ? ' sigma-modal--case-completion-qc' : '' }}" tabindex="-1" role="dialog" data-backdrop="false" data-keyboard="true"
                                                             id="confirmCompletion{{ $key . $case->id }}">
                                                             <div class="modal-dialog modal-dialog-centered fade-in-down-local" role="document">
                                                                 <div class="modal-content">
@@ -2837,10 +2923,7 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title">Case Completion</h5>
 
-                                                                    <button type="button" class="close"
-                                                                        data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="false">&times;</span>
-                                                                    </button>
+                                                                    <x-sigma-close-button />
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     <!-- Sticky Doctor/Patient section -->
@@ -2868,17 +2951,23 @@
                                                                         <div class="form-group row">
                                                                             <div class=" col-12 ">
                                                                                 <label class="case-completion-dialog-label case-jobs-label"><b>Jobs:</b></label>
+                                                                                @php
+                                                                                    $caseCompletionJobs = $key == 'finishing'
+                                                                                        ? $case->jobs
+                                                                                        : $case->jobs->where('stage', $stage['numericStage']);
+                                                                                @endphp
                                                                                 <div class="sigma-case-jobs-list">
-                                                                                    @foreach ($case->jobs->where('stage', $stage['numericStage']) as $job)
+                                                                                    @foreach ($caseCompletionJobs as $job)
                                                                                         @php
                                                                                             $unit = explode(
                                                                                                 ', ',
                                                                                                 $job->unit_num,
                                                                                             );
                                                                                             // Check if this job goes through the current stage based on material
-                                                                                            $showJob = $job->goesThroughStage(
-                                                                                                $stage['numericStage'],
-                                                                                            );
+                                                                                            $showJob = $key == 'finishing'
+                                                                                                || $job->goesThroughStage(
+                                                                                                    $stage['numericStage'],
+                                                                                                );
                                                                                         @endphp
 
                                                                                         @if ($showJob)
@@ -2959,13 +3048,16 @@
                                                                                 $canComplete = true;
                                                                                 $isUserCase = true;
                                                                             }
-                                                                            if ($key == 'finishing') {
-                                                                                if ($notReadyA || !$abutmentsReceived) {
-                                                                                    $canComplete = false;
-                                                                                    $canBeFinished = false;
-                                                                                }
-                                                                            }
-                                                                        @endphp
+                                                                             if ($key == 'finishing') {
+                                                                                 if ($notReadyA || !$abutmentsReceived) {
+                                                                                     $canComplete = false;
+                                                                                     $canBeFinished = false;
+                                                                                 }
+                                                                                 if (!$case->allJobsAtStageAssignedTo($stage['numericStage'], Auth()->user()->id)) {
+                                                                                     $canComplete = false;
+                                                                                 }
+                                                                             }
+                                                                         @endphp
 
 
                                                                         <!-- Row 2: View (25%) | Complete (50%) | Edit (25%) -->
@@ -3180,7 +3272,7 @@
 
         <!-- Generic loading dialog -->
         <div id="loadingDialog" class="modal sigma-modal--cases-dashboard-loading" tabindex="-1" role="dialog"
-            style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.5); z-index: 9999;">
+            style="display: none; align-items: center; justify-content: center; background: rgba(0,0,0,0.6); z-index: 9999;">
             <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content">
                     <div class="modal-body text-center p-4">
@@ -3819,6 +3911,15 @@
             width: 1rem;
             height: 1rem;
             margin: 0;
+        }
+
+        .ops-milling-material-disabled {
+            opacity: 0.48;
+        }
+
+        .ops-milling-material-disabled input[type="checkbox"],
+        .ops-milling-material-disabled .ops-case-card__content {
+            cursor: not-allowed !important;
         }
 
         @media (max-width: 767.98px) {

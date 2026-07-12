@@ -121,9 +121,48 @@
         border-left: 3px solid var(--color-accent);
         border-radius: 4px;
     }
+
+    .milling-support-section {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-top: 4px;
+        background: #f8f9fa;
+    }
+
+    .milling-support-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .milling-support-options label {
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+    }
+
+    @media (max-width: 767.98px) {
+        .milling-support-options {
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
 </style>
 @endpush
 @section('content')
+    @php
+        $selectedDeviceType = old('device_type', $device->type);
+        $useOldDeviceSupport = old('device_type') !== null;
+        $dryMillingChecked = $useOldDeviceSupport
+            ? old('supports_dry_milling')
+            : ($device->type == 2 && ($device->is_dry || (!$device->is_dry && !$device->is_wet)));
+        $wetMillingChecked = $useOldDeviceSupport
+            ? old('supports_wet_milling')
+            : ($device->type == 2 && $device->is_wet);
+    @endphp
     <form method="POST" action="{{ route('edit-device', $device->id) }}" class="card" enctype="multipart/form-data" id="device-form">
         @csrf
         <div class="kt-portlet__head">
@@ -148,11 +187,32 @@
                 <div class="col-md-12 col-xs-12"><label>Device Type:</label></div>
                 <div class="col-md-12 col-xs-12">
                     <select class="form-control selectpicker" id="dev" name="device_type">
-                        <option value="3" {{ $device->type == 3 ? 'selected' : '' }}>3D Printer</option>
-                        <option value="2" {{ $device->type == 2 ? 'selected' : '' }}>Milling Machine</option>
-                        <option value="4" {{ $device->type == 4 ? 'selected' : '' }}>Sintering Furnace</option>
-                        <option value="5" {{ $device->type == 5 ? 'selected' : '' }}>Pressing Furnace</option>
+                        <option value="3" {{ $selectedDeviceType == 3 ? 'selected' : '' }}>3D Printer</option>
+                        <option value="2" {{ $selectedDeviceType == 2 ? 'selected' : '' }}>Milling Machine</option>
+                        <option value="4" {{ $selectedDeviceType == 4 ? 'selected' : '' }}>Sintering Furnace</option>
+                        <option value="5" {{ $selectedDeviceType == 5 ? 'selected' : '' }}>Pressing Furnace</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3" id="milling-support-section" style="{{ $selectedDeviceType == 2 ? '' : 'display: none;' }}">
+                <div class="col-md-12 col-xs-12"><label>Supports:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <div class="milling-support-section">
+                        <div class="milling-support-options">
+                            <label>
+                                <input type="checkbox" name="supports_dry_milling" value="1" {{ $dryMillingChecked ? 'checked' : '' }}>
+                                <span>Dry Milling</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="supports_wet_milling" value="1" {{ $wetMillingChecked ? 'checked' : '' }}>
+                                <span>Wet Milling</span>
+                            </label>
+                        </div>
+                        @if ($errors->has('supports_dry_milling'))
+                            <small class="text-danger d-block mt-2">{{ $errors->first('supports_dry_milling') }}</small>
+                        @endif
+                    </div>
                 </div>
             </div>
 
@@ -208,6 +268,14 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('form').parsley();
+            const deviceTypeDropdown = $('#dev');
+
+            function syncMillingSupport() {
+                $('#milling-support-section').toggle(deviceTypeDropdown.val() === '2');
+            }
+
+            deviceTypeDropdown.on('change', syncMillingSupport);
+            syncMillingSupport();
 
             // Initialize horizontal sortable list
             const el = document.getElementById('devices-list-horizontal');

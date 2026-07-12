@@ -29,6 +29,7 @@ class MaterialController extends Controller
         $this->validate($request, [
             'mat_name' => 'required|max:30',
             'price'    => 'required|numeric',
+            'material_milling_mode' => 'required|in:dry,wet',
         ]);
 
         $material = new material();
@@ -36,6 +37,8 @@ class MaterialController extends Controller
 
             $material->name = $request->mat_name;
             $material->price = $request->price;
+            $material->is_dry = $request->material_milling_mode === 'dry' ? 1 : 0;
+            $material->is_wet = $request->material_milling_mode === 'wet' ? 1 : 0;
             $material->design = isset($request->design) ? 1 : 0;
             $material->mill = $request->manufacturing == 2  ? 1 : 0;
             $material->print_3d = $request->manufacturing == 3  ? 1 : 0;
@@ -95,6 +98,11 @@ class MaterialController extends Controller
     }
     public function update(Request $request)
     {
+        $this->validate($request, [
+            'mat_name' => 'required|max:30',
+            'price' => 'required|numeric',
+            'material_milling_mode' => 'required|in:dry,wet',
+        ]);
 
 
         $material = material::where('id', $request->mat_id)->first();
@@ -104,6 +112,8 @@ class MaterialController extends Controller
 
             $material->name = $request->mat_name;
             $material->price = $request->price;
+            $material->is_dry = $request->material_milling_mode === 'dry' ? 1 : 0;
+            $material->is_wet = $request->material_milling_mode === 'wet' ? 1 : 0;
             $material->design = isset($request->design) ? 1 : 0;
             $material->mill = $request->manufacturing == 2  ? 1 : 0;
             $material->print_3d = $request->manufacturing == 3  ? 1 : 0;

@@ -255,6 +255,7 @@
                                         data-case-id="{{ $case->id }}"
                                         data-case-doctor="{{ $case->client->name }}"
                                         data-case-patient="{{ $case->patient_name }}"
+                                        data-case-view-url="{{ route('view-case', $case->id) }}"
                                         data-delivery-date="{{ \Carbon\Carbon::parse($case->initial_delivery_date)->format('Y-m-d\TH:i:s') }}">
 
                                         <td class="text-center">
@@ -377,6 +378,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="#" id="shared-delivery-view-link" class="btn btn-info">View</a>
                         <button type="submit" class="btn btn-danger" form="delivery-form-shared">UPDATE</button>
                     </div>
                 </div>
@@ -477,6 +479,7 @@
             document.getElementById('shared-delivery-case-label').textContent = data.caseId || '-';
             document.getElementById('shared-delivery-doctor').textContent = data.caseDoctor || '-';
             document.getElementById('shared-delivery-patient').textContent = data.casePatient || '-';
+            document.getElementById('shared-delivery-view-link').href = data.caseViewUrl || (data.caseId ? '/view/' + data.caseId : '#');
 
             if (input) {
                 input.value = data.deliveryDate || '';

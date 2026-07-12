@@ -491,8 +491,9 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
     /* Dialog Dismissal Enhancements */
 
 .sigma-workflow-modal.sigma-modal--active-cases-preview {
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
+        background: rgba(0, 0, 0, 0.6) !important;
+        backdrop-filter: blur(2px) !important;
+        -webkit-backdrop-filter: blur(2px) !important;
     }
 
 
@@ -648,6 +649,9 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                     @else
 
                                         @foreach($data['cases'] as $caseData)
+                                            @php
+                                                $slidePanelKey = $caseData['case']->id . '-' . $type . '-b' . $data['build']->id;
+                                            @endphp
 
                                             <div class="sigma-case-item">
                                                 <div class="  info-case-row">
@@ -656,7 +660,7 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
                                                     <div class="  ">{{ $caseData['unitCount'] }}</div>
                                                     <div class=" ">
                                                         <button class="sigma-case-view-btn"
-                                                                onclick="YSH_openSlidePanel({{ $caseData['case']->id }}, '{{ $type }}')">
+                                                                onclick="YSH_openSlidePanel(@js($slidePanelKey))">
                                                             <svg class="sigma-inline-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                                                 <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                                                                 <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
@@ -735,7 +739,11 @@ Log::info("-----------Dialog has Active Jobs -------: ".$hasActiveJobs);
 
 @foreach($buildData as $data)
     @foreach($data['cases'] as $caseData)
-        <x-partiels.caseSlidePanel :case="$caseData['case']" :stageType="$type"/>
+        <x-partiels.caseSlidePanel
+            :case="$caseData['case']"
+            :stageType="$type"
+            :slide-key="$caseData['case']->id . '-' . $type . '-b' . $data['build']->id"
+            :jobs="$caseData['jobs']" />
     @endforeach
 @endforeach
 

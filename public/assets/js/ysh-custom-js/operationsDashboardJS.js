@@ -301,10 +301,18 @@ function showNoJobsMessage() {
 }
 
 function multiCBChanged(groupKey, changedCheckbox) {
+    if (groupKey === 'milling' && typeof syncMillingSameMaterialSelectionGuard === 'function') {
+        syncMillingSameMaterialSelectionGuard(changedCheckbox);
+    }
+
     // This part of the function handles the show/hide behavior for .receiveSelectBtn based on overall selection.
     var checkedCount = $(`.multipleCB.${groupKey}:checkbox:checked`).length;
 
     console.log(`multiCBChanged called for ${groupKey}, checked count: ${checkedCount}`);
+
+    if (groupKey === 'milling' && typeof filterMillingMachinesBySelectedMaterials === 'function') {
+        filterMillingMachinesBySelectedMaterials();
+    }
 
     if (checkedCount > 0) {
         // Show the SET button for this specific stage
@@ -936,19 +944,10 @@ function disableButton(key, deviceId = "", isWaiting = false) {
         const submitButton = document.getElementById('action-button-delivery');
         if (submitButton) {
             submitButton.disabled = true;
-            submitButton.classList.add('btn-loading');
-            submitButton.innerText = 'Processing...';
-            submitButton.classList.add('disabled');
+            submitButton.classList.remove('btn-loading', 'disabled');
+            submitButton.innerText = 'Assign';
 
             console.log('Disabled delivery button');
-
-            // Auto-reset after timeout (fallback) - but the dialog should reset it when reopened
-            setTimeout(() => {
-                console.log('Auto-resetting delivery button after timeout');
-                submitButton.classList.remove('disabled', 'btn-loading');
-                submitButton.disabled = true; // Keep disabled until driver selected
-                submitButton.innerText = 'ASSIGN';
-            }, 3000);
         }
 
 
@@ -1186,20 +1185,20 @@ function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
             document.activeElement.blur();
         }
 
-        // Add Animate.css fade-out animation (fadeOutUp to top) - faster
+        // Add lightweight local fade-out animation.
         const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeIn');
-            dialogContent.classList.add('animate__fadeOut');
+            dialogContent.classList.remove('animate__fadeIn', 'animate__animated', 'animate__faster', 'fade-in');
+            dialogContent.classList.add('fade-out');
         }
 
-        // Hide modal after animation completes (300ms for faster)
+        // Hide modal after the short local animation completes.
         setTimeout(() => {
             modal.classList.remove('active', 'show');
             modal.style.display = 'none';
             if (dialogContent) {
-                dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
-                dialogContent.style.willChange = 'auto'; // Reset GPU optimization
+                dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster', 'fade-out', 'fade-in');
+                dialogContent.style.willChange = 'auto';
             }
 
             // Reset dialog state if needed
@@ -1211,7 +1210,7 @@ function closeModal({id, isWaiting = false, deviceId = 0, exactId = null}) {
                     exactId: exactId
                 });
             }
-        }, 300);
+        }, 140);
 
     } else {
         console.error(`Modal not found: ${modalId}, trying fallback cleanup`);

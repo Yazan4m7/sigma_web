@@ -100,6 +100,11 @@ function selectMachine(element, type, machineId) {
     console.log("Machine clicked:", type, machineId);
 
     try {
+        if (type === 'milling' && element.classList.contains('sigma-machine-card--incompatible')) {
+            showToast("This machine is not compatible with the selected material", "warning");
+            return;
+        }
+
         // Check if this machine is already selected
         const isAlreadySelected = element.classList.contains('selected');
 
@@ -233,6 +238,14 @@ function initializeDialog(type) {
     allMachines.forEach(machine => {
         machine.classList.remove('selected');
         machine.classList.remove('disabled'); // Ensure no machines are disabled initially
+        machine.classList.remove('sigma-machine-card--incompatible');
+        machine.removeAttribute('aria-disabled');
+        machine.removeAttribute('title');
+        machine.tabIndex = 0;
+        const machineColumn = machine.closest('.sigma-machine-col');
+        if (machineColumn) {
+            machineColumn.style.display = '';
+        }
     });
 
     // For stages that require build name, reset and disable build name input
@@ -249,6 +262,190 @@ function initializeDialog(type) {
     if (actionButton) {
         actionButton.disabled = true;
     }
+
+    if (type === 'milling') {
+        filterMillingMachinesBySelectedMaterials();
+    }
+}
+
+function getWorkflowSelectionCheckboxes(type) {
+    let selector;
+    if (/^\d/.test(type)) {
+        selector = `input.multipleCB[class*="${type}"]`;
+    } else {
+        selector = `.multipleCB.${type}`;
+    }
+
+    const checkboxes = Array.from(document.querySelectorAll(selector));
+    const checked = checkboxes.filter(checkbox => checkbox.checked);
+
+    if (checked.length > 0) {
+        return checked;
+    }
+
+    if (window.caseIDFromOldDialog && window.caseIDFromOldDialog !== 0) {
+        return checkboxes.filter(checkbox => String(checkbox.value) === String(window.caseIDFromOldDialog));
+    }
+
+    return [];
+}
+
+function getSelectedMillingRequirement() {
+    const selectedCheckboxes = getWorkflowSelectionCheckboxes('milling');
+    let hasRequirement = false;
+    let requiresDry = false;
+    let requiresWet = false;
+
+    selectedCheckboxes.forEach(checkbox => {
+        const isDry = checkbox.dataset.materialIsDry === '1';
+        const isWet = checkbox.dataset.materialIsWet === '1';
+
+        if (isDry || isWet) {
+            hasRequirement = true;
+            requiresDry = requiresDry || isDry;
+            requiresWet = requiresWet || isWet;
+        }
+    });
+
+    return { hasRequirement, requiresDry, requiresWet };
+}
+
+function filterMillingMachinesBySelectedMaterials() {
+    const requirement = getSelectedMillingRequirement();
+    const machineCards = Array.from(document.querySelectorAll('.sigma-machine-card.milling'));
+    const noCompatibleMessage = document.getElementById('no-compatible-milling-devices-milling');
+    let visibleCount = 0;
+
+    machineCards.forEach(card => {
+        const supportsDry = card.dataset.supportsDry === '1';
+        const supportsWet = card.dataset.supportsWet === '1';
+        const isCompatible = !requirement.hasRequirement
+            || ((!requirement.requiresDry || supportsDry) && (!requirement.requiresWet || supportsWet));
+
+        card.classList.toggle('sigma-machine-card--incompatible', !isCompatible);
+        card.setAttribute('aria-disabled', isCompatible ? 'false' : 'true');
+        card.title = isCompatible ? '' : 'Not compatible with selected material';
+        card.tabIndex = isCompatible ? 0 : -1;
+
+        if (isCompatible) {
+            visibleCount += 1;
+        } else if (card.classList.contains('selected')) {
+            card.classList.remove('selected');
+            window.selectedMachineId = null;
+            const deviceInput = document.getElementById('device-id-milling');
+            if (deviceInput) {
+                deviceInput.value = '';
+            }
+        }
+    });
+
+    if (noCompatibleMessage) {
+        noCompatibleMessage.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    if (typeof updateActionButtonState === 'function') {
+        updateActionButtonState('milling');
+    }
+}
+
+// Milling same-material selection guard. Kept separate from wet/dry machine compatibility filtering.
+function getMillingMaterialSelectionCheckboxes() {
+    return Array.from(document.querySelectorAll('.multipleCB.milling'));
+}
+
+function getMillingCheckboxMaterialKey(checkbox) {
+    return checkbox && checkbox.dataset ? (checkbox.dataset.materialId || '').trim() : '';
+}
+
+function getMillingCheckboxContainer(checkbox) {
+    return checkbox ? (checkbox.closest('.ops-case-card--waiting') || checkbox.closest('tr')) : null;
+}
+
+function setMillingMaterialSelectionLocked(checkbox, locked) {
+    const container = getMillingCheckboxContainer(checkbox);
+
+    checkbox.disabled = locked;
+    checkbox.title = locked ? 'Different material' : '';
+    checkbox.setAttribute('aria-disabled', locked ? 'true' : 'false');
+
+    if (container) {
+        container.classList.toggle('ops-milling-material-disabled', locked);
+        if (locked) {
+            container.setAttribute('title', 'Different material');
+        } else {
+            container.removeAttribute('title');
+        }
+    }
+}
+
+function showMillingMaterialSelectionWarning() {
+    if (typeof showToast === 'function') {
+        showToast('Milling assignment can only include one material', 'warning');
+    }
+}
+
+function syncMillingSameMaterialSelectionGuard(changedCheckbox) {
+    const checkboxes = getMillingMaterialSelectionCheckboxes();
+
+    if (changedCheckbox && changedCheckbox.checked) {
+        const changedMaterialKey = getMillingCheckboxMaterialKey(changedCheckbox);
+        const hasDifferentSelection = checkboxes.some(checkbox => {
+            return checkbox !== changedCheckbox
+                && checkbox.checked
+                && getMillingCheckboxMaterialKey(checkbox) !== changedMaterialKey;
+        });
+
+        if (hasDifferentSelection) {
+            changedCheckbox.checked = false;
+            showMillingMaterialSelectionWarning();
+        }
+    }
+
+    let selectedMaterialKey = '';
+    let removedDifferentSelection = false;
+
+    checkboxes.forEach(checkbox => {
+        if (!checkbox.checked) {
+            return;
+        }
+
+        const materialKey = getMillingCheckboxMaterialKey(checkbox);
+        if (!selectedMaterialKey) {
+            selectedMaterialKey = materialKey;
+            return;
+        }
+
+        if (materialKey !== selectedMaterialKey) {
+            checkbox.checked = false;
+            removedDifferentSelection = true;
+        }
+    });
+
+    if (removedDifferentSelection) {
+        showMillingMaterialSelectionWarning();
+    }
+
+    const selectedCheckboxes = checkboxes.filter(checkbox => checkbox.checked);
+    selectedMaterialKey = selectedCheckboxes.length
+        ? getMillingCheckboxMaterialKey(selectedCheckboxes[0])
+        : '';
+
+    checkboxes.forEach(checkbox => {
+        const materialKey = getMillingCheckboxMaterialKey(checkbox);
+        const shouldLock = selectedMaterialKey !== ''
+            && !checkbox.checked
+            && materialKey !== selectedMaterialKey;
+
+        setMillingMaterialSelectionLocked(checkbox, shouldLock);
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+        syncMillingSameMaterialSelectionGuard();
+    });
+} else {
+    syncMillingSameMaterialSelectionGuard();
 }
 
 /**
@@ -609,17 +806,17 @@ function openDeviceDialog(deviceId, type) {
     // Clear any existing animations
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
+        dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'fade-out', 'fade-in');
     }
 
-    // Show dialog with smooth Animate.css animation (instant, no delay)
+    // Show dialog with lightweight local animation.
     dialog.classList.add('active', 'show');
     dialog.style.display = 'flex';
 
     if (dialogContent) {
-        // Use faster animation (300ms) with GPU acceleration for smooth performance
-        dialogContent.style.willChange = 'transform, opacity';
-        dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
+        requestAnimationFrame(() => {
+            dialogContent.classList.add('fade-in');
+        });
     }
 
     // Set up case list with improved visuals for delivery
@@ -783,27 +980,27 @@ function closeDeviceDialog(deviceId) {
         document.activeElement.blur();
     }
 
-    // Add Animate.css fade-out animation (fadeOutUp to top) - smooth and fast
+    // Add lightweight local fade-out animation.
     const dialogContent = dialog.querySelector('.sigma-workflow-dialog') || dialog.querySelector('.modal-content');
     if (dialogContent) {
-        dialogContent.classList.remove('animate__fadeIn');
-        dialogContent.classList.add('animate__fadeOut');
+        dialogContent.classList.remove('animate__fadeIn', 'animate__animated', 'animate__faster', 'fade-in');
+        dialogContent.classList.add('fade-out');
     }
 
-    // Hide dialog after animation completes (300ms for faster, smoother)
+    // Hide dialog after the short local animation completes.
     setTimeout(() => {
         dialog.classList.remove('active', 'show');
         dialog.style.display = 'none';
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster');
-            dialogContent.style.willChange = 'auto'; // Reset GPU optimization
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'animate__faster', 'fade-out', 'fade-in');
+            dialogContent.style.willChange = 'auto';
         }
 
         // Clean up any overlays
         document.querySelectorAll('.modal-backdrop, .modal-overlay').forEach(backdrop => {
             backdrop.remove();
         });
-    }, 300);
+    }, 140);
 }
 
 /**
@@ -1123,6 +1320,21 @@ function showToast(message, type = 'info') {
  * Show loading indicator
  */
 function showLoadingIndicator() {
+    const staticLoadingScreen = document.getElementById('sigma-loading-screen');
+    const legacyIndicator = document.getElementById('loading-indicator');
+
+    if (staticLoadingScreen) {
+        if (legacyIndicator) {
+            legacyIndicator.style.display = 'none';
+            legacyIndicator.style.pointerEvents = 'none';
+        }
+        staticLoadingScreen.classList.add('is-active');
+        staticLoadingScreen.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('sigma-loading-active');
+        console.log('Loading indicator shown');
+        return;
+    }
+
     let loadingIndicator = document.getElementById('loading-indicator');
 
     if (!loadingIndicator) {
@@ -1145,7 +1357,15 @@ function showLoadingIndicator() {
         loadingIndicator.innerHTML = `
             <div class="sigma-loading-screen__content" role="status" aria-live="polite" aria-label="Loading">
                 <div class="sigma-processing-indicator">
-                    <span class="sigma-processing-indicator__spinner" aria-hidden="true"></span>
+                    <div class="sigma-pyramid-loader sigma-processing-indicator__loader" aria-hidden="true">
+                        <div class="sigma-pyramid-loader__wrapper">
+                            <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--1"></span>
+                            <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--2"></span>
+                            <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--3"></span>
+                            <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--4"></span>
+                            <span class="sigma-pyramid-loader__shadow"></span>
+                        </div>
+                    </div>
                     <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
                 </div>
             </div>
@@ -1171,16 +1391,66 @@ function showLoadingIndicator() {
                     gap: 12px;
                 }
 
-                .sigma-processing-indicator__spinner {
+                .sigma-processing-indicator__loader {
                     width: 24px;
                     height: 24px;
                     flex: 0 0 24px;
-                    border-radius: 50%;
-                    border: 3px solid rgba(55, 180, 74, 0.22);
-                    border-top-color: #37b44a;
-                    border-right-color: rgba(245, 255, 247, 0.85);
-                    box-shadow: 0 0 14px rgba(55, 180, 74, 0.28);
-                    animation: sigmaProcessingSpin 0.82s linear infinite;
+                    display: block;
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader {
+                    position: relative;
+                    transform-style: preserve-3d;
+                    transform: rotateX(-20deg);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    transform-style: preserve-3d;
+                    animation: sigmaPyramidSpin 4s linear infinite;
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__side {
+                    width: 14px;
+                    height: 14px;
+                    position: absolute;
+                    inset: 0;
+                    margin: auto;
+                    transform-origin: center top;
+                    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__side--1 {
+                    transform: rotateZ(-30deg) rotateY(90deg);
+                    background: conic-gradient(#37b44a, #8be59a, #f5fff7, #1f8f35);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__side--2 {
+                    transform: rotateZ(30deg) rotateY(90deg);
+                    background: conic-gradient(#1f8f35, #f5fff7, #8be59a, #37b44a);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__side--3 {
+                    transform: rotateX(30deg);
+                    background: conic-gradient(#1f8f35, #f5fff7, #8be59a, #37b44a);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__side--4 {
+                    transform: rotateX(-30deg);
+                    background: conic-gradient(#37b44a, #8be59a, #f5fff7, #1f8f35);
+                }
+
+                .sigma-processing-indicator .sigma-pyramid-loader__shadow {
+                    width: 12px;
+                    height: 12px;
+                    background: rgba(55, 180, 74, 0.72);
+                    position: absolute;
+                    inset: 0;
+                    margin: auto;
+                    transform: rotateX(90deg) translateZ(-8px);
+                    filter: blur(4px);
                 }
 
                 .sigma-processing-indicator__text {
@@ -1215,7 +1485,7 @@ function showLoadingIndicator() {
                     -webkit-background-clip: text;
                     background-clip: text;
                     -webkit-text-fill-color: transparent;
-                    animation: sigmaProcessingShimmer 1.15s linear infinite;
+                    animation: sigmaProcessingShimmer 2.3s linear infinite;
                     pointer-events: none;
                 }
 
@@ -1224,9 +1494,8 @@ function showLoadingIndicator() {
                     100% { background-position: -150% 50%; }
                 }
 
-                @keyframes sigmaProcessingSpin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
+                @keyframes sigmaPyramidSpin {
+                    100% { transform: rotateY(360deg); }
                 }
             `;
             document.head.appendChild(style);
@@ -1239,6 +1508,8 @@ function showLoadingIndicator() {
     loadingIndicator.style.backdropFilter = 'blur(1px)';
     loadingIndicator.style.webkitBackdropFilter = 'blur(1px)';
     loadingIndicator.style.display = 'flex';
+    loadingIndicator.style.pointerEvents = 'auto';
+    document.body.classList.add('sigma-loading-active');
     console.log('Loading indicator shown');
 }
 
@@ -1246,10 +1517,19 @@ function showLoadingIndicator() {
  * Hide loading indicator
  */
 function hideLoadingIndicator() {
+    const staticLoadingScreen = document.getElementById('sigma-loading-screen');
+    if (staticLoadingScreen) {
+        staticLoadingScreen.classList.remove('is-active');
+        staticLoadingScreen.setAttribute('aria-hidden', 'true');
+    }
+
     const loadingIndicator = document.getElementById('loading-indicator');
     if (loadingIndicator) {
         loadingIndicator.style.display = 'none';
+        loadingIndicator.style.pointerEvents = 'none';
     }
+
+    document.body.classList.remove('sigma-loading-active');
 }
 
 /**
@@ -1375,12 +1655,20 @@ function multiCBChanged(type, checkbox, caseId) {
     //     });
     // }
 
+    if (type === 'milling' && typeof syncMillingSameMaterialSelectionGuard === 'function') {
+        syncMillingSameMaterialSelectionGuard(checkbox);
+    }
+
     // Filter material types based on selected cases (for milling, pressing, sintering)
     if (['milling', 'pressing', 'sintering'].includes(type)) {
         // Call the filtering function defined in waiting-dialog component
         if (typeof filterMaterialTypesBySelectedCases === 'function') {
             filterMaterialTypesBySelectedCases(type);
         }
+    }
+
+    if (type === 'milling' && typeof filterMillingMachinesBySelectedMaterials === 'function') {
+        filterMillingMachinesBySelectedMaterials();
     }
 
     // Show/hide SET button based on selection
@@ -1872,7 +2160,7 @@ function selectDeliveryDriver(element, driverId) {
         console.log("disabling assign button");
         assignButton.disabled = false;
         assignButton.classList.remove('btn-loading', 'disabled');
-        assignButton.innerText = 'ASSIGN';
+        assignButton.innerText = 'Assign';
     }
 
     console.log('Selected driver ID:', window.selectedDriverId);
@@ -1990,7 +2278,7 @@ function initializeDeliveryDialog() {
     if (assignButton) {
         assignButton.disabled = true;
         assignButton.classList.remove('btn-loading', 'disabled');
-        assignButton.innerText = 'ASSIGN';
+        assignButton.innerText = 'Assign';
         console.log('Reset delivery button state');
     }
 
@@ -2227,7 +2515,7 @@ function proceedWithModalOpen(modalId, isWaiting, caseId) {
     closeAllModals();
 
     // Store case ID if provided for single case operations
-    if (caseId > 0) {
+    if (caseId && caseId !== 0 && caseId !== '0') {
         window.caseIDFromOldDialog = caseId;
         console.log('Stored case ID from dialog:', caseId);
     }
@@ -2245,19 +2533,18 @@ function proceedWithModalOpen(modalId, isWaiting, caseId) {
         // Clear any existing animation classes
         const dialogContent = modal.querySelector('.sigma-workflow-dialog') || modal.querySelector('.modal-content');
         if (dialogContent) {
-            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated');
+            dialogContent.classList.remove('animate__fadeOut', 'animate__fadeIn', 'animate__animated', 'fade-out', 'fade-in');
         }
 
-        // Show the modal immediately with Animate.css
+        // Show the modal immediately with lightweight local animation.
         modal.classList.add('active');
         modal.style.display = 'flex';
         updateDialogScrollLock();
 
-        // Add Animate.css fade-in animation (fadeInDown from top) - instant, no delay
         if (dialogContent) {
-            // Use faster animation (300ms) with GPU acceleration
-            dialogContent.style.willChange = 'transform, opacity';
-            dialogContent.classList.add('animate__animated', 'animate__fadeIn', 'animate__faster');
+            requestAnimationFrame(() => {
+                dialogContent.classList.add('fade-in');
+            });
         }
 
         console.log('Successfully opened modal:', fullModalId);
@@ -2477,7 +2764,7 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
     closeAllModals();
 
     // Store case ID if provided for single case operations
-    if (caseId > 0) {
+    if (caseId && caseId !== 0 && caseId !== '0') {
         window.caseIDFromOldDialog = caseId;
         console.log('Stored case ID from dialog:', caseId);
     }
@@ -2504,9 +2791,9 @@ function openModal(modalId, isWaiting = false, caseId = 0) {
 
         // Add fade-in animation
         if (dialogContent) {
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 dialogContent.classList.add('fade-in');
-            }, 10);
+            });
         }
 
         console.log('Successfully opened modal:', fullModalId);
@@ -2712,12 +2999,38 @@ function updateActionXXXXXButtonState(deviceId, type) {
     }
 }
 
-function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
+function YSH_slidePanelKey(caseId, stageType) {
+    const baseKey = String(caseId);
+    if (!stageType) {
+        return baseKey;
+    }
+
+    return baseKey + '-' + String(stageType).replace(/[^\w-]/g, '');
+}
+
+function YSH_slidePanelElements(caseId, stageType) {
+    const keys = [];
+    if (stageType) {
+        keys.push(YSH_slidePanelKey(caseId, stageType));
+    }
+    keys.push(String(caseId));
+
+    for (const key of keys) {
+        const overlay = document.getElementById('YSH-slide-overlay-' + key);
+        const panel = document.getElementById('YSH-slide-panel-' + key);
+        if (overlay && panel) {
+            return { overlay, panel, key };
+        }
+    }
+
+    return { overlay: null, panel: null, key: keys[0] };
+}
+
+function YSH_openSlidePanel(caseId, stageType = '') {
     try {
         window.currentPanelStage = stageType;
 
-        const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-        const panel = document.getElementById('YSH-slide-panel-' + caseId);
+        const { overlay, panel } = YSH_slidePanelElements(caseId, stageType);
 
         if (!overlay || !panel) {
             console.warn('Slide panel missing for case', caseId, 'stage', stageType);
@@ -2753,9 +3066,8 @@ function YSH_openSlidePanel(caseId, stageType = '3dprinting') {
     }
 }
 
-function YSH_closeSlidePanel(caseId) {
-    const overlay = document.getElementById('YSH-slide-overlay-' + caseId);
-    const panel = document.getElementById('YSH-slide-panel-' + caseId);
+function YSH_closeSlidePanel(caseId, stageType = '') {
+    const { overlay, panel } = YSH_slidePanelElements(caseId, stageType);
 
     if (!overlay || !panel) {
         return;

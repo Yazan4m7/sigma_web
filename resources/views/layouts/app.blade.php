@@ -143,7 +143,7 @@
 
         .noteText {
             font-weight: 700 !important;
-            white-space: nowrap;
+            white-space: wrap;
             text-align: right;
             font-family: 'Cairo', sans-serif;
             display: block !important;
@@ -371,10 +371,9 @@
             opacity: 1;
             pointer-events: auto;
         }
-        /* Disable legacy overlays but keep the sidebar overlay available */
-        [class*="overlay"]:not(.sidebar-overlay):not(.YSH-slide-overlay),
+        /* Keep legacy overlays non-interactive without removing valid modal overlays from layout */
+        [class*="overlay"]:not(.sidebar-overlay):not(.YSH-slide-overlay):not(.sigma-dialog-overlay),
         [id*="overlay"]:not(#sidebarOverlay):not([id^="YSH-slide-overlay-"]) {
-            display: none !important;
             pointer-events: none !important;
         }
 
@@ -386,7 +385,15 @@
 <div class="sigma-loading-screen" id="sigma-loading-screen" aria-hidden="true">
     <div class="sigma-loading-screen__content" role="status" aria-live="polite" aria-label="Loading">
         <div class="sigma-processing-indicator">
-            <span class="sigma-processing-indicator__spinner" aria-hidden="true"></span>
+            <div class="sigma-pyramid-loader sigma-processing-indicator__loader" aria-hidden="true">
+                <div class="sigma-pyramid-loader__wrapper">
+                    <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--1"></span>
+                    <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--2"></span>
+                    <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--3"></span>
+                    <span class="sigma-pyramid-loader__side sigma-pyramid-loader__side--4"></span>
+                    <span class="sigma-pyramid-loader__shadow"></span>
+                </div>
+            </div>
             <div class="sigma-processing-indicator__text" data-text="Processing...">Processing...</div>
         </div>
     </div>
@@ -490,11 +497,10 @@
         const screen = document.getElementById('sigma-loading-screen');
 
         function showLoadingScreen() {
-            if (typeof window.showLoadingIndicator === 'function') {
-                window.showLoadingIndicator();
-                return;
-            }
             if (!screen) {
+                if (typeof window.showLoadingIndicator === 'function') {
+                    window.showLoadingIndicator();
+                }
                 return;
             }
             screen.classList.add('is-active');
@@ -503,20 +509,49 @@
         }
 
         function hideLoadingScreen() {
-            if (typeof window.hideLoadingIndicator === 'function') {
-                window.hideLoadingIndicator();
-                return;
+            if (screen) {
+                screen.classList.remove('is-active');
+                screen.setAttribute('aria-hidden', 'true');
             }
-            if (!screen) {
-                return;
+
+            const legacyIndicator = document.getElementById('loading-indicator');
+            if (legacyIndicator) {
+                legacyIndicator.style.display = 'none';
+                legacyIndicator.style.pointerEvents = 'none';
             }
-            screen.classList.remove('is-active');
-            screen.setAttribute('aria-hidden', 'true');
+
             document.body.classList.remove('sigma-loading-active');
         }
 
         window.showLoadingScreen = showLoadingScreen;
         window.hideLoadingScreen = hideLoadingScreen;
+
+        function clearTransientPageBlockers() {
+            hideLoadingScreen();
+
+            const hasOpenModal = document.querySelector('.modal.show, .sigma-workflow-modal.active, .YSH-slide-overlay.YSH-active, .ysh-case-slide-modal.YSH-active');
+            if (!hasOpenModal) {
+                document.querySelectorAll('.modal-backdrop').forEach(function(backdrop) {
+                    backdrop.remove();
+                });
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+                document.body.style.paddingRight = '';
+            }
+
+            const sidebarIsOpen = document.body.classList.contains('sidebar-expanded') || document.documentElement.classList.contains('nav-open');
+            if (!sidebarIsOpen) {
+                document.body.classList.remove('no-scroll');
+                document.documentElement.classList.remove('no-scroll');
+                const sidebarOverlay = document.getElementById('sidebarOverlay');
+                if (sidebarOverlay) {
+                    sidebarOverlay.classList.remove('active', 'sidebar-overlay--visible');
+                    sidebarOverlay.setAttribute('aria-hidden', 'true');
+                }
+            }
+        }
+
+        window.clearTransientPageBlockers = clearTransientPageBlockers;
 
         document.addEventListener('submit', function(event) {
             const form = event.target;
@@ -534,7 +569,10 @@
     })();
 
     window.addEventListener('pageshow', function() {
-        if (typeof window.hideLoadingScreen === 'function') {
+        if (typeof window.clearTransientPageBlockers === 'function') {
+            window.clearTransientPageBlockers();
+            window.setTimeout(window.clearTransientPageBlockers, 250);
+        } else if (typeof window.hideLoadingScreen === 'function') {
             window.hideLoadingScreen();
         }
     });
@@ -585,7 +623,7 @@
 </script>
 <script src="{{ asset('js/table-width-preferences.js') }}"></script>
 <script src="{{ asset('js/user-preferences.js') }}"></script>
- <script src="{{ asset('js/sidebar-collapse.js') }}"></script>
+ <script src="{{ asset('js/sidebar-collapse.js') }}?v={{ filemtime(public_path('js/sidebar-collapse.js')) }}"></script>
 <script src="{{ asset('js/sigma-sticky-layout.js') }}"></script>
 <script>
     // Robust Bootstrap Select (selectpicker) initialization

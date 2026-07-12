@@ -361,6 +361,16 @@ class sCase extends Model
                 return false;
         return true;
     }
+    public function allJobsAtStageAssignedTo($stage, $userId){
+        $stageJobs = $this->jobs->where('stage', $stage);
+        if ($stageJobs->isEmpty())
+            return false;
+
+        foreach ($stageJobs as $job)
+            if((int) $job->assignee !== (int) $userId)
+                return false;
+        return true;
+    }
     public function abutmentsReceived(){
        foreach($this->abutmentsDeliveries as $abt)
            if($abt->status != 3) return false;

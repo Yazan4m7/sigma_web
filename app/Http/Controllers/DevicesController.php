@@ -26,8 +26,14 @@ class DevicesController extends Controller
     {
         $this->validate($request, [
             'device_name'     => 'required|max:50',
+            'device_type'     => 'required|in:2,3,4,5',
 
         ]);
+        if ((int) $request->device_type === 2 && !$request->has('supports_dry_milling') && !$request->has('supports_wet_milling')) {
+            return back()
+                ->withInput()
+                ->withErrors(['supports_dry_milling' => 'Select at least one milling support option.']);
+        }
     //    dd($request);
 
         $device = new device();
@@ -35,6 +41,8 @@ class DevicesController extends Controller
         try {
             $device->name = $request->device_name;
             $device->type = $request->device_type;
+            $device->is_dry = (int) $request->device_type === 2 && $request->has('supports_dry_milling') ? 1 : 0;
+            $device->is_wet = (int) $request->device_type === 2 && $request->has('supports_wet_milling') ? 1 : 0;
             $device->sorting_order = 0;
             $device->save();
 
@@ -67,6 +75,17 @@ class DevicesController extends Controller
     public function update(Request $request)
     {
        // dd($request);
+        $this->validate($request, [
+            'device_name' => 'required|max:50',
+            'device_type' => 'required|in:2,3,4,5',
+        ]);
+
+        if ((int) $request->device_type === 2 && !$request->has('supports_dry_milling') && !$request->has('supports_wet_milling')) {
+            return back()
+                ->withInput()
+                ->withErrors(['supports_dry_milling' => 'Select at least one milling support option.']);
+        }
+
         try {
             $device = device::where('id', $request->device_id)->first();
             if (!$device) {
@@ -75,6 +94,8 @@ class DevicesController extends Controller
             }
             $device->name = $request->device_name;
             $device->type = $request->device_type;
+            $device->is_dry = (int) $request->device_type === 2 && $request->has('supports_dry_milling') ? 1 : 0;
+            $device->is_wet = (int) $request->device_type === 2 && $request->has('supports_wet_milling') ? 1 : 0;
             $device->save();
             if ($request->hasFile('device_image')) {
                 try {

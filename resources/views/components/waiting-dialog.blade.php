@@ -25,6 +25,31 @@
 @php
     $deviceCount = $devices->where('type', $stageId)->count();
 @endphp
+<style>
+    .waiting-dialog .sigma-machine-card--incompatible {
+        cursor: not-allowed !important;
+        opacity: 0.32;
+        filter: grayscale(1) saturate(0) !important;
+        background: #f1f1f1 !important;
+        color: #1f1f1f !important;
+        border-color: rgba(95, 95, 95, 0.75) !important;
+        box-shadow: none !important;
+        transform: none !important;
+    }
+
+    .waiting-dialog .sigma-machine-card--incompatible:hover {
+        background: #eeeeee !important;
+        color: #111 !important;
+        border-color: rgba(70, 70, 70, 0.85) !important;
+        filter: grayscale(1) saturate(0) !important;
+        transform: none !important;
+        box-shadow: none !important;
+    }
+
+    .waiting-dialog .sigma-machine-card--incompatible .sigma-machine-image {
+        filter: grayscale(1) saturate(0) contrast(0.9) !important;
+    }
+</style>
 <div class="sigma-workflow-modal waiting-dialog animate__animated animate__bounc machines-count-{{ $deviceCount }} sigma-modal--waiting-generic"
     id="{{ $type }}-waiting" tabindex="-1" role="dialog"
     onclick="handleWaitingDialogBackdropClick(event, '{{ $type }}')">
@@ -44,6 +69,8 @@
                 @foreach ($devices->where('type', $stageId) as $device)
                     <div class="sigma-machine-col">
                         <div class="sigma-machine-card {{ $type }}" role="button" tabindex="0"
+                            data-supports-dry="{{ !empty($device['is_dry']) ? 1 : 0 }}"
+                            data-supports-wet="{{ !empty($device['is_wet']) ? 1 : 0 }}"
                             onclick="selectMachine(this, '{{ $type }}', {{ $device['id'] }})"
                             onkeypress="if(event.key === 'Enter' || event.key === ' ') selectMachine(this, '{{ $type }}', {{ $device['id'] }});">
                             <div class="sigma-machine-image-container">
@@ -55,6 +82,9 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="no-compatible-milling-devices" id="no-compatible-milling-devices-{{ $type }}" style="display:none; width:100%; padding:16px; text-align:center; color:#6c757d;">
+                    No compatible milling machines available.
+                </div>
             </div>
             @php
                 $buildFieldName = [

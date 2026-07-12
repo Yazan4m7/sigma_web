@@ -9,7 +9,12 @@ class material extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['name', 'price', 'default_type_id', 'type_selection_stage'];
+    protected $fillable = ['name', 'price', 'default_type_id', 'type_selection_stage', 'is_dry', 'is_wet'];
+
+    protected $casts = [
+        'is_dry' => 'boolean',
+        'is_wet' => 'boolean',
+    ];
 
     public function jobtypes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

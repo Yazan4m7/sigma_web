@@ -358,7 +358,12 @@ $canAssignDelivery = (Auth()->user()->is_admin || ($permissions && $permissions-
                                     @if ($key == "milling")
                                         <button type="button" data-toggle="modal" class="btn btn-success" data-dismiss="modal" onclick="openModal('MillingDialog')"><i class="fa-solid fa-hexagon-nodes"></i> Nest</button>
                                     @else
-                                        <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> {{$key == "delivery" ? 'Take' : 'Assign To Me'}}</button>
+                                        @php
+                                            $assignStageLabel = $key == 'delivery'
+                                                ? 'Take'
+                                                : 'Assign To Me';
+                                        @endphp
+                                        <button type="submit" class="btn btn-success"><i class="fas fa-user-plus"></i> {{ $assignStageLabel }}</button>
                                     @endif
                                 </div>
                                 <div class="col-3 padding5px">

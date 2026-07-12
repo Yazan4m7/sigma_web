@@ -46,6 +46,184 @@ html,
 }
 
 /* Centralized modal action button styling */
+:root {
+    --sigma-dialog-overlay-color: rgba(0, 0, 0, 0.46);
+    --sigma-dialog-enter-duration: 240ms;
+    --sigma-dialog-enter-easing: cubic-bezier(0.22, 1, 0.36, 1);
+    --sigma-dialog-enter-scale: 0.94;
+}
+
+@keyframes sigmaDialogOverlayEnter {
+    from {
+        background-color: transparent;
+    }
+    to {
+        background-color: var(--sigma-dialog-overlay-color);
+    }
+}
+
+@keyframes sigmaDialogEnter {
+    from {
+        opacity: 0;
+        transform: scale(var(--sigma-dialog-enter-scale));
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Shared overlay and entrance motion for matching preview/action dialogs. */
+.sigma-dialog-overlay.sigma-modal--cases-index-actions,
+.sigma-dialog-overlay.sigma-modal--delivery-schedule-actions,
+.sigma-dialog-overlay.sigma-modal--case-preview-unified {
+    background-color: var(--sigma-dialog-overlay-color) !important;
+}
+
+.sigma-dialog-overlay.sigma-modal--cases-index-actions.show,
+.sigma-dialog-overlay.sigma-modal--delivery-schedule-actions.show,
+.sigma-dialog-overlay.sigma-modal--case-preview-unified.show {
+    display: block !important;
+    pointer-events: auto !important;
+    background-color: var(--sigma-dialog-overlay-color) !important;
+}
+
+.sigma-dialog-overlay.sigma-modal--cases-index-actions.show,
+.sigma-dialog-overlay.sigma-modal--delivery-schedule-actions.show,
+.sigma-dialog-overlay.sigma-modal--case-preview-unified.show,
+.sigma-dialog-overlay.swal2-container.swal2-backdrop-show {
+    animation: sigmaDialogOverlayEnter var(--sigma-dialog-enter-duration) var(--sigma-dialog-enter-easing) both;
+}
+
+.sigma-dialog-overlay.sigma-modal--cases-index-actions.show .modal-content,
+.sigma-dialog-overlay.sigma-modal--delivery-schedule-actions.show .modal-content,
+.sigma-dialog-overlay.sigma-modal--case-preview-unified.show .modal-content,
+.sigma-dialog-overlay .sigma-dialog-entrance.swal2-show {
+    transform-origin: center;
+    -webkit-animation: sigmaDialogEnter var(--sigma-dialog-enter-duration) var(--sigma-dialog-enter-easing) both !important;
+    animation: sigmaDialogEnter var(--sigma-dialog-enter-duration) var(--sigma-dialog-enter-easing) both !important;
+}
+
+.sigma-dialog-overlay.swal2-container.swal2-backdrop-show,
+.sigma-dialog-overlay.swal2-container.swal2-noanimation {
+    background: var(--sigma-dialog-overlay-color) !important;
+}
+
+body.sigma-dialog-scroll-unlocked {
+    overflow-y: scroll !important;
+    padding-right: 0 !important;
+}
+
+.sigma-close-button {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    color: #6c757d;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+.sigma-close-button:hover {
+    color: #dc3545;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    transform: scale(1.05);
+}
+
+/* Shared case-preview close slot used by Cases and Delivery Schedule. */
+.sigma-modal--cases-index-actions .case-preview-header,
+.sigma-modal--cases-index-action .case-preview-header,
+.sigma-modal--delivery-schedule-actions .case-preview-header,
+.sigma-modal--delivery-schedule-action .case-preview-header {
+    position: absolute !important;
+    top: 25px;
+    right: 25px;
+    z-index: 3;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+.sigma-modal--cases-index-actions .case-preview-header .sigma-close-button,
+.sigma-modal--cases-index-action .case-preview-header .sigma-close-button,
+.sigma-modal--delivery-schedule-actions .case-preview-header .sigma-close-button,
+.sigma-modal--delivery-schedule-action .case-preview-header .sigma-close-button {
+    position: static !important;
+}
+
+/* Operations Dashboard completion previews use the same centered shell. */
+.sigma-modal--case-preview-unified .modal-dialog {
+    width: min(500px, calc(100vw - 32px)) !important;
+    max-width: 500px !important;
+    max-height: calc(100vh - 32px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    pointer-events: none;
+}
+
+.sigma-modal--case-preview-unified .modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 32px) !important;
+    overflow: hidden;
+    border: none !important;
+    border-radius: 25px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+}
+
+.sigma-modal--case-preview-unified .modal-content > form {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    max-height: inherit;
+}
+
+.sigma-modal--case-preview-unified .modal-header {
+    flex: 0 0 auto;
+    background: #fff;
+}
+
+.sigma-modal--case-preview-unified .modal-header .sigma-close-button {
+    flex: 0 0 36px;
+    margin-left: auto;
+}
+
+.sigma-modal--case-preview-unified .modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sigma-modal--case-preview-unified .modal-footer {
+    flex: 0 0 auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sigma-dialog-overlay.sigma-modal--cases-index-actions.show,
+    .sigma-dialog-overlay.sigma-modal--cases-index-actions.show .modal-content,
+    .sigma-dialog-overlay.sigma-modal--delivery-schedule-actions.show,
+    .sigma-dialog-overlay.sigma-modal--delivery-schedule-actions.show .modal-content,
+    .sigma-dialog-overlay.sigma-modal--case-preview-unified.show,
+    .sigma-dialog-overlay.sigma-modal--case-preview-unified.show .modal-content,
+    .sigma-dialog-overlay.swal2-container.swal2-backdrop-show,
+    .sigma-dialog-overlay .sigma-dialog-entrance.swal2-show {
+        animation: none !important;
+    }
+}
+
 .sigma-action-btn {
     font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-weight: 600;
@@ -808,16 +986,66 @@ body.sigma-loading-active {
     gap: 12px;
 }
 
-.sigma-processing-indicator__spinner {
+.sigma-processing-indicator__loader {
     width: 24px;
     height: 24px;
     flex: 0 0 24px;
-    border-radius: 50%;
-    border: 3px solid rgba(55, 180, 74, 0.22);
-    border-top-color: #37b44a;
-    border-right-color: rgba(245, 255, 247, 0.85);
-    box-shadow: 0 0 14px rgba(55, 180, 74, 0.28);
-    animation: sigmaProcessingSpin 0.82s linear infinite;
+    display: block;
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(-20deg);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    animation: sigmaPyramidSpin 4s linear infinite;
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__side {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transform-origin: center top;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__side--1 {
+    transform: rotateZ(-30deg) rotateY(90deg);
+    background: conic-gradient(#37b44a, #8be59a, #f5fff7, #1f8f35);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__side--2 {
+    transform: rotateZ(30deg) rotateY(90deg);
+    background: conic-gradient(#1f8f35, #f5fff7, #8be59a, #37b44a);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__side--3 {
+    transform: rotateX(30deg);
+    background: conic-gradient(#1f8f35, #f5fff7, #8be59a, #37b44a);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__side--4 {
+    transform: rotateX(-30deg);
+    background: conic-gradient(#37b44a, #8be59a, #f5fff7, #1f8f35);
+}
+
+.sigma-processing-indicator .sigma-pyramid-loader__shadow {
+    width: 12px;
+    height: 12px;
+    background: rgba(55, 180, 74, 0.72);
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    transform: rotateX(90deg) translateZ(-8px);
+    filter: blur(4px);
 }
 
 .sigma-loading-screen__content .sigma-processing-indicator__text {
@@ -852,7 +1080,7 @@ body.sigma-loading-active {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: sigmaProcessingShimmer 1.15s linear infinite;
+    animation: sigmaProcessingShimmer 2.3s linear infinite;
     pointer-events: none;
 }
 
@@ -861,9 +1089,8 @@ body.sigma-loading-active {
     100% { background-position: -150% 50%; }
 }
 
-@keyframes sigmaProcessingSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes sigmaPyramidSpin {
+    100% { transform: rotateY(360deg); }
 }
 
 /* Prevent skeleton squares inside workflow modal action buttons */
@@ -889,7 +1116,7 @@ body.sigma-loading-active {
         transition: none;
     }
 
-    .sigma-processing-indicator__spinner,
+    .sigma-processing-indicator .sigma-pyramid-loader__wrapper,
     .sigma-loading-screen__content .sigma-processing-indicator__text::after {
         animation: none;
     }
@@ -9018,7 +9245,7 @@ table:not(.sunriseTable):not(.sigma-col-total) thead th {
 .sigma-modal--cases-index-actions .modal-body {
     position: relative;
     flex: 1 1 auto;
-    padding: 21px 20px 1px 20px;
+    padding: 9px 20px 1px 20px;
 }
 .sigma-modal--cases-rejected-actions .modal-body {
     position: relative;
@@ -10500,7 +10727,7 @@ table.sunriseTable.sigma-sticky-table-header.sigma-no-header-radius thead th:las
         display: flex !important;
         align-items: center !important;
         justify-content: space-around !important;
-        padding: 19px 10px 3px 10px !important;
+        padding: 1px 10px 3px 10px !important;
     }
 .sigma-modal--delivery-receive-payment .modal-footer:not(.teethSelection) {
         display: flex !important;

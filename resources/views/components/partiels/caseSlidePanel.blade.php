@@ -1,4 +1,4 @@
-@props(['case', 'stageType' => '3dprinting'])
+@props(['case', 'stageType' => '3dprinting', 'slideKey' => null, 'jobs' => null])
 
 @php
     $stageNumber = match($stageType) {
@@ -17,21 +17,22 @@
         'delivery' => 'Delivery',
         default => 'Workflow'
     };
-    $jobsAtStage = $case->jobs->where('stage', $stageNumber);
+    $slidePanelKey = $slideKey ?: ($case->id . '-' . preg_replace('/[^A-Za-z0-9_-]/', '', $stageType));
+    $jobsAtStage = $jobs !== null ? collect($jobs) : $case->jobs->where('stage', $stageNumber);
     $permissions = safe_permissions();
     $canEditCase = (Auth()->user()->is_admin || ($permissions && $permissions->contains('permission_id', 102)));
 @endphp
 
 <div class="modal fade waiting-dialog case-action-dialog sigma-modal--dashboard-waiting-actions ysh-case-slide-modal"
-     tabindex="-1" role="dialog" id="YSH-slide-overlay-{{$case->id}}"
-     onclick="if (event.target === this) YSH_closeSlidePanel({{$case->id}})">
-    <div class="modal-dialog modal-dialog-centered" role="document" id="YSH-slide-panel-{{$case->id}}" onclick="event.stopPropagation()">
+     tabindex="-1" role="dialog" id="YSH-slide-overlay-{{ $slidePanelKey }}"
+     onclick="if (event.target === this) YSH_closeSlidePanel(@js($slidePanelKey))">
+    <div class="modal-dialog" role="document" id="YSH-slide-panel-{{ $slidePanelKey }}" onclick="event.stopPropagation()">
         <div class="modal-content">
             <div class="modal-body">
                 <div class="modal-top-actions">
                     <span class="ysh-modal-title">CASE COMPLETION</span>
                     <button type="button" class="close modal-close" aria-label="Close"
-                            onclick="event.stopPropagation(); YSH_closeSlidePanel({{$case->id}})">
+                            onclick="event.stopPropagation(); YSH_closeSlidePanel(@js($slidePanelKey))">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -128,7 +129,7 @@
                     <!-- Row 2: Cancel (100%) -->
                     <div class="col-12 padding5px">
                         <button type="button" class="btn btn-secondary"
-                                onclick="event.stopPropagation(); YSH_closeSlidePanel({{$case->id}})" style="width:100%">Cancel</button>
+                                onclick="event.stopPropagation(); YSH_closeSlidePanel(@js($slidePanelKey))" style="width:100%">Cancel</button>
                     </div>
                 </div>
             </div>
@@ -142,8 +143,36 @@
         <script>
             // Fallback/override for YSH slide panel functions
             (function() {
-                window.YSH_closeSlidePanel = function(caseId) {
-                    var overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+                function yshSlideKey(caseId, stageType) {
+                    var baseKey = String(caseId);
+                    if (!stageType) {
+                        return baseKey;
+                    }
+
+                    return baseKey + '-' + String(stageType).replace(/[^\w-]/g, '');
+                }
+
+                function yshSlideElements(caseId, stageType) {
+                    var keys = [];
+                    if (stageType) {
+                        keys.push(yshSlideKey(caseId, stageType));
+                    }
+                    keys.push(String(caseId));
+
+                    for (var i = 0; i < keys.length; i++) {
+                        var overlay = document.getElementById('YSH-slide-overlay-' + keys[i]);
+                        var panel = document.getElementById('YSH-slide-panel-' + keys[i]);
+                        if (overlay && panel) {
+                            return { overlay: overlay, panel: panel, key: keys[i] };
+                        }
+                    }
+
+                    return { overlay: null, panel: null, key: keys[0] };
+                }
+
+                window.YSH_closeSlidePanel = function(caseId, stageType) {
+                    var elements = yshSlideElements(caseId, stageType);
+                    var overlay = elements.overlay;
                     if (!overlay) {
                         console.warn('Cannot close: overlay not found for case', caseId);
                         return;
@@ -161,7 +190,8 @@
                 };
 
                 window.YSH_openSlidePanel = function(caseId, stageType) {
-                    var overlay = document.getElementById('YSH-slide-overlay-' + caseId);
+                    var elements = yshSlideElements(caseId, stageType);
+                    var overlay = elements.overlay;
                     if (!overlay) {
                         console.warn('Slide panel missing for case', caseId);
                         return;
@@ -218,7 +248,9 @@
         }
         .ysh-case-slide-modal.YSH-active {
             opacity: 1;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            -webkit-backdrop-filter: blur(2px);
+            backdrop-filter: blur(2px);
             pointer-events: auto;
         }
         .ysh-case-slide-modal.YSH-closing {
@@ -238,9 +270,10 @@
             width: 90vw !important;
             height: auto !important;
             max-height: 85vh !important;
+            min-height: 0 !important;
             transition: right 0.3s ease !important;
             z-index: 1051 !important;
-            pointer-events: auto !important;
+            pointer-events: none !important;
         }
         .ysh-case-slide-modal.YSH-active .modal-dialog {
             right: 0 !important;
@@ -257,6 +290,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            pointer-events: auto;
         }
 
         .ysh-case-slide-modal .modal-top-actions {
@@ -326,11 +360,12 @@
             flex: 1;
             align-items: center;
             display: inline-flex;
-            height: 40px !important;
+            font-size: 14px;
+            height: 34px !important;
             justify-content: center;
-            min-height: 40px !important;
-            padding-top: 7px !important;
-            padding-bottom: 7px !important;
+            line-height: 1.2;
+            min-height: 34px !important;
+            padding: 6px 10px !important;
             width: 100%;
         }
         .ysh-case-slide-modal .modal-footer {

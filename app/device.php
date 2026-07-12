@@ -23,7 +23,12 @@ class Device extends Model
     /**
      * Attributes that are mass assignable
      */
-    protected $fillable = ['name', 'type', 'sorting_order', 'img', 'hidden'];
+    protected $fillable = ['name', 'type', 'sorting_order', 'img', 'hidden', 'is_dry', 'is_wet'];
+
+    protected $casts = [
+        'is_dry' => 'boolean',
+        'is_wet' => 'boolean',
+    ];
 
     /**
      * Cache build IDs per request to avoid repeated queries

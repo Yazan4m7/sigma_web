@@ -94,6 +94,11 @@
     $sigmaToastMessages = collect($sigmaToastMessages)
         ->unique(fn ($toast) => $toast['type'] . '|' . $toast['message'])
         ->values()
+        ->map(function ($toast, $index) {
+            $toast['onceKey'] = hash('sha256', (string) \Illuminate\Support\Str::uuid() . '|' . $index . '|' . $toast['type'] . '|' . $toast['message']);
+
+            return $toast;
+        })
         ->all();
 @endphp
 
@@ -219,6 +224,7 @@
     <script>
         (function () {
             var initialToasts = @json($sigmaToastMessages);
+            var toastStoragePrefix = 'sigma-toast-shown:';
 
             function removeToast(item) {
                 if (!item) {
@@ -240,8 +246,72 @@
                 }, 180);
             }
 
+            function getToastOnceKeys(toast) {
+                var keys = [];
+
+                if (toast && toast.onceKey) {
+                    keys.push(String(toast.onceKey));
+                }
+
+                if (toast && Array.isArray(toast.onceKeys)) {
+                    toast.onceKeys.forEach(function (key) {
+                        if (key) {
+                            keys.push(String(key));
+                        }
+                    });
+                }
+
+                return keys;
+            }
+
+            function getToastStorage() {
+                try {
+                    return window.sessionStorage;
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            function toastWasShown(toast) {
+                var keys = getToastOnceKeys(toast);
+                var storage = getToastStorage();
+
+                if (!keys.length || !storage) {
+                    return false;
+                }
+
+                try {
+                    return keys.some(function (key) {
+                        return storage.getItem(toastStoragePrefix + key) === '1';
+                    });
+                } catch (error) {
+                    return false;
+                }
+            }
+
+            function rememberToast(toast) {
+                var keys = getToastOnceKeys(toast);
+                var storage = getToastStorage();
+
+                if (!keys.length || !storage) {
+                    return;
+                }
+
+                try {
+                    keys.forEach(function (key) {
+                        storage.setItem(toastStoragePrefix + key, '1');
+                    });
+                } catch (error) {
+                    //
+                }
+            }
+
             function renderToast(toast) {
                 if (!toast || !toast.message) {
+                    return;
+                }
+
+                if (toastWasShown(toast)) {
                     return;
                 }
 
@@ -289,6 +359,8 @@
                         removeToast(item);
                     }, duration);
                 }
+
+                rememberToast(toast);
             }
 
             function collapseToastBatch(toasts) {
@@ -302,7 +374,10 @@
 
                 return [{
                     type: normalized.some(function (toast) { return toast.type === 'error'; }) ? 'error' : normalized[0].type,
-                    message: normalized.map(function (toast) { return toast.message; }).join('\n')
+                    message: normalized.map(function (toast) { return toast.message; }).join('\n'),
+                    onceKeys: normalized.reduce(function (keys, toast) {
+                        return keys.concat(getToastOnceKeys(toast));
+                    }, [])
                 }];
             }
 

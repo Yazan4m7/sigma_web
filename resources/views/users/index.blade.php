@@ -27,6 +27,7 @@
                             <tr>
                                 <th class="sigma-cell-center">ID</th>
                                 <th>Name</th>
+                                <th class="sigma-cell-center">Initials</th>
                                 <th class="sigma-cell-center">Phone</th>
 
                                 </tr>
@@ -36,6 +37,7 @@
                                 <tr id="{{$user->id}}"  class="odd clickable"  data-toggle="modal" data-target="#actionsDialog{{$user->id}}">
                                     <td class="sigma-cell-center"><span class="tabledit-span tabledit-identifier">{{$user->id}}</span><input class="tabledit-input tabledit-identifier" type="hidden" name="id" value="1" disabled=""></td>
                                     <td class="tabledit-view-mode"><span class="tabledit-span">{{$user->first_name . ' ' . $user->last_name}}</span><input class="tabledit-input form-control input-sm" type="text" name="col1" value="John" style="display: none;" disabled=""></td>
+                                    <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$user->name_initials ?: '-'}}</span></td>
                                     <td class="tabledit-view-mode sigma-cell-center"><span class="tabledit-span">{{$user->phone}}</span><input class="tabledit-input form-control input-sm" type="text" name="col1" value="Doe" style="display: none;" disabled=""></td>
 
                                </tr>

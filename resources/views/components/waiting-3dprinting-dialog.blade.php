@@ -88,6 +88,7 @@
     <input type="hidden" name="deviceId" id="device-id-3dprinting" value="">
     <input type="hidden" name="WaitingPopupCheckBoxes3dprinting[]" id="case-ids-3dprinting" value="">
     <input type="hidden" name="buildName" id="build-name-3dprinting" value="">
+    <input type="hidden" name="materialTypeId" id="material-type-id-3dprinting" value="">
 </form>
 
 

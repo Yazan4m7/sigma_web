@@ -21,9 +21,38 @@
         height: 50px;
         margin-right: 1rem;
     }
+    .milling-support-section {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 12px 14px;
+        margin-top: 4px;
+        background: #f8f9fa;
+    }
+    .milling-support-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .milling-support-options label {
+        margin: 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 500;
+    }
+    @media (max-width: 767.98px) {
+        .milling-support-options {
+            flex-direction: column;
+            gap: 8px;
+        }
+    }
 </style>
 @endpush
 @section('content')
+    @php
+        $oldDeviceType = old('device_type', '3');
+        $isFirstDeviceFormLoad = old('device_type') === null;
+    @endphp
     <form method="POST" action="{{route('new-device')}}" class="card" enctype="multipart/form-data">
         @csrf
         <div class="kt-portlet__head">
@@ -48,17 +77,36 @@
                 <div class="col-md-12 col-xs-12"><label>Device Type:</label></div>
                 <div class="col-md-12 col-xs-12">
                     <select class="form-control selectpicker  border: 1px solid grey;" id="device_type" name="device_type" style="  border: 1px solid grey;">
-                        <option value="3">3D Printer</option>
-                        <option value="2">Milling Machine</option>
-                        <option value="4">Sintering Furnace</option>
-                        <option value="5">Pressing Furnace</option>
+                        <option value="3" {{ $oldDeviceType == '3' ? 'selected' : '' }}>3D Printer</option>
+                        <option value="2" {{ $oldDeviceType == '2' ? 'selected' : '' }}>Milling Machine</option>
+                        <option value="4" {{ $oldDeviceType == '4' ? 'selected' : '' }}>Sintering Furnace</option>
+                        <option value="5" {{ $oldDeviceType == '5' ? 'selected' : '' }}>Pressing Furnace</option>
                     </select>
                 </div>
 
             </div>
 
 
-
+            <div class="col-md-3 col-xs-6 col-l-3 col-xl-3" id="milling-support-section" style="{{ $oldDeviceType == '2' ? '' : 'display: none;' }}">
+                <div class="col-md-12 col-xs-12"><label>Supports:</label></div>
+                <div class="col-md-12 col-xs-12">
+                    <div class="milling-support-section">
+                        <div class="milling-support-options">
+                            <label>
+                                <input type="checkbox" name="supports_dry_milling" value="1" {{ $isFirstDeviceFormLoad || old('supports_dry_milling') ? 'checked' : '' }}>
+                                <span>Dry Milling</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" name="supports_wet_milling" value="1" {{ old('supports_wet_milling') ? 'checked' : '' }}>
+                                <span>Wet Milling</span>
+                            </label>
+                        </div>
+                        @if ($errors->has('supports_dry_milling'))
+                            <small class="text-danger d-block mt-2">{{ $errors->first('supports_dry_milling') }}</small>
+                        @endif
+                    </div>
+                </div>
+            </div>
 
             <div class="col-md-3  col-xs-6 col-l-3  col-xl-3">
                 <div class="col-md-12 col-xs-12" style="padding-bottom: 0"><label>Device Image:</label></div>
@@ -139,9 +187,11 @@
 
             deviceTypeDropdown.on('change', function(){
                 fetchDevices($(this).val());
+                syncMillingSupport();
             });
 
             fetchDevices(deviceTypeDropdown.val());
+            syncMillingSupport();
 
             $('#save-order').on('click', function(){
                 const deviceIds = sortable.toArray();
@@ -161,6 +211,11 @@
                     }
                 });
             });
+
+            function syncMillingSupport() {
+                const isMilling = deviceTypeDropdown.val() === '2';
+                $('#milling-support-section').toggle(isMilling);
+            }
         });
 
         $("#image-picker").change(function (event) {

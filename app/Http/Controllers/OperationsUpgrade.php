@@ -9,6 +9,7 @@ use App\job;
 use App\sCase;
 use App\User;
 use App\Services\AuditLogger;
+use App\Modules\DeviceStageBatches\DeviceStageBatchService;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -191,58 +192,72 @@ class OperationsUpgrade extends Controller
                 return $this->errorResponse("No device selected for {$stageConfig['name']}");
             }
 
-            // Get selected cases
-            $casesIds = $this->parseCheckboxInput($request->input("WaitingPopupCheckBoxes{$type}"));
+            // Get selected cases or virtual device-stage batches.
+            $selectedRows = $this->parseCheckboxInput($request->input("WaitingPopupCheckBoxes{$type}"));
 
-            if (empty($casesIds)) {
+            if (empty($selectedRows)) {
                 return $this->errorResponse('No cases selected');
+            }
+
+            $deviceStageBatches = new DeviceStageBatchService();
+            $selection = $deviceStageBatches->parseSelections($selectedRows, $stage);
+            $casesIds = $selection['case_ids'];
+            $batchSelections = $selection['batches'];
+
+            if ($type === 'milling') {
+                $selectedMaterialIds = $this->millingMaterialIdsForSelections($casesIds, $batchSelections, $stage);
+
+                if (count($selectedMaterialIds) > 1) {
+                    return $this->errorResponse('Milling assignments can only include cases with the same material.');
+                }
             }
 
             // Get device information
             $device = device::find($deviceId);
             $deviceName = $device ? $device->name : 'unknown device';
 
-            // Get all jobs for the selected cases at the appropriate stage
-            $jobs = job::whereIn('case_id', $casesIds)->where('stage', $stage)->get();
-
-            if ($jobs->isEmpty()) {
-                return $this->errorResponse('No jobs found for selected cases');
-            }
-
-            // Special handling for 3D printing builds
             $buildName = $request->input('buildName');
             $materialTypeId = $request->input('materialTypeId');
+            $totalJobCount = 0;
 
-            // Create a new build
-            $build = new Build();
+            foreach ($batchSelections as $batch) {
+                $jobs = $deviceStageBatches->resolveJobs($batch['case_id'], $stage, $batch['material_id'], 'waiting');
 
-            $build->set_at = now();
-            $build->name = "";
-            $build->device_used = $deviceId;
-            $build->save();
-            if ($type == 'sintering') {
-                $build->name = 'Sintering-' . $build->id;
-                $build->set_at = now();
-                $build->started_at = now();
-            } else {
-                $build->name = $buildName;
+                if ($jobs->isEmpty()) {
+                    continue;
+                }
+
+                $totalJobCount += $this->createBuildAndSetupJobs(
+                    $jobs,
+                    (int) $deviceId,
+                    $stage,
+                    $type,
+                    $buildName,
+                    $materialTypeId,
+                    $deviceName
+                );
             }
-            $build->save();
 
-            // Set up jobs for the build
-            Log::info("Setting up jobs for build {$build->id} stage : {$stage} type: {$type}");
-            $jobCount = $this->setupJobs($jobs, $deviceId, $stage, $type, [
-                'milling_build_id' => $type == "milling" ? $build->id : null,
-                'printing_build_id' => $type == "3dprinting" ? $build->id : null,
-                'sintering_build_id' => $type == "sintering" ? $build->id : null,
-                'pressing_build_id' => $type == "pressing" ? $build->id : null,
-                'build_id' => $build->id,
-                'build_name' => $build->name,
-                'device_name' => $deviceName,
-                'notes_suffix' => ", Build: {$buildName}",
-                'is_active' => $type == "sintering" ? 1 : 0,
-                'type_id' => $materialTypeId
-            ]);
+            if (!empty($casesIds)) {
+                // Existing non-split behavior: selected normal rows share one build.
+                $jobs = job::whereIn('case_id', $casesIds)->where('stage', $stage)->get();
+
+                if ($jobs->isNotEmpty()) {
+                    $totalJobCount += $this->createBuildAndSetupJobs(
+                        $jobs,
+                        (int) $deviceId,
+                        $stage,
+                        $type,
+                        $buildName,
+                        $materialTypeId,
+                        $deviceName
+                    );
+                }
+            }
+
+            if ($totalJobCount === 0) {
+                return $this->errorResponse('No jobs found for selected cases');
+            }
 
             // For sintering, start the build immediately
 //                if ($type == "sintering") {
@@ -254,7 +269,7 @@ class OperationsUpgrade extends Controller
             //  $jobCount = $this->setupJobs($jobs, $deviceId, $stage, $type);
 
             return $this->successResponse(
-                "{$jobCount} jobs have been {$stageConfig['set_action']} on {$deviceName}"
+                "{$totalJobCount} jobs have been {$stageConfig['set_action']} on {$deviceName}"
             );
 
         }, $this->getRedirectRoute($request));
@@ -890,6 +905,40 @@ class OperationsUpgrade extends Controller
 //        }
     }
 
+    private function createBuildAndSetupJobs($jobs, int $deviceId, int $stage, string $type, ?string $buildName, $materialTypeId, string $deviceName): int
+    {
+        $build = new Build();
+        $build->set_at = now();
+        $build->name = '';
+        $build->device_used = $deviceId;
+        $build->save();
+
+        if ($type == 'sintering') {
+            $build->name = 'Sintering-' . $build->id;
+            $build->set_at = now();
+            $build->started_at = now();
+        } else {
+            $build->name = $buildName;
+        }
+
+        $build->save();
+
+        Log::info("Setting up jobs for build {$build->id} stage : {$stage} type: {$type}");
+
+        return $this->setupJobs($jobs, $deviceId, $stage, $type, [
+            'milling_build_id' => $type == "milling" ? $build->id : null,
+            'printing_build_id' => $type == "3dprinting" ? $build->id : null,
+            'sintering_build_id' => $type == "sintering" ? $build->id : null,
+            'pressing_build_id' => $type == "pressing" ? $build->id : null,
+            'build_id' => $build->id,
+            'build_name' => $build->name,
+            'device_name' => $deviceName,
+            'notes_suffix' => ", Build: {$build->name}",
+            'is_active' => $type == "sintering" ? 1 : 0,
+            'type_id' => $materialTypeId
+        ]);
+    }
+
     /**
      * Set up jobs for a device
      *
@@ -1188,6 +1237,34 @@ class OperationsUpgrade extends Controller
 
         // Remove empty values
         return array_filter($ids);
+    }
+
+    private function millingMaterialIdsForSelections(array $caseIds, array $batchSelections, int $stage): array
+    {
+        $materialIds = [];
+
+        foreach ($batchSelections as $batch) {
+            if (!empty($batch['material_id'])) {
+                $materialIds[] = (int) $batch['material_id'];
+            }
+        }
+
+        if (!empty($caseIds)) {
+            $caseMaterialIds = job::query()
+                ->whereIn('case_id', $caseIds)
+                ->where('stage', $stage)
+                ->whereNotNull('material_id')
+                ->pluck('material_id')
+                ->map(function ($materialId) {
+                    return (int) $materialId;
+                })
+                ->filter()
+                ->all();
+
+            $materialIds = array_merge($materialIds, $caseMaterialIds);
+        }
+
+        return array_values(array_unique($materialIds));
     }
 
     /**

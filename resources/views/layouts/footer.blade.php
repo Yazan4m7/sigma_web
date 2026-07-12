@@ -573,22 +573,31 @@ $(document).ready(function() {
     <script>
         // Select the navbar-toggle div and overlay (support both .navbar-toggle and .navbar-toggler)
         const navbarToggle = document.querySelector('.navbar-toggle') || document.querySelector('.navbar-toggler');
-        const overlay = document.getElementById('overlay');
+        const overlay = document.getElementById('sidebarOverlay') || document.getElementById('overlay');
+        const appWrapper = document.querySelector('.wrapper:not(.wrapper-full-page)');
+        const managedSidebarToggle = document.getElementById('sidebar-hamburger');
 
-        try {
+        if (!managedSidebarToggle) {
+            try {
             // Function to close sidebar
             function closeSidebar() {
                 document.documentElement.classList.remove('nav-open');
+                document.body.classList.remove('sidebar-expanded', 'sidebar-open');
+                document.body.classList.remove('no-scroll');
+                document.documentElement.classList.remove('no-scroll');
+                if (appWrapper) appWrapper.classList.remove('sidebar-expanded', 'sidebar-open');
                 if (navbarToggle) navbarToggle.classList.remove('toggled');
-                if (overlay) overlay.classList.remove('active');
+                if (overlay) overlay.classList.remove('active', 'sidebar-overlay--visible');
                 console.log("closing sidebar");
             }
 
             // Function to open sidebar
             function openSidebar() {
                 document.documentElement.classList.add('nav-open');
+                document.body.classList.add('sidebar-expanded', 'sidebar-open');
+                if (appWrapper) appWrapper.classList.add('sidebar-expanded', 'sidebar-open');
                 if (navbarToggle) navbarToggle.classList.add('toggled');
-                if (overlay) overlay.classList.add('active');
+                if (overlay) overlay.classList.add('active', 'sidebar-overlay--visible');
                 console.log("opening sidebar");
             }
 
@@ -628,8 +637,9 @@ $(document).ready(function() {
                 }
             });
 
-        } catch (e) {
-            console.log(e);
+            } catch (e) {
+                console.log(e);
+            }
         }
     </script>
 

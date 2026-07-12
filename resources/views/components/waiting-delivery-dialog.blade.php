@@ -1,13 +1,146 @@
 @props(['title', 'btnText', 'type', 'drivers', 'stageId'])
 
-<div class="sigma-workflow-modal waiting-dialog sigma-modal--waiting-delivery" id="DeliveryDialog" tabindex="-1" role="dialog">
+<style>
+    #DeliveryDialog .sigma-workflow-dialog {
+        width: calc(100% - 32px) !important;
+        max-width: 720px;
+        transform-origin: center;
+    }
+
+    #DeliveryDialog {
+        align-items: center;
+        justify-content: center;
+    }
+
+    #DeliveryDialog .sigma-workflow-dialog.fade-in {
+        animation: deliveryDialogFadeIn 180ms ease-out both !important;
+    }
+
+    #DeliveryDialog .sigma-workflow-dialog.fade-out {
+        animation: deliveryDialogFadeOut 140ms ease-in both !important;
+    }
+
+    @keyframes deliveryDialogFadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    @keyframes deliveryDialogFadeOut {
+        from {
+            opacity: 1;
+            transform: scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: scale(0.98);
+        }
+    }
+
+    #DeliveryDialog .sigma-workflow-header {
+        background: #fff;
+        background-image: none;
+        padding: 18px 24px;
+    }
+
+    #DeliveryDialog .sigma-workflow-title,
+    #DeliveryDialog .sigma-button,
+    #DeliveryDialog .sigma-driver-name {
+        font-family: 'Inter', sans-serif;
+    }
+
+    #DeliveryDialog .sigma-workflow-title {
+        font-size: 18px;
+        font-weight: 600;
+        text-shadow: none;
+    }
+
+    #DeliveryDialog .sigma-workflow-body {
+        padding: 32px 24px;
+    }
+
+    #DeliveryDialog .sigma-drivers-grid {
+        gap: 24px;
+        padding: 0;
+    }
+
+    #DeliveryDialog .sigma-driver-card {
+        width: 160px;
+        padding: 8px;
+    }
+
+    #DeliveryDialog .sigma-driver-image-container {
+        width: 132px;
+        height: 132px;
+        overflow: hidden;
+        border-radius: 50%;
+        background: #f1f3f5;
+    }
+
+    #DeliveryDialog .sigma-driver-image {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    #DeliveryDialog .sigma-driver-name {
+        margin-top: 8px;
+        font-size: 14px;
+    }
+
+    #DeliveryDialog .sigma-workflow-footer {
+        justify-content: flex-end;
+        padding: 14px 20px;
+    }
+
+    #DeliveryDialog .sigma-button {
+        width: auto !important;
+        min-width: 100px;
+        min-height: 36px;
+        padding: 7px 12px !important;
+        color: #fff;
+        font-size: 14px !important;
+        font-weight: 400;
+        line-height: 20px;
+    }
+
+    @media (max-width: 480px) {
+        #DeliveryDialog .sigma-workflow-header {
+            padding: 15px 20px !important;
+        }
+
+        #DeliveryDialog .sigma-workflow-body {
+            padding: 24px 12px !important;
+        }
+
+        #DeliveryDialog .sigma-drivers-grid {
+            gap: 12px;
+        }
+
+        #DeliveryDialog .sigma-driver-card {
+            width: 132px;
+        }
+
+        #DeliveryDialog .sigma-driver-image-container {
+            width: 112px;
+            height: 112px;
+        }
+    }
+</style>
+
+<div class="sigma-workflow-modal waiting-dialog sigma-modal--waiting-delivery" id="DeliveryDialog" tabindex="-1" role="dialog"
+     onclick="dismissDeliveryDialog(event)">
     <div class="sigma-workflow-dialog">
         <!-- Header with close button -->
         <div class="sigma-workflow-header">
             <span class="sigma-workflow-title">{{ $title }}</span>
-            <button class="sigma-close-button" onclick="closeModal({id: 'DeliveryDialog', isWaiting:false})">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <x-sigma-close-button onclick="closeModal({id: 'DeliveryDialog', isWaiting:false})" />
         </div>
 
         <!-- Driver selection grid -->
@@ -93,7 +226,7 @@ function closeModal(options) {
         if (assignButton) {
             assignButton.disabled = true;
             assignButton.classList.remove('btn-loading', 'disabled');
-            assignButton.innerText = 'ASSIGN';
+            assignButton.innerText = 'Assign';
         }
 
         // Clear selected driver
@@ -122,5 +255,11 @@ function closeModal(options) {
             window.updateDialogScrollLock();
         }
     }, 300);
+}
+
+function dismissDeliveryDialog(event) {
+    if (event.target === event.currentTarget) {
+        closeModal({id: 'DeliveryDialog', isWaiting: false});
+    }
 }
 </script>

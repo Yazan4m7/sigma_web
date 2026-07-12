@@ -12,7 +12,7 @@
         }
 
         .delivery-page-wrapper {
-            background: var(--surface-bg);
+            background: transparent;
             min-height: 100vh;
             padding: 1rem;
         }
@@ -428,7 +428,7 @@
             /* Mobile card adjustments */
             .delivery-page-wrapper {
                 padding:  8px 6px !important;
-                background: var(--surface-bg) !important;
+                background: transparent !important;
             }
 
             .delivery-section-card {
@@ -838,7 +838,7 @@
             will-change: auto !important;
             overflow-x: hidden !important;
             overflow-y: hidden !important;
-            background: rgba(15, 23, 42, 0.28);
+            background: var(--sigma-dialog-overlay-color);
             z-index: 9998 !important;
         }
 
@@ -863,8 +863,6 @@
 
         .sigma-modal--delivery-schedule-actions .modal-content {
             position: relative !important;
-            transform: none !important;
-            -webkit-transform: none !important;
             will-change: auto !important;
             pointer-events: auto !important;
             display: flex !important;
@@ -874,48 +872,6 @@
             border: none !important;
             border-radius: 25px !important;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .sigma-modal--delivery-schedule-actions .modal-header {
-            display: flex !important;
-            align-items: center;
-            border-bottom: 1px solid #dee2e6 !important;
-            padding: 0.75rem 1rem;
-        }
-
-        .sigma-modal--delivery-schedule-actions .modal-title {
-            color: #2d5f6d;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 0;
-        }
-
-        .sigma-modal--delivery-schedule-actions .modal-header button.close {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.25rem;
-            height: 2.25rem;
-            margin: -0.2rem -0.25rem -0.2rem auto;
-            padding: 0;
-            border: 1px solid #d1d5db;
-            border-radius: 50%;
-            background: #f3f4f6;
-            color: #6b7280;
-            opacity: 1;
-            font-size: 1.75rem;
-            font-weight: 400;
-            line-height: 1;
-            text-shadow: none;
-            transform: translate(0.25rem, -0.25rem);
-        }
-
-        .sigma-modal--delivery-schedule-actions .modal-header button.close:hover,
-        .sigma-modal--delivery-schedule-actions .modal-header button.close:focus {
-            opacity: 1;
-            border-color: #cbd5e1;
-            background: #e5e7eb;
-            color: #4b5563;
         }
 
         .sigma-modal--delivery-schedule-actions .modal-body {
@@ -1220,12 +1176,6 @@
             background: transparent;
         }
 
-        .sigma-modal--delivery-schedule-actions.fade .modal-content {
-            opacity: 0;
-            transform: translateY(10px) scale(0.98) !important;
-            transition: opacity 150ms ease, transform 150ms ease;
-        }
-
         .sigma-modal--delivery-schedule-edit.fade .modal-dialog,
         .sigma-modal--delivery-schedule-edit.show .modal-dialog {
             transform: none !important;
@@ -1237,10 +1187,9 @@
             transition: opacity 150ms ease, transform 150ms ease;
         }
 
-        .sigma-modal--delivery-schedule-actions.show .modal-content,
         .sigma-modal--delivery-schedule-edit.show .modal-content {
             opacity: 1;
-            transform: translateY(0) scale(1) !important;
+            transform: scale(1) !important;
         }
 
         .sigma-modal--delivery-schedule-edit.show {
@@ -1607,6 +1556,7 @@
         }
 
         .delivery-page-wrapper .delivery-print-btn {
+
             position: absolute;
             top: 12px;
             right: 14px;
@@ -1799,7 +1749,7 @@
             }
 
             .delivery-page-wrapper .cases-filter-card.delivery-filter-card {
-                padding: 16px 14px 12px !important;
+                padding: 16px 14px 12px 20px !important;
                 margin-bottom: 0 !important;
                 top: 60px;
             }
@@ -1866,7 +1816,7 @@
             }
 
             .delivery-page-wrapper .materials-total-card.report-total-card.delivery-counter-card {
-                padding: 8px 7px 8px 10px !important;
+                padding: 8px 7px 8px 20px !important;
                 min-width: 0 !important;
             }
 
@@ -2005,7 +1955,7 @@
                     </div>
                 </div>
 
-                <button type="button" onclick="printResult()" class="btn delivery-print-btn sigma-toolbar-icon-btn" title="Print">
+                <button type="button" onclick="printResult()" class="btn delivery-print-btn " title="Print">
                     <i class="fas fa-print"></i>
                 </button>
             </div>
@@ -2106,15 +2056,12 @@
                                 @endforeach
                             </tbody>
                         </table>
-        <div class='modal fade sigma-modal--delivery-schedule-actions sigma-modal--delivery-schedule-action' tabindex='-1' role='dialog' id='deliveryActionsModal' data-backdrop='false' data-keyboard='true'>
+        <div class='modal sigma-modal--delivery-schedule-actions sigma-modal--delivery-schedule-action sigma-dialog-overlay' tabindex='-1' role='dialog' id='deliveryActionsModal' data-backdrop='false' data-keyboard='true'>
             <input type='hidden' name='case_id' id='delivery-actions-case-id' value=''>
             <div class='modal-dialog modal-dialog-centered' role='document'>
                 <div class='modal-content'>
-                    <div class='modal-header'>
-                        <h5 class='modal-title'>Case Actions</h5>
-                        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
-                            <span aria-hidden='true'>&times;</span>
-                        </button>
+                    <div class='modal-header case-preview-header'>
+                        <x-sigma-close-button />
                     </div>
                     <div class='modal-body'>
                         <div class='case-summary-block'>
@@ -2129,10 +2076,10 @@
                                 </div>
                             </div>
                         </div>
-                        <hr class='case-summary-divider'>
+
                         <div class='form-group row delivery-jobs-section case-jobs-section'>
                             <div class='col-12'>
-                                <label class='case-completion-dialog-label case-jobs-label'><b>Jobs:</b></label>
+                                <label class='case-completion-dialog-label case-jobs-label'><b>Jobs:</b></label> <hr>
                                 <div class='delivery-jobs-list sigma-case-jobs-list' id='delivery-actions-jobs'></div>
                             </div>
                         </div>
@@ -2445,6 +2392,8 @@
         });
 
         $(document).on('show.bs.modal', '#deliveryActionsModal', function(event) {
+            document.body.classList.add('sigma-dialog-scroll-unlocked');
+
             const trigger = event.relatedTarget;
             if (!trigger || !trigger.dataset) {
                 return;
@@ -2493,6 +2442,10 @@
                 delete editDeliveryButton.dataset.deliveryDate;
                 editDeliveryWrap.style.display = 'none';
             }
+        });
+
+        $(document).on('hidden.bs.modal', '#deliveryActionsModal', function() {
+            document.body.classList.remove('sigma-dialog-scroll-unlocked');
         });
 
         $(document).on('show.bs.modal', '#deliveryEditModal', function(event) {

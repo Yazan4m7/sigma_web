@@ -1459,6 +1459,28 @@
                     </div>
 
                     <div class="form-group">
+                        <div class="form-label">Milling Mode</div>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <div class="custom-radio">
+                                    <input type="radio" id="materialModeDry" name="material_milling_mode" value="dry" {{ old('material_milling_mode', 'dry') == 'dry' ? 'checked' : '' }} required>
+                                    <div class="radio-indicator"></div>
+                                </div>
+                                <span>Dry</span>
+                            </label>
+
+                            <label class="radio-option">
+                                <div class="custom-radio">
+                                    <input type="radio" id="materialModeWet" name="material_milling_mode" value="wet" {{ old('material_milling_mode', 'dry') == 'wet' ? 'checked' : '' }} required>
+                                    <div class="radio-indicator"></div>
+                                </div>
+                                <span>Wet</span>
+                            </label>
+                        </div>
+                        <div class="help-text">Used to match milling materials with compatible machines</div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Job Types</label>
                         <select class="select selectpicker" id="jobTypes" name="jobTypes[]" multiple required>
                             @foreach ($jobTypes as $type)

@@ -576,12 +576,14 @@
                                 if($case->jobs->where('stage',$stage["numericStage"])->first() && $case->jobs->where('stage',$stage["numericStage"])->first()->assignee == Auth()->user()->id)
                                 {$canComplete = true;
                                 $isUserCase= true; }
-                                if($key == "finishing")
-                                if ($notReadyA || !$abutmentsReceived){
-                                $canComplete= false;
-                                $canBeFinished = false;
-                                }
-                                @endphp
+                                 if($key == "finishing")
+                                 if ($notReadyA || !$abutmentsReceived){
+                                 $canComplete= false;
+                                 $canBeFinished = false;
+                                 }
+                                 if($key == "finishing" && !$case->allJobsAtStageAssignedTo($stage["numericStage"], Auth()->user()->id))
+                                 $canComplete= false;
+                                 @endphp
 
                                 <!-- Row 1: Delivery status (100%) - Layout 3 only -->
                                 @if($key == "delivery")

@@ -77,7 +77,7 @@
         }
 
         #casesTable tbody td:nth-child(6) .sigma-case-status-badge {
-            margin: 0 auto !important;
+            /*margin: 0 auto !important;*/
         }
 
         /* End Customizations */
@@ -458,7 +458,7 @@
             overflow-x: hidden;
             overflow-y: hidden;
             z-index: 9998;
-            background: rgba(15, 23, 42, 0.28);
+            background: var(--sigma-dialog-overlay-color);
         }
 
         .sigma-modal--cases-index-actions.show {
@@ -482,8 +482,6 @@
         .sigma-modal--cases-index-actions .modal-content,
         .sigma-modal--cases-index-action .modal-content {
             position: relative !important;
-            transform: none !important;
-            -webkit-transform: none !important;
             will-change: auto !important;
             pointer-events: auto !important;
             display: flex !important;
@@ -532,56 +530,8 @@
             transform: none !important;
             -webkit-transform: none !important;
         }
-        /* Modal title styling */
-        .sigma-modal--cases-index-actions .modal-title,
-        .sigma-modal--cases-index-action .modal-title {
-            color: #2d5f6d;
-            font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 0;
-        }
-
         .badge .badge-success {
             width: 7vw !important;
-        }
-
-        /* Modal header styling with divider */
-        .sigma-modal--cases-index-actions .modal-header,
-        .sigma-modal--cases-index-action .modal-header {
-            display: flex !important;
-            align-items: center;
-            /*border-bottom: 1px solid #dee2e6 !important;*/
-            padding: 0.75rem 2rem;
-        }
-
-        .sigma-modal--cases-index-actions .modal-header button.close,
-        .sigma-modal--cases-index-action .modal-header button.close {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2rem;
-            height: 1.94rem;
-            margin: -0.2rem -0.25rem -0.2rem auto;
-            padding: 0;
-            border: 1px solid #d1d5db;
-            border-radius: 50%;
-            background: #29314969;
-            color: #ffffff;
-            opacity: 1;
-            font-size: 1.5rem;
-            font-weight: 900;
-            line-height: 1;
-            text-shadow: none;
-            /* transform: translate(0.25rem, -0.25rem); */
-            align-items: flex-start;
-        }
-
-        .sigma-modal--cases-index-actions .modal-header button.close:hover,
-        .sigma-modal--cases-index-action .modal-header button.close:hover {
-            opacity: 1;
-            border-color: #cbd5e1;
-            background: #e5e7eb;
-            color: #4b5563;
         }
 
         /* Doctor/Patient names styling */
@@ -1850,16 +1800,13 @@
 
                 <script id="cases-tooltip-data" type="application/json">@json($caseTooltipJobs)</script>
 
-                <div class="modal sigma-modal--cases-index-actions sigma-modal--cases-index-action" tabindex="-1" role="dialog"
+                <div class="modal sigma-modal--cases-index-actions sigma-modal--cases-index-action sigma-dialog-overlay" tabindex="-1" role="dialog"
                      id="actionsDialog" data-backdrop="false" data-keyboard="true">
                     <input type="hidden" name="case_id" value="">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Case Preview</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="false">&times;</span>
-                                </button>
+                            <div class="modal-header case-preview-header">
+                                <x-sigma-close-button />
                             </div>
                             <div class="modal-body">
                                 <div class="text-center py-4">Loading case details...</div>
@@ -2613,6 +2560,10 @@
                     }
                 }, {passive: true, capture: true} );
 
+                function setCasesDialogScrollUnlocked(unlocked) {
+                    document.body.classList.toggle( 'sigma-dialog-scroll-unlocked', unlocked );
+                }
+
                 function cleanupCasesIndexModalArtifacts() {
                     if (document.querySelector( '.modal.show' )) {
                         return;
@@ -2624,33 +2575,32 @@
                         .css( {
                             'padding-right': ''
                         } );
+                    setCasesDialogScrollUnlocked( false );
                 }
 
                 var casesActionsModalCache = {};
                 var casesActionsModalUrlTemplate = @json(route('cases-actions-modal', ['id' => '__CASE_ID__']));
+                var casesActionsModalCloseButton = document.querySelector('#actionsDialog .sigma-close-button').outerHTML;
 
                 function getCasesActionsModalUrl(caseId) {
                     return casesActionsModalUrlTemplate.replace('__CASE_ID__', caseId);
                 }
-                function getCasesActionsModalHeader() {
-                    return '<div class="modal-header">' +
-                        '<h5 class="modal-title">Case Preview</h5>' +
-                        '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-                        '<span aria-hidden="false">&times;</span>' +
-                        '</button>' +
+                function getCasesActionsModalCloseButton() {
+                    return '<div class="modal-header case-preview-header">' +
+                        casesActionsModalCloseButton +
                         '</div>';
                 }
 
                 function setCasesActionsModalLoading($modal) {
                     $modal.find('.modal-content').html(
-                        getCasesActionsModalHeader() +
+                        getCasesActionsModalCloseButton() +
                         '<div class="modal-body"><div class="text-center py-4">Loading case details...</div></div>'
                     );
                 }
 
                 function setCasesActionsModalError($modal) {
                     $modal.find('.modal-content').html(
-                        getCasesActionsModalHeader() +
+                        getCasesActionsModalCloseButton() +
                         '<div class="modal-body"><div class="text-center py-4 text-danger">Unable to load case details.</div></div>' +
                         '<div class="modal-footer"><button type="button" class="btn btn-secondary sigma-action-btn" data-dismiss="modal">Close</button></div>'
                     );
@@ -2711,6 +2661,7 @@
                         }
                         mountCasesIndexModals();
                         $( 'body' ).addClass( 'modal-open' );
+                        setCasesDialogScrollUnlocked( true );
                         $modal.removeAttr( 'aria-hidden' );
                         loadCasesActionsModal( caseId, $modal );
                     } );
@@ -2787,7 +2738,17 @@
                                    showCancelButton: true ,
                                    confirmButtonText: 'Delete Case' ,
                                    cancelButtonText: 'Cancel',
-                                   target: document.body
+                                   target: document.body,
+                                   customClass: {
+                                       container: 'sigma-dialog-overlay',
+                                       popup: 'sigma-dialog-entrance'
+                                   },
+                                   didOpen: function () {
+                                       setCasesDialogScrollUnlocked( true );
+                                   },
+                                   willClose: function () {
+                                       setCasesDialogScrollUnlocked( false );
+                                   }
                                } ).then( (result) => {
                         if (result.isConfirmed) {
                             window.location = urlToRedirect;

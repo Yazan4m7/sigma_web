@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let hoverCollapseTimer = null;
 
     const isMobile = () => window.innerWidth <= MOBILE_BREAKPOINT;
+    const isSidebarExpansionDisabled = () => !isMobile() && getDisableExpandPreference();
 
     function clearHoverCollapseTimer() {
         if (hoverCollapseTimer !== null) {
@@ -104,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function applyPinnedState() {
         if (!wrapper) return;
         clearHoverCollapseTimer();
-        if (getDisableExpandPreference()) {
+        if (isSidebarExpansionDisabled()) {
             wrapper.classList.remove('sidebar-pinned', 'sidebar-hover', 'sidebar-expanded');
             if (pinBtn) {
                 pinBtn.classList.remove('pinned');
@@ -158,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Hover functionality (only when not pinned)
         sidebar.addEventListener('mouseenter', function () {
             if (isMobile()) return;
-            if (getDisableExpandPreference()) return;
+            if (isSidebarExpansionDisabled()) return;
             clearHoverCollapseTimer();
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 wrapper.classList.add('sidebar-hover');
@@ -167,13 +168,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         sidebar.addEventListener('mouseleave', function () {
             if (isMobile()) return;
-            if (getDisableExpandPreference()) return;
+            if (isSidebarExpansionDisabled()) return;
             clearHoverCollapseTimer();
             if (!wrapper.classList.contains('sidebar-pinned')) {
                 hoverCollapseTimer = setTimeout(() => {
                     hoverCollapseTimer = null;
                     if (isMobile()) return;
-                    if (getDisableExpandPreference()) return;
+                    if (isSidebarExpansionDisabled()) return;
                     if (!wrapper.classList.contains('sidebar-pinned')) {
                         wrapper.classList.remove('sidebar-hover');
                         collapseExpandedSubmenus();
@@ -194,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const isSubmenuToggle = link.hasAttribute('data-sigma-toggle');
 
             if (isSubmenuToggle) {
-                if (getDisableExpandPreference()) {
+                if (isSidebarExpansionDisabled()) {
                     e.preventDefault();
                     e.stopPropagation();
                     const targetId = link.getAttribute('data-target');
@@ -223,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Pin button click handler
     if (pinBtn) {
         pinBtn.addEventListener('click', function (e) {
-            if (getDisableExpandPreference()) {
+            if (isSidebarExpansionDisabled()) {
                 e.preventDefault();
                 e.stopPropagation();
                 return;
@@ -245,6 +246,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (hamburgerBtn && wrapper) {
         hamburgerBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             if (!isMobile()) return;
             const expanded = wrapper.classList.contains('sidebar-expanded');
             if (expanded) {

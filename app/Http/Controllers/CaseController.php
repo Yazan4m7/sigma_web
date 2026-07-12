@@ -34,6 +34,7 @@ use App\User;
 use App\Support\OperationsDashboardCache;
 use App\Support\PageBenchmark;
 use App\Support\UserPermissionsCache;
+use App\Modules\DeviceStageBatches\DeviceStageBatchService;
 use App\lab;
 use App\editLog;
 use App\Services\AuditLogger;
@@ -105,7 +106,7 @@ class CaseController extends Controller
             'jobs' => function ($q) {
                 $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'delivery_accepted');
             },
-            'jobs.material:id,name,count_as_unit',
+            'jobs.material:id,name,count_as_unit,is_dry,is_wet',
             'jobs.jobType:id,name,a_secondary_item',
             'jobs.assignedTo:id,name_initials',
             'jobs.implantR:id,name',
@@ -200,7 +201,7 @@ class CaseController extends Controller
             'tags.originalTagRecord:id,text,color,icon',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
+            'jobs.material:id,name,count_as_unit,is_dry,is_wet',
             'jobs.implantR:id,name',
             'jobs.abutmentR:id,name',
             'jobs.subType:id,name,material_id'
@@ -288,7 +289,7 @@ class CaseController extends Controller
             'notes.writtenBy:id,first_name,last_name,name_initials',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
+            'jobs.material:id,name,count_as_unit,is_dry,is_wet',
             'jobs.implantR:id,name',
             'jobs.abutmentR:id,name'
         ])->findOrFail($id);
@@ -300,7 +301,7 @@ class CaseController extends Controller
     {
         $case = sCase::with([
             'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
+            'jobs.material:id,name,count_as_unit,is_dry,is_wet',
             'jobs.subType:id,name,material_id',
             'jobs.device:id,name,type',
             'jobs.millingBuild.deviceUsed:id,name,type',
@@ -895,7 +896,7 @@ class CaseController extends Controller
                 'jobs' => function ($q) {
                     $q->select('id', 'unit_num', 'case_id', 'stage', 'assignee', 'is_active', 'is_set', 'device_id', 'type', 'material_id', 'color', 'style', 'printing_build_id', 'delivery_accepted', 'type_id');
                 },
-                'jobs.material:id,name,count_as_unit',
+                'jobs.material:id,name,count_as_unit,is_dry,is_wet',
                 'jobs.jobType:id,name,a_secondary_item',
                 'jobs.subType:id,name,material_id',
                 'jobs.assignedTo:id,name_initials',
@@ -1038,7 +1039,7 @@ class CaseController extends Controller
             }
 
             // Use raw arrays to prevent serialization issues completely:
-            $devices = collect(device::select('id', 'name', 'type', 'img', 'sorting_order', 'hidden')->get()->toArray());
+            $devices = collect(device::select('id', 'name', 'type', 'img', 'sorting_order', 'hidden', 'is_dry', 'is_wet')->get()->toArray());
             $deviceStats = job::selectRaw('device_id,
                                          SUM(CASE WHEN is_set = 0 THEN 1 ELSE 0 END) as waiting_count,
                                          SUM(CASE WHEN is_set = 1 THEN 1 ELSE 0 END) as set_count,
@@ -1107,6 +1108,16 @@ class CaseController extends Controller
         // Leaving them empty avoids extra metadata queries on every dashboard hit.
         $types = collect();
         $typesByMaterial = collect();
+
+        $deviceStageBatches = new DeviceStageBatchService();
+        $wMilling = $deviceStageBatches->rowsForStage($wMilling, 2, 'waiting');
+        $wPrinting = $deviceStageBatches->rowsForStage($wPrinting, 3, 'waiting');
+        $wSintering = $deviceStageBatches->rowsForStage($wSintering, 4, 'waiting');
+        $wPressing = $deviceStageBatches->rowsForStage($wPressing, 5, 'waiting');
+        $aMilling = $deviceStageBatches->rowsForStage($aMilling, 2, 'active');
+        $aPrinting = $deviceStageBatches->rowsForStage($aPrinting, 3, 'active');
+        $aSintering = $deviceStageBatches->rowsForStage($aSintering, 4, 'active');
+        $aPressing = $deviceStageBatches->rowsForStage($aPressing, 5, 'active');
     
         $viewData = compact(
             'labs', 'wDesign', 'aDesign',
@@ -1123,6 +1134,7 @@ class CaseController extends Controller
             $isAdmin ? 'admin' : 'user',
             (string) $dashboardCacheGeneratedAt,
             $activeOuterTab,
+            'device-batches-v1',
         ]));
 
         if (Cache::has($htmlCacheKey)) {
@@ -1182,6 +1194,7 @@ class CaseController extends Controller
     {
         $userId = Auth::id();
         $stage = (int) $stage;
+
         $stageJobs = job::where('case_id', $caseId)
             ->where('stage', $stage)
             ->get(['id', 'assignee']);
@@ -1291,8 +1304,16 @@ class CaseController extends Controller
 
     public function assignAndFinish($caseId, $stage)
     {
-        $this->assignToMe($caseId, $stage, false);
-        $this->finishCaseStage($caseId, $stage, false);
+        $assignmentResponse = $this->assignToMe($caseId, $stage, false);
+        if ($assignmentResponse) {
+            return $assignmentResponse;
+        }
+
+        $finishResponse = $this->finishCaseStage($caseId, $stage, false);
+        if ($finishResponse) {
+            return $finishResponse;
+        }
+
         return $this->getAssignmentRedirect()->with('success', "Case completed & sent to the next stage!");
     }
 
@@ -1310,13 +1331,18 @@ class CaseController extends Controller
 
     public function finishCaseStage($caseId, $stage, $returnMessages = true, $jobs = [])
     {
+        $hasScopedJobs = !empty($jobs) && count($jobs) > 0;
         Log::info('[finishCaseStage] called with parameters', [
             'caseId' => $caseId,
             'stage' => $stage,
             'returnMessages' => $returnMessages,
             'jobs' => count($jobs)
         ]);
-        $jobs = empty($jobs) ? job::with('material')->where("case_id", $caseId)->where("stage", $stage)->get() : $jobs;
+        $jobs = $hasScopedJobs
+            ? collect($jobs)->filter(function ($job) use ($caseId, $stage) {
+                return (int) $job->case_id === (int) $caseId && (int) $job->stage === (int) $stage;
+            })->values()
+            : job::with('material')->where("case_id", $caseId)->where("stage", $stage)->get();
 
         Log::info('[finishCaseStage] firstJob case_id: ' . $caseId . ' stage: ' . $stage . '  ', ['$jobs' => count($jobs)]);
         //  if($firstJob) return back()->with("Case's jobs are currently at different stage");
@@ -1329,9 +1355,21 @@ class CaseController extends Controller
         Log::info('[finishCaseStage] assignee', ['assignee' => $assignee]);
         if (!$assignee) return back()->with('error', "Case Already Completed");
 
-        $case = sCase::findOrFail($caseId);
+        $case = sCase::with('jobs')->findOrFail($caseId);
 //        if (empty($jobs))
-        $jobs = job::with('material')->where("case_id", $caseId)->where("stage", $stage)->where("assignee", $assignee ?? Auth()->user()->id)->get();
+        if (!$hasScopedJobs) {
+            $jobs = job::with('material')->where("case_id", $caseId)->where("stage", $stage)->where("assignee", $assignee ?? Auth()->user()->id)->get();
+        }
+
+        if ((int) $stage === 6) {
+            if (!$case->allUnitsAtFinishing()) {
+                return back()->with('error', 'Not all jobs are in finishing stage');
+            }
+
+            if (!$case->allJobsAtStageAssignedTo(6, Auth::id())) {
+                return back()->with('error', 'All finishing jobs must be assigned to you before completing the case.');
+            }
+        }
 
         if ((int) $stage === 6 && $this->allJobsAreIn($case, 6)) {
             $passiveFinishingJobs = job::with('material')
@@ -1355,6 +1393,7 @@ class CaseController extends Controller
         if (!$jobs) return back()->with('error', 'No Jobs found.');
 
         $nextStage = -3;
+        $deviceId = $jobs->first()->device_id ?? null;
         foreach ($jobs as $job) {
             $nextStage = $this->getJobNextStage($job);
             Log::info('[finishCaseStage] job', ['job' => $job, 'nextStage' => $nextStage]);
@@ -1455,12 +1494,6 @@ class CaseController extends Controller
             $case->delivered_to_client = 1;
             $case->save();
             $this->applyInvoice($job);
-        }
-
-        // Get the device ID from the job if available
-        $deviceId = null;
-        if (!empty($jobs) && count($jobs) > 0) {
-            $deviceId = $jobs[0]->device_id;
         }
 
         // Substage logic for main manufacturing stages
@@ -1897,7 +1930,7 @@ class CaseController extends Controller
                         'color',
                     ])->with([
                         'jobType:id,name',
-                        'material:id,name,count_as_unit',
+                        'material:id,name,count_as_unit,is_dry,is_wet',
                         'assignedTo:id,name_initials,first_name',
                     ]);
                 },
@@ -2344,7 +2377,7 @@ class CaseController extends Controller
             'tags.originalTagRecord:id,text,color,icon',
             'jobs.assignedTo:id,name_initials,first_name',
             'jobs.jobType:id,name',
-            'jobs.material:id,name,count_as_unit',
+            'jobs.material:id,name,count_as_unit,is_dry,is_wet',
             'jobs.implantR:id,name',
             'jobs.abutmentR:id,name',
             'jobs.subType:id,name,material_id'
@@ -2607,6 +2640,9 @@ class CaseController extends Controller
         try {
             $caseIds = $request->input('case_ids', []);
             $stage = $request->input('stage', '');
+            $deviceStageBatches = new DeviceStageBatchService();
+            $batchMaterialIds = $deviceStageBatches->materialIdsFromBatchSelections($caseIds);
+            $caseIds = $deviceStageBatches->caseIdsFromSelections($caseIds);
 
             if (empty($caseIds)) {
                 return response()->json([
@@ -2631,15 +2667,23 @@ class CaseController extends Controller
             $uniqueMaterials = [];
             $uniqueMaterialIds = [];
 
-            foreach ($cases as $case) {
-                foreach ($case->jobs as $job) {
-                    if ($job->material) {
-                        $materialName = $job->material->name;
-                        $materialId = $job->material->id;
+            if (!empty($batchMaterialIds)) {
+                $materials = material::whereIn('id', $batchMaterialIds)->get();
+                foreach ($materials as $material) {
+                    $uniqueMaterials[] = $material->name;
+                    $uniqueMaterialIds[] = $material->id;
+                }
+            } else {
+                foreach ($cases as $case) {
+                    foreach ($case->jobs as $job) {
+                        if ($job->material) {
+                            $materialName = $job->material->name;
+                            $materialId = $job->material->id;
 
-                        if (!in_array($materialName, $uniqueMaterials)) {
-                            $uniqueMaterials[] = $materialName;
-                            $uniqueMaterialIds[] = $materialId;
+                            if (!in_array($materialName, $uniqueMaterials)) {
+                                $uniqueMaterials[] = $materialName;
+                                $uniqueMaterialIds[] = $materialId;
+                            }
                         }
                     }
                 }
@@ -2670,6 +2714,9 @@ class CaseController extends Controller
         try {
             $stage = $request->input('stage');
             $caseIds = $request->input('case_ids', []);
+            $deviceStageBatches = new DeviceStageBatchService();
+            $batchMaterialIds = $deviceStageBatches->materialIdsFromBatchSelections($caseIds);
+            $caseIds = $deviceStageBatches->caseIdsFromSelections($caseIds);
 
             \Log::info('[BACKEND] getMaterialTypesForStage called', ['stage' => $stage, 'case_ids' => $caseIds]);
 
@@ -2719,13 +2766,17 @@ class CaseController extends Controller
                 ], 400);
             }
 
-            // Find the shared material among all selected cases
-            // Get unique material IDs from all jobs
-            $materialIds = [];
-            foreach ($cases as $case) {
-                foreach ($case->jobs as $job) {
-                    if ($job->material) {
-                        $materialIds[] = $job->material->id;
+            if (!empty($batchMaterialIds)) {
+                $materialIds = $batchMaterialIds;
+            } else {
+                // Find the shared material among all selected cases
+                // Get unique material IDs from all jobs
+                $materialIds = [];
+                foreach ($cases as $case) {
+                    foreach ($case->jobs as $job) {
+                        if ($job->material) {
+                            $materialIds[] = $job->material->id;
+                        }
                     }
                 }
             }

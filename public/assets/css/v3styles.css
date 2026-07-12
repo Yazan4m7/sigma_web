@@ -9353,29 +9353,6 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.sigma-close-button {
-    background: rgba(255, 255, 255, 0.8);
-    border: none;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    font-size: 1.25rem;
-    color: #6c757d;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.sigma-close-button:hover {
-    color: #dc3545;
-    background: white;
-    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
-    transform: scale(1.05);
-}
-
 /* Body styles */
 
 .sigma-modal--abutments-delivery-actions .sigma-workflow-body {
@@ -14409,13 +14386,6 @@ body:not(.mod-bg-1):not(.mod-bg-2):not(.mod-bg-3):not(.mod-bg-4) .page-sidebar .
         font-size: 1.1rem !important;
         flex: 1 !important;
         margin-right: 10px !important;
-    }
-
-    .sigma-close-button {
-        font-size: 24px !important;
-        padding: 5px !important;
-        min-width: 30px !important;
-        height: 30px !important;
     }
 
     /* Body content mobile optimization */
