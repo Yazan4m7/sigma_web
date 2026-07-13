@@ -1,353 +1,287 @@
-@extends('layouts.app' ,[ 'pageSlug' => 'Statement Of Account' ])
+@extends('layouts.app', ['pageSlug' => 'Statement Of Account'])
 
-
-@section('content')
-    <style>
-        body {
-            -webkit-print-color-adjust: exact !important;
-        }
-        hr { display: block; height: 1px;
-
-            margin:0; padding: 0; border-color:black;}
-        .statement-table thead th {
-            padding: 5px;
-        }
-         .statement-table thead th:nth-child(1){
-
-            /* Safari 3-4, iOS 1-3.2, Android 1.6- */
-            -webkit-border-radius: 3px 0px 0px 3px;
-
-            /* Firefox 1-3.6 */
-            -moz-border-radius: 3px 0px 0px 3px;
-
-            /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
-            border-radius: 12px 0px 0px 0px;
-        }
-
-       .statement-table thead th:nth-last-child(1){
-            /* Safari 3-4, iOS 1-3.2, Android 1.6- */
-            -webkit-border-radius: 0px 3px 3px 0px;
-
-            /* Firefox 1-3.6 */
-            -moz-border-radius: 0px 3px 3px 0px;
-
-            /* Opera 10.5, IE 9, Safari 5, Chrome, Firefox 4, iOS 4, Android 2.1+ */
-            border-radius: 0px 12px 0px 0px;
-        }
-        .row:not(.headerRow) {
-            width: auto;
-            padding: 0;
-        }
-                .kt-subheader__search input {
-                    height: auto;
-                }
-                .kt-subheader__search label {
-                    display: block;
-                    margin-bottom: 0.5rem;
-                    font-weight: bold;
-                }
-
-                /* Custom filter row styles (matching cases and delivery-schedule) */
-                .filter-label {
-                    font-weight: 600;
-                    font-size: 12px;
-                    color: #6c757d;
-                    margin-bottom: 6px;
-                    display: block;
-                    text-transform: uppercase;
-                    letter-spacing: 0.5px;
-                }
-                .cases-filter-btn {
-                    width: 36px;
-                    height: 36px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 !important;
-                }
-
-                /* Responsive adjustments for labels and inputs */
-                @media screen and (max-width: 767px) {
-                    .filter-label {
-                        font-size: 12px !important;
-                        margin-bottom: 4px !important;
-                    }
-                    .x-ios-dtp { /* Target ios-dtp for height */
-                        height: 38px !important;
-                        font-size: 13px !important;
-                        padding: 6px 8px !important;
-                    }
-                    .cases-filter-btn {
-                        height: 38px; /* Slightly taller on mobile for easier tapping */
-                        width: 38px;
-                    }
-                }
-        </style>
-            <form  class="kt-form sigma-list-page" method="GET" action="{{route('client-statement-admin',$client->id)}}">
-                <div class="col-lg-12 col-sm-12 card sigma-list-filter-card">
-            <input type="hidden" name="id" value="{{$client->id}}" >
-            <div class="row d-flex align-items-end mb-3 sigma-list-filter-row">
-                <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <label class="filter-label" for="from">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>From</span>
-                    </label>
-                    <x-ios-dtp name="from" id="from" :value="$from" mode="month" />
-                </div>
-                <div class="col-lg-3 col-md-3 col-12 mb-3">
-                    <label class="filter-label" for="to">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span>To</span>
-                    </label>
-                    <x-ios-dtp name="to" id="to" :value="$to" mode="month" />
-                </div>
-                <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-action-col">
-                    <button type="submit" class="btn btn-primary sigma-apply-btn" title="Filter">
-                        <i class="fas fa-search"></i>
-                        <span>Apply</span>
-                    </button>
-                </div>
-                <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-secondary-col">
-                    <div class="sigma-filter-toolbar-end">
-                    <button type="button" class="btn sigma-toolbar-icon-btn" title="All-time" onclick="window.location='{{ route('client-statement-admin',['id' => $client->id, 'allTime' =>1]) }}'">
-                        <i class="fas fa-clock"></i>
-                    </button>
-                    <button type="button" class="btn sigma-toolbar-icon-btn" title="Print" onclick="PrintStatement()">
-                        <i class="fas fa-print me-1"></i>
-                    </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </form>
-    <br>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
-            <div class="card m-b-30">
-
-                <div class="card-body">
-
-                    <div class="row">
-                        <div class="col-md-8" style="position: relative;">
-                            <div style="">  <p>To</p>
-                                <h4>Dr. :<b> {{$client->name}}</b></h4></div>
-
-                        </div>
-                        <div class="col-md-4">
-                            <h4 style="text-align: center;font-weight: bold">Statement of Account</h4>
-                            <hr style="margin:0">
-                            <div class="row">
-                            <div class="col-md-4">{{substr($from,0,10) }}</div>
-                                <div class="col-md-4" style="text-align: center">To</div>
-                                <div class="col-md-4">{{substr($to,0,10) }}</div>
-                            </div>
-                            <hr style="margin:0">
-                            <h6 style="background-color: #e1e0e4;font-weight: 600">Account Summery </h6>
-                            <div class="row"><div class="col-md-6">Opening Balance :
-
-
-                                {{--{{ $amountDuePreDate  . " - " . $amountPaidPreDate}}--}}
-
-
-
-                                </div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$openingBalance ?? '0'}}  JOD</b></h5></div></div>
-                            <div class="row"><div class="col-md-6">Invoices Amount :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$invoicesAmount ?? '0'}} JOD</b></h5></div></div>
-                            <div class="row"><div class="col-md-6">Amount Paid :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$amountPaid ?? '0'}} JOD</b></h5></div></div>
-                            @if($discounts)
-                                <div class="row"><div class="col-md-6">Discounts :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$discounts ?? '0'}} JOD</b></h5></div></div>
-                            @endif
-                            <hr style="margin:0">
-                            <div class="row"><div class="col-md-6">Balance Due :</div> <div class="col-md-6"><h5 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h5></div></div>
-                        </div>
-                    </div>
-
-<br>
-                    <div class="">
-                        <table class="table table-hover sunriseTable sigma-list-table statement-table">
-                            <thead>
-                            <tr style="background-color: #1b1b1b;">
-                                <th scope="col" style="padding:5px;">Date</th>
-                                <th scope="col" style="padding:5px;">Transaction</th>
-                                <th scope="col" style="padding:5px;">Description</th>
-                                <th scope="col" style="padding:5px;">Payment</th>
-                                <th scope="col" style="padding:5px;">Amount</th>
-                                <th scope="col" style="padding:5px;">Balance</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @forelse($statementRows as $row)
-                            <tr>
-                                <td scope="row">{{ $row['date'] }}</td>
-                                <td>{{ $row['transaction'] }}</td>
-                                <td>{{ $row['description'] }}</td>
-                                <td>{{ is_null($row['payment']) ? '-' : $row['payment'] }}</td>
-                                <td>{{ is_null($row['amount']) ? '-' : $row['amount'] }}{{ $row['has_discount'] ? '*' : '' }}</td>
-                                <td><b>{{ $row['balance'] }}</b></td>
-                            </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="6" class="text-center">No transactions in this date range.</td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                        <hr>
-                        <div>
-                            <div class="row" style="padding-right: 40px;padding-top: 10px">
-                            <div class="col-md-8">
-                                @if ($discountExist)
-                                * Discount applied
-                                @endif
-                            </div>
-                                <div class="col-md-2"><h5>Balance Due :</h5></div>
-                            <div class="col-md-2"><h5 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h5></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
-@push('js')
-    <script>
-    function PrintStatement() {
-    var mywindow = window.open('', 'PRINT', 'height=400,width=600');
-
-    //mywindow.document.write('<html><head><title>' + document.title + '</title>');
-        //noinspection JSAnnotator
-        mywindow.document.write( `
-            <html>
-            <head>
-            <link href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
-<link href="//cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
-
-
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<title>SIGMA LAB</title>
-
-
-
-            <link href="{{asset('assets/css/menu.css')}}" rel="stylesheet" type="text/css">
-            <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
-            <style>
-            body {
-            -webkit-print-color-adjust: exact !important;
-            }
-            hr { display: block; height: 1px;
-            background-color:black;
-            margin:0; padding: 0; border-color:black;}
-            th {  padding: 0; }
-            @media print{
-            hr { display: block; height: 1px;
-            background-color:black;
-            margin:0; padding: 0; border-color:black;}
-            th {  padding: 0; }
-            thead{
-            background-color: black;
-            }
-            body {
-            -webkit-print-color-adjust: exact !important;
-            }
-            }
-            </style>
-            </head>
-            <body>
-          <div class="row" >
-        <div class="col-lg-12 col-sm-12">
-            <div class="card m-b-30">
-
-                <div class="card-body">
-
-                    <div class="row" style="float:left;width:48%;">
-                        <div class="col-md-8" >
-            <h1  style="font-weight:bolder;font-size:30px;"></h1>
-            <br><br><br><br><br>
-                                <h4>Dr. : {{$client->name}}</h4></div>
-
-                        </div>
-            <div class="col-md-4" style="float:right;width:48%;">
-                <h5 style="font-weight: bold;">Statement of Account</h5>
-                <hr style="margin:0">
-                <div class="row">
-                <div  style="float:left;width: 33%;">{{substr($from,0,10) }}</div>
-                                <div  style="text-align: center;width: 33%;">To</div>
-                                <div  style="float:right;width: 33%;">{{substr($to,0,10) }}</div>
-
-            </div>
-                            <hr style="margin:0">
-                            <h6 style="background-color: #e1e0e4;font-weight: 600;text-align:center !important;">Account Summery </h6>
-                            <div class="row">
-            <div style="float:left;width: 50%;">Opening Balance :</div>
-            <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b> {{$openingBalance ?? '0'}}  JOD</b></h6></div>
-            </div>
-                            <div class="row"><div style="float:left;width: 50%;">Invoices Amount :</div> <div style="float:right;width:50%;"><h6 style="text-align: right" ><b> {{$invoicesAmount ?? '0'}} JOD</b></h6></div></div>
-                            <div class="row"><div style="float:left;width: 50%;">Amount Paid :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b> {{$amountPaid ?? '0'}} JOD</b></h6></div></div>
-                              @if($discounts)
-                            <div class="row"><div style="float:left;width: 50%;">Discounts :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b>  {{$discounts ?? '0'}} JOD</b></h6></div></div>
-                            @endif
-                            <hr style="margin:0">
-                            <div class="row"><div style="float:left;width: 50%;">Balance Due :</div> <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b>{{$closingBalance}} JOD</b></h6></div></div>
-                        </div>
-                    </div>
-
-<br>
-            `);
-        mywindow.document.write( `
-                    <div class="">
-                        <table class="table table-hover" style="width:100%">
-                            <thead style="background-color: black !important;color:white">
-                            <tr style="background-color: black !important;color:white">
-                                <th scope="col" style="padding:5px;">Date</th>
-                                <th scope="col" style="padding:5px;">Transaction</th>
-                                <th scope="col" style="padding:5px;">Description</th>
-                                <th scope="col" style="padding:5px;">Payment</th>
-                                <th scope="col" style="padding:5px;">Amount</th>
-                                <th scope="col" style="padding:5px;">Balance</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                @forelse($statementRows as $row)
-            <tr>
-            <td scope="row">{{ $row['date'] }}</td>
-            <td>{{ $row['transaction'] }}</td>
-            <td>{{ $row['description'] }}</td>
-            <td>{{ is_null($row['payment']) ? '-' : $row['payment'] }}</td>
-            <td>{{ is_null($row['amount']) ? '-' : $row['amount'] }}{{ $row['has_discount'] ? '*' : '' }}</td>
-            <th>{{ $row['balance'] }}</th>
-                            </tr>
-                            @empty
-                                <tr><td colspan="6" style="text-align:center">No transactions in this date range.</td></tr>
-                            @endforelse
-            </tbody>
-        </table>
-        <hr>
-        <div>
-            <div class="row" style="padding-right: 40px;margin-top:10px">
-            <div class="col-md-8"></div>
-
-            <div style="float:left;width: 50%;">Balance Due :</div>
-            <div style="float:right;width: 50%;"><h6 style="text-align: right" ><b> {{$closingBalance}} JOD</b></h6></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous" />
-            </body>
-
-            </html>
-        `);
-            //mywindow.document.close(); // necessary for IE >= 10
-           // mywindow.focus(); // necessary for IE >= 10*/
-            setTimeout(function(){ mywindow.print(); mywindow.close(); },2000);
-
-
-
+@push('css')
+<style>
+    .statement-page {
+        color: #25343b;
+        font-family: "Cairo", sans-serif;
     }
 
-    </script>
+    .statement-filter-card {
+        margin-bottom: 1.25rem;
+    }
+
+    .statement-filter-card .filter-label {
+        display: block;
+        margin-bottom: 6px;
+        color: #6c757d;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: .5px;
+        text-transform: uppercase;
+    }
+
+    .statement-sheet {
+        width: 100%;
+        margin: 0 auto;
+        padding: 32px;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e2eaec;
+        border-radius: 10px;
+        box-shadow: 0 8px 28px rgba(37, 52, 59, .08);
+    }
+
+    .statement-screen-header {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 18px;
+        align-items: center;
+        margin-bottom: 2px;
+        padding: 0 0 22px;
+        border-bottom: 1px solid #d8e6e7;
+    }
+
+    .statement-screen-logo {
+        display: block;
+        width: 64px;
+        height: auto;
+    }
+
+    .statement-screen-title {
+        margin: 0;
+        color: #2d5f6d;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.25;
+    }
+
+    .statement-screen-client {
+        margin: 2px 0 0;
+        color: #25343b;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.35;
+    }
+
+    .statement-screen-range {
+        margin: 3px 0 0;
+        color: #6b7c85;
+        direction: ltr;
+        font-size: 14px;
+        line-height: 1.35;
+        unicode-bidi: embed;
+    }
+
+    .statement-document-scroll {
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .statement-document {
+        min-width: 780px;
+        padding-top: 28px;
+    }
+
+    @include('clients.partials.statement-document-styles')
+
+    .statement-document .transactions-table th,
+    .statement-document .transactions-table td {
+        line-height: 1.45;
+    }
+
+    .statement-document .transactions-table,
+    .statement-document .transactions-table th {
+        border-radius: 0 !important;
+    }
+
+    .statement-document .transactions-table th,
+    .statement-document .transactions-table th:nth-child(4),
+    .statement-document .transactions-table th:nth-child(5),
+    .statement-document .transactions-table th:nth-child(6) {
+        font-size: 16px;
+        font-weight: 400;
+    }
+
+    .statement-document .summary-title {
+        font-size: 15px;
+    }
+
+    .statement-document .summary-table .summary-total td,
+    .statement-document .statement-total td {
+        font-size: 17px;
+    }
+
+    #statement-transactions-table_wrapper .statement-total {
+        clear: both;
+        margin-top: 0;
+    }
+
+    #statement-transactions-table_wrapper .dataTables_paginate {
+        float: none;
+        padding-top: 8px;
+        text-align: right;
+    }
+
+    @media (max-width: 767px) {
+        .summary-layout,
+        .summary-layout > tbody {
+            display: block;
+            width: 100%;
+        }
+
+        .summary-layout > tbody > tr {
+            display: flex;
+            width: 100%;
+        }
+
+        .summary-layout > tbody > tr > td:nth-child(1) {
+            display: none;
+        }
+
+        .summary-layout > tbody > tr > td:nth-child(2) {
+            display: block;
+            flex: 0 0 50%;
+            width: 50% !important;
+            max-width: 50%;
+        }
+
+        .statement-document-scroll {
+            overflow-x: auto;
+        }
+        .statement-filter-card .filter-label {
+            margin-bottom: 4px;
+        }
+
+        .statement-sheet {
+            padding: 20px 0 22px;
+            border-radius: 8px;
+        }
+
+        .statement-screen-header {
+            grid-template-columns: 52px minmax(0, 1fr);
+            gap: 12px;
+            margin: 0 18px;
+            padding-bottom: 17px;
+        }
+
+        .statement-screen-logo {
+            width: 46px;
+        }
+
+        .statement-screen-title {
+            font-size: 20px;
+        }
+
+        .statement-screen-client {
+            font-size: 14px;
+        }
+
+        .statement-screen-range {
+            font-size: 12px;
+        }
+
+        .statement-document {
+            padding: 22px 18px 0;
+        }
+    }
+</style>
+@endpush
+
+@section('content')
+    @php
+        $fromLabel = \Carbon\Carbon::parse($from)->format('d M Y');
+        $toLabel = \Carbon\Carbon::parse($to)->format('d M Y');
+        $pdfUrl = route('doctor-statement-pdf', [
+            'doctor' => $client->id,
+            'from' => substr($from, 0, 10),
+            'to' => substr($to, 0, 10),
+        ]);
+    @endphp
+
+    <div class="statement-page">
+        <form class="kt-form sigma-list-page" method="GET" action="{{ route('client-statement-admin', $client->id) }}">
+            <div class="col-12 card sigma-list-filter-card statement-filter-card">
+                <input type="hidden" name="id" value="{{ $client->id }}">
+                <div class="row d-flex align-items-end mb-3 sigma-list-filter-row">
+                    <div class="col-lg-3 col-md-3 col-12 mb-3">
+                        <label class="filter-label" for="from">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>From</span>
+                        </label>
+                        <x-ios-dtp name="from" id="from" :value="$from" mode="month" />
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12 mb-3">
+                        <label class="filter-label" for="to">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>To</span>
+                        </label>
+                        <x-ios-dtp name="to" id="to" :value="$to" mode="month" />
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-action-col">
+                        <button type="submit" class="btn btn-primary sigma-apply-btn" title="Filter">
+                            <i class="fas fa-search"></i>
+                            <span>Apply</span>
+                        </button>
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-12 mb-3 sigma-filter-secondary-col">
+                        <div class="sigma-filter-toolbar-end">
+                            <a class="btn sigma-toolbar-icon-btn" title="All-time" href="{{ route('client-statement-admin', ['id' => $client->id, 'allTime' => 1]) }}">
+                                <i class="fas fa-clock"></i>
+                            </a>
+                            <a class="btn sigma-toolbar-icon-btn" title="Download PDF" href="{{ $pdfUrl }}">
+                                <i class="fas fa-file-pdf"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <article class="statement-sheet" aria-labelledby="statement-title">
+            <header class="statement-screen-header">
+                <img src="{{ asset('assets/img/green-pdf.jpg') }}" class="statement-screen-logo" alt="SIGMA">
+                <div>
+                    <h1 class="statement-screen-title" id="statement-title">Statement of Account</h1>
+                    <p class="statement-screen-client">Dr. {{ $client->name }}</p>
+                    <p class="statement-screen-range">{{ $fromLabel }} to {{ $toLabel }}</p>
+                </div>
+            </header>
+
+            <div class="statement-document-scroll" tabindex="0" aria-label="Account statement details">
+                <div class="statement-document">
+                    @include('clients.partials.statement-document', ['statementTableId' => 'statement-transactions-table'])
+                </div>
+            </div>
+        </article>
+    </div>
+@endsection
+
+@push('js')
+<script>
+    $(function () {
+        const statementTable = $('#statement-transactions-table');
+
+        if (statementTable.length && $.fn.DataTable && !$.fn.DataTable.isDataTable(statementTable[0])) {
+            statementTable.DataTable({
+                pageLength: 25,
+                searching: false,
+                lengthChange: false,
+                ordering: false,
+                info: false,
+                autoWidth: false,
+                pagingType: 'simple_numbers',
+                dom: 'tp'
+            });
+
+            const tableWrapper = statementTable.closest('.dataTables_wrapper');
+            const pagination = tableWrapper.find('.dataTables_paginate');
+            const balanceDue = statementTable.closest('.statement-document').children('.statement-total');
+
+            if (pagination.length && balanceDue.length) {
+                balanceDue.detach().insertBefore(pagination);
+            }
+        }
+    });
+</script>
 @endpush

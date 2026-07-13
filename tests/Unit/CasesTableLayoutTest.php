@@ -21,6 +21,17 @@ class CasesTableLayoutTest extends TestCase
     }
 
     /** @test */
+    public function cases_table_has_a_visible_bottom_edge_and_page_end_spacing(): void
+    {
+        $view = file_get_contents(__DIR__ . '/../../resources/views/cases/index.blade.php');
+
+        $this->assertStringContainsString('padding: 0 0 32px !important;', $view);
+        $this->assertStringContainsString('#casesTable_wrapper .dataTables_scrollBody {', $view);
+        $this->assertStringContainsString('border-bottom: 2px solid rgba(64, 131, 133, 0.72) !important;', $view);
+        $this->assertStringContainsString('box-shadow: 0 5px 10px -8px rgba(37, 52, 59, 0.65);', $view);
+    }
+
+    /** @test */
     public function cases_datatables_scroll_header_keeps_original_header_style_without_duplicate_bar(): void
     {
         $view = file_get_contents(__DIR__ . '/../../resources/views/cases/index.blade.php');
@@ -57,10 +68,10 @@ class CasesTableLayoutTest extends TestCase
         $this->assertStringContainsString('@keyframes sigmaDialogEnter', $css);
         $this->assertStringContainsString('@keyframes sigmaDialogOverlayEnter', $css);
         $this->assertStringContainsString('sigma-modal--cases-index-action sigma-dialog-overlay', $view);
-        $this->assertStringContainsString("container: 'sigma-dialog-overlay'", $view);
-        $this->assertStringContainsString("popup: 'sigma-dialog-entrance'", $view);
+        $this->assertStringContainsString('<x-case-delete-confirmation-dialog />', $view);
         $this->assertStringContainsString('function setCasesDialogScrollUnlocked(unlocked)', $view);
         $this->assertStringContainsString('body.sigma-dialog-scroll-unlocked', $css);
+        $this->assertStringNotContainsString('window.Swal || window.swal', $view);
         $this->assertStringNotContainsString("document.documentElement.classList.toggle( 'sigma-dialog-scroll-unlocked'", $view);
         $this->assertStringNotContainsString('translateY(var(--sigma-dialog-enter-offset-y))', $css);
         $this->assertStringNotContainsString('background: rgba(15, 23, 42, 0.28);', $view);

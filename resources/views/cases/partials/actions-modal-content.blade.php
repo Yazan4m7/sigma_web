@@ -386,9 +386,8 @@
                 @if(Auth()->user()->is_admin && !$case->locked)
                     <a data-clientName="{{ $case->client->name ?? '-' }}"
                        data-patientName="{{ $case->patient_name }}"
-                       onclick="caseDelConfirmation(event)"
                        href="{{ route('delete-case', $case->id) }}"
-                       class="btn btn-danger sigma-action-btn"><span class="btn-icon"><i
+                       class="btn btn-danger sigma-action-btn js-case-delete"><span class="btn-icon"><i
                                 class="fas fa-trash"></i></span><span
                             class="btn-text">Delete</span></a>
                 @endif

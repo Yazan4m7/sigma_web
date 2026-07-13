@@ -2684,8 +2684,8 @@
                                         @endif
 
                                         @if(Auth()->user()->is_admin || $permissions->contains('permission_id', 131))
-                                            <a href="{{route('delete-case',$case->id)}}" onclick="caseDelConfirmation(event)"
-                                               class="btn btn-danger sigma-action-btn" data-clientName="{{ $case->client->name ?? '' }}" data-patientName="{{ $case->patient_name ?? '' }}">
+                                            <a href="{{route('delete-case',$case->id)}}"
+                                               class="btn btn-danger sigma-action-btn js-case-delete" data-clientName="{{ $case->client->name ?? '' }}" data-patientName="{{ $case->patient_name ?? '' }}" data-delete-show-loading="true">
                                                 <span class="btn-icon"><i class="fas fa-trash"></i></span><span class="btn-text">Delete</span>
                                             </a>
                                         @endif
@@ -2731,6 +2731,8 @@
         </div>
         @endif
         </div>
+
+        <x-case-delete-confirmation-dialog />
 
         <div class="modal fade sigma-modal--report-employees-filter" id="employeesFilterModal" tabindex="-1" aria-labelledby="employeesFilterModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
@@ -4813,40 +4815,16 @@
 
                 $(document).on('click.masterReportCaseActionsLoading', '.sigma-modal--master-report-case-actions a.sigma-action-btn', function() {
                     const href = this.getAttribute('href');
-                    const onclick = this.getAttribute('onclick') || '';
                     if (!href || href === '#' || this.hasAttribute('data-dismiss')) {
                         return;
                     }
-                    if (onclick.includes('caseDelConfirmation')) {
+                    if (this.classList.contains('js-case-delete')) {
                         return;
                     }
                     if (typeof window.showLoadingScreen === 'function') {
                         window.showLoadingScreen();
                     }
                 });
-
-                function caseDelConfirmation(ev) {
-                    ev.preventDefault();
-                    var urlToRedirect = ev.currentTarget.getAttribute('href');
-                    var clientName = ev.currentTarget.getAttribute('data-clientName');
-                    var patientName = ev.currentTarget.getAttribute('data-patientName');
-
-                    swal.fire({
-                        title: "You sure You want to delete.. </br>" + clientName + " - " + patientName,
-                        text: "This will also delete related info. (invoice, photos .. etc)?",
-                        icon: "warning",
-                        showDenyButton: true,
-                        confirmButtonText: 'Delete Case',
-                        denyButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            if (typeof window.showLoadingScreen === 'function') {
-                                window.showLoadingScreen();
-                            }
-                            window.location = urlToRedirect;
-                        }
-                    });
-                }
 
                 // --- Employee/Device Filter Modal Logic ---
                 let employeeFilterCount = 0;

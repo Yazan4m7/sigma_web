@@ -1167,9 +1167,20 @@
             background: transparent !important;
             border: 0 !important;
             box-shadow: none !important;
-            padding: 0 !important;
+            padding: 0 0 32px !important;
             position: relative;
             z-index: 1;
+        }
+
+        #casesTable_wrapper > #casesTable,
+        #casesTable_wrapper .dataTables_scrollBody {
+            border-bottom: 2px solid rgba(64, 131, 133, 0.72) !important;
+            box-shadow: 0 5px 10px -8px rgba(37, 52, 59, 0.65);
+        }
+
+        #casesTable_wrapper .dataTables_scrollBody > #casesTable {
+            border-bottom: 0 !important;
+            box-shadow: none;
         }
 
         .cases-table-shell .row,
@@ -1814,6 +1825,8 @@
                         </div>
                     </div>
                 </div>
+
+                <x-case-delete-confirmation-dialog />
 
             </div>
             <div style="text-align:right">
@@ -2717,56 +2730,6 @@
 
 
             } );
-
-            function caseDelConfirmation(ev) {
-                ev.preventDefault();
-                var urlToRedirect = ev.currentTarget.getAttribute( 'href' ); //use currentTarget because the click may be on the nested i tag and not a tag causing the href to be empty
-                var clientName = ev.currentTarget.getAttribute( 'data-clientName' );
-                var patientName = ev.currentTarget.getAttribute( 'data-patientName' );
-                var alert = window.Swal || window.swal;
-                var $openCaseActionsModal = $( '.sigma-modal--cases-index-actions.show' );
-
-                function showDeleteCaseAlert() {
-                    if (!alert || typeof alert.fire !== 'function') {
-                        return;
-                    }
-
-                    alert.fire( {
-                                   title: "You sure You want to delete.. </br>" + clientName + " - " + patientName ,
-                                   text: "This will also delete related info. (invoice, photos .. etc)?" ,
-                                   icon: "warning" ,
-                                   showCancelButton: true ,
-                                   confirmButtonText: 'Delete Case' ,
-                                   cancelButtonText: 'Cancel',
-                                   target: document.body,
-                                   customClass: {
-                                       container: 'sigma-dialog-overlay',
-                                       popup: 'sigma-dialog-entrance'
-                                   },
-                                   didOpen: function () {
-                                       setCasesDialogScrollUnlocked( true );
-                                   },
-                                   willClose: function () {
-                                       setCasesDialogScrollUnlocked( false );
-                                   }
-                               } ).then( (result) => {
-                        if (result.isConfirmed) {
-                            window.location = urlToRedirect;
-                        }
-                    } );
-                }
-
-                if ($openCaseActionsModal.length) {
-                    $openCaseActionsModal.one( 'hidden.bs.modal', function () {
-                        setTimeout( showDeleteCaseAlert, 0 );
-                    } );
-                    $openCaseActionsModal.modal( 'hide' );
-                    return;
-                }
-
-                showDeleteCaseAlert();
-
-            }
         </script>
         <script>
             $( document ).ready( function () {
