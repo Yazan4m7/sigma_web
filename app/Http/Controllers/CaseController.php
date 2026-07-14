@@ -1329,7 +1329,7 @@ class CaseController extends Controller
         return back()->with('success', "Case has been sent to Delivery Stage");
     }
 
-    public function finishCaseStage($caseId, $stage, $returnMessages = true, $jobs = [])
+    public function finishCaseStage($caseId, $stage, $returnMessages = true, $jobs = [], $deliveredInBox = false)
     {
         $hasScopedJobs = !empty($jobs) && count($jobs) > 0;
         Log::info('[finishCaseStage] called with parameters', [
@@ -1392,252 +1392,192 @@ class CaseController extends Controller
 
         if (!$jobs) return back()->with('error', 'No Jobs found.');
 
-        $nextStage = -3;
+        $jobIds = $jobs->pluck('id')->map(function ($jobId) {
+            return (int) $jobId;
+        })->all();
         $deviceId = $jobs->first()->device_id ?? null;
-        foreach ($jobs as $job) {
-            $nextStage = $this->getJobNextStage($job);
-            Log::info('[finishCaseStage] job', ['job' => $job, 'nextStage' => $nextStage]);
+        $userId = (int) Auth::id();
 
-            // before QC ( 7 = QC ) just send them to next stage
+        $completionResult = DB::transaction(function () use ($caseId, $stage, $jobIds, $deviceId, $userId, $deliveredInBox) {
+            $case = sCase::query()->lockForUpdate()->findOrFail($caseId);
+            $caseJobs = job::with('material')
+                ->where('case_id', $caseId)
+                ->lockForUpdate()
+                ->get();
+            $case->setRelation('jobs', $caseJobs);
 
-            if ($nextStage != 7) {
+            $jobsToFinish = $caseJobs->filter(function ($job) use ($jobIds, $stage) {
+                return in_array((int) $job->id, $jobIds, true)
+                    && (int) $job->stage === (int) $stage;
+            })->values();
+
+            if ($jobsToFinish->isEmpty()) {
+                return ['error' => 'No Jobs found.'];
+            }
+
+            $nextStages = [];
+            foreach ($jobsToFinish as $job) {
+                $nextStages[$job->id] = $this->getJobNextStage($job);
+                Log::info('[finishCaseStage] job', [
+                    'job' => $job,
+                    'nextStage' => $nextStages[$job->id],
+                ]);
+            }
+
+            if (in_array(7, $nextStages, true) && !$this->allJobsAreIn($case, 6)) {
+                return ['error' => 'Not all jobs are in finishing stage'];
+            }
+
+            $shouldIssueInvoice = false;
+            foreach ($jobsToFinish as $job) {
+                $nextStage = $nextStages[$job->id];
                 $job->assignee = null;
                 $job->stage = $nextStage;
-
                 $job->is_active = null;
                 $job->is_set = null;
                 $job->device_id = null;
-
                 $job->save();
-                //dd($job, $job->stage, $nextStage);
 
-            } // If Next stage is QC check if all jobs are ready (in finishing) or not before sending them to QC
-            else {
-                if ($this->allJobsAreIn($case, 6)) {
-                    $job->is_active = null;
-                    $job->is_set = null;
-                    $job->device_id = null;
-                    $job->assignee = null;
-                    $job->stage = $nextStage;
-                    if ($nextStage != 8)
-                        $this->issueInvoice($job);
-                    $job->save();
-                } else {
-                    if ($returnMessages)
-                        return back()->with('error', 'Not all jobs are in finishing stage');
+                if ((int) $nextStage === 7) {
+                    $shouldIssueInvoice = true;
                 }
             }
-        }
 
+            $caseJobs = job::with('material')
+                ->where('case_id', $caseId)
+                ->lockForUpdate()
+                ->get();
+            $case->setRelation('jobs', $caseJobs);
 
-        // if next stage is Delivery, create invoice
-//        if ($nextStage == 8) $this->applyInvoice($job);
-
-        // if all jobs are finished, apply invoice and set date delivered
-        if ($nextStage == -1) {
-
-            // Check for modification cases
-            if ($case->contains_modification == 1) {
-                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
-                // This handles cases where a case is modified multiple times - we always want the original date
-                $log = failureLog::where("case_id", $case->id)
-                    ->where('failure_type', 2)
-                    ->whereNotNull('old_delivery_date')
-                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
-                    ->withTrashed()
-                    ->first();
-
-                // If no log with valid date found, try to get any modification log
-                if (!$log) {
-                    $log = failureLog::where("case_id", $case->id)
-                        ->where('failure_type', 2)
-                        ->orderBy('id', 'desc')
-                        ->withTrashed()
-                        ->first();
-                }
-
-                // if the failure log is found with a valid old_delivery_date
-                if ($log && $log->old_delivery_date) {
-                    // Preserve original delivery date from failure log
-                    $case->actual_delivery_date = $log->old_delivery_date;
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
-                    $note->note = "Modification Delivered - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-
-                    // if contains modification and the failure was not found or has no date
-                } else {
-                    $case->actual_delivery_date = now();
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Modification Delivered - No previous delivery date found, using current time";
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                }
-            } // Check for repeat cases (they don't use contains_modification flag)
-            elseif ($case->first_case_if_repeated) {
-                // Repeat cases should be treated as new deliveries
-                $case->actual_delivery_date = now();
-                $note = new note();
-                $note->case_id = $case->id;
-                $note->note = "Repeat Case Delivered - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
-                $note->written_by = Auth()->user()->id;
-                $note->save();
-            } else {
-                // Normal case - use current delivery time
-                $case->actual_delivery_date = now();
+            if ($shouldIssueInvoice) {
+                $this->issueInvoiceForLockedCase($case);
             }
 
+            $allJobsCompleted = $caseJobs->isNotEmpty() && $caseJobs->every(function ($caseJob) {
+                return (int) $caseJob->stage === -1;
+            });
+            $deliveryTransition = $allJobsCompleted && (int) $case->delivered_to_client !== 1;
 
-            $case->delivered_to_client = 1;
-            $case->save();
-            $this->applyInvoice($job);
+            if ($allJobsCompleted) {
+                if ($deliveryTransition) {
+                    $this->markCaseDelivered($case, (bool) $deliveredInBox, $userId);
+                }
+
+                // Some materials skip QC, so the invoice must also be ensured at actual completion.
+                $this->issueInvoiceForLockedCase($case);
+                $this->applyInvoiceForLockedCase($case);
+            }
+
+            // A Delivery Complete log represents the whole case, not a partial set of jobs.
+            if ((int) $stage !== 8 || ($allJobsCompleted && $deliveryTransition)) {
+                $logStage = $stage;
+                if ((int) $stage === 2) {
+                    $logStage = $this->stageActions['MILLING_COMPLETE'];
+                } elseif ((int) $stage === 3) {
+                    $logStage = $this->stageActions['PRINTING_COMPLETE'];
+                } elseif ((int) $stage === 4) {
+                    $logStage = $this->stageActions['SINTERING_COMPLETE'];
+                } elseif ((int) $stage === 5) {
+                    $logStage = $this->stageActions['PRESSING_COMPLETE'];
+                } elseif ((int) $stage === 8) {
+                    $logStage = $this->stageActions['DELIVERY_COMPLETE'];
+                }
+
+                $log = new caseLog([
+                    'user_id' => $userId,
+                    'case_id' => $caseId,
+                    'stage' => $logStage,
+                    'device_id' => $deviceId,
+                    'action_type' => 3,
+                    'is_completion' => 1,
+                ]);
+                $log->save();
+            }
+
+            return [
+                'delivery_transition' => $deliveryTransition,
+            ];
+        });
+
+        if (!empty($completionResult['error'])) {
+            return back()->with('error', $completionResult['error']);
         }
 
-        // Substage logic for main manufacturing stages
-        $logStage = $stage;
-        $isCompletion = 1;
-        if ($stage == 2) {
-            $logStage = $this->stageActions['MILLING_COMPLETE'];
+        if (!empty($completionResult['delivery_transition'])) {
+            DB::afterCommit(function () use ($caseId) {
+                $this->sendCaseDeliveryNotificationSafely((int) $caseId);
+            });
         }
-        if ($stage == 3) {
-            $logStage = $this->stageActions['PRINTING_COMPLETE'];
-        }
-        if ($stage == 4) {
-            $logStage = $this->stageActions['SINTERING_COMPLETE'];
-        }
-        if ($stage == 5) {
-            $logStage = $this->stageActions['PRESSING_COMPLETE'];
-        }
-        if ($stage == 8) {
-            $logStage = $this->stageActions['DELIVERY_COMPLETE'];
-        }
-        $log = new caseLog([
-            'user_id' => Auth()->user()->id,
-            'case_id' => $caseId,
-            'stage' => $logStage,
-            'device_id' => $deviceId,
-            'action_type' => 3, // 3 = complete
-            'is_completion' => $isCompletion
-        ]);
-        $log->save();
 
         if ($returnMessages)
-            return back()->with('success', "Case have been marked as finished.");
+            return back()->with(
+                'success',
+                $deliveredInBox
+                    ? "Case have been marked as finished & delivered in box."
+                    : "Case have been marked as finished."
+            );
     }
 
     public function deliveredInBox($caseId)
     {
-        //$assignee is the employee currently working on the jobs
-        $assignee = job::where("case_id", $caseId)->where("stage", 8)->first()->assignee;
-        if (!$assignee) return back()->with('error', "Case Already Completed");
-        // $assignee = job::where("case_id", $caseId)->where("stage", 8)->first()->assignee;
-        $jobs = job::where("case_id", $caseId)->where("stage", 8)->where("assignee", $assignee)->get();
-        $case = sCase::findOrFail($caseId);
+        return $this->finishCaseStage($caseId, 8, true, [], true);
+    }
 
-        if (!$jobs) return back()->with('error', 'No Jobs found.');
+    private function markCaseDelivered(sCase $case, bool $deliveredInBox, int $userId): void
+    {
+        $deliveryLabel = $deliveredInBox ? 'Delivered (In Box)' : 'Delivered';
 
-        $nextStage = -3;
-        foreach ($jobs as $job) {
+        if ((int) $case->contains_modification === 1) {
+            $failureLog = failureLog::where('case_id', $case->id)
+                ->where('failure_type', 2)
+                ->whereNotNull('old_delivery_date')
+                ->orderBy('id', 'asc')
+                ->withTrashed()
+                ->first();
 
-            $nextStage = $this->getJobNextStage($job);
-
-            // before QC ( 7 = QC ) just send them to next stage
-            if ($nextStage != 7) {
-                $job->assignee = null;
-
-                $job->stage = $nextStage;
-                $job->save();
-            } // If Next stage is QC check if all jobs are ready (in finishing) or not before sending them to QC
-            else {
-                if ($this->allJobsAreIn($case, 6)) {
-
-                    $job->assignee = null;
-                    $job->stage = $nextStage;
-                    $job->save();
-                } else
-                    return back()->with('error', 'Not all jobs are in finishing stage');
-            }
-        }
-
-
-        // if next stage is Delivery, create invoice
-        if ($nextStage == 8) {
-
-            $job->is_set = null;
-            $job->assignee = $assignee;
-            $job->is_set = null;
-        }
-
-        // if all jobs are finished, apply invoice and set date delivered
-        if ($nextStage == -1) {
-            $case->delivered_in_box = 1;
-            $this->createTag($case, 15);
-            // Check for modification cases
-            if ($case->contains_modification == 1) {
-                // Look for the FIRST failure log with a valid old_delivery_date (the original delivery)
-                // This handles cases where a case is modified multiple times - we always want the original date
-                $log = failureLog::where("case_id", $case->id)
+            if (!$failureLog) {
+                $failureLog = failureLog::where('case_id', $case->id)
                     ->where('failure_type', 2)
-                    ->whereNotNull('old_delivery_date')
-                    ->orderBy('id', 'asc')  // Get the FIRST log with valid date (original delivery)
+                    ->orderBy('id', 'desc')
                     ->withTrashed()
                     ->first();
-
-                // If no log with valid date found, try to get any modification log
-                if (!$log) {
-                    $log = failureLog::where("case_id", $case->id)
-                        ->where('failure_type', 2)
-                        ->orderBy('id', 'desc')
-                        ->withTrashed()
-                        ->first();
-                }
-
-                // if the failure log is found with a valid old_delivery_date
-                if ($log && $log->old_delivery_date) {
-                    // Preserve original delivery date from failure log
-                    $case->actual_delivery_date = $log->old_delivery_date;
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $logStatus = $log->trashed() ? " (recovered from deleted log)" : "";
-                    $note->note = "Modification Delivered (In Box) - Original delivery date preserved: " . date('Y-m-d H:i:s', strtotime($log->old_delivery_date)) . $logStatus;
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-
-                    // if contains modification and the failure was not found or has no date
-                } else {
-                    $case->actual_delivery_date = now();
-                    $note = new note();
-                    $note->case_id = $case->id;
-                    $note->note = "Modification Delivered (In Box) - No previous delivery date found, using current time";
-                    $note->written_by = Auth()->user()->id;
-                    $note->save();
-                }
-            } // Check for repeat cases (they don't use contains_modification flag)
-            elseif ($case->first_case_if_repeated) {
-                // Repeat cases should be treated as new deliveries
-                $case->actual_delivery_date = now();
-                $note = new note();
-                $note->case_id = $case->id;
-                $note->note = "Repeat Case Delivered (In Box) - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
-                $note->written_by = Auth()->user()->id;
-                $note->save();
-            } else {
-                // Normal case - use current delivery time
-                $case->actual_delivery_date = now();
             }
-            $case->delivered_to_client = 1;
-            $case->save();
-            $this->applyInvoice($job);
+
+            $case->actual_delivery_date = $failureLog && $failureLog->old_delivery_date
+                ? $failureLog->old_delivery_date
+                : now();
+
+            $deliveryNote = new note();
+            $deliveryNote->case_id = $case->id;
+            if ($failureLog && $failureLog->old_delivery_date) {
+                $logStatus = $failureLog->trashed() ? ' (recovered from deleted log)' : '';
+                $deliveryNote->note = "Modification {$deliveryLabel} - Original delivery date preserved: "
+                    . date('Y-m-d H:i:s', strtotime($failureLog->old_delivery_date))
+                    . $logStatus;
+            } else {
+                $deliveryNote->note = "Modification {$deliveryLabel} - No previous delivery date found, using current time";
+            }
+            $deliveryNote->written_by = $userId;
+            $deliveryNote->save();
+        } elseif ($case->first_case_if_repeated) {
+            $case->actual_delivery_date = now();
+            $deliveryNote = new note();
+            $deliveryNote->case_id = $case->id;
+            $deliveryNote->note = "Repeat Case {$deliveryLabel} - New delivery date set for repeat of case #{$case->first_case_if_repeated}";
+            $deliveryNote->written_by = $userId;
+            $deliveryNote->save();
+        } else {
+            $case->actual_delivery_date = now();
         }
 
+        $case->delivered_to_client = 1;
+        $case->delivered_in_box = $deliveredInBox ? 1 : 0;
+        $case->notification_sent = 0;
+        $case->save();
 
-        $log = new caseLog(['user_id' => Auth()->user()->id, 'case_id' => $caseId, 'stage' => $this->stageActions['DELIVERY_COMPLETE'], 'is_completion' => 1]);
-        $log->save();
-
-        return back()->with('success', "Case have been marked as finished & delivered in box.");
+        if ($deliveredInBox) {
+            $this->createTag($case, 15);
+        }
     }
 
 
@@ -1672,134 +1612,251 @@ class CaseController extends Controller
 
     public function issueInvoice($job)
     {
-        $case = sCase::findOrFail($job->case_id);
+        return $this->issueInvoiceForCase((int) $job->case_id);
+    }
 
-        if ($case->contains_modification) return;
+    public function issueInvoiceForCase(int $caseId)
+    {
+        return DB::transaction(function () use ($caseId) {
+            $case = sCase::query()->lockForUpdate()->findOrFail($caseId);
+            $caseJobs = job::with('material')
+                ->where('case_id', $caseId)
+                ->lockForUpdate()
+                ->get();
+            $case->setRelation('jobs', $caseJobs);
 
-        // Check if invoice already exists for this case
-        $existingInvoice = invoice::where('case_id', $case->id)->first();
+            return $this->issueInvoiceForLockedCase($case);
+        });
+    }
 
-        if ($job->is_repeat) {
-            // For repeat jobs, create/update invoice with zero amount
-            if ($existingInvoice) {
-                // Update existing invoice
-                $existingInvoice->status = 0;
-                $existingInvoice->amount = 0;
-                $existingInvoice->save();
-            } else {
-                // Create new invoice
-                $invoice = new invoice();
-                $invoice->status = 0;
-                $invoice->amount = 0;
-                $invoice->case_id = $case->id;
-                $invoice->doctor_id = $case->client->id;
-                $invoice->save();
+    private function issueInvoiceForLockedCase(sCase $case)
+    {
+        $existingInvoice = invoice::where('case_id', $case->id)
+            ->lockForUpdate()
+            ->first();
+
+        // Never reopen an invoice that has already affected the client balance.
+        if ($existingInvoice) {
+            $statusApplied = (int) $existingInvoice->status === 1;
+            $dateApplied = !empty($existingInvoice->date_applied);
+
+            if ($statusApplied !== $dateApplied) {
+                throw new \RuntimeException(
+                    "Invoice #{$existingInvoice->id} has inconsistent application markers."
+                );
             }
-            return;
+
+            if ($statusApplied) {
+                return $existingInvoice;
+            }
         }
 
-        // Calculate invoice amount
-        $invoiceApplicable = true;
+        // Modification work is not billed. Preserve a pending invoice that was
+        // created for the original delivery so the guarded apply path can finish it.
+        if ((int) $case->contains_modification === 1) {
+            return $existingInvoice;
+        }
+
         $invoiceAmount = 0;
+        $hasBillableJobs = false;
         foreach ($case->jobs as $job) {
-            if ($job->is_repeat == 1 || $job->is_repeat == '1' || $job->is_modification == 1 || $job->is_modification == '1')
+            if ((int) $job->is_repeat === 1 || (int) $job->is_modification === 1) {
                 continue;
+            }
+
+            $hasBillableJobs = true;
             $jobPrice = (count(explode(',', $job->unit_num)) * $job->material->price) - $this->getDiscount($job, $case);
             $invoiceAmount += $jobPrice;
         }
 
-        if ($invoiceApplicable) {
-            if ($existingInvoice) {
-                // Update existing invoice instead of creating a new one
-                $invoice = $existingInvoice;
-                $invoice->status = 0;
-                $invoice->case_id = $case->id;
-                $invoice->doctor_id = $case->client->id;
-                if (isset($case->discount)) {
-                    $invoice->amount_before_discount = $invoiceAmount;
-                    $invoice->amount = $invoiceAmount - $case->discount->discount;
-                } else {
-                    $invoice->amount = $invoiceAmount;
-                    $invoice->amount_before_discount = $invoiceAmount;
-                }
-                $invoice->save();
-            } else {
-                // Create new invoice only if one doesn't exist
-                $invoice = new invoice();
-                $invoice->status = 0;
-                $invoice->case_id = $case->id;
-                $invoice->doctor_id = $case->client->id;
-                if (isset($case->discount)) {
-                    $invoice->amount_before_discount = $invoiceAmount;
-                    $invoice->amount = $invoiceAmount - $case->discount->discount;
-                } else {
-                    $invoice->amount = $invoiceAmount;
-                    $invoice->amount_before_discount = $invoiceAmount;
-                }
-                $invoice->save();
-            }
+        if (!$hasBillableJobs) {
+            return $existingInvoice;
         }
+
+        $invoice = $existingInvoice ?: new invoice();
+        $invoice->status = 0;
+        $invoice->case_id = $case->id;
+        $invoice->doctor_id = $case->doctor_id;
+        $invoice->amount_before_discount = $invoiceAmount;
+
+        if ($hasBillableJobs && $case->discount) {
+            $invoice->amount = $invoiceAmount - $case->discount->discount;
+        } else {
+            $invoice->amount = $invoiceAmount;
+        }
+
+        $invoice->save();
+
+        return $invoice;
     }
 
     public function applyInvoice($job)
     {
-        $case = sCase::with(['invoice', 'client', 'jobs'])->find($job->case_id);
+        return $this->applyInvoiceForCase((int) $job->case_id);
+    }
 
-        if (!$case) {
-            return;
-        }
+    public function applyInvoiceForCase(int $caseId): bool
+    {
+        return DB::transaction(function () use ($caseId) {
+            $case = sCase::query()->lockForUpdate()->findOrFail($caseId);
+            $caseJobs = job::with('material')
+                ->where('case_id', $caseId)
+                ->lockForUpdate()
+                ->get();
+            $case->setRelation('jobs', $caseJobs);
 
-        // Only notify/apply invoices after the case is actually completed
-        $allJobsCompleted = $case->jobs->every(function ($job) {
-            return $job->stage == -1;
-        });
+            $allJobsCompleted = $caseJobs->isNotEmpty() && $caseJobs->every(function ($caseJob) {
+                return (int) $caseJob->stage === -1;
+            });
 
-        if (!$allJobsCompleted) {
-            return;
-        }
-        if ($case->notification_sent == 1) {
-            return;
-        } else {
-            $case->notification_sent = 1;
-            $case->save();
-        }
-
-        $patientName = $case->patient_name;
-        $client = $case->client;
-        $clientTokens = MobileNotificationToken::where("client_id", $client->id)->get();
-
-        foreach ($clientTokens as $token) {
-            if ($case->delivered_in_box) {
-//                dd("Sent in-box notification for case id :  " . $case->id);
-                $this->sendCaseNotification($token->token, "Case has been delivered in box", "Case of $patientName has been delivered In-Box", "1");
-            } else {
-//                dd("Sent notification for case id :  " . $case->id);
-                $this->sendCaseNotification($token->token, "Case has been delivered", "Case of $patientName has been delivered", "1");
+            if (!$allJobsCompleted) {
+                return false;
             }
-        }
 
-//        if ($case[0]->delivered_in_box) {
-//            $this->sendCaseNotification($client->doc_notification_token, "Case has been delivered in box", "Case of $patientName has been delivered In-Box", "1");
-//            $this->sendCaseNotification($client->clinic_notification_token, "Case has been delivered in box", "Case of $patientName has been delivered In-Box", "1");
-//        } else// 0 => open app, 1 => open case, 2 => open statement
-//        {
-//            $this->sendCaseNotification($client->doc_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
-//            $this->sendCaseNotification($client->clinic_notification_token, "Case has been delivered", "Case of $patientName has been delivered", "1");
-//        }
-        if ($case->contains_modification) {
-            return;
-        }
+            $this->issueInvoiceForLockedCase($case);
 
-        $invoice = $case->invoice;
+            return $this->applyInvoiceForLockedCase($case);
+        });
+    }
+
+    private function applyInvoiceForLockedCase(sCase $case): bool
+    {
+        $invoice = invoice::where('case_id', $case->id)
+            ->lockForUpdate()
+            ->first();
+
         if (!$invoice) {
-            return;
+            throw new \RuntimeException("Invoice could not be issued for case #{$case->id}.");
         }
 
-        $client->balance = $client->balance + ($invoice->amount ?? 0);
+        $statusApplied = (int) $invoice->status === 1;
+        $dateApplied = !empty($invoice->date_applied);
+        if ($statusApplied !== $dateApplied) {
+            throw new \RuntimeException(
+                "Invoice #{$invoice->id} has inconsistent application markers."
+            );
+        }
+
+        if ($statusApplied) {
+            return false;
+        }
+
+        if ((int) $case->contains_modification === 1
+            && !$this->isSafePendingOriginalInvoiceForModifiedCase($case, $invoice)) {
+            return false;
+        }
+
+        $client = client::where('id', $case->doctor_id)
+            ->lockForUpdate()
+            ->first();
+
+        if (!$client) {
+            throw new \RuntimeException("Client could not be found for case #{$case->id}.");
+        }
+
+        $client->balance = (float) $client->balance + (float) ($invoice->amount ?? 0);
         $invoice->status = 1;
-        $invoice->date_applied = now();
+        $invoice->date_applied = $case->actual_delivery_date ?: now();
         $invoice->save();
         $client->save();
+
+        return true;
+    }
+
+    private function isSafePendingOriginalInvoiceForModifiedCase(sCase $case, invoice $invoice): bool
+    {
+        if ((int) $invoice->status !== 0
+            || !empty($invoice->date_applied)
+            || (int) $invoice->doctor_id !== (int) $case->doctor_id
+            || (float) $invoice->amount <= 0) {
+            return false;
+        }
+
+        $modificationLog = failureLog::withTrashed()
+            ->where('case_id', $case->id)
+            ->where('failure_type', 2)
+            ->whereNotNull('old_delivery_date')
+            ->orderBy('created_at')
+            ->orderBy('id')
+            ->lockForUpdate()
+            ->first();
+
+        if (!$modificationLog) {
+            return false;
+        }
+
+        $invoiceCreatedAt = $invoice->getRawOriginal('created_at');
+        $modificationCreatedAt = $modificationLog->getRawOriginal('created_at');
+        $originalDeliveryAt = $modificationLog->getRawOriginal('old_delivery_date');
+        $caseDeliveryAt = $case->getRawOriginal('actual_delivery_date');
+
+        if (!$invoiceCreatedAt || !$modificationCreatedAt || !$originalDeliveryAt || !$caseDeliveryAt) {
+            return false;
+        }
+
+        if (\Carbon\Carbon::parse($invoiceCreatedAt)->gt(\Carbon\Carbon::parse($modificationCreatedAt))
+            || !\Carbon\Carbon::parse($originalDeliveryAt)->equalTo(\Carbon\Carbon::parse($caseDeliveryAt))) {
+            return false;
+        }
+
+        $originalJobs = $case->jobs->filter(function ($job) {
+            return (int) $job->is_repeat !== 1 && (int) $job->is_modification !== 1;
+        });
+
+        return $originalJobs->isNotEmpty() && $originalJobs->every(function ($job) {
+            return (int) $job->stage === -1;
+        });
+    }
+
+    private function sendCaseDeliveryNotificationSafely(int $caseId): void
+    {
+        try {
+            $case = sCase::with('client')->find($caseId);
+            if (!$case || (int) $case->notification_sent === 1) {
+                return;
+            }
+
+            if (!$case->client) {
+                throw new \RuntimeException("Client could not be found for case #{$caseId} notification.");
+            }
+
+            $tokens = MobileNotificationToken::where('client_id', $case->client->id)
+                ->whereNotNull('token')
+                ->pluck('token')
+                ->filter()
+                ->unique()
+                ->values();
+
+            foreach ($tokens as $token) {
+                if ((int) $case->delivered_in_box === 1) {
+                    $this->sendCaseNotification(
+                        $token,
+                        'Case has been delivered in box',
+                        "Case of {$case->patient_name} has been delivered In-Box"
+                    );
+                } else {
+                    $this->sendCaseNotification(
+                        $token,
+                        'Case has been delivered',
+                        "Case of {$case->patient_name} has been delivered"
+                    );
+                }
+            }
+
+            sCase::where('id', $caseId)
+                ->where('delivered_to_client', 1)
+                ->where(function ($query) {
+                    $query->whereNull('notification_sent')
+                        ->orWhere('notification_sent', '!=', 1);
+                })
+                ->update(['notification_sent' => 1]);
+        } catch (\Throwable $exception) {
+            Log::error('[case-delivery-notification] delivery notification failed', [
+                'case_id' => $caseId,
+                'exception' => get_class($exception),
+                'message' => $exception->getMessage(),
+            ]);
+        }
     }
 
     public function invoicesList(Request $request)
@@ -2432,7 +2489,11 @@ class CaseController extends Controller
 
     public function completeByAdmin($id, $stage)
     {
-        $this->finishCaseStage($id, $stage, false);
+        $finishResponse = $this->finishCaseStage($id, $stage, false);
+        if ($finishResponse) {
+            return $finishResponse;
+        }
+
         return back()->with('success', 'Case has been overridden & completed successfully.');
     }
 

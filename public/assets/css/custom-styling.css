@@ -109,8 +109,7 @@ body.sigma-dialog-scroll-unlocked {
 
 .sigma-close-button {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    justify-content: space-around;
     width: 36px;
     height: 36px;
     padding: 0;
@@ -123,6 +122,10 @@ body.sigma-dialog-scroll-unlocked {
     cursor: pointer;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.2s ease;
+    align-items: center;
+    align-content: stretch;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 .sigma-close-button:hover {
@@ -13593,6 +13596,7 @@ body.ysh-dialog-open {
     font-size: 12px;
     text-transform: uppercase;
     color: #6c757d;
+    margin-top: 0.3rem;
     margin-bottom: 2px;
     display: block;
 }

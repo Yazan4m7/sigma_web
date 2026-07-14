@@ -205,6 +205,7 @@ a:hover {
 }
 
 a:not([href]):not([tabindex]) {
+    color: white;
     text-decoration: none;
 }
 
@@ -6178,7 +6179,7 @@ button.close {
     }
 
     .modal-backdrop.show {
-        opacity: 0.16;
+        opacity: 0.8;
     }
 
 .modal-header {
@@ -13272,7 +13273,7 @@ img {
             /*right: 27px;*/
             /*top: 24px;*/
             /*outline: 0;*/
-            padding: 1rem;
+            /* padding: 1rem; */
             margin: -1rem -1rem -1rem 0;
         }
 
@@ -13324,7 +13325,7 @@ img {
     }
 
 .modal-backdrop {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0 0 0 / 60%);
 }
 
 .modal.modal-default .modal-content {

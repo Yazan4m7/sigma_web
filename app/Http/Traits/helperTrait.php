@@ -370,7 +370,7 @@ trait helperTrait
     {
         $arr = array();
     }
-    public function generateAccessToken()
+    public function generateAccessToken(): ?string
     {
         $accessTokenLink = 'https://oauth2.googleapis.com/token';
 
@@ -394,38 +394,83 @@ trait helperTrait
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-        // Execute cURL session
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+
         $response = curl_exec($ch);
+        $curlError = curl_error($ch);
+        $curlErrorNumber = curl_errno($ch);
+        $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
         if ($response === false) {
-            throw new Exception(curl_error($ch), curl_errno($ch));
+            throw new Exception($curlError, $curlErrorNumber);
         }
-$json = json_decode($response, true);
-        return $json["access_token"];
+
+        $json = json_decode($response, true);
+        if (!is_array($json)) {
+            throw new \RuntimeException('Google OAuth token request returned invalid JSON.');
+        }
+
+        if ($httpCode < 200 || $httpCode >= 300 || empty($json['access_token'])) {
+            $error = $json['error'] ?? 'unknown_error';
+            $description = $json['error_description'] ?? 'Access token was not returned.';
+
+            if ($this->isInvalidJwtOAuthError((string) $error, (string) $description)) {
+                return null;
+            }
+
+            throw new \RuntimeException(
+                "Google OAuth token request failed ({$httpCode}): {$error}: {$description}"
+            );
+        }
+
+        return $json['access_token'];
     }
+
+    protected function isInvalidJwtOAuthError(string $error, string $description): bool
+    {
+        $message = strtolower(trim($error . ' ' . $description));
+
+        return str_contains($message, 'invalid jwt')
+            || (strtolower($error) === 'invalid_grant' && str_contains($message, 'jwt'));
+    }
+
     public function generateJWT()
     {
+        $serviceAccountPath = config_path('service_account_2.json');
+        $serviceAccount = json_decode(
+            file_get_contents($serviceAccountPath),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
 
-        $googleConfig = [
-            'iss' => 'sigmalab@sigma-f8312.iam.gserviceaccount.com',
-            'private_key' => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDVMjAPM6z/N0Ni\njHx1cdAMQN2nNjCLnRx5CZIy2mhT709U75EAEmrWrQjtlIVTsOfwBudim+YqDjLw\nrnxTHDjwBNsAogxVmu8fj5Di1z3mjfMlWajeyYGXaT0SVcblM53Lc5MhJxtCJk28\nWcGHmgVT1o0hewNuFf9qgDZyf2vbXbSsmYQVz1Rc/v0PIHd8rHreH5W5AmyTcZhh\nZSk5+MYxl1uEUlAnKZ16csjrT5AV8IyassK3Ru1QSP7loAmxi501QVxwZ9OvBJS8\nadcAL9H3YwFicg9eyetSleOiyfbTw6jH91PZS21jaUkD0oKGEFNQnvJywB81uvcH\nO9FZ7SWJAgMBAAECggEAL5qMu6A8xSHoVHVtBuZaX5oORBtn/Iygwm/+Koe1GuTJ\nEHyLonn6TCQH5dCvcpACQgiwmsaXvpU8D5zOWtpm5kUXR41ndqfpM+FhJx2Lj1Lr\n00+xUsmou4++mLz5c80yMy8Dz7fFMOCPo/pgqbAc92rlSXAHxIl55iRpw+gqw6jA\n6YB0P9vGFe8dGTQmamnGNu5jtRDWaNeGOYmBGON0gXsp+I2dGjNmMOwDYOWDR+CF\nKSqyikS+LFrvXXvmqVfBPAqV0bWCCytkAEE4ddGtyhW03VMaNS7UlMaNWTVkSsxb\nEA57dcRZmFsEmz9updR23OfripMmmmas2p0TGgmbuQKBgQDt+yFpmcvYttQm1QD/\nG065hwbcvoBwV+eBHV0lSRnRLeQ4OIC9WfLW/CI4Foe68OygVhh5DSGmdBvZIraJ\n2ooYTmOSxULGJZ8D/wUnLWjOymljG9EKjiLOt8+Eiv3LVginjb6B9QSNCQ8vxwD5\nS01yPu/hfARuoh9JWRT5MBrbFQKBgQDlVqRga58IZy0jAMyUwTIUN
-            wcuq8HbUHRs\nWyMTkKTIRAFPpg99uXaNUSrniJZAToGOYfFaMDuk3yYBjMxViyllRqrP+FKwyeGT\n//sSNaJXxccEd5h2sBzyicSuXOmcydPHZLkc1QQ+ZczDrZE9AM0i1ycBvDrBTNA3\nr6zLAX5tpQKBgQCGJxsevGP9NpNBkLGPHYWzcDqeFYWxztviHPt1GVBEaupMBw4L\nr7kFF/zyQUEiUM4TVHVXR9/ARZOtQ7RC4b8XFJltE2Yg7PRG/GubOi3q5I+kHvoo\nSRe2EEgbH38SMN2QFodeGxEFsCWveS9DWP+/d1sicRbOhvW8E0uPbV62QQKBgC2M\nP6lGtpccpsJE7ly84g1RwINsaVv9ZqH+l8DTAWck2n3PJVR6+Sin7jV90xmCfgih\nOyYGXlIoX4v/QrXapaYPmu0jDIlADyUtuder/0ofZZ9lgUpRP+6LnhxjJ6KUExOO\n1ZT8WZNq9HgIiMfs2NEKmhymHaU2dEQbB95ptYphAoGAIyt1PWeDS0itBpdiU/Ex\nlFBJJThpFpgPeniEeLPHYwxmSyxZA+YGlaDL3FUKFFzXd6dXzVSXEYWCzCxXdCaD\nlIWsg9FEDR10izL7tWFMRrh4xI+LerkRwDh9tvCdA9qCasuhYKhlrXqNZdfEth5p\nObe4WbY0++PGApnSltuiTNc=\n-----END PRIVATE KEY-----\n\\",
-            'aud' => 'https://www.googleapis.com/oauth2/v4/token',
-            'exp' => time() + 3600,
-            "scope" => "https://www.googleapis.com/auth/firebase.messaging", // Expiration time (1 hour from now)
-            "iat" =>  time()
+        if (empty($serviceAccount['client_email']) || empty($serviceAccount['private_key'])) {
+            throw new \RuntimeException('Firebase service account credentials are incomplete.');
+        }
+
+        $issuedAt = time();
+        $claims = [
+            'iss' => $serviceAccount['client_email'],
+            'scope' => 'https://www.googleapis.com/auth/firebase.messaging',
+            'aud' => 'https://oauth2.googleapis.com/token',
+            'iat' => $issuedAt,
+            'exp' => $issuedAt + 3600,
         ];
 
-        // Create the JWT
-        $jwt = JWT::encode($googleConfig, $googleConfig['private_key'], 'RS256');
-
-        return $jwt;
+        return JWT::encode(
+            $claims,
+            $serviceAccount['private_key'],
+            'RS256',
+            $serviceAccount['private_key_id'] ?? null
+        );
     }
-
     function contains($needle, $haystack)
     {
         return strpos($haystack, $needle) !== false;
     }
-    public function sendCaseNotification($token, $title, $body)
+    public function sendCaseNotification($token, $title, $body): bool
     {
 
         $fcmsendUrl = 'https://fcm.googleapis.com/v1/projects/sigma-f8312/messages:send';
@@ -454,9 +499,14 @@ $json = json_decode($response, true);
         ];
 
 
+        $accessToken = $this->generateAccessToken();
+        if (empty($accessToken)) {
+            return false;
+        }
+
         $jsonMessage = json_encode($notificationMessage);
         $headers = [
-            'Authorization: Bearer ' . $this->generateAccessToken(),
+            'Authorization: Bearer ' . $accessToken,
             'Content-Type: application/json; charset=utf-8',
         ];
         $ch = curl_init($fcmsendUrl);
@@ -467,16 +517,35 @@ $json = json_decode($response, true);
         curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 20);
         $response = curl_exec($ch);
-        if ($response === false) {
-            throw new Exception(curl_error($ch), curl_errno($ch));
-        }
-
+        $curlError = curl_error($ch);
+        $curlErrorNumber = curl_errno($ch);
+        $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
 
+        if ($response === false) {
+            throw new Exception($curlError, $curlErrorNumber);
+        }
+
+        if ($httpCode < 200 || $httpCode >= 300) {
+            $json = json_decode($response, true);
+            $message = is_array($json)
+                ? ($json['error']['message'] ?? $json['error'] ?? 'Unknown FCM error')
+                : 'Invalid FCM response';
+
+            if (is_array($message)) {
+                $message = json_encode($message);
+            }
+
+            throw new \RuntimeException("FCM request failed ({$httpCode}): {$message}");
+        }
+
+        return true;
     }
 
-    public function sendPaymentNotification($token, $title, $body)
+    public function sendPaymentNotification($token, $title, $body): bool
     {
 
 
@@ -509,9 +578,14 @@ $json = json_decode($response, true);
             ]
         ];
 
+        $accessToken = $this->generateAccessToken();
+        if (empty($accessToken)) {
+            return false;
+        }
+
         $jsonMessage = json_encode($notificationMessage);
         $headers = [
-            'Authorization: Bearer ' . $this->generateAccessToken(),
+            'Authorization: Bearer ' . $accessToken,
             'Content-Type: application/json; charset=utf-8',
         ];
 
@@ -532,6 +606,8 @@ $json = json_decode($response, true);
             throw new Exception(curl_error($ch), curl_errno($ch));
         }
         curl_close($ch);
+
+        return true;
     }
 
     private function saveImageUnder2MBAsWebp(string $srcPath, string $destPath, int $maxBytes = 2097152): void

@@ -34,12 +34,23 @@ class ToolsController extends Controller
                     $jq->where('stage', '>=', 7)->orWhere('stage', -1);
                 });
             })->orWhereNotNull('actual_delivery_date');
+        })->whereHas('jobs', function ($jobQuery) {
+            // Repeat/modification-only cases are intentionally non-billable, including
+            // cases that already received a legacy zero-value pending invoice.
+            $jobQuery->where('is_repeat', 0)
+                ->where('is_modification', 0);
         })->where(function ($q) {
-            // Include cases that don't have an invoice OR have an invoice but date_applied is NULL (not applied yet)
-            $q->whereDoesntHave('invoice')
-              ->orWhereHas('invoice', function ($iq) {
-                  $iq->whereNull('date_applied')->orWhere('date_applied', '');
-              });
+            // Existing pending invoices remain visible because they may belong to the
+            // original delivery before a later modification.
+            $q->where(function ($missingInvoiceQuery) {
+                $missingInvoiceQuery->whereDoesntHave('invoice');
+            })->orWhereHas('invoice', function ($invoiceQuery) {
+                $invoiceQuery->where(function ($pendingQuery) {
+                    $pendingQuery->where('status', '!=', 1)
+                        ->orWhereNull('date_applied')
+                        ->orWhere('date_applied', '');
+                });
+            });
         });
 
         $from = $request->from ? $request->from : now()->startOfMonth()->format('Y-m-d');
@@ -86,14 +97,9 @@ class ToolsController extends Controller
             return back()->with('error', 'Case has no jobs to calculate invoice.');
         }
 
-        // Prefer a non-repeat, non-modification job if available
-        $job = $case->jobs->first(function ($j) {
-            return empty($j->is_repeat) && empty($j->is_modification);
-        }) ?? $case->jobs->first();
-
         try {
             $caseController = app(CaseController::class);
-            $caseController->issueInvoice($job);
+            $caseController->issueInvoiceForCase((int) $case->id);
             return back()->with('success', "Invoice issued for case #{$case->id}.");
         } catch (\Throwable $e) {
             return back()->with('error', 'Failed to issue invoice: ' . $e->getMessage());
@@ -122,17 +128,14 @@ class ToolsController extends Controller
         }
 
         try {
-            // Use the case actual_delivery_date if available, otherwise fallback to now()
-            $appliedAt = $case->actual_delivery_date ? date('Y-m-d H:i:s', strtotime($case->actual_delivery_date)) : now();
-            $invoice->date_applied = $appliedAt;
-            $invoice->status = 1;
-            $invoice->save();
+            $caseController = app(CaseController::class);
+            $applied = $caseController->applyInvoiceForCase((int) $case->id);
 
-            // Update client balance similarly to CaseController::applyInvoice
-            $client = $case->client;
-            if ($client) {
-                $client->balance = $client->balance + ($invoice->amount ?? 0);
-                $client->save();
+            if (!$applied) {
+                $invoice->refresh();
+                if ((int) $invoice->status !== 1 && empty($invoice->date_applied)) {
+                    return back()->with('error', 'Invoice was not applied because the case is not fully completed.');
+                }
             }
 
             return back()->with('success', "Invoice applied for case #{$case->id}.");

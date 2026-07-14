@@ -31,7 +31,7 @@
             <div class="modal-body">
                 <div class="modal-top-actions">
                     <span class="ysh-modal-title">CASE COMPLETION</span>
-                    <button type="button" class="close modal-close" aria-label="Close"
+                    <button type="button" class="sigma-close-button" aria-label="Close"
                             onclick="event.stopPropagation(); YSH_closeSlidePanel(@js($slidePanelKey))">
                         <span aria-hidden="true">&times;</span>
                     </button>
