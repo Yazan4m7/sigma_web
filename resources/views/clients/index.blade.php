@@ -260,7 +260,7 @@
                         </table>
                     </div>
 
-                    <div class="modal sigma-modal--clients-delete" tabindex="-1" role="dialog" id="doctorActionsModal">
+                    <div class="modal fade doctor-centered-fade-modal sigma-modal--clients-delete" tabindex="-1" role="dialog" id="doctorActionsModal">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -328,7 +328,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-6">
-                                                <a id="doctor-discount-link doctor-edit-link" data-toggle="modal" data-target="#doctorDiscountModal" class="btn btn-danger" data-dismiss="modal">
+                                                <a id="doctor-discount-link" href="#" role="button" class="btn btn-danger">
                                                     <span class="btn-icon"><i class="fas fa-percent"></i></span>
                                                     <span class="btn-text">Create a discount</span>
                                                 </a>
@@ -424,8 +424,8 @@
                     @endif
 
                     @if( Auth()->user()->is_admin)
-                        <div class="modal sigma-modal--clients-add" tabindex="-1" role="dialog" id="doctorDiscountModal">
-                            <div class="modal-dialog" role="document">
+                        <div class="modal fade doctor-centered-fade-modal sigma-modal--clients-add" tabindex="-1" role="dialog" id="doctorDiscountModal">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <form id="doctor-discount-form" action="{{route('account-discount')}}" method="POST">
                                         @csrf
@@ -444,7 +444,7 @@
                                             </div>
                                             <div class="doctor-payment-field">
                                                 <label class="doctor-payment-field-label" for="doctor-discount-date">Date of discount</label>
-                                                <input id="doctor-discount-date" type="datetime-local" name="discount_date" class="form-control">
+                                                <input id="doctor-discount-date" type="datetime-local" name="discount_date" class="form-control" required>
                                             </div>
                                             <div class="doctor-payment-field doctor-payment-field--last">
                                                 <label class="doctor-payment-field-label" for="doctor-discount-title">Details (How it appears on account statement)</label>
@@ -966,8 +966,28 @@
             preventDecimalAmountInput(event);
         });
 
+        $(document).on('click', '#doctor-discount-link', function(event) {
+            event.preventDefault();
+
+            const $actionsModal = $('#doctorActionsModal');
+            const $discountModal = $('#doctorDiscountModal');
+            const showDiscountModal = function() {
+                $discountModal.modal('show');
+            };
+
+            if ($actionsModal.hasClass('show')) {
+                $actionsModal
+                    .off('hidden.bs.modal.doctorDiscountHandoff')
+                    .one('hidden.bs.modal.doctorDiscountHandoff', showDiscountModal)
+                    .modal('hide');
+                return;
+            }
+
+            showDiscountModal();
+        });
+
         $(document).on('show.bs.modal', '#doctorDiscountModal', function(event) {
-            const trigger = event.relatedTarget;
+            const trigger = event.relatedTarget || document.getElementById('doctor-discount-link');
             const form = document.getElementById('doctor-discount-form');
 
             if (form) {

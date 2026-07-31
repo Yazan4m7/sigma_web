@@ -215,6 +215,25 @@
     font-weight: 700 !important;
 }
 
+.doctor-page-wrapper {
+    padding-bottom: 48px;
+}
+
+.doctor-page-wrapper .doctor-filter-shell-col,
+.doctor-page-wrapper .sigma-summary-grid {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.doctor-page-wrapper .doctor-table-shell {
+    overflow-x: auto;
+}
+
+.doctor-page-wrapper.take-payments-page table#my-table.dataTable tbody td:first-child,
+.doctor-page-wrapper.take-payments-page table#my-table.dataTable tbody td:nth-child(2) {
+    padding-left: 14px !important;
+}
+
 
 .filters-card {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -759,19 +778,30 @@
 }
 
 #doctorStatementsModal.fade .modal-dialog,
-#doctorStatementsModal.show .modal-dialog {
+#doctorStatementsModal.show .modal-dialog,
+.doctor-centered-fade-modal.fade .modal-dialog,
+.doctor-centered-fade-modal.show .modal-dialog {
     transform: none !important;
 }
 
-#doctorStatementsModal.fade .modal-content {
+#doctorStatementsModal.fade .modal-content,
+.doctor-centered-fade-modal.fade .modal-content {
     opacity: 0;
     transform: scale(0.98);
     transition: opacity 180ms ease, transform 180ms ease;
 }
 
-#doctorStatementsModal.show .modal-content {
+#doctorStatementsModal.show .modal-content,
+.doctor-centered-fade-modal.show .modal-content {
     opacity: 1;
     transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #doctorStatementsModal.fade .modal-content,
+    .doctor-centered-fade-modal.fade .modal-content {
+        transition: none;
+    }
 }
 
 #doctorStatementsModal .modal-title {
@@ -953,6 +983,14 @@ body.doctor-statements-modal-open .modal-backdrop.show {
         width: calc(100vw - 20px) !important;
         max-width: calc(100vw - 20px) !important;
         margin: 0.75rem auto !important;
+    }
+
+    #doctorDiscountModal .modal-dialog.modal-dialog-centered {
+        min-height: calc(100% - 1.5rem) !important;
+    }
+
+    #doctorDiscountModal .modal-dialog.modal-dialog-centered::before {
+        height: calc(100vh - 1.5rem);
     }
 
     #doctorPaymentModal .modal-body,

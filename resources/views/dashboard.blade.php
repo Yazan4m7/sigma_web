@@ -1,4 +1,7 @@
-@extends('layouts.app', ['pageSlug' => 'Home'])
+@extends('layouts.app', [
+    'pageSlug' => 'Home',
+    'pageSubtitle' => now()->format('l, F j, Y'),
+])
 
 @push('css')
     @php
@@ -12,6 +15,15 @@
 @endpush
 
 @section('content')
+    @php
+        $inWorkActive = (int) $ActiveJobsToday;
+        $inWorkWaiting = (int) $waitingJobsToday;
+        $inWorkCompleted = (int) $CompletedJobsToday;
+        $inWorkTotal = $inWorkActive + $inWorkWaiting + $inWorkCompleted;
+        $inWorkActivePercent = $inWorkTotal > 0 ? (int) round(($inWorkActive / $inWorkTotal) * 100) : 0;
+        $inWorkWaitingPercent = $inWorkTotal > 0 ? (int) round(($inWorkWaiting / $inWorkTotal) * 100) : 0;
+        $inWorkCompletedPercent = $inWorkTotal > 0 ? (int) round(($inWorkCompleted / $inWorkTotal) * 100) : 0;
+    @endphp
 
     {{-- <div class="row"  style="background-color: transparent"> --}}
     {{-- <h2 class="subheader-title"> --}}
@@ -64,16 +76,47 @@
                 <div class="card-header ">
                     <div class="row" style="background-color: transparent;padding:0">
                         <div class="col-sm-12 text-left">
-                            <h4 class="card-title" style="">Cases/Units Currently in-work</h4>
+                            <h4 class="card-title">Cases/units currently in-work</h4>
 
                         </div>
                     </div>
 
                 </div>
                 <div class="card-body dashboard-inwork-card-body">
-                    <div class="chart-area">
-                        <div id="chartContainer" style="height: 100%; width: 100%;"></div>
+                    <div class="dashboard-inwork-layout">
+                        <div class="dashboard-donut-visual">
+                            <canvas id="workloadDonutChart" aria-label="Active, waiting, and completed units"></canvas>
+                            <div class="dashboard-donut-center" aria-hidden="true">
+                                <strong>{{ $inWorkTotal }}</strong>
+                                <span>total units</span>
+                            </div>
+                        </div>
+                        <div class="dashboard-donut-legend" aria-label="Units currently in work">
+                            <div class="dashboard-donut-legend-row">
+                                <span class="dashboard-donut-label">
+                                    <span class="dashboard-donut-dot dashboard-donut-dot--active"></span>
+                                    Active <strong>{{ $inWorkActive }}</strong>
+                                </span>
 
+                                <span class="dashboard-donut-percent">{{ $inWorkActivePercent }}%</span>
+                            </div>
+                            <div class="dashboard-donut-legend-row">
+                                <span class="dashboard-donut-label">
+                                    <span class="dashboard-donut-dot dashboard-donut-dot--waiting"></span>
+                                    Waiting <strong>{{ $inWorkWaiting }}</strong>
+                                </span>
+
+                                <span class="dashboard-donut-percent">{{ $inWorkWaitingPercent }}%</span>
+                            </div>
+                            <div class="dashboard-donut-legend-row">
+                                <span class="dashboard-donut-label">
+                                    <span class="dashboard-donut-dot dashboard-donut-dot--completed"></span>
+                                    Completed <strong>{{ $inWorkCompleted }}</strong>
+                                </span>
+
+                                <span class="dashboard-donut-percent">{{ $inWorkCompletedPercent }}%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,9 +221,9 @@
                                         data-payment-doctor="{{ $payment->client->name }}"
                                         data-payment-collector="{{ $payment->collectorFullName() }}"
                                         data-payment-amount="{{ $payment->amount }}"
-                                        data-payment-collected-on="{{ $payment->created_at }}"
+                                        data-payment-collected-on="{{ ui_timestamp($payment->created_at) }}"
                                         data-payment-is-collected="{{ $payment->isCollected() ? '1' : '0' }}"
-                                        data-payment-received-on="{{ $payment->recieved_on }}"
+                                        data-payment-received-on="{{ ui_timestamp($payment->recieved_on) }}"
                                         data-payment-receiver="{{ $payment->receiverFullName() }}"
                                         data-payment-method="{{ str_replace(["\r", "\n"], ' ', (string) $payment->notes) }}"
                                         data-payment-notes="{{ str_replace(["\r", "\n"], ' ', (string) $payment->additional_notes) }}"
@@ -388,16 +431,14 @@
 @endsection
 
 @push('js')
-    <script src="{{ asset('assets') }}/js/canvasjs.min.js"></script>
     <script src="{{ asset('white') }}/js/plugins/chartjs.min.js"></script>
 
     <script>
         $(document).ready(function() {
             const hasChartJs = typeof Chart !== 'undefined';
-            const hasCanvasJs = typeof CanvasJS !== 'undefined';
 
             const bootDashboardCharts = function() {
-                if (hasCanvasJs && document.getElementById('chartContainer')) {
+                if (hasChartJs && document.getElementById('workloadDonutChart')) {
                     initDoughnutChart();
                 }
 
@@ -418,17 +459,40 @@
                 });
             }
 
-            $('.datatable').DataTable({
-                "pageLength": 50,
-                "searching": false,
-                "lengthChange": false,
-                "ordering": false,
-                "paging": false,
-                "autoWidth": false,
-                "columnDefs": [{
-                    "targets": -1,
-                    "className": "text-center"
-                }]
+            $('.datatable').each(function() {
+                const tableOptions = {
+                    "pageLength": 50,
+                    "searching": false,
+                    "lengthChange": false,
+                    "ordering": false,
+                    "paging": false,
+                    "info": false,
+                    "autoWidth": false,
+                    "columnDefs": [{
+                        "targets": -1,
+                        "className": "text-center"
+                    }]
+                };
+
+                if (this.id === 'datatable') {
+                    tableOptions.language = {
+                        emptyTable: '<div class="dashboard-summary-empty" role="status">' +
+                            '<i class="fa-solid fa-wallet" aria-hidden="true"></i>' +
+                            '<span>No payments collected today</span>' +
+                            '</div>'
+                    };
+                }
+
+                if (this.id === 'datatable2') {
+                    tableOptions.language = {
+                        emptyTable: '<div class="dashboard-summary-empty" role="status">' +
+                            '<i class="fa-solid fa-truck" aria-hidden="true"></i>' +
+                            '<span>No deliveries scheduled today</span>' +
+                            '</div>'
+                    };
+                }
+
+                $(this).DataTable(tableOptions);
             });
 
             // iOS fix: Move modals to body to escape stacking context
@@ -518,8 +582,8 @@
                     yAxes: [{
                         gridLines: {
                             drawBorder: false,
-                            color: 'rgba(29,140,248,0.1)',
-                            zeroLineColor: "transparent",
+                            color: 'rgba(91,105,116,0.10)',
+                            zeroLineColor: 'rgba(91,105,116,0.14)',
                         },
                         ticks: {
                             suggestedMin: 20,
@@ -532,7 +596,7 @@
                     xAxes: [{
                         gridLines: {
                             drawBorder: false,
-                            color: 'rgba(29,140,248,0.1)',
+                            color: 'rgba(91,105,116,0.08)',
                             zeroLineColor: "transparent"
                         },
                         ticks: {
@@ -545,12 +609,6 @@
 
             var ctx = completedChartElement.getContext("2d");
 
-            var gradientStroke = ctx.createLinearGradient(0, 230, 0, 50);
-
-            gradientStroke.addColorStop(1, 'rgba(29,140,248,0.2)');
-            gradientStroke.addColorStop(0.4, 'rgba(29,140,248,0.0)');
-            gradientStroke.addColorStop(0, 'rgba(29,140,248,0)'); //blue colors
-
             var options1 = {
                 type: 'bar',
                 responsive: true,
@@ -562,9 +620,9 @@
                     datasets: [{
                         label: "Completed Units",
                         fill: true,
-                        backgroundColor: gradientStroke,
-                        hoverBackgroundColor: gradientStroke,
-                        borderColor: '#1f8ef1',
+                        backgroundColor: '#1a7f64',
+                        hoverBackgroundColor: '#1a7f64',
+                        borderColor: '#1a7f64',
                         borderWidth: 2,
                         borderDash: [],
                         borderDashOffset: 0.0,
@@ -584,9 +642,9 @@
                     datasets: [{
                         label: "Completed Cases",
                         fill: true,
-                        backgroundColor: gradientStroke,
-                        hoverBackgroundColor: gradientStroke,
-                        borderColor: '#1f8ef1',
+                        backgroundColor: '#1a7f64',
+                        hoverBackgroundColor: '#1a7f64',
+                        borderColor: '#1a7f64',
                         borderWidth: 2,
                         borderDash: [],
                         borderDashOffset: 0.0,
@@ -610,83 +668,41 @@
         }
 
         function initDoughnutChart() {
-            const chartContainer = document.getElementById("chartContainer");
-            if (!chartContainer || typeof CanvasJS === 'undefined') {
+            const doughnutChartElement = document.getElementById('workloadDonutChart');
+            if (!doughnutChartElement || !doughnutChartElement.getContext || typeof Chart === 'undefined') {
                 return;
             }
-            var isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
-            var doughnetChartData = {
-                "Units": [{
-                        y: {!! $CompletedJobsToday !!},
-                        name: "Completed"
-                    },
-                    {
-                        y: {!! $ActiveJobsToday !!},
-                        name: "Active"
-                    },
-                    {
-                        y: {!! $waitingJobsToday !!},
-                        name: "Waiting"
-                    }
+            const doughnutValues = @json([$inWorkActive, $inWorkWaiting, $inWorkCompleted]);
 
-                ]
-            };
-            CanvasJS.addColorSet("greenShades",
-                [ //colorSet Array
-
-                    "#37b44a",
-                    "#007bff",
-                    "#dc3545"
-                ]);
-            var options = {
-
-                exportFileName: "Active/Waiting/Completed Chart",
-                exportEnabled: false,
-                animationEnabled: true,
-                animationDuration: 800,
-                colorSet: "greenShades",
-                //                title:{
-                //                    text: "Monthly Expense"
-                //                },
-                legend: {
-                    cursor: "pointer",
-                    itemclick: explodePie
+            new Chart(doughnutChartElement.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Active', 'Waiting', 'Completed'],
+                    datasets: [{
+                        data: doughnutValues,
+                        backgroundColor: ['#2f97e9', '#ff493f', '#4caf50'],
+                        hoverBackgroundColor: ['#2f97e9', '#ff493f', '#4caf50'],
+                        borderWidth: 0
+                    }]
                 },
-                data: [{
-                    type: "doughnut",
-                    innerRadius: isSmallScreen ? 38 : 50,
-                    indexLabelTextAlign: "center",
-                    //indexLabelWrap: true,
-
-                    indexLabelPlacement: "outside",
-                    indexLabelFontColor: "black",
-                    indexLabelFontSize: isSmallScreen ? 11 : 12,
-                    showInLegend: false,
-                    toolTipContent: "<b>{name}</b>: {y} (#percent%)",
-                    indexLabel: "{name}",
-                    dataPoints: doughnetChartData["Units"]
-                }]
-
-            };
-
-            var compWaitingChart = new CanvasJS.Chart("chartContainer",
-                options);
-
-            compWaitingChart.render();
-
-
-
-
-            function explodePie(e) {
-                if (typeof(e.dataSeries.dataPoints[e.dataPointIndex].exploded) === "undefined" || !e.dataSeries.dataPoints[e
-                        .dataPointIndex].exploded) {
-                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = true;
-                } else {
-                    e.dataSeries.dataPoints[e.dataPointIndex].exploded = false;
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutoutPercentage: 58,
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem, data) {
+                                const label = data.labels[tooltipItem.index] || '';
+                                const value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] || 0;
+                                return label + ': ' + value;
+                            }
+                        }
+                    }
                 }
-                e.chart.render();
-            }
-
+            });
         }
 
         function initPerformanceChart() {
@@ -722,8 +738,8 @@
                         barPercentage: 1.6,
                         gridLines: {
                             drawBorder: false,
-                            color: 'rgba(29,140,248,0.0)',
-                            zeroLineColor: "transparent"
+                            color: 'rgba(91,105,116,0.22)',
+                            zeroLineColor: 'rgba(91,105,116,0.28)'
                         },
                         ticks: {
                             suggestedMin: 20,
@@ -738,7 +754,7 @@
                         barPercentage: 1.6,
                         gridLines: {
                             drawBorder: false,
-                            color: 'rgba(225,78,202,0.1)',
+                            color: 'rgba(91,105,116,0.08)',
                             zeroLineColor: "transparent"
                         },
                         ticks: {

@@ -255,6 +255,14 @@
         display: none !important;
     }
 
+    .invoices-page-wrapper {
+        padding-bottom: 48px;
+    }
+
+    .invoices-page-wrapper table#datatable.dataTable tbody td:first-child {
+        padding-left: 14px !important;
+    }
+
     @media screen and (min-width: 768px) {
         .invoices-page-wrapper .cases-filter-row > [class*="col-"].sigma-filter-action-col {
             flex: 0 0 auto !important;
@@ -409,7 +417,15 @@
 
                                     <tbody>
                                         @foreach($invoices as $invoice)
-                                        @if(isset($invoice->case))
+                                        @if($invoice->isAccountDiscount())
+                                        {{-- This is a discount invoice --}}
+                                        <tr role="row" class="odd discount-invoice-row" data-invoice-id="{{$invoice->id}}" style="background-color: #f8f9fa; border-left: 3px solid #6c757d; cursor: pointer;" title="Click to delete this discount">
+                                            <td class="sorting_1 sigma-col-shaded sigma-body-left">{{$invoice->client->name}}</td>
+                                            <td class="sigma-body-left"><i class="fa fa-tag" style="color: #6c757d; margin-right: 5px;"></i>{{$invoice->discount_title}}</td>
+                                            <td class="sigma-col-shaded sigma-body-left">{{$invoice->amount}} JOD</td>
+                                            <td class="sigma-body-center">-</td>
+                                        </tr>
+                                        @elseif(isset($invoice->case))
                                         <tr role="row" class="odd" onclick="window.location='{{route('view-invoice', $invoice->case->id)}}';" style="cursor: pointer;">
                                             <td class="sorting_1 sigma-col-shaded sigma-body-left">{{$invoice->client->name}}</td>
                                             <td class="sigma-body-left">{{$invoice->case->patient_name}}</td>
@@ -421,10 +437,9 @@
                                             @endif
                                         </tr>
                                         @else
-                                        {{-- This is a discount invoice --}}
-                                        <tr role="row" class="odd discount-invoice-row" data-invoice-id="{{$invoice->id}}" style="background-color: #f8f9fa; border-left: 3px solid #6c757d; cursor: pointer;" title="Click to delete this discount">
+                                        <tr role="row" class="odd" title="Linked case unavailable">
                                             <td class="sorting_1 sigma-col-shaded sigma-body-left">{{$invoice->client->name}}</td>
-                                            <td class="sigma-body-left"><i class="fa fa-tag" style="color: #6c757d; margin-right: 5px;"></i>{{$invoice->discount_title}}</td>
+                                            <td class="sigma-body-left"><i class="fa fa-exclamation-triangle text-warning" style="margin-right: 5px;"></i>Linked case unavailable</td>
                                             <td class="sigma-col-shaded sigma-body-left">{{$invoice->amount}} JOD</td>
                                             <td class="sigma-body-center">-</td>
                                         </tr>

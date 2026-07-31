@@ -19,4 +19,10 @@ class invoice extends Model
     {
         return $this->belongsTo('App\discount', 'case_id', 'case_id');
     }
+
+    public function isAccountDiscount(): bool
+    {
+        return (int) $this->case_id <= 0 && (float) $this->amount <= 0;
+    }
+
 }

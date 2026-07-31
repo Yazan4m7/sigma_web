@@ -40,6 +40,30 @@
     min-height: 0 !important;
 }
 
+.pageTitleContainer--with-subtitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 5px;
+    padding-bottom: 7px;
+}
+
+.pageTitleContainer--with-subtitle .pageTitle {
+    line-height: 1.05;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.pageTitleSubtitle {
+    margin: 3px 0 0 15px;
+    color: #8a98a6;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+}
+
 .main-panel > .content > .row {
     row-gap: 16px;
     margin-bottom: 16px;
@@ -49,6 +73,113 @@
 .main-panel > .content .noLeftPadding {
     padding-left: 8px !important;
     padding-right: 8px !important;
+}
+
+.dashboard-inwork-card-body {
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-inwork-layout {
+    display: grid;
+    grid-template-columns: minmax(150px, 0.9fr) minmax(170px, 1.1fr);
+    gap: 18px;
+    align-items: center;
+    width: 100%;
+    min-height: 190px;
+}
+
+.dashboard-donut-visual {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin: 0 auto;
+}
+
+.dashboard-donut-visual canvas {
+    position: relative;
+    z-index: 1;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.dashboard-donut-center {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.dashboard-donut-center strong {
+    color: #202936;
+    font-size: 26px;
+    line-height: 1;
+}
+
+.dashboard-donut-center span {
+    margin-top: 5px;
+    color: #a3afba;
+    font-size: 12px;
+    line-height: 1;
+}
+
+.dashboard-donut-legend {
+    min-width: 0;
+}
+
+.dashboard-donut-legend-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 42px;
+    gap: 6px;
+    align-items: center;
+    min-height: 34px;
+    border-bottom: 1px solid #edf0f3;
+    color: #697789;
+    font-size: 14px;
+}
+
+.dashboard-donut-legend-row:last-child {
+    border-bottom: 0;
+}
+
+.dashboard-donut-label {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    min-width: 0;
+}
+
+.dashboard-donut-dot {
+    flex: 0 0 9px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.dashboard-donut-dot--active {
+    background: #2f97e9;
+}
+
+.dashboard-donut-dot--waiting {
+    background: #ff493f;
+}
+
+.dashboard-donut-dot--completed {
+    background: #4caf50;
+}
+
+.dashboard-donut-legend-row strong {
+    color: #202936;
+    font-size: 14px;
+}
+
+.dashboard-donut-percent {
+    color: #a3afba;
+    text-align: right;
 }
 
 .dashboard-summary-panel {
@@ -70,7 +201,7 @@
     overflow-x: hidden !important;
     overflow-y: hidden !important;
     margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+    padding-bottom: 10px !important;
 }
 
 .summary-table-responsive .dataTables_wrapper,
@@ -160,6 +291,29 @@
     text-overflow: ellipsis;
 }
 
+#datatable td.dataTables_empty,
+#datatable2 td.dataTables_empty {
+    padding: 0 !important;
+    background: #f8fafc !important;
+}
+
+.dashboard-summary-empty {
+    display: flex;
+    min-height: 105px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    color: #aab6c4;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.dashboard-summary-empty i {
+    color: #ced7e0;
+    font-size: 24px;
+}
+
 .payment-info-grid {
     display: grid;
     gap: 12px;
@@ -246,12 +400,34 @@
         height: 180px !important;
     }
 
-    #chartContainer {
-        min-height: 180px !important;
+    .dashboard-inwork-layout {
+        grid-template-columns: minmax(130px, 0.9fr) minmax(130px, 1.1fr);
+        gap: 8px;
+        min-height: 180px;
     }
 
-    .dashboard-inwork-card-body #chartContainer {
-        min-height: 210px !important;
+    .dashboard-donut-visual {
+        width: 140px;
+        height: 140px;
+    }
+
+    .dashboard-donut-legend-row {
+        grid-template-columns: minmax(0, 1fr) 36px;
+        gap: 4px;
+        min-height: 31px;
+        font-size: 12px;
+    }
+
+    .dashboard-donut-label {
+        gap: 6px;
+    }
+
+    .dashboard-donut-center strong {
+        font-size: 23px;
+    }
+
+    .dashboard-donut-legend-row strong {
+        font-size: 12px;
     }
 
     .dashboard-summary-panel {
@@ -260,7 +436,6 @@
     }
 
     .dashboard-summary-panel .card-body,
-    .summary-table-responsive,
     .main-dashboard-summary-table {
         margin-bottom: 0 !important;
         padding-bottom: 0 !important;

@@ -515,7 +515,7 @@ class ClientsController extends Controller
         $this->attachClientBalances($sales, now()->toDateString() . ' 23:59:59');
 
         $latestInvoices = invoice::query()
-            ->select(['id', 'doctor_id', 'date_applied', 'discount_title', 'case_id'])
+            ->select(['id', 'doctor_id', 'date_applied', 'discount_title', 'case_id', 'amount'])
             ->where('status', 1)
             ->whereNotNull('date_applied')
             ->when(!empty($selectedDoctorIds), function ($query) use ($selectedDoctorIds) {
@@ -534,7 +534,7 @@ class ClientsController extends Controller
             $doctor->setAttribute('last_invoice_case_id', optional($latestInvoice)->case_id);
             $doctor->setAttribute(
                 'last_invoice_is_discount',
-                (bool) ($latestInvoice && (!empty($latestInvoice->discount_title) || (int) $latestInvoice->case_id === -1))
+                (bool) ($latestInvoice && $latestInvoice->isAccountDiscount())
             );
         }
 
@@ -671,7 +671,7 @@ class ClientsController extends Controller
             $invoice->updated_at = $request->discount_date;
             $invoice->amount = $discountAmount * -1;
             $invoice->amount_before_discount = $discountAmount * -1;
-            $invoice->case_id =-1;
+            $invoice->case_id = 0;
             $invoice->doctor_id =$doctor->id;
             $invoice->discount_title =$request->discount_title;
             $invoice->save();
@@ -689,35 +689,33 @@ class ClientsController extends Controller
         return back()->with('success', 'Payment removed.');
     }
 
-    public function deleteDiscount($id){
-        $invoice = invoice::where('id',$id)->first();
+    public function deleteDiscount($id)
+    {
+        return DB::transaction(function () use ($id) {
+            $invoice = invoice::where('id', $id)->lockForUpdate()->first();
 
-        // Check if invoice exists
-        if(!$invoice){
-            return back()->with('error', 'Discount invoice not found.');
-        }
+            if (!$invoice) {
+                return back()->with('error', 'Discount invoice not found.');
+            }
 
-        // Check if it's actually a discount (case_id = -1)
-        if($invoice->case_id != -1){
-            return back()->with('error', 'This is not a discount invoice.');
-        }
+            if (!$invoice->isAccountDiscount()) {
+                return back()->with('error', 'This is not a discount invoice.');
+            }
 
-        // Get the doctor/client
-        $doctor = client::where('id', $invoice->doctor_id)->first();
+            $doctor = client::where('id', $invoice->doctor_id)->lockForUpdate()->first();
 
-        if(!$doctor){
-            return back()->with('error', 'Doctor not found.');
-        }
+            if (!$doctor) {
+                return back()->with('error', 'Doctor not found.');
+            }
 
-        // Reverse the discount effect on doctor's balance
-        // Since discount amount is negative, subtracting it will increase the balance
-        $doctor->balance = $doctor->balance - $invoice->amount;
-        $doctor->save();
+            // Since the discount amount is negative, subtracting it reverses the balance effect.
+            $doctor->balance = $doctor->balance - $invoice->amount;
+            $doctor->save();
 
-        // Soft delete the invoice
-        $invoice->delete();
+            $invoice->delete();
 
-        return back()->with('success', 'Discount removed successfully. Doctor balance updated.');
+            return back()->with('success', 'Discount removed successfully. Doctor balance updated.');
+        });
     }
 
     public function doctorInvoices(Request $request)
